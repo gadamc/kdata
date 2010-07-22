@@ -1,0 +1,8 @@
+Small introduction into filling the data structure:
+
+Since filling the data structure takes quite some cpu time, this should be done on TESLA. (O(40.000.000)events)Run12
+Location of the scripts and programms needed for filling:
+- Analysis branch of the SVN let's call this directory base.
+- base/examples/ houses a collection of scripts needed for processing
+- base/examples/scriptstartMerge.sh is a shell script that contains calls to all root scripts needed for the different merging steps, and I am going to include calls to the post filling programms as well
+- thus in principal all you have to do is comment/uncomment the steps you want to do and submit the shell script to TESLA
