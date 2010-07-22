@@ -1,0 +1,1407 @@
+// !$*UTF8*$!
+{
+	660A9DA811AD7DC400312F5A /* EdwEventCollection.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {686, 1152}}";
+			sepNavSelRange = "{1260, 0}";
+			sepNavVisRange = "{609, 993}";
+			sepNavWindowFrame = "{{574, 91}, {745, 787}}";
+		};
+	};
+	660A9DA911AD7DC400312F5A /* EdwEventCollection.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {686, 720}}";
+			sepNavSelRange = "{796, 0}";
+			sepNavVisRange = "{49, 982}";
+			sepNavWindowFrame = "{{574, 241}, {745, 787}}";
+		};
+	};
+	661E8C3F11E8BC4A007FBA0E /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 6631B6AA116F567B007A6E89 /* EdwEventBase.h */;
+	};
+	661E8C6611E908D5007FBA0E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6631B6AA116F567B007A6E89 /* EdwEventBase.h */;
+		name = "EdwEventBase.h: 60";
+		rLen = 0;
+		rLoc = 2256;
+		rType = 0;
+		vrLen = 1950;
+		vrLoc = 2560;
+	};
+	662348B311D0997200107A63 /* ExampleAnalysis.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {760, 864}}";
+			sepNavSelRange = "{1383, 0}";
+			sepNavVisRange = "{307, 1159}";
+			sepNavWindowFrame = "{{437, 287}, {819, 699}}";
+		};
+	};
+	66234ABE11DB4A7500107A63 /* EdwHLaMCEvent.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {726, 3520}}";
+			sepNavSelRange = "{2519, 0}";
+			sepNavVisRange = "{1933, 1158}";
+		};
+	};
+	66234ABF11DB4A7500107A63 /* EdwHLaMCEvent.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {651, 1152}}";
+			sepNavSelRange = "{1558, 8}";
+			sepNavVisRange = "{447, 1521}";
+			sepNavWindowFrame = "{{364, -26}, {710, 871}}";
+		};
+	};
+	66234C1111DBA22400107A63 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 663F5E8811B511A000B63EEA /* getNeutronCalibCoincidence.cpp */;
+	};
+	66234C1311DBA25100107A63 /* getBoloMuonCoincidences.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {957, 1936}}";
+			sepNavSelRange = "{1384, 0}";
+			sepNavVisRange = "{1925, 1149}";
+			sepNavWindowFrame = "{{291, 40}, {1016, 836}}";
+		};
+	};
+	66234C1711DBA36000107A63 /* getBoloMuonCoincidences */ = {
+		activeExec = 0;
+		executables = (
+			66234C2111DBA36000107A63 /* getBoloMuonCoincidences */,
+		);
+	};
+	66234C2111DBA36000107A63 /* getBoloMuonCoincidences */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = getBoloMuonCoincidences;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	6631B6A4116F565C007A6E89 /* EdwBoloPulseSubRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {913, 2880}}";
+			sepNavSelRange = "{4419, 0}";
+			sepNavVisRange = "{3725, 1035}";
+			sepNavWindowFrame = "{{111, 56}, {972, 822}}";
+		};
+	};
+	6631B6A5116F565C007A6E89 /* EdwBoloPulseSubRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {913, 960}}";
+			sepNavSelRange = "{328, 61}";
+			sepNavVisRange = "{390, 1687}";
+			sepNavWindowFrame = "{{857, 68}, {972, 822}}";
+		};
+	};
+	6631B6A6116F567B007A6E89 /* EdwBoloSystemRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {684, 1936}}";
+			sepNavSelRange = "{2547, 0}";
+			sepNavVisRange = "{1474, 1139}";
+			sepNavWindowFrame = "{{420, 50}, {679, 828}}";
+		};
+	};
+	6631B6A7116F567B007A6E89 /* EdwBoloSystemRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {712, 928}}";
+			sepNavSelRange = "{1540, 8}";
+			sepNavVisRange = "{253, 1458}";
+			sepNavWindowFrame = "{{421, 282}, {679, 746}}";
+		};
+	};
+	6631B6A9116F567B007A6E89 /* EdwEventBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {831, 3376}}";
+			sepNavSelRange = "{1139, 16}";
+			sepNavVisRange = "{1043, 977}";
+			sepNavWindowFrame = "{{237, 22}, {701, 854}}";
+		};
+	};
+	6631B6AA116F567B007A6E89 /* EdwEventBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1160, 1888}}";
+			sepNavSelRange = "{2256, 0}";
+			sepNavVisRange = "{2560, 1950}";
+			sepNavWindowFrame = "{{460, 18}, {701, 854}}";
+		};
+	};
+	6631B6AB116F567B007A6E89 /* EdwHLABoloPulseSubRecord.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 1840}}";
+			sepNavSelRange = "{2595, 0}";
+			sepNavVisRange = "{1677, 1241}";
+			sepNavWindowFrame = "{{189, 31}, {641, 847}}";
+		};
+	};
+	6631B6AC116F567B007A6E89 /* EdwHLABoloPulseSubRecord.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 816}}";
+			sepNavSelRange = "{370, 25}";
+			sepNavVisRange = "{58, 1420}";
+			sepNavWindowFrame = "{{189, 31}, {641, 847}}";
+		};
+	};
+	6631B6AD116F567B007A6E89 /* EdwHLABoloSysRecord.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {656, 1792}}";
+			sepNavSelRange = "{2810, 0}";
+			sepNavVisRange = "{1643, 1184}";
+			sepNavWindowFrame = "{{261, 50}, {679, 828}}";
+		};
+	};
+	6631B6AE116F567B007A6E89 /* EdwHLABoloSysRecord.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {635, 656}}";
+			sepNavSelRange = "{351, 23}";
+			sepNavVisRange = "{0, 1156}";
+			sepNavWindowFrame = "{{630, 282}, {679, 746}}";
+		};
+	};
+	6631B6AF116F567B007A6E89 /* EdwHLAEvent.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1258, 9152}}";
+			sepNavSelRange = "{12037, 567}";
+			sepNavVisRange = "{10855, 1043}";
+			sepNavWindowFrame = "{{461, 132}, {842, 746}}";
+		};
+	};
+	6631B6B0116F567B007A6E89 /* EdwHLAEvent.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {783, 3120}}";
+			sepNavSelRange = "{695, 51}";
+			sepNavVisRange = "{189, 1486}";
+			sepNavWindowFrame = "{{598, 73}, {842, 805}}";
+		};
+	};
+	6631B6B1116F567B007A6E89 /* EdwHLAMuonModuleSubRecord.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {836, 2016}}";
+			sepNavSelRange = "{2880, 69}";
+			sepNavVisRange = "{2075, 1219}";
+			sepNavWindowFrame = "{{289, 58}, {895, 798}}";
+		};
+	};
+	6631B6B2116F567B007A6E89 /* EdwHLAMuonModuleSubRecord.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {677, 784}}";
+			sepNavSelRange = "{374, 26}";
+			sepNavVisRange = "{95, 1407}";
+			sepNavWindowFrame = "{{536, 16}, {666, 821}}";
+		};
+	};
+	6631B6B3116F567B007A6E89 /* EdwHLAMuonVetoSysRecord.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {684, 1744}}";
+			sepNavSelRange = "{698, 0}";
+			sepNavVisRange = "{1732, 1147}";
+			sepNavWindowFrame = "{{438, 132}, {679, 746}}";
+		};
+	};
+	6631B6B4116F567B007A6E89 /* EdwHLAMuonVetoSysRecord.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {663, 709}}";
+			sepNavSelRange = "{491, 0}";
+			sepNavVisRange = "{0, 1225}";
+			sepNavWindowFrame = "{{68, 133}, {679, 828}}";
+		};
+	};
+	6631B6B5116F567B007A6E89 /* EdwHLASambaSubRecord.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {656, 1824}}";
+			sepNavSelRange = "{1868, 0}";
+			sepNavVisRange = "{1603, 1215}";
+			sepNavWindowFrame = "{{584, 53}, {711, 824}}";
+		};
+	};
+	6631B6B6116F567B007A6E89 /* EdwHLASambaSubRecord.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {652, 672}}";
+			sepNavSelRange = "{372, 21}";
+			sepNavVisRange = "{0, 1169}";
+			sepNavWindowFrame = "{{361, 132}, {711, 746}}";
+		};
+	};
+	6631B6B7116F567B007A6E89 /* EdwHLASingleBoloSubRecord.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {973, 9520}}";
+			sepNavSelRange = "{11723, 7}";
+			sepNavVisRange = "{11298, 798}";
+			sepNavWindowFrame = "{{669, 132}, {771, 746}}";
+		};
+	};
+	6631B6B8116F567B007A6E89 /* EdwHLASingleBoloSubRecord.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {957, 2848}}";
+			sepNavSelRange = "{635, 0}";
+			sepNavVisRange = "{436, 1792}";
+			sepNavWindowFrame = "{{381, 132}, {771, 746}}";
+		};
+	};
+	6631B6B9116F567B007A6E89 /* EdwHLASubRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {620, 768}}";
+			sepNavSelRange = "{957, 0}";
+			sepNavVisRange = "{54, 1077}";
+			sepNavWindowFrame = "{{203, 27}, {679, 828}}";
+		};
+	};
+	6631B6BA116F567B007A6E89 /* EdwHLASubRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {733, 686}}";
+			sepNavSelRange = "{942, 0}";
+			sepNavVisRange = "{0, 1084}";
+			sepNavWindowFrame = "{{203, 27}, {679, 828}}";
+		};
+	};
+	6631B6BB116F567B007A6E89 /* EdwHLASystemRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {663, 2768}}";
+			sepNavSelRange = "{237, 0}";
+			sepNavVisRange = "{3462, 1505}";
+			sepNavWindowFrame = "{{226, 6}, {679, 828}}";
+		};
+	};
+	6631B6BC116F567B007A6E89 /* EdwHLASystemRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {656, 1152}}";
+			sepNavSelRange = "{903, 0}";
+			sepNavVisRange = "{908, 1680}";
+			sepNavWindowFrame = "{{226, 6}, {679, 828}}";
+		};
+	};
+	6631B6BF116F567B007A6E89 /* EdwMuonModuleSubRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {726, 3184}}";
+			sepNavSelRange = "{4005, 0}";
+			sepNavVisRange = "{3003, 1180}";
+			sepNavWindowFrame = "{{289, 3}, {710, 871}}";
+		};
+	};
+	6631B6C0116F567C007A6E89 /* EdwMuonModuleSubRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {684, 1056}}";
+			sepNavSelRange = "{1351, 15}";
+			sepNavVisRange = "{332, 1618}";
+			sepNavWindowFrame = "{{641, 9}, {597, 869}}";
+		};
+	};
+	6631B6C1116F567C007A6E89 /* EdwMuonVetoSystemRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {768, 3792}}";
+			sepNavSelRange = "{2334, 0}";
+			sepNavVisRange = "{1371, 1190}";
+			sepNavWindowFrame = "{{523, 47}, {703, 831}}";
+		};
+	};
+	6631B6C2116F567C007A6E89 /* EdwMuonVetoSystemRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1118, 1440}}";
+			sepNavSelRange = "{2833, 12}";
+			sepNavVisRange = "{1691, 1974}";
+			sepNavWindowFrame = "{{977, 0}, {703, 831}}";
+		};
+	};
+	6631B6C3116F567C007A6E89 /* EdwRawEvent.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {656, 2192}}";
+			sepNavSelRange = "{2784, 0}";
+			sepNavVisRange = "{1762, 1056}";
+			sepNavWindowFrame = "{{723, 59}, {679, 819}}";
+		};
+	};
+	6631B6C4116F567C007A6E89 /* EdwRawEvent.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {621, 848}}";
+			sepNavSelRange = "{1254, 27}";
+			sepNavVisRange = "{81, 1327}";
+			sepNavWindowFrame = "{{723, 110}, {679, 819}}";
+		};
+	};
+	6631B6C5116F567C007A6E89 /* EdwSambaSubRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {913, 5488}}";
+			sepNavSelRange = "{4592, 0}";
+			sepNavVisRange = "{3939, 1250}";
+			sepNavWindowFrame = "{{468, 56}, {972, 822}}";
+		};
+	};
+	6631B6C6116F567C007A6E89 /* EdwSambaSubRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {943, 1504}}";
+			sepNavSelRange = "{1224, 16}";
+			sepNavVisRange = "{1214, 1989}";
+			sepNavWindowFrame = "{{163, 11}, {972, 822}}";
+		};
+	};
+	6631B6C7116F567C007A6E89 /* EdwSingleBoloSubRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {726, 3728}}";
+			sepNavSelRange = "{3927, 0}";
+			sepNavVisRange = "{3291, 1465}";
+			sepNavWindowFrame = "{{466, 132}, {783, 746}}";
+		};
+	};
+	6631B6C8116F567C007A6E89 /* EdwSingleBoloSubRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {724, 1248}}";
+			sepNavSelRange = "{419, 0}";
+			sepNavVisRange = "{1315, 1425}";
+			sepNavWindowFrame = "{{442, 103}, {765, 719}}";
+		};
+	};
+	6631B6C9116F567C007A6E89 /* EdwSubRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {620, 800}}";
+			sepNavSelRange = "{408, 0}";
+			sepNavVisRange = "{165, 901}";
+			sepNavWindowFrame = "{{180, 48}, {679, 828}}";
+		};
+	};
+	6631B6CA116F567C007A6E89 /* EdwSubRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {810, 686}}";
+			sepNavSelRange = "{954, 0}";
+			sepNavVisRange = "{0, 1111}";
+			sepNavWindowFrame = "{{180, 48}, {679, 828}}";
+		};
+	};
+	6631B6CB116F567C007A6E89 /* EdwSystemRecordBase.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {628, 1728}}";
+			sepNavSelRange = "{1870, 236}";
+			sepNavVisRange = "{1444, 1124}";
+			sepNavWindowFrame = "{{756, 11}, {679, 828}}";
+		};
+	};
+	6631B6CC116F567C007A6E89 /* EdwSystemRecordBase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {635, 1104}}";
+			sepNavSelRange = "{1042, 10}";
+			sepNavVisRange = "{623, 1508}";
+			sepNavWindowFrame = "{{741, 7}, {679, 828}}";
+		};
+	};
+	6631B6CF116F567C007A6E89 /* EdwTimeStamp.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {530, 638}}";
+			sepNavSelRange = "{217, 77}";
+			sepNavVisRange = "{0, 295}";
+			sepNavWindowFrame = "{{406, 92}, {589, 757}}";
+		};
+	};
+	6631B6D0116F567C007A6E89 /* EdwTimeStamp.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {530, 638}}";
+			sepNavSelRange = "{313, 0}";
+			sepNavVisRange = "{0, 419}";
+			sepNavWindowFrame = "{{406, 92}, {589, 757}}";
+		};
+	};
+	6631B6D1116F567C007A6E89 /* EdwDSWriter.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {852, 5488}}";
+			sepNavSelRange = "{8153, 0}";
+			sepNavVisRange = "{413, 1325}";
+			sepNavWindowFrame = "{{593, 151}, {769, 877}}";
+		};
+	};
+	6631B6D2116F567C007A6E89 /* EdwDSWriter.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {710, 1280}}";
+			sepNavSelRange = "{302, 42}";
+			sepNavVisRange = "{288, 1656}";
+			sepNavWindowFrame = "{{821, 63}, {769, 877}}";
+		};
+	};
+	6631B6D3116F567C007A6E89 /* fillEvents.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {973, 2384}}";
+			sepNavSelRange = "{2688, 13}";
+			sepNavVisRange = "{2197, 1133}";
+			sepNavWindowFrame = "{{676, 0}, {734, 878}}";
+		};
+	};
+	6631B6D4116F567C007A6E89 /* fillEventTest.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {768, 1952}}";
+			sepNavSelRange = "{2188, 0}";
+			sepNavVisRange = "{319, 1627}";
+			sepNavWindowFrame = "{{716, 0}, {624, 878}}";
+		};
+	};
+	6631B6DE116F5EB4007A6E89 /* fillExample.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {712, 3056}}";
+			sepNavSelRange = "{2575, 0}";
+			sepNavVisRange = "{0, 985}";
+			sepNavWindowFrame = "{{762, 0}, {624, 878}}";
+		};
+	};
+	6631B6E0116F5F08007A6E89 /* rootScript_fillExample.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {782, 759}}";
+			sepNavSelRange = "{711, 0}";
+			sepNavVisRange = "{0, 748}";
+			sepNavWindowFrame = "{{331, 150}, {624, 878}}";
+		};
+	};
+	6631BBD1117724C5007A6E89 /* WishList.rtf */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {777, 1359}}";
+			sepNavSelRange = "{626, 0}";
+			sepNavVisRect = "{{0, 0}, {777, 774}}";
+			sepNavWindowFrame = "{{351, 0}, {822, 878}}";
+		};
+	};
+	6631BC4B11774767007A6E89 /* filldstEvents.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {3309, 5040}}";
+			sepNavSelRange = "{10699, 10}";
+			sepNavVisRange = "{7184, 2014}";
+			sepNavWindowFrame = "{{158, 106}, {838, 863}}";
+		};
+	};
+	663F5A3A11AEB50700B63EEA /* fillEvents.cc:112 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 6631B6D3116F567C007A6E89 /* fillEvents.cc */;
+		functionName = "main(int /*argc*/, char* /*argv[]*/)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 112;
+		location = fillEvents;
+		modificationTime = 299758948.551557;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	663F5A3E11AEB61D00B63EEA /* fillEvents.cc:134 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 6631B6D3116F567C007A6E89 /* fillEvents.cc */;
+		functionName = "main(int /*argc*/, char* /*argv[]*/)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 134;
+		location = fillEvents;
+		modificationTime = 299758948.551578;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	663F5A4711AEB6D300B63EEA /* fillEvents.cc:79 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 6631B6D3116F567C007A6E89 /* fillEvents.cc */;
+		functionName = "main(int /*argc*/, char* /*argv[]*/)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 79;
+		location = fillEvents;
+		modificationTime = 299758948.551599;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	663F5A4F11AEB92100B63EEA /* fillEvents.cc:64 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 6631B6D3116F567C007A6E89 /* fillEvents.cc */;
+		functionName = "main(int /*argc*/, char* /*argv[]*/)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 64;
+		location = fillEvents;
+		modificationTime = 299758948.551612;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	663F5E8811B511A000B63EEA /* getNeutronCalibCoincidence.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {817, 5904}}";
+			sepNavSelRange = "{1942, 0}";
+			sepNavVisRange = "{1136, 1839}";
+			sepNavWindowFrame = "{{349, 282}, {710, 746}}";
+		};
+	};
+	663F5E9611B5123B00B63EEA /* allPassOne_GSEventNumbers.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {803, 1296}}";
+			sepNavSelRange = "{1418, 69}";
+			sepNavVisRange = "{789, 1020}";
+			sepNavWindowFrame = "{{508, 150}, {862, 878}}";
+		};
+	};
+	663F5E9711B513B600B63EEA /* allPassOne_GSEventNumbers */ = {
+		activeExec = 0;
+		executables = (
+			663F5EA111B513B600B63EEA /* allPassOne_GSEventNumbers */,
+		);
+	};
+	663F5EA111B513B600B63EEA /* allPassOne_GSEventNumbers */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+			YES,
+			YES,
+		);
+		argumentStrings = (
+			/Users/adam/analysis/edelweiss/data/boloEds/Merge/Eds_AllBolos_p0.root,
+			/Users/adam/analysis/edelweiss/data/boloEds/Merge/Eds_AllBolos_p1.root,
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = allPassOne_GSEventNumbers;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	66463F2711BC29EA007E130A /* mergeEdsTreeExec.cc */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = mergeEdsTreeExec.cc;
+		path = /Users/adam/softwareDev/EdwDataStructure/src/mergeEdsTreeExec.cc;
+		sourceTree = "<absolute>";
+	};
+	66463FB611BC34FE007E130A /* mergeEdsTreeExec.cc:152 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 66463F2711BC29EA007E130A /* mergeEdsTreeExec.cc */;
+		functionName = "mergeEdsEvent(EdwHLAEvent* ev1, EdwHLAEvent* ev2)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 152;
+		location = mergeEdsTreeExec;
+		modificationTime = 299758948.551629;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	66463FD611BC3AC9007E130A /* mergeEdsTreeExec.cc:93 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 66463F2711BC29EA007E130A /* mergeEdsTreeExec.cc */;
+		functionName = "mergeSubRecords(EdwHLAEvent* ev1, EdwHLAEvent* ev2)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 93;
+		location = mergeEdsTreeExec;
+		modificationTime = 299758948.551641;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	66463FDA11BC3BEB007E130A /* mergeEdsTreeExec.cc:90 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 66463F2711BC29EA007E130A /* mergeEdsTreeExec.cc */;
+		functionName = "mergeSubRecords(EdwHLAEvent* ev1, EdwHLAEvent* ev2)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 90;
+		location = mergeEdsTreeExec;
+		modificationTime = 299758948.551659;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	664640CC11BD1D23007E130A /* coincAnalysis.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1356, 20544}}";
+			sepNavSelRange = "{44207, 150}";
+			sepNavVisRange = "{43630, 1544}";
+			sepNavWindowFrame = "{{568, 50}, {748, 878}}";
+		};
+	};
+	6647658B11B84D6F00345765 /* getNeutronCalibCoincidence */ = {
+		activeExec = 0;
+		executables = (
+			6647659511B84D6F00345765 /* getNeutronCalibCoincidence */,
+		);
+	};
+	6647659511B84D6F00345765 /* getNeutronCalibCoincidence */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = getNeutronCalibCoincidence;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	665AB5CF11945EAD002D615B /* skimFile.cc */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = skimFile.cc;
+		path = /Users/adam/softwareDev/EdwDataStructure/src/skimFile.cc;
+		sourceTree = "<absolute>";
+	};
+	665AB60F1194ACC9002D615B /* processMuonVetoToEDSOnKalinka.root.C */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {831, 752}}";
+			sepNavSelRange = "{1248, 0}";
+			sepNavVisRange = "{0, 1638}";
+			sepNavWindowFrame = "{{716, -9}, {643, 863}}";
+		};
+	};
+	665AB613119590BF002D615B /* EdwAnalysis.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {712, 1408}}";
+			sepNavSelRange = "{748, 0}";
+			sepNavVisRange = "{80, 1477}";
+			sepNavWindowFrame = "{{539, 110}, {737, 862}}";
+		};
+	};
+	665AB614119590BF002D615B /* EdwAnalysis.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {726, 5472}}";
+			sepNavSelRange = "{8522, 0}";
+			sepNavVisRange = "{7099, 1973}";
+			sepNavWindowFrame = "{{539, 110}, {737, 862}}";
+		};
+	};
+	665AB6171198129E002D615B /* EdwEventFactory.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {838, 1040}}";
+			sepNavSelRange = "{1539, 0}";
+			sepNavVisRange = "{329, 1552}";
+			sepNavWindowFrame = "{{769, 0}, {737, 862}}";
+		};
+	};
+	665AB6181198129E002D615B /* EdwEventFactory.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {678, 2864}}";
+			sepNavSelRange = "{3315, 11}";
+			sepNavVisRange = "{3036, 922}";
+			sepNavWindowFrame = "{{131, 8}, {737, 862}}";
+		};
+	};
+	665B068F11DCC1EA00471020 /* boloMuonCoincEff.C */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {985, 2784}}";
+			sepNavSelRange = "{46, 0}";
+			sepNavVisRange = "{3625, 1196}";
+			sepNavWindowFrame = "{{286, 150}, {751, 878}}";
+		};
+	};
+	665B076C11E36ABA00471020 /* coincAnalysis2.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2014, 19776}}";
+			sepNavSelRange = "{21475, 0}";
+			sepNavVisRange = "{22058, 2019}";
+			sepNavWindowFrame = "{{111, 0}, {1012, 878}}";
+		};
+	};
+	6669863E11BFDFF100432589 /* PBXBookmarkGroup */ = {
+		isa = PBXBookmarkGroup;
+		children = (
+			6669880911C2638800432589 /* PBXBookmark */,
+			66234C1111DBA22400107A63 /* PBXBookmark */,
+		);
+		name = Root;
+	};
+	6669872811C12F7C00432589 /* fillEraToEds.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2147, 8816}}";
+			sepNavSelRange = "{4927, 151}";
+			sepNavVisRange = "{6900, 1641}";
+			sepNavWindowFrame = "{{195, 158}, {835, 741}}";
+		};
+	};
+	666987CE11C25DDB00432589 /* rootScript_fillEraToEdsEvents.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1055, 1728}}";
+			sepNavSelRange = "{3699, 0}";
+			sepNavVisRange = "{63, 1626}";
+			sepNavWindowFrame = "{{366, 92}, {771, 757}}";
+		};
+	};
+	666987F011C2618D00432589 /* rootScript_concatMuonEdwDS.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {978, 717}}";
+			sepNavSelRange = "{616, 0}";
+			sepNavVisRange = "{0, 1445}";
+			sepNavWindowFrame = "{{478, 131}, {1016, 836}}";
+		};
+	};
+	6669880111C262AC00432589 /* rootScript_fillEraToEdsEvents.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1055, 1712}}";
+			sepNavSelRange = "{3699, 0}";
+			sepNavVisRange = "{63, 1626}";
+			sepNavWindowFrame = "{{366, 92}, {771, 757}}";
+		};
+	};
+	6669880911C2638800432589 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 66775E5C118F12D5002936D8 /* rootScript_concatDst.c */;
+	};
+	6669880D11C263B200432589 /* rootScript_concatBoloEra.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1433, 2080}}";
+			sepNavSelRange = "{4630, 0}";
+			sepNavVisRange = "{0, 1722}";
+			sepNavWindowFrame = "{{42, 207}, {1492, 795}}";
+		};
+	};
+	6669886311C4F05500432589 /* AmBeNemoKolmogorovTest.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1055, 3472}}";
+			sepNavSelRange = "{3105, 0}";
+			sepNavVisRange = "{0, 1125}";
+			sepNavWindowFrame = "{{377, 0}, {867, 878}}";
+		};
+	};
+	66698C9F11CB724700432589 /* BugList.rtf */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {822, 2046}}";
+			sepNavSelRange = "{4165, 0}";
+			sepNavVisRect = "{{0, 1271}, {822, 774}}";
+			sepNavWindowFrame = "{{665, 150}, {867, 878}}";
+		};
+	};
+	66775DF3118EFBBD002936D8 /* EdwDSReader.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {852, 4192}}";
+			sepNavSelRange = "{3868, 0}";
+			sepNavVisRange = "{3171, 885}";
+			sepNavWindowFrame = "{{673, 145}, {737, 862}}";
+		};
+	};
+	66775DF4118EFBBD002936D8 /* EdwDSReader.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {726, 1056}}";
+			sepNavSelRange = "{830, 25}";
+			sepNavVisRange = "{395, 1329}";
+			sepNavWindowFrame = "{{673, 147}, {737, 862}}";
+		};
+	};
+	66775E5A118F12C4002936D8 /* concatDst.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {621, 3040}}";
+			sepNavSelRange = "{612, 0}";
+			sepNavVisRange = "{568, 1368}";
+			sepNavWindowFrame = "{{452, 150}, {669, 878}}";
+		};
+	};
+	66775E5B118F12CE002936D8 /* mergeEdsTree.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2308, 11792}}";
+			sepNavSelRange = "{8319, 0}";
+			sepNavVisRange = "{12702, 1780}";
+			sepNavWindowFrame = "{{420, 0}, {1020, 878}}";
+		};
+	};
+	66775E5C118F12D5002936D8 /* rootScript_concatDst.c */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.c;
+		name = rootScript_concatDst.c;
+		path = /Users/adam/softwareDev/EdwDataStructure/examples/rootScript_concatDst.c;
+		sourceTree = "<absolute>";
+	};
+	66775E5D118F12DB002936D8 /* rootScript_mergeEdsTrees.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1734, 1216}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1718}";
+			sepNavWindowFrame = "{{522, 0}, {1020, 878}}";
+		};
+	};
+	667D75D9117796D700B37614 /* Makefile */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {615, 2592}}";
+			sepNavSelRange = "{1233, 0}";
+			sepNavVisRange = "{511, 1545}";
+			sepNavWindowFrame = "{{766, 17}, {674, 818}}";
+		};
+	};
+	667D76561178A35100B37614 /* fillMuonVetoEvents.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {973, 8800}}";
+			sepNavSelRange = "{15228, 8}";
+			sepNavVisRange = "{14737, 1149}";
+			sepNavWindowFrame = "{{655, 150}, {826, 878}}";
+		};
+	};
+	66AC835B11A155D40071A5AA /* Make Linkdef */ = {
+		activeExec = 0;
+	};
+	66AC83AA11A16A590071A5AA /* getMuonModuleAdcSpectrum */ = {
+		activeExec = 0;
+		executables = (
+			66AC83AD11A16A590071A5AA /* getMuonModuleAdcSpectrum */,
+		);
+	};
+	66AC83AD11A16A590071A5AA /* getMuonModuleAdcSpectrum */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+			YES,
+			YES,
+			YES,
+			YES,
+		);
+		argumentStrings = (
+			4,
+			0,
+			/Users/adam/analysis/edelweiss/data/merged/Eds_AllBolosVeto.root,
+			/Users/adam/analysis/edelweiss/Analysis1/muonModuleADCHist/,
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = getMuonModuleAdcSpectrum;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		startupPath = "<<ProjectDirectory>>";
+		variableFormatDictionary = {
+		};
+	};
+	66AC841E11A172680071A5AA /* getMuonModuleAdcSpectrum.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {768, 2480}}";
+			sepNavSelRange = "{2755, 0}";
+			sepNavVisRange = "{2031, 1419}";
+			sepNavWindowFrame = "{{467, 52}, {795, 784}}";
+		};
+	};
+	66AC842511A172920071A5AA /* MuonModuleADCSpectrum.C */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {980, 759}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1002}";
+			sepNavWindowFrame = "{{19, 0}, {1039, 878}}";
+		};
+	};
+	66AC849211A183E20071A5AA /* Build All Executables */ = {
+		activeExec = 0;
+	};
+	66AC84BB11A18DC70071A5AA /* EdwDS */ = {
+		activeExec = 0;
+	};
+	66AC852011A19EEB0071A5AA /* Make Dictionary */ = {
+		activeExec = 0;
+	};
+	66AC855D11A1A09E0071A5AA /* EDSDict.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {887, 172416}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 582}";
+		};
+	};
+	66AC857811A1A7D10071A5AA /* fillEvents */ = {
+		activeExec = 0;
+		executables = (
+			66AC858111A1A7D10071A5AA /* fillEvents */,
+		);
+	};
+	66AC858111A1A7D10071A5AA /* fillEvents */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = fillEvents;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	66AC859211A1A8E80071A5AA /* Build Library */ = {
+		activeExec = 0;
+	};
+	66AC865911A29CA00071A5AA /* skimNoNoiseBolos */ = {
+		activeExec = 0;
+		executables = (
+			66AC866211A29CA00071A5AA /* skimNoNoiseBolos */,
+		);
+	};
+	66AC866211A29CA00071A5AA /* skimNoNoiseBolos */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+			YES,
+			YES,
+		);
+		argumentStrings = (
+			/Users/adam/analysis/edelweiss/data/boloEds/Merge/Eds_AllBolos_p0.root,
+			/Users/adam/analysis/edelweiss/data/boloEds/Merge/Eds_AllBolos_p0_skimmed.root,
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = skimNoNoiseBolos;
+		savedGlobals = {
+		};
+		showTypeColumn = 1;
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	66AC868911A2B5650071A5AA /* skimNoNoiseBolos.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {719, 2544}}";
+			sepNavSelRange = "{1493, 11}";
+			sepNavVisRange = "{171, 1076}";
+			sepNavWindowFrame = "{{600, 141}, {778, 869}}";
+		};
+	};
+	66AC87D011A44E670071A5AA /* skimFile.cc:36 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 665AB5CF11945EAD002D615B /* skimFile.cc */;
+		functionName = "main(void)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 36;
+		location = skimFile;
+		modificationTime = 299758948.5515;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	66AC8A4D11A5871D0071A5AA /* fillMuonVetoEvents */ = {
+		activeExec = 0;
+		executables = (
+			66AC8A5611A5871D0071A5AA /* fillMuonVetoEvents */,
+		);
+	};
+	66AC8A5611A5871D0071A5AA /* fillMuonVetoEvents */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = fillMuonVetoEvents;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	66AC8EF311A6E0CD0071A5AA /* rootScript_localConcat.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1363, 1344}}";
+			sepNavSelRange = "{3815, 0}";
+			sepNavVisRange = "{0, 1824}";
+			sepNavWindowFrame = "{{800, 19}, {816, 947}}";
+		};
+	};
+	66AC8F1E11A6E3710071A5AA /* processMuonVetoToEDSLocal.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1014, 741}}";
+			sepNavSelRange = "{1529, 0}";
+			sepNavVisRange = "{0, 1529}";
+			sepNavWindowFrame = "{{67, 8}, {1073, 860}}";
+		};
+	};
+	66AC904A11ABF1060071A5AA /* concatenateMuon.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1154, 992}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 658}";
+			sepNavWindowFrame = "{{399, 0}, {972, 822}}";
+		};
+	};
+	66AC904D11ABF3740071A5AA /* concatenateMuon */ = {
+		activeExec = 0;
+		executables = (
+			66AC905611ABF3740071A5AA /* concatenateMuon */,
+		);
+	};
+	66AC905611ABF3740071A5AA /* concatenateMuon */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+			YES,
+			YES,
+			YES,
+		);
+		argumentStrings = (
+			/Users/adam/analysis/edelweiss/data/muonVeto/eds/EdwDSRun12_MvRun54.root,
+			/Users/adam/analysis/edelweiss/data/muonVeto/eds/EdwDSRun12_MvRun55.root,
+			/Users/adam/analysis/edelweiss/data/merged/EdwDSRun12_MvRun54and55.root,
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = concatenateMuon;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	66C7BCDB1199662B005A93E2 /* EdwDSFileIO.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {678, 944}}";
+			sepNavSelRange = "{1052, 0}";
+			sepNavVisRange = "{45, 1224}";
+			sepNavWindowFrame = "{{943, 45}, {737, 862}}";
+		};
+	};
+	66C7BCDC1199662B005A93E2 /* EdwDSFileIO.cc */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {678, 2736}}";
+			sepNavSelRange = "{706, 5}";
+			sepNavVisRange = "{3, 792}";
+			sepNavWindowFrame = "{{703, 16}, {737, 862}}";
+		};
+	};
+	66F9C1EF1164E1E30070AFCE /* Project object */ = {
+		activeBuildConfigurationName = Release;
+		activeExecutable = 66AC83AD11A16A590071A5AA /* getMuonModuleAdcSpectrum */;
+		activeTarget = 66AC849211A183E20071A5AA /* Build All Executables */;
+		addToTargets = (
+			66AC84BB11A18DC70071A5AA /* EdwDS */,
+		);
+		breakpoints = (
+			66AC87D011A44E670071A5AA /* skimFile.cc:36 */,
+			663F5A3A11AEB50700B63EEA /* fillEvents.cc:112 */,
+			663F5A3E11AEB61D00B63EEA /* fillEvents.cc:134 */,
+			663F5A4711AEB6D300B63EEA /* fillEvents.cc:79 */,
+			663F5A4F11AEB92100B63EEA /* fillEvents.cc:64 */,
+			66463FB611BC34FE007E130A /* mergeEdsTreeExec.cc:152 */,
+			66463FD611BC3AC9007E130A /* mergeEdsTreeExec.cc:93 */,
+			66463FDA11BC3BEB007E130A /* mergeEdsTreeExec.cc:90 */,
+		);
+		codeSenseManager = 66F9C1F41164E1E30070AFCE /* Code sense */;
+		executables = (
+			66AC83AD11A16A590071A5AA /* getMuonModuleAdcSpectrum */,
+			66AC858111A1A7D10071A5AA /* fillEvents */,
+			66AC866211A29CA00071A5AA /* skimNoNoiseBolos */,
+			66AC8A5611A5871D0071A5AA /* fillMuonVetoEvents */,
+			66AC905611ABF3740071A5AA /* concatenateMuon */,
+			663F5EA111B513B600B63EEA /* allPassOne_GSEventNumbers */,
+			6647659511B84D6F00345765 /* getNeutronCalibCoincidence */,
+			66234C2111DBA36000107A63 /* getBoloMuonCoincidences */,
+		);
+		ignoreBreakpointsInProjectsDict = {
+		};
+		perUserDictionary = {
+			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBreakpointsDataSource_BreakpointID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					198,
+					20,
+					99,
+					99,
+					29,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBreakpointsDataSource_ActionID,
+					PBXBreakpointsDataSource_TypeID,
+					PBXBreakpointsDataSource_BreakpointID,
+					PBXBreakpointsDataSource_UseID,
+					PBXBreakpointsDataSource_LocationID,
+					PBXBreakpointsDataSource_ConditionID,
+					PBXBreakpointsDataSource_IgnoreCountID,
+					PBXBreakpointsDataSource_ContinueID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXBookmarksDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBookmarksDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					200,
+					200,
+					57.58349609375,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBookmarksDataSource_LocationID,
+					PBXBookmarksDataSource_NameID,
+					PBXBookmarksDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					315,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFindDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFindDataSource_LocationID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					200,
+					422,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFindDataSource_MessageID,
+					PBXFindDataSource_LocationID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.XCSCMDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					214,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_SCM_ColumnID,
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					198,
+					60,
+					20,
+					48.16259765625,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 300484839;
+			PBXWorkspaceStateSaveDate = 300484839;
+		};
+		perUserProjectItems = {
+			661E8C3F11E8BC4A007FBA0E = 661E8C3F11E8BC4A007FBA0E /* PBXBookmark */;
+			661E8C6611E908D5007FBA0E = 661E8C6611E908D5007FBA0E /* PBXTextBookmark */;
+		};
+		sourceControlManager = 66F9C1F31164E1E30070AFCE /* Source Control */;
+		userBookmarkGroup = 6669863E11BFDFF100432589 /* PBXBookmarkGroup */;
+		userBuildSettings = {
+		};
+	};
+	66F9C1F31164E1E30070AFCE /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = Edw;
+			};
+		};
+	};
+	66F9C1F41164E1E30070AFCE /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	66F9C22A1164E2000070AFCE /* Makefile.arch */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {745, 8608}}";
+			sepNavSelRange = "{9778, 8}";
+			sepNavVisRange = "{3233, 1115}";
+			sepNavWindowFrame = "{{410, 11}, {804, 867}}";
+		};
+	};
+	66F9C22D1164E22B0070AFCE /* Make All */ = {
+		activeExec = 0;
+	};
+	66F9C2331164E25B0070AFCE /* Make Clean */ = {
+		activeExec = 0;
+	};
+}
