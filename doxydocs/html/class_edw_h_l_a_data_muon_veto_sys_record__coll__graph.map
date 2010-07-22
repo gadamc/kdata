@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" href="$class_edw_h_l_a_muon_veto_sys_record.html" title="EdwHLAMuonVetoSysRecord" alt="" coords="155,161,379,188"/>
+<area shape="rect" href="$class_edw_muon_veto_system_record_base.html" title="EdwMuonVetoSystemRecordBase" alt="" coords="5,84,267,111"/>
+<area shape="rect" href="$class_edw_system_record_base.html" title="EdwSystemRecordBase" alt="" coords="43,7,229,33"/>
+<area shape="rect" href="$class_edw_h_l_a_system_record_base.html" title="EdwHLASystemRecordBase" alt="" coords="291,84,507,111"/>
+<area shape="rect" href="$class_edw_data_system_record_base.html" title="EdwDataSystemRecordBase" alt="" coords="403,161,624,188"/>
+</map>

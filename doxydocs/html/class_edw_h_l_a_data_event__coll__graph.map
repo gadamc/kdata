@@ -1,0 +1,14 @@
+<map id="G" name="G">
+<area shape="rect" href="$class_edw_h_l_a_event.html" title="EdwHLAEvent" alt="" coords="8,247,125,273"/>
+<area shape="rect" href="$class_edw_event_base.html" title="EdwEventBase" alt="" coords="5,167,128,193"/>
+<area shape="rect" href="$class_edw_data_event_base.html" title="EdwDataEventBase" alt="" coords="149,247,307,273"/>
+<area shape="rect" href="$class_edw_h_l_a_data_bolo_sys_record.html" title="EdwHLADataBoloSysRecord" alt="" coords="331,247,549,273"/>
+<area shape="rect" href="$class_edw_h_l_a_bolo_sys_record.html" title="EdwHLABoloSysRecord" alt="" coords="229,167,413,193"/>
+<area shape="rect" href="$class_edw_bolo_system_record_base.html" title="EdwBoloSystemRecordBase" alt="" coords="193,87,412,113"/>
+<area shape="rect" href="$class_edw_system_record_base.html" title="EdwSystemRecordBase" alt="" coords="519,7,705,33"/>
+<area shape="rect" href="$class_edw_muon_veto_system_record_base.html" title="EdwMuonVetoSystemRecordBase" alt="" coords="676,87,937,113"/>
+<area shape="rect" href="$class_edw_h_l_a_system_record_base.html" title="EdwHLASystemRecordBase" alt="" coords="436,87,652,113"/>
+<area shape="rect" href="$class_edw_h_l_a_muon_veto_sys_record.html" title="EdwHLAMuonVetoSysRecord" alt="" coords="683,167,907,193"/>
+<area shape="rect" href="$class_edw_data_system_record_base.html" title="EdwDataSystemRecordBase" alt="" coords="437,167,659,193"/>
+<area shape="rect" href="$class_edw_h_l_a_data_muon_veto_sys_record.html" title="EdwHLADataMuonVetoSysRecord" alt="" coords="573,247,832,273"/>
+</map>

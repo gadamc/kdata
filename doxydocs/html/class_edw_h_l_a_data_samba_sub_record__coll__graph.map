@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" href="$class_edw_h_l_a_samba_sub_record.html" title="EdwHLASambaSubRecord" alt="" coords="120,161,328,188"/>
+<area shape="rect" href="$class_edw_samba_sub_record_base.html" title="EdwSambaSubRecordBase" alt="" coords="5,84,219,111"/>
+<area shape="rect" href="$class_edw_sub_record_base.html" title="EdwSubRecordBase" alt="" coords="31,7,193,33"/>
+<area shape="rect" href="$class_edw_h_l_a_sub_record_base.html" title="EdwHLASubRecordBase" alt="" coords="243,84,432,111"/>
+<area shape="rect" href="$class_edw_data_sub_record_base.html" title="EdwDataSubRecordBase" alt="" coords="352,161,549,188"/>
+</map>
