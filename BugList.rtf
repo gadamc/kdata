@@ -1,0 +1,134 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf320
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue0;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+
+\f0\fs20 \cf0 --------------------------------------------------------------------------------------------------------\
+Bug 1: Opening Muon Veto Merged file after opening the Bolo Merged file causes a crash.\
+Status: Fixed. This had to do with trying to call IgnoreObjectStreamer for the TBit objects in the Data Strucutre. It \
+was causing some confusion. The EdwDSReader and EdwDSWriter classes were fixed by removing this call. No longer will\
+it attempt to IgnoreObjectStreamer. \
+\
+--------------------------------------------------------------------------------------------------------\
+\
+Bug 2: TRef pointer to SambaRecord:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f1\fs28 \cf0 Now I find a bug in the assignment operator.. hell...\
+\
+EdwDSReader f("Eds_FID401.root");\
+EdwHLAEvent *e1 = new EdwHLAEvent;\
+EdwHLAEvent *e2 = new EdwHLAEvent;\
+EdwHLAEvent *e = (EdwHLAEvent *)f.GetEvent();\
+\
+f.GetEntry(235616)\
+*e1 = *e;\
+(class EdwHLAEvent)4367045392\
+root [34] e\
+(class EdwHLAEvent*)0x1044bd310\
+root [35] e1\
+(class EdwHLAEvent*)0x104519940\
+root [36] e1->GetSamba(0)\
+(const class EdwHLASambaSubRecord*)0x103aabb60\
+root [37] e1->GetBolo(0)\
+(const class EdwHLASingleBoloSubRecord*)0x10451b3a0\
+root [38] e1->GetBolo(0)->GetSambaRecord()\
+(const class EdwHLASambaSubRecord*)0x103aabb60\
+\
+now I go to the next entry\
+\
+root [39] f.GetEntry(235617)\
+(Int_t)495\
+root [40] *e2 = *e\
+(class EdwHLAEvent)4367045392\
+root [41] e2->GetSamba(0)\
+(const class EdwHLASambaSubRecord*)0x107959370\
+root [42] e2->GetBolo(0)\
+(const class EdwHLASingleBoloSubRecord*)0x107951220\
+root [43] e2->GetBolo(0)->GetSambaRecord()\
+(const class EdwHLASambaSubRecord*)0x107959370\
+\
+root [44] *e\
+(class EdwHLAEvent)4367045392\
+root [45] *e1\
+(class EdwHLAEvent)4367423808\
+root [46] *e2\
+(class EdwHLAEvent)4422252576\
+\
+The events all appear to be separate in memory space. So, the assignment operator looks okay so far. Maybe its in the comparison operator\
+\
+root [47] e1->GetSamba(0)\
+(const class EdwHLASambaSubRecord*)0x103aabb60\
+root [48] e1->GetBolo(0)\
+(const class EdwHLASingleBoloSubRecord*)0x10451b3a0\
+root [49] e1->GetBolo(0)->GetSambaRecord()\
+(const class EdwHLASambaSubRecord*)0x107959370\
+\
+\
+But, now the TRef in the e1 bolometer is pointing to the TRef in e2's Bolometer and no longer pointing to its own!!\
+\
+So, it seems that calling *e2 = *e affects e1  !  Which is totally crazy. \
+\
+The original event still seems okay\
+\
+root [50] e->GetSamba(0)\
+(const class EdwHLASambaSubRecord*)0x104510380\
+root [51] e->GetBolo(0)\
+(const class EdwHLASingleBoloSubRecord*)0x104512c10\
+root [52] e->GetBolo(0)->GetSambaRecord()\
+(const class EdwHLASambaSubRecord*)0x104510380\
+\
+And, I've made no call to a comparison operator... So, its clearly occurring when I assign e to e2 (*e2 = *e).\
+\
+Does the same thing happen in reverse?\
+\
+root [53] EdwHLAEvent *e3 = new EdwHLAEvent;\
+root [54] e3\
+(class EdwHLAEvent*)0x107951410\
+root [55] e2\
+(class EdwHLAEvent*)0x107963820\
+root [56] e\
+(class EdwHLAEvent*)0x1044bd310\
+root [57] *e2 = *e\
+(class EdwHLAEvent)4367045392\
+root [58] f.GetEntry(235616)\
+(Int_t)495\
+root [59] e2->GetBolo(0)\
+(const class EdwHLASingleBoloSubRecord*)0x107951220\
+\cb2 root [60] e2->GetSamba(0)\
+(const class EdwHLASambaSubRecord*)0x107959370\
+root [61] e2->GetBolo(0)->GetSambaRecord()\
+(const class EdwHLASambaSubRecord*)0x107959370\cb1 \
+root [62] *e3 = *e\
+(class EdwHLAEvent)4367045392\
+root [63] e3->GetBolo(0)\
+(const class EdwHLASingleBoloSubRecord*)0x107951e70\
+\cb2 root [64] e3->GetSamba(0)\
+(const class EdwHLASambaSubRecord*)0x10797f950\
+root [65] e3->GetBolo(0)->GetSambaRecord()\
+(const class EdwHLASambaSubRecord*)0x10797f950\cb1 \
+root [66] e2->GetBolo(0)\
+(const class EdwHLASingleBoloSubRecord*)0x107951220\
+root [67] e2->GetS\
+GetSamba\
+GetSambaSubRecords\
+GetStamp\
+GetSecPerStamp\
+GetStampTime\
+\ul root [67] e2->GetSamba(0)\
+(const class EdwHLASambaSubRecord*)0x107959370\
+root [68] e2->GetBolo(0)->GetSambaRecord()\
+(const class EdwHLASambaSubRecord*)0x10797f950\ulnone \
+root [69] \
+\
+\
+\
+YES, it does happen in reverse. When I called *e3 = *e, the TRef value in e2's Bolometer event changed to point to the samba record in e3.\
+\
+Clearly, there's something funky with these TRefs that I don't yet understand. \
+\
+\
+--------------------------------------------------------------------------------------------------------\
+\
+Bug 3: \
+}
