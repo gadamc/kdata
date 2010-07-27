@@ -36,6 +36,8 @@ int main(int argc, char* argv[])
 			cout << "Invalid option: " << argv[i] << "... exiting" << endl;
 			exit(0);
 		}
+        
+        i++;
 	}
 	
 	TString fInFileName(argv[argc-2]);
