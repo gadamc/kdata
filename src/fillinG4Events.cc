@@ -9,7 +9,7 @@
 
 #include "TFile.h"
 #include "EdwHLaMCEvent.h"
-#include "EdwTestEventClass.h"
+//#include "EdwTestEventClass.h"
 #include "EdwHLAMuonModuleSubRecord.h"
 #include "EdwMCSingleBoloSubRecord.h"
 #include "TTree.h"
