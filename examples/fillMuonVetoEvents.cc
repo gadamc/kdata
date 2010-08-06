@@ -72,7 +72,7 @@ struct MuonChannelMap {
 	Int_t tdc_index[sizeOfIndex][kNumPmtsPerMod];
 };
 
-void initializeMuonChannelMap(MuonChannelMap &map)
+void initializeMuonChannelMap(MuonChannelMap &map, UInt_t runNum)
 {
 	map.adc_index[1][0]  = 0;     map.adc_index[1][1] = 8;
 	map.tdc_index[1][0]  = 0;     map.tdc_index[1][1] = 8;
@@ -92,6 +92,12 @@ void initializeMuonChannelMap(MuonChannelMap &map)
 	map.adc_index[6][0]  = 18;    map.adc_index[6][1] = 26;  
 	map.tdc_index[6][0]  = 18;    map.tdc_index[6][1] = 26;  
 	
+	map.adc_index[7][0]  = -99;     map.adc_index[7][1]  = -99;
+	map.tdc_index[7][0]  = -99;     map.tdc_index[7][1]  = -99;
+	
+	map.adc_index[8][0]  = -99;     map.adc_index[8][1]  = -99;
+	map.tdc_index[8][0]  = -99;     map.tdc_index[8][1]  = -99;
+	
 	map.adc_index[9][0]  =  4;    map.adc_index[9][1] = 12;  
 	map.tdc_index[9][0]  =  4;    map.tdc_index[9][1] = 12;  
 	
@@ -110,6 +116,12 @@ void initializeMuonChannelMap(MuonChannelMap &map)
 	map.adc_index[14][0] = 22;    map.adc_index[14][1] = 30;   
 	map.tdc_index[14][0] = 22;    map.tdc_index[14][1] = 30;   
 	
+	map.adc_index[15][0] = -99;  map.adc_index[15][1] = -99; 
+	map.tdc_index[15][0] = -99;  map.tdc_index[15][1] = -99; 
+	
+	map.adc_index[16][0] = -99;  map.adc_index[16][1] = -99;
+	map.tdc_index[16][0] = -99;  map.tdc_index[16][1] = -99;
+	
 	map.adc_index[17][0] = 32;    map.adc_index[17][1] = 40;   
 	map.tdc_index[17][0] = 32;    map.tdc_index[17][1] = 40;   
 	
@@ -127,6 +139,12 @@ void initializeMuonChannelMap(MuonChannelMap &map)
 	
 	map.adc_index[22][0] = 19;    map.adc_index[22][1] = 27;  
 	map.tdc_index[22][0] = 19;    map.tdc_index[22][1] = 27;  
+	
+	map.adc_index[23][0] = -99;   map.adc_index[23][1] = -99;
+	map.tdc_index[23][0] = -99;  map.tdc_index[23][1] = -99;
+	
+	map.adc_index[24][0] = -99; map.adc_index[24][1] = -99;	
+	map.tdc_index[24][0] = -99;  map.tdc_index[24][1] = -99;
 	
 	map.adc_index[25][0] = 36;    map.adc_index[25][1] = 44;  
 	map.tdc_index[25][0] = 36;    map.tdc_index[25][1] = 44;  
@@ -202,26 +220,92 @@ void initializeMuonChannelMap(MuonChannelMap &map)
 	
 	map.adc_index[48][0] = 87;    map.adc_index[48][1] = 95;  
 	map.tdc_index[48][0] = 87;    map.tdc_index[48][1] = 95;  
+
+	map.adc_index[49][0] = -99;    map.adc_index[49][1] = -99;  
+	map.tdc_index[49][0] = -99;    map.tdc_index[49][1] = -99;  
 	
 	//50 and 51 are the neutron counter PMTs
-	map.adc_index[50][0] = 3;    map.adc_index[50][1] = 11;  
-	map.tdc_index[50][0] = 3;    map.tdc_index[50][1] = 11;  
+	map.adc_index[50][0] = 3;     map.adc_index[50][1] = 11;  
+	map.tdc_index[50][0] = 3;     map.tdc_index[50][1] = 11;  
 	
 	map.adc_index[51][0] = 23;    map.adc_index[51][1] = 31;  
 	map.tdc_index[51][0] = 23;    map.tdc_index[51][1] = 31;  
 	
-	map.adc_index[7][0]  = -99;  map.adc_index[8][0]  = -99;   map.adc_index[15][0] = -99;  
-	map.adc_index[16][0] = -99;  map.adc_index[23][0] = -99;   map.adc_index[24][0] = -99; 
+
+	if(runNum >= 69){
+		map.adc_index[7][0]  = 7;     map.adc_index[7][1]  = 15;
+		map.tdc_index[7][0]  = 7;     map.tdc_index[7][1]  = 15;
+		
+		map.adc_index[8][0]  = 35;     map.adc_index[8][1]  = 43;
+		map.tdc_index[8][0]  = 48;     map.tdc_index[8][1]  = 56;
+		
+		map.adc_index[15][0] = 51;  map.adc_index[15][1] = 59; 
+		map.tdc_index[15][0] = 49;  map.tdc_index[15][1] = 57; 
+		
+		map.adc_index[16][0] = 50;  map.adc_index[16][1] = 58;
+		map.tdc_index[16][0] = 50; map.tdc_index[16][1] = 58;
+		
+	}
+
+}
+
+Bool_t testMuonChannelMapForUniqueness(MuonChannelMap &map)
+{
+	Bool_t mapIsUnique = true;
 	
-	map.adc_index[7][1]  = -99;  map.adc_index[8][1]  = -99;   map.adc_index[15][1] = -99;  
-	map.adc_index[16][1] = -99;  map.adc_index[23][1] = -99;   map.adc_index[24][1] = -99; 
+	for(Int_t index = 1; index < sizeOfIndex; index++){
+		for(Int_t pmt = 0; pmt < kNumPmtsPerMod; pmt++){
+			Int_t adcVal = map.adc_index[index][pmt];
+			Int_t tdcVal = map.tdc_index[index][pmt];
+		
+			if(adcVal ==-99){
+				if(tdcVal != -99){
+					cout << "map.adc_index["<<index<<"]["<<pmt<<"] == -99, but map.tdc_index["<<index<<"]["<<pmt<<"] == " << tdcVal << endl;
+					mapIsUnique = false;
+				}
+			}
+			
+			if(tdcVal ==-99){
+				if(adcVal != -99){
+					cout << "map.tdc_index["<<index<<"]["<<pmt<<"] == -99, but map.adc_index["<<index<<"]["<<pmt<<"] == " << adcVal << endl;
+					mapIsUnique = false;
+				}
+			}
+			
+			if(adcVal != -99 && tdcVal != -99) {
+				
+				//check the remaining pmts in this index.
+				for(Int_t p = pmt+1; p < kNumPmtsPerMod; p++){
+					
+					if( (adcVal == map.adc_index[index][p]) || (tdcVal == map.tdc_index[index][p]) ){
+						
+						cout << "Check Muon Channel Map. Found Same Value for a/tdc_index[" << index << "][" 
+						<< pmt << "] and a/tdc_index[" << index << "][" << p << "]" << endl;
+						
+						mapIsUnique = false;
+					}					
+				}
+				
+				//check the rest of the map
+				for(Int_t i = index + 1; i < sizeOfIndex; i++){
+					for(Int_t p = 0; p < kNumPmtsPerMod; p++){
+						if( (adcVal == map.adc_index[i][p]) || (tdcVal == map.tdc_index[i][p]) ){
+							
+							cout << "Check Muon Channel Map. Found Same Value for a/tdc_index[" << index << "][" 
+							<< pmt << "] and a/tdc_index[" << i << "][" << p << "]" << endl;
+							
+							mapIsUnique = false;
+						}	
+					}
+				}
+			
+				
+			}
+			
+		}
+	}
 	
-	map.tdc_index[7][0]  = -99;  map.tdc_index[8][0]  = -99;   map.tdc_index[15][0] = -99;  
-	map.tdc_index[16][0] = -99;  map.tdc_index[23][0] = -99;   map.tdc_index[24][0] = -99; 
-	
-	map.tdc_index[7][1]  = -99;  map.tdc_index[8][1]  = -99;   map.tdc_index[15][1] = -99;  
-	map.tdc_index[16][1] = -99;  map.tdc_index[23][1] = -99;   map.tdc_index[24][1] = -99;
-	
+	return mapIsUnique; 
 }
 
 Bool_t openMuonVetoFile(const Char_t* file)
@@ -368,7 +452,16 @@ Bool_t fillEvents(void)
 {
 	
 	MuonChannelMap mMuonChanMap;
-	initializeMuonChannelMap(mMuonChanMap);
+	
+	mMuonTree->GetEntry(0);
+	initializeMuonChannelMap(mMuonChanMap, mMuonVetoData.fRun);
+	if(!testMuonChannelMapForUniqueness(mMuonChanMap)) {
+		cout << "The Muon Module ADC/TDC map is not unique!" << endl;
+		cout << "  ***** This program will now terminate without filling the EdwDS file!" << endl;
+		return -1;
+	}
+		
+	
 	Int_t numPureNCEvents = 0;
 	Int_t numEventsWithNC = 0;
 	Int_t numEmptyEvents = 0;
@@ -532,12 +625,16 @@ Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outEDSFile)
 	
 }
 
-//Comment this out if you plan to compile with ROOT's ACLiC! 
-//and then call MuonVetoToDS directly. 
-/*
+
+
+#ifndef __CINT__
+//we only compile with the main if we're not in the CINT.
+//you can still compile this file with the ACLiC compiler when you start a ROOT session, but then you 
+//should call MuonVetoToDS directly since a function titled 'main' cannot be used in this case. 
 int main(int argc, char* argv[])
 {
 	if(argc != 3) return -1;
 	return MuonVetoToDS(argv[1], argv[2]);
 }
-*/
+#endif
+
