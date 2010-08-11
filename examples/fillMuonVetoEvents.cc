@@ -412,8 +412,7 @@ Int_t getMuonModulesData(Bool_t mMods[], Int_t mADCVals[][kNumPmtsPerMod],
 						if(!mMods[moduleNum]) nModulesHit++; //count the number of Modules Hit, but prevent double counting
 						mMods[moduleNum] = true;
 						mADCVals[moduleNum][pmtNum] = adcArray[i];
-						if(moduleNum == 7 || moduleNum == 8 || moduleNum == 15 ||
-							 moduleNum == 16 || moduleNum == 23 || moduleNum == 24)
+						if(moduleNum == 23 || moduleNum == 24)
 							cout << "ADC Hey - you can't be here!  moduleNum = " << moduleNum << endl;
 						moduleNum = sizeOfIndex;
 						pmtNum = kNumPmtsPerMod; //stop looping once you've found the correct module
@@ -433,8 +432,7 @@ Int_t getMuonModulesData(Bool_t mMods[], Int_t mADCVals[][kNumPmtsPerMod],
 						if(!mMods[moduleNum]) nModulesHit++; //count the number of Modules Hit, but prevent double counting
 						mMods[moduleNum] = true;
 						mTDCVals[moduleNum][pmtNum] = tdcArray[i];
-						if(moduleNum == 7 || moduleNum == 8 || moduleNum == 15 ||
-							 moduleNum == 16 || moduleNum == 23 || moduleNum == 24)
+						if(moduleNum == 23 || moduleNum == 24)
 							cout << "TDC Hey - you can't be here!  moduleNum = " << moduleNum << endl;
 						moduleNum = sizeOfIndex;
 						pmtNum = kNumPmtsPerMod; //stop looping once you've found the correct module
