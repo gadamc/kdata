@@ -247,3 +247,35 @@ void EdwMuonVetoSystemRecordBase::Compact(void)
 	
 	fEventQuality.Compact();
 }
+ 
+Bool_t EdwMuonVetoSystemRecordBase::TestEventQualityBit(Int_t i) const
+{
+	/*
+	 These bits are set by the Neider processing, which provides some event quality 
+	 information. From the TTree::Draw/Scan methods, the array of UChar_t which hold these
+	 bits can be accessed from the variable fMuonSystem.fEventQuality.fAllBits[].  
+	 
+	 One can test these bits in the TTree Draw/Scan methods via the bit-wise operators &, |.
+	 For example
+	 
+	 t->Draw("fAdc[][0]","fMuonSystem.fEventQuality.fAllBits & 0x1") 
+	 
+	 would draw the zeroth ADC value for only events where there was a 'reliable stamp'. 
+	 
+	 0: reliable stamp
+	 1: corrected stamp (jump)
+	 2: stamp available
+	 3: stamp is pctime
+	 4: ADC mismatches in this event
+	 5: Multi is not the same as in binaries
+	 6: *NO* TDC End of Buffer found!
+	 7: TDC afterpulse
+	 8: ADC afterpulse (should never happen)
+	 9: no TDC Data available
+	 
+	 
+	 12: adc header found after noTDCEOB
+	*/
+	return fEventQuality.TestBitNumber(i);
+
+}	

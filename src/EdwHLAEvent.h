@@ -43,6 +43,7 @@ public:
 	EdwHLAEvent& operator=(const EdwRawEvent &anEvent);
 	EdwHLAEvent& operator=(const EdwHLAEvent &anEvent);
 	virtual void Clear(Option_t *option = "C");
+	virtual void ClearArrays(Option_t *anOption = "C");
 	Bool_t IsSame(const EdwHLAEvent &anEvent, Bool_t bPrint = false) const;
 	Bool_t operator==(const EdwHLAEvent &anEvent) const { return IsSame(anEvent,false); }
 	Bool_t operator!=(const EdwHLAEvent &anEvent) const { return !(*this==anEvent); }

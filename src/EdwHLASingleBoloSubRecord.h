@@ -65,8 +65,11 @@ public:
 	Double32_t GetEnergyIonFiducial(void) const {return fEnergyIonFiducial;}
 	Double32_t GetEnergySumIonChannels(void) const {return fEnergyIonSum;}
 	Double32_t GetBaselineIonFiducial(void) const {return fBaselineIonFiducial;}
+	Double32_t GetBaselineNoiseIonFiducial(void) const {return GetBaselineIonFiducial();} //returns GetBaselineIonFidcuial()
 	Double32_t GetEnergyBaselineHeat(void) const {return fEnergyBaselineHeat;}
-	Double32_t GetBaselineHeat(void) const {return fBaselineHeat;}
+	Double32_t GetBaselineNoiseHeat(void) const {return fBaselineHeat;}
+	Double32_t GetBaselineHeat(void) const {return GetBaselineNoiseHeat();} //returns GetBaselineNoiseHeat()
+
 	
 	Bool_t TestCutsBitNumber(Int_t i) const;
 	TBits* GetCuts(void) {return &fCuts;}
@@ -103,7 +106,8 @@ public:
 	void SetEnergySumIonChannels(Double32_t aVal)  { fEnergyIonSum = aVal;}
 	void SetBaselineIonFiducial(Double32_t aVal)  { fBaselineIonFiducial = aVal;}
 	void SetEnergyBaselineHeat(Double32_t aVal)  { fEnergyBaselineHeat = aVal;}
-	void SetBaselineHeat(Double32_t aVal)  { fBaselineHeat = aVal;}
+	void SetBaselineNoiseHeat(Double32_t aVal)  { fBaselineHeat = aVal;}
+	void SetBaselineHeat(Double32_t aVal){ SetBaselineNoiseHeat(aVal);}  //keep this method to support older code
 	
 	void SetCutsBitNumber(Int_t i, Bool_t aVal = true) {fCuts.SetBitNumber(i, aVal);}
 	void SetCuts(const TBits *mCuts);
@@ -150,7 +154,7 @@ private:
 	
 	//eheat
 	Double32_t fEnergyBaselineHeat; //fitted value of the energy along the baseline (at "zero time") on the heat channel
-	Double32_t fBaselineHeat; //baseline noise amplitude of the heat signal 
+	Double32_t fBaselineHeat; //baseline noise amplitude of the heat signal. Call GetBaselineNoiseHeat() to get this value.
 	
 	//cuts
 	TBits fCuts;  //set the TestCutsBitNumber method for a list of which bit corresponds to which cut.

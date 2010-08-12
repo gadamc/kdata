@@ -43,7 +43,7 @@ public:
 	Bool_t OpenOutputEdsFile(const Char_t* fileName, EdwEventBase **anEvent);
 	Int_t SaveThisEvent(EdwEventBase* e);
 	Int_t SaveThisEvent(void);
-	Int_t WriteOutput(const Char_t* name = 0, Int_t option = TObject::kWriteDelete, 
+	Int_t Write(const Char_t* name = 0, Int_t option = TObject::kWriteDelete, 
 										Int_t bufsize = 0);
 	void CloseOutput(Option_t *anOpt = "");
 	void CloseInput(Option_t *anOpt = "");

@@ -58,7 +58,7 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const EdwMuonModuleSubRecordBase &aRec);
-  ClassDef(EdwMuonModuleSubRecordBase,1);
+  ClassDef(EdwMuonModuleSubRecordBase,2);
 };
 
 

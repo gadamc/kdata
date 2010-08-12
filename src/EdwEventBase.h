@@ -106,7 +106,7 @@ private:
 	void CopyLocalMembers(const EdwEventBase &anEvent);
 	
 	
-	ClassDef(EdwEventBase, 1);
+	ClassDef(EdwEventBase, 2);
 };
 
 #endif // __EDWEVENTBASE_H__

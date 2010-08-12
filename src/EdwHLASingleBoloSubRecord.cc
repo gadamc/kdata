@@ -82,7 +82,7 @@ void EdwHLASingleBoloSubRecord::CopyLocalMembers(const EdwHLASingleBoloSubRecord
 	SetEnergySumIonChannels(aRec.GetEnergySumIonChannels());
 	SetBaselineIonFiducial(aRec.GetBaselineIonFiducial());
 	SetEnergyBaselineHeat(aRec.GetEnergyBaselineHeat());
-	SetBaselineHeat(aRec.GetBaselineHeat());
+	SetBaselineNoiseHeat(aRec.GetBaselineNoiseHeat());
 	
 	fCuts = aRec.fCuts;
 	fCuts.Compact();
@@ -152,7 +152,7 @@ void EdwHLASingleBoloSubRecord::InitializeMembers(void)
 	SetEnergySumIonChannels(-99.0);
 	SetBaselineIonFiducial(-99.0);
 	SetEnergyBaselineHeat(-99.0);
-	SetBaselineHeat(-99.0);
+	SetBaselineNoiseHeat(-99.0);
 	
 	fCuts.Clear();  //resets all the values to zero and the array size to zero.
 }
@@ -624,7 +624,7 @@ Bool_t EdwHLASingleBoloSubRecord::TestCutsBitNumber(Int_t i) const
 	//cuts.CutChi2Col1 -- bit 0
 	//cuts.CutChi2Col2 -- bit 1
 	//cuts.CutChi2Vet1 -- bit 2
-	//cuts.CutChiVet2  -- 3
+	//cuts.CutChi2Vet2 -- 3
 	//cuts.CutChi2Gar1 -- 4
 	//cuts.CutChi2Gar2 -- 5
 	//cuts.CutChi2Heat -- 6

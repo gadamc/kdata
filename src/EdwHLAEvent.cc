@@ -120,13 +120,31 @@ EdwHLAEvent::~EdwHLAEvent(void)
 
 EdwHLAEvent& EdwHLAEvent::operator=(const EdwEventBase &anEvent)
 {
-	//assigns the data member values of an EdwEventBase object into the EdwHLAEvent. 
-	
 #ifdef _EDW_DEBUG_EVENT_ASSIGNOP
 	cout << "hla = base" << endl;
 #endif
+	
+	//assigns the data member values of an EdwEventBase object into the EdwHLAEvent. 
 	if(&anEvent == this) return *this;
-	this->EdwEventBase::operator=(anEvent);
+
+	
+	try {
+		const EdwRawEvent &rhs = dynamic_cast<const EdwRawEvent&>(anEvent);
+		this->operator=(rhs);
+		
+	}
+	catch(bad_cast) {
+		
+		try{
+			const EdwHLAEvent &rhs = dynamic_cast<const EdwHLAEvent&>(anEvent);
+			this->operator=(rhs);
+		}
+		
+		catch(bad_cast) {
+			this->EdwEventBase::operator=(anEvent);
+		}
+	}
+	
 
 	return *this;
 }
@@ -191,11 +209,7 @@ void EdwHLAEvent::CopyClonesArrays(const EdwHLAEvent &anEvent)
 	//MUST copy all TRef's appropriately to the new file. Otherwise
 	//they will point to records in a different File!
 
-	
-	ClearArray("C", fSamba,fNumSamba);
-	ClearArray("C", fBolo,fNumBolo);
-	ClearArray("C", fBoloPulse,fNumBoloPulse);
-	ClearArray("C", fMuonModule,fNumMuonModule);
+	ClearArrays("C");
 	
 	Int_t ObjectNumber = TProcessID::GetObjectCount();
 	/*
@@ -288,14 +302,18 @@ void EdwHLAEvent::CopyFromRawEvent(const EdwRawEvent &/*anEvent*/)
 	//into the HLA object.
 }
 
-
-void EdwHLAEvent::Clear(Option_t *anOption)
+void EdwHLAEvent::ClearArrays(Option_t *anOption)
 {
 	ClearArray(anOption, fSamba,fNumSamba);
 	ClearArray(anOption, fBolo,fNumBolo);
 	ClearArray(anOption, fBoloPulse,fNumBoloPulse);
 	ClearArray(anOption, fMuonModule,fNumMuonModule);
+}
 
+void EdwHLAEvent::Clear(Option_t *anOption)
+{
+	
+	ClearArrays(anOption);
 	//delete any memory allocated by the EdwEvent class here that
 	//needs to be deleted for each event -- but not the TClonesArrays. Clear should be called 
 	//after every event so that the TClonesArrays are cleared. 

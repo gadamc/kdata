@@ -40,8 +40,8 @@ CLASSES := $(filter-out EdwTimeStamp, $(CLASSES))
 
 #EXE = fillinG4Events
 
-#EXE = skimNoNoiseBolos
-EXE = fillinG4Events
+EXE = skimNoNoiseBolos
+#EXE = fillinG4Events
 
 FILLEVENT    = bin/$(EXE)$(ExeSuf)
 FILLEVENTO   = $(addprefix $(SRCDIR),$(EXE).$(ObjSuf))

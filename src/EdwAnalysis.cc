@@ -211,6 +211,8 @@ Int_t EdwAnalysis::SaveThisEvent(EdwEventBase* e)
 			}
 			//the type of event (EdwEventBase, EdwHLAEvent, EdwRawEvent, etc..) will
 			//be handled appropriatedly by the virtual assignment operator=
+			
+			//BUG! nope, i don't think that this works!
 			*fFileWriter->GetEvent() = *e;
 			theRet = fFileWriter->Fill();
 			
@@ -226,9 +228,10 @@ Int_t EdwAnalysis::SaveThisEvent(void)
 	return SaveThisEvent(GetEvent());
 }
 
-Int_t EdwAnalysis::WriteOutput(const Char_t* name, Int_t option, Int_t bufsize)
+Int_t EdwAnalysis::Write(const Char_t* name, Int_t option, Int_t bufsize)
 {
-	//The options are the same as those options in TObject::Write
+	//The options are the same as those options in TObject::Write. 
+    //This writes the output EdwDS data file to disk.
 	
 	if(fFileWriter != 0){
 		return fFileWriter->Write(name, option, bufsize);
@@ -238,12 +241,11 @@ Int_t EdwAnalysis::WriteOutput(const Char_t* name, Int_t option, Int_t bufsize)
 
 const char* EdwAnalysis::GetEventClassName(void) const
 {
-	string theRet = "";
 	if(fFileReader != 0) {
-		theRet = fFileReader->GetEventClassName();
+		return fFileReader->GetEventClassName();
 	}
 	
-	return theRet.c_str();
+	else return "";
 }
 
 

@@ -41,7 +41,7 @@ public:
 	Int_t GetMultiTDC(void) const {return fMultiTDC;}	
 	Int_t GetPcTimeSec(void) const {return fPcTimeSec;}	
 	Int_t GetPcTimeMuSec(void) const {return fPcTimeMuSec;}	
-	Bool_t TestEventQualityBit(Int_t i) const {return fEventQuality.TestBitNumber(i);}	
+	Bool_t TestEventQualityBit(Int_t i) const;
 	Int_t GetRunNumber(void) const {return fRunNumber;}
 	Int_t GetCommonStopTime(void) const {return fCommonStopTime;}
 	

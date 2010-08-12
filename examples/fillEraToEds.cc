@@ -455,7 +455,7 @@ int eraToEds(string inputPath, string kDetectorName, string outputFile, string l
 			bolo->SetEnergySumIonChannels(etot);
 			bolo->SetBaselineIonFiducial(ldbfid);
 			bolo->SetEnergyBaselineHeat(E0heat);
-			bolo->SetBaselineHeat(LdbHeat);
+			bolo->SetBaselineNoiseHeat(LdbHeat);
 			if(!kDetectorName.compare(0, 3, "FID") == 0) {
 				bolo->SetEnergyGuard(0, egar1);
 				bolo->SetEnergyGuard(1, egar2);

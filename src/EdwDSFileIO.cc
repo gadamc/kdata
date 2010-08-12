@@ -157,24 +157,20 @@ const char* EdwDSFileIO::GetFileName(void) const
 	if (fFile != 0) {
 		return fFile->GetName();
 	}
-	else {
-		string a = "";
-		return a.c_str();
-	}
+	else return "";
 		
 }
 
 const char* EdwDSFileIO::GetEventClassName(void) const
 {
-	string theRet = "";
 	if(fTree != 0){
 		TBranchElement *branch = (TBranchElement *)fTree->GetBranch(fBranchName.c_str());
 		if(branch != 0)
-			theRet = branch->GetClassName();
+			return branch->GetClassName();
 		
+		else return "";
 	}
-	
-	return theRet.c_str();
+	else return "";
 }
 
 
