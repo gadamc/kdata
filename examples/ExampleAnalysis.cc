@@ -1,6 +1,6 @@
 /*
  *  ExampleAnalysis.cc
- *  EdwDataStructure
+ *  KDataStructure
  *
  *  Created by Adam Cox on 6/22/10.
  *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
@@ -8,19 +8,19 @@
  */
 
 
-#include "EdwDSReader"
+#include "KDataReader"
 #include "TFile"
-#include "EdwEventBase"
-#include "EdwHLAEvent"
+#include "KEvent"
+#include "KHLAEvent"
 #include "TH1D"
 
 // myAnalysisFile.C
 
 void myAnalysisScript(int arg1, const char* arg2)
 {
-	EdwDSReader fIn("/path/to/my/Eds_Run12_v1.0_0.root");  
+	KDataReader fIn("/path/to/my/Eds_Run12_v1.0_0.root");  
 	
-	EdwHLAEvent *mEvent = (EdwHLAEvent *)fIn.GetEvent();	
+	KHLAEvent *mEvent = (KHLAEvent *)fIn.GetEvent();	
 	TFile fSaveOut("/path/to/my/results.root");
 	
 	TH1D myEnergyHist("ERecoil","Recoil Energy", 100, 0, 100);  //100 bins between 0 and 100 keV 
@@ -31,7 +31,7 @@ void myAnalysisScript(int arg1, const char* arg2)
 		//analyze your event!
 		for(Int_t bolo = 0; bolo < mEvent->GetNumBolos(); bolo++){
 			
-			EdwHLASingleBoloSubRecord *mBolo = mEvent->GetBolo(bolo);
+			KHLASingleBoloSubRecord *mBolo = mEvent->GetBolo(bolo);
 			
 			Double_t qVal = mBolo->GetQvalue();
 			Double_t Erec = mBolo->GetEnergyRecoil();

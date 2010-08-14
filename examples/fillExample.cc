@@ -1,6 +1,6 @@
 /*
  *  fillEvents.cc
- *  EdwDataStructure
+ *  KDataStructure
  *
  *  Created by Adam Cox on 4/6/10.
  *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
@@ -8,15 +8,15 @@
  */
 
 #include "TFile.h"
-#include "EdwHLAEvent.h"
-#include "EdwTestEventClass.h"
-#include "EdwHLAMuonModuleSubRecord.h"
-#include "EdwHLASingleBoloSubRecord.h"
+#include "KHLAEvent.h"
+#include "KTestEventClass.h"
+#include "KHLAMuonModuleSubRecord.h"
+#include "KHLASingleBoloSubRecord.h"
 #include "TTree.h"
 #include <iostream>
 #include <fstream>
 #include "TRandom.h"
-#include "EdwDSWriter.h"
+#include "KDataWriter.h"
 
 using namespace std;
 
@@ -82,23 +82,23 @@ int fillEventExampleFunction(const char* name, const char* log)
 	cout << "Recreated Root File " << rootFileName.Data() << endl;
 	logFile << "Recreated Root File " << rootFileName.Data() << endl;
 	
-	EdwHLAEvent *mEv = new EdwHLAEvent();
-	cout << "Created EdwHLAEvent" << endl;
-	logFile << "Created EdwHLAEvent" << endl;
+	KHLAEvent *mEv = new KHLAEvent();
+	cout << "Created KHLAEvent" << endl;
+	logFile << "Created KHLAEvent" << endl;
 	
 	TTree *t = new TTree(treeName.Data(),treeTitle.Data());
 	cout << "Created TTree" << endl;
 	logFile << "Created TTree" << endl;
 	
-	t->Branch("EdwHLAEventBranch","EdwHLAEvent",&mEv,32000,99); 
+	t->Branch("KHLAEventBranch","KHLAEvent",&mEv,32000,99); 
 	t->BranchRef(); //creates an extra Branch table filled with Branches that have TRefs or TRefArrays
 	*/
 	
-	EdwDSWriter fOutFile(rootFileName.Data());
+	KDataWriter fOutFile(rootFileName.Data());
 	cout << "Recreated Root File " << rootFileName.Data() << endl;
 	logFile << "Recreated Root File " << rootFileName.Data() << endl;
 	
-	EdwHLAEvent *mEv = dynamic_cast<EdwHLAEvent*>(fOutFile.GetEvent());
+	KHLAEvent *mEv = dynamic_cast<KHLAEvent*>(fOutFile.GetEvent());
 	if(mEv == 0){
 		cout << "Unable to Create Event object" << endl;
 		return -1;
@@ -137,7 +137,7 @@ int fillEventExampleFunction(const char* name, const char* log)
 			
 			for(Int_t i = 0; i < nMod; i++) {
 				bIsMuonEvent = true;
-				EdwHLAMuonModuleSubRecord* mMuonModule = mEv->AddMuonModule();
+				KHLAMuonModuleSubRecord* mMuonModule = mEv->AddMuonModule();
 				mMuonModule->SetModuleNumber(40*gRandom->Rndm());
 				mMuonModule->SetAdc(0,(Int_t)(2048*gRandom->Rndm()));
 				mMuonModule->SetAdc(1,(Int_t)(2048*gRandom->Rndm()));
@@ -152,7 +152,7 @@ int fillEventExampleFunction(const char* name, const char* log)
 			Int_t nBolo = 1 + (gRandom->Poisson(0.95));
 			for (Int_t i = 0; i < nBolo; i++) {
 				bIsBoloEvent = true;
-				EdwHLASingleBoloSubRecord* mBolo2 = mEv->AddBolo();
+				KHLASingleBoloSubRecord* mBolo2 = mEv->AddBolo();
 				
 				mBolo2->SetQvalue(gRandom->Rndm());
 				mBolo2->SetEnergyRecoil(100.0*gRandom->Rndm());

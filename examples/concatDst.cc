@@ -1,6 +1,6 @@
 /*
  *  concatDst.cc
- *  EdwDataStructure 
+ *  KDataStructure 
  *  Preprocessing of Erics two different dst Files into 1, for the whole of Run12.
  *
  *  Created by Benjamin Schmidt 26.04.10 .
@@ -8,26 +8,26 @@
  *
  *
  *  Revisions
- *  1 - Adam Cox. Used new EdwDSReader/Writer and EdwEventFactory objects
- *                This calls the EdwDSWriter::MergeTrees method
+ *  1 - Adam Cox. Used new KDataReader/Writer and KEventFactory objects
+ *                This calls the KDataWriter::MergeTrees method
  *                which simply calls the TTree::MergeTrees method.
  *  2 - Adam Cox. Using the TTree::MergeTrees in the concatDst function.
  *                
  */
 
 #include "TFile.h"
-#include "EdwHLAEvent.h"
-#include "EdwHLAMuonModuleSubRecord.h"
-#include "EdwHLASingleBoloSubRecord.h"
-#include "EdwHLASambaSubRecord.h"
+#include "KHLAEvent.h"
+#include "KHLAMuonModuleSubRecord.h"
+#include "KHLASingleBoloSubRecord.h"
+#include "KHLASambaSubRecord.h"
 #include "TTree.h"
 #include <iostream>
 #include <fstream>
 #include "TRandom.h"
 #include <string>
-#include "EdwEventFactory.h"
-#include "EdwDSReader.h"
-#include "EdwDSWriter.h"
+#include "KEventFactory.h"
+#include "KDataReader.h"
+#include "KDataWriter.h"
 #include "TList.h"
 
 //outputFile =firstFile , inputPath=second read only file
@@ -151,7 +151,7 @@ int concatEds(string *inputFiles, Int_t numFiles, string outputFile){
 	//to take up a LOT of memory. A work around is to combine 
 	//two files at once and iterate over the entire set of files
 	//that you wish to cacatenate together. 
-	EdwDSReader* mFilesToMerge[numFiles];
+	KDataReader* mFilesToMerge[numFiles];
 	TList *mList = new TList;
 	
 	cout << "Concatenating Files into the output file " << outputFile << "." << endl;
@@ -159,7 +159,7 @@ int concatEds(string *inputFiles, Int_t numFiles, string outputFile){
 	cout << "    Adding the following files: " << endl;
 	for(Int_t i=0; i< numFiles; i++){
 		cout << "          " << inputFiles[i] << endl;
-		mFilesToMerge[i] = new EdwDSReader(inputFiles[i].c_str());
+		mFilesToMerge[i] = new KDataReader(inputFiles[i].c_str());
 		
 		if(mFilesToMerge[i]->GetTTree() == 0){
 			cout << " woops! File doesn't seem to be an EDS File. Quitting." << endl;
@@ -168,7 +168,7 @@ int concatEds(string *inputFiles, Int_t numFiles, string outputFile){
 		mList->Add(mFilesToMerge[i]->GetTTree());
 	}
 	
-	EdwDSWriter f(outputFile.c_str());
+	KDataWriter f(outputFile.c_str());
 	
 	cout << "Concatenating the Trees... have a beer, this could take a while." << endl;
 	f.ConcatenateTrees(mList, "fast");

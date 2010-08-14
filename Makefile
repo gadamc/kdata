@@ -24,17 +24,15 @@ DEBUG = -g
 #
 # ANY CLASS THAT BEGINS WITH "Edw" THAT YOU ADD TO THE src/ DIRECTORY WILL BE COMPILED
 # 
-CLASSES := $(basename $(notdir $(wildcard $(SRCDIR)Edw*.cc)))
+CLASSES := $(basename $(notdir $(wildcard $(SRCDIR)K*.cpp)))
 
 # FILTER OUT ANY CLASSES THAT YOU ARE NOT READY TO ADD FOR COMPILATION
 #	
-CLASSES := $(filter-out EdwMcEventBase, $(CLASSES))
-CLASSES := $(filter-out EdwTestEventClass, $(CLASSES))
 #CLASSES := $(filter-out EdwTreeReader, $(CLASSES))
 #CLASSES := $(filter-out EdwTreeWriter, $(CLASSES))
 #CLASSES := $(filter-out EdwTreeIO, $(CLASSES))
 #CLASSES := $(filter-out EdwAnalysis, $(CLASSES))
-CLASSES := $(filter-out EdwTimeStamp, $(CLASSES))
+CLASSES := $(filter-out KTimeStamp, $(CLASSES))
 
 #fillEvents -- CHANGE THIS NAME HERE TO COMPILE A DIFFERENT EXECUTABLE
 
@@ -61,29 +59,29 @@ OBJS        += $(FILLEVENTO)
 ############################
 
 #automatically generate the EDS_LinkDef.h file! Don't call it Edw_LinkDef
-LINKDEF := $(SRCDIR)EDS_LinkDef.h
+LINKDEF := $(SRCDIR)KEDS_LinkDef.h
 
 #automatically extract the headers and object file names
-EDWHEADERS = $(addsuffix .h, $(CLASSES))
+KEDSHEADERS = $(addsuffix .h, $(CLASSES))
 #NEDWHEADERS = $(addprefix $(SRCDIR), $(EDWHEADERS)) 
 
 COBJS = $(addprefix $(SRCDIR),$(addsuffix .$(ObjSuf), $(CLASSES)))
 OBJS          = $(COBJS)
 
 ## Library and Executable
-LIBEDWDSO       = lib/libEdwDS.$(DllSuf)
+LIBKEDSO       = lib/libKData.$(DllSuf)
 
 ifeq ($(PLATFORM),win32)
-EVENTLIB      = lib/libEdwDS.lib
+EVENTLIB      = lib/libKData.lib
 else
-EVENTLIB      = $(shell pwd)/$(LIBEDWDSO)
+EVENTLIB      = $(shell pwd)/$(LIBKEDSO)
 endif
 
 #ROOT Dictionary -- dont call this EdwDict... 
-EDSDICT = $(SRCDIR)EDSDict
-EDSDICTO = $(EDSDICT).$(ObjSuf)
-EDSDICTS = $(EDSDICT).$(SrcSuf)
-OBJS   += $(EDSDICTO) 
+KEDSDICT = $(SRCDIR)KEDSDict
+KEDSDICTO = $(KEDSDICT).$(ObjSuf)
+KEDSDICTS = $(KEDSDICT).$(SrcSuf)
+OBJS   += $(KEDSDICTO) 
 #BOOSTDIR = /usr/local/include
 #CXXFLAGS += -I$(BOOSTDIR) #include the directly that holds the BOOST libraries
 
@@ -93,7 +91,7 @@ OBJS   += $(EDSDICTO)
 
 all:            $(PROGRAMS)
 
-$(LIBEDWDSO):     $(COBJS) $(EDSDICTO) 
+$(LIBKEDSO):     $(COBJS) $(KEDSDICTO) 
  
 ifeq ($(PLATFORM),macosx)
 # We need to make both the .dylib and the .so
@@ -120,34 +118,34 @@ endif
 endif
 		@echo "$@ done"
 
-$(FILLEVENT):       $(LIBEDWDSO) $(FILLEVENTO) 
-		$(LD) $(LDFLAGS) $(FILLEVENTO) $(COBJS) $(EDSDICTO) $(LIBS) $(OutPutOpt)$@	
+$(FILLEVENT):       $(LIBKEDSO) $(FILLEVENTO) 
+		$(LD) $(LDFLAGS) $(FILLEVENTO) $(COBJS) $(KEDSDICTO) $(LIBS) $(OutPutOpt)$@	
 		$(MT_EXE)
 		@echo "$@ done"
 		
-#$(FILLEVENTTEST):       $(LIBEDWDSO) $(FILLEVENTTESTO)
+#$(FILLEVENTTEST):       $(LIBKEDSO) $(FILLEVENTTESTO)
 #		$(LD) $(LDFLAGS) $(FILLEVENTTESTO) $(COBJS) $(EDSDICTO) $(LIBS) $(OutPutOpt)$@	
 #		$(MT_EXE)
 #		@echo "$@ done"
 
 clean:
-		@rm -f $(OBJS) $(TRACKMATHSRC) core $(LINKDEF)* $(EDSDICT)* lib/* bin/* $(SRCDIR)*.o
+		@rm -f $(OBJS) $(TRACKMATHSRC) core $(LINKDEF)* $(KEDSDICT)* lib/* bin/* $(SRCDIR)*.o
 
 distclean:      clean
-		@rm -f $(PROGRAMS) $(LIBEDWDSO) $(EVENTLIB) *.def *.exp \
+		@rm -f $(PROGRAMS) $(LIBKEDSO) $(EVENTLIB) *.def *.exp \
 		   *.root *.ps *.so *.lib *.dll *.d *.log .def so_locations \
 		   files/* 
 
 .SUFFIXES: .$(SrcSuf)
 
 ### 
-$(EDSDICTS): $(addprefix $(SRCDIR),$(EDWHEADERS)) $(LINKDEF)
+$(KEDSDICTS): $(addprefix $(SRCDIR),$(KEDSHEADERS)) $(LINKDEF)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ -c -I./$(SRCDIR) $(EDWHEADERS) $(LINKDEF)
+	$(ROOTCINT) -f $@ -c -I./$(SRCDIR) $(KEDSHEADERS) $(LINKDEF)
 	@echo "$@ done"
 
 	
-$(LINKDEF) : $(addsuffix, .$(ObjSuf), $(addprefix $(SRCDIR), $(CLASSES))) $(addprefix $(SRCDIR),$(EDWHEADERS))
+$(LINKDEF) : $(addsuffix, .$(ObjSuf), $(addprefix $(SRCDIR), $(CLASSES))) $(addprefix $(SRCDIR),$(KEDSHEADERS))
 	@echo "Writing Linkdef file $@..."
 	@echo "#ifdef __CINT__" > $@.tmp
 	@echo "" >> $@.tmp

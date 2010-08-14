@@ -1,0 +1,2493 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		66AC835B11A155D40071A5AA /* Make Linkdef */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 66AC835F11A155F20071A5AA /* Build configuration list for PBXAggregateTarget "Make Linkdef" */;
+			buildPhases = (
+				66AC835A11A155D40071A5AA /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Make Linkdef";
+			productName = "Make Linkdef";
+		};
+		66AC849211A183E20071A5AA /* Build All Executables */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 66AC849D11A184250071A5AA /* Build configuration list for PBXAggregateTarget "Build All Executables" */;
+			buildPhases = (
+			);
+			dependencies = (
+				66AC859911A1A8FB0071A5AA /* PBXTargetDependency */,
+				66AC849811A183EC0071A5AA /* PBXTargetDependency */,
+				66AC859D11A1A9190071A5AA /* PBXTargetDependency */,
+				66AC866511A29CEF0071A5AA /* PBXTargetDependency */,
+				66AC8A5911A587770071A5AA /* PBXTargetDependency */,
+				660A9C9D11AD280400312F5A /* PBXTargetDependency */,
+				663F5EA711B5140400B63EEA /* PBXTargetDependency */,
+				6647659811B84DDF00345765 /* PBXTargetDependency */,
+				66234C2411DBA39700107A63 /* PBXTargetDependency */,
+			);
+			name = "Build All Executables";
+			productName = BuildAllExternalExecutables;
+		};
+		66AC852011A19EEB0071A5AA /* Make Dictionary */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 66AC852911A19F3A0071A5AA /* Build configuration list for PBXAggregateTarget "Make Dictionary" */;
+			buildPhases = (
+				66AC852611A19EFC0071A5AA /* ShellScript */,
+			);
+			dependencies = (
+				66AC852411A19EEF0071A5AA /* PBXTargetDependency */,
+			);
+			name = "Make Dictionary";
+			productName = "Make Dict";
+		};
+		66AC859211A1A8E80071A5AA /* Build Library */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 66AC859E11A1A9370071A5AA /* Build configuration list for PBXAggregateTarget "Build Library" */;
+			buildPhases = (
+			);
+			dependencies = (
+				66AC859511A1A8ED0071A5AA /* PBXTargetDependency */,
+				66AC859711A1A8F00071A5AA /* PBXTargetDependency */,
+			);
+			name = "Build Library";
+			productName = "Build Library";
+		};
+		66F9C22D1164E22B0070AFCE /* Make All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 66F9C2311164E23C0070AFCE /* Build configuration list for PBXAggregateTarget "Make All" */;
+			buildPhases = (
+				66F9C22C1164E22B0070AFCE /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Make All";
+			productName = make;
+		};
+		66F9C2331164E25B0070AFCE /* Make Clean */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 66F9C2391164E27B0070AFCE /* Build configuration list for PBXAggregateTarget "Make Clean" */;
+			buildPhases = (
+				66F9C2321164E25B0070AFCE /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Make Clean";
+			productName = clean;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		66234C2211DBA38100107A63 /* getBoloMuonCoincidences.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66234C1311DBA25100107A63 /* getBoloMuonCoincidences.cpp */; };
+		663F5EAE11B5142600B63EEA /* allPassOne_GSEventNumbers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 663F5E9611B5123B00B63EEA /* allPassOne_GSEventNumbers.cpp */; };
+		6647659611B84D9400345765 /* getNeutronCalibCoincidence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 663F5E8811B511A000B63EEA /* getNeutronCalibCoincidence.cpp */; };
+		66AC842611A172C40071A5AA /* getMuonModuleAdcSpectrum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AC841E11A172680071A5AA /* getMuonModuleAdcSpectrum.cpp */; };
+		66AC858211A1A7E20071A5AA /* fillEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6631B6D3116F567C007A6E89 /* fillEvents.cpp */; };
+		66AC868A11A2B5650071A5AA /* skimNoNoiseBolos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AC868911A2B5650071A5AA /* skimNoNoiseBolos.cpp */; };
+		66AC8A5711A587530071A5AA /* fillMuonVetoEvents.cc in Sources */ = {isa = PBXBuildFile; fileRef = 667D76561178A35100B37614 /* fillMuonVetoEvents.cc */; };
+		66AC905811ABF39A0071A5AA /* concatenateMuon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AC904A11ABF1060071A5AA /* concatenateMuon.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		660A9C9C11AD280400312F5A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC904D11ABF3740071A5AA;
+			remoteInfo = concatenateMuon;
+		};
+		66234C2311DBA39700107A63 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66234C1711DBA36000107A63;
+			remoteInfo = getBoloMuonCoincidences;
+		};
+		663F5EA611B5140400B63EEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 663F5E9711B513B600B63EEA;
+			remoteInfo = fillGSEventNumbers;
+		};
+		6647659711B84DDF00345765 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6647658B11B84D6F00345765;
+			remoteInfo = getCoincidence;
+		};
+		66AC849711A183EC0071A5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC83AA11A16A590071A5AA;
+			remoteInfo = getMuonModuleAdcSpectrum;
+		};
+		66AC852311A19EEF0071A5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC835B11A155D40071A5AA;
+			remoteInfo = "Make Linkdef";
+		};
+		66AC859411A1A8ED0071A5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC852011A19EEB0071A5AA;
+			remoteInfo = "Make Dictionary";
+		};
+		66AC859611A1A8F00071A5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC84BB11A18DC70071A5AA;
+			remoteInfo = EdwDS;
+		};
+		66AC859811A1A8FB0071A5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC859211A1A8E80071A5AA;
+			remoteInfo = "Build Library";
+		};
+		66AC859C11A1A9190071A5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC857811A1A7D10071A5AA;
+			remoteInfo = fillEvents;
+		};
+		66AC866411A29CEF0071A5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC865911A29CA00071A5AA;
+			remoteInfo = skimNoNoiseBolos;
+		};
+		66AC8A5811A587770071A5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66F9C1EF1164E1E30070AFCE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 66AC8A4D11A5871D0071A5AA;
+			remoteInfo = fillMuonVetoEvents;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		662348B311D0997200107A63 /* ExampleAnalysis.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExampleAnalysis.cc; sourceTree = "<group>"; };
+		66234C1311DBA25100107A63 /* getBoloMuonCoincidences.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = getBoloMuonCoincidences.cpp; sourceTree = "<group>"; };
+		66234C2011DBA36000107A63 /* getBoloMuonCoincidences */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = getBoloMuonCoincidences; sourceTree = BUILT_PRODUCTS_DIR; };
+		6631B6D3116F567C007A6E89 /* fillEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEvents.cpp; path = src/fillEvents.cpp; sourceTree = "<group>"; };
+		6631B6D4116F567C007A6E89 /* fillEventTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEventTest.cpp; path = src/fillEventTest.cpp; sourceTree = "<group>"; };
+		6631B6DE116F5EB4007A6E89 /* fillExample.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillExample.cc; sourceTree = "<group>"; };
+		6631B6E0116F5F08007A6E89 /* rootScript_fillExample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_fillExample.c; sourceTree = "<group>"; };
+		6631BBD1117724C5007A6E89 /* WishList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = WishList.rtf; sourceTree = "<group>"; };
+		6631BC4B11774767007A6E89 /* filldstEvents.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = filldstEvents.cc; sourceTree = "<group>"; };
+		663F5E8811B511A000B63EEA /* getNeutronCalibCoincidence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = getNeutronCalibCoincidence.cpp; sourceTree = "<group>"; };
+		663F5E9611B5123B00B63EEA /* allPassOne_GSEventNumbers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = allPassOne_GSEventNumbers.cpp; path = src/allPassOne_GSEventNumbers.cpp; sourceTree = "<group>"; };
+		663F5EA011B513B600B63EEA /* allPassOne_GSEventNumbers */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = allPassOne_GSEventNumbers; sourceTree = BUILT_PRODUCTS_DIR; };
+		664640CC11BD1D23007E130A /* coincAnalysis.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = coincAnalysis.c; path = ../../analysis/edelweiss/Analysis1/coincidence/coincAnalysis.c; sourceTree = SOURCE_ROOT; };
+		6647659411B84D6F00345765 /* getNeutronCalibCoincidence */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = getNeutronCalibCoincidence; sourceTree = BUILT_PRODUCTS_DIR; };
+		665B068F11DCC1EA00471020 /* boloMuonCoincEff.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = boloMuonCoincEff.C; path = ../../analysis/edelweiss/Analysis1/muonVetoEfficiencyFromBoloEvents/boloMuonCoincEff.C; sourceTree = SOURCE_ROOT; };
+		665B076C11E36ABA00471020 /* coincAnalysis2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = coincAnalysis2.c; path = ../../analysis/edelweiss/Analysis1/coincidence2_highEnergy/coincAnalysis2.c; sourceTree = SOURCE_ROOT; };
+		6669880D11C263B200432589 /* rootScript_concatBoloEra.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatBoloEra.c; sourceTree = "<group>"; };
+		6669886311C4F05500432589 /* AmBeNemoKolmogorovTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = AmBeNemoKolmogorovTest.c; sourceTree = "<group>"; };
+		66698C9F11CB724700432589 /* BugList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = BugList.rtf; sourceTree = "<group>"; };
+		66775E5A118F12C4002936D8 /* concatDst.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = concatDst.cc; sourceTree = "<group>"; };
+		667D75D9117796D700B37614 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		667D76561178A35100B37614 /* fillMuonVetoEvents.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillMuonVetoEvents.cc; sourceTree = "<group>"; };
+		66AC83AB11A16A590071A5AA /* getMuonModuleAdcSpectrum */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = getMuonModuleAdcSpectrum; sourceTree = BUILT_PRODUCTS_DIR; };
+		66AC841E11A172680071A5AA /* getMuonModuleAdcSpectrum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = getMuonModuleAdcSpectrum.cpp; sourceTree = "<group>"; };
+		66AC842511A172920071A5AA /* MuonModuleADCSpectrum.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MuonModuleADCSpectrum.C; sourceTree = "<group>"; };
+		66AC84BC11A18DC70071A5AA /* libEdwDS.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libEdwDS.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		66AC858011A1A7D10071A5AA /* fillEvents */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fillEvents; sourceTree = BUILT_PRODUCTS_DIR; };
+		66AC866111A29CA00071A5AA /* skimNoNoiseBolos */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = skimNoNoiseBolos; sourceTree = BUILT_PRODUCTS_DIR; };
+		66AC868911A2B5650071A5AA /* skimNoNoiseBolos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = skimNoNoiseBolos.cpp; path = src/skimNoNoiseBolos.cpp; sourceTree = "<group>"; };
+		66AC8A5511A5871D0071A5AA /* fillMuonVetoEvents */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fillMuonVetoEvents; sourceTree = BUILT_PRODUCTS_DIR; };
+		66AC8EF311A6E0CD0071A5AA /* rootScript_localConcat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_localConcat.c; sourceTree = "<group>"; };
+		66AC8F1E11A6E3710071A5AA /* processMuonVetoToEDSLocal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = processMuonVetoToEDSLocal.c; sourceTree = "<group>"; };
+		66AC904A11ABF1060071A5AA /* concatenateMuon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = concatenateMuon.cpp; sourceTree = "<group>"; };
+		66AC905511ABF3740071A5AA /* concatenateMuon */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = concatenateMuon; sourceTree = BUILT_PRODUCTS_DIR; };
+		66D3A1511214904400A08CBD /* KEventCollection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KEventCollection.cpp; path = src/KEventCollection.cpp; sourceTree = "<group>"; };
+		66D3A1521214904400A08CBD /* KEventCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KEventCollection.h; path = src/KEventCollection.h; sourceTree = "<group>"; };
+		66D3A1531214905E00A08CBD /* KTimeStamp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KTimeStamp.cpp; path = src/KTimeStamp.cpp; sourceTree = "<group>"; };
+		66D3A1541214905E00A08CBD /* KTimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KTimeStamp.h; path = src/KTimeStamp.h; sourceTree = "<group>"; };
+		66D3A1551214907F00A08CBD /* KDataFileIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KDataFileIO.cpp; path = src/KDataFileIO.cpp; sourceTree = "<group>"; };
+		66D3A1561214907F00A08CBD /* KDataFileIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KDataFileIO.h; path = src/KDataFileIO.h; sourceTree = "<group>"; };
+		66D3A1571214907F00A08CBD /* KDataReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KDataReader.cpp; path = src/KDataReader.cpp; sourceTree = "<group>"; };
+		66D3A1581214907F00A08CBD /* KDataReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KDataReader.h; path = src/KDataReader.h; sourceTree = "<group>"; };
+		66D3A1591214907F00A08CBD /* KDataWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KDataWriter.cpp; path = src/KDataWriter.cpp; sourceTree = "<group>"; };
+		66D3A15A1214907F00A08CBD /* KDataWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KDataWriter.h; path = src/KDataWriter.h; sourceTree = "<group>"; };
+		66D3A15B1214907F00A08CBD /* KEventFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KEventFactory.cpp; path = src/KEventFactory.cpp; sourceTree = "<group>"; };
+		66D3A15C1214907F00A08CBD /* KEventFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KEventFactory.h; path = src/KEventFactory.h; sourceTree = "<group>"; };
+		66D3A15D121490B100A08CBD /* mergeKEdsTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mergeKEdsTree.cc; sourceTree = "<group>"; };
+		66D3A15E1214990500A08CBD /* fillEraToKEds.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillEraToKEds.cc; sourceTree = "<group>"; };
+		66D3A15F1214993800A08CBD /* processMuonVetoToKEDSOnKalinka.root.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = processMuonVetoToKEDSOnKalinka.root.C; sourceTree = "<group>"; };
+		66D3A1601214993800A08CBD /* rootScript_concatMuonKEdwDS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatMuonKEdwDS.c; sourceTree = "<group>"; };
+		66D3A1611214993800A08CBD /* rootScript_fillEraToKEdsEvents.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_fillEraToKEdsEvents.c; sourceTree = "<group>"; };
+		66D3A1621214993800A08CBD /* rootScript_mergeKEdsTrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_mergeKEdsTrees.c; sourceTree = "<group>"; };
+		66D3A163121543FD00A08CBD /* KRawEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KRawEvent.h; path = src/KRawEvent.h; sourceTree = "<group>"; };
+		66D3A164121543FD00A08CBD /* KRawEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KRawEvent.cpp; path = src/KRawEvent.cpp; sourceTree = "<group>"; };
+		66D3A165121543FD00A08CBD /* KHLaMCEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLaMCEvent.h; path = src/KHLaMCEvent.h; sourceTree = "<group>"; };
+		66D3A166121543FD00A08CBD /* KHLaMCEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLaMCEvent.cpp; path = src/KHLaMCEvent.cpp; sourceTree = "<group>"; };
+		66D3A167121543FD00A08CBD /* KHLAEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLAEvent.h; path = src/KHLAEvent.h; sourceTree = "<group>"; };
+		66D3A168121543FD00A08CBD /* KHLAEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLAEvent.cpp; path = src/KHLAEvent.cpp; sourceTree = "<group>"; };
+		66D3A1691215441200A08CBD /* KEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KEvent.h; path = src/KEvent.h; sourceTree = "<group>"; };
+		66D3A16A1215441200A08CBD /* KEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KEvent.cpp; path = src/KEvent.cpp; sourceTree = "<group>"; };
+		66D3A16E121544E000A08CBD /* KHLAMuonVetoSysRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLAMuonVetoSysRecord.h; path = src/KHLAMuonVetoSysRecord.h; sourceTree = "<group>"; };
+		66D3A16F121544E000A08CBD /* KHLAMuonVetoSysRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLAMuonVetoSysRecord.cpp; path = src/KHLAMuonVetoSysRecord.cpp; sourceTree = "<group>"; };
+		66D3A170121544E000A08CBD /* KHLABoloSysRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLABoloSysRecord.h; path = src/KHLABoloSysRecord.h; sourceTree = "<group>"; };
+		66D3A171121544E000A08CBD /* KHLABoloSysRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLABoloSysRecord.cpp; path = src/KHLABoloSysRecord.cpp; sourceTree = "<group>"; };
+		66D3A172121544FE00A08CBD /* KSystemRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSystemRecord.h; path = src/KSystemRecord.h; sourceTree = "<group>"; };
+		66D3A173121544FE00A08CBD /* KSystemRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSystemRecord.cpp; path = src/KSystemRecord.cpp; sourceTree = "<group>"; };
+		66D3A174121544FE00A08CBD /* KMuonVetoSystemRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMuonVetoSystemRecord.h; path = src/KMuonVetoSystemRecord.h; sourceTree = "<group>"; };
+		66D3A175121544FE00A08CBD /* KMuonVetoSystemRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KMuonVetoSystemRecord.cpp; path = src/KMuonVetoSystemRecord.cpp; sourceTree = "<group>"; };
+		66D3A178121544FE00A08CBD /* KBoloSystemRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KBoloSystemRecord.h; path = src/KBoloSystemRecord.h; sourceTree = "<group>"; };
+		66D3A179121544FE00A08CBD /* KBoloSystemRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KBoloSystemRecord.cpp; path = src/KBoloSystemRecord.cpp; sourceTree = "<group>"; };
+		66D3A17A1215455D00A08CBD /* KMCSingleBoloSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMCSingleBoloSubRecord.h; path = src/KMCSingleBoloSubRecord.h; sourceTree = "<group>"; };
+		66D3A17B1215455D00A08CBD /* KMCSingleBoloSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KMCSingleBoloSubRecord.cpp; path = src/KMCSingleBoloSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A17C1215455D00A08CBD /* KHLASingleBoloSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLASingleBoloSubRecord.h; path = src/KHLASingleBoloSubRecord.h; sourceTree = "<group>"; };
+		66D3A17D1215455D00A08CBD /* KHLASingleBoloSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLASingleBoloSubRecord.cpp; path = src/KHLASingleBoloSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A17E1215455D00A08CBD /* KHLASambaSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLASambaSubRecord.h; path = src/KHLASambaSubRecord.h; sourceTree = "<group>"; };
+		66D3A17F1215455D00A08CBD /* KHLASambaSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLASambaSubRecord.cpp; path = src/KHLASambaSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A1801215455D00A08CBD /* KHLAMuonModuleSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLAMuonModuleSubRecord.h; path = src/KHLAMuonModuleSubRecord.h; sourceTree = "<group>"; };
+		66D3A1811215455D00A08CBD /* KHLAMuonModuleSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLAMuonModuleSubRecord.cpp; path = src/KHLAMuonModuleSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A1821215455D00A08CBD /* KHLABoloPulseSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLABoloPulseSubRecord.h; path = src/KHLABoloPulseSubRecord.h; sourceTree = "<group>"; };
+		66D3A1831215455D00A08CBD /* KHLABoloPulseSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLABoloPulseSubRecord.cpp; path = src/KHLABoloPulseSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A18C121545C900A08CBD /* KSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSubRecord.h; path = src/KSubRecord.h; sourceTree = "<group>"; };
+		66D3A18D121545C900A08CBD /* KSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSubRecord.cpp; path = src/KSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A18E121545C900A08CBD /* KSingleBoloSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSingleBoloSubRecord.h; path = src/KSingleBoloSubRecord.h; sourceTree = "<group>"; };
+		66D3A18F121545C900A08CBD /* KSingleBoloSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSingleBoloSubRecord.cpp; path = src/KSingleBoloSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A190121545C900A08CBD /* KSambaSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSambaSubRecord.h; path = src/KSambaSubRecord.h; sourceTree = "<group>"; };
+		66D3A191121545C900A08CBD /* KSambaSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSambaSubRecord.cpp; path = src/KSambaSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A192121545C900A08CBD /* KMuonModuleSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMuonModuleSubRecord.h; path = src/KMuonModuleSubRecord.h; sourceTree = "<group>"; };
+		66D3A193121545C900A08CBD /* KMuonModuleSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KMuonModuleSubRecord.cpp; path = src/KMuonModuleSubRecord.cpp; sourceTree = "<group>"; };
+		66D3A196121545C900A08CBD /* KBoloPulseSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KBoloPulseSubRecord.h; path = src/KBoloPulseSubRecord.h; sourceTree = "<group>"; };
+		66D3A197121545C900A08CBD /* KBoloPulseSubRecord.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KBoloPulseSubRecord.cpp; path = src/KBoloPulseSubRecord.cpp; sourceTree = "<group>"; };
+		66F9C22A1164E2000070AFCE /* Makefile.arch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.arch; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		66234C1A11DBA36000107A63 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		663F5E9A11B513B600B63EEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6647658E11B84D6F00345765 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC83A911A16A590071A5AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC84BA11A18DC70071A5AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC857B11A1A7D10071A5AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC865C11A29CA00071A5AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC8A5011A5871D0071A5AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC905011ABF3740071A5AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6631B6D6116F577E007A6E89 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				66B18EB3116B3ED30012D0E9 /* executables */,
+				66B18EB1116B3E6F0012D0E9 /* Utilities */,
+				66F9C23F1164E2BF0070AFCE /* Record Classes */,
+				66F9C23E1164E2B50070AFCE /* Event Classes */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		6631B6DD116F5EB4007A6E89 /* examples */ = {
+			isa = PBXGroup;
+			children = (
+				66775E5A118F12C4002936D8 /* concatDst.cc */,
+				66D3A15D121490B100A08CBD /* mergeKEdsTree.cc */,
+				6631BC4B11774767007A6E89 /* filldstEvents.cc */,
+				66D3A15E1214990500A08CBD /* fillEraToKEds.cc */,
+				667D76561178A35100B37614 /* fillMuonVetoEvents.cc */,
+				6631B6DE116F5EB4007A6E89 /* fillExample.cc */,
+				66D3A15F1214993800A08CBD /* processMuonVetoToKEDSOnKalinka.root.C */,
+				66D3A1601214993800A08CBD /* rootScript_concatMuonKEdwDS.c */,
+				66D3A1611214993800A08CBD /* rootScript_fillEraToKEdsEvents.c */,
+				66D3A1621214993800A08CBD /* rootScript_mergeKEdsTrees.c */,
+				6669880D11C263B200432589 /* rootScript_concatBoloEra.c */,
+				66AC8EF311A6E0CD0071A5AA /* rootScript_localConcat.c */,
+				6631B6E0116F5F08007A6E89 /* rootScript_fillExample.c */,
+				66AC8F1E11A6E3710071A5AA /* processMuonVetoToEDSLocal.c */,
+				662348B311D0997200107A63 /* ExampleAnalysis.cc */,
+			);
+			path = examples;
+			sourceTree = "<group>";
+		};
+		66AC839A11A15FCA0071A5AA /* External Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				66AC841C11A172680071A5AA /* Analysis1 */,
+			);
+			name = "External Analysis";
+			sourceTree = "<group>";
+		};
+		66AC839F11A160130071A5AA /* EdwDS */ = {
+			isa = PBXGroup;
+			children = (
+				667D75D9117796D700B37614 /* Makefile */,
+				66F9C22A1164E2000070AFCE /* Makefile.arch */,
+				6631BBD1117724C5007A6E89 /* WishList.rtf */,
+				66698C9F11CB724700432589 /* BugList.rtf */,
+				6631B6DD116F5EB4007A6E89 /* examples */,
+				6631B6D6116F577E007A6E89 /* src */,
+			);
+			name = EdwDS;
+			sourceTree = "<group>";
+		};
+		66AC83AC11A16A590071A5AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				66AC83AB11A16A590071A5AA /* getMuonModuleAdcSpectrum */,
+				66AC84BC11A18DC70071A5AA /* libEdwDS.so */,
+				66AC858011A1A7D10071A5AA /* fillEvents */,
+				66AC866111A29CA00071A5AA /* skimNoNoiseBolos */,
+				66AC8A5511A5871D0071A5AA /* fillMuonVetoEvents */,
+				66AC905511ABF3740071A5AA /* concatenateMuon */,
+				663F5EA011B513B600B63EEA /* allPassOne_GSEventNumbers */,
+				6647659411B84D6F00345765 /* getNeutronCalibCoincidence */,
+				66234C2011DBA36000107A63 /* getBoloMuonCoincidences */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		66AC841C11A172680071A5AA /* Analysis1 */ = {
+			isa = PBXGroup;
+			children = (
+				66AC842411A172920071A5AA /* rootscripts */,
+				66AC841D11A172680071A5AA /* executables */,
+			);
+			name = Analysis1;
+			path = ../../analysis/edelweiss/Analysis1;
+			sourceTree = SOURCE_ROOT;
+		};
+		66AC841D11A172680071A5AA /* executables */ = {
+			isa = PBXGroup;
+			children = (
+				663F5E8811B511A000B63EEA /* getNeutronCalibCoincidence.cpp */,
+				66234C1311DBA25100107A63 /* getBoloMuonCoincidences.cpp */,
+				66AC841E11A172680071A5AA /* getMuonModuleAdcSpectrum.cpp */,
+				66AC904A11ABF1060071A5AA /* concatenateMuon.cpp */,
+			);
+			path = executables;
+			sourceTree = "<group>";
+		};
+		66AC842411A172920071A5AA /* rootscripts */ = {
+			isa = PBXGroup;
+			children = (
+				66AC842511A172920071A5AA /* MuonModuleADCSpectrum.C */,
+				665B076C11E36ABA00471020 /* coincAnalysis2.c */,
+				664640CC11BD1D23007E130A /* coincAnalysis.c */,
+				665B068F11DCC1EA00471020 /* boloMuonCoincEff.C */,
+				6669886311C4F05500432589 /* AmBeNemoKolmogorovTest.c */,
+			);
+			path = rootscripts;
+			sourceTree = "<group>";
+		};
+		66B18EB1116B3E6F0012D0E9 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				66D3A1511214904400A08CBD /* KEventCollection.cpp */,
+				66D3A1521214904400A08CBD /* KEventCollection.h */,
+				66D3A1531214905E00A08CBD /* KTimeStamp.cpp */,
+				66D3A1541214905E00A08CBD /* KTimeStamp.h */,
+				66D3A1551214907F00A08CBD /* KDataFileIO.cpp */,
+				66D3A1561214907F00A08CBD /* KDataFileIO.h */,
+				66D3A1571214907F00A08CBD /* KDataReader.cpp */,
+				66D3A1581214907F00A08CBD /* KDataReader.h */,
+				66D3A1591214907F00A08CBD /* KDataWriter.cpp */,
+				66D3A15A1214907F00A08CBD /* KDataWriter.h */,
+				66D3A15B1214907F00A08CBD /* KEventFactory.cpp */,
+				66D3A15C1214907F00A08CBD /* KEventFactory.h */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		66B18EB3116B3ED30012D0E9 /* executables */ = {
+			isa = PBXGroup;
+			children = (
+				66AC868911A2B5650071A5AA /* skimNoNoiseBolos.cpp */,
+				663F5E9611B5123B00B63EEA /* allPassOne_GSEventNumbers.cpp */,
+				6631B6D3116F567C007A6E89 /* fillEvents.cpp */,
+				6631B6D4116F567C007A6E89 /* fillEventTest.cpp */,
+			);
+			name = executables;
+			sourceTree = "<group>";
+		};
+		66F9C1ED1164E1E30070AFCE = {
+			isa = PBXGroup;
+			children = (
+				66AC839F11A160130071A5AA /* EdwDS */,
+				66AC839A11A15FCA0071A5AA /* External Analysis */,
+				66AC83AC11A16A590071A5AA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		66F9C23E1164E2B50070AFCE /* Event Classes */ = {
+			isa = PBXGroup;
+			children = (
+				66D3A164121543FD00A08CBD /* KRawEvent.cpp */,
+				66D3A163121543FD00A08CBD /* KRawEvent.h */,
+				66D3A166121543FD00A08CBD /* KHLaMCEvent.cpp */,
+				66D3A165121543FD00A08CBD /* KHLaMCEvent.h */,
+				66D3A168121543FD00A08CBD /* KHLAEvent.cpp */,
+				66D3A167121543FD00A08CBD /* KHLAEvent.h */,
+				66F9C2421164E2DD0070AFCE /* Base Classes */,
+			);
+			name = "Event Classes";
+			sourceTree = "<group>";
+		};
+		66F9C23F1164E2BF0070AFCE /* Record Classes */ = {
+			isa = PBXGroup;
+			children = (
+				66F9C2411164E2D30070AFCE /* Sub Records */,
+				66F9C2401164E2CA0070AFCE /* System Records */,
+			);
+			name = "Record Classes";
+			sourceTree = "<group>";
+		};
+		66F9C2401164E2CA0070AFCE /* System Records */ = {
+			isa = PBXGroup;
+			children = (
+				66D3A16F121544E000A08CBD /* KHLAMuonVetoSysRecord.cpp */,
+				66D3A16E121544E000A08CBD /* KHLAMuonVetoSysRecord.h */,
+				66D3A171121544E000A08CBD /* KHLABoloSysRecord.cpp */,
+				66D3A170121544E000A08CBD /* KHLABoloSysRecord.h */,
+				66F9C2441164E2EE0070AFCE /* Base Classes */,
+			);
+			name = "System Records";
+			sourceTree = "<group>";
+		};
+		66F9C2411164E2D30070AFCE /* Sub Records */ = {
+			isa = PBXGroup;
+			children = (
+				66D3A17B1215455D00A08CBD /* KMCSingleBoloSubRecord.cpp */,
+				66D3A17A1215455D00A08CBD /* KMCSingleBoloSubRecord.h */,
+				66D3A17D1215455D00A08CBD /* KHLASingleBoloSubRecord.cpp */,
+				66D3A17C1215455D00A08CBD /* KHLASingleBoloSubRecord.h */,
+				66D3A17F1215455D00A08CBD /* KHLASambaSubRecord.cpp */,
+				66D3A17E1215455D00A08CBD /* KHLASambaSubRecord.h */,
+				66D3A1811215455D00A08CBD /* KHLAMuonModuleSubRecord.cpp */,
+				66D3A1801215455D00A08CBD /* KHLAMuonModuleSubRecord.h */,
+				66D3A1831215455D00A08CBD /* KHLABoloPulseSubRecord.cpp */,
+				66D3A1821215455D00A08CBD /* KHLABoloPulseSubRecord.h */,
+				66F9C2431164E2E70070AFCE /* Base Classes */,
+			);
+			name = "Sub Records";
+			sourceTree = "<group>";
+		};
+		66F9C2421164E2DD0070AFCE /* Base Classes */ = {
+			isa = PBXGroup;
+			children = (
+				66D3A16A1215441200A08CBD /* KEvent.cpp */,
+				66D3A1691215441200A08CBD /* KEvent.h */,
+			);
+			name = "Base Classes";
+			sourceTree = "<group>";
+		};
+		66F9C2431164E2E70070AFCE /* Base Classes */ = {
+			isa = PBXGroup;
+			children = (
+				66D3A18D121545C900A08CBD /* KSubRecord.cpp */,
+				66D3A18C121545C900A08CBD /* KSubRecord.h */,
+				66D3A18F121545C900A08CBD /* KSingleBoloSubRecord.cpp */,
+				66D3A18E121545C900A08CBD /* KSingleBoloSubRecord.h */,
+				66D3A191121545C900A08CBD /* KSambaSubRecord.cpp */,
+				66D3A190121545C900A08CBD /* KSambaSubRecord.h */,
+				66D3A193121545C900A08CBD /* KMuonModuleSubRecord.cpp */,
+				66D3A192121545C900A08CBD /* KMuonModuleSubRecord.h */,
+				66D3A197121545C900A08CBD /* KBoloPulseSubRecord.cpp */,
+				66D3A196121545C900A08CBD /* KBoloPulseSubRecord.h */,
+			);
+			name = "Base Classes";
+			sourceTree = "<group>";
+		};
+		66F9C2441164E2EE0070AFCE /* Base Classes */ = {
+			isa = PBXGroup;
+			children = (
+				66D3A173121544FE00A08CBD /* KSystemRecord.cpp */,
+				66D3A172121544FE00A08CBD /* KSystemRecord.h */,
+				66D3A175121544FE00A08CBD /* KMuonVetoSystemRecord.cpp */,
+				66D3A174121544FE00A08CBD /* KMuonVetoSystemRecord.h */,
+				66D3A179121544FE00A08CBD /* KBoloSystemRecord.cpp */,
+				66D3A178121544FE00A08CBD /* KBoloSystemRecord.h */,
+			);
+			name = "Base Classes";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		66AC84B811A18DC70071A5AA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		66234C1711DBA36000107A63 /* getBoloMuonCoincidences */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66234C1D11DBA36000107A63 /* Build configuration list for PBXNativeTarget "getBoloMuonCoincidences" */;
+			buildPhases = (
+				66234C1811DBA36000107A63 /* Sources */,
+				66234C1A11DBA36000107A63 /* Frameworks */,
+				66234C1C11DBA36000107A63 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = getBoloMuonCoincidences;
+			productName = getMuonModuleAdcSpectrum;
+			productReference = 66234C2011DBA36000107A63 /* getBoloMuonCoincidences */;
+			productType = "com.apple.product-type.tool";
+		};
+		663F5E9711B513B600B63EEA /* allPassOne_GSEventNumbers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 663F5E9D11B513B600B63EEA /* Build configuration list for PBXNativeTarget "allPassOne_GSEventNumbers" */;
+			buildPhases = (
+				663F5E9811B513B600B63EEA /* Sources */,
+				663F5E9A11B513B600B63EEA /* Frameworks */,
+				663F5E9C11B513B600B63EEA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = allPassOne_GSEventNumbers;
+			productName = getMuonModuleAdcSpectrum;
+			productReference = 663F5EA011B513B600B63EEA /* allPassOne_GSEventNumbers */;
+			productType = "com.apple.product-type.tool";
+		};
+		6647658B11B84D6F00345765 /* getNeutronCalibCoincidence */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6647659111B84D6F00345765 /* Build configuration list for PBXNativeTarget "getNeutronCalibCoincidence" */;
+			buildPhases = (
+				6647658C11B84D6F00345765 /* Sources */,
+				6647658E11B84D6F00345765 /* Frameworks */,
+				6647659011B84D6F00345765 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = getNeutronCalibCoincidence;
+			productName = getMuonModuleAdcSpectrum;
+			productReference = 6647659411B84D6F00345765 /* getNeutronCalibCoincidence */;
+			productType = "com.apple.product-type.tool";
+		};
+		66AC83AA11A16A590071A5AA /* getMuonModuleAdcSpectrum */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66AC83B011A16A5C0071A5AA /* Build configuration list for PBXNativeTarget "getMuonModuleAdcSpectrum" */;
+			buildPhases = (
+				66AC83A811A16A590071A5AA /* Sources */,
+				66AC83A911A16A590071A5AA /* Frameworks */,
+				66AC847B11A17E460071A5AA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = getMuonModuleAdcSpectrum;
+			productName = getMuonModuleAdcSpectrum;
+			productReference = 66AC83AB11A16A590071A5AA /* getMuonModuleAdcSpectrum */;
+			productType = "com.apple.product-type.tool";
+		};
+		66AC84BB11A18DC70071A5AA /* EdwDS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66AC84CD11A18DE00071A5AA /* Build configuration list for PBXNativeTarget "EdwDS" */;
+			buildPhases = (
+				66AC84B811A18DC70071A5AA /* Headers */,
+				66AC84B911A18DC70071A5AA /* Sources */,
+				66AC84BA11A18DC70071A5AA /* Frameworks */,
+				66AC856111A1A0C80071A5AA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EdwDS;
+			productName = EdwDS;
+			productReference = 66AC84BC11A18DC70071A5AA /* libEdwDS.so */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		66AC857811A1A7D10071A5AA /* fillEvents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66AC857E11A1A7D10071A5AA /* Build configuration list for PBXNativeTarget "fillEvents" */;
+			buildPhases = (
+				66AC857911A1A7D10071A5AA /* Sources */,
+				66AC857B11A1A7D10071A5AA /* Frameworks */,
+				66AC857D11A1A7D10071A5AA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = fillEvents;
+			productName = getMuonModuleAdcSpectrum;
+			productReference = 66AC858011A1A7D10071A5AA /* fillEvents */;
+			productType = "com.apple.product-type.tool";
+		};
+		66AC865911A29CA00071A5AA /* skimNoNoiseBolos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66AC865F11A29CA00071A5AA /* Build configuration list for PBXNativeTarget "skimNoNoiseBolos" */;
+			buildPhases = (
+				66AC865A11A29CA00071A5AA /* Sources */,
+				66AC865C11A29CA00071A5AA /* Frameworks */,
+				66AC865E11A29CA00071A5AA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = skimNoNoiseBolos;
+			productName = getMuonModuleAdcSpectrum;
+			productReference = 66AC866111A29CA00071A5AA /* skimNoNoiseBolos */;
+			productType = "com.apple.product-type.tool";
+		};
+		66AC8A4D11A5871D0071A5AA /* fillMuonVetoEvents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66AC8A5311A5871D0071A5AA /* Build configuration list for PBXNativeTarget "fillMuonVetoEvents" */;
+			buildPhases = (
+				66AC8A4E11A5871D0071A5AA /* Sources */,
+				66AC8A5011A5871D0071A5AA /* Frameworks */,
+				66AC8A5211A5871D0071A5AA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = fillMuonVetoEvents;
+			productName = getMuonModuleAdcSpectrum;
+			productReference = 66AC8A5511A5871D0071A5AA /* fillMuonVetoEvents */;
+			productType = "com.apple.product-type.tool";
+		};
+		66AC904D11ABF3740071A5AA /* concatenateMuon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66AC905311ABF3740071A5AA /* Build configuration list for PBXNativeTarget "concatenateMuon" */;
+			buildPhases = (
+				66AC904E11ABF3740071A5AA /* Sources */,
+				66AC905011ABF3740071A5AA /* Frameworks */,
+				66AC905211ABF3740071A5AA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = concatenateMuon;
+			productName = getMuonModuleAdcSpectrum;
+			productReference = 66AC905511ABF3740071A5AA /* concatenateMuon */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		66F9C1EF1164E1E30070AFCE /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 66F9C1F21164E1E30070AFCE /* Build configuration list for PBXProject "KData" */;
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 66F9C1ED1164E1E30070AFCE;
+			productRefGroup = 66AC83AC11A16A590071A5AA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				66F9C22D1164E22B0070AFCE /* Make All */,
+				66F9C2331164E25B0070AFCE /* Make Clean */,
+				66AC852011A19EEB0071A5AA /* Make Dictionary */,
+				66AC835B11A155D40071A5AA /* Make Linkdef */,
+				66AC859211A1A8E80071A5AA /* Build Library */,
+				66AC84BB11A18DC70071A5AA /* EdwDS */,
+				66AC849211A183E20071A5AA /* Build All Executables */,
+				66AC857811A1A7D10071A5AA /* fillEvents */,
+				66AC83AA11A16A590071A5AA /* getMuonModuleAdcSpectrum */,
+				66AC865911A29CA00071A5AA /* skimNoNoiseBolos */,
+				66AC8A4D11A5871D0071A5AA /* fillMuonVetoEvents */,
+				66AC904D11ABF3740071A5AA /* concatenateMuon */,
+				663F5E9711B513B600B63EEA /* allPassOne_GSEventNumbers */,
+				6647658B11B84D6F00345765 /* getNeutronCalibCoincidence */,
+				66234C1711DBA36000107A63 /* getBoloMuonCoincidences */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		66234C1C11DBA36000107A63 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\"\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/adam/analysis/edelweiss/Analysis1/executables/$PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/adam/analysis/edelweiss/Analysis1/executables/$PRODUCT_NAME\"\nexit 0";
+		};
+		663F5E9C11B513B600B63EEA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\"\nexit 0";
+		};
+		6647659011B84D6F00345765 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\"\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/adam/analysis/edelweiss/Analysis1/executables/$PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/adam/analysis/edelweiss/Analysis1/executables/$PRODUCT_NAME\"\nexit 0";
+		};
+		66AC835A11A155D40071A5AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "# shell script goes here\ncd $SRCROOT\nmake src/EDS_LinkDef.h";
+		};
+		66AC847B11A17E460071A5AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\"\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/adam/analysis/edelweiss/Analysis1/executables/$PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/adam/analysis/edelweiss/Analysis1/executables/$PRODUCT_NAME\"\nexit 0";
+		};
+		66AC852611A19EFC0071A5AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "# shell script goes here\ncd $SRCROOT\nmake src/EDSDict.cc";
+		};
+		66AC856111A1A0C80071A5AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script here\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/lib/$FULL_PRODUCT_NAME\nexit 0";
+		};
+		66AC857D11A1A7D10071A5AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\"\nexit 0";
+		};
+		66AC865E11A29CA00071A5AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\"\n\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/adam/analysis/edelweiss/Analysis1/executables/$PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME /Users/adam/analysis/edelweiss/Analysis1/executables/$PRODUCT_NAME\"\n\nexit 0";
+		};
+		66AC8A5211A5871D0071A5AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\"\n\nexit 0";
+		};
+		66AC905211ABF3740071A5AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "#shell script\ncp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\necho \"cp $BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME $SRCROOT/bin/$FULL_PRODUCT_NAME\"\n\nexit 0";
+		};
+		66F9C22C1164E22B0070AFCE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "# shell script goes here\ncd $SRCROOT\nmake";
+		};
+		66F9C2321164E25B0070AFCE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/tcsh;
+			shellScript = "# shell script goes here\ncd $SRCROOT\nmake clean";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		66234C1811DBA36000107A63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66234C2211DBA38100107A63 /* getBoloMuonCoincidences.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		663F5E9811B513B600B63EEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				663F5EAE11B5142600B63EEA /* allPassOne_GSEventNumbers.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6647658C11B84D6F00345765 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6647659611B84D9400345765 /* getNeutronCalibCoincidence.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC83A811A16A590071A5AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66AC842611A172C40071A5AA /* getMuonModuleAdcSpectrum.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC84B911A18DC70071A5AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC857911A1A7D10071A5AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66AC858211A1A7E20071A5AA /* fillEvents.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC865A11A29CA00071A5AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66AC868A11A2B5650071A5AA /* skimNoNoiseBolos.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC8A4E11A5871D0071A5AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66AC8A5711A587530071A5AA /* fillMuonVetoEvents.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66AC904E11ABF3740071A5AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66AC905811ABF39A0071A5AA /* concatenateMuon.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		660A9C9D11AD280400312F5A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC904D11ABF3740071A5AA /* concatenateMuon */;
+			targetProxy = 660A9C9C11AD280400312F5A /* PBXContainerItemProxy */;
+		};
+		66234C2411DBA39700107A63 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66234C1711DBA36000107A63 /* getBoloMuonCoincidences */;
+			targetProxy = 66234C2311DBA39700107A63 /* PBXContainerItemProxy */;
+		};
+		663F5EA711B5140400B63EEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 663F5E9711B513B600B63EEA /* allPassOne_GSEventNumbers */;
+			targetProxy = 663F5EA611B5140400B63EEA /* PBXContainerItemProxy */;
+		};
+		6647659811B84DDF00345765 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6647658B11B84D6F00345765 /* getNeutronCalibCoincidence */;
+			targetProxy = 6647659711B84DDF00345765 /* PBXContainerItemProxy */;
+		};
+		66AC849811A183EC0071A5AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC83AA11A16A590071A5AA /* getMuonModuleAdcSpectrum */;
+			targetProxy = 66AC849711A183EC0071A5AA /* PBXContainerItemProxy */;
+		};
+		66AC852411A19EEF0071A5AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC835B11A155D40071A5AA /* Make Linkdef */;
+			targetProxy = 66AC852311A19EEF0071A5AA /* PBXContainerItemProxy */;
+		};
+		66AC859511A1A8ED0071A5AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC852011A19EEB0071A5AA /* Make Dictionary */;
+			targetProxy = 66AC859411A1A8ED0071A5AA /* PBXContainerItemProxy */;
+		};
+		66AC859711A1A8F00071A5AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC84BB11A18DC70071A5AA /* EdwDS */;
+			targetProxy = 66AC859611A1A8F00071A5AA /* PBXContainerItemProxy */;
+		};
+		66AC859911A1A8FB0071A5AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC859211A1A8E80071A5AA /* Build Library */;
+			targetProxy = 66AC859811A1A8FB0071A5AA /* PBXContainerItemProxy */;
+		};
+		66AC859D11A1A9190071A5AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC857811A1A7D10071A5AA /* fillEvents */;
+			targetProxy = 66AC859C11A1A9190071A5AA /* PBXContainerItemProxy */;
+		};
+		66AC866511A29CEF0071A5AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC865911A29CA00071A5AA /* skimNoNoiseBolos */;
+			targetProxy = 66AC866411A29CEF0071A5AA /* PBXContainerItemProxy */;
+		};
+		66AC8A5911A587770071A5AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 66AC8A4D11A5871D0071A5AA /* fillMuonVetoEvents */;
+			targetProxy = 66AC8A5811A587770071A5AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		660A9E1011AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = _EDW_DEBUG_EVENT_ASSIGNOP;
+			};
+			name = DebugEvents;
+		};
+		660A9E1111AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = make;
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1211AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = clean;
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1311AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Make Dict";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1411AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Make Linkdef";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1511AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Build Library";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1611AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EXECUTABLE_EXTENSION = so;
+				EXECUTABLE_PREFIX = lib;
+				GCC_DEBUGGING_SYMBOLS = default;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 3;
+				INSTALL_PATH = "";
+				LD_DYLIB_INSTALL_NAME = "";
+				LIBRARY_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/lib/**";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-Wall",
+					"-W",
+					"-Woverloaded-virtual",
+					"-D_REENTRANT",
+					"-pthread",
+					"-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = EdwDS;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1711AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = fillEvents;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1911AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = getMuonModuleAdcSpectrum;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1B11AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = skimNoNoiseBolos;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1C11AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = fillMuonVetoEvents;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1D11AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = concatenateMuon;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		660A9E1E11AD8DCD00312F5A /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = BuildAllExternalExecutables;
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		66234C1E11DBA36000107A63 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = getBoloMuonCoincidences;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66234C1F11DBA36000107A63 /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = getBoloMuonCoincidences;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		663F5E9E11B513B600B63EEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = allPassOne_GSEventNumbers;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		663F5E9F11B513B600B63EEA /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = allPassOne_GSEventNumbers;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		6647659211B84D6F00345765 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = getNeutronCalibCoincidence;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		6647659311B84D6F00345765 /* DebugEvents */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = getNeutronCalibCoincidence;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = DebugEvents;
+		};
+		66AC835D11A155D40071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Make Linkdef";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC83AF11A16A5C0071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = getMuonModuleAdcSpectrum;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC849411A183E20071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = BuildAllExternalExecutables;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC84BE11A18DC70071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EXECUTABLE_EXTENSION = so;
+				EXECUTABLE_PREFIX = lib;
+				GCC_DEBUGGING_SYMBOLS = default;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 3;
+				INSTALL_PATH = "";
+				LD_DYLIB_INSTALL_NAME = "";
+				LIBRARY_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/lib/**";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-pipe",
+					"-Wall",
+					"-W",
+					"-Woverloaded-virtual",
+					"-D_REENTRANT",
+					"-pthread",
+					"-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = EdwDS;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC852211A19EEB0071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Make Dict";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC857F11A1A7D10071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = fillEvents;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC859311A1A8E80071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Build Library";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC866011A29CA00071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = skimNoNoiseBolos;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC8A5411A5871D0071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = fillMuonVetoEvents;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66AC905411ABF3740071A5AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"/Users/adam/softwareDev/root/root/lib/**",
+					"$(inherited)",
+					"$(SRCROOT)/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-m64",
+					"-pthread",
+					"-D_REENTRANT",
+					"-Woverloaded-virtual",
+					"-W",
+					"-Wall",
+					"-pipe\n-Wall\n-W\n-Woverloaded-virtual\n-D_REENTRANT\n-pthread\n-m64",
+					"$(OTHER_CFLAGS)",
+				);
+				OTHER_LDFLAGS = (
+					"-L/Users/adam/softwareDev/root/root/lib",
+					"-lCore",
+					"-lCint",
+					"-lRIO",
+					"-lNet",
+					"-lHist",
+					"-lGraf",
+					"-lGraf3d",
+					"-lGpad",
+					"-lTree",
+					"-lRint",
+					"-lPostscript",
+					"-lMatrix",
+					"-lPhysics",
+					"-lMathCore",
+					"-lThread",
+					"-lfreetype",
+					"-pthread",
+					"-Wl,-rpath,/Users/adam/softwareDev/root/root/lib",
+					"-lm",
+					"-ldl",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = concatenateMuon;
+				USER_HEADER_SEARCH_PATHS = "/Users/adam/softwareDev/root/root/include/** /Users/adam/softwareDev/EdwDataStructure/src/**";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66F9C1F11164E1E30070AFCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		66F9C22F1164E22B0070AFCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = make;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		66F9C2351164E25B0070AFCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = clean;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		66234C1D11DBA36000107A63 /* Build configuration list for PBXNativeTarget "getBoloMuonCoincidences" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66234C1E11DBA36000107A63 /* Release */,
+				66234C1F11DBA36000107A63 /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		663F5E9D11B513B600B63EEA /* Build configuration list for PBXNativeTarget "allPassOne_GSEventNumbers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				663F5E9E11B513B600B63EEA /* Release */,
+				663F5E9F11B513B600B63EEA /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6647659111B84D6F00345765 /* Build configuration list for PBXNativeTarget "getNeutronCalibCoincidence" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6647659211B84D6F00345765 /* Release */,
+				6647659311B84D6F00345765 /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC835F11A155F20071A5AA /* Build configuration list for PBXAggregateTarget "Make Linkdef" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC835D11A155D40071A5AA /* Release */,
+				660A9E1411AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC83B011A16A5C0071A5AA /* Build configuration list for PBXNativeTarget "getMuonModuleAdcSpectrum" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC83AF11A16A5C0071A5AA /* Release */,
+				660A9E1911AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC849D11A184250071A5AA /* Build configuration list for PBXAggregateTarget "Build All Executables" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC849411A183E20071A5AA /* Release */,
+				660A9E1E11AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC84CD11A18DE00071A5AA /* Build configuration list for PBXNativeTarget "EdwDS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC84BE11A18DC70071A5AA /* Release */,
+				660A9E1611AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC852911A19F3A0071A5AA /* Build configuration list for PBXAggregateTarget "Make Dictionary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC852211A19EEB0071A5AA /* Release */,
+				660A9E1311AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC857E11A1A7D10071A5AA /* Build configuration list for PBXNativeTarget "fillEvents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC857F11A1A7D10071A5AA /* Release */,
+				660A9E1711AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC859E11A1A9370071A5AA /* Build configuration list for PBXAggregateTarget "Build Library" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC859311A1A8E80071A5AA /* Release */,
+				660A9E1511AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC865F11A29CA00071A5AA /* Build configuration list for PBXNativeTarget "skimNoNoiseBolos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC866011A29CA00071A5AA /* Release */,
+				660A9E1B11AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC8A5311A5871D0071A5AA /* Build configuration list for PBXNativeTarget "fillMuonVetoEvents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC8A5411A5871D0071A5AA /* Release */,
+				660A9E1C11AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66AC905311ABF3740071A5AA /* Build configuration list for PBXNativeTarget "concatenateMuon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66AC905411ABF3740071A5AA /* Release */,
+				660A9E1D11AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66F9C1F21164E1E30070AFCE /* Build configuration list for PBXProject "KData" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66F9C1F11164E1E30070AFCE /* Release */,
+				660A9E1011AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66F9C2311164E23C0070AFCE /* Build configuration list for PBXAggregateTarget "Make All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66F9C22F1164E22B0070AFCE /* Release */,
+				660A9E1111AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66F9C2391164E27B0070AFCE /* Build configuration list for PBXAggregateTarget "Make Clean" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66F9C2351164E25B0070AFCE /* Release */,
+				660A9E1211AD8DCD00312F5A /* DebugEvents */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 66F9C1EF1164E1E30070AFCE /* Project object */;
+}

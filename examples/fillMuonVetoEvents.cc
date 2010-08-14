@@ -1,6 +1,6 @@
 /*
  *  fillMuonVetoEvents.cc
- *  EdwDataStructure
+ *  KDataStructure
  *
  *  Created by Adam Cox on 4/16/10.
  *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
@@ -18,26 +18,26 @@
 #include "TBits.h"
 
 //dMEAT includes
-#include "EdwHLAEvent.h"
-#include "EdwHLAMuonModuleSubRecord.h"
-#include "EdwHLAMuonVetoSysRecord.h"
-#include "EdwHLASingleBoloSubRecord.h"
-#include "EdwHLASambaSubRecord.h"
-#include "EdwDSWriter.h"
+#include "KHLAEvent.h"
+#include "KHLAMuonModuleSubRecord.h"
+#include "KHLAMuonVetoSysRecord.h"
+#include "KHLASingleBoloSubRecord.h"
+#include "KHLASambaSubRecord.h"
+#include "KDataWriter.h"
 
 TFile *mMuonVetoRootFile = 0;
-EdwDSWriter *mEDSOutFile = 0;
+KDataWriter *mKEDSOutFile = 0;
 TTree *mMuonTree = 0;  
-EdwHLAEvent *mEvent = 0;
+KHLAEvent *mEvent = 0;
 
 //warning! These have to be the same everywhere! Might need to 
 //consider some sort of Singleton class. Or... better yet, 
-//the EdwTree Class which does all of this tree buiding
+//the KTree Class which does all of this tree buiding
 //and manipulating. anyways....
 
-const Int_t kEdwRunNumber = 12;
-const Double_t kEdwRun12StartTime = 1235646944.0; //Thu, 26 Feb 2009 11:15:44 +0000 (GMT) +        0 nsec  First event of Muon Veto Run 54.
-const Double_t kEdwRun12EndTime = 1274115600.0; //Mon, 17 May 2010 15:00:00 +0000 (UTC) +        0 nsec.  Approximate end of Run 12.
+const Int_t kKRunNumber = 12;
+const Double_t kKRun12StartTime = 1235646944.0; //Thu, 26 Feb 2009 11:15:44 +0000 (GMT) +        0 nsec  First event of Muon Veto Run 54.
+const Double_t kKRun12EndTime = 1274115600.0; //Mon, 17 May 2010 15:00:00 +0000 (UTC) +        0 nsec.  Approximate end of Run 12.
 const Int_t kNumMuonModules = 51; //48 modules, plus two spots for the NC counter Muon Module and PMT plus 1 for no Module Number == 0.
 const Int_t kNumPmtsPerMod = 2;
 
@@ -314,11 +314,11 @@ Bool_t openMuonVetoFile(const Char_t* file)
 	return mMuonVetoRootFile->IsOpen();
 }
 
-Bool_t openEDSOutFile(const Char_t* file)
+Bool_t openKEDSOutFile(const Char_t* file)
 {
-	mEDSOutFile = new EdwDSWriter(file);
-	if(mEDSOutFile != 0){
-		return mEDSOutFile->IsReady();
+	mKEDSOutFile = new KDataWriter(file);
+	if(mKEDSOutFile != 0){
+		return mKEDSOutFile->IsReady();
 	}
 	else return false;
 }
@@ -355,10 +355,10 @@ Bool_t setMuonVetoFileBranches(void)
 	return true;
 }
 
-Bool_t setOutputEDSBranches(void)
+Bool_t setOutputKEDSBranches(void)
 {
-	if(mEDSOutFile != 0){
-		mEvent = dynamic_cast<EdwHLAEvent *>(mEDSOutFile->GetEvent());
+	if(mKEDSOutFile != 0){
+		mEvent = dynamic_cast<KHLAEvent *>(mKEDSOutFile->GetEvent());
 	}
 	if(mEvent != 0) return true;
 	else return false;
@@ -455,7 +455,7 @@ Bool_t fillEvents(void)
 	initializeMuonChannelMap(mMuonChanMap, mMuonVetoData.fRun);
 	if(!testMuonChannelMapForUniqueness(mMuonChanMap)) {
 		cout << "The Muon Module ADC/TDC map is not unique!" << endl;
-		cout << "  ***** This program will now terminate without filling the EdwDS file!" << endl;
+		cout << "  ***** This program will now terminate without filling the KDS file!" << endl;
 		return -1;
 	}
 		
@@ -474,9 +474,9 @@ Bool_t fillEvents(void)
 		
 		mMuonTree->GetEntry(entry);
 		mMuonTree->SetScanField(100);
-		mEvent->SetRunNumber(kEdwRunNumber);
-		mEvent->SetRunStartTime(kEdwRun12StartTime);
-		mEvent->SetRunEndTime(kEdwRun12EndTime);
+		mEvent->SetRunNumber(kKRunNumber);
+		mEvent->SetRunStartTime(kKRun12StartTime);
+		mEvent->SetRunEndTime(kKRun12EndTime);
 		
 		mEvent->SetStamp(mMuonVetoData.f10muSecStamp);
 		
@@ -487,7 +487,7 @@ Bool_t fillEvents(void)
 		
 		mEvent->SetEventTriggerTime((Double_t)mMuonVetoData.fPcTimeSec + microTime);
 		
-		EdwHLAMuonVetoSysRecord *mMvSysRec = mEvent->GetMuonVetoSystemRecord();
+		KHLAMuonVetoSysRecord *mMvSysRec = mEvent->GetMuonVetoSystemRecord();
 		
 		mMvSysRec->SetRunNumber(mMuonVetoData.fRun);
 		mMvSysRec->SetIsSystemOn(true);
@@ -515,7 +515,7 @@ Bool_t fillEvents(void)
 			//cout << "Found " << numberOfModsHit << " modules Hit" << endl;
 			for(Int_t module = 1; module < kNumMuonModules+1; module++){
 				if(mModHits[module]){
-					EdwHLAMuonModuleSubRecord *mMod = mEvent->AddMuonModule();
+					KHLAMuonModuleSubRecord *mMod = mEvent->AddMuonModule();
 					mMod->SetModuleNumber(module);
 					for(Int_t pmt = 0; pmt < kNumPmtsPerMod; pmt++){
 						mMod->SetAdc(pmt, mADCVals[module][pmt]);
@@ -551,18 +551,18 @@ Bool_t fillEvents(void)
 		}
 		
 		/*if(numberOfModsHit > 0 || (numberOfModsHit == 0 && !bIsNCHit)) {
-			mEDSOutFile->Fill();
+			mKEDSOutFile->Fill();
 		}*/
 		//always fill the tree!
-		mEDSOutFile->Fill();
+		mKEDSOutFile->Fill();
 
 	}
 	
 	cout << "End of Filling Events. Found " << numPureNCEvents << " events with ONLY a Neutron Counter hit" << endl;
 	cout << "                       Found " << numEmptyEvents << " completely empty events" << endl;
 	cout << "                       Found " << numEventsWithNC << " events with a Neutron Counter hit" << endl;
-	cout << "There are " << mEDSOutFile->GetEntries() << " events in the EDS Tree" << endl;
-	//cout << "There should be " << mEdsTree->GetEntries() + numPureNCEvents  << " events in the Muon Veto Root File" << endl;
+	cout << "There are " << mKEDSOutFile->GetEntries() << " events in the KEDS Tree" << endl;
+	//cout << "There should be " << mKEdsTree->GetEntries() + numPureNCEvents  << " events in the Muon Veto Root File" << endl;
 	cout << "There are " << nEvents << " events in the Muon Veto Root File" << endl;
 	return true;
 }
@@ -572,17 +572,17 @@ Bool_t writeCloseAndCleanup(void)
 	cout << "Writing File and Closing" << endl;
 	cout << endl;
 	
-	mEDSOutFile->Write();
-	mEDSOutFile->Close();
+	mKEDSOutFile->Write();
+	mKEDSOutFile->Close();
 	mMuonVetoRootFile->Close();
 	
 	delete mMuonVetoData.fEventQualityBits;
-	delete mEDSOutFile;
+	delete mKEDSOutFile;
 	/*
 	if(mEvent!=NULL) delete mEvent;
-	if(mEdsTree!=NULL) delete mEdsTree;
+	if(mKEdsTree!=NULL) delete mKEdsTree;
 	if(mMuonTree!=NULL) delete mMuonTree;
-	if(mEDSOutFile!=NULL) delete mEDSOutFile;
+	if(mKEDSOutFile!=NULL) delete mKEDSOutFile;
 	if(mMuonVetoRootFile!=NULL) delete mMuonVetoRootFile;
 	*/
 
@@ -591,7 +591,7 @@ Bool_t writeCloseAndCleanup(void)
 	return true;
 }
 
-Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outEDSFile)
+Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outKEDSFile)
 {
 	if(!openMuonVetoFile(muonVetoFile)){
 		cout << "Can't open Muon Veto File" << endl;
@@ -599,11 +599,11 @@ Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outEDSFile)
 	}
 	cout << "Opened Muon Veto File " << muonVetoFile << endl;
 	
-	if(!openEDSOutFile(outEDSFile)){
-		cout << "Can't open output EDS File" << endl;
+	if(!openKEDSOutFile(outKEDSFile)){
+		cout << "Can't open output KEDS File" << endl;
 		return -1;
 	}
-	cout << "Opened output EDS File " << outEDSFile << endl;
+	cout << "Opened output KEDS File " << outKEDSFile << endl;
 	
 	if(!setMuonVetoFileBranches()){
 		cout << "Failed Setting Muon Veto Branches" << endl;
@@ -611,11 +611,11 @@ Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outEDSFile)
 	}
 	cout << "Setup Reading Muon Veto File Branches " << endl;
 	
-	if(!setOutputEDSBranches()){
-		cout << "Failed Setting Output EDS Branches" << endl;
+	if(!setOutputKEDSBranches()){
+		cout << "Failed Setting Output KEDS Branches" << endl;
 		return -1;
 	}	
-	cout << "Setup Output EDS Branch Address" << endl;
+	cout << "Setup Output KEDS Branch Address" << endl;
 	
 	fillEvents();
 	

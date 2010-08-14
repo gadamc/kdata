@@ -1,6 +1,6 @@
 /*
  *  rootScript_fillExample.c
- *  EdwDataStructure
+ *  KDataStructure
  *
  *  Created by Adam Cox on 4/9/10. Modified by Benjamin Schmidt
  *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
@@ -12,9 +12,9 @@
 
 {
 
-	gSystem->Load("../lib/libEdwDS.so");  //load the EdwDataStructure library
+	gSystem->Load("../lib/libKDS.so");  //load the KDataStructure library
 	gSystem->AddIncludePath("-I/kalinka/home/schmidt-b/develSvn/src");//changed to absolute path, thus I can execute it from kalinka account
-	gROOT->ProcessLine(".L concatDst.cc+"); //compile your code, which uses the EdwDataStructure class library
+	gROOT->ProcessLine(".L concatDst.cc+"); //compile your code, which uses the KDataStructure class library
 	//gROOT->ProcessLine(".L filldstEvents.cc+");
 
 	Int_t kNumberBolos=13;
