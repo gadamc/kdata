@@ -1,17 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" href="$class_edw_data_sub_record_base.html" title="EdwDataSubRecordBase" alt="" coords="547,107,744,133"/>
-<area shape="rect" href="$class_edw_h_l_a_data_bolo_pulse_sub_record.html" title="EdwHLADataBoloPulseSubRecord" alt="" coords="832,196,1091,223"/>
-<area shape="rect" href="$class_edw_h_l_a_data_muon_module_sub_record.html" title="EdwHLADataMuonModuleSubRecord" alt="" coords="820,19,1103,45"/>
-<area shape="rect" href="$class_edw_h_l_a_data_samba_sub_record.html" title="EdwHLADataSambaSubRecord" alt="" coords="840,95,1083,121"/>
-<area shape="rect" href="$class_edw_h_l_a_data_single_bolo_sub_record.html" title="EdwHLADataSingleBoloSubRecord" alt="" coords="828,145,1095,172"/>
-<area shape="rect" href="$class_edw_h_l_a_sub_record_base.html" title="EdwHLASubRecordBase" alt="" coords="249,107,439,133"/>
-<area shape="rect" href="$class_edw_h_l_a_bolo_pulse_sub_record.html" title="EdwHLABoloPulseSubRecord" alt="" coords="533,208,757,235"/>
-<area shape="rect" href="$class_edw_h_l_a_muon_module_sub_record.html" title="EdwHLAMuonModuleSubRecord" alt="" coords="521,5,769,32"/>
-<area shape="rect" href="$class_edw_h_l_a_samba_sub_record.html" title="EdwHLASambaSubRecord" alt="" coords="541,56,749,83"/>
-<area shape="rect" href="$class_edw_h_l_a_single_bolo_sub_record.html" title="EdwHLASingleBoloSubRecord" alt="" coords="529,157,761,184"/>
-<area shape="rect" href="$class_edw_sub_record_base.html" title="EdwSubRecordBase" alt="" coords="5,107,168,133"/>
-<area shape="rect" href="$class_edw_bolo_pulse_sub_record_base.html" title="EdwBoloPulseSubRecordBase" alt="" coords="228,208,460,235"/>
-<area shape="rect" href="$class_edw_muon_module_sub_record_base.html" title="EdwMuonModuleSubRecordBase" alt="" coords="216,5,472,32"/>
-<area shape="rect" href="$class_edw_samba_sub_record_base.html" title="EdwSambaSubRecordBase" alt="" coords="237,56,451,83"/>
-<area shape="rect" href="$class_edw_single_bolo_sub_record_base.html" title="EdwSingleBoloSubRecordBase" alt="" coords="224,157,464,184"/>
+<area shape="rect" id="node1" href="$class_k_edw_analysis.html" title="KEdwAnalysis" alt="" coords="5,5,117,35"/>
 </map>

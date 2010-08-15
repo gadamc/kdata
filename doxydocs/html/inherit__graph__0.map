@@ -1,8 +1,3 @@
 <map id="G" name="G">
-<area shape="rect" href="$class_edw_data_event_base.html" title="EdwDataEventBase" alt="" coords="180,56,337,83"/>
-<area shape="rect" href="$class_edw_h_l_a_data_event.html" title="EdwHLADataEvent" alt="" coords="388,31,540,57"/>
-<area shape="rect" href="$class_edw_raw_data_event.html" title="EdwRawDataEvent" alt="" coords="388,93,540,120"/>
-<area shape="rect" href="$class_edw_event_base.html" title="EdwEventBase" alt="" coords="7,56,129,83"/>
-<area shape="rect" href="$class_edw_h_l_a_event.html" title="EdwHLAEvent" alt="" coords="200,5,317,32"/>
-<area shape="rect" href="$class_edw_raw_event.html" title="EdwRawEvent" alt="" coords="200,107,317,133"/>
+<area shape="rect" id="node1" href="$class_g____cpp__setup__init_k_e_d_s_dict.html" title="G__cpp_setup_initKEDSDict" alt="" coords="5,5,216,35"/>
 </map>

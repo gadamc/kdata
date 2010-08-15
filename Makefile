@@ -24,7 +24,7 @@ DEBUG = -g
 #
 # ANY CLASS THAT BEGINS WITH "Edw" THAT YOU ADD TO THE src/ DIRECTORY WILL BE COMPILED
 # 
-CLASSES := $(basename $(notdir $(wildcard $(SRCDIR)K*.cpp)))
+CLASSES := $(basename $(notdir $(wildcard $(SRCDIR)K*.cxx)))
 
 # FILTER OUT ANY CLASSES THAT YOU ARE NOT READY TO ADD FOR COMPILATION
 #	
