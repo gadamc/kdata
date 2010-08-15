@@ -145,7 +145,7 @@ int concatCuts(string inputPath1, string inputPath2, string outputFile){
 
 
 
-int concatEds(string *inputFiles, Int_t numFiles, string outputFile){
+int concatKDS(string *inputFiles, Int_t numFiles, string outputFile){
 	//You MUST add these to the list in the proper order.
 	//If there are a large numFiles, then expect this routine
 	//to take up a LOT of memory. A work around is to combine 
