@@ -77,8 +77,8 @@ else
 EVENTLIB      = $(shell pwd)/$(LIBKEDSO)
 endif
 
-#ROOT Dictionary -- dont call this EdwDict... 
-KEDSDICT = $(SRCDIR)KEDSDict
+#ROOT Dictionary -- dont start this with a K... 
+KEDSDICT = $(SRCDIR)DataDict
 KEDSDICTO = $(KEDSDICT).$(ObjSuf)
 KEDSDICTS = $(KEDSDICT).$(SrcSuf)
 OBJS   += $(KEDSDICTO) 
