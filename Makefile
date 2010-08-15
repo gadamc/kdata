@@ -38,8 +38,10 @@ CLASSES := $(filter-out KTimeStamp, $(CLASSES))
 
 #EXE = fillinG4Events
 
-EXE = skimNoNoiseBolos
+#EXE = skimNoNoiseBolos
+#EXE = breakupKDataFile
 #EXE = fillinG4Events
+EXE = allPassOne_GSEventNumbers
 
 FILLEVENT    = bin/$(EXE)$(ExeSuf)
 FILLEVENTO   = $(addprefix $(SRCDIR),$(EXE).$(ObjSuf))

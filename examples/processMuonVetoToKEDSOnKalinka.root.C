@@ -9,8 +9,8 @@
 
 {
 	//gSystem->Load("$HOME/dev/KDataStructure/lib/libKDS.so");  //load the KDataStructure library
-	gSystem->Load("/kalinka/home/schmidt-b/develSvn/lib/libKDS.so");
-	gSystem->AddIncludePath("-I/kalinka/home/schmidt-b/develSvn/src");
+	gSystem->Load("/kalinka/storage/edelweiss/EdwSoftware/Kdata/lib/libKData.so");
+	gSystem->AddIncludePath("-I/kalinka/storage/edelweiss/EdwSoftware/Kdata/src");
 	gROOT->ProcessLine(".L fillMuonVetoEvents.cc+"); //compile your code, which uses the KDataStructure class library
 	RedirectHandle_t *h = new RedirectHandle_t;
 	//TString outputLog = "/kalinka/home/gadamc/data/muonVeto/eds/MuonVetoToEDS_log.txt";
@@ -34,7 +34,7 @@
 	  fIn += i;
 	  fIn += "_Laser_time.root";
 	  fOut = fDataOutPath;
-	  fOut += "KDSRun12_MvRun";
+	  fOut += "KdsRun12_MvRun";
 	  fOut += i;
 	  fOut += ".root"; 
 	  MuonVetoToDS(fIn.Data(), fOut.Data());

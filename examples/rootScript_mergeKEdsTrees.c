@@ -11,9 +11,9 @@
 //root[0] .x examples/rootScript_fillExample.c
 
 {
-	gSystem->AddIncludePath("-I/kalinka/home/schmidt-b/develSvn/src");
-	gSystem->Load("/kalinka/home/schmidt-b/develSvn/lib/libKDS.so"); 
-	gROOT->ProcessLine(".L mergeEdsTree.cc+");
+	gSystem->AddIncludePath("-I/kalinka/storage/edelweiss/EdwSoftware/Kdata/src");
+	gSystem->Load("/kalinka/storage/edelweiss/EdwSoftware/lib/libKData.so"); 
+	gROOT->ProcessLine(".L mergeKEdsTree.cc+");
 
 	//defining input and outputpath, bolonames:
 	Int_t kNumberBolos=13;
@@ -22,11 +22,12 @@
 	"ID3", "ID4", "ID5", 
 	"ID6", "ID401", "ID402",
 	"ID403", "ID404", "ID405", "GGA4"};
+	
 	string kInputPath1="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
 	string kOutputPath="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
 	string kRoot=".root";
 	string kdst="dst_";
-	string kEds="Eds_";
+	string kEds="Kds_";
 	string kLogFile="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge.log";
 	Int_t kEntryOfBoloStart=272395; //From this event on the timelines match and merging begins, before this event we just fill in the uVeto data
 	Int_t badMuonEntry[2]={396278 ,400838};//first bad entry, last bad entry, period of time resets in uVeto
@@ -34,7 +35,7 @@
 
 	//merging of the bolometers
 	//merging step1
-	/*
+	
 	for(Int_t i=0; i<kNumberBolos-1;i+=2){ // kNumberBolos
 		TString logFile = kOutputPath;
 		logFile += kDetectorNames[i];
@@ -49,17 +50,17 @@
 		out.append(kEds); out.append(kDetectorNames[i]);out.append(kDetectorNames[i+1]); out.append(kRoot);
 		cout << "loop 1" << endl;
 		cout << "merging " << in1 << " and " << in2 << endl;
-		mergeEdsTree(in1, in2, out, log);
+		mergeKEdsTree(in1, in2, out, log);
 		in1.replace(in1.find("Bckgd"), 5,"Neutron" );
 		in2.replace(in2.find("Bckgd"), 5,"Neutron" );
 		out.replace(out.find("Bckgd"), 5,"Neutron" );
 		log.replace(log.find("Bckgd"), 5,"Neutron" );
-		mergeEdsTree(in1, in2, out, log);
+		mergeKEdsTree(in1, in2, out, log);
 		in1.replace(in1.find("Neutron"), 7,"Gamma" );
 		in2.replace(in2.find("Neutron"), 7,"Gamma" );
 		out.replace(out.find("Neutron"), 7,"Gamma" );
 		log.replace(log.find("Neutron"), 7,"Gamma" );
-		mergeEdsTree(in1, in2, out, log);
+		mergeKEdsTree(in1, in2, out, log);
  	}	
 	
 
@@ -80,35 +81,35 @@
 		out.append(kDetectorNames[i+2]); out.append(kDetectorNames[i+3]); out.append(kRoot);
 		cout << "loop 2" << endl;
 		cout << "merging " << in1 << " and " << in2 << endl;
-		mergeEdsTree(in1, in2, out, log);
+		mergeKEdsTree(in1, in2, out, log);
 		in1.replace(in1.find("Bckgd"), 5,"Neutron" );
 		in2.replace(in2.find("Bckgd"), 5,"Neutron" );
 		out.replace(out.find("Bckgd"), 5,"Neutron" );
 		log.replace(log.find("Bckgd"), 5,"Neutron" );
-		mergeEdsTree(in1, in2, out, log);
+		mergeKEdsTree(in1, in2, out, log);
 		in1.replace(in1.find("Neutron"), 7,"Gamma" );
 		in2.replace(in2.find("Neutron"), 7,"Gamma" );
 		out.replace(out.find("Neutron"), 7,"Gamma" );
 		log.replace(log.find("Neutron"), 7,"Gamma" );
-		mergeEdsTree(in1, in2, out, log); 
+		mergeKEdsTree(in1, in2, out, log); 
  	}
 	
 	//merging step3 
 		//3 single merging operations left (merge 4+4) merge(4+GGA4) -> merge (8+5)
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_AlmostAll1.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge_AlmostAll1.log");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AlmostAll1.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge_AlmostAll1.log");
 
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_AlmostAll1.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AlmostAll1.log");
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AlmostAll1.log");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll1.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AlmostAll1.log");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AlmostAll1.log");
 	cout <<"Merging AlmosAll1 finished" << endl;
 
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_AlmostAll2.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge_AlmostAll2.log");
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_AlmostAll2.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AlmostAll2.log");
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AlmostAll2.log", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_AlmostAll2.root");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AlmostAll2.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge_AlmostAll2.log");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll2.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AlmostAll2.log");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AlmostAll2.log", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll2.root");
 	cout <<"Merging AlmosAll2 finished" << endl;
 
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_AllBolos.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge_AllBolos.log");
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Eds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AllBolos.log");
-	mergeEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Eds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AllBolos.log");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolos.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge_AllBolos.log");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AllBolos.log");
+	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AllBolos.log");
 	cout <<"Merging AllBolos finished" << endl;
 	*/
 
@@ -123,9 +124,9 @@
 	//third bad Entry to fourth bad Entry: no bolo data available + time resets in uVeto
 	
 	string logfile="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/MergeAllBolosVeto.log";
-	 in1 ="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_AllBolos.root";
-	 in2 ="/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/uVeto/KDSRun12_MuonVetoAll.root";
-	 out="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Eds_AllBolosVeto.root";
+	 in1 ="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolos.root";
+	 in2 ="/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/uVeto/KdsRun12_MuonVetoAll.root";
+	 out="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolosVeto.root";
 	Bool_t bigNeutron=false; //defines if the data of the big Neutron calibration should be included, default is off
 	Int_t debug=-24129205;
 	mergeEdsTree( in1, in2, out, logfile, kEntryOfBoloStart, bigNeutron, debug);
