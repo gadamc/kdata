@@ -18,7 +18,6 @@
 const Int_t kBoloTriggerType = 0x1;
 const Int_t kMuonVetoTriggerType = 0x2;
 const Int_t kNCTriggerType = 0x4;  //whenever (if?) we add the Neutron Counter data
-const Int_t kHLADataType = 0x2;
 
 class KEvent : public TObject {
 	
