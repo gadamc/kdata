@@ -1,0 +1,547 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@pcroot.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Sun Aug 15 15:20:08 2010            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KMCSingleBoloSubRecord</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers, cern" />
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis." />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KMCSingleBoloSubRecord','','KMCSingleBoloSubRecord.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KMCSingleBoloSubRecord.h.html">header file</a>
+<a class="descrheadentry" href="src/KMCSingleBoloSubRecord.cxx.html">source file</a>
+
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KMCSingleBoloSubRecord:description">class description</a> 
+<a class="descrheadentry" href="#KMCSingleBoloSubRecord:Function_Members">function members</a>
+<a class="descrheadentry" href="#KMCSingleBoloSubRecord:Data_Members">data members</a>
+<a class="descrheadentry" href="#KMCSingleBoloSubRecord:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">K-Data</a>
+ &#187; <a class="locationlevel" href="./SRC_Index.html">SRC</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KMCSingleBoloSubRecord</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KMCSingleBoloSubRecord:description"></a>class KMCSingleBoloSubRecord: public <a href="./KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>.cxx
+ KDataStructure
+
+ Author: Alexander Wunderle &lt;mailto:alexander.wunderle@kit.edu&gt; on 6/15/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ The base class for all Pulse Sub Records. Currently, however, this data
+ is not stored in the Event classes because we don't read directly from the Samba files
+ at the moment. This will possibly change one day in the future.
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KMCSingleBoloSubRecord:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:KMCSingleBoloSubRecord">KMCSingleBoloSubRecord</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:KMCSingleBoloSubRecord%1">KMCSingleBoloSubRecord</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:_KMCSingleBoloSubRecord">~KMCSingleBoloSubRecord</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:Class">Class</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:Clear">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">"C"</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:Clone"><span class="baseclass">TObject::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:Compact"><span class="baseclass">KHLASingleBoloSubRecord::</span>Compact</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Compare"><span class="baseclass">TObject::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Copy"><span class="baseclass">TObject::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; object) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Delete"><span class="baseclass">TObject::</span>Delete</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:DistancetoPrimitive"><span class="baseclass">TObject::</span>DistancetoPrimitive</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Draw"><span class="baseclass">TObject::</span>Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DrawClass"><span class="baseclass">TObject::</span>DrawClass</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:DrawClone"><span class="baseclass">TObject::</span>DrawClone</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Dump"><span class="baseclass">TObject::</span>Dump</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Error"><span class="baseclass">TObject::</span>Error</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute"><span class="baseclass">TObject::</span>Execute</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute%1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject%1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetBaselineHeat"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetBaselineHeat</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetBaselineIonFiducial"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetBaselineIonFiducial</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetBaselineNoiseCollectrode"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetBaselineNoiseCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetBaselineNoiseGuard"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetBaselineNoiseGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetBaselineNoiseHeat"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetBaselineNoiseHeat</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetBaselineNoiseIonFiducial"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetBaselineNoiseIonFiducial</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetBaselineNoiseVeto"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetBaselineNoiseVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetChi2Flag"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetChi2Flag</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetCreationProcess">GetCreationProcess</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">TBits*</td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetCuts"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetCuts</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="./KSingleBoloSubRecord.html#KSingleBoloSubRecord:GetDetectorName"><span class="baseclass">KSingleBoloSubRecord::</span>GetDetectorName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KSingleBoloSubRecord.html#KSingleBoloSubRecord:GetDetectorNameSize"><span class="baseclass">KSingleBoloSubRecord::</span>GetDetectorNameSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KSingleBoloSubRecord.html#KSingleBoloSubRecord:GetDetectorNumber"><span class="baseclass">KSingleBoloSubRecord::</span>GetDetectorNumber</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetEnergy">GetEnergy</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyBaselineCollectrode"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyBaselineCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyBaselineGuard"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyBaselineGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyBaselineHeat"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyBaselineHeat</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyBaselineVeto"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyBaselineVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyCollectrode"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyGuard"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyHeat"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyHeat</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyIon"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyIon</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyIonFiducial"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyIonFiducial</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyRecoil"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyRecoil</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergySumIonChannels"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergySumIonChannels</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyVeto"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEnergyVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEventFlag"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetEventFlag</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetEventID">GetEventID</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetFiducialVolume"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetFiducialVolume</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetIonFlagNumber"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetIonFlagNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> index) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetIonFlags"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetIonFlags</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a>* anArray, <a href="./ListOfTypes.html#Int_t">Int_t</a> anArraySize) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetIonPulseTimeOffset"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetIonPulseTimeOffset</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetMCQvalue">GetMCQvalue</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetName"><span class="baseclass">TObject::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetNumHits">GetNumHits</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetParentID">GetParentID</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetParticleName">GetParticleName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetProcess">GetProcess</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetQvalue"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetQvalue</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetRecoilEnergy">GetRecoilEnergy</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./KHLASambaSubRecord.html">KHLASambaSubRecord</a>*</td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetSambaRecord"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetSambaRecord</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetTime">GetTime</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetTitle"><span class="baseclass">TObject::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetTrackID">GetTrackID</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetTriggerBit1"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetTriggerBit1</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetTriggerBit2"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetTriggerBit2</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetVoltageFlag"><span class="baseclass">KHLASingleBoloSubRecord::</span>GetVoltageFlag</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetXpos">GetXpos</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetYpos">GetYpos</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:GetZpos">GetZpos</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Hash"><span class="baseclass">TObject::</span>Hash</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Info"><span class="baseclass">TObject::</span>Info</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> <span class="keyword">char</span>* classname) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom%1"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> TClass* cl) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Inspect"><span class="baseclass">TObject::</span>Inspect</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:InvertBit"><span class="baseclass">TObject::</span>InvertBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:IsSame">IsSame</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete%1"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]%1"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new%1"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]%1"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:operator!_">operator!=</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp;</td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:operator__">operator==</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Print"><span class="baseclass">TObject::</span>Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(basic_ostream&lt;<span class="keyword">char</span>,char_traits&lt;<span class="keyword">char</span>&gt; &gt;&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetBaselineHeat"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetBaselineHeat</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetBaselineIonFiducial"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetBaselineIonFiducial</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetBaselineNoiseCollectrode"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetBaselineNoiseCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetBaselineNoiseGuard"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetBaselineNoiseGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetBaselineNoiseHeat"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetBaselineNoiseHeat</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetBaselineNoiseVeto"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetBaselineNoiseVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit%1"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> set)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetChi2Flag"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetChi2Flag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetCreationProcess">SetCreationProcess</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aWord, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetCuts"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetCuts</a>(<span class="keyword">const</span> TBits* mCuts)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetCutsBitNumber"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetCutsBitNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal = <span class="keyword">true</span>)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KSingleBoloSubRecord.html#KSingleBoloSubRecord:SetDetectorName"><span class="baseclass">KSingleBoloSubRecord::</span>SetDetectorName</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aWord, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KSingleBoloSubRecord.html#KSingleBoloSubRecord:SetDetectorNumber"><span class="baseclass">KSingleBoloSubRecord::</span>SetDetectorNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDrawOption"><span class="baseclass">TObject::</span>SetDrawOption</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetEnergy">SetEnergy</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyBaselineCollectrode"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyBaselineCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyBaselineGuard"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyBaselineGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyBaselineHeat"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyBaselineHeat</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyBaselineVeto"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyBaselineVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyCollectrode"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyGuard"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyHeat"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyHeat</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyIon"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyIon</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyIonFiducial"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyIonFiducial</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyRecoil"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyRecoil</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergySumIonChannels"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergySumIonChannels</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEnergyVeto"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEnergyVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetEventFlag"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetEventFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetEventID">SetEventID</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetFiducialVolume"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetFiducialVolume</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aWord)</td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetIonFlagNumber"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetIonFlagNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> index, <a href="./ListOfTypes.html#Int_t">Int_t</a> value)</td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetIonFlags"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetIonFlags</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a>* anArray, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetIonPulseTimeOffset"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetIonPulseTimeOffset</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetMCQvalue">SetMCQvalue</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetNumHits">SetNumHits</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetParentID">SetParentID</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetParticleName">SetParticleName</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aWord, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetProcess">SetProcess</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aWord, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetQvalue"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetQvalue</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetRecoilEnergy">SetRecoilEnergy</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetSambaRecord"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetSambaRecord</a>(<a href="./KHLASambaSubRecord.html">KHLASambaSubRecord</a>* aRec)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetTime">SetTime</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetTrackID">SetTrackID</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetTriggerBit1"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetTriggerBit1</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetTriggerBit2"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetTriggerBit2</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetUniqueID"><span class="baseclass">TObject::</span>SetUniqueID</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> uid)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:SetVoltageFlag"><span class="baseclass">KHLASingleBoloSubRecord::</span>SetVoltageFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetXpos">SetXpos</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetYpos">SetYpos</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:SetZpos">SetZpos</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:ShowMembers">ShowMembers</a>(TMemberInspector&amp; insp, <span class="keyword">char</span>* parent)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:Streamer">Streamer</a>(TBuffer&amp; b)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; b)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SysError"><span class="baseclass">TObject::</span>SysError</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBit"><span class="baseclass">TObject::</span>TestBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBits"><span class="baseclass">TObject::</span>TestBits</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:TestCutsBitNumber"><span class="baseclass">KHLASingleBoloSubRecord::</span>TestCutsBitNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:UseCurrentStyle"><span class="baseclass">TObject::</span>UseCurrentStyle</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Warning"><span class="baseclass">TObject::</span>Warning</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write%1"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0) <span class="keyword">const</span></td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DoError"><span class="baseclass">TObject::</span>DoError</a>(<span class="keyword">int</span> level, <span class="keyword">const</span> <span class="keyword">char</span>* location, <span class="keyword">const</span> <span class="keyword">char</span>* fmt, va_list va) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MakeZombie"><span class="baseclass">TObject::</span>MakeZombie</a>()</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:CopyLocalMembers">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KMCSingleBoloSubRecord:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KMCSingleBoloSubRecord:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span>EStatusBits { </td><td class="dataname"><a href="#TObject:kCanDelete">kCanDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kMustCleanup">kMustCleanup</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kObjInCanvas">kObjInCanvas</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kIsReferenced">kIsReferenced</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kHasUUID">kHasUUID</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kCannotPick">kCannotPick</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNoContextMenu">kNoContextMenu</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kInvalidObject">kInvalidObject</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span><i>[unnamed]</i> { </td><td class="dataname"><a href="#TObject:kIsOnHeap">kIsOnHeap</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNotDeleted">kNotDeleted</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kZombie">kZombie</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kBitMask">kBitMask</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kSingleKey">kSingleKey</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kOverwrite">kOverwrite</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kWriteDelete">kWriteDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="dataname"><a name="KMCSingleBoloSubRecord:fCreationProcess"></a>fCreationProcess</td><td class="datadesc">[fCreationProcessSize]</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fCreationProcessSize"></a>fCreationProcessSize</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fEnergy"></a>fEnergy</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fEventID"></a>fEventID</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fMCQvalue"></a>fMCQvalue</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fNumHits"></a>fNumHits</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fParentID"></a>fParentID</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="dataname"><a name="KMCSingleBoloSubRecord:fParticleName"></a>fParticleName</td><td class="datadesc">[fParticleNameSize]</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fParticleNameSize"></a>fParticleNameSize</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="dataname"><a name="KMCSingleBoloSubRecord:fProcess"></a>fProcess</td><td class="datadesc">[fProcessSize]</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fProcessSize"></a>fProcessSize</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fRecoilEnergy"></a>fRecoilEnergy</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fTime"></a>fTime</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fTrackID"></a>fTrackID</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fXpos"></a>fXpos</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fYpos"></a>fYpos</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KMCSingleBoloSubRecord:fZpos"></a>fZpos</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KMCSingleBoloSubRecord:Class_Charts"></a>Class Charts</h2>
+<map name="MapKMCSingleBoloSubRecord_Inh" id="MapKMCSingleBoloSubRecord_Inh">
+<area shape="rect" id="node3" href="./KHLASingleBoloSubRecord.html" title="KHLASingleBoloSubRecord" alt="" coords="402,3,539,18"/>
+<area shape="rect" id="node4" href="./KSingleBoloSubRecord.html" title="KSingleBoloSubRecord" alt="" coords="247,3,361,18"/>
+<area shape="rect" id="node5" href="./KSubRecord.html" title="KSubRecord" alt="" coords="124,3,206,18"/>
+</map>
+<map name="MapKMCSingleBoloSubRecord_InhMem" id="MapKMCSingleBoloSubRecord_InhMem">
+<area shape="rect" id="graph12" href="./KHLASingleBoloSubRecord.html" alt="" coords="1176,57,1264,211"/>
+<area shape="rect" id="graph13" href="./KHLASingleBoloSubRecord.html" alt="" coords="1077,57,1165,225"/>
+<area shape="rect" id="graph14" href="./KHLASingleBoloSubRecord.html" alt="" coords="979,57,1067,225"/>
+<area shape="rect" id="graph15" href="./KHLASingleBoloSubRecord.html" alt="" coords="1208,221,1232,243"/>
+<area shape="rect" id="graph16" href="./KHLASingleBoloSubRecord.html" alt="" coords="1176,253,1264,669"/>
+<area shape="rect" id="graph17" href="./KHLASingleBoloSubRecord.html" alt="" coords="1077,236,1165,681"/>
+<area shape="rect" id="graph18" href="./KHLASingleBoloSubRecord.html" alt="" coords="979,236,1067,681"/>
+<area shape="rect" id="graph11" href="./KHLASingleBoloSubRecord.html" title="KHLASingleBoloSubRecord" alt="" coords="968,16,1275,692"/>
+<area shape="rect" id="graph21" href="./KSingleBoloSubRecord.html" alt="" coords="859,57,947,108"/>
+<area shape="rect" id="graph22" href="./KSingleBoloSubRecord.html" alt="" coords="760,57,848,108"/>
+<area shape="rect" id="graph23" href="./KSingleBoloSubRecord.html" alt="" coords="693,57,717,79"/>
+<area shape="rect" id="graph24" href="./KSingleBoloSubRecord.html" alt="" coords="859,119,947,271"/>
+<area shape="rect" id="graph25" href="./KSingleBoloSubRecord.html" alt="" coords="760,119,848,271"/>
+<area shape="rect" id="graph26" href="./KSingleBoloSubRecord.html" alt="" coords="661,119,749,271"/>
+<area shape="rect" id="graph20" href="./KSingleBoloSubRecord.html" title="KSingleBoloSubRecord" alt="" coords="651,16,957,281"/>
+<area shape="rect" id="graph29" href="./KSubRecord.html" alt="" coords="376,57,629,93"/>
+<area shape="rect" id="graph30" href="./KSubRecord.html" alt="" coords="541,104,629,227"/>
+<area shape="rect" id="graph31" href="./KSubRecord.html" alt="" coords="443,104,531,227"/>
+<area shape="rect" id="graph32" href="./KSubRecord.html" alt="" coords="344,104,432,227"/>
+<area shape="rect" id="graph28" href="./KSubRecord.html" title="KSubRecord" alt="" coords="333,16,640,237"/>
+</map>
+<map name="MapKMCSingleBoloSubRecord_Lib" id="MapKMCSingleBoloSubRecord_Lib">
+<area shape="rect" id="node1" href="LibraryDependencies.html" title="All Libraries" alt="" coords="129,237,249,285"/>
+</map>
+<div class="tabs">
+<a id="imgKMCSingleBoloSubRecord_Inh" class="tabsel" href="inh/KMCSingleBoloSubRecord_Inh.png" onclick="javascript:return SetImg('Charts','inh/KMCSingleBoloSubRecord_Inh.png');">Inheritance</a>
+<a id="imgKMCSingleBoloSubRecord_InhMem" class="tab" href="inhmem/KMCSingleBoloSubRecord_InhMem.png" onclick="javascript:return SetImg('Charts','inhmem/KMCSingleBoloSubRecord_InhMem.png');">Inherited Members</a>
+<a id="imgKMCSingleBoloSubRecord_Incl" class="tab" href="incl/KMCSingleBoloSubRecord_Incl.png" onclick="javascript:return SetImg('Charts','incl/KMCSingleBoloSubRecord_Incl.png');">Includes</a>
+<a id="imgKMCSingleBoloSubRecord_Lib" class="tab" href="lib/KMCSingleBoloSubRecord_Lib.png" onclick="javascript:return SetImg('Charts','lib/KMCSingleBoloSubRecord_Lib.png');">Libraries</a><br/>
+</div><div class="classcharts"><div class="classchartswidth"></div>
+<img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapKMCSingleBoloSubRecord_Inh" src="inh/KMCSingleBoloSubRecord_Inh.png"/></div>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KMCSingleBoloSubRecord:KMCSingleBoloSubRecord%1" href="src/KMCSingleBoloSubRecord.cxx.html#erDvUC">KMCSingleBoloSubRecord</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KMCSingleBoloSubRecord:KMCSingleBoloSubRecord%1" href="src/KMCSingleBoloSubRecord.cxx.html#dTtyZD">KMCSingleBoloSubRecord</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; <a class="funcname" name="KMCSingleBoloSubRecord:operator_" href="src/KMCSingleBoloSubRecord.cxx.html#vqZkID">operator=</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:CopyLocalMembers" href="src/KMCSingleBoloSubRecord.cxx.html#YYJddE">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KMCSingleBoloSubRecord:_KMCSingleBoloSubRecord" href="src/KMCSingleBoloSubRecord.cxx.html#CLVMRB">~KMCSingleBoloSubRecord</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Does calling clear at destruction take too much computing time?
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:Clear" href="src/KMCSingleBoloSubRecord.cxx.html#Trnm5">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">"C"</span>)</span><br />
+<div class="funccomm"><pre><a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:Clear" title="void KMCSingleBoloSubRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a> the base classes and then clear/delete any local
+members. Its necessary for this <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:Clear" title="void KMCSingleBoloSubRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a> method to exist
+in the case that instances of this object are stored
+inside of a TClonesArray
+Also, if this class holds any TClonesArrays, it must call
+TClonesArray::<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:Clear" title="void KMCSingleBoloSubRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a>(<span class="string">"C"</span>)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:InitializeMembers" href="src/KMCSingleBoloSubRecord.cxx.html#si_jHD">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>init local members
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetParticleName" href="src/KMCSingleBoloSubRecord.cxx.html#Yzyp2C">SetParticleName</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aWord, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetProcess" href="src/KMCSingleBoloSubRecord.cxx.html#ERsYa">SetProcess</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aWord, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetCreationProcess" href="src/KMCSingleBoloSubRecord.cxx.html#vaqtyC">SetCreationProcess</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aWord, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:IsSame" href="src/KMCSingleBoloSubRecord.cxx.html#lum7iE">IsSame</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) const</span><br />
+<div class="funccomm"><pre>Compares two objects and their member variables to test for equality.
+If bPrint is set to <a href="./ListOfTypes.html#bool">true</a>, then a message for each member variable that is different
+will print to standard out. Otherwise, this method will return <a href="./ListOfTypes.html#bool">false</a> and quit
+checking member variables as soon as it finds a unequal data member.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:operator__" href="src/KMCSingleBoloSubRecord.h.html#rHTCK">operator==</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:IsSame" title="Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord&amp; aRec,Bool_t bPrint=false)">IsSame</a>(aRec,<span class="keyword">false</span>); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:operator!_" href="src/KMCSingleBoloSubRecord.h.html#f2fIV">operator!=</a>(<span class="keyword">const</span> <a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&amp; aRec) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> !(*<span class="keyword">this</span>==aRec); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetEventID" href="src/KMCSingleBoloSubRecord.h.html#ixsFgE">GetEventID</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fEventID" title="Int_t KMCSingleBoloSubRecord::fEventID">fEventID</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetNumHits" href="src/KMCSingleBoloSubRecord.h.html#qAgXHB">GetNumHits</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fNumHits" title="Int_t KMCSingleBoloSubRecord::fNumHits">fNumHits</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetTrackID" href="src/KMCSingleBoloSubRecord.h.html#mY_06">GetTrackID</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fTrackID" title="Int_t KMCSingleBoloSubRecord::fTrackID">fTrackID</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetParentID" href="src/KMCSingleBoloSubRecord.h.html#o7b3rC">GetParentID</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fParentID" title="Int_t KMCSingleBoloSubRecord::fParentID">fParentID</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetTime" href="src/KMCSingleBoloSubRecord.h.html#P2SgCD">GetTime</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fTime" title="Double_t KMCSingleBoloSubRecord::fTime">fTime</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetEnergy" href="src/KMCSingleBoloSubRecord.h.html#luucF">GetEnergy</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fEnergy" title="Double_t KMCSingleBoloSubRecord::fEnergy">fEnergy</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetRecoilEnergy" href="src/KMCSingleBoloSubRecord.h.html#YExdED">GetRecoilEnergy</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fRecoilEnergy" title="Double_t KMCSingleBoloSubRecord::fRecoilEnergy">fRecoilEnergy</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KMCSingleBoloSubRecord:GetParticleName" href="src/KMCSingleBoloSubRecord.h.html#Q6R76E">GetParticleName</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{string str=<span class="string">""</span>; <span class="keyword">if</span>(<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fParticleName" title="Char_t* KMCSingleBoloSubRecord::fParticleName">fParticleName</a>==0) <span class="keyword">return</span> str; str = <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fParticleName" title="Char_t* KMCSingleBoloSubRecord::fParticleName">fParticleName</a>; <span class="keyword">return</span> str;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KMCSingleBoloSubRecord:GetProcess" href="src/KMCSingleBoloSubRecord.h.html#EC_FVD">GetProcess</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{string str=<span class="string">""</span>; <span class="keyword">if</span>(<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fProcess" title="Char_t* KMCSingleBoloSubRecord::fProcess">fProcess</a>==0) <span class="keyword">return</span> str; str = <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fProcess" title="Char_t* KMCSingleBoloSubRecord::fProcess">fProcess</a>; <span class="keyword">return</span> str;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KMCSingleBoloSubRecord:GetCreationProcess" href="src/KMCSingleBoloSubRecord.h.html#FmN5DD">GetCreationProcess</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{string str=<span class="string">""</span>; <span class="keyword">if</span>(<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fCreationProcess" title="Char_t* KMCSingleBoloSubRecord::fCreationProcess">fCreationProcess</a>==0) <span class="keyword">return</span> str; str = <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fCreationProcess" title="Char_t* KMCSingleBoloSubRecord::fCreationProcess">fCreationProcess</a>; <span class="keyword">return</span> str;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetXpos" href="src/KMCSingleBoloSubRecord.h.html#yBXMT">GetXpos</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fXpos" title="Double_t KMCSingleBoloSubRecord::fXpos">fXpos</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetYpos" href="src/KMCSingleBoloSubRecord.h.html#yLNWT">GetYpos</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fYpos" title="Double_t KMCSingleBoloSubRecord::fYpos">fYpos</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetZpos" href="src/KMCSingleBoloSubRecord.h.html#yVDgT">GetZpos</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fZpos" title="Double_t KMCSingleBoloSubRecord::fZpos">fZpos</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KMCSingleBoloSubRecord:GetMCQvalue" href="src/KMCSingleBoloSubRecord.h.html#xCEBLC">GetMCQvalue</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fMCQvalue" title="Double_t KMCSingleBoloSubRecord::fMCQvalue">fMCQvalue</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetEventID" href="src/KMCSingleBoloSubRecord.h.html#BRwouE">SetEventID</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fEventID" title="Int_t KMCSingleBoloSubRecord::fEventID">fEventID</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetNumHits" href="src/KMCSingleBoloSubRecord.h.html#m9cmkB">SetNumHits</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fNumHits" title="Int_t KMCSingleBoloSubRecord::fNumHits">fNumHits</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetTrackID" href="src/KMCSingleBoloSubRecord.h.html#C6FLsE">SetTrackID</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fTrackID" title="Int_t KMCSingleBoloSubRecord::fTrackID">fTrackID</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetParentID" href="src/KMCSingleBoloSubRecord.h.html#tkngqD">SetParentID</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fParentID" title="Int_t KMCSingleBoloSubRecord::fParentID">fParentID</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetTime" href="src/KMCSingleBoloSubRecord.h.html#UOcsSC">SetTime</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fTime" title="Double_t KMCSingleBoloSubRecord::fTime">fTime</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetEnergy" href="src/KMCSingleBoloSubRecord.h.html#NF_8uE">SetEnergy</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fEnergy" title="Double_t KMCSingleBoloSubRecord::fEnergy">fEnergy</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetRecoilEnergy" href="src/KMCSingleBoloSubRecord.h.html#dyEQ">SetRecoilEnergy</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fRecoilEnergy" title="Double_t KMCSingleBoloSubRecord::fRecoilEnergy">fRecoilEnergy</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetXpos" href="src/KMCSingleBoloSubRecord.h.html#QH5iQC">SetXpos</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fXpos" title="Double_t KMCSingleBoloSubRecord::fXpos">fXpos</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetYpos" href="src/KMCSingleBoloSubRecord.h.html#kuWFuE">SetYpos</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fYpos" title="Double_t KMCSingleBoloSubRecord::fYpos">fYpos</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetZpos" href="src/KMCSingleBoloSubRecord.h.html#Z94iQC">SetZpos</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fZpos" title="Double_t KMCSingleBoloSubRecord::fZpos">fZpos</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KMCSingleBoloSubRecord:SetMCQvalue" href="src/KMCSingleBoloSubRecord.h.html#CUZ0.D">SetMCQvalue</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KMCSingleBoloSubRecord.html#KMCSingleBoloSubRecord:fMCQvalue" title="Double_t KMCSingleBoloSubRecord::fMCQvalue">fMCQvalue</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Sun Aug 15 15:20:09 2010 </em><em>&raquo; Last generated: 2010-08-15 15:20</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>
