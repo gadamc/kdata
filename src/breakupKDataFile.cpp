@@ -1,6 +1,6 @@
 /*
- *  breakupKEdwDSFile.cc
- *  KEdwDataStructure
+ *  breakupKDataFile.cc
+ *  KDataStructure
  *
  *  Created by Adam Cox on 7/26/10.
  *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
@@ -10,9 +10,9 @@
 #include <cstdlib>
 #include "TString.h"
 #include "TDatime.h"
-#include "KEdwHLAEvent.h"
-#include "KEdwDSReader.h"
-#include "KEdwDSWriter.h"
+#include "KHLAEvent.h"
+#include "KDataReader.h"
+#include "KDataWriter.h"
 
 using namespace std;
 
@@ -61,15 +61,15 @@ int main(int argc, char* argv[])
 	//In the future, it should be possible, via polymorphism, to 
 	//to handle raw and hla events. 
 	
-	KEdwDSReader fin(fInFileName.Data());
-	KEdwHLAEvent *fEventIn = dynamic_cast<KEdwHLAEvent *>(fin.GetEvent());
+	KDataReader fin(fInFileName.Data());
+	KHLAEvent *fEventIn = dynamic_cast<KHLAEvent *>(fin.GetEvent());
 	if(fEventIn == 0){
 		cout << "Not an HLA File" << endl;
 		return -1;
 	}
 	
-	KEdwDSWriter *fout = 0;
-	KEdwHLAEvent *fEventOut = 0;
+	KDataWriter *fout = 0;
+	KHLAEvent *fEventOut = 0;
 	
 	if(fInFileName.EndsWith(".root")){
 		fInFileName.Remove(fInFileName.Length() - 5, 5);  //strip the .root off"
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 	
 	for(Int_t i = 0; i < fin.GetEntries(); i++){
 		
-		if(i % fBreakAfterThisNumEvents == 0){
+		if(i % fBreakAfterThisNumEvents == 0 && i!=0){
 			if(fout != 0){
 				cout << "Writing and Closing sub file." << endl;
 				fout->Write();
@@ -100,10 +100,10 @@ int main(int argc, char* argv[])
 			
 			cout << "Opening " << fOutName << endl;
 			
-			fout = new KEdwDSWriter(fOutName.Data());
-			fEventOut = dynamic_cast<KEdwHLAEvent *> (fout->GetEvent());
+			fout = new KDataWriter(fOutName.Data());
+			fEventOut = dynamic_cast<KHLAEvent *> (fout->GetEvent());
 			if(fEventOut == 0){
-				cout << "Hmmmm KEdwDSWriter gave me the wrong event type" << endl;
+				cout << "Hmmmm KDataWriter gave me the wrong event type" << endl;
 				return -1;
 			}
 			
