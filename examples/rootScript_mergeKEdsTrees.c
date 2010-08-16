@@ -111,7 +111,7 @@
 	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AllBolos.log");
 	mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AllBolos.log");
 	cout <<"Merging AllBolos finished" << endl;
-	*/
+	
 
 	//merging of the muonVetoSystem
 
@@ -129,7 +129,7 @@
 	 out="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolosVeto.root";
 	Bool_t bigNeutron=false; //defines if the data of the big Neutron calibration should be included, default is off
 	Int_t debug=-24129205;
-	mergeEdsTree( in1, in2, out, logfile, kEntryOfBoloStart, bigNeutron, debug);
+	mergeKEdsTree( in1, in2, out, logfile, kEntryOfBoloStart, bigNeutron, debug);
 
 }
 

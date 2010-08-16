@@ -1,7 +1,7 @@
 #!/bin/bash
 # sleep 7
 
-# root -q -l rootScript_concatBoloEra.c
+root -q -l rootScript_concatBoloEra.c
 # Erics has two sets of files for Run12, and within a set there are a few files per bolometer,  but we process the complete data in one step
 
 root -q -l rootScript_fillEraToKEdsEvents.c
@@ -17,7 +17,7 @@ root -q -l rootScript_mergeKEdsTrees.c
 #merging always 2files together until at last also the uVeto data is included
 
 #make sure these following programms have been compiled
-/kalinka/home/edelweiss/EdwSoftware/Kdata/dev/bin/allPassOne_GSEventNumbers /kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolosVeto.root /kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_Run12_v2.0.root 
+/kalinka/home/edelweiss/EdwSoftware/Kdata/dev/bin/allPassOne_GSEventNumbers /kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolosVeto.root /kalinka/home/edelweiss/Bolo/Run12/Eds/Final/Bckgd/Kds_Run12_v2.0.root 
 # setting a new global EventNumber
 
 # filling of SystemRecord information
