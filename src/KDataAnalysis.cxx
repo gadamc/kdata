@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KEdwAnalysis.cc
+// KDataAnalysis.cc
 // KEdwDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
@@ -16,10 +16,10 @@
 //
 // It also has a method that is used with an KEdwEventCollection object.
 
-#include "KEdwAnalysis.h"
-#include "KEdwDSReader.h"
-#include "KEdwDSWriter.h"
-#include "KEdwEventCollection.h"
+#include "KDataAnalysis.h"
+#include "KDataReader.h"
+#include "KDataWriter.h"
+#include "KEventCollection.h"
 #include <typeinfo>
 #include <exception>
 #include <iostream>
@@ -28,10 +28,10 @@
 
 using namespace std;
 
-ClassImp(KEdwAnalysis);
+ClassImp(KDataAnalysis);
 
 
-KEdwAnalysis::KEdwAnalysis(const Char_t* fileName)
+KDataAnalysis::KDataAnalysis(const Char_t* fileName)
 {
 	fFileReader = 0;
 	fFileWriter = 0;
@@ -41,12 +41,12 @@ KEdwAnalysis::KEdwAnalysis(const Char_t* fileName)
 		OpenEdsFile(fileName);
 }
 
-KEdwAnalysis::~KEdwAnalysis(void)
+KDataAnalysis::~KDataAnalysis(void)
 {
   Close();
 }
 
-void KEdwAnalysis::InitializeMembers(void)
+void KDataAnalysis::InitializeMembers(void)
 {
 	//
 	
@@ -55,13 +55,13 @@ void KEdwAnalysis::InitializeMembers(void)
 }
 
 
-void KEdwAnalysis::Close(Option_t *anOpt)
+void KDataAnalysis::Close(Option_t *anOpt)
 {
 	CloseOutput(anOpt);
 	CloseInput(anOpt);
 }
 
-void KEdwAnalysis::CloseOutput(Option_t *anOpt)
+void KDataAnalysis::CloseOutput(Option_t *anOpt)
 {
 	if(fFileWriter != 0){
 		fFileWriter->Close(anOpt);
@@ -70,7 +70,7 @@ void KEdwAnalysis::CloseOutput(Option_t *anOpt)
 	}
 }
 
-void KEdwAnalysis::CloseInput(Option_t *anOpt)
+void KDataAnalysis::CloseInput(Option_t *anOpt)
 {
 	if(fFileReader != 0){
 		fFileReader->Close(anOpt);
@@ -79,16 +79,16 @@ void KEdwAnalysis::CloseInput(Option_t *anOpt)
 	}
 }
 
-Int_t KEdwAnalysis::OpenEdsFile(const Char_t* fileName)
+Int_t KDataAnalysis::OpenEdsFile(const Char_t* fileName)
 {
-	fFileReader = new KEdwDSReader(fileName);
+	fFileReader = new KDataReader(fileName);
 	if(fFileReader != 0){
 		return fFileReader->GetEntries();
 	}
 	else return -1;
 }
 
-KEdwEventBase*  KEdwAnalysis::GetEvent(void)
+KEvent*  KDataAnalysis::GetEvent(void)
 {
 	if(fFileReader != 0)
 		return fFileReader->GetEvent();
@@ -96,7 +96,7 @@ KEdwEventBase*  KEdwAnalysis::GetEvent(void)
 	else return 0;
 }
 
-Int_t KEdwAnalysis::GetCurrentEntryNumber(void) const
+Int_t KDataAnalysis::GetCurrentEntryNumber(void) const
 {
 	if(fFileReader != 0)
 		return fFileReader->GetCurrentEntryNumber();
@@ -104,7 +104,7 @@ Int_t KEdwAnalysis::GetCurrentEntryNumber(void) const
 	else return -1;
 }
 
-Int_t KEdwAnalysis::GetNextEntry(void) const
+Int_t KDataAnalysis::GetNextEntry(void) const
 {
 	if(fFileReader != 0)
 		return fFileReader->GetNextEntry();
@@ -112,7 +112,7 @@ Int_t KEdwAnalysis::GetNextEntry(void) const
 	else return -1;
 }
 
-Int_t KEdwAnalysis::GetPreviousEntry(void) const
+Int_t KDataAnalysis::GetPreviousEntry(void) const
 {
 	if(fFileReader != 0)
 		return fFileReader->GetPreviousEntry();
@@ -120,7 +120,7 @@ Int_t KEdwAnalysis::GetPreviousEntry(void) const
 	else return -1;
 }
 
-Int_t KEdwAnalysis::GetEntry(Int_t anEntry) const
+Int_t KDataAnalysis::GetEntry(Int_t anEntry) const
 {
 	if(fFileReader != 0)
 		return fFileReader->GetEntry(anEntry);
@@ -128,7 +128,7 @@ Int_t KEdwAnalysis::GetEntry(Int_t anEntry) const
 	else return -1;
 }
 
-Int_t KEdwAnalysis::GetEntries(void) const
+Int_t KDataAnalysis::GetEntries(void) const
 {
 	if(fFileReader != 0)
 		return fFileReader->GetEntries();
@@ -136,10 +136,10 @@ Int_t KEdwAnalysis::GetEntries(void) const
 	else return -1;
 }
 
-Bool_t KEdwAnalysis::OpenOutputEdsFile(const Char_t* fileName)
+Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName)
 {
 	if(fFileWriter == 0){
-		fFileWriter = new KEdwDSWriter(fileName, GetEventClassName());
+		fFileWriter = new KDataWriter(fileName, GetEventClassName());
 		return fFileWriter->IsReady();
 	}
 	else {
@@ -147,10 +147,10 @@ Bool_t KEdwAnalysis::OpenOutputEdsFile(const Char_t* fileName)
 	}
 }
 
-Bool_t KEdwAnalysis::OpenOutputEdsFile(const Char_t* fileName, const Char_t* aLevel)
+Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName, const Char_t* aLevel)
 {
 	if(fFileWriter == 0){
-		fFileWriter = new KEdwDSWriter(fileName, aLevel);
+		fFileWriter = new KDataWriter(fileName, aLevel);
 		return fFileWriter->IsReady();
 	}
 	else {
@@ -158,10 +158,10 @@ Bool_t KEdwAnalysis::OpenOutputEdsFile(const Char_t* fileName, const Char_t* aLe
 	}
 }
 
-Bool_t KEdwAnalysis::OpenOutputEdsFile(const Char_t* fileName, KEdwEventBase **anEvent)
+Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName, KEvent **anEvent)
 {
 	if(fFileWriter == 0){
-		fFileWriter = new KEdwDSWriter(fileName, anEvent);
+		fFileWriter = new KDataWriter(fileName, anEvent);
 		return fFileWriter->IsReady();
 	}
 	else {
@@ -170,7 +170,7 @@ Bool_t KEdwAnalysis::OpenOutputEdsFile(const Char_t* fileName, KEdwEventBase **a
 }
 
 
-Int_t KEdwAnalysis::SaveThisEvent(KEdwEventBase* e)
+Int_t KDataAnalysis::SaveThisEvent(KEvent* e)
 {
 	//Save a particular event into the output Eds File. 
 	//The type of the event need not be the same type of
@@ -202,11 +202,11 @@ Int_t KEdwAnalysis::SaveThisEvent(KEdwEventBase* e)
 	if(fFileWriter != 0){
 		if(fFileWriter->IsReady()){
 			if(e == 0){
-				cout << "KEdwAnalysis::SaveThisEvent(KEdwEventBase *). Argument is NULL" << endl;
+				cout << "KDataAnalysis::SaveThisEvent(KEvent *). Argument is NULL" << endl;
 				return theRet;
 			}
 			else if(fFileWriter->GetEvent() == 0){
-				cout << "KEdwAnalysis::SaveThisEvent(KEdwEventBase *). KEdwDSWriter::GetEvent() is NULL" << endl;
+				cout << "KDataAnalysis::SaveThisEvent(KEvent *). KDataWriter::GetEvent() is NULL" << endl;
 				return theRet;
 			}
 			//the type of event (KEdwEventBase, KEdwHLAEvent, KEdwRawEvent, etc..) will
@@ -222,13 +222,13 @@ Int_t KEdwAnalysis::SaveThisEvent(KEdwEventBase* e)
 	return theRet;
 }
 
-Int_t KEdwAnalysis::SaveThisEvent(void)
+Int_t KDataAnalysis::SaveThisEvent(void)
 {
 	//Saves the current event into the output Eds file.
 	return SaveThisEvent(GetEvent());
 }
 
-Int_t KEdwAnalysis::Write(const Char_t* name, Int_t option, Int_t bufsize)
+Int_t KDataAnalysis::Write(const Char_t* name, Int_t option, Int_t bufsize)
 {
 	//The options are the same as those options in TObject::Write. 
     //This writes the output KEdwDS data file to disk.
@@ -239,7 +239,7 @@ Int_t KEdwAnalysis::Write(const Char_t* name, Int_t option, Int_t bufsize)
 	else return -1;
 }
 
-const char* KEdwAnalysis::GetEventClassName(void) const
+const char* KDataAnalysis::GetEventClassName(void) const
 {
 	if(fFileReader != 0) {
 		return fFileReader->GetEventClassName();
@@ -249,7 +249,7 @@ const char* KEdwAnalysis::GetEventClassName(void) const
 }
 
 
-KEdwEventCollection* KEdwAnalysis::GetCoincEvent(KEdwEventCollection *mCoincE, Double_t fForwardTime,
+KEventCollection* KDataAnalysis::GetCoincEvent(KEventCollection *mCoincE, Double_t fForwardTime,
 																						 Double_t fBackwardTime)
 {
 	//This routine finds, for the current event that the file is pointing to,
@@ -295,12 +295,12 @@ KEdwEventCollection* KEdwAnalysis::GetCoincEvent(KEdwEventCollection *mCoincE, D
 	 
 	 */
 	
-	KEdwEventBase *anEvent = GetEvent();
+	KEvent *anEvent = GetEvent();
 	
 	if(anEvent == 0){
 		return mCoincE;
 	}
-	if(mCoincE == 0) mCoincE = new KEdwEventCollection;
+	if(mCoincE == 0) mCoincE = new KEventCollection;
 	
 	Int_t fSaveEntry = GetCurrentEntryNumber();
 	
@@ -315,7 +315,7 @@ KEdwEventCollection* KEdwAnalysis::GetCoincEvent(KEdwEventCollection *mCoincE, D
 		//Or, see the WishList for the idea of making objects "Sortable"
 		
 		
-		if(KEdwHLAEvent *mHlaEv = dynamic_cast<KEdwHLAEvent *>(anEvent)){
+		if(KHLAEvent *mHlaEv = dynamic_cast<KHLAEvent *>(anEvent)){
 			//need a routine here to look for events near this particular event
 			//given the criteria above. 
 			Double_t deltaT = 0;
@@ -329,7 +329,7 @@ KEdwEventCollection* KEdwAnalysis::GetCoincEvent(KEdwEventCollection *mCoincE, D
 			while(keepGoing){
 				if(GetPreviousEntry() > 0){
 					//cout << "..searching backward...." << endl;
-					mHlaEv = dynamic_cast<KEdwHLAEvent *> (GetEvent());
+					mHlaEv = dynamic_cast<KHLAEvent *> (GetEvent());
 					fTempTime = mHlaEv->GetStampTime();
 					deltaT = fabs(fCurrentTime - fTempTime);
 					if(deltaT < fBackwardTime){  
@@ -353,7 +353,7 @@ KEdwEventCollection* KEdwAnalysis::GetCoincEvent(KEdwEventCollection *mCoincE, D
 			while(keepGoing){
 				if(GetNextEntry() > 0){
 					//cout << "..searching forward...." << endl;
-					mHlaEv = dynamic_cast<KEdwHLAEvent *> (GetEvent());
+					mHlaEv = dynamic_cast<KHLAEvent *> (GetEvent());
 					fTempTime = mHlaEv->GetStampTime();
 					deltaT = fabs(fCurrentTime - fTempTime);
 					if(deltaT < fForwardTime) {
@@ -370,7 +370,7 @@ KEdwEventCollection* KEdwAnalysis::GetCoincEvent(KEdwEventCollection *mCoincE, D
 			
 		}
 		else {
-			cout << "KEdwAnalysis::GetPhysicsEvent. Sorry, you can only do this with High Level Analysis Events at the moment" << endl;
+			cout << "KDataAnalysis::GetPhysicsEvent. Sorry, you can only do this with High Level Analysis Events at the moment" << endl;
 		}
 		
 	}
@@ -384,13 +384,13 @@ KEdwEventCollection* KEdwAnalysis::GetCoincEvent(KEdwEventCollection *mCoincE, D
 }
  
 
-Double_t KEdwAnalysis::GetBoloPhysicsEventTime(Int_t i, KEdwHLAEvent *ev) 
+Double_t KDataAnalysis::GetBoloPhysicsEventTime(Int_t i, KHLAEvent *ev) 
 {
 	if(ev == 0)
-		ev = dynamic_cast< KEdwHLAEvent *>( this->GetEvent() );
+		ev = dynamic_cast< KHLAEvent *>( this->GetEvent() );
 	
 	if(ev != 0){
-		KEdwHLASingleBoloSubRecord* bolo = ev->GetBolo(i);
+		KHLABolometerRecord* bolo = ev->GetBolo(i);
 		if(bolo != 0)
 			return ev->GetSecPerStamp()*(ev->GetStamp() + bolo->GetIonPulseTimeOffset());
 		else 

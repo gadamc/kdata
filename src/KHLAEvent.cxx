@@ -27,10 +27,10 @@
 
 //sub record includes
 #include "TClonesArray.h"
-#include "KHLASambaSubRecord.h"
-#include "KHLASingleBoloSubRecord.h"
-#include "KHLABoloPulseSubRecord.h"
-#include "KHLAMuonModuleSubRecord.h"
+#include "KHLASambaRecord.h"
+#include "KHLABolometerRecord.h"
+#include "KHLABoloPulseRecord.h"
+#include "KHLAMuonModuleRecord.h"
 #include <iostream>
 
 using namespace std;
@@ -194,10 +194,10 @@ void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 {
 	//
 	//ClonesArray assignment doesn't appear to work in the following way
-	//*fSamba = *anEvent.GetSambaSubRecords();
+	//*fSamba = *anEvent.GetSambaRecords();
 	//*fBolo = *anEvent.GetBoloSubRecords();
-	//*fBoloPulse = *anEvent.GetBoloPulseSubRecords();
-	//*fMuonModule = *anEvent.GetMuonModuleSubRecords();
+	//*fBoloPulse = *anEvent.GetBoloPulseRecords();
+	//*fMuonModule = *anEvent.GetMuonModuleRecords();
 	//
 	//so, I just clear this object's array, and create as many objects as I need.
 	//this might be inefficient, but I don't think so. besides,
@@ -214,8 +214,8 @@ void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 	Int_t ObjectNumber = TProcessID::GetObjectCount();
 	/*
 	for(Int_t i = 0; i < anEvent.GetNumSambas(); i++){
-		KHLASambaSubRecord *s = AddSamba();
-		KHLASambaSubRecord *sO = anEvent.GetSamba(i);
+		KHLASambaRecord *s = AddSamba();
+		KHLASambaRecord *sO = anEvent.GetSamba(i);
 		if(s != 0 && sO != 0) 
 			*s = *sO;
 		else
@@ -227,10 +227,10 @@ void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 	//BECAUSE EACH SAMBA RECORD MUST BE ADDED TO THE EVENT. 
 	
 	for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
-		KHLASingleBoloSubRecord *bolo = AddBolo();
-		KHLASingleBoloSubRecord *boloO = anEvent.GetBolo(i);
-		KHLASambaSubRecord *sambaO = boloO->GetSambaRecord();
-		KHLASambaSubRecord *samba = 0;
+		KHLABolometerRecord *bolo = AddBolo();
+		KHLABolometerRecord *boloO = anEvent.GetBolo(i);
+		KHLASambaRecord *sambaO = boloO->GetSambaRecord();
+		KHLASambaRecord *samba = 0;
 		
 		if(bolo != 0 && boloO != 0) 
 			*bolo = *boloO;
@@ -254,8 +254,8 @@ void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 	//RECORD IS DONE ABOVE, INSTEAD OF THIS CURRENT METHOD THAT
 	//DOESN'T PRESERVE PROPER TREF LINKING TO THIS EVENT
 	for(Int_t i = 0; i < anEvent.GetNumBoloPulses(); i++){
-		KHLABoloPulseSubRecord *s = AddBoloPulse();
-		KHLABoloPulseSubRecord *sO = anEvent.GetBoloPulse(i);
+		KHLABoloPulseRecord *s = AddBoloPulse();
+		KHLABoloPulseRecord *sO = anEvent.GetBoloPulse(i);
 		if(s != 0 && sO != 0) 
 			*s = *sO;
 		else
@@ -263,8 +263,8 @@ void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 	}
 	
 	for(Int_t i = 0; i < anEvent.GetNumMuonModules(); i++){
-		KHLAMuonModuleSubRecord *s = AddMuonModule();
-		KHLAMuonModuleSubRecord *sO = anEvent.GetMuonModule(i);
+		KHLAMuonModuleRecord *s = AddMuonModule();
+		KHLAMuonModuleRecord *sO = anEvent.GetMuonModule(i);
 		if(s != 0 && sO != 0) 
 			*s = *sO;
 		else
@@ -342,16 +342,16 @@ void KHLAEvent::CreateArrays(void)
 	//been allocated.
 	
 	if(!fSamba)
-		fSamba = new TClonesArray("KHLASambaSubRecord",5);
+		fSamba = new TClonesArray("KHLASambaRecord",5);
 	
 	if(!fBolo)
-		fBolo = new TClonesArray("KHLASingleBoloSubRecord",5);
+		fBolo = new TClonesArray("KHLABolometerRecord",5);
 	
 	if(!fBoloPulse)
-		fBoloPulse = new TClonesArray("KHLABoloPulseSubRecord",10);
+		fBoloPulse = new TClonesArray("KHLABoloPulseRecord",10);
 	
 	if(!fMuonModule)
-		fMuonModule = new TClonesArray("KHLAMuonModuleSubRecord",5);
+		fMuonModule = new TClonesArray("KHLAMuonModuleRecord",5);
 
 	
 	//why doesn't this create a memory leak? CreateArrays is called
@@ -377,73 +377,73 @@ template<class T> T* KHLAEvent::AddSubRecord(TClonesArray *mArray, Int_t &mCount
 	return mNewSubRecord;
 }
 
-KHLASambaSubRecord* KHLAEvent::AddSamba(void)
+KHLASambaRecord* KHLAEvent::AddSamba(void)
 {
 	//Use this event only when creating an event and you want to add
 	//a new SubRecord.
 	
-	return AddSubRecord<KHLASambaSubRecord>(fSamba,fNumSamba);
+	return AddSubRecord<KHLASambaRecord>(fSamba,fNumSamba);
 }
 
-KHLASingleBoloSubRecord* KHLAEvent::AddBolo(void)
+KHLABolometerRecord* KHLAEvent::AddBolo(void)
 {
 	//Use this event only when creating an event and you want to add
 	//a new SubRecord.
 	
 	AddTriggerType(kBoloTriggerType);
-	return AddSubRecord<KHLASingleBoloSubRecord>(fBolo,fNumBolo);
+	return AddSubRecord<KHLABolometerRecord>(fBolo,fNumBolo);
 }
 
-KHLABoloPulseSubRecord* KHLAEvent::AddBoloPulse()
+KHLABoloPulseRecord* KHLAEvent::AddBoloPulse()
 {
 	//Use this event only when creating an event and you want to add
 	//a new SubRecord.
 	
-	return AddSubRecord<KHLABoloPulseSubRecord>(fBoloPulse,fNumBoloPulse);
+	return AddSubRecord<KHLABoloPulseRecord>(fBoloPulse,fNumBoloPulse);
 }
 
-KHLAMuonModuleSubRecord* KHLAEvent::AddMuonModule()
+KHLAMuonModuleRecord* KHLAEvent::AddMuonModule()
 {
 	//Use this event only when creating an event and you want to add
 	//a new SubRecord.
 	
 	AddTriggerType(kMuonVetoTriggerType);
-	return AddSubRecord<KHLAMuonModuleSubRecord>(fMuonModule,fNumMuonModule);
+	return AddSubRecord<KHLAMuonModuleRecord>(fMuonModule,fNumMuonModule);
 }
 
-KHLASambaSubRecord *KHLAEvent::GetSamba(Int_t i) const
+KHLASambaRecord *KHLAEvent::GetSamba(Int_t i) const
 {
   // Return the i'th Samba Sub Record for this event.
 	
-  KHLASambaSubRecord *ms = 0;
-  if (i < fNumSamba) ms = (KHLASambaSubRecord *)fSamba->At(i);
+  KHLASambaRecord *ms = 0;
+  if (i < fNumSamba) ms = (KHLASambaRecord *)fSamba->At(i);
   return ms;
 }
 
-KHLASingleBoloSubRecord *KHLAEvent::GetBolo(Int_t i) const
+KHLABolometerRecord *KHLAEvent::GetBolo(Int_t i) const
 {
   // Return the i'th Bolometer Sub Record for this event.
 	
-  KHLASingleBoloSubRecord *ms = 0;
-  if (i < fNumBolo) ms = (KHLASingleBoloSubRecord *)fBolo->At(i);
+  KHLABolometerRecord *ms = 0;
+  if (i < fNumBolo) ms = (KHLABolometerRecord *)fBolo->At(i);
   return ms;
 }
 
-KHLABoloPulseSubRecord *KHLAEvent::GetBoloPulse(Int_t i) const
+KHLABoloPulseRecord *KHLAEvent::GetBoloPulse(Int_t i) const
 {
   // Return the i'th Bolometer Pulse Sub Record for this event.
 	
-  KHLABoloPulseSubRecord *ms = 0;
-  if (i < fNumBoloPulse) ms = (KHLABoloPulseSubRecord *)fBoloPulse->At(i);
+  KHLABoloPulseRecord *ms = 0;
+  if (i < fNumBoloPulse) ms = (KHLABoloPulseRecord *)fBoloPulse->At(i);
   return ms;
 }
 
-KHLAMuonModuleSubRecord *KHLAEvent::GetMuonModule(Int_t i) const
+KHLAMuonModuleRecord *KHLAEvent::GetMuonModule(Int_t i) const
 {
   // Return the i'th Muon Module Sub Record for this event.
 	
-  KHLAMuonModuleSubRecord *ms = 0;
-  if (i < fNumMuonModule) ms = (KHLAMuonModuleSubRecord *)fMuonModule->At(i);
+  KHLAMuonModuleRecord *ms = 0;
+  if (i < fNumMuonModule) ms = (KHLAMuonModuleRecord *)fMuonModule->At(i);
   return ms;
 }
 
@@ -492,12 +492,12 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	
 	if(fNumSamba == anEvent.fNumSamba){
 		for(Int_t i = 0; i < fNumSamba; i++){
-			KHLASambaSubRecord *s = GetSamba(i);
-			KHLASambaSubRecord *sOther = anEvent.GetSamba(i);
+			KHLASambaRecord *s = GetSamba(i);
+			KHLASambaRecord *sOther = anEvent.GetSamba(i);
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
-						cout << "KHLAEvent KHLASambaSubRecord number " << i << " Not Equal" << endl;		
+						cout << "KHLAEvent KHLASambaRecord number " << i << " Not Equal" << endl;		
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -515,12 +515,12 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	
 	if(fNumBolo == anEvent.fNumBolo){
 		for(Int_t i = 0; i < fNumBolo; i++){
-			KHLASingleBoloSubRecord *s = GetBolo(i);
-			KHLASingleBoloSubRecord *sOther = anEvent.GetBolo(i);
+			KHLABolometerRecord *s = GetBolo(i);
+			KHLABolometerRecord *sOther = anEvent.GetBolo(i);
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
-						cout << "KHLAEvent KHLASingleBoloSubRecord number " << i << " Not Equal" << endl;		
+						cout << "KHLAEvent KHLABolometerRecord number " << i << " Not Equal" << endl;		
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -538,12 +538,12 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	
 	if(fNumBoloPulse == anEvent.fNumBoloPulse){
 		for(Int_t i = 0; i < fNumBoloPulse; i++){
-			KHLABoloPulseSubRecord *s = GetBoloPulse(i);
-			KHLABoloPulseSubRecord *sOther = anEvent.GetBoloPulse(i);
+			KHLABoloPulseRecord *s = GetBoloPulse(i);
+			KHLABoloPulseRecord *sOther = anEvent.GetBoloPulse(i);
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
-						cout << "KHLAEvent KHLABoloPulseSubRecord number " << i << " Not Equal" << endl;		
+						cout << "KHLAEvent KHLABoloPulseRecord number " << i << " Not Equal" << endl;		
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -561,12 +561,12 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	
 	if(fNumMuonModule == anEvent.fNumMuonModule){
 		for(Int_t i = 0; i < fNumMuonModule; i++){
-			KHLAMuonModuleSubRecord *s = GetMuonModule(i);
-			KHLAMuonModuleSubRecord *sOther = anEvent.GetMuonModule(i);
+			KHLAMuonModuleRecord *s = GetMuonModule(i);
+			KHLAMuonModuleRecord *sOther = anEvent.GetMuonModule(i);
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
-						cout << "KHLAEvent KHLABoloPulseSubRecord number " << i << " Not Equal" << endl;		
+						cout << "KHLAEvent KHLABoloPulseRecord number " << i << " Not Equal" << endl;		
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -606,19 +606,19 @@ void KHLAEvent::Compact(void)
 	fMuonSystem.Compact();
 	
 	for(Int_t i = 0; i < GetNumSambas(); i++){
-		KHLASambaSubRecord* samba = GetSamba(i);
+		KHLASambaRecord* samba = GetSamba(i);
 		samba->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBolos(); i++){
-		KHLASingleBoloSubRecord* bolo = GetBolo(i);
+		KHLABolometerRecord* bolo = GetBolo(i);
 		bolo->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBoloPulses(); i++){
-		KHLABoloPulseSubRecord* bp = GetBoloPulse(i);
+		KHLABoloPulseRecord* bp = GetBoloPulse(i);
 		bp->Compact();
 	}
 	for(Int_t i = 0; i < GetNumMuonModules(); i++){
-		KHLAMuonModuleSubRecord* module = GetMuonModule(i);
+		KHLAMuonModuleRecord* module = GetMuonModule(i);
 		module->Compact();
 	}
 }

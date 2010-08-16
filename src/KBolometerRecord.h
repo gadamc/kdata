@@ -1,5 +1,5 @@
 /*
- *  KSingleBoloSubRecord.h
+ *  KBolometerRecord.h
  *  KDataStructure
  *
  *  Created by Adam Cox on 3/25/10.
@@ -7,26 +7,26 @@
  *
  */
 
-#ifndef __KSINGLEBOLOSUBRECORD_H__
-#define __KSINGLEBOLOSUBRECORD_H__
+#ifndef __KBOLOMETERRECORD_H__
+#define __KBOLOMETERRECORD_H__
 
 #include "KSubRecord.h"
 #include <string>
 
 using namespace std;
 
-class KSingleBoloSubRecord : public KSubRecord {
+class KBolometerRecord : public KSubRecord {
 
 public:
   //Constructors
-  KSingleBoloSubRecord(void);
-	KSingleBoloSubRecord(const KSingleBoloSubRecord &aRec);
-	KSingleBoloSubRecord& operator=(const KSingleBoloSubRecord &aRec);
-  virtual ~KSingleBoloSubRecord(void);
+  KBolometerRecord(void);
+	KBolometerRecord(const KBolometerRecord &aRec);
+	KBolometerRecord& operator=(const KBolometerRecord &aRec);
+  virtual ~KBolometerRecord(void);
 	virtual void Clear(Option_t *opt = "C");
-	Bool_t IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KSingleBoloSubRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KSingleBoloSubRecord &aRec) const { return !(*this==aRec); }
+	Bool_t IsSame(const KBolometerRecord &aRec, Bool_t bPrint = false) const;
+	Bool_t operator==(const KBolometerRecord &aRec) const { return IsSame(aRec,false); }
+	Bool_t operator!=(const KBolometerRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
 	
 	//getters
@@ -67,11 +67,11 @@ private:
 	
 	//private methods
   void InitializeMembers(void);
-	void CopyLocalMembers(const KSingleBoloSubRecord &aRec);
+	void CopyLocalMembers(const KBolometerRecord &aRec);
 	
-  ClassDef(KSingleBoloSubRecord,1);
+  ClassDef(KBolometerRecord,1);
 };
 
 
-#endif // __KSINGLEBOLOSUBRECORD_H__
+#endif // __KBOLOMETERRECORD_H__
 

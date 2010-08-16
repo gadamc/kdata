@@ -1,5 +1,5 @@
 /*
- *  KMuonModuleSubRecord.h
+ *  KMuonModuleRecord.h
  *  KDataStructure
  *
  *  Created by Adam Cox on 3/25/10.
@@ -7,25 +7,25 @@
  *
  */
 
-#ifndef __KMUONMODULESUBRECORD_H__
-#define __KMUONMODULESUBRECORD_H__
+#ifndef __KMUONMODULERECORD_H__
+#define __KMUONMODULERECORD_H__
 
 #include "KSubRecord.h"
 
 const Int_t kNumPmtsPerMuonModule = 2;
 
-class KMuonModuleSubRecord : public KSubRecord  { 
+class KMuonModuleRecord : public KSubRecord  { 
 
 public:
   //Constructors
-  KMuonModuleSubRecord(void);
-	KMuonModuleSubRecord(const KMuonModuleSubRecord &aRec);
-	KMuonModuleSubRecord& operator=(const KMuonModuleSubRecord &aRec);
-  virtual ~KMuonModuleSubRecord(void);
+  KMuonModuleRecord(void);
+	KMuonModuleRecord(const KMuonModuleRecord &aRec);
+	KMuonModuleRecord& operator=(const KMuonModuleRecord &aRec);
+  virtual ~KMuonModuleRecord(void);
 	virtual void Clear(Option_t *anOpt = "C");
-	Bool_t IsSame(const KMuonModuleSubRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KMuonModuleSubRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KMuonModuleSubRecord &aRec) const { return !(*this==aRec); }
+	Bool_t IsSame(const KMuonModuleRecord &aRec, Bool_t bPrint = false) const;
+	Bool_t operator==(const KMuonModuleRecord &aRec) const { return IsSame(aRec,false); }
+	Bool_t operator!=(const KMuonModuleRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
 	
 	Bool_t IsNeutronCounter();
@@ -57,9 +57,9 @@ private:
 	
 	//private methods
 	void InitializeMembers(void);
-	void CopyLocalMembers(const KMuonModuleSubRecord &aRec);
-  ClassDef(KMuonModuleSubRecord,1);
+	void CopyLocalMembers(const KMuonModuleRecord &aRec);
+  ClassDef(KMuonModuleRecord,1);
 };
 
 
-#endif // __KMUONMODULESUBRECORD_H__
+#endif // __KMUONMODULERECORD_H__

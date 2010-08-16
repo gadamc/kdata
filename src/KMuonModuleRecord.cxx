@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KMuonModuleSubRecord.cxx
+// KMuonModuleRecord.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
@@ -10,30 +10,30 @@
 // The base class of all Muon Module Sub Record classes. This base class
 // contains a number of the data values for the Muon Module sub records.
 
-#include "KMuonModuleSubRecord.h"
+#include "KMuonModuleRecord.h"
 #include <iostream>
 using namespace std;
 
-ClassImp(KMuonModuleSubRecord);
+ClassImp(KMuonModuleRecord);
 
-KMuonModuleSubRecord::KMuonModuleSubRecord(void)
+KMuonModuleRecord::KMuonModuleRecord(void)
 {
 	InitializeMembers();
 }
 
-KMuonModuleSubRecord::~KMuonModuleSubRecord(void)
+KMuonModuleRecord::~KMuonModuleRecord(void)
 {
 	Clear("C");
 }
 
-KMuonModuleSubRecord::KMuonModuleSubRecord(const KMuonModuleSubRecord &aRec)
+KMuonModuleRecord::KMuonModuleRecord(const KMuonModuleRecord &aRec)
 : KSubRecord(aRec)
 {
 	CopyLocalMembers(aRec);
 	
 }
 
-KMuonModuleSubRecord& KMuonModuleSubRecord::operator=(const KMuonModuleSubRecord &aRec)
+KMuonModuleRecord& KMuonModuleRecord::operator=(const KMuonModuleRecord &aRec)
 {
 	if(&aRec == this) return *this;
 	
@@ -43,7 +43,7 @@ KMuonModuleSubRecord& KMuonModuleSubRecord::operator=(const KMuonModuleSubRecord
 	return *this;
 }
 
-void KMuonModuleSubRecord::CopyLocalMembers(const KMuonModuleSubRecord &aRec)
+void KMuonModuleRecord::CopyLocalMembers(const KMuonModuleRecord &aRec)
 {
 	SetModuleNumber(aRec.GetModuleNumber());
 	SetTdc(0, aRec.GetTdc(0));
@@ -53,7 +53,7 @@ void KMuonModuleSubRecord::CopyLocalMembers(const KMuonModuleSubRecord &aRec)
 	SetAdcGroup(aRec.GetAdcGroup());
 }
 
-void KMuonModuleSubRecord::Clear(Option_t *anopt)
+void KMuonModuleRecord::Clear(Option_t *anopt)
 {
 	//Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
@@ -70,7 +70,7 @@ void KMuonModuleSubRecord::Clear(Option_t *anopt)
 	
 }
 
-void KMuonModuleSubRecord::InitializeMembers(void)
+void KMuonModuleRecord::InitializeMembers(void)
 {
 	//Init local members. 
 	
@@ -86,7 +86,7 @@ void KMuonModuleSubRecord::InitializeMembers(void)
 
 
 
-Int_t KMuonModuleSubRecord::GetTdc(Int_t i) const
+Int_t KMuonModuleRecord::GetTdc(Int_t i) const
 {
 	if(i < kNumPmtsPerMuonModule)
 		return fTdc[i];
@@ -94,7 +94,7 @@ Int_t KMuonModuleSubRecord::GetTdc(Int_t i) const
 		return -1;
 } 
 
-Int_t KMuonModuleSubRecord::GetAdc(Int_t i) const
+Int_t KMuonModuleRecord::GetAdc(Int_t i) const
 {
 	if(i < kNumPmtsPerMuonModule && i >= 0)
 		return fAdc[i];
@@ -102,7 +102,7 @@ Int_t KMuonModuleSubRecord::GetAdc(Int_t i) const
 		return -1;
 }
 
-Int_t KMuonModuleSubRecord::SetTdc(Int_t i, Int_t val)
+Int_t KMuonModuleRecord::SetTdc(Int_t i, Int_t val)
 {
 	if(i < kNumPmtsPerMuonModule && i >= 0){
 		fTdc[i] = val;
@@ -112,7 +112,7 @@ Int_t KMuonModuleSubRecord::SetTdc(Int_t i, Int_t val)
 		return -1;
 }
 
-Int_t KMuonModuleSubRecord::SetAdc(Int_t i, Int_t val)
+Int_t KMuonModuleRecord::SetAdc(Int_t i, Int_t val)
 {
 	if(i < kNumPmtsPerMuonModule && i >= 0){
 		fAdc[i] = val;
@@ -122,7 +122,7 @@ Int_t KMuonModuleSubRecord::SetAdc(Int_t i, Int_t val)
 		return -1;
 }
 
-Bool_t KMuonModuleSubRecord::IsSame(const KMuonModuleSubRecord &aRec, Bool_t bPrint) const
+Bool_t KMuonModuleRecord::IsSame(const KMuonModuleRecord &aRec, Bool_t bPrint) const
 {
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
@@ -137,7 +137,7 @@ Bool_t KMuonModuleSubRecord::IsSame(const KMuonModuleSubRecord &aRec, Bool_t bPr
 	if(fModuleNumber != aRec.fModuleNumber){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KMuonModuleSubRecord fModuleNumber Not Equal. lhs: " 
+			cout << "KMuonModuleRecord fModuleNumber Not Equal. lhs: " 
 			<< fModuleNumber << " != rhs " << aRec.fModuleNumber << endl;	
 		else
 			return false;  
@@ -147,7 +147,7 @@ Bool_t KMuonModuleSubRecord::IsSame(const KMuonModuleSubRecord &aRec, Bool_t bPr
 		if(fTdc[i] != aRec.fTdc[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KMuonModuleSubRecord fTdc["<<i<<"] Not Equal. lhs: " 
+				cout << "KMuonModuleRecord fTdc["<<i<<"] Not Equal. lhs: " 
 				<< fTdc[i] << " != rhs " << aRec.fTdc[i] << endl;			
 			else
 				return false;  
@@ -158,7 +158,7 @@ Bool_t KMuonModuleSubRecord::IsSame(const KMuonModuleSubRecord &aRec, Bool_t bPr
 		if(fAdc[i] != aRec.fAdc[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KMuonModuleSubRecord fAdc["<<i<<"] Not Equal. lhs: " 
+				cout << "KMuonModuleRecord fAdc["<<i<<"] Not Equal. lhs: " 
 				<< fAdc[i] << " != rhs " << aRec.fAdc[i] << endl;			
 			else
 				return false;  
@@ -168,7 +168,7 @@ Bool_t KMuonModuleSubRecord::IsSame(const KMuonModuleSubRecord &aRec, Bool_t bPr
 	if(fAdcGroup != aRec.fAdcGroup){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KMuonModuleSubRecord fAdcGroup Not Equal. lhs: " 
+			cout << "KMuonModuleRecord fAdcGroup Not Equal. lhs: " 
 			<< fAdcGroup << " != rhs " << aRec.fAdcGroup << endl;		
 		else
 			return false;  
@@ -176,7 +176,7 @@ Bool_t KMuonModuleSubRecord::IsSame(const KMuonModuleSubRecord &aRec, Bool_t bPr
 	return bIsEqual;
 }
 
-Bool_t KMuonModuleSubRecord::IsNeutronCounter(void)
+Bool_t KMuonModuleRecord::IsNeutronCounter(void)
 {
 	//If fMuonModuleNumber is set to 50 or 51, then this event
 	//contains information for the Neutron Counter and not for the Muon
@@ -185,7 +185,7 @@ Bool_t KMuonModuleSubRecord::IsNeutronCounter(void)
 	return (fModuleNumber == 50 || fModuleNumber == 51);
 }
 
-void KMuonModuleSubRecord::Compact(void)
+void KMuonModuleRecord::Compact(void)
 {
 	//make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
@@ -194,7 +194,7 @@ void KMuonModuleSubRecord::Compact(void)
 	KSubRecord::Compact();
 }
 
-Bool_t KMuonModuleSubRecord::IsHardTrigger()
+Bool_t KMuonModuleRecord::IsHardTrigger()
 {
 	//returns true if both TDC values have a value > -1.
 	//Note, this means that a TDC value of 0 indicates a

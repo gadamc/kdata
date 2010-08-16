@@ -11,9 +11,9 @@
 
 #include "TFile.h"
 #include "KHLAEvent.h"
-#include "KHLAMuonModuleSubRecord.h"
-#include "KHLASingleBoloSubRecord.h"
-#include "KHLASambaSubRecord.h"
+#include "KHLAMuonModuleRecord.h"
+#include "KHLABolometerRecord.h"
+#include "KHLASambaRecord.h"
 #include "TTree.h"
 #include <iostream>
 #include <fstream>
@@ -422,7 +422,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			//mEv->SetBlindnessWord(Int_t);
 			//mEv->SetGSEventNumber(UInt_t);
 			//mEv->SetDataCleaningWord(Int_t);
-			KHLASingleBoloSubRecord* bolo = mEv->AddBolo();
+			KHLABolometerRecord* bolo = mEv->AddBolo();
 			
 			bolo->SetQvalue((double)q);
 			bolo->SetEnergyRecoil((double)eRec);
@@ -492,7 +492,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			//bolo->SetTriggerBit2(Int_t);
 			//bolo->SetFiducialVolume(Double_t);	
 			
-			KHLASambaSubRecord* sam=mEv->AddSamba();
+			KHLASambaRecord* sam=mEv->AddSamba();
 			sam-> SetSambaEventNumber(eventNum);
 			sam-> SetRunName(runName, 10);
 			sam-> SetNtpDateSec(dateSec);
@@ -506,7 +506,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			
 			bolo->SetSambaRecord(sam);
 			
-			//KHLAMuonModuleSubRecord* muon=mEv->AddMuonModule();
+			//KHLAMuonModuleRecord* muon=mEv->AddMuonModule();
 			//muon-> SetModuleNumber(3);
 			
 			// For boloSysRecors:

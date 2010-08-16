@@ -13,7 +13,7 @@
 #include "KHLaMCEvent.h"
 #include "KHLAEvent.h"
 #include "TClonesArray.h"
-#include "KMCSingleBoloSubRecord.h"
+#include "KMCBolometerRecord.h"
 #include <typeinfo>
 #include <iostream>
 #include <exception>
@@ -122,12 +122,12 @@ Bool_t KHLaMCEvent::IsSame(const KHLaMCEvent &anEvent, Bool_t bPrint) const
 	
 	if(fNumBolo == anEvent.fNumBolo){
 		for(Int_t i = 0; i < fNumBolo; i++){
-			KMCSingleBoloSubRecord *s = GetBolo(i);
-			KMCSingleBoloSubRecord *sOther = anEvent.GetBolo(i);
+			KMCBolometerRecord *s = GetBolo(i);
+			KMCBolometerRecord *sOther = anEvent.GetBolo(i);
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
-						cout << "KHLaMCEvent KMCSingleBoloSubRecord number " << i << " Not Equal" << endl;		
+						cout << "KHLaMCEvent KMCBolometerRecord number " << i << " Not Equal" << endl;		
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -147,18 +147,18 @@ Bool_t KHLaMCEvent::IsSame(const KHLaMCEvent &anEvent, Bool_t bPrint) const
 	return bIsEqual;
 }
 
-KMCSingleBoloSubRecord *KHLaMCEvent::GetBolo(Int_t i) const
+KMCBolometerRecord *KHLaMCEvent::GetBolo(Int_t i) const
 {
   // Return the i'th Bolometer Sub Record for this event.
-	KMCSingleBoloSubRecord *ms = 0;
-	if (i < fNumBolo) ms = (KMCSingleBoloSubRecord *)fBolo->At(i);
+	KMCBolometerRecord *ms = 0;
+	if (i < fNumBolo) ms = (KMCBolometerRecord *)fBolo->At(i);
 	return ms;
 }
 
-KMCSingleBoloSubRecord* KHLaMCEvent::AddBolo(void)
+KMCBolometerRecord* KHLaMCEvent::AddBolo(void)
 {
 	AddTriggerType(kBoloTriggerType);
-	return AddSubRecord<KMCSingleBoloSubRecord>(fBolo,fNumBolo);
+	return AddSubRecord<KMCBolometerRecord>(fBolo,fNumBolo);
 }
 
 void KHLaMCEvent::ClearArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
@@ -181,10 +181,10 @@ template<class T> T* KHLaMCEvent::AddSubRecord(TClonesArray *mArray, Int_t &mCou
 void KHLaMCEvent::CopyClonesArrays(const KHLaMCEvent &anEvent)
 {
 	//ClonesArray assignment doesn't appear to work in the following way
-	//*fSamba = *anEvent.GetSambaSubRecords();
+	//*fSamba = *anEvent.GetSambaRecords();
 	//*fBolo = *anEvent.GetBoloSubRecords();
-	//*fBoloPulse = *anEvent.GetBoloPulseSubRecords();
-	//*fMuonModule = *anEvent.GetMuonModuleSubRecords();
+	//*fBoloPulse = *anEvent.GetBoloPulseRecords();
+	//*fMuonModule = *anEvent.GetMuonModuleRecords();
 	
 	//so, I just clear this object's array, and create as many objects as I need.
 	//this might be inefficient, but I don't think so. besides,
@@ -197,8 +197,8 @@ void KHLaMCEvent::CopyClonesArrays(const KHLaMCEvent &anEvent)
 	
 	
 	for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
-		KMCSingleBoloSubRecord *s = AddBolo();
-		KMCSingleBoloSubRecord *sO = anEvent.GetBolo(i);
+		KMCBolometerRecord *s = AddBolo();
+		KMCBolometerRecord *sO = anEvent.GetBolo(i);
 		if(s != 0 && sO != 0) 
 			*s = *sO;
 		else
@@ -210,7 +210,7 @@ void KHLaMCEvent::CopyClonesArrays(const KHLaMCEvent &anEvent)
 void KHLaMCEvent::CreateArrays(void)
 {
 	if(!fBolo)
-		fBolo = new TClonesArray("KMCSingleBoloSubRecord",2);
+		fBolo = new TClonesArray("KMCBolometerRecord",2);
 	
 }
 

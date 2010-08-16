@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KSambaSubRecord.cxx
+// KSambaRecord.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
@@ -12,14 +12,14 @@
 // 
 //
 
-#include "KSambaSubRecord.h"
+#include "KSambaRecord.h"
 #include <stdio.h>
 #include <iostream>
 #include <cstring>
 
-ClassImp(KSambaSubRecord);
+ClassImp(KSambaRecord);
 
-KSambaSubRecord::KSambaSubRecord(void)
+KSambaRecord::KSambaRecord(void)
 {
 	InitializeMembers();
 	
@@ -34,7 +34,7 @@ KSambaSubRecord::KSambaSubRecord(void)
 }
 
 
-KSambaSubRecord::KSambaSubRecord(const KSambaSubRecord &aRec)
+KSambaRecord::KSambaRecord(const KSambaRecord &aRec)
 : KSubRecord(aRec)
 {
 	CopyLocalMembers(aRec);
@@ -49,7 +49,7 @@ KSambaSubRecord::KSambaSubRecord(const KSambaSubRecord &aRec)
 	
 }
 
-KSambaSubRecord& KSambaSubRecord::operator=(const KSambaSubRecord &aRec)
+KSambaRecord& KSambaRecord::operator=(const KSambaRecord &aRec)
 {
 	if(&aRec == this) return *this;
 	
@@ -62,7 +62,7 @@ KSambaSubRecord& KSambaSubRecord::operator=(const KSambaSubRecord &aRec)
 	return *this;
 }
 
-void KSambaSubRecord::CopyLocalMembers(const KSambaSubRecord &aRec)
+void KSambaRecord::CopyLocalMembers(const KSambaRecord &aRec)
 {
 	SetSambaEventNumber(aRec.GetSambaEventNumber()); 
 	SetNtpDateSec(aRec.GetNtpDateSec()); 
@@ -76,7 +76,7 @@ void KSambaSubRecord::CopyLocalMembers(const KSambaSubRecord &aRec)
 	//SetSambaMinorVersionNum(aRec.GetSambaMinorVersionNum());
 }
 
-KSambaSubRecord::~KSambaSubRecord(void)
+KSambaRecord::~KSambaRecord(void)
 {
 	Clear("C");
 
@@ -93,7 +93,7 @@ KSambaSubRecord::~KSambaSubRecord(void)
 	
 }
 
-void KSambaSubRecord::Clear(Option_t *opt)
+void KSambaRecord::Clear(Option_t *opt)
 {
 	//Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
@@ -124,7 +124,7 @@ void KSambaSubRecord::Clear(Option_t *opt)
 
 }
 
-void KSambaSubRecord::SetRunName(const Char_t* aWord, Int_t aSize)
+void KSambaRecord::SetRunName(const Char_t* aWord, Int_t aSize)
 {
 	if(aSize!=fRunNameSize){
 		if(fRunName!=0){
@@ -140,7 +140,7 @@ void KSambaSubRecord::SetRunName(const Char_t* aWord, Int_t aSize)
 
 
 
-/*void KSambaSubRecord::SetFileName(const Char_t* aWord, Int_t aSize)
+/*void KSambaRecord::SetFileName(const Char_t* aWord, Int_t aSize)
 {
 	if(aSize!=fFileNameSize){
 		if(fFileName!=0){
@@ -155,7 +155,7 @@ void KSambaSubRecord::SetRunName(const Char_t* aWord, Int_t aSize)
 }
 */
 
-string KSambaSubRecord::GetRunName(void) const 
+string KSambaRecord::GetRunName(void) const 
 {
 	string str=""; 
 	
@@ -166,7 +166,7 @@ string KSambaSubRecord::GetRunName(void) const
 	
 }
 
-/*string KSambaSubRecord::GetFileName(void) const 
+/*string KSambaRecord::GetFileName(void) const 
 {
 	string str=""; 
 	
@@ -177,7 +177,7 @@ string KSambaSubRecord::GetRunName(void) const
 	
 }*/
 
-void KSambaSubRecord::InitializeMembers(void)
+void KSambaRecord::InitializeMembers(void)
 {
 	//Init local members
 	
@@ -197,7 +197,7 @@ void KSambaSubRecord::InitializeMembers(void)
 }
 
 
-Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
+Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
 {
 	//Compares two objects and their member variables to test for equality.
 	//If bPrint is set to true, then a message for each member variable that is different
@@ -217,7 +217,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	if(fSambaEventNumber != aRec.fSambaEventNumber){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fSambaEventNumber Not Equal. lhs: " 
+			cout << "KSambaRecord fSambaEventNumber Not Equal. lhs: " 
 			<< fSambaEventNumber << " != rhs " << aRec.fSambaEventNumber << endl;	
 		else
 			return false;  
@@ -226,7 +226,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	if(fNtpDateSec != aRec.fNtpDateSec){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fNtpDateSec Not Equal. lhs: " 
+			cout << "KSambaRecord fNtpDateSec Not Equal. lhs: " 
 			<< fNtpDateSec << " != rhs " << aRec.fNtpDateSec << endl;		
 		else
 			return false;  
@@ -235,7 +235,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	if(fNtpDateMicroSec != aRec.fNtpDateMicroSec){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fNtpDateMicroSec Not Equal. lhs: " 
+			cout << "KSambaRecord fNtpDateMicroSec Not Equal. lhs: " 
 			<< fNtpDateMicroSec << " != rhs " << aRec.fNtpDateMicroSec << endl;		
 		else
 			return false;  
@@ -244,7 +244,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	if(fSambaDAQNumber != aRec.fSambaDAQNumber){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fSambaDAQNumber Not Equal. lhs: " 
+			cout << "KSambaRecord fSambaDAQNumber Not Equal. lhs: " 
 			<< fSambaDAQNumber << " != rhs " << aRec.fSambaDAQNumber << endl;		
 		else
 			return false;  
@@ -253,7 +253,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	if(fRunNameSize != aRec.fRunNameSize){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fRunNameSize Not Equal. lhs: " 
+			cout << "KSambaRecord fRunNameSize Not Equal. lhs: " 
 			<< fRunNameSize << " != rhs " << aRec.fRunNameSize << endl;		
 		else
 			return false;  
@@ -262,7 +262,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	if(strncmp(fRunName, aRec.fRunName, sizeof(Char_t)*fRunNameSize)){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fDetectorName Not Equal. lhs: " 
+			cout << "KSambaRecord fDetectorName Not Equal. lhs: " 
 			<< fRunName << " != rhs " << aRec.fRunName << endl;		
 		else
 			return false;  
@@ -271,7 +271,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	/*if(fFileNameSize != aRec.fFileNameSize){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fFileNameSize Not Equal. lhs: " 
+			cout << "KSambaRecord fFileNameSize Not Equal. lhs: " 
 			<< fFileNameSize << " != rhs " << aRec.fFileNameSize << endl;		
 		else
 			return false;  
@@ -280,7 +280,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	/*if(strncmp(fFileName, aRec.fFileName, sizeof(Char_t)*fFileNameSize)){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fFileName Not Equal" << fFileName << " != " << aRec.fFileName << "_" << endl;		
+			cout << "KSambaRecord fFileName Not Equal" << fFileName << " != " << aRec.fFileName << "_" << endl;		
 		else
 			return false;  
 	}*/
@@ -288,7 +288,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	/*if(fPosition != aRec.fPosition){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fPosition Not Equal. lhs: " 
+			cout << "KSambaRecord fPosition Not Equal. lhs: " 
 			<< fPosition << " != rhs " << aRec.fPosition << endl;		
 		else
 			return false;  
@@ -297,7 +297,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	/*if(fDelai != aRec.fDelai){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fDelai Not Equal. lhs: " 
+			cout << "KSambaRecord fDelai Not Equal. lhs: " 
 			<< fDelai << " != rhs " << aRec.fDelai << endl;		
 		else
 			return false;  
@@ -306,7 +306,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	/*if(fSambaMajorVersionNum != aRec.fSambaMajorVersionNum){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fSambaMajorVersionNum Not Equal. lhs: " 
+			cout << "KSambaRecord fSambaMajorVersionNum Not Equal. lhs: " 
 			<< fSambaMajorVersionNum << " != rhs " << aRec.fSambaMajorVersionNum << endl;		
 		else
 			return false;  
@@ -315,7 +315,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 	/*if(fSambaMinorVersionNum != aRec.fSambaMinorVersionNum){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaSubRecord fSambaMinorVersionNum Not Equal. lhs: " 
+			cout << "KSambaRecord fSambaMinorVersionNum Not Equal. lhs: " 
 			<< fSambaMinorVersionNum << " != rhs " << aRec.fSambaMinorVersionNum << endl;		
 		else
 			return false;  
@@ -325,7 +325,7 @@ Bool_t KSambaSubRecord::IsSame(const KSambaSubRecord &aRec, Bool_t bPrint) const
 }
 
 
-void KSambaSubRecord::Compact(void)
+void KSambaRecord::Compact(void)
 {
 	//make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)

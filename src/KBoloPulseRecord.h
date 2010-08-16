@@ -1,30 +1,30 @@
 /*
- *  KBoloPulseSubRecord.h
+ *  KBoloPulseRecord.h
  *  KDataStructure
  *
  *  Created by Adam Cox on 3/25/10.
  *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
  *
  */
-#ifndef __KBOLOPULSESUBRECORD_H__
-#define __KBOLOPULSESUBRECORD_H__
+#ifndef __KBOLOPULSERECORD_H__
+#define __KBOLOPULSERECORD_H__
 
 #include "KSubRecord.h"
 #include <string>
 using namespace std;
 
-class KBoloPulseSubRecord : public KSubRecord { 
+class KBoloPulseRecord : public KSubRecord { 
 
 public:
   //Constructors
-  KBoloPulseSubRecord(void);
-	KBoloPulseSubRecord(const KBoloPulseSubRecord &aRec);
-	KBoloPulseSubRecord& operator=(const KBoloPulseSubRecord &aRec);
-  virtual ~KBoloPulseSubRecord(void);
+  KBoloPulseRecord(void);
+	KBoloPulseRecord(const KBoloPulseRecord &aRec);
+	KBoloPulseRecord& operator=(const KBoloPulseRecord &aRec);
+  virtual ~KBoloPulseRecord(void);
 	virtual void Clear(Option_t *anOpt = "C");
-	Bool_t IsSame(const KBoloPulseSubRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KBoloPulseSubRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KBoloPulseSubRecord &aRec) const { return !(*this==aRec); }
+	Bool_t IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint = false) const;
+	Bool_t operator==(const KBoloPulseRecord &aRec) const { return IsSame(aRec,false); }
+	Bool_t operator!=(const KBoloPulseRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
 	
 	//getters
@@ -49,11 +49,11 @@ private:
 
 	//private methods
 	void InitializeMembers(void);
-	void CopyLocalMembers(const KBoloPulseSubRecord &aRec);
+	void CopyLocalMembers(const KBoloPulseRecord &aRec);
 	
-  ClassDef(KBoloPulseSubRecord,1);
+  ClassDef(KBoloPulseRecord,1);
 };
 
 
-#endif // __KBOLOPULSESUBRECORD_H__
+#endif // __KBOLOPULSERECORD_H__
 

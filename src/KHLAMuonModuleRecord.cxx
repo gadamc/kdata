@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KHLAMuonModuleSubRecord.cxx
+// KHLAMuonModuleRecord.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
@@ -13,51 +13,51 @@
 // file, no doubt. 
 //
 
-#include "KHLAMuonModuleSubRecord.h"
+#include "KHLAMuonModuleRecord.h"
 #include <iostream>
 using namespace std;
 
-ClassImp(KHLAMuonModuleSubRecord);
+ClassImp(KHLAMuonModuleRecord);
 
-KHLAMuonModuleSubRecord::KHLAMuonModuleSubRecord(void)
+KHLAMuonModuleRecord::KHLAMuonModuleRecord(void)
 {
 
   InitializeMembers();
 }
 
-KHLAMuonModuleSubRecord::KHLAMuonModuleSubRecord(const KHLAMuonModuleSubRecord &aRec)
-: KMuonModuleSubRecord(aRec)
+KHLAMuonModuleRecord::KHLAMuonModuleRecord(const KHLAMuonModuleRecord &aRec)
+: KMuonModuleRecord(aRec)
 {
 	CopyLocalMembers(aRec);
 	
 }
 
-KHLAMuonModuleSubRecord& KHLAMuonModuleSubRecord::operator=(const KHLAMuonModuleSubRecord &aRec)
+KHLAMuonModuleRecord& KHLAMuonModuleRecord::operator=(const KHLAMuonModuleRecord &aRec)
 {
 	if(&aRec == this) return *this;
 	
-	this->KMuonModuleSubRecord::operator=(aRec);
+	this->KMuonModuleRecord::operator=(aRec);
 	
 	CopyLocalMembers(aRec);
 	
 	return *this;
 }
 
-void KHLAMuonModuleSubRecord::CopyLocalMembers(const KHLAMuonModuleSubRecord &aRec)
+void KHLAMuonModuleRecord::CopyLocalMembers(const KHLAMuonModuleRecord &aRec)
 {
 	//SetEnergy(0, aRec.GetEnergy(0));
 	//SetEnergy(1, aRec.GetEnergy(1));
 	
 }
 
-KHLAMuonModuleSubRecord::~KHLAMuonModuleSubRecord(void)
+KHLAMuonModuleRecord::~KHLAMuonModuleRecord(void)
 {
   //Does calling clear at destruction take too much computing time?
   Clear("C");
 
 }
 
-void KHLAMuonModuleSubRecord::Clear(Option_t *opt)
+void KHLAMuonModuleRecord::Clear(Option_t *opt)
 {
   //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
@@ -65,7 +65,7 @@ void KHLAMuonModuleSubRecord::Clear(Option_t *opt)
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-	KMuonModuleSubRecord::Clear(opt);
+	KMuonModuleRecord::Clear(opt);
   
 	//Clear and delete local objects here. 
 
@@ -74,7 +74,7 @@ void KHLAMuonModuleSubRecord::Clear(Option_t *opt)
 
 }
 
-void KHLAMuonModuleSubRecord::InitializeMembers(void)
+void KHLAMuonModuleRecord::InitializeMembers(void)
 {
 	//init local members
 	
@@ -84,7 +84,7 @@ void KHLAMuonModuleSubRecord::InitializeMembers(void)
 	//SetEnergy(1, -99.0);
 }
 
-Bool_t KHLAMuonModuleSubRecord::IsSame(const KHLAMuonModuleSubRecord &aRec, Bool_t bPrint) const
+Bool_t KHLAMuonModuleRecord::IsSame(const KHLAMuonModuleRecord &aRec, Bool_t bPrint) const
 {
 	//Compares two objects and their member variables to test for equality.
 	//If bPrint is set to true, then a message for each member variable that is different
@@ -94,7 +94,7 @@ Bool_t KHLAMuonModuleSubRecord::IsSame(const KHLAMuonModuleSubRecord &aRec, Bool
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
 	//call the base class's IsSame methods
-	if(!this->KMuonModuleSubRecord::IsSame(aRec,bPrint)){
+	if(!this->KMuonModuleRecord::IsSame(aRec,bPrint)){
 		bIsEqual = false;
 		if(!bPrint)
 			return false;  //if we're not printing out, just return false at first failure
@@ -107,7 +107,7 @@ Bool_t KHLAMuonModuleSubRecord::IsSame(const KHLAMuonModuleSubRecord &aRec, Bool
 		if(fEnergy[i] != aRec.fEnergy[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLAMuonModuleSubRecord fEnergy["<<i<<"] Not Equal. lhs: " 
+				cout << "KHLAMuonModuleRecord fEnergy["<<i<<"] Not Equal. lhs: " 
 				<< fEnergy[i] << " != rhs " << aRec.fEnergy[i] << endl;		
 			else
 				return false;  
@@ -117,13 +117,13 @@ Bool_t KHLAMuonModuleSubRecord::IsSame(const KHLAMuonModuleSubRecord &aRec, Bool
 	return bIsEqual;
 }
 
-void KHLAMuonModuleSubRecord::Compact(void)
+void KHLAMuonModuleRecord::Compact(void)
 {
 	//make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
 	//and base classes
 	
-	KMuonModuleSubRecord::Compact();
+	KMuonModuleRecord::Compact();
 	
 }
 

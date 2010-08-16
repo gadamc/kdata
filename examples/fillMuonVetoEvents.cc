@@ -19,10 +19,10 @@
 
 //dMEAT includes
 #include "KHLAEvent.h"
-#include "KHLAMuonModuleSubRecord.h"
+#include "KHLAMuonModuleRecord.h"
 #include "KHLAMuonVetoSysRecord.h"
-#include "KHLASingleBoloSubRecord.h"
-#include "KHLASambaSubRecord.h"
+#include "KHLABolometerRecord.h"
+#include "KHLASambaRecord.h"
 #include "KDataWriter.h"
 
 TFile *mMuonVetoRootFile = 0;
@@ -515,7 +515,7 @@ Bool_t fillEvents(void)
 			//cout << "Found " << numberOfModsHit << " modules Hit" << endl;
 			for(Int_t module = 1; module < kNumMuonModules+1; module++){
 				if(mModHits[module]){
-					KHLAMuonModuleSubRecord *mMod = mEvent->AddMuonModule();
+					KHLAMuonModuleRecord *mMod = mEvent->AddMuonModule();
 					mMod->SetModuleNumber(module);
 					for(Int_t pmt = 0; pmt < kNumPmtsPerMod; pmt++){
 						mMod->SetAdc(pmt, mADCVals[module][pmt]);

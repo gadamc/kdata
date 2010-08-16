@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KHLASingleBoloSubRecord.cxx
+// KHLABolometerRecord.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
@@ -13,38 +13,38 @@
 // of each of the parameters.
 //
 
-#include "KHLASingleBoloSubRecord.h"
+#include "KHLABolometerRecord.h"
 #include <iostream>
 #include <cstring>
 using namespace std;
 
-ClassImp(KHLASingleBoloSubRecord);
+ClassImp(KHLABolometerRecord);
 
-KHLASingleBoloSubRecord::KHLASingleBoloSubRecord(void)
+KHLABolometerRecord::KHLABolometerRecord(void)
 {
 	InitializeMembers();
 	
 }
 
-KHLASingleBoloSubRecord::KHLASingleBoloSubRecord(const KHLASingleBoloSubRecord &aRec)
-: KSingleBoloSubRecord(aRec)
+KHLABolometerRecord::KHLABolometerRecord(const KHLABolometerRecord &aRec)
+: KBolometerRecord(aRec)
 {
 	CopyLocalMembers(aRec);
 	
 }
 
-KHLASingleBoloSubRecord& KHLASingleBoloSubRecord::operator=(const KHLASingleBoloSubRecord &aRec)
+KHLABolometerRecord& KHLABolometerRecord::operator=(const KHLABolometerRecord &aRec)
 {
 	if(&aRec == this) return *this;
 	
-	this->KSingleBoloSubRecord::operator=(aRec);
+	this->KBolometerRecord::operator=(aRec);
 	
 	CopyLocalMembers(aRec);
 	
 	return *this;
 }
 
-void KHLASingleBoloSubRecord::CopyLocalMembers(const KHLASingleBoloSubRecord &aRec)
+void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
 {
 	SetQvalue(aRec.GetQvalue());
 	SetEnergyRecoil(aRec.GetEnergyRecoil());
@@ -88,13 +88,13 @@ void KHLASingleBoloSubRecord::CopyLocalMembers(const KHLASingleBoloSubRecord &aR
 }
 
 
-KHLASingleBoloSubRecord::~KHLASingleBoloSubRecord(void)
+KHLABolometerRecord::~KHLABolometerRecord(void)
 {
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
 }
 
-void KHLASingleBoloSubRecord::Clear(Option_t *opt)
+void KHLABolometerRecord::Clear(Option_t *opt)
 {
 	//Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
@@ -102,7 +102,7 @@ void KHLASingleBoloSubRecord::Clear(Option_t *opt)
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-	KSingleBoloSubRecord::Clear(opt);
+	KBolometerRecord::Clear(opt);
 	
   //Clear and delete local objects here. 
 	
@@ -111,7 +111,7 @@ void KHLASingleBoloSubRecord::Clear(Option_t *opt)
 	
 }
 
-void KHLASingleBoloSubRecord::InitializeMembers(void)
+void KHLABolometerRecord::InitializeMembers(void)
 {
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
@@ -156,7 +156,7 @@ void KHLASingleBoloSubRecord::InitializeMembers(void)
 }
 
 
-Int_t KHLASingleBoloSubRecord::GetIonFlagNumber(Int_t index) const
+Int_t KHLABolometerRecord::GetIonFlagNumber(Int_t index) const
 {
 	if(index < kSizeOfIonFlags && index >= 0){
 		return fIonFlags[index];
@@ -165,7 +165,7 @@ Int_t KHLASingleBoloSubRecord::GetIonFlagNumber(Int_t index) const
 		return -1;
 }
 
-Bool_t KHLASingleBoloSubRecord::GetIonFlags(Int_t* anArray, Int_t aSize) const
+Bool_t KHLABolometerRecord::GetIonFlags(Int_t* anArray, Int_t aSize) const
 {
 	if(aSize == kSizeOfIonFlags){
 		memcpy(anArray, fIonFlags, sizeof(Int_t)*kSizeOfIonFlags);
@@ -175,7 +175,7 @@ Bool_t KHLASingleBoloSubRecord::GetIonFlags(Int_t* anArray, Int_t aSize) const
 		return false;
 }
 
-Int_t KHLASingleBoloSubRecord::SetIonFlagNumber(Int_t index, Int_t aVal)
+Int_t KHLABolometerRecord::SetIonFlagNumber(Int_t index, Int_t aVal)
 {
 	if(index < kSizeOfIonFlags && index >= 0){
 		fIonFlags[index] = aVal;
@@ -185,7 +185,7 @@ Int_t KHLASingleBoloSubRecord::SetIonFlagNumber(Int_t index, Int_t aVal)
 		return -1;
 }
 
-Bool_t KHLASingleBoloSubRecord::SetIonFlags(Int_t *anArray, Int_t aSize)
+Bool_t KHLABolometerRecord::SetIonFlags(Int_t *anArray, Int_t aSize)
 {
 	if(aSize == kSizeOfIonFlags){
 		memcpy(fIonFlags, anArray, sizeof(Int_t)*kSizeOfIonFlags);
@@ -195,14 +195,14 @@ Bool_t KHLASingleBoloSubRecord::SetIonFlags(Int_t *anArray, Int_t aSize)
 		return false;
 }
 
-Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool_t bPrint) const
+Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrint) const
 {
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
 	if(bPrint) cout.precision(16);
 	
 	
-	if(!this->KSingleBoloSubRecord::IsSame(aRec,bPrint)){
+	if(!this->KBolometerRecord::IsSame(aRec,bPrint)){
 		bIsEqual = false;
 		if(!bPrint)
 			return false;  //if we're not printing out, just return false at first failure
@@ -212,7 +212,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fQvalue != aRec.fQvalue){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fQvalue Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fQvalue Not Equal. lhs: " 
 			<< fQvalue << " != rhs " << aRec.fQvalue << endl;		
 		else
 			return false;  
@@ -221,7 +221,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fEnergyRecoil != aRec.fEnergyRecoil){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fEnergyRecoil Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fEnergyRecoil Not Equal. lhs: " 
 			<< fEnergyRecoil << " != rhs " << aRec.fEnergyRecoil << endl;	
 		else
 			return false;  
@@ -230,7 +230,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fEnergyIon != aRec.fEnergyIon){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fEnergyIon Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fEnergyIon Not Equal. lhs: " 
 			<< fEnergyIon << " != rhs " << aRec.fEnergyIon << endl;		
 		else
 			return false;  
@@ -239,7 +239,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fEnergyHeat != aRec.fEnergyHeat){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fEnergyHeat Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fEnergyHeat Not Equal. lhs: " 
 			<< fEnergyHeat << " != rhs " << aRec.fEnergyHeat << endl;		
 		else
 			return false;  
@@ -249,7 +249,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fIonFlags[i] != aRec.fIonFlags[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fIonFlags["<<i<<"] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fIonFlags["<<i<<"] Not Equal. lhs: " 
 				<< fIonFlags[i] << " != rhs " << aRec.fIonFlags[i] << endl;		
 			else
 				return false;  
@@ -259,7 +259,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fTriggerBit1 != aRec.fTriggerBit1){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fTriggerBit1 Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fTriggerBit1 Not Equal. lhs: " 
 			<< fTriggerBit1 << " != rhs " << aRec.fTriggerBit1 << endl;		
 		else
 			return false;  
@@ -268,7 +268,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fTriggerBit2 != aRec.fTriggerBit2){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fTriggerBit2 Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fTriggerBit2 Not Equal. lhs: " 
 			<< fTriggerBit2 << " != rhs " << aRec.fTriggerBit2 << endl;		
 		else
 			return false;  
@@ -277,7 +277,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fVoltageFlag != aRec.fVoltageFlag){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fVoltageFlag Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fVoltageFlag Not Equal. lhs: " 
 			<< fVoltageFlag << " != rhs " << aRec.fVoltageFlag << endl;		
 		else
 			return false;  
@@ -286,7 +286,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fIonPulseTimeOffset != aRec.fIonPulseTimeOffset){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fIonPulseTimeOffset Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fIonPulseTimeOffset Not Equal. lhs: " 
 			<< fIonPulseTimeOffset << " != rhs " << aRec.fIonPulseTimeOffset << endl;		
 		else
 			return false;  
@@ -295,7 +295,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fFiducialVolume != aRec.fFiducialVolume){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fFiducialVolume Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fFiducialVolume Not Equal. lhs: " 
 			<< fFiducialVolume << " != rhs " << aRec.fFiducialVolume << endl;		
 		else
 			return false;  
@@ -305,7 +305,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fSambaRecord != aRec.fSambaRecord){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fSambaRecord Not Equal" << endl;		
+			cout << "KHLABolometerRecord fSambaRecord Not Equal" << endl;		
 		else
 			return false;  
 	}
@@ -315,7 +315,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fEnergyCollectrode[i] != aRec.fEnergyCollectrode[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fEnergyCollectrode[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fEnergyCollectrode[" << i << "] Not Equal. lhs: " 
 				<< fEnergyCollectrode[i] << " != rhs " << aRec.fEnergyCollectrode[i] << endl;		
 			else
 				return false;  
@@ -324,7 +324,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fEnergyVeto[i] != aRec.fEnergyVeto[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fEnergyVeto[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fEnergyVeto[" << i << "] Not Equal. lhs: " 
 				<< fEnergyVeto[i] << " != rhs " << aRec.fEnergyVeto[i] << endl;		
 			else
 				return false;  
@@ -333,7 +333,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fEnergyGuard[i] != aRec.fEnergyGuard[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fEnergyGuard[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fEnergyGuard[" << i << "] Not Equal. lhs: " 
 				<< fEnergyGuard[i] << " != rhs " << aRec.fEnergyGuard[i] << endl;		
 			else
 				return false;  
@@ -342,7 +342,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fEnergyBaselineCollectrode[i] != aRec.fEnergyBaselineCollectrode[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fEnergyBaselineCollectrode[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fEnergyBaselineCollectrode[" << i << "] Not Equal. lhs: " 
 				<< fEnergyBaselineCollectrode[i] << " != rhs " << aRec.fEnergyBaselineCollectrode[i] << endl;		
 			else
 				return false;  
@@ -351,7 +351,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fEnergyBaselineVeto[i] != aRec.fEnergyBaselineVeto[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fEnergyBaselineVeto[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fEnergyBaselineVeto[" << i << "] Not Equal. lhs: " 
 				<< fEnergyBaselineVeto[i] << " != rhs " << aRec.fEnergyBaselineVeto[i] << endl;		
 			else
 				return false;  
@@ -360,7 +360,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fEnergyBaselineGuard[i] != aRec.fEnergyBaselineGuard[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fEnergyBaselineGuard[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fEnergyBaselineGuard[" << i << "] Not Equal. lhs: " 
 				<< fEnergyBaselineGuard[i] << " != rhs " << aRec.fEnergyBaselineGuard[i] << endl;			
 			else
 				return false;  
@@ -369,7 +369,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fBaselineNoiseCollectrode[i] != aRec.fBaselineNoiseCollectrode[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fBaselineNoiseCollectrode[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fBaselineNoiseCollectrode[" << i << "] Not Equal. lhs: " 
 				<< fBaselineNoiseCollectrode[i] << " != rhs " << aRec.fBaselineNoiseCollectrode[i] << endl;		
 			else
 				return false;  
@@ -378,7 +378,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fBaselineNoiseVeto[i] != aRec.fBaselineNoiseVeto[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fBaselineNoiseVeto[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fBaselineNoiseVeto[" << i << "] Not Equal. lhs: " 
 				<< fBaselineNoiseVeto[i] << " != rhs " << aRec.fBaselineNoiseVeto[i] << endl;	
 			else
 				return false;  
@@ -387,7 +387,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 		if(fBaselineNoiseGuard[i] != aRec.fBaselineNoiseGuard[i]){
 			bIsEqual = false;
 			if (bPrint) 
-				cout << "KHLASingleBoloSubRecord fBaselineNoiseGuard[" << i << "] Not Equal. lhs: " 
+				cout << "KHLABolometerRecord fBaselineNoiseGuard[" << i << "] Not Equal. lhs: " 
 				<< fBaselineNoiseGuard[i] << " != rhs " << aRec.fBaselineNoiseGuard[i] << endl;		
 			else
 				return false;  
@@ -397,7 +397,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fEnergyIonFiducial != aRec.fEnergyIonFiducial){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fEnergyIonFiducial Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fEnergyIonFiducial Not Equal. lhs: " 
 			<< fEnergyIonFiducial << " != rhs " << aRec.fEnergyIonFiducial << endl;	
 		else
 			return false;  
@@ -407,7 +407,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fEnergyIonSum != aRec.fEnergyIonSum){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fEnergyIonSum Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fEnergyIonSum Not Equal. lhs: " 
 			<< fEnergyIonSum << " != rhs " << aRec.fEnergyIonSum << endl;		
 		else
 			return false;  
@@ -416,7 +416,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fBaselineIonFiducial != aRec.fBaselineIonFiducial){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fBaselineIonFiducial Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fBaselineIonFiducial Not Equal. lhs: " 
 			<< fBaselineIonFiducial << " != rhs " << aRec.fBaselineIonFiducial << endl;		
 		else
 			return false;  
@@ -425,7 +425,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fEnergyBaselineHeat != aRec.fEnergyBaselineHeat){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fEnergyBaselineHeat Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fEnergyBaselineHeat Not Equal. lhs: " 
 			<< fEnergyBaselineHeat << " != rhs " << aRec.fEnergyBaselineHeat << endl;		
 		else
 			return false;  
@@ -434,7 +434,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fBaselineNoiseHeat != aRec.fBaselineNoiseHeat){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fBaselineNoiseHeat Not Equal. lhs: " 
+			cout << "KHLABolometerRecord fBaselineNoiseHeat Not Equal. lhs: " 
 			<< fBaselineNoiseHeat << " != rhs " << aRec.fBaselineNoiseHeat << endl;		
 		else
 			return false;  
@@ -443,7 +443,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	if(fCuts != aRec.fCuts){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KHLASingleBoloSubRecord fCuts Not Equal" << endl;		
+			cout << "KHLABolometerRecord fCuts Not Equal" << endl;		
 		else
 			return false;  
 	}
@@ -452,7 +452,7 @@ Bool_t KHLASingleBoloSubRecord::IsSame(const KHLASingleBoloSubRecord &aRec, Bool
 	return bIsEqual;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetEnergyCollectrode(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyCollectrode(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fEnergyCollectrode[i];
@@ -460,7 +460,7 @@ Double32_t KHLASingleBoloSubRecord::GetEnergyCollectrode(Int_t i) const
 	else return -99999.;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetEnergyVeto(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyVeto(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fEnergyVeto[i];
@@ -468,7 +468,7 @@ Double32_t KHLASingleBoloSubRecord::GetEnergyVeto(Int_t i) const
 	else return -99999.;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetEnergyGuard(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyGuard(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fEnergyGuard[i];
@@ -476,7 +476,7 @@ Double32_t KHLASingleBoloSubRecord::GetEnergyGuard(Int_t i) const
 	else return -99999.;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetEnergyBaselineCollectrode(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyBaselineCollectrode(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fEnergyBaselineCollectrode[i];
@@ -484,7 +484,7 @@ Double32_t KHLASingleBoloSubRecord::GetEnergyBaselineCollectrode(Int_t i) const
 	else return -99999.;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetEnergyBaselineVeto(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyBaselineVeto(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fEnergyBaselineVeto[i];
@@ -492,7 +492,7 @@ Double32_t KHLASingleBoloSubRecord::GetEnergyBaselineVeto(Int_t i) const
 	else return -99999.;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetEnergyBaselineGuard(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyBaselineGuard(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fEnergyBaselineGuard[i];
@@ -500,7 +500,7 @@ Double32_t KHLASingleBoloSubRecord::GetEnergyBaselineGuard(Int_t i) const
 	else return -99999.;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetBaselineNoiseCollectrode(Int_t i) const 
+Double32_t KHLABolometerRecord::GetBaselineNoiseCollectrode(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fBaselineNoiseCollectrode[i];
@@ -508,7 +508,7 @@ Double32_t KHLASingleBoloSubRecord::GetBaselineNoiseCollectrode(Int_t i) const
 	else return -99999.;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetBaselineNoiseVeto(Int_t i) const 
+Double32_t KHLABolometerRecord::GetBaselineNoiseVeto(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fBaselineNoiseVeto[i];
@@ -516,7 +516,7 @@ Double32_t KHLASingleBoloSubRecord::GetBaselineNoiseVeto(Int_t i) const
 	else return -99999.;
 }
 
-Double32_t KHLASingleBoloSubRecord::GetBaselineNoiseGuard(Int_t i) const 
+Double32_t KHLABolometerRecord::GetBaselineNoiseGuard(Int_t i) const 
 {
 	if(i >= 0 && i < 2)
 		return fBaselineNoiseGuard[i];
@@ -525,63 +525,63 @@ Double32_t KHLASingleBoloSubRecord::GetBaselineNoiseGuard(Int_t i) const
 }
 
 
-void KHLASingleBoloSubRecord::SetEnergyCollectrode(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetEnergyCollectrode(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fEnergyCollectrode[i] = aVal;
 	
 }
 
-void KHLASingleBoloSubRecord::SetEnergyVeto(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetEnergyVeto(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fEnergyVeto[i] = aVal;
 	
 }
 
-void KHLASingleBoloSubRecord::SetEnergyGuard(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetEnergyGuard(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fEnergyGuard[i] = aVal;
 	
 }
 
-void KHLASingleBoloSubRecord::SetEnergyBaselineCollectrode(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetEnergyBaselineCollectrode(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fEnergyBaselineCollectrode[i] = aVal;
 
 }
 
-void KHLASingleBoloSubRecord::SetEnergyBaselineVeto(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetEnergyBaselineVeto(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fEnergyBaselineVeto[i] = aVal;
 	
 }
 
-void KHLASingleBoloSubRecord::SetEnergyBaselineGuard(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetEnergyBaselineGuard(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fEnergyBaselineGuard[i] = aVal;
 	
 }
 
-void KHLASingleBoloSubRecord::SetBaselineNoiseCollectrode(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetBaselineNoiseCollectrode(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fBaselineNoiseCollectrode[i] = aVal;
 	
 }
 
-void KHLASingleBoloSubRecord::SetBaselineNoiseVeto(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetBaselineNoiseVeto(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fBaselineNoiseVeto[i] = aVal;
 	
 }
 
-void KHLASingleBoloSubRecord::SetBaselineNoiseGuard(Int_t i, Double_t aVal) 
+void KHLABolometerRecord::SetBaselineNoiseGuard(Int_t i, Double_t aVal) 
 {
 	if(i >= 0 && i < 2)
 		fBaselineNoiseGuard[i] = aVal;
@@ -589,25 +589,25 @@ void KHLASingleBoloSubRecord::SetBaselineNoiseGuard(Int_t i, Double_t aVal)
 }
 
 
-void KHLASingleBoloSubRecord::SetCuts(const TBits *mCuts)
+void KHLABolometerRecord::SetCuts(const TBits *mCuts)
 {
 	fCuts = *mCuts;
 	fCuts.Compact();
 }
 
 
-void KHLASingleBoloSubRecord::Compact(void)
+void KHLABolometerRecord::Compact(void)
 {
 	//make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
 	//and base classes
 	
-	KSingleBoloSubRecord::Compact();
+	KBolometerRecord::Compact();
 	
 	fCuts.Compact();
 }
 
-Bool_t KHLASingleBoloSubRecord::TestCutsBitNumber(Int_t i) const 
+Bool_t KHLABolometerRecord::TestCutsBitNumber(Int_t i) const 
 {
 	//The ERA cuts file for each bolometer has been read and each cut has been packed into this
 	//TBits object. The cuts correspond to the various cuts listed below.

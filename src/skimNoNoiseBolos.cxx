@@ -14,9 +14,9 @@
 #include "TH1I.h"
 #include "KHLAEvent.h"
 #include "KEvent.h"
-#include "KHLAMuonModuleSubRecord.h"
-#include "KHLASingleBoloSubRecord.h"
-#include "KHLASambaSubRecord.h"
+#include "KHLAMuonModuleRecord.h"
+#include "KHLABolometerRecord.h"
+#include "KHLASambaRecord.h"
 #include <stdlib.h>
 #include <iostream>
 #include "TString.h"
@@ -87,7 +87,7 @@ int main(int argc, char* argv[] )
 			//samba records. then add them back in accordingly if they
 			//are valid. 
 			mEout->GetBoloSubRecords()->Clear("C");
-			mEout->GetSambaSubRecords()->Clear("C");
+			mEout->GetSambaRecords()->Clear("C");
 			mEout->SetNumBolo(0);
 			mEout->SetNumSamba(0);
 			for(Int_t i = 0; i < mEv->GetNumBolos(); i++){
@@ -96,11 +96,11 @@ int main(int argc, char* argv[] )
 					 ){  //0 are 'noise' events.
 					isGoodEvent = true;
 					//this should be the same as cutting events where the EventFlag == 0
-					KHLASingleBoloSubRecord *inBolo = mEv->GetBolo(i);
-					KHLASingleBoloSubRecord *outBolo = mEout->AddBolo();
-					KHLASambaSubRecord *outSamba = mEout->AddSamba();
+					KHLABolometerRecord *inBolo = mEv->GetBolo(i);
+					KHLABolometerRecord *outBolo = mEout->AddBolo();
+					KHLASambaRecord *outSamba = mEout->AddSamba();
 					*outBolo = *inBolo;  //copy the bolo sub record
-					KHLASambaSubRecord *inSamba = inBolo->GetSambaRecord();
+					KHLASambaRecord *inSamba = inBolo->GetSambaRecord();
 					//cout << "Copying Samba Record" << endl;
 					*outSamba = *inSamba; //copy the samba sub record information 
 					//cout << "Setting Samba Record" << endl;

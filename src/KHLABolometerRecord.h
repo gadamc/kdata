@@ -1,5 +1,5 @@
 /*
- *  KHLASingleBoloSubRecord.h
+ *  KHLABolometerRecord.h
  *  KDataStructure
  *
  *  Created by Adam Cox on 3/25/10.
@@ -7,30 +7,30 @@
  *
  */
 
-#ifndef __KHLASINGLEBOLOSUBRECORD_H__
-#define __KHLASINGLEBOLOSUBRECORD_H__
+#ifndef __KHLABOLOMETERRECORD_H__
+#define __KHLABOLOMETERRECORD_H__
 
-#include "KSingleBoloSubRecord.h"
+#include "KBolometerRecord.h"
 #include "TRef.h"
-#include "KHLASambaSubRecord.h"
+#include "KHLASambaRecord.h"
 #include "TBits.h"
 const Int_t kSizeOfIonFlags = 6;
 
 //#include "TObject.h"
 
-class KHLASingleBoloSubRecord : public KSingleBoloSubRecord
+class KHLABolometerRecord : public KBolometerRecord
 {
 	
 public:
   //Constructors
-  KHLASingleBoloSubRecord(void);  //MUST have a default constructor
-	KHLASingleBoloSubRecord(const KHLASingleBoloSubRecord &aRec);
-	KHLASingleBoloSubRecord& operator=(const KHLASingleBoloSubRecord &aRec);
-  virtual ~KHLASingleBoloSubRecord(void);
+  KHLABolometerRecord(void);  //MUST have a default constructor
+	KHLABolometerRecord(const KHLABolometerRecord &aRec);
+	KHLABolometerRecord& operator=(const KHLABolometerRecord &aRec);
+  virtual ~KHLABolometerRecord(void);
 	virtual void Clear(Option_t *opt = "C");
-	Bool_t IsSame(const KHLASingleBoloSubRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KHLASingleBoloSubRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KHLASingleBoloSubRecord &aRec) const { return !(*this==aRec); }
+	Bool_t IsSame(const KHLABolometerRecord &aRec, Bool_t bPrint = false) const;
+	Bool_t operator==(const KHLABolometerRecord &aRec) const { return IsSame(aRec,false); }
+	Bool_t operator!=(const KHLABolometerRecord &aRec) const { return !(*this==aRec); }
 	void Compact(void); //make the class as small as possible.
 	
 	//getters
@@ -50,7 +50,7 @@ public:
 
 	Double_t GetFiducialVolume(void) const {return fFiducialVolume;}
 	
-	KHLASambaSubRecord* GetSambaRecord() const {return (KHLASambaSubRecord*)fSambaRecord.GetObject();}
+	KHLASambaRecord* GetSambaRecord() const {return (KHLASambaRecord*)fSambaRecord.GetObject();}
 	
 	Double32_t GetEnergyCollectrode(Int_t i) const;
 	Double32_t GetEnergyVeto(Int_t i) const;
@@ -90,7 +90,7 @@ public:
 	
 	void SetFiducialVolume(Double_t aWord) {fFiducialVolume = aWord;}
 	
-	void SetSambaRecord(KHLASambaSubRecord* aRec){fSambaRecord = aRec;}
+	void SetSambaRecord(KHLASambaRecord* aRec){fSambaRecord = aRec;}
 	
 	void SetEnergyCollectrode(Int_t i, Double32_t aVal);
 	void SetEnergyVeto(Int_t i, Double32_t aVal);
@@ -163,10 +163,10 @@ private:
 	
 	//private methods
 	void InitializeMembers(void);
-	void CopyLocalMembers(const KHLASingleBoloSubRecord &aRec);
+	void CopyLocalMembers(const KHLABolometerRecord &aRec);
 	
-  ClassDef(KHLASingleBoloSubRecord,1);
+  ClassDef(KHLABolometerRecord,1);
 };
 
 
-#endif // __KHLASINGLEBOLOSUBRECORD_H__
+#endif // __KHLABOLOMETERRECORD_H__

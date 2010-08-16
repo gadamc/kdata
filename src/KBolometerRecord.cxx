@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KSingleBoloSubRecord.cxx
+// KBolometerRecord.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
@@ -11,16 +11,16 @@
 // contain data from an individual bolometer. 
 //
 
-#include "KSingleBoloSubRecord.h"
+#include "KBolometerRecord.h"
 #include <stdio.h>
 #include <iostream>
 #include <cstring> 
 
 using namespace std;
 
-ClassImp(KSingleBoloSubRecord);
+ClassImp(KBolometerRecord);
 
-KSingleBoloSubRecord::KSingleBoloSubRecord(void)
+KBolometerRecord::KBolometerRecord(void)
 {
 	InitializeMembers();
 	
@@ -32,7 +32,7 @@ KSingleBoloSubRecord::KSingleBoloSubRecord(void)
 	
 }
 
-KSingleBoloSubRecord::KSingleBoloSubRecord(const KSingleBoloSubRecord &aRec)
+KBolometerRecord::KBolometerRecord(const KBolometerRecord &aRec)
 : KSubRecord(aRec)
 {
 	CopyLocalMembers(aRec);
@@ -42,7 +42,7 @@ KSingleBoloSubRecord::KSingleBoloSubRecord(const KSingleBoloSubRecord &aRec)
 
 }
 
-KSingleBoloSubRecord& KSingleBoloSubRecord::operator=(const KSingleBoloSubRecord &aRec)
+KBolometerRecord& KBolometerRecord::operator=(const KBolometerRecord &aRec)
 {
 	if(&aRec == this) return *this;
 	
@@ -54,7 +54,7 @@ KSingleBoloSubRecord& KSingleBoloSubRecord::operator=(const KSingleBoloSubRecord
 	return *this;
 }
 
-void KSingleBoloSubRecord::CopyLocalMembers(const KSingleBoloSubRecord &aRec)
+void KBolometerRecord::CopyLocalMembers(const KBolometerRecord &aRec)
 {
 
 	SetDetectorNumber(aRec.GetDetectorNumber());
@@ -64,7 +64,7 @@ void KSingleBoloSubRecord::CopyLocalMembers(const KSingleBoloSubRecord &aRec)
 	//SetTimeOfLastThresholdChange(aRec.GetTimeOfLastThresholdChange());
 }
 
-KSingleBoloSubRecord::~KSingleBoloSubRecord(void)
+KBolometerRecord::~KBolometerRecord(void)
 {
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
@@ -77,7 +77,7 @@ KSingleBoloSubRecord::~KSingleBoloSubRecord(void)
 	}
 }
 
-void KSingleBoloSubRecord::Clear(Option_t *opt)
+void KBolometerRecord::Clear(Option_t *opt)
 {
 	//Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
@@ -99,7 +99,7 @@ void KSingleBoloSubRecord::Clear(Option_t *opt)
 	
 }
 
-void KSingleBoloSubRecord::InitializeMembers(void)
+void KBolometerRecord::InitializeMembers(void)
 {
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
@@ -111,7 +111,7 @@ void KSingleBoloSubRecord::InitializeMembers(void)
 	//SetTimeOfLastThresholdChange(-99);
 }
 
-void KSingleBoloSubRecord::SetDetectorName(const Char_t* aWord, Int_t aSize)
+void KBolometerRecord::SetDetectorName(const Char_t* aWord, Int_t aSize)
 {
 	if(aSize!=fDetectorNameSize){
 		if(fDetectorName!=0){
@@ -125,7 +125,7 @@ void KSingleBoloSubRecord::SetDetectorName(const Char_t* aWord, Int_t aSize)
 	if(aSize>0)memcpy(fDetectorName, aWord, fDetectorNameSize*sizeof(Char_t));
 }
 
-string KSingleBoloSubRecord::GetDetectorName(void) const 
+string KBolometerRecord::GetDetectorName(void) const 
 {
 	string str=""; 
 	
@@ -137,7 +137,7 @@ string KSingleBoloSubRecord::GetDetectorName(void) const
 }
 
 
-Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPrint) const
+Bool_t KBolometerRecord::IsSame(const KBolometerRecord &aRec, Bool_t bPrint) const
 {
 	//Compares two objects and their member variables to test for equality.
 	//If bPrint is set to true, then a message for each member variable that is different
@@ -156,7 +156,7 @@ Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPr
 	
 	if(fDetectorNumber != aRec.fDetectorNumber){
 		if (bPrint) 
-			cout << "KSingleBoloSubRecord fDetectorNumber Not Equal. lhs: " 
+			cout << "KBolometerRecord fDetectorNumber Not Equal. lhs: " 
 			<< fDetectorNumber << " != rhs " << aRec.fDetectorNumber << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -166,7 +166,7 @@ Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPr
 	
 	if(fDetectorNameSize != aRec.fDetectorNameSize){
 		if (bPrint) 
-			cout << "KSingleBoloSubRecord fDetectorNameSize Not Equal. lhs: " 
+			cout << "KBolometerRecord fDetectorNameSize Not Equal. lhs: " 
 			<< fDetectorNameSize << " != rhs " << aRec.fDetectorNameSize << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -176,7 +176,7 @@ Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPr
 	
 	if(strncmp(fDetectorName, aRec.fDetectorName, sizeof(Char_t)*fDetectorNameSize)){
 		if (bPrint) 
-			cout << "KSingleBoloSubRecord fDetectorName Not Equal. lhs: " 
+			cout << "KBolometerRecord fDetectorName Not Equal. lhs: " 
 			<< fDetectorName << " != rhs " << aRec.fDetectorName << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -186,7 +186,7 @@ Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPr
 	
 	/*if(fHeatPositiveThreshold != aRec.fHeatPositiveThreshold){
 		if (bPrint) 
-			cout << "KSingleBoloSubRecord fHeatPositiveThreshold Not Equal. lhs: " 
+			cout << "KBolometerRecord fHeatPositiveThreshold Not Equal. lhs: " 
 			<< fHeatPositiveThreshold << " != rhs " << aRec.fHeatPositiveThreshold << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -196,7 +196,7 @@ Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPr
 	
 	/*if(fHeatNegativeThreshold != aRec.fHeatNegativeThreshold){
 		if (bPrint) 
-			cout << "KSingleBoloSubRecord fHeatNegativeThreshold Not Equal. lhs: " 
+			cout << "KBolometerRecord fHeatNegativeThreshold Not Equal. lhs: " 
 			<< fHeatNegativeThreshold << " != rhs " << aRec.fHeatNegativeThreshold << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -206,7 +206,7 @@ Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPr
 	
 	/*if(fTimeOfLastThresholdChange != aRec.fTimeOfLastThresholdChange){
 		if (bPrint) 
-			cout << "KSingleBoloSubRecord fTimeOfLastThresholdChange Not Equal. lhs: " 
+			cout << "KBolometerRecord fTimeOfLastThresholdChange Not Equal. lhs: " 
 			<< fTimeOfLastThresholdChange << " != rhs " << aRec.fTimeOfLastThresholdChange << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -216,7 +216,7 @@ Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPr
 	
 	/*if(fVoie != aRec.fVoie){
 		if (bPrint) 
-			cout << "KSingleBoloSubRecord fVoie Not Equal. lhs: " 
+			cout << "KBolometerRecord fVoie Not Equal. lhs: " 
 			<< fVoie << " != rhs " << aRec.fVoie << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -228,7 +228,7 @@ Bool_t KSingleBoloSubRecord::IsSame(const KSingleBoloSubRecord &aRec, Bool_t bPr
 }
 
 
-void KSingleBoloSubRecord::Compact(void)
+void KBolometerRecord::Compact(void)
 {
 	//make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)

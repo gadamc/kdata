@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 	
 	for(Int_t i = 0; i < fin.GetEntries(); i++){
 		
-		if(i % fBreakAfterThisNumEvents == 0 && i!=0){
+		if(i % fBreakAfterThisNumEvents == 0){
 			if(fout != 0){
 				cout << "Writing and Closing sub file." << endl;
 				fout->Write();

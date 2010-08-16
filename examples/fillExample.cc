@@ -10,8 +10,8 @@
 #include "TFile.h"
 #include "KHLAEvent.h"
 #include "KTestEventClass.h"
-#include "KHLAMuonModuleSubRecord.h"
-#include "KHLASingleBoloSubRecord.h"
+#include "KHLAMuonModuleRecord.h"
+#include "KHLABolometerRecord.h"
 #include "TTree.h"
 #include <iostream>
 #include <fstream>
@@ -137,7 +137,7 @@ int fillEventExampleFunction(const char* name, const char* log)
 			
 			for(Int_t i = 0; i < nMod; i++) {
 				bIsMuonEvent = true;
-				KHLAMuonModuleSubRecord* mMuonModule = mEv->AddMuonModule();
+				KHLAMuonModuleRecord* mMuonModule = mEv->AddMuonModule();
 				mMuonModule->SetModuleNumber(40*gRandom->Rndm());
 				mMuonModule->SetAdc(0,(Int_t)(2048*gRandom->Rndm()));
 				mMuonModule->SetAdc(1,(Int_t)(2048*gRandom->Rndm()));
@@ -152,7 +152,7 @@ int fillEventExampleFunction(const char* name, const char* log)
 			Int_t nBolo = 1 + (gRandom->Poisson(0.95));
 			for (Int_t i = 0; i < nBolo; i++) {
 				bIsBoloEvent = true;
-				KHLASingleBoloSubRecord* mBolo2 = mEv->AddBolo();
+				KHLABolometerRecord* mBolo2 = mEv->AddBolo();
 				
 				mBolo2->SetQvalue(gRandom->Rndm());
 				mBolo2->SetEnergyRecoil(100.0*gRandom->Rndm());

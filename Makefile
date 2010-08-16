@@ -28,10 +28,7 @@ CLASSES := $(basename $(notdir $(wildcard $(SRCDIR)K*.cxx)))
 
 # FILTER OUT ANY CLASSES THAT YOU ARE NOT READY TO ADD FOR COMPILATION
 #	
-#CLASSES := $(filter-out EdwTreeReader, $(CLASSES))
-#CLASSES := $(filter-out EdwTreeWriter, $(CLASSES))
-#CLASSES := $(filter-out EdwTreeIO, $(CLASSES))
-#CLASSES := $(filter-out EdwAnalysis, $(CLASSES))
+
 CLASSES := $(filter-out KTimeStamp, $(CLASSES))
 
 #fillEvents -- CHANGE THIS NAME HERE TO COMPILE A DIFFERENT EXECUTABLE

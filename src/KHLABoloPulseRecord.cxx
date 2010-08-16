@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KHLABoloPulseSubRecord.cxx
+// KHLABoloPulseRecord.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
@@ -12,50 +12,50 @@
 // at the moment. This will possibly change one day in the future. 
 //
 
-#include "KHLABoloPulseSubRecord.h"
+#include "KHLABoloPulseRecord.h"
 #include <iostream>
 using namespace std;
 
-ClassImp(KHLABoloPulseSubRecord);
+ClassImp(KHLABoloPulseRecord);
 
-KHLABoloPulseSubRecord::KHLABoloPulseSubRecord(void)
+KHLABoloPulseRecord::KHLABoloPulseRecord(void)
 {
 
   InitializeMembers();
 }
 
-KHLABoloPulseSubRecord::KHLABoloPulseSubRecord(const KHLABoloPulseSubRecord &aRec)
-: KBoloPulseSubRecord(aRec)
+KHLABoloPulseRecord::KHLABoloPulseRecord(const KHLABoloPulseRecord &aRec)
+: KBoloPulseRecord(aRec)
 {
 	CopyLocalMembers(aRec);
 	
 }
 
-KHLABoloPulseSubRecord& KHLABoloPulseSubRecord::operator=(const KHLABoloPulseSubRecord &aRec)
+KHLABoloPulseRecord& KHLABoloPulseRecord::operator=(const KHLABoloPulseRecord &aRec)
 {
 	if(&aRec == this) return *this;
 	
-	this->KBoloPulseSubRecord::operator=(aRec);
+	this->KBoloPulseRecord::operator=(aRec);
 	
 	CopyLocalMembers(aRec);
 	
 	return *this;
 }
 
-void KHLABoloPulseSubRecord::CopyLocalMembers(const KHLABoloPulseSubRecord &/*aRec*/)
+void KHLABoloPulseRecord::CopyLocalMembers(const KHLABoloPulseRecord &/*aRec*/)
 {
 	//nothing to do
 	
 }
 
-KHLABoloPulseSubRecord::~KHLABoloPulseSubRecord(void)
+KHLABoloPulseRecord::~KHLABoloPulseRecord(void)
 {
   //Does calling clear at destruction take too much computing time?
   Clear("C");
 
 }
 
-void KHLABoloPulseSubRecord::Clear(Option_t *opt)
+void KHLABoloPulseRecord::Clear(Option_t *opt)
 {
   //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
@@ -63,7 +63,7 @@ void KHLABoloPulseSubRecord::Clear(Option_t *opt)
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-	KBoloPulseSubRecord::Clear(opt);
+	KBoloPulseRecord::Clear(opt);
 	
   //Clear and delete local objects here. 
 
@@ -72,7 +72,7 @@ void KHLABoloPulseSubRecord::Clear(Option_t *opt)
 
 }
 
-void KHLABoloPulseSubRecord::InitializeMembers(void)
+void KHLABoloPulseRecord::InitializeMembers(void)
 {
 	//init local members
 	
@@ -80,7 +80,7 @@ void KHLABoloPulseSubRecord::InitializeMembers(void)
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 }
 
-Bool_t KHLABoloPulseSubRecord::IsSame(const KHLABoloPulseSubRecord &aRec, Bool_t bPrint) const
+Bool_t KHLABoloPulseRecord::IsSame(const KHLABoloPulseRecord &aRec, Bool_t bPrint) const
 {
 	//Compares two objects and their member variables to test for equality.
 	//If bPrint is set to true, then a message for each member variable that is different
@@ -90,7 +90,7 @@ Bool_t KHLABoloPulseSubRecord::IsSame(const KHLABoloPulseSubRecord &aRec, Bool_t
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
 	//call the base class's IsSame methods
-	if(!this->KBoloPulseSubRecord::IsSame(aRec,bPrint)){
+	if(!this->KBoloPulseRecord::IsSame(aRec,bPrint)){
 		bIsEqual = false;
 		if(!bPrint)
 			return false;  //if we're not printing out, just return false at first failure
@@ -102,13 +102,13 @@ Bool_t KHLABoloPulseSubRecord::IsSame(const KHLABoloPulseSubRecord &aRec, Bool_t
 }
 
 
-void KHLABoloPulseSubRecord::Compact(void)
+void KHLABoloPulseRecord::Compact(void)
 {
 	//make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
 	//and base classes
 	
-	KBoloPulseSubRecord::Compact();
+	KBoloPulseRecord::Compact();
 
 }
 

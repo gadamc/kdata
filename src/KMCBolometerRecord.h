@@ -1,5 +1,5 @@
 /*
- *  KMCSingleBoloSubRecord.h
+ *  KMCBolometerRecord.h
  *  KDataStructure
  *
  *  Created by Alexander Wunderele on 3/25/10.
@@ -7,26 +7,26 @@
  *
  */
 
-#ifndef __KMCSINGLEBOLOSUBRECORD_H__
-#define __KMCSINGLEBOLOSUBRECORD_H__
+#ifndef __KMCBOLOMETERRECORD_H__
+#define __KMCBOLOMETERRECORD_H__
 
-#include "KHLASingleBoloSubRecord.h"
+#include "KHLABolometerRecord.h"
 #include <string>
 
 using namespace std;
 
-class KMCSingleBoloSubRecord : public KHLASingleBoloSubRecord {
+class KMCBolometerRecord : public KHLABolometerRecord {
 
 public:
   //Constructors
-  KMCSingleBoloSubRecord(void);
-	KMCSingleBoloSubRecord(const KMCSingleBoloSubRecord &aRec);
-	KMCSingleBoloSubRecord& operator=(const KMCSingleBoloSubRecord &aRec);
-  virtual ~KMCSingleBoloSubRecord(void);
+  KMCBolometerRecord(void);
+	KMCBolometerRecord(const KMCBolometerRecord &aRec);
+	KMCBolometerRecord& operator=(const KMCBolometerRecord &aRec);
+  virtual ~KMCBolometerRecord(void);
 	virtual void Clear(Option_t *opt = "C");
-	Bool_t IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KMCSingleBoloSubRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KMCSingleBoloSubRecord &aRec) const { return !(*this==aRec); }
+	Bool_t IsSame(const KMCBolometerRecord &aRec, Bool_t bPrint = false) const;
+	Bool_t operator==(const KMCBolometerRecord &aRec) const { return IsSame(aRec,false); }
+	Bool_t operator!=(const KMCBolometerRecord &aRec) const { return !(*this==aRec); }
 
 	
 	Int_t GetEventID(void) const {return fEventID;}
@@ -83,11 +83,11 @@ private:
 	
 	//private methods
   void InitializeMembers(void);
-	void CopyLocalMembers(const KMCSingleBoloSubRecord &aRec);
+	void CopyLocalMembers(const KMCBolometerRecord &aRec);
 	
-  ClassDef(KMCSingleBoloSubRecord,1);
+  ClassDef(KMCBolometerRecord,1);
 };
 
 
-#endif // __KMCSINGLEBOLOSUBRECORD_H__
+#endif // __KMCBOLOMETERRECORD_H__
 

@@ -14,9 +14,9 @@
 #include "TH1I.h"
 #include "KHLAEvent.h"
 #include "KEvent.h"
-#include "KHLAMuonModuleSubRecord.h"
-#include "KHLASingleBoloSubRecord.h"
-#include "KHLASambaSubRecord.h"
+#include "KHLAMuonModuleRecord.h"
+#include "KHLABolometerRecord.h"
+#include "KHLASambaRecord.h"
 #include <stdlib.h>
 #include <iostream>
 #include "TString.h"

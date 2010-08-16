@@ -22,10 +22,10 @@
 #include "Rtypes.h"
 
 #include "KHLAEvent.h"
-#include "KHLAMuonModuleSubRecord.h"
+#include "KHLAMuonModuleRecord.h"
 #include "KHLAMuonVetoSysRecord.h"
-#include "KHLASingleBoloSubRecord.h"
-#include "KHLASambaSubRecord.h"
+#include "KHLABolometerRecord.h"
+#include "KHLASambaRecord.h"
 #include "KDataReader.h"
 #include "KDataWriter.h"
 
@@ -82,11 +82,11 @@ KHLAEvent* mergeSubRecords(KHLAEvent* ev1, KHLAEvent* ev2){
 	
 	TClonesArray *boloArray2 = ev2->GetBoloSubRecords();
 	for(Int_t i =0; i<bolo2;i++){
-		KHLASingleBoloSubRecord* singleBoloSub=ev1->AddBolo();
-		KHLASingleBoloSubRecord* singleBoloSub2=(KHLASingleBoloSubRecord*)boloArray2->At(i);
+		KHLABolometerRecord* singleBoloSub=ev1->AddBolo();
+		KHLABolometerRecord* singleBoloSub2=(KHLABolometerRecord*)boloArray2->At(i);
 		*singleBoloSub = *singleBoloSub2; 
-		KHLASambaSubRecord* sambaSub2 = singleBoloSub2->GetSambaRecord();
-		KHLASambaSubRecord* sambaSub = 0;
+		KHLASambaRecord* sambaSub2 = singleBoloSub2->GetSambaRecord();
+		KHLASambaRecord* sambaSub = 0;
 		
 		if(sambaSub2 != 0){
 			sambaSub = ev1->AddSamba();
@@ -95,10 +95,10 @@ KHLAEvent* mergeSubRecords(KHLAEvent* ev1, KHLAEvent* ev2){
 		}
 	}
 	//the same for pulse muon etc.
-	TClonesArray *muonArray2 = ev2->GetMuonModuleSubRecords();
+	TClonesArray *muonArray2 = ev2->GetMuonModuleRecords();
 	for(Int_t i =0; i<muon2;i++){
-		KHLAMuonModuleSubRecord* muonModuleSub=ev1->AddMuonModule();
-		KHLAMuonModuleSubRecord* muonModuleSub2=(KHLAMuonModuleSubRecord*)muonArray2->At(i);
+		KHLAMuonModuleRecord* muonModuleSub=ev1->AddMuonModule();
+		KHLAMuonModuleRecord* muonModuleSub2=(KHLAMuonModuleRecord*)muonArray2->At(i);
 		*muonModuleSub = *muonModuleSub2;
 	}
 	
@@ -127,8 +127,8 @@ void printInfo(KHLAEvent* ev){
 	ev->myPrint();
 	ev->myPrintB();
 	if((ev->GetNumSambas())!=0){
-		TClonesArray* sambaArray=ev->GetSambaSubRecords();
-		KHLASambaSubRecord* sam=(KHLASambaSubRecord*)sambaArray->At(0);
+		TClonesArray* sambaArray=ev->GetSambaRecords();
+		KHLASambaRecord* sam=(KHLASambaRecord*)sambaArray->At(0);
 		cout <<  "FileName: "<< sam->GetRunName()	<< " Samba Event Number: "<< sam->GetSambaEventNumber() <<endl;
 	}
 	else cout << "No Samba information available." << endl;
@@ -137,9 +137,9 @@ void printInfo(KHLAEvent* ev){
 
 
 bool checkSpecialCase(string in, KHLAEvent* ev ){
-	if((ev->GetNumSambas())!=0){ //GetNumSambaRecs  GetSambaSubRecords
-		TClonesArray* sambaArray = ev->GetSambaSubRecords();
-		KHLASambaSubRecord* sam=(KHLASambaSubRecord*)sambaArray->At(0);
+	if((ev->GetNumSambas())!=0){ //GetNumSambaRecs  GetSambaRecords
+		TClonesArray* sambaArray = ev->GetSambaRecords();
+		KHLASambaRecord* sam=(KHLASambaRecord*)sambaArray->At(0);
 		if((sam->GetRunName())==in) return true;
 		else return false;
 	}

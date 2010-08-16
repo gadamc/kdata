@@ -1,5 +1,5 @@
 /*
- *  KSambaSubRecord.h
+ *  KSambaRecord.h
  *  KDataStructure
  *
  *  Created by Adam Cox on 3/25/10.
@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef __KSAMBASUBRECORD_H__
-#define __KSAMBASUBRECORD_H__
+#ifndef __KSAMBARECORD_H__
+#define __KSAMBARECORD_H__
 
 #include "KSubRecord.h"
 #include <string>
@@ -16,18 +16,18 @@
 
 using namespace std;
 
-class KSambaSubRecord : public KSubRecord { 
+class KSambaRecord : public KSubRecord { 
 
 public:
   //Constructors
-  KSambaSubRecord(void);
-	KSambaSubRecord(const KSambaSubRecord &aRec);
-	KSambaSubRecord& operator=(const KSambaSubRecord &aRec);
-  virtual ~KSambaSubRecord(void);
+  KSambaRecord(void);
+	KSambaRecord(const KSambaRecord &aRec);
+	KSambaRecord& operator=(const KSambaRecord &aRec);
+  virtual ~KSambaRecord(void);
 	virtual void Clear(Option_t *opt = "C");
-	Bool_t IsSame(const KSambaSubRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KSambaSubRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KSambaSubRecord &aRec) const { return !(*this==aRec); }
+	Bool_t IsSame(const KSambaRecord &aRec, Bool_t bPrint = false) const;
+	Bool_t operator==(const KSambaRecord &aRec) const { return IsSame(aRec,false); }
+	Bool_t operator!=(const KSambaRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
 	
 	//getters
@@ -84,10 +84,10 @@ private:
 	
 	//private methods
 	void InitializeMembers(void);
-	void CopyLocalMembers(const KSambaSubRecord &aRec);
+	void CopyLocalMembers(const KSambaRecord &aRec);
 	
-  ClassDef(KSambaSubRecord,1);
+  ClassDef(KSambaRecord,1);
 };
 
 
-#endif // __KSAMBASUBRECORD_H__
+#endif // __KSAMBARECORD_H__

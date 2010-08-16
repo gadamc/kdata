@@ -17,9 +17,9 @@
 
 #include "TFile.h"
 #include "KHLAEvent.h"
-#include "KHLAMuonModuleSubRecord.h"
-#include "KHLASingleBoloSubRecord.h"
-#include "KHLASambaSubRecord.h"
+#include "KHLAMuonModuleRecord.h"
+#include "KHLABolometerRecord.h"
+#include "KHLASambaRecord.h"
 #include "TTree.h"
 #include <iostream>
 #include <fstream>

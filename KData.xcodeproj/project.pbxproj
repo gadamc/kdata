@@ -208,7 +208,6 @@
 		66AC83AB11A16A590071A5AA /* getMuonModuleAdcSpectrum */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = getMuonModuleAdcSpectrum; sourceTree = BUILT_PRODUCTS_DIR; };
 		66AC841E11A172680071A5AA /* getMuonModuleAdcSpectrum.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = getMuonModuleAdcSpectrum.cxx; sourceTree = "<group>"; };
 		66AC842511A172920071A5AA /* MuonModuleADCSpectrum.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MuonModuleADCSpectrum.C; sourceTree = "<group>"; };
-		66AC84BC11A18DC70071A5AA /* libEdwDS.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libEdwDS.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		66AC858011A1A7D10071A5AA /* fillEvents */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fillEvents; sourceTree = BUILT_PRODUCTS_DIR; };
 		66AC866111A29CA00071A5AA /* skimNoNoiseBolos */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = skimNoNoiseBolos; sourceTree = BUILT_PRODUCTS_DIR; };
 		66AC868911A2B5650071A5AA /* skimNoNoiseBolos.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = skimNoNoiseBolos.cxx; path = src/skimNoNoiseBolos.cxx; sourceTree = "<group>"; };
@@ -253,27 +252,32 @@
 		66D3A175121544FE00A08CBD /* KMuonVetoSystemRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KMuonVetoSystemRecord.cxx; path = src/KMuonVetoSystemRecord.cxx; sourceTree = "<group>"; };
 		66D3A178121544FE00A08CBD /* KBoloSystemRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KBoloSystemRecord.h; path = src/KBoloSystemRecord.h; sourceTree = "<group>"; };
 		66D3A179121544FE00A08CBD /* KBoloSystemRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KBoloSystemRecord.cxx; path = src/KBoloSystemRecord.cxx; sourceTree = "<group>"; };
-		66D3A17A1215455D00A08CBD /* KMCSingleBoloSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMCSingleBoloSubRecord.h; path = src/KMCSingleBoloSubRecord.h; sourceTree = "<group>"; };
-		66D3A17B1215455D00A08CBD /* KMCSingleBoloSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KMCSingleBoloSubRecord.cxx; path = src/KMCSingleBoloSubRecord.cxx; sourceTree = "<group>"; };
-		66D3A17C1215455D00A08CBD /* KHLASingleBoloSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLASingleBoloSubRecord.h; path = src/KHLASingleBoloSubRecord.h; sourceTree = "<group>"; };
-		66D3A17D1215455D00A08CBD /* KHLASingleBoloSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLASingleBoloSubRecord.cxx; path = src/KHLASingleBoloSubRecord.cxx; sourceTree = "<group>"; };
-		66D3A17E1215455D00A08CBD /* KHLASambaSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLASambaSubRecord.h; path = src/KHLASambaSubRecord.h; sourceTree = "<group>"; };
-		66D3A17F1215455D00A08CBD /* KHLASambaSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLASambaSubRecord.cxx; path = src/KHLASambaSubRecord.cxx; sourceTree = "<group>"; };
-		66D3A1801215455D00A08CBD /* KHLAMuonModuleSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLAMuonModuleSubRecord.h; path = src/KHLAMuonModuleSubRecord.h; sourceTree = "<group>"; };
-		66D3A1811215455D00A08CBD /* KHLAMuonModuleSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLAMuonModuleSubRecord.cxx; path = src/KHLAMuonModuleSubRecord.cxx; sourceTree = "<group>"; };
-		66D3A1821215455D00A08CBD /* KHLABoloPulseSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLABoloPulseSubRecord.h; path = src/KHLABoloPulseSubRecord.h; sourceTree = "<group>"; };
-		66D3A1831215455D00A08CBD /* KHLABoloPulseSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLABoloPulseSubRecord.cxx; path = src/KHLABoloPulseSubRecord.cxx; sourceTree = "<group>"; };
+		66D3A17A1215455D00A08CBD /* KMCBolometerRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMCBolometerRecord.h; path = src/KMCBolometerRecord.h; sourceTree = "<group>"; };
+		66D3A17B1215455D00A08CBD /* KMCBolometerRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KMCBolometerRecord.cxx; path = src/KMCBolometerRecord.cxx; sourceTree = "<group>"; };
+		66D3A17C1215455D00A08CBD /* KHLABolometerRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLABolometerRecord.h; path = src/KHLABolometerRecord.h; sourceTree = "<group>"; };
+		66D3A17D1215455D00A08CBD /* KHLABolometerRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLABolometerRecord.cxx; path = src/KHLABolometerRecord.cxx; sourceTree = "<group>"; };
+		66D3A17E1215455D00A08CBD /* KHLASambaRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLASambaRecord.h; path = src/KHLASambaRecord.h; sourceTree = "<group>"; };
+		66D3A17F1215455D00A08CBD /* KHLASambaRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLASambaRecord.cxx; path = src/KHLASambaRecord.cxx; sourceTree = "<group>"; };
+		66D3A1801215455D00A08CBD /* KHLAMuonModuleRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLAMuonModuleRecord.h; path = src/KHLAMuonModuleRecord.h; sourceTree = "<group>"; };
+		66D3A1811215455D00A08CBD /* KHLAMuonModuleRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLAMuonModuleRecord.cxx; path = src/KHLAMuonModuleRecord.cxx; sourceTree = "<group>"; };
+		66D3A1821215455D00A08CBD /* KHLABoloPulseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KHLABoloPulseRecord.h; path = src/KHLABoloPulseRecord.h; sourceTree = "<group>"; };
+		66D3A1831215455D00A08CBD /* KHLABoloPulseRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KHLABoloPulseRecord.cxx; path = src/KHLABoloPulseRecord.cxx; sourceTree = "<group>"; };
 		66D3A18C121545C900A08CBD /* KSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSubRecord.h; path = src/KSubRecord.h; sourceTree = "<group>"; };
 		66D3A18D121545C900A08CBD /* KSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSubRecord.cxx; path = src/KSubRecord.cxx; sourceTree = "<group>"; };
-		66D3A18E121545C900A08CBD /* KSingleBoloSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSingleBoloSubRecord.h; path = src/KSingleBoloSubRecord.h; sourceTree = "<group>"; };
-		66D3A18F121545C900A08CBD /* KSingleBoloSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSingleBoloSubRecord.cxx; path = src/KSingleBoloSubRecord.cxx; sourceTree = "<group>"; };
-		66D3A190121545C900A08CBD /* KSambaSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSambaSubRecord.h; path = src/KSambaSubRecord.h; sourceTree = "<group>"; };
-		66D3A191121545C900A08CBD /* KSambaSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSambaSubRecord.cxx; path = src/KSambaSubRecord.cxx; sourceTree = "<group>"; };
-		66D3A192121545C900A08CBD /* KMuonModuleSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMuonModuleSubRecord.h; path = src/KMuonModuleSubRecord.h; sourceTree = "<group>"; };
-		66D3A193121545C900A08CBD /* KMuonModuleSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KMuonModuleSubRecord.cxx; path = src/KMuonModuleSubRecord.cxx; sourceTree = "<group>"; };
-		66D3A196121545C900A08CBD /* KBoloPulseSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KBoloPulseSubRecord.h; path = src/KBoloPulseSubRecord.h; sourceTree = "<group>"; };
-		66D3A197121545C900A08CBD /* KBoloPulseSubRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KBoloPulseSubRecord.cxx; path = src/KBoloPulseSubRecord.cxx; sourceTree = "<group>"; };
+		66D3A18E121545C900A08CBD /* KBolometerRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KBolometerRecord.h; path = src/KBolometerRecord.h; sourceTree = "<group>"; };
+		66D3A18F121545C900A08CBD /* KBolometerRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KBolometerRecord.cxx; path = src/KBolometerRecord.cxx; sourceTree = "<group>"; };
+		66D3A190121545C900A08CBD /* KSambaRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSambaRecord.h; path = src/KSambaRecord.h; sourceTree = "<group>"; };
+		66D3A191121545C900A08CBD /* KSambaRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSambaRecord.cxx; path = src/KSambaRecord.cxx; sourceTree = "<group>"; };
+		66D3A192121545C900A08CBD /* KMuonModuleRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KMuonModuleRecord.h; path = src/KMuonModuleRecord.h; sourceTree = "<group>"; };
+		66D3A193121545C900A08CBD /* KMuonModuleRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KMuonModuleRecord.cxx; path = src/KMuonModuleRecord.cxx; sourceTree = "<group>"; };
+		66D3A196121545C900A08CBD /* KBoloPulseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KBoloPulseRecord.h; path = src/KBoloPulseRecord.h; sourceTree = "<group>"; };
+		66D3A197121545C900A08CBD /* KBoloPulseRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KBoloPulseRecord.cxx; path = src/KBoloPulseRecord.cxx; sourceTree = "<group>"; };
 		66D3A3561218111A00A08CBD /* breakupKDataFile.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = breakupKDataFile.cxx; path = src/breakupKDataFile.cxx; sourceTree = "<group>"; };
+		66D3A3B5121829DB00A08CBD /* scriptStartMerge.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scriptStartMerge.sh; sourceTree = "<group>"; };
+		66D3A3EF1219DF5A00A08CBD /* libEdwDS.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; name = libEdwDS.so; path = /Users/adam/softwareDev/KData/build/Release/libEdwDS.so; sourceTree = "<absolute>"; };
+		66D3A3FC1219E3B600A08CBD /* KDataAnalysis.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KDataAnalysis.cxx; path = src/KDataAnalysis.cxx; sourceTree = "<group>"; };
+		66D3A3FD1219E3B600A08CBD /* KDataAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KDataAnalysis.h; path = src/KDataAnalysis.h; sourceTree = "<group>"; };
+		66D3A4061219F4CD00A08CBD /* libKData.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libKData.so; path = lib/libKData.so; sourceTree = "<group>"; };
 		66F9C22A1164E2000070AFCE /* Makefile.arch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.arch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -358,6 +362,7 @@
 		6631B6DD116F5EB4007A6E89 /* examples */ = {
 			isa = PBXGroup;
 			children = (
+				66D3A3B5121829DB00A08CBD /* scriptStartMerge.sh */,
 				66775E5A118F12C4002936D8 /* concatDst.cc */,
 				66D3A15D121490B100A08CBD /* mergeKEdsTree.cc */,
 				66D3A15E1214990500A08CBD /* fillEraToKEds.cc */,
@@ -400,8 +405,8 @@
 		66AC83AC11A16A590071A5AA /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				66D3A4061219F4CD00A08CBD /* libKData.so */,
 				66AC83AB11A16A590071A5AA /* getMuonModuleAdcSpectrum */,
-				66AC84BC11A18DC70071A5AA /* libEdwDS.so */,
 				66AC858011A1A7D10071A5AA /* fillEvents */,
 				66AC866111A29CA00071A5AA /* skimNoNoiseBolos */,
 				66AC8A5511A5871D0071A5AA /* fillMuonVetoEvents */,
@@ -459,6 +464,8 @@
 				66D3A1581214907F00A08CBD /* KDataReader.h */,
 				66D3A1591214907F00A08CBD /* KDataWriter.cxx */,
 				66D3A15A1214907F00A08CBD /* KDataWriter.h */,
+				66D3A3FC1219E3B600A08CBD /* KDataAnalysis.cxx */,
+				66D3A3FD1219E3B600A08CBD /* KDataAnalysis.h */,
 				66D3A15B1214907F00A08CBD /* KEventFactory.cxx */,
 				66D3A15C1214907F00A08CBD /* KEventFactory.h */,
 			);
@@ -471,7 +478,6 @@
 				66D3A3561218111A00A08CBD /* breakupKDataFile.cxx */,
 				66AC868911A2B5650071A5AA /* skimNoNoiseBolos.cxx */,
 				663F5E9611B5123B00B63EEA /* allPassOne_GSEventNumbers.cxx */,
-				6631B6D3116F567C007A6E89 /* fillEvents.cxx */,
 				6631B6D4116F567C007A6E89 /* fillEventTest.cxx */,
 			);
 			name = executables;
@@ -481,6 +487,7 @@
 			isa = PBXGroup;
 			children = (
 				66AC839F11A160130071A5AA /* EdwDS */,
+				6631B6D3116F567C007A6E89 /* fillEvents.cxx */,
 				66AC839A11A15FCA0071A5AA /* External Analysis */,
 				66AC83AC11A16A590071A5AA /* Products */,
 			);
@@ -524,16 +531,16 @@
 		66F9C2411164E2D30070AFCE /* Sub Records */ = {
 			isa = PBXGroup;
 			children = (
-				66D3A17B1215455D00A08CBD /* KMCSingleBoloSubRecord.cxx */,
-				66D3A17A1215455D00A08CBD /* KMCSingleBoloSubRecord.h */,
-				66D3A17D1215455D00A08CBD /* KHLASingleBoloSubRecord.cxx */,
-				66D3A17C1215455D00A08CBD /* KHLASingleBoloSubRecord.h */,
-				66D3A17F1215455D00A08CBD /* KHLASambaSubRecord.cxx */,
-				66D3A17E1215455D00A08CBD /* KHLASambaSubRecord.h */,
-				66D3A1811215455D00A08CBD /* KHLAMuonModuleSubRecord.cxx */,
-				66D3A1801215455D00A08CBD /* KHLAMuonModuleSubRecord.h */,
-				66D3A1831215455D00A08CBD /* KHLABoloPulseSubRecord.cxx */,
-				66D3A1821215455D00A08CBD /* KHLABoloPulseSubRecord.h */,
+				66D3A17B1215455D00A08CBD /* KMCBolometerRecord.cxx */,
+				66D3A17A1215455D00A08CBD /* KMCBolometerRecord.h */,
+				66D3A17D1215455D00A08CBD /* KHLABolometerRecord.cxx */,
+				66D3A17C1215455D00A08CBD /* KHLABolometerRecord.h */,
+				66D3A17F1215455D00A08CBD /* KHLASambaRecord.cxx */,
+				66D3A17E1215455D00A08CBD /* KHLASambaRecord.h */,
+				66D3A1811215455D00A08CBD /* KHLAMuonModuleRecord.cxx */,
+				66D3A1801215455D00A08CBD /* KHLAMuonModuleRecord.h */,
+				66D3A1831215455D00A08CBD /* KHLABoloPulseRecord.cxx */,
+				66D3A1821215455D00A08CBD /* KHLABoloPulseRecord.h */,
 				66F9C2431164E2E70070AFCE /* Base Classes */,
 			);
 			name = "Sub Records";
@@ -553,14 +560,14 @@
 			children = (
 				66D3A18D121545C900A08CBD /* KSubRecord.cxx */,
 				66D3A18C121545C900A08CBD /* KSubRecord.h */,
-				66D3A18F121545C900A08CBD /* KSingleBoloSubRecord.cxx */,
-				66D3A18E121545C900A08CBD /* KSingleBoloSubRecord.h */,
-				66D3A191121545C900A08CBD /* KSambaSubRecord.cxx */,
-				66D3A190121545C900A08CBD /* KSambaSubRecord.h */,
-				66D3A193121545C900A08CBD /* KMuonModuleSubRecord.cxx */,
-				66D3A192121545C900A08CBD /* KMuonModuleSubRecord.h */,
-				66D3A197121545C900A08CBD /* KBoloPulseSubRecord.cxx */,
-				66D3A196121545C900A08CBD /* KBoloPulseSubRecord.h */,
+				66D3A18F121545C900A08CBD /* KBolometerRecord.cxx */,
+				66D3A18E121545C900A08CBD /* KBolometerRecord.h */,
+				66D3A191121545C900A08CBD /* KSambaRecord.cxx */,
+				66D3A190121545C900A08CBD /* KSambaRecord.h */,
+				66D3A193121545C900A08CBD /* KMuonModuleRecord.cxx */,
+				66D3A192121545C900A08CBD /* KMuonModuleRecord.h */,
+				66D3A197121545C900A08CBD /* KBoloPulseRecord.cxx */,
+				66D3A196121545C900A08CBD /* KBoloPulseRecord.h */,
 			);
 			name = "Base Classes";
 			sourceTree = "<group>";
@@ -674,7 +681,7 @@
 			);
 			name = EdwDS;
 			productName = EdwDS;
-			productReference = 66AC84BC11A18DC70071A5AA /* libEdwDS.so */;
+			productReference = 66D3A3EF1219DF5A00A08CBD /* libEdwDS.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		66AC857811A1A7D10071A5AA /* fillEvents */ = {

@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KMCSingleBoloSubRecord.cxx
+// KMCBolometerRecord.cxx
 // KDataStructure
 //
 // Author: Alexander Wunderle <mailto:alexander.wunderle@kit.edu> on 6/15/10.
@@ -12,13 +12,13 @@
 // at the moment. This will possibly change one day in the future. 
 //
 
-#include "KMCSingleBoloSubRecord.h"
+#include "KMCBolometerRecord.h"
 #include <stdio.h>
 #include <iostream>
 
-ClassImp(KMCSingleBoloSubRecord);
+ClassImp(KMCBolometerRecord);
 
-KMCSingleBoloSubRecord::KMCSingleBoloSubRecord(void)
+KMCBolometerRecord::KMCBolometerRecord(void)
 {
 	InitializeMembers();
 	
@@ -35,8 +35,8 @@ KMCSingleBoloSubRecord::KMCSingleBoloSubRecord(void)
 	
 }
 
-KMCSingleBoloSubRecord::KMCSingleBoloSubRecord(const KMCSingleBoloSubRecord &aRec)
-: KHLASingleBoloSubRecord(aRec)
+KMCBolometerRecord::KMCBolometerRecord(const KMCBolometerRecord &aRec)
+: KHLABolometerRecord(aRec)
 {
 	CopyLocalMembers(aRec);
 	fParticleName=0;
@@ -50,7 +50,7 @@ KMCSingleBoloSubRecord::KMCSingleBoloSubRecord(const KMCSingleBoloSubRecord &aRe
 
 }
 
-KMCSingleBoloSubRecord& KMCSingleBoloSubRecord::operator=(const KMCSingleBoloSubRecord &aRec)
+KMCBolometerRecord& KMCBolometerRecord::operator=(const KMCBolometerRecord &aRec)
 {
 	if(&aRec == this) return *this;
 	
@@ -62,7 +62,7 @@ KMCSingleBoloSubRecord& KMCSingleBoloSubRecord::operator=(const KMCSingleBoloSub
 	return *this;
 }
 
-void KMCSingleBoloSubRecord::CopyLocalMembers(const KMCSingleBoloSubRecord &aRec)
+void KMCBolometerRecord::CopyLocalMembers(const KMCBolometerRecord &aRec)
 {
 	SetEventID(aRec.GetEventID()) ;
 	SetTrackID(aRec.GetTrackID()) ;
@@ -79,7 +79,7 @@ void KMCSingleBoloSubRecord::CopyLocalMembers(const KMCSingleBoloSubRecord &aRec
 	SetMCQvalue(aRec.GetMCQvalue());
 }
 
-KMCSingleBoloSubRecord::~KMCSingleBoloSubRecord(void)
+KMCBolometerRecord::~KMCBolometerRecord(void)
 {
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
@@ -87,7 +87,7 @@ KMCSingleBoloSubRecord::~KMCSingleBoloSubRecord(void)
 	
 }
 
-void KMCSingleBoloSubRecord::Clear(Option_t *opt)
+void KMCBolometerRecord::Clear(Option_t *opt)
 {
 	//Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
@@ -95,7 +95,7 @@ void KMCSingleBoloSubRecord::Clear(Option_t *opt)
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-	KHLASingleBoloSubRecord::Clear(opt);
+	KHLABolometerRecord::Clear(opt);
 	
  
 	//Clear and delete local objects here. 
@@ -122,7 +122,7 @@ void KMCSingleBoloSubRecord::Clear(Option_t *opt)
 	
 }
 
-void KMCSingleBoloSubRecord::InitializeMembers(void)
+void KMCBolometerRecord::InitializeMembers(void)
 {
 	//init local members
 	
@@ -145,7 +145,7 @@ void KMCSingleBoloSubRecord::InitializeMembers(void)
 	
 }
 
-void KMCSingleBoloSubRecord::SetParticleName(const Char_t* aWord, Int_t aSize)
+void KMCBolometerRecord::SetParticleName(const Char_t* aWord, Int_t aSize)
 {
 	if(aSize!=fParticleNameSize){
 		if(fParticleName!=0){
@@ -159,7 +159,7 @@ void KMCSingleBoloSubRecord::SetParticleName(const Char_t* aWord, Int_t aSize)
 	if(aSize>0)memcpy(fParticleName, aWord, fParticleNameSize*sizeof(Char_t));
 }
 
-void KMCSingleBoloSubRecord::SetProcess(const Char_t* aWord, Int_t aSize)
+void KMCBolometerRecord::SetProcess(const Char_t* aWord, Int_t aSize)
 {
 	if(aSize!=fProcessSize){
 		if(fProcess!=0){
@@ -173,7 +173,7 @@ void KMCSingleBoloSubRecord::SetProcess(const Char_t* aWord, Int_t aSize)
 	if(aSize>0)memcpy(fProcess, aWord, fProcessSize*sizeof(Char_t));
 }
 
-void KMCSingleBoloSubRecord::SetCreationProcess(const Char_t* aWord, Int_t aSize)
+void KMCBolometerRecord::SetCreationProcess(const Char_t* aWord, Int_t aSize)
 {
 	if(aSize!=fCreationProcessSize){
 		if(fCreationProcess!=0){
@@ -189,7 +189,7 @@ void KMCSingleBoloSubRecord::SetCreationProcess(const Char_t* aWord, Int_t aSize
 
 
 
-Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t bPrint) const
+Bool_t KMCBolometerRecord::IsSame(const KMCBolometerRecord &aRec, Bool_t bPrint) const
 {
 	//Compares two objects and their member variables to test for equality.
 	//If bPrint is set to true, then a message for each member variable that is different
@@ -208,7 +208,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fEventID != aRec.fEventID){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fEventID Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fEventID Not Equal. lhs: " 
 			<< fEventID << " != rhs " << aRec.fEventID << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -218,7 +218,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fTrackID != aRec.fTrackID){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fTrackID Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fTrackID Not Equal. lhs: " 
 			<< fTrackID << " != rhs " << aRec.fTrackID << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -229,7 +229,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fParentID != aRec.fParentID){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fParentID Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fParentID Not Equal. lhs: " 
 			<< fParentID << " != rhs " << aRec.fParentID << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -239,7 +239,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fTime != aRec.fTime){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fTime Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fTime Not Equal. lhs: " 
 			<< fTime << " != rhs " << aRec.fTime << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -249,7 +249,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fEnergy != aRec.fEnergy){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fEnergy Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fEnergy Not Equal. lhs: " 
 			<< fEnergy << " != rhs " << aRec.fEnergy << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -259,7 +259,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fRecoilEnergy != aRec.fRecoilEnergy){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fRecoilEnergy Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fRecoilEnergy Not Equal. lhs: " 
 			<< fRecoilEnergy << " != rhs " << aRec.fRecoilEnergy << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -269,7 +269,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(strncmp(fParticleName, aRec.fParticleName, sizeof(Char_t)*fParticleNameSize)){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fParticleName Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fParticleName Not Equal. lhs: " 
 			<< fParticleName << " != rhs " << aRec.fParticleName << endl;	
 		bIsEqual = false;
 		if(!bPrint)
@@ -279,7 +279,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(strncmp(fProcess, aRec.fProcess, sizeof(Char_t)*fProcessSize)){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fProcess Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fProcess Not Equal. lhs: " 
 			<< fProcess << " != rhs " << aRec.fProcess << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -289,7 +289,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(strncmp(fCreationProcess, aRec.fCreationProcess, sizeof(Char_t)*fCreationProcessSize)){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fParticleName Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fParticleName Not Equal. lhs: " 
 			<< fCreationProcess << " != rhs " << aRec.fCreationProcess << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -299,7 +299,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fXpos != aRec.fXpos){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fXpos Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fXpos Not Equal. lhs: " 
 			<< fXpos << " != rhs " << aRec.fXpos << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -309,7 +309,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fYpos != aRec.fYpos){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fYpos Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fYpos Not Equal. lhs: " 
 			<< fYpos << " != rhs " << aRec.fYpos << endl;		
 		bIsEqual = false;
 		if(!bPrint)
@@ -319,7 +319,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 	
 	if(fZpos != aRec.fZpos){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fZpos Not Equal. lhs: " 
+			cout << "KMCBolometerRecord fZpos Not Equal. lhs: " 
 			<< fZpos << " != rhs " << aRec.fZpos << endl;	
 		bIsEqual = false;
 		if(!bPrint)
@@ -329,7 +329,7 @@ Bool_t KMCSingleBoloSubRecord::IsSame(const KMCSingleBoloSubRecord &aRec, Bool_t
 
 	if(fMCQvalue != aRec.fMCQvalue){
 		if (bPrint) 
-			cout << "KMCSingleBoloSubRecord fMCQvalue Not Equal" << endl;		
+			cout << "KMCBolometerRecord fMCQvalue Not Equal" << endl;		
 		bIsEqual = false;
 		if(!bPrint)
 			return false;  //if we're not printing out, just return false at first failure

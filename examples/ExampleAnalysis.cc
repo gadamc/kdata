@@ -31,7 +31,7 @@ void myAnalysisScript(int arg1, const char* arg2)
 		//analyze your event!
 		for(Int_t bolo = 0; bolo < mEvent->GetNumBolos(); bolo++){
 			
-			KHLASingleBoloSubRecord *mBolo = mEvent->GetBolo(bolo);
+			KHLABolometerRecord *mBolo = mEvent->GetBolo(bolo);
 			
 			Double_t qVal = mBolo->GetQvalue();
 			Double_t Erec = mBolo->GetEnergyRecoil();

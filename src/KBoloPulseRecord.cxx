@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KBoloPulseSubRecord.cxx
+// KBoloPulseRecord.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
@@ -12,13 +12,13 @@
 // at the moment. This will possibly change one day in the future. 
 //
 
-#include "KBoloPulseSubRecord.h"
+#include "KBoloPulseRecord.h"
 #include <iostream>
 #include <cstring>
 
-ClassImp(KBoloPulseSubRecord);
+ClassImp(KBoloPulseRecord);
 
-KBoloPulseSubRecord::KBoloPulseSubRecord(void)
+KBoloPulseRecord::KBoloPulseRecord(void)
 {	
 	
 	InitializeMembers();
@@ -30,7 +30,7 @@ KBoloPulseSubRecord::KBoloPulseSubRecord(void)
 	
 }
 
-KBoloPulseSubRecord::KBoloPulseSubRecord(const KBoloPulseSubRecord &aRec)
+KBoloPulseRecord::KBoloPulseRecord(const KBoloPulseRecord &aRec)
 : KSubRecord(aRec)
 {
 	CopyLocalMembers(aRec);
@@ -40,7 +40,7 @@ KBoloPulseSubRecord::KBoloPulseSubRecord(const KBoloPulseSubRecord &aRec)
 	
 }
 
-KBoloPulseSubRecord& KBoloPulseSubRecord::operator=(const KBoloPulseSubRecord &aRec)
+KBoloPulseRecord& KBoloPulseRecord::operator=(const KBoloPulseRecord &aRec)
 {
 	if(&aRec == this) return *this;
 	
@@ -52,14 +52,14 @@ KBoloPulseSubRecord& KBoloPulseSubRecord::operator=(const KBoloPulseSubRecord &a
 	return *this;
 }
 
-void KBoloPulseSubRecord::CopyLocalMembers(const KBoloPulseSubRecord &aRec)
+void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
 {
 	SetPeakAmp(aRec.GetPeakAmp());
 	SetBaselineMean(aRec.GetBaselineMean());
 	SetBaselineFWHM(aRec.GetBaselineFWHM());
 }
 
-KBoloPulseSubRecord::~KBoloPulseSubRecord(void)
+KBoloPulseRecord::~KBoloPulseRecord(void)
 {
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
@@ -71,7 +71,7 @@ KBoloPulseSubRecord::~KBoloPulseSubRecord(void)
 	}
 }
 
-void KBoloPulseSubRecord::Clear(Option_t *anopt)
+void KBoloPulseRecord::Clear(Option_t *anopt)
 {
 	
 	//Clear the base classes and then clear/delete any local
@@ -94,7 +94,7 @@ void KBoloPulseSubRecord::Clear(Option_t *anopt)
 	
 }
 
-void KBoloPulseSubRecord::InitializeMembers(void)
+void KBoloPulseRecord::InitializeMembers(void)
 {
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
@@ -106,7 +106,7 @@ void KBoloPulseSubRecord::InitializeMembers(void)
 }
 
 
-void KBoloPulseSubRecord::SetChannelName(const Char_t* aWord, Int_t aSize)
+void KBoloPulseRecord::SetChannelName(const Char_t* aWord, Int_t aSize)
 {
 	if(aSize!=fChannelNameSize){
 		if(fChannelName!=0){
@@ -120,7 +120,7 @@ void KBoloPulseSubRecord::SetChannelName(const Char_t* aWord, Int_t aSize)
 	if(aSize>0) memcpy(fChannelName, aWord, fChannelNameSize*sizeof(Char_t));
 }
 
-Bool_t KBoloPulseSubRecord::IsSame(const KBoloPulseSubRecord &aRec, Bool_t bPrint) const
+Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) const
 {
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
@@ -135,7 +135,7 @@ Bool_t KBoloPulseSubRecord::IsSame(const KBoloPulseSubRecord &aRec, Bool_t bPrin
 	if(fChannelNameSize != aRec.fChannelNameSize){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KBoloPulseSubRecord fChannelNameSize Not Equal. lhs: " 
+			cout << "KBoloPulseRecord fChannelNameSize Not Equal. lhs: " 
 			<< fChannelNameSize << " != rhs " << aRec.fChannelNameSize << endl;		
 		else
 			return false;  
@@ -144,7 +144,7 @@ Bool_t KBoloPulseSubRecord::IsSame(const KBoloPulseSubRecord &aRec, Bool_t bPrin
 	if(strncmp(fChannelName, aRec.fChannelName, sizeof(Char_t)*fChannelNameSize)){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KBoloPulseSubRecord fChannelName Not Equal. lhs: " 
+			cout << "KBoloPulseRecord fChannelName Not Equal. lhs: " 
 			<< fChannelName << " != rhs " << aRec.fChannelName << endl;		
 		else
 			return false;  
@@ -153,7 +153,7 @@ Bool_t KBoloPulseSubRecord::IsSame(const KBoloPulseSubRecord &aRec, Bool_t bPrin
 	if(fPeakAmp != aRec.fPeakAmp){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KBoloPulseSubRecord fPeakAmp Not Equal. lhs: " 
+			cout << "KBoloPulseRecord fPeakAmp Not Equal. lhs: " 
 			<< fPeakAmp << " != rhs " << aRec.fPeakAmp << endl;		
 		else
 			return false;  
@@ -162,7 +162,7 @@ Bool_t KBoloPulseSubRecord::IsSame(const KBoloPulseSubRecord &aRec, Bool_t bPrin
 	if(fBaselineMean != aRec.fBaselineMean){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KBoloPulseSubRecord fBaselineMean Not Equal. lhs: " 
+			cout << "KBoloPulseRecord fBaselineMean Not Equal. lhs: " 
 			<< fBaselineMean << " != rhs " << aRec.fBaselineMean << endl;		
 		else
 			return false;  
@@ -171,7 +171,7 @@ Bool_t KBoloPulseSubRecord::IsSame(const KBoloPulseSubRecord &aRec, Bool_t bPrin
 	if(fBaselineFWHM != aRec.fBaselineFWHM){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KBoloPulseSubRecord fBaselineFWHM Not Equal. lhs: " 
+			cout << "KBoloPulseRecord fBaselineFWHM Not Equal. lhs: " 
 			<< fBaselineFWHM << " != rhs " << aRec.fBaselineFWHM << endl;		
 		else
 			return false;  
@@ -181,7 +181,7 @@ Bool_t KBoloPulseSubRecord::IsSame(const KBoloPulseSubRecord &aRec, Bool_t bPrin
 }
 
 
-void KBoloPulseSubRecord::Compact(void)
+void KBoloPulseRecord::Compact(void)
 {
 	//make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
