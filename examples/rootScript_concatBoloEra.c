@@ -12,8 +12,8 @@
 
 {
 
-	gSystem->Load("../lib/libKDS.so");  //load the KDataStructure library
-	gSystem->AddIncludePath("-I/kalinka/home/schmidt-b/develSvn/src");//changed to absolute path, thus I can execute it from kalinka account
+	gSystem->Load("/kalinka/storage/edelweiss/EdwSoftware/Kdata/v2.0/lib/libKData.so");  //load the KDataStructure library
+	gSystem->AddIncludePath("-I/kalinka/storage/edelweiss/EdwSoftware/Kdata/v2.0/src");//changed to absolute path, thus I can execute it from kalinka account
 	gROOT->ProcessLine(".L concatDst.cc+"); //compile your code, which uses the KDataStructure class library
 	//gROOT->ProcessLine(".L filldstEvents.cc+");
 
