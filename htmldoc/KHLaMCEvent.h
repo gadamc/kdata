@@ -15,7 +15,7 @@
 //class TObject;
 //class KEventFactory;
 class TClonesArray; 
-class KMCSingleBoloSubRecord;
+class KMCBolometerRecord;
 
 const Char_t kHLaMCEventName[] = "HLaMC";
 const Char_t kHLaMCClassName[] = "KHLaMCEvent";
@@ -43,18 +43,18 @@ public:
 
 	void SetNumBolo(Int_t aNum){fNumBolo = aNum;}
 	
-	KMCSingleBoloSubRecord* GetBolo(Int_t i) const;
+	KMCBolometerRecord* GetBolo(Int_t i) const;
 	
 	TClonesArray* GetBoloSubRecords(void) const {return fBolo;}
 	
-	KMCSingleBoloSubRecord* AddBolo();
+	KMCBolometerRecord* AddBolo();
 	
 	
 	
 private: 
-	Int_t fNumBolo;  //the number of KMCSingleBoloSubRecord in this event. 
+	Int_t fNumBolo;  //the number of KMCBolometerRecord in this event. 
 	
-	TClonesArray *fBolo; //->  pointer to an array of KMCSingleBoloSubRecord found in this event.
+	TClonesArray *fBolo; //->  pointer to an array of KMCBolometerRecord found in this event.
 	
 	template<class T> T* AddSubRecord(TClonesArray *mArray, Int_t &mCount);
 	void ClearArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);

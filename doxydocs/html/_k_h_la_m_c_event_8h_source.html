@@ -40,7 +40,7 @@
 <a name="l00015"></a>00015 <span class="comment">//class TObject;</span>
 <a name="l00016"></a>00016 <span class="comment">//class KEventFactory;</span>
 <a name="l00017"></a>00017 <span class="keyword">class </span>TClonesArray; 
-<a name="l00018"></a>00018 <span class="keyword">class </span><a class="code" href="class_k_m_c_single_bolo_sub_record.html">KMCSingleBoloSubRecord</a>;
+<a name="l00018"></a>00018 <span class="keyword">class </span><a class="code" href="class_k_m_c_bolometer_record.html">KMCBolometerRecord</a>;
 <a name="l00019"></a>00019 
 <a name="l00020"></a><a class="code" href="_k_h_la_m_c_event_8h.html#a4746a899c3790f44c2eeedd07bc61b4f">00020</a> <span class="keyword">const</span> Char_t <a class="code" href="_k_h_la_m_c_event_8h.html#a4746a899c3790f44c2eeedd07bc61b4f">kHLaMCEventName</a>[] = <span class="stringliteral">&quot;HLaMC&quot;</span>;
 <a name="l00021"></a><a class="code" href="_k_h_la_m_c_event_8h.html#a2fcf34045d26238656118d8694f80ddd">00021</a> <span class="keyword">const</span> Char_t <a class="code" href="_k_h_la_m_c_event_8h.html#a2fcf34045d26238656118d8694f80ddd">kHLaMCClassName</a>[] = <span class="stringliteral">&quot;KHLaMCEvent&quot;</span>;
@@ -68,18 +68,18 @@
 <a name="l00043"></a>00043 
 <a name="l00044"></a><a class="code" href="class_k_h_la_m_c_event.html#a656f003c7bc4004c80b4bff8ea2fdd46">00044</a>         <span class="keywordtype">void</span> <a class="code" href="class_k_h_la_m_c_event.html#a656f003c7bc4004c80b4bff8ea2fdd46">SetNumBolo</a>(Int_t aNum){fNumBolo = aNum;}
 <a name="l00045"></a>00045         
-<a name="l00046"></a>00046         <a class="code" href="class_k_m_c_single_bolo_sub_record.html">KMCSingleBoloSubRecord</a>* <a class="code" href="class_k_h_la_m_c_event.html#a328eba6c59861505b9b91e8ae37ade14">GetBolo</a>(Int_t i) <span class="keyword">const</span>;
+<a name="l00046"></a>00046         <a class="code" href="class_k_m_c_bolometer_record.html">KMCBolometerRecord</a>* <a class="code" href="class_k_h_la_m_c_event.html#ae2fef82cd80be4bbf561e4b0314204a8">GetBolo</a>(Int_t i) <span class="keyword">const</span>;
 <a name="l00047"></a>00047         
 <a name="l00048"></a><a class="code" href="class_k_h_la_m_c_event.html#afe9509dc5a4aa424d3fc2684bd40be4b">00048</a>         TClonesArray* <a class="code" href="class_k_h_la_m_c_event.html#afe9509dc5a4aa424d3fc2684bd40be4b">GetBoloSubRecords</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> fBolo;}
 <a name="l00049"></a>00049         
-<a name="l00050"></a>00050         <a class="code" href="class_k_m_c_single_bolo_sub_record.html">KMCSingleBoloSubRecord</a>* <a class="code" href="class_k_h_la_m_c_event.html#ad1c434b331b1a5f7e50283c3d6059246">AddBolo</a>();
+<a name="l00050"></a>00050         <a class="code" href="class_k_m_c_bolometer_record.html">KMCBolometerRecord</a>* <a class="code" href="class_k_h_la_m_c_event.html#ad8021464afacc88729f6219ca3253f25">AddBolo</a>();
 <a name="l00051"></a>00051         
 <a name="l00052"></a>00052         
 <a name="l00053"></a>00053         
 <a name="l00054"></a>00054 <span class="keyword">private</span>: 
-<a name="l00055"></a>00055         Int_t fNumBolo;  <span class="comment">//the number of KMCSingleBoloSubRecord in this event. </span>
+<a name="l00055"></a>00055         Int_t fNumBolo;  <span class="comment">//the number of KMCBolometerRecord in this event. </span>
 <a name="l00056"></a>00056         
-<a name="l00057"></a>00057         TClonesArray *fBolo; <span class="comment">//-&gt;  pointer to an array of KMCSingleBoloSubRecord found in this event.</span>
+<a name="l00057"></a>00057         TClonesArray *fBolo; <span class="comment">//-&gt;  pointer to an array of KMCBolometerRecord found in this event.</span>
 <a name="l00058"></a>00058         
 <a name="l00059"></a>00059         <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt; T* AddSubRecord(TClonesArray *mArray, Int_t &amp;mCount);
 <a name="l00060"></a>00060         <span class="keywordtype">void</span> ClearArray(Option_t *anOpt, TClonesArray *mArray, Int_t &amp;mCount);
@@ -95,7 +95,7 @@
 <a name="l00070"></a>00070 
 <a name="l00071"></a>00071 <span class="preprocessor">#endif // __KHLAMCEVENT_H__</span>
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 15 15:16:04 2010 by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 17 01:29:17 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

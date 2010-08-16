@@ -34,8 +34,8 @@
 <a name="l00009"></a>00009 <span class="preprocessor">#include &quot;TFile.h&quot;</span>
 <a name="l00010"></a>00010 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_event_8h.html">KHLAEvent.h</a>&quot;</span>
 <a name="l00011"></a>00011 <span class="preprocessor">#include &quot;KTestEventClass.h&quot;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_muon_module_sub_record_8h.html">KHLAMuonModuleSubRecord.h</a>&quot;</span>
-<a name="l00013"></a>00013 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_single_bolo_sub_record_8h.html">KHLASingleBoloSubRecord.h</a>&quot;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_muon_module_record_8h.html">KHLAMuonModuleRecord.h</a>&quot;</span>
+<a name="l00013"></a>00013 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_bolometer_record_8h.html">KHLABolometerRecord.h</a>&quot;</span>
 <a name="l00014"></a>00014 <span class="preprocessor">#include &quot;TTree.h&quot;</span>
 <a name="l00015"></a>00015 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00016"></a>00016 <span class="preprocessor">#include &quot;TRandom.h&quot;</span>
@@ -82,10 +82,10 @@
 <a name="l00057"></a>00057                         
 <a name="l00058"></a>00058                         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; nMod; i++) {
 <a name="l00059"></a>00059                                 bIsMuonEvent = <span class="keyword">true</span>;
-<a name="l00060"></a>00060                                 <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a>* mMuonModule = mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#a03c7f41ac061e3c44874613c53765d5b">AddMuonModule</a>();
-<a name="l00061"></a>00061                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#ac04b4812f647fc488e59819153f79bec">SetModuleNumber</a>(40*gRandom-&gt;Rndm());
-<a name="l00062"></a>00062                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#a963cf3707f0795d662a42a692eb8f705">SetAdc</a>(0,(Int_t)(2048*gRandom-&gt;Rndm()));
-<a name="l00063"></a>00063                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#a963cf3707f0795d662a42a692eb8f705">SetAdc</a>(1,(Int_t)(2048*gRandom-&gt;Rndm()));
+<a name="l00060"></a>00060                                 <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a>* mMuonModule = mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#a8708c175eac459c6a7a94c57867666a5">AddMuonModule</a>();
+<a name="l00061"></a>00061                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#a2fb3711346e51a59bbd88f03e60f4a00">SetModuleNumber</a>(40*gRandom-&gt;Rndm());
+<a name="l00062"></a>00062                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#ad4256b655413ef05f9d2a80d1ddea672">SetAdc</a>(0,(Int_t)(2048*gRandom-&gt;Rndm()));
+<a name="l00063"></a>00063                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#ad4256b655413ef05f9d2a80d1ddea672">SetAdc</a>(1,(Int_t)(2048*gRandom-&gt;Rndm()));
 <a name="l00064"></a>00064                                 <span class="comment">//mMuonModule-&gt;SetRelativeEventTime(0,200.0*gRandom-&gt;Rndm());</span>
 <a name="l00065"></a>00065                                 <span class="comment">//mMuonModule-&gt;SetRelativeEventTime(1,mMuonModule-&gt;GetRelativeEventTime(0) + 200.0*gRandom-&gt;Rndm());</span>
 <a name="l00066"></a>00066                                 mMuonModule-&gt;SetEnergy(0,(Int_t)(2048*gRandom-&gt;Rndm()/1.0e6)); <span class="comment">//divide by 1 MeV...?</span>
@@ -97,12 +97,12 @@
 <a name="l00072"></a>00072                         Int_t nBolo = 1 + (gRandom-&gt;Poisson(0.95));
 <a name="l00073"></a>00073                         <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nBolo; i++) {
 <a name="l00074"></a>00074                                 bIsBoloEvent = <span class="keyword">true</span>;
-<a name="l00075"></a>00075                                 <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a>* mBolo2 = mEv-&gt;AddSingleBolo();
+<a name="l00075"></a>00075                                 <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a>* mBolo2 = mEv-&gt;AddSingleBolo();
 <a name="l00076"></a>00076                                 
-<a name="l00077"></a>00077                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#acba93ddea93a633661c850c57e61f2ee">SetQvalue</a>(gRandom-&gt;Rndm());
-<a name="l00078"></a>00078                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#a2785fa8c915f98ec70b961ea54a14ca4">SetEnergyRecoil</a>(100.0*gRandom-&gt;Rndm());
-<a name="l00079"></a>00079                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#afbc80efd47b14e2b2f3911306a6591dd">SetEnergyIon</a>(100.0*gRandom-&gt;Rndm());
-<a name="l00080"></a>00080                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#a147d6e5650347ef851cae07fea57d21c">SetEnergyHeat</a>(100.0*gRandom-&gt;Rndm());
+<a name="l00077"></a>00077                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a87185bf7c03cb8305aa96a9d0fa3d98f">SetQvalue</a>(gRandom-&gt;Rndm());
+<a name="l00078"></a>00078                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#ad01b32064face616cf173f691a85bffe">SetEnergyRecoil</a>(100.0*gRandom-&gt;Rndm());
+<a name="l00079"></a>00079                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#ae668f3d74992a8bb96c117c8a98488df">SetEnergyIon</a>(100.0*gRandom-&gt;Rndm());
+<a name="l00080"></a>00080                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#aee24d443af5730d9bc9703c9465e2f07">SetEnergyHeat</a>(100.0*gRandom-&gt;Rndm());
 <a name="l00081"></a>00081                                 
 <a name="l00082"></a>00082                         }
 <a name="l00083"></a>00083                 }
@@ -146,7 +146,7 @@
 <a name="l00121"></a>00121 <span class="comment">         */</span>
 <a name="l00122"></a>00122 }
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 15 15:15:57 2010 by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 17 01:29:17 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

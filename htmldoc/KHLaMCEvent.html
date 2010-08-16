@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@pcroot.cern.ch)  -->
 <!--                                             -->
-<!--   Date: Sun Aug 15 15:40:45 2010            -->
+<!--   Date: Tue Aug 17 01:27:41 2010            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -80,7 +80,7 @@ return false;}
 <tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KHLaMCEvent:KHLaMCEvent%1">KHLaMCEvent</a>(<span class="keyword">const</span> <a href="./KHLaMCEvent.html">KHLaMCEvent</a>&amp; anEvent)</td></tr>
 <tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KHLaMCEvent:_KHLaMCEvent">~KHLaMCEvent</a>()</td></tr>
 <tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
-<tr class="func"><td class="funcret"><a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLaMCEvent:AddBolo">AddBolo</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KMCBolometerRecord.html">KMCBolometerRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLaMCEvent:AddBolo">AddBolo</a>()</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
 <tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KHLaMCEvent:Class">Class</a>()</td></tr>
@@ -103,7 +103,7 @@ return false;}
 <tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject%1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
-<tr class="func"><td class="funcret"><a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLaMCEvent:GetBolo">GetBolo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KMCBolometerRecord.html">KMCBolometerRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLaMCEvent:GetBolo">GetBolo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
 <tr class="func"><td class="funcret">TClonesArray*</td><td class="funcname"><a class="funcname" href="#KHLaMCEvent:GetBoloSubRecords">GetBoloSubRecords</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
 <tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
@@ -231,8 +231,8 @@ return false;}
 </table></div>
 <div class="access" id="datapriv"><b>private:</b>
 <table class="data" id="tabdatapriv" cellspacing="0">
-<tr class="data"><td class="datatype">TClonesArray*</td><td class="dataname"><a name="KHLaMCEvent:fBolo"></a>fBolo</td><td class="datadesc">-&gt;  pointer to an array of KMCSingleBoloSubRecord found in this event.</td></tr>
-<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KHLaMCEvent:fNumBolo"></a>fNumBolo</td><td class="datadesc">the number of KMCSingleBoloSubRecord in this event. </td></tr>
+<tr class="data"><td class="datatype">TClonesArray*</td><td class="dataname"><a name="KHLaMCEvent:fBolo"></a>fBolo</td><td class="datadesc">-&gt;  pointer to an array of KMCBolometerRecord found in this event.</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KHLaMCEvent:fNumBolo"></a>fNumBolo</td><td class="datadesc">the number of KMCBolometerRecord in this event. </td></tr>
 
 </table></div>
 </div>
@@ -286,20 +286,20 @@ will print to standard out. Otherwise, this method will return <a href="./ListOf
 checking member variables as soon as it finds a unequal data member.
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> * <a class="funcname" name="KHLaMCEvent:GetBolo" href="src/KHLaMCEvent.cxx.html#FflFM">GetBolo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) const</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./KMCBolometerRecord.html">KMCBolometerRecord</a> * <a class="funcname" name="KHLaMCEvent:GetBolo" href="src/KHLaMCEvent.cxx.html#Ki_TFD">GetBolo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) const</span><br />
 <div class="funccomm"><pre> Return the i'th Bolometer Sub Record for this event.
 </pre></div>
 </div>
-<div class="funcdoc"><span class="funcname"><a href="./KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>* <a class="funcname" name="KHLaMCEvent:AddBolo" href="src/KHLaMCEvent.cxx.html#rat1sB">AddBolo</a>(<span class="keyword">void</span>)</span><br />
+<div class="funcdoc"><span class="funcname"><a href="./KMCBolometerRecord.html">KMCBolometerRecord</a>* <a class="funcname" name="KHLaMCEvent:AddBolo" href="src/KHLaMCEvent.cxx.html#yIhBo">AddBolo</a>(<span class="keyword">void</span>)</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLaMCEvent:ClearArray" href="src/KHLaMCEvent.cxx.html#YRdoEB">ClearArray</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt, TClonesArray* mArray, <a href="./ListOfTypes.html#Int_t">Int_t</a>&amp; mCount)</span><br />
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLaMCEvent:CopyClonesArrays" href="src/KHLaMCEvent.cxx.html#UXTxmD">CopyClonesArrays</a>(<span class="keyword">const</span> <a href="./KHLaMCEvent.html">KHLaMCEvent</a>&amp; anEvent)</span><br />
 <div class="funccomm"><pre>ClonesArray assignment doesn't appear to work in the following way
-*fSamba = *anEvent.GetSambaSubRecords();
+*fSamba = *anEvent.GetSambaRecords();
 *<a href="./KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a> = *anEvent.<a href="./KHLaMCEvent.html#KHLaMCEvent:GetBoloSubRecords" title="TClonesArray* KHLaMCEvent::GetBoloSubRecords()">GetBoloSubRecords</a>();
-*fBoloPulse = *anEvent.GetBoloPulseSubRecords();
-*fMuonModule = *anEvent.GetMuonModuleSubRecords();
+*fBoloPulse = *anEvent.GetBoloPulseRecords();
+*fMuonModule = *anEvent.GetMuonModuleRecords();
 </pre></div>
 </div>
 <div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLaMCEvent:CreateArrays" href="src/KHLaMCEvent.cxx.html#ZIEM">CreateArrays</a>(<span class="keyword">void</span>)</span><br />
@@ -334,7 +334,7 @@ checking member variables as soon as it finds a unequal data member.
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: Sun Aug 15 15:40:46 2010 </em><em>&raquo; Last generated: 2010-08-15 15:40</em><br />
+<em>&raquo; Last changed: Tue Aug 17 01:27:42 2010 </em><em>&raquo; Last generated: 2010-08-17 01:27</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
 </div>
 </div>

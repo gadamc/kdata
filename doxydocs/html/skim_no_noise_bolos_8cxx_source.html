@@ -39,9 +39,9 @@
 <a name="l00014"></a>00014 <span class="preprocessor">#include &quot;TH1I.h&quot;</span>
 <a name="l00015"></a>00015 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_event_8h.html">KHLAEvent.h</a>&quot;</span>
 <a name="l00016"></a>00016 <span class="preprocessor">#include &quot;<a class="code" href="_k_event_8h.html">KEvent.h</a>&quot;</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_muon_module_sub_record_8h.html">KHLAMuonModuleSubRecord.h</a>&quot;</span>
-<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_single_bolo_sub_record_8h.html">KHLASingleBoloSubRecord.h</a>&quot;</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_samba_sub_record_8h.html">KHLASambaSubRecord.h</a>&quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_muon_module_record_8h.html">KHLAMuonModuleRecord.h</a>&quot;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_bolometer_record_8h.html">KHLABolometerRecord.h</a>&quot;</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_samba_record_8h.html">KHLASambaRecord.h</a>&quot;</span>
 <a name="l00020"></a>00020 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
 <a name="l00021"></a>00021 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00022"></a>00022 <span class="preprocessor">#include &quot;TString.h&quot;</span>
@@ -112,27 +112,27 @@
 <a name="l00087"></a>00087                         <span class="comment">//samba records. then add them back in accordingly if they</span>
 <a name="l00088"></a>00088                         <span class="comment">//are valid. </span>
 <a name="l00089"></a>00089                         mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#ad22e00b0ade2bb687be4601f6c44cb16">GetBoloSubRecords</a>()-&gt;Clear(<span class="stringliteral">&quot;C&quot;</span>);
-<a name="l00090"></a>00090                         mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#a50478591793b6e7696d14da51c315a82">GetSambaSubRecords</a>()-&gt;Clear(<span class="stringliteral">&quot;C&quot;</span>);
+<a name="l00090"></a>00090                         mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#a539579e54317b2992e442dc7ca8c5632">GetSambaRecords</a>()-&gt;Clear(<span class="stringliteral">&quot;C&quot;</span>);
 <a name="l00091"></a>00091                         mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#abcaeb79065040bb68d935d8fc2ae7990">SetNumBolo</a>(0);
 <a name="l00092"></a>00092                         mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#a78b36f363faae578c8ebe0ac42f18e81">SetNumSamba</a>(0);
 <a name="l00093"></a>00093                         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#a812b86e1de180129e807e634705a6657">GetNumBolos</a>(); i++){
-<a name="l00094"></a>00094                                 <span class="keywordflow">if</span>(mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#aadad523118b43c3568a9a24f68c371e4">GetEventFlag</a>() &gt; 0 &amp;&amp;
-<a name="l00095"></a>00095                                          (fEventFlagCut &gt; 0 ? mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#aadad523118b43c3568a9a24f68c371e4">GetEventFlag</a>()==fEventFlagCut : <span class="keyword">true</span>)
+<a name="l00094"></a>00094                                 <span class="keywordflow">if</span>(mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#aa07543c33f4480bc23fb0fdcd79f66e4">GetEventFlag</a>() &gt; 0 &amp;&amp;
+<a name="l00095"></a>00095                                          (fEventFlagCut &gt; 0 ? mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#aa07543c33f4480bc23fb0fdcd79f66e4">GetEventFlag</a>()==fEventFlagCut : <span class="keyword">true</span>)
 <a name="l00096"></a>00096                                          ){  <span class="comment">//0 are &#39;noise&#39; events.</span>
 <a name="l00097"></a>00097                                         isGoodEvent = <span class="keyword">true</span>;
 <a name="l00098"></a>00098                                         <span class="comment">//this should be the same as cutting events where the EventFlag == 0</span>
-<a name="l00099"></a>00099                                         <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *inBolo = mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i);
-<a name="l00100"></a>00100                                         <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *outBolo = mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#ab302bdb3cc4ebfac0bf16ddaef40d482">AddBolo</a>();
-<a name="l00101"></a>00101                                         <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *outSamba = mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#ad6c33610d04176e501e477aa04955b56">AddSamba</a>();
+<a name="l00099"></a>00099                                         <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *inBolo = mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i);
+<a name="l00100"></a>00100                                         <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *outBolo = mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#aa37f5347dbbbfc81fb96f26e835939ae">AddBolo</a>();
+<a name="l00101"></a>00101                                         <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *outSamba = mEout-&gt;<a class="code" href="class_k_h_l_a_event.html#abce5f0283b8a996d547ca30edb126cde">AddSamba</a>();
 <a name="l00102"></a>00102                                         *outBolo = *inBolo;  <span class="comment">//copy the bolo sub record</span>
-<a name="l00103"></a>00103                                         <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *inSamba = inBolo-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#ad02b3d799bb66ca5903796e3d30611b3">GetSambaRecord</a>();
+<a name="l00103"></a>00103                                         <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *inSamba = inBolo-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a5d4f230bd2a69e308a0917800d862204">GetSambaRecord</a>();
 <a name="l00104"></a>00104                                         <span class="comment">//cout &lt;&lt; &quot;Copying Samba Record&quot; &lt;&lt; endl;</span>
 <a name="l00105"></a>00105                                         *outSamba = *inSamba; <span class="comment">//copy the samba sub record information </span>
 <a name="l00106"></a>00106                                         <span class="comment">//cout &lt;&lt; &quot;Setting Samba Record&quot; &lt;&lt; endl;</span>
 <a name="l00107"></a>00107                                         
 <a name="l00108"></a>00108                                         <span class="comment">//cout &lt;&lt; &quot;GetSambaRecord in: &quot; &lt;&lt; inBolo-&gt;GetSambaRecord() &lt;&lt; endl;</span>
 <a name="l00109"></a>00109                                         <span class="comment">//cout &lt;&lt; &quot;GetSambaRecord out: &quot; &lt;&lt; outBolo-&gt;GetSambaRecord() &lt;&lt; endl;</span>
-<a name="l00110"></a>00110                                         outBolo-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#ac7eff75fde4f29fb8da588fde194e56d">SetSambaRecord</a>(outSamba);
+<a name="l00110"></a>00110                                         outBolo-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a1092935d071ede8f950bb68240cf734a">SetSambaRecord</a>(outSamba);
 <a name="l00111"></a>00111                                         <span class="comment">//cout &lt;&lt; &quot;GetSambaRecord in: &quot; &lt;&lt; inBolo-&gt;GetSambaRecord() &lt;&lt; endl;</span>
 <a name="l00112"></a>00112                                         <span class="comment">//cout &lt;&lt; &quot;GetSambaRecord out: &quot; &lt;&lt; outBolo-&gt;GetSambaRecord() &lt;&lt; endl;</span>
 <a name="l00113"></a>00113                                         
@@ -165,7 +165,7 @@
 <a name="l00140"></a>00140         <span class="keywordflow">return</span> 1;
 <a name="l00141"></a>00141 }
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 15 15:16:04 2010 by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 17 01:29:17 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

@@ -52,15 +52,15 @@
 <a name="l00027"></a>00027 
 <a name="l00028"></a>00028 <span class="comment">//sub record includes</span>
 <a name="l00029"></a>00029 <span class="preprocessor">#include &quot;TClonesArray.h&quot;</span>
-<a name="l00030"></a>00030 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_samba_sub_record_8h.html">KHLASambaSubRecord.h</a>&quot;</span>
-<a name="l00031"></a>00031 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_single_bolo_sub_record_8h.html">KHLASingleBoloSubRecord.h</a>&quot;</span>
-<a name="l00032"></a>00032 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_bolo_pulse_sub_record_8h.html">KHLABoloPulseSubRecord.h</a>&quot;</span>
-<a name="l00033"></a>00033 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_muon_module_sub_record_8h.html">KHLAMuonModuleSubRecord.h</a>&quot;</span>
+<a name="l00030"></a>00030 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_samba_record_8h.html">KHLASambaRecord.h</a>&quot;</span>
+<a name="l00031"></a>00031 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_bolometer_record_8h.html">KHLABolometerRecord.h</a>&quot;</span>
+<a name="l00032"></a>00032 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_bolo_pulse_record_8h.html">KHLABoloPulseRecord.h</a>&quot;</span>
+<a name="l00033"></a>00033 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_muon_module_record_8h.html">KHLAMuonModuleRecord.h</a>&quot;</span>
 <a name="l00034"></a>00034 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00035"></a>00035 
 <a name="l00036"></a>00036 <span class="keyword">using namespace </span>std;
 <a name="l00037"></a>00037 
-<a name="l00038"></a>00038 <a class="code" href="_k_bolo_pulse_sub_record_8cxx.html#aecfdeeae44fea95bc2af59d175690aae">ClassImp</a>(<a class="code" href="class_k_h_l_a_event.html">KHLAEvent</a>);
+<a name="l00038"></a>00038 <a class="code" href="_k_bolometer_record_8cxx.html#ae3cb8d88f4e336c0580e7e85155b85bd">ClassImp</a>(<a class="code" href="class_k_h_l_a_event.html">KHLAEvent</a>);
 <a name="l00039"></a>00039 
 <a name="l00040"></a><a class="code" href="class_k_h_l_a_event.html#ae3c33b749b7bd2bdc3ecf924a072c244">00040</a> <a class="code" href="class_k_h_l_a_event.html#ae3c33b749b7bd2bdc3ecf924a072c244">KHLAEvent::KHLAEvent</a>(<span class="keywordtype">void</span>)
 <a name="l00041"></a>00041 {
@@ -219,10 +219,10 @@
 <a name="l00194"></a>00194 {
 <a name="l00195"></a>00195         <span class="comment">//</span>
 <a name="l00196"></a>00196         <span class="comment">//ClonesArray assignment doesn&#39;t appear to work in the following way</span>
-<a name="l00197"></a>00197         <span class="comment">//*fSamba = *anEvent.GetSambaSubRecords();</span>
+<a name="l00197"></a>00197         <span class="comment">//*fSamba = *anEvent.GetSambaRecords();</span>
 <a name="l00198"></a>00198         <span class="comment">//*fBolo = *anEvent.GetBoloSubRecords();</span>
-<a name="l00199"></a>00199         <span class="comment">//*fBoloPulse = *anEvent.GetBoloPulseSubRecords();</span>
-<a name="l00200"></a>00200         <span class="comment">//*fMuonModule = *anEvent.GetMuonModuleSubRecords();</span>
+<a name="l00199"></a>00199         <span class="comment">//*fBoloPulse = *anEvent.GetBoloPulseRecords();</span>
+<a name="l00200"></a>00200         <span class="comment">//*fMuonModule = *anEvent.GetMuonModuleRecords();</span>
 <a name="l00201"></a>00201         <span class="comment">//</span>
 <a name="l00202"></a>00202         <span class="comment">//so, I just clear this object&#39;s array, and create as many objects as I need.</span>
 <a name="l00203"></a>00203         <span class="comment">//this might be inefficient, but I don&#39;t think so. besides,</span>
@@ -239,8 +239,8 @@
 <a name="l00214"></a>00214         Int_t ObjectNumber = TProcessID::GetObjectCount();
 <a name="l00215"></a>00215         <span class="comment">/*</span>
 <a name="l00216"></a>00216 <span class="comment">        for(Int_t i = 0; i &lt; anEvent.GetNumSambas(); i++){</span>
-<a name="l00217"></a>00217 <span class="comment">                KHLASambaSubRecord *s = AddSamba();</span>
-<a name="l00218"></a>00218 <span class="comment">                KHLASambaSubRecord *sO = anEvent.GetSamba(i);</span>
+<a name="l00217"></a>00217 <span class="comment">                KHLASambaRecord *s = AddSamba();</span>
+<a name="l00218"></a>00218 <span class="comment">                KHLASambaRecord *sO = anEvent.GetSamba(i);</span>
 <a name="l00219"></a>00219 <span class="comment">                if(s != 0 &amp;&amp; sO != 0) </span>
 <a name="l00220"></a>00220 <span class="comment">                        *s = *sO;</span>
 <a name="l00221"></a>00221 <span class="comment">                else</span>
@@ -252,10 +252,10 @@
 <a name="l00227"></a>00227         <span class="comment">//BECAUSE EACH SAMBA RECORD MUST BE ADDED TO THE EVENT. </span>
 <a name="l00228"></a>00228         
 <a name="l00229"></a>00229         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; anEvent.<a class="code" href="class_k_h_l_a_event.html#a812b86e1de180129e807e634705a6657">GetNumBolos</a>(); i++){
-<a name="l00230"></a>00230                 <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *bolo = <a class="code" href="class_k_h_l_a_event.html#ab302bdb3cc4ebfac0bf16ddaef40d482">AddBolo</a>();
-<a name="l00231"></a>00231                 <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *boloO = anEvent.<a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i);
-<a name="l00232"></a>00232                 <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *sambaO = boloO-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#ad02b3d799bb66ca5903796e3d30611b3">GetSambaRecord</a>();
-<a name="l00233"></a>00233                 <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *samba = 0;
+<a name="l00230"></a>00230                 <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *bolo = <a class="code" href="class_k_h_l_a_event.html#aa37f5347dbbbfc81fb96f26e835939ae">AddBolo</a>();
+<a name="l00231"></a>00231                 <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *boloO = anEvent.<a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i);
+<a name="l00232"></a>00232                 <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *sambaO = boloO-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a5d4f230bd2a69e308a0917800d862204">GetSambaRecord</a>();
+<a name="l00233"></a>00233                 <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *samba = 0;
 <a name="l00234"></a>00234                 
 <a name="l00235"></a>00235                 <span class="keywordflow">if</span>(bolo != 0 &amp;&amp; boloO != 0) 
 <a name="l00236"></a>00236                         *bolo = *boloO;
@@ -263,9 +263,9 @@
 <a name="l00238"></a>00238                         cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent::operator= Invalid SingleBolo Pointer&quot;</span> &lt;&lt; endl;
 <a name="l00239"></a>00239                 
 <a name="l00240"></a>00240                 <span class="keywordflow">if</span>(sambaO != 0) {
-<a name="l00241"></a>00241                         samba = <a class="code" href="class_k_h_l_a_event.html#ad6c33610d04176e501e477aa04955b56">AddSamba</a>();
+<a name="l00241"></a>00241                         samba = <a class="code" href="class_k_h_l_a_event.html#abce5f0283b8a996d547ca30edb126cde">AddSamba</a>();
 <a name="l00242"></a>00242                         *samba = *sambaO;
-<a name="l00243"></a>00243                         <span class="keywordflow">if</span>(samba) bolo-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#ac7eff75fde4f29fb8da588fde194e56d">SetSambaRecord</a>(samba);
+<a name="l00243"></a>00243                         <span class="keywordflow">if</span>(samba) bolo-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a1092935d071ede8f950bb68240cf734a">SetSambaRecord</a>(samba);
 <a name="l00244"></a>00244                 }
 <a name="l00245"></a>00245                 <span class="comment">//else</span>
 <a name="l00246"></a>00246                         <span class="comment">//cout &lt;&lt; &quot;KHLAEvent::operator= Invalid Samba Pointer&quot; &lt;&lt; endl;</span>
@@ -279,8 +279,8 @@
 <a name="l00254"></a>00254         <span class="comment">//RECORD IS DONE ABOVE, INSTEAD OF THIS CURRENT METHOD THAT</span>
 <a name="l00255"></a>00255         <span class="comment">//DOESN&#39;T PRESERVE PROPER TREF LINKING TO THIS EVENT</span>
 <a name="l00256"></a>00256         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; anEvent.<a class="code" href="class_k_h_l_a_event.html#a93e5a03d4daea0953320a779cca7710c">GetNumBoloPulses</a>(); i++){
-<a name="l00257"></a>00257                 <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#ae5cd4414660ad3be69903decb368b581">AddBoloPulse</a>();
-<a name="l00258"></a>00258                 <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a> *sO = anEvent.<a class="code" href="class_k_h_l_a_event.html#af17444e65cbb8303bb494cb02da28cd8">GetBoloPulse</a>(i);
+<a name="l00257"></a>00257                 <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#aed1ae21569b64b7d61218d5132f62f82">AddBoloPulse</a>();
+<a name="l00258"></a>00258                 <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a> *sO = anEvent.<a class="code" href="class_k_h_l_a_event.html#ac77aa5b8440e4ba94f96cebeb551e66d">GetBoloPulse</a>(i);
 <a name="l00259"></a>00259                 <span class="keywordflow">if</span>(s != 0 &amp;&amp; sO != 0) 
 <a name="l00260"></a>00260                         *s = *sO;
 <a name="l00261"></a>00261                 <span class="keywordflow">else</span>
@@ -288,8 +288,8 @@
 <a name="l00263"></a>00263         }
 <a name="l00264"></a>00264         
 <a name="l00265"></a>00265         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; anEvent.<a class="code" href="class_k_h_l_a_event.html#a090d7fcfd69676c37883e50e77c00b0d">GetNumMuonModules</a>(); i++){
-<a name="l00266"></a>00266                 <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#a03c7f41ac061e3c44874613c53765d5b">AddMuonModule</a>();
-<a name="l00267"></a>00267                 <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a> *sO = anEvent.<a class="code" href="class_k_h_l_a_event.html#a29053ac1ee4155248a113b362b33114f">GetMuonModule</a>(i);
+<a name="l00266"></a>00266                 <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#a8708c175eac459c6a7a94c57867666a5">AddMuonModule</a>();
+<a name="l00267"></a>00267                 <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a> *sO = anEvent.<a class="code" href="class_k_h_l_a_event.html#adf5946d554eb2085a8f133cc79b4637f">GetMuonModule</a>(i);
 <a name="l00268"></a>00268                 <span class="keywordflow">if</span>(s != 0 &amp;&amp; sO != 0) 
 <a name="l00269"></a>00269                         *s = *sO;
 <a name="l00270"></a>00270                 <span class="keywordflow">else</span>
@@ -367,16 +367,16 @@
 <a name="l00342"></a>00342         <span class="comment">//been allocated.</span>
 <a name="l00343"></a>00343         
 <a name="l00344"></a>00344         <span class="keywordflow">if</span>(!fSamba)
-<a name="l00345"></a>00345                 fSamba = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;KHLASambaSubRecord&quot;</span>,5);
+<a name="l00345"></a>00345                 fSamba = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;KHLASambaRecord&quot;</span>,5);
 <a name="l00346"></a>00346         
 <a name="l00347"></a>00347         <span class="keywordflow">if</span>(!fBolo)
-<a name="l00348"></a>00348                 fBolo = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;KHLASingleBoloSubRecord&quot;</span>,5);
+<a name="l00348"></a>00348                 fBolo = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;KHLABolometerRecord&quot;</span>,5);
 <a name="l00349"></a>00349         
 <a name="l00350"></a>00350         <span class="keywordflow">if</span>(!fBoloPulse)
-<a name="l00351"></a>00351                 fBoloPulse = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;KHLABoloPulseSubRecord&quot;</span>,10);
+<a name="l00351"></a>00351                 fBoloPulse = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;KHLABoloPulseRecord&quot;</span>,10);
 <a name="l00352"></a>00352         
 <a name="l00353"></a>00353         <span class="keywordflow">if</span>(!fMuonModule)
-<a name="l00354"></a>00354                 fMuonModule = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;KHLAMuonModuleSubRecord&quot;</span>,5);
+<a name="l00354"></a>00354                 fMuonModule = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;KHLAMuonModuleRecord&quot;</span>,5);
 <a name="l00355"></a>00355 
 <a name="l00356"></a>00356         
 <a name="l00357"></a>00357         <span class="comment">//why doesn&#39;t this create a memory leak? CreateArrays is called</span>
@@ -402,73 +402,73 @@
 <a name="l00377"></a>00377         <span class="keywordflow">return</span> mNewSubRecord;
 <a name="l00378"></a>00378 }
 <a name="l00379"></a>00379 
-<a name="l00380"></a><a class="code" href="class_k_h_l_a_event.html#ad6c33610d04176e501e477aa04955b56">00380</a> <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#ad6c33610d04176e501e477aa04955b56">KHLAEvent::AddSamba</a>(<span class="keywordtype">void</span>)
+<a name="l00380"></a><a class="code" href="class_k_h_l_a_event.html#abce5f0283b8a996d547ca30edb126cde">00380</a> <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a>* <a class="code" href="class_k_h_l_a_event.html#abce5f0283b8a996d547ca30edb126cde">KHLAEvent::AddSamba</a>(<span class="keywordtype">void</span>)
 <a name="l00381"></a>00381 {
 <a name="l00382"></a>00382         <span class="comment">//Use this event only when creating an event and you want to add</span>
 <a name="l00383"></a>00383         <span class="comment">//a new SubRecord.</span>
 <a name="l00384"></a>00384         
-<a name="l00385"></a>00385         <span class="keywordflow">return</span> AddSubRecord&lt;KHLASambaSubRecord&gt;(fSamba,fNumSamba);
+<a name="l00385"></a>00385         <span class="keywordflow">return</span> AddSubRecord&lt;KHLASambaRecord&gt;(fSamba,fNumSamba);
 <a name="l00386"></a>00386 }
 <a name="l00387"></a>00387 
-<a name="l00388"></a><a class="code" href="class_k_h_l_a_event.html#ab302bdb3cc4ebfac0bf16ddaef40d482">00388</a> <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#ab302bdb3cc4ebfac0bf16ddaef40d482">KHLAEvent::AddBolo</a>(<span class="keywordtype">void</span>)
+<a name="l00388"></a><a class="code" href="class_k_h_l_a_event.html#aa37f5347dbbbfc81fb96f26e835939ae">00388</a> <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a>* <a class="code" href="class_k_h_l_a_event.html#aa37f5347dbbbfc81fb96f26e835939ae">KHLAEvent::AddBolo</a>(<span class="keywordtype">void</span>)
 <a name="l00389"></a>00389 {
 <a name="l00390"></a>00390         <span class="comment">//Use this event only when creating an event and you want to add</span>
 <a name="l00391"></a>00391         <span class="comment">//a new SubRecord.</span>
 <a name="l00392"></a>00392         
 <a name="l00393"></a>00393         <a class="code" href="class_k_event.html#a20cf5700c1ab024a7c63d2148aa09139">AddTriggerType</a>(<a class="code" href="_k_event_8h.html#a30485be5575a49f9454f40be3d593cc1">kBoloTriggerType</a>);
-<a name="l00394"></a>00394         <span class="keywordflow">return</span> AddSubRecord&lt;KHLASingleBoloSubRecord&gt;(fBolo,fNumBolo);
+<a name="l00394"></a>00394         <span class="keywordflow">return</span> AddSubRecord&lt;KHLABolometerRecord&gt;(fBolo,fNumBolo);
 <a name="l00395"></a>00395 }
 <a name="l00396"></a>00396 
-<a name="l00397"></a><a class="code" href="class_k_h_l_a_event.html#ae5cd4414660ad3be69903decb368b581">00397</a> <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#ae5cd4414660ad3be69903decb368b581">KHLAEvent::AddBoloPulse</a>()
+<a name="l00397"></a><a class="code" href="class_k_h_l_a_event.html#aed1ae21569b64b7d61218d5132f62f82">00397</a> <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a>* <a class="code" href="class_k_h_l_a_event.html#aed1ae21569b64b7d61218d5132f62f82">KHLAEvent::AddBoloPulse</a>()
 <a name="l00398"></a>00398 {
 <a name="l00399"></a>00399         <span class="comment">//Use this event only when creating an event and you want to add</span>
 <a name="l00400"></a>00400         <span class="comment">//a new SubRecord.</span>
 <a name="l00401"></a>00401         
-<a name="l00402"></a>00402         <span class="keywordflow">return</span> AddSubRecord&lt;KHLABoloPulseSubRecord&gt;(fBoloPulse,fNumBoloPulse);
+<a name="l00402"></a>00402         <span class="keywordflow">return</span> AddSubRecord&lt;KHLABoloPulseRecord&gt;(fBoloPulse,fNumBoloPulse);
 <a name="l00403"></a>00403 }
 <a name="l00404"></a>00404 
-<a name="l00405"></a><a class="code" href="class_k_h_l_a_event.html#a03c7f41ac061e3c44874613c53765d5b">00405</a> <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a03c7f41ac061e3c44874613c53765d5b">KHLAEvent::AddMuonModule</a>()
+<a name="l00405"></a><a class="code" href="class_k_h_l_a_event.html#a8708c175eac459c6a7a94c57867666a5">00405</a> <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a8708c175eac459c6a7a94c57867666a5">KHLAEvent::AddMuonModule</a>()
 <a name="l00406"></a>00406 {
 <a name="l00407"></a>00407         <span class="comment">//Use this event only when creating an event and you want to add</span>
 <a name="l00408"></a>00408         <span class="comment">//a new SubRecord.</span>
 <a name="l00409"></a>00409         
 <a name="l00410"></a>00410         <a class="code" href="class_k_event.html#a20cf5700c1ab024a7c63d2148aa09139">AddTriggerType</a>(<a class="code" href="_k_event_8h.html#a0fb570ec4d299cb3fe079cb45e05bc5d">kMuonVetoTriggerType</a>);
-<a name="l00411"></a>00411         <span class="keywordflow">return</span> AddSubRecord&lt;KHLAMuonModuleSubRecord&gt;(fMuonModule,fNumMuonModule);
+<a name="l00411"></a>00411         <span class="keywordflow">return</span> AddSubRecord&lt;KHLAMuonModuleRecord&gt;(fMuonModule,fNumMuonModule);
 <a name="l00412"></a>00412 }
 <a name="l00413"></a>00413 
-<a name="l00414"></a><a class="code" href="class_k_h_l_a_event.html#a378dbc75ed13fd04d4631b91cb39daea">00414</a> <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *<a class="code" href="class_k_h_l_a_event.html#a378dbc75ed13fd04d4631b91cb39daea">KHLAEvent::GetSamba</a>(Int_t i)<span class="keyword"> const</span>
+<a name="l00414"></a><a class="code" href="class_k_h_l_a_event.html#a787737ea794e27f7176517353c51f2b4">00414</a> <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *<a class="code" href="class_k_h_l_a_event.html#a787737ea794e27f7176517353c51f2b4">KHLAEvent::GetSamba</a>(Int_t i)<span class="keyword"> const</span>
 <a name="l00415"></a>00415 <span class="keyword"></span>{
 <a name="l00416"></a>00416   <span class="comment">// Return the i&#39;th Samba Sub Record for this event.</span>
 <a name="l00417"></a>00417         
-<a name="l00418"></a>00418   <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *ms = 0;
-<a name="l00419"></a>00419   <span class="keywordflow">if</span> (i &lt; fNumSamba) ms = (<a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *)fSamba-&gt;At(i);
+<a name="l00418"></a>00418   <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *ms = 0;
+<a name="l00419"></a>00419   <span class="keywordflow">if</span> (i &lt; fNumSamba) ms = (<a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *)fSamba-&gt;At(i);
 <a name="l00420"></a>00420   <span class="keywordflow">return</span> ms;
 <a name="l00421"></a>00421 }
 <a name="l00422"></a>00422 
-<a name="l00423"></a><a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">00423</a> <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *<a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">KHLAEvent::GetBolo</a>(Int_t i)<span class="keyword"> const</span>
+<a name="l00423"></a><a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">00423</a> <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *<a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">KHLAEvent::GetBolo</a>(Int_t i)<span class="keyword"> const</span>
 <a name="l00424"></a>00424 <span class="keyword"></span>{
 <a name="l00425"></a>00425   <span class="comment">// Return the i&#39;th Bolometer Sub Record for this event.</span>
 <a name="l00426"></a>00426         
-<a name="l00427"></a>00427   <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *ms = 0;
-<a name="l00428"></a>00428   <span class="keywordflow">if</span> (i &lt; fNumBolo) ms = (<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *)fBolo-&gt;At(i);
+<a name="l00427"></a>00427   <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *ms = 0;
+<a name="l00428"></a>00428   <span class="keywordflow">if</span> (i &lt; fNumBolo) ms = (<a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *)fBolo-&gt;At(i);
 <a name="l00429"></a>00429   <span class="keywordflow">return</span> ms;
 <a name="l00430"></a>00430 }
 <a name="l00431"></a>00431 
-<a name="l00432"></a><a class="code" href="class_k_h_l_a_event.html#af17444e65cbb8303bb494cb02da28cd8">00432</a> <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a> *<a class="code" href="class_k_h_l_a_event.html#af17444e65cbb8303bb494cb02da28cd8">KHLAEvent::GetBoloPulse</a>(Int_t i)<span class="keyword"> const</span>
+<a name="l00432"></a><a class="code" href="class_k_h_l_a_event.html#ac77aa5b8440e4ba94f96cebeb551e66d">00432</a> <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a> *<a class="code" href="class_k_h_l_a_event.html#ac77aa5b8440e4ba94f96cebeb551e66d">KHLAEvent::GetBoloPulse</a>(Int_t i)<span class="keyword"> const</span>
 <a name="l00433"></a>00433 <span class="keyword"></span>{
 <a name="l00434"></a>00434   <span class="comment">// Return the i&#39;th Bolometer Pulse Sub Record for this event.</span>
 <a name="l00435"></a>00435         
-<a name="l00436"></a>00436   <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a> *ms = 0;
-<a name="l00437"></a>00437   <span class="keywordflow">if</span> (i &lt; fNumBoloPulse) ms = (<a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a> *)fBoloPulse-&gt;At(i);
+<a name="l00436"></a>00436   <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a> *ms = 0;
+<a name="l00437"></a>00437   <span class="keywordflow">if</span> (i &lt; fNumBoloPulse) ms = (<a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a> *)fBoloPulse-&gt;At(i);
 <a name="l00438"></a>00438   <span class="keywordflow">return</span> ms;
 <a name="l00439"></a>00439 }
 <a name="l00440"></a>00440 
-<a name="l00441"></a><a class="code" href="class_k_h_l_a_event.html#a29053ac1ee4155248a113b362b33114f">00441</a> <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a> *<a class="code" href="class_k_h_l_a_event.html#a29053ac1ee4155248a113b362b33114f">KHLAEvent::GetMuonModule</a>(Int_t i)<span class="keyword"> const</span>
+<a name="l00441"></a><a class="code" href="class_k_h_l_a_event.html#adf5946d554eb2085a8f133cc79b4637f">00441</a> <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a> *<a class="code" href="class_k_h_l_a_event.html#adf5946d554eb2085a8f133cc79b4637f">KHLAEvent::GetMuonModule</a>(Int_t i)<span class="keyword"> const</span>
 <a name="l00442"></a>00442 <span class="keyword"></span>{
 <a name="l00443"></a>00443   <span class="comment">// Return the i&#39;th Muon Module Sub Record for this event.</span>
 <a name="l00444"></a>00444         
-<a name="l00445"></a>00445   <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a> *ms = 0;
-<a name="l00446"></a>00446   <span class="keywordflow">if</span> (i &lt; fNumMuonModule) ms = (<a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a> *)fMuonModule-&gt;At(i);
+<a name="l00445"></a>00445   <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a> *ms = 0;
+<a name="l00446"></a>00446   <span class="keywordflow">if</span> (i &lt; fNumMuonModule) ms = (<a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a> *)fMuonModule-&gt;At(i);
 <a name="l00447"></a>00447   <span class="keywordflow">return</span> ms;
 <a name="l00448"></a>00448 }
 <a name="l00449"></a>00449 
@@ -517,12 +517,12 @@
 <a name="l00492"></a>00492         
 <a name="l00493"></a>00493         <span class="keywordflow">if</span>(fNumSamba == anEvent.fNumSamba){
 <a name="l00494"></a>00494                 <span class="keywordflow">for</span>(Int_t i = 0; i &lt; fNumSamba; i++){
-<a name="l00495"></a>00495                         <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#a378dbc75ed13fd04d4631b91cb39daea">GetSamba</a>(i);
-<a name="l00496"></a>00496                         <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a> *sOther = anEvent.<a class="code" href="class_k_h_l_a_event.html#a378dbc75ed13fd04d4631b91cb39daea">GetSamba</a>(i);
+<a name="l00495"></a>00495                         <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#a787737ea794e27f7176517353c51f2b4">GetSamba</a>(i);
+<a name="l00496"></a>00496                         <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a> *sOther = anEvent.<a class="code" href="class_k_h_l_a_event.html#a787737ea794e27f7176517353c51f2b4">GetSamba</a>(i);
 <a name="l00497"></a>00497                         <span class="keywordflow">if</span>(s != 0 &amp;&amp; sOther != 0){
-<a name="l00498"></a>00498                                 <span class="keywordflow">if</span>(!s-&gt;<a class="code" href="class_k_h_l_a_samba_sub_record.html#a891720bedf86414f7a7d3ce3aae98ba3">IsSame</a>(*sOther, bPrint)){
+<a name="l00498"></a>00498                                 <span class="keywordflow">if</span>(!s-&gt;<a class="code" href="class_k_h_l_a_samba_record.html#a582ee9b16bba583104d840d587112739">IsSame</a>(*sOther, bPrint)){
 <a name="l00499"></a>00499                                         <span class="keywordflow">if</span> (bPrint) 
-<a name="l00500"></a>00500                                                 cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent KHLASambaSubRecord number &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; Not Equal&quot;</span> &lt;&lt; endl;            
+<a name="l00500"></a>00500                                                 cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent KHLASambaRecord number &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; Not Equal&quot;</span> &lt;&lt; endl;               
 <a name="l00501"></a>00501                                         bIsEqual = <span class="keyword">false</span>;
 <a name="l00502"></a>00502                                         <span class="keywordflow">if</span>(!bPrint)
 <a name="l00503"></a>00503                                                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -540,12 +540,12 @@
 <a name="l00515"></a>00515         
 <a name="l00516"></a>00516         <span class="keywordflow">if</span>(fNumBolo == anEvent.fNumBolo){
 <a name="l00517"></a>00517                 <span class="keywordflow">for</span>(Int_t i = 0; i &lt; fNumBolo; i++){
-<a name="l00518"></a>00518                         <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i);
-<a name="l00519"></a>00519                         <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a> *sOther = anEvent.<a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i);
+<a name="l00518"></a>00518                         <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i);
+<a name="l00519"></a>00519                         <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a> *sOther = anEvent.<a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i);
 <a name="l00520"></a>00520                         <span class="keywordflow">if</span>(s != 0 &amp;&amp; sOther != 0){
-<a name="l00521"></a>00521                                 <span class="keywordflow">if</span>(!s-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#a23e1289902da71913a9826b7ff954b22">IsSame</a>(*sOther, bPrint)){
+<a name="l00521"></a>00521                                 <span class="keywordflow">if</span>(!s-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#ab3043ddaa56ac3714fc590bfad7a3197">IsSame</a>(*sOther, bPrint)){
 <a name="l00522"></a>00522                                         <span class="keywordflow">if</span> (bPrint) 
-<a name="l00523"></a>00523                                                 cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent KHLASingleBoloSubRecord number &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; Not Equal&quot;</span> &lt;&lt; endl;               
+<a name="l00523"></a>00523                                                 cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent KHLABolometerRecord number &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; Not Equal&quot;</span> &lt;&lt; endl;           
 <a name="l00524"></a>00524                                         bIsEqual = <span class="keyword">false</span>;
 <a name="l00525"></a>00525                                         <span class="keywordflow">if</span>(!bPrint)
 <a name="l00526"></a>00526                                                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -563,12 +563,12 @@
 <a name="l00538"></a>00538         
 <a name="l00539"></a>00539         <span class="keywordflow">if</span>(fNumBoloPulse == anEvent.fNumBoloPulse){
 <a name="l00540"></a>00540                 <span class="keywordflow">for</span>(Int_t i = 0; i &lt; fNumBoloPulse; i++){
-<a name="l00541"></a>00541                         <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#af17444e65cbb8303bb494cb02da28cd8">GetBoloPulse</a>(i);
-<a name="l00542"></a>00542                         <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a> *sOther = anEvent.<a class="code" href="class_k_h_l_a_event.html#af17444e65cbb8303bb494cb02da28cd8">GetBoloPulse</a>(i);
+<a name="l00541"></a>00541                         <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#ac77aa5b8440e4ba94f96cebeb551e66d">GetBoloPulse</a>(i);
+<a name="l00542"></a>00542                         <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a> *sOther = anEvent.<a class="code" href="class_k_h_l_a_event.html#ac77aa5b8440e4ba94f96cebeb551e66d">GetBoloPulse</a>(i);
 <a name="l00543"></a>00543                         <span class="keywordflow">if</span>(s != 0 &amp;&amp; sOther != 0){
-<a name="l00544"></a>00544                                 <span class="keywordflow">if</span>(!s-&gt;<a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html#af05be4772d418529759d54bf3754746b">IsSame</a>(*sOther, bPrint)){
+<a name="l00544"></a>00544                                 <span class="keywordflow">if</span>(!s-&gt;<a class="code" href="class_k_h_l_a_bolo_pulse_record.html#ac1667553f6bfbac60bb95df2eaccf579">IsSame</a>(*sOther, bPrint)){
 <a name="l00545"></a>00545                                         <span class="keywordflow">if</span> (bPrint) 
-<a name="l00546"></a>00546                                                 cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent KHLABoloPulseSubRecord number &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; Not Equal&quot;</span> &lt;&lt; endl;                
+<a name="l00546"></a>00546                                                 cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent KHLABoloPulseRecord number &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; Not Equal&quot;</span> &lt;&lt; endl;           
 <a name="l00547"></a>00547                                         bIsEqual = <span class="keyword">false</span>;
 <a name="l00548"></a>00548                                         <span class="keywordflow">if</span>(!bPrint)
 <a name="l00549"></a>00549                                                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -586,12 +586,12 @@
 <a name="l00561"></a>00561         
 <a name="l00562"></a>00562         <span class="keywordflow">if</span>(fNumMuonModule == anEvent.fNumMuonModule){
 <a name="l00563"></a>00563                 <span class="keywordflow">for</span>(Int_t i = 0; i &lt; fNumMuonModule; i++){
-<a name="l00564"></a>00564                         <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#a29053ac1ee4155248a113b362b33114f">GetMuonModule</a>(i);
-<a name="l00565"></a>00565                         <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a> *sOther = anEvent.<a class="code" href="class_k_h_l_a_event.html#a29053ac1ee4155248a113b362b33114f">GetMuonModule</a>(i);
+<a name="l00564"></a>00564                         <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a> *s = <a class="code" href="class_k_h_l_a_event.html#adf5946d554eb2085a8f133cc79b4637f">GetMuonModule</a>(i);
+<a name="l00565"></a>00565                         <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a> *sOther = anEvent.<a class="code" href="class_k_h_l_a_event.html#adf5946d554eb2085a8f133cc79b4637f">GetMuonModule</a>(i);
 <a name="l00566"></a>00566                         <span class="keywordflow">if</span>(s != 0 &amp;&amp; sOther != 0){
-<a name="l00567"></a>00567                                 <span class="keywordflow">if</span>(!s-&gt;<a class="code" href="class_k_h_l_a_muon_module_sub_record.html#aeea146fa0bfa95d08c686da03b15d6e4">IsSame</a>(*sOther, bPrint)){
+<a name="l00567"></a>00567                                 <span class="keywordflow">if</span>(!s-&gt;<a class="code" href="class_k_h_l_a_muon_module_record.html#a996593d988c8c0602bad36f92c267510">IsSame</a>(*sOther, bPrint)){
 <a name="l00568"></a>00568                                         <span class="keywordflow">if</span> (bPrint) 
-<a name="l00569"></a>00569                                                 cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent KHLABoloPulseSubRecord number &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; Not Equal&quot;</span> &lt;&lt; endl;                
+<a name="l00569"></a>00569                                                 cout &lt;&lt; <span class="stringliteral">&quot;KHLAEvent KHLABoloPulseRecord number &quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot; Not Equal&quot;</span> &lt;&lt; endl;           
 <a name="l00570"></a>00570                                         bIsEqual = <span class="keyword">false</span>;
 <a name="l00571"></a>00571                                         <span class="keywordflow">if</span>(!bPrint)
 <a name="l00572"></a>00572                                                 <span class="keywordflow">return</span> <span class="keyword">false</span>;
@@ -631,20 +631,20 @@
 <a name="l00606"></a>00606         fMuonSystem.<a class="code" href="class_k_h_l_a_muon_veto_sys_record.html#a72429e82be881322c91cfb87457215b3">Compact</a>();
 <a name="l00607"></a>00607         
 <a name="l00608"></a>00608         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; <a class="code" href="class_k_h_l_a_event.html#a9fd3640221487b1e4bb7e033cb02480b">GetNumSambas</a>(); i++){
-<a name="l00609"></a>00609                 <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a>* samba = <a class="code" href="class_k_h_l_a_event.html#a378dbc75ed13fd04d4631b91cb39daea">GetSamba</a>(i);
-<a name="l00610"></a>00610                 samba-&gt;<a class="code" href="class_k_h_l_a_samba_sub_record.html#a067f1e433bb43bf7773e7ab322015151">Compact</a>();
+<a name="l00609"></a>00609                 <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a>* samba = <a class="code" href="class_k_h_l_a_event.html#a787737ea794e27f7176517353c51f2b4">GetSamba</a>(i);
+<a name="l00610"></a>00610                 samba-&gt;<a class="code" href="class_k_h_l_a_samba_record.html#a5694c8bcbef34cf6203561923476b5b2">Compact</a>();
 <a name="l00611"></a>00611         }
 <a name="l00612"></a>00612         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; <a class="code" href="class_k_h_l_a_event.html#a812b86e1de180129e807e634705a6657">GetNumBolos</a>(); i++){
-<a name="l00613"></a>00613                 <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a>* bolo = <a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i);
-<a name="l00614"></a>00614                 bolo-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#a36df8d2f159f46c9487f665754175df8">Compact</a>();
+<a name="l00613"></a>00613                 <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a>* bolo = <a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i);
+<a name="l00614"></a>00614                 bolo-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a5bd521a5993f44cf6212d92b1a6b951a">Compact</a>();
 <a name="l00615"></a>00615         }
 <a name="l00616"></a>00616         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; <a class="code" href="class_k_h_l_a_event.html#a93e5a03d4daea0953320a779cca7710c">GetNumBoloPulses</a>(); i++){
-<a name="l00617"></a>00617                 <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a>* bp = <a class="code" href="class_k_h_l_a_event.html#af17444e65cbb8303bb494cb02da28cd8">GetBoloPulse</a>(i);
-<a name="l00618"></a>00618                 bp-&gt;<a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html#a714b17839ac889998f7a0df1cedf6b20">Compact</a>();
+<a name="l00617"></a>00617                 <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a>* bp = <a class="code" href="class_k_h_l_a_event.html#ac77aa5b8440e4ba94f96cebeb551e66d">GetBoloPulse</a>(i);
+<a name="l00618"></a>00618                 bp-&gt;<a class="code" href="class_k_h_l_a_bolo_pulse_record.html#a011c6ef161e862e1da487fc9fc2543c6">Compact</a>();
 <a name="l00619"></a>00619         }
 <a name="l00620"></a>00620         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; <a class="code" href="class_k_h_l_a_event.html#a090d7fcfd69676c37883e50e77c00b0d">GetNumMuonModules</a>(); i++){
-<a name="l00621"></a>00621                 <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a>* module = <a class="code" href="class_k_h_l_a_event.html#a29053ac1ee4155248a113b362b33114f">GetMuonModule</a>(i);
-<a name="l00622"></a>00622                 module-&gt;<a class="code" href="class_k_h_l_a_muon_module_sub_record.html#ae455de90b429af927ae930d8904e4b60">Compact</a>();
+<a name="l00621"></a>00621                 <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a>* module = <a class="code" href="class_k_h_l_a_event.html#adf5946d554eb2085a8f133cc79b4637f">GetMuonModule</a>(i);
+<a name="l00622"></a>00622                 module-&gt;<a class="code" href="class_k_h_l_a_muon_module_record.html#a2610514bb7c87b33c76f26c97338a3fb">Compact</a>();
 <a name="l00623"></a>00623         }
 <a name="l00624"></a>00624 }
 <a name="l00625"></a>00625 
@@ -657,7 +657,7 @@
 <a name="l00632"></a>00632         
 <a name="l00633"></a>00633         Double_t energy = 0;
 <a name="l00634"></a>00634         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; <a class="code" href="class_k_h_l_a_event.html#a812b86e1de180129e807e634705a6657">GetNumBolos</a>(); i++)
-<a name="l00635"></a>00635                 energy += <a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#a63666b42b6af3df17ad9d0ef16ea65f7">GetEnergyRecoil</a>();
+<a name="l00635"></a>00635                 energy += <a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a4f56cea9e0729ba72d9c29a131acb4bf">GetEnergyRecoil</a>();
 <a name="l00636"></a>00636         
 <a name="l00637"></a>00637         <span class="keywordflow">return</span> energy;
 <a name="l00638"></a>00638 }
@@ -669,7 +669,7 @@
 <a name="l00644"></a>00644         
 <a name="l00645"></a>00645         Double_t energy = 0;
 <a name="l00646"></a>00646         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; <a class="code" href="class_k_h_l_a_event.html#a812b86e1de180129e807e634705a6657">GetNumBolos</a>(); i++)
-<a name="l00647"></a>00647                 energy += <a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#ad7d8669394d7a5329135590b3422d884">GetEnergyHeat</a>();
+<a name="l00647"></a>00647                 energy += <a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a2ab132bedfb6115c48ccafc8e8338a93">GetEnergyHeat</a>();
 <a name="l00648"></a>00648         
 <a name="l00649"></a>00649         <span class="keywordflow">return</span> energy;
 <a name="l00650"></a>00650 }
@@ -683,13 +683,13 @@
 <a name="l00658"></a>00658         
 <a name="l00659"></a>00659         Double_t energy = 0;
 <a name="l00660"></a>00660         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; <a class="code" href="class_k_h_l_a_event.html#a812b86e1de180129e807e634705a6657">GetNumBolos</a>(); i++)
-<a name="l00661"></a>00661                 energy += <a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#ab594810789924321c4e90abc39820203">GetEnergyIon</a>();
+<a name="l00661"></a>00661                 energy += <a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(i)-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a594897f2a259df0a21f59cf5a333561c">GetEnergyIon</a>();
 <a name="l00662"></a>00662         
 <a name="l00663"></a>00663         <span class="keywordflow">return</span> energy;
 <a name="l00664"></a>00664 }
 <a name="l00665"></a>00665 
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 15 15:16:04 2010 by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 17 01:29:17 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

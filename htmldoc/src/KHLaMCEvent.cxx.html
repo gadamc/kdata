@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@pcroot.cern.ch)  -->
 <!--                                             -->
-<!--   Date: Sun Aug 15 15:40:45 2010            -->
+<!--   Date: Tue Aug 17 01:27:41 2010            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -34,7 +34,7 @@
 <span class="cpp">#include "<a href="../KHLaMCEvent.h">KHLaMCEvent.h</a>"</span>
 <span class="cpp">#include "<a href="../KHLAEvent.h">KHLAEvent.h</a>"</span>
 <span class="cpp">#include "TClonesArray.h"</span>
-<span class="cpp">#include "<a href="../KMCSingleBoloSubRecord.h">KMCSingleBoloSubRecord.h</a>"</span>
+<span class="cpp">#include "<a href="../KMCBolometerRecord.h">KMCBolometerRecord.h</a>"</span>
 <span class="cpp">#include &lt;typeinfo&gt;</span>
 <span class="cpp">#include &lt;iostream&gt;</span>
 <span class="cpp">#include &lt;exception&gt;</span>
@@ -143,12 +143,12 @@ ClassImp(<a href="../KHLaMCEvent.html">KHLaMCEvent</a>);
 	
 	<span class="keyword">if</span>(<a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a> == anEvent.<a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a>){
 		<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a>; i++){
-			<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> *s = <a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCSingleBoloSubRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(i);
-			<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> *sOther = anEvent.<a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCSingleBoloSubRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(i);
+			<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> *s = <a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCBolometerRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(i);
+			<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> *sOther = anEvent.<a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCBolometerRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(i);
 			<span class="keyword">if</span>(s != 0 &amp;&amp; sOther != 0){
 				<span class="keyword">if</span>(!s-&gt;<a href="../KHLaMCEvent.html#KHLaMCEvent:IsSame" title="Bool_t KHLaMCEvent::IsSame(const KHLaMCEvent&amp; anEvent,Bool_t bPrint=false)">IsSame</a>(*sOther, bPrint)){
 					<span class="keyword">if</span> (bPrint) 
-						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLaMCEvent KMCSingleBoloSubRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
+						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLaMCEvent KMCBolometerRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
 					bIsEqual = <span class="keyword">false</span>;
 					<span class="keyword">if</span>(!bPrint)
 						<span class="keyword">return</span> <span class="keyword">false</span>;
@@ -168,18 +168,18 @@ ClassImp(<a href="../KHLaMCEvent.html">KHLaMCEvent</a>);
 	<span class="keyword">return</span> bIsEqual;
 }
 
-<a name="FflFM"></a><a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> *<a href="../KHLaMCEvent.html">KHLaMCEvent</a>::<a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCSingleBoloSubRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
+<a name="Ki_TFD"></a><a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> *<a href="../KHLaMCEvent.html">KHLaMCEvent</a>::<a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCBolometerRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
 {
   <span class="comment">// Return the i'th Bolometer Sub Record for this event.</span>
-	<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> *ms = 0;
-	<span class="keyword">if</span> (i &lt; <a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a>) ms = (<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> *)<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a>-&gt;At(i);
+	<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> *ms = 0;
+	<span class="keyword">if</span> (i &lt; <a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a>) ms = (<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> *)<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a>-&gt;At(i);
 	<span class="keyword">return</span> ms;
 }
 
-<a name="rat1sB"></a><a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>* <a href="../KHLaMCEvent.html">KHLaMCEvent</a>::<a href="../KHLaMCEvent.html#KHLaMCEvent:AddBolo" title="KMCSingleBoloSubRecord* KHLaMCEvent::AddBolo()">AddBolo</a>(<span class="keyword">void</span>)
+<a name="yIhBo"></a><a href="../KMCBolometerRecord.html">KMCBolometerRecord</a>* <a href="../KHLaMCEvent.html">KHLaMCEvent</a>::<a href="../KHLaMCEvent.html#KHLaMCEvent:AddBolo" title="KMCBolometerRecord* KHLaMCEvent::AddBolo()">AddBolo</a>(<span class="keyword">void</span>)
 {
 	<a href="../KEvent.html#KEvent:AddTriggerType" title="void KEvent::AddTriggerType(Int_t aNum)">AddTriggerType</a>(kBoloTriggerType);
-	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>&gt;(<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a>,<a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a>);
+	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a>&gt;(<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a>,<a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a>);
 }
 
 <a name="YRdoEB"></a><span class="keyword">void</span> <a href="../KHLaMCEvent.html">KHLaMCEvent</a>::<a href="../KHLaMCEvent.html#KHLaMCEvent:ClearArray" title="void KHLaMCEvent::ClearArray(Option_t* anOpt,TClonesArray* mArray,Int_t&amp; mCount)">ClearArray</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *anOption, TClonesArray *mArray, <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;mCount)
@@ -202,10 +202,10 @@ ClassImp(<a href="../KHLaMCEvent.html">KHLaMCEvent</a>);
 <a name="UXTxmD"></a><span class="keyword">void</span> <a href="../KHLaMCEvent.html">KHLaMCEvent</a>::<a href="../KHLaMCEvent.html#KHLaMCEvent:CopyClonesArrays" title="void KHLaMCEvent::CopyClonesArrays(const KHLaMCEvent&amp; anEvent)">CopyClonesArrays</a>(<span class="keyword">const</span> <a href="../KHLaMCEvent.html">KHLaMCEvent</a> &amp;anEvent)
 {
 	<span class="comment">//ClonesArray assignment doesn't appear to work in the following way</span>
-	<span class="comment">//*fSamba = *anEvent.GetSambaSubRecords();</span>
+	<span class="comment">//*fSamba = *anEvent.GetSambaRecords();</span>
 	<span class="comment">//*<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a> = *anEvent.<a href="../KHLaMCEvent.html#KHLaMCEvent:GetBoloSubRecords" title="TClonesArray* KHLaMCEvent::GetBoloSubRecords()">GetBoloSubRecords</a>();</span>
-	<span class="comment">//*fBoloPulse = *anEvent.GetBoloPulseSubRecords();</span>
-	<span class="comment">//*fMuonModule = *anEvent.GetMuonModuleSubRecords();</span>
+	<span class="comment">//*fBoloPulse = *anEvent.GetBoloPulseRecords();</span>
+	<span class="comment">//*fMuonModule = *anEvent.GetMuonModuleRecords();</span>
 	
 	<span class="comment">//so, I just clear this object's array, and create as many objects as I need.</span>
 	<span class="comment">//this might be inefficient, but I don't think so. besides,</span>
@@ -218,8 +218,8 @@ ClassImp(<a href="../KHLaMCEvent.html">KHLaMCEvent</a>);
 	
 	
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; anEvent.<a href="../KHLaMCEvent.html#KHLaMCEvent:GetNumBolos" title="Int_t KHLaMCEvent::GetNumBolos()">GetNumBolos</a>(); i++){
-		<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> *s = <a href="../KHLaMCEvent.html#KHLaMCEvent:AddBolo" title="KMCSingleBoloSubRecord* KHLaMCEvent::AddBolo()">AddBolo</a>();
-		<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> *sO = anEvent.<a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCSingleBoloSubRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(i);
+		<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> *s = <a href="../KHLaMCEvent.html#KHLaMCEvent:AddBolo" title="KMCBolometerRecord* KHLaMCEvent::AddBolo()">AddBolo</a>();
+		<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> *sO = anEvent.<a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCBolometerRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(i);
 		<span class="keyword">if</span>(s != 0 &amp;&amp; sO != 0) 
 			*s = *sO;
 		<span class="keyword">else</span>
@@ -231,7 +231,7 @@ ClassImp(<a href="../KHLaMCEvent.html">KHLaMCEvent</a>);
 <a name="ZIEM"></a><span class="keyword">void</span> <a href="../KHLaMCEvent.html">KHLaMCEvent</a>::<a href="../KHLaMCEvent.html#KHLaMCEvent:CreateArrays" title="void KHLaMCEvent::CreateArrays()">CreateArrays</a>(<span class="keyword">void</span>)
 {
 	<span class="keyword">if</span>(!<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a>)
-		<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KMCSingleBoloSubRecord"</span>,2);
+		<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KMCBolometerRecord"</span>,2);
 	
 }
 
@@ -244,7 +244,7 @@ ClassImp(<a href="../KHLaMCEvent.html">KHLaMCEvent</a>);
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2010-08-15 15:40 </em><em>&raquo; Last generated: 2010-08-15 15:40</em><br />
+<em>&raquo; Last changed: 2010-08-17 01:27 </em><em>&raquo; Last generated: 2010-08-17 01:27</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
 </div>
 </div>

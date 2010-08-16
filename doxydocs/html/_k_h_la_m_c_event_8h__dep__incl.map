@@ -1,6 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$_k_e_d_s_dict_8cxx.html" title="src/KEDSDict.cxx" alt="" coords="5,83,144,112"/>
-<area shape="rect" id="node6" href="$_k_e_d_s_dict_8h.html" title="src/KEDSDict.h" alt="" coords="192,83,315,112"/>
-<area shape="rect" id="node8" href="$_k_event_factory_8cxx.html" title="src/KEventFactory.cxx" alt="" coords="339,83,512,112"/>
-<area shape="rect" id="node10" href="$_k_h_la_m_c_event_8cxx.html" title="src/KHLaMCEvent.cxx" alt="" coords="536,83,707,112"/>
+<area shape="rect" id="node3" href="$_data_dict_8h.html" title="src/DataDict.h" alt="" coords="5,83,125,112"/>
+<area shape="rect" id="node5" href="$_k_data_writer_8cxx.html" title="src/KDataWriter.cxx" alt="" coords="149,83,307,112"/>
+<area shape="rect" id="node7" href="$_k_event_factory_8cxx.html" title="src/KEventFactory.cxx" alt="" coords="331,83,504,112"/>
+<area shape="rect" id="node9" href="$_k_h_la_m_c_event_8cxx.html" title="src/KHLaMCEvent.cxx" alt="" coords="528,83,699,112"/>
 </map>

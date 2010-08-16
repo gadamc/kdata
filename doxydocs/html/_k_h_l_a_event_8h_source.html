@@ -42,10 +42,10 @@
 <a name="l00017"></a>00017 <span class="preprocessor">#include &quot;TRef.h&quot;</span>
 <a name="l00018"></a>00018 <span class="comment">//sub record forward declarrations</span>
 <a name="l00019"></a>00019 <span class="keyword">class </span>TClonesArray; 
-<a name="l00020"></a>00020 <span class="keyword">class </span><a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a>;
-<a name="l00021"></a>00021 <span class="keyword">class </span><a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a>;
-<a name="l00022"></a>00022 <span class="keyword">class </span><a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a>;
-<a name="l00023"></a>00023 <span class="keyword">class </span><a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a>;
+<a name="l00020"></a>00020 <span class="keyword">class </span><a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a>;
+<a name="l00021"></a>00021 <span class="keyword">class </span><a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a>;
+<a name="l00022"></a>00022 <span class="keyword">class </span><a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a>;
+<a name="l00023"></a>00023 <span class="keyword">class </span><a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a>;
 <a name="l00024"></a>00024 <span class="keyword">class </span><a class="code" href="class_k_raw_event.html">KRawEvent</a>;
 <a name="l00025"></a>00025 <span class="comment">//class KHLANCSysRecord;</span>
 <a name="l00026"></a>00026 <span class="keyword">class </span>TBits;
@@ -96,25 +96,25 @@
 <a name="l00071"></a><a class="code" href="class_k_h_l_a_event.html#a1d3383e159d976d0a6acb05891acc98a">00071</a>         <a class="code" href="class_k_h_l_a_muon_veto_sys_record.html">KHLAMuonVetoSysRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a1d3383e159d976d0a6acb05891acc98a">GetMuonVetoSystemRecord</a>(<span class="keywordtype">void</span>) {<span class="keywordflow">return</span> &amp;fMuonSystem;}
 <a name="l00072"></a>00072         <span class="comment">//KHLANCSysRecord* GetHLANCSysRecord(void) {return &amp;fKHLANCSysRecord;}</span>
 <a name="l00073"></a>00073         
-<a name="l00074"></a>00074         <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a378dbc75ed13fd04d4631b91cb39daea">GetSamba</a>(Int_t i) <span class="keyword">const</span>;
-<a name="l00075"></a>00075         <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a2040a43fafc0dece696e22ee9689cba4">GetBolo</a>(Int_t i) <span class="keyword">const</span>;
-<a name="l00076"></a>00076         <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#af17444e65cbb8303bb494cb02da28cd8">GetBoloPulse</a>(Int_t i) <span class="keyword">const</span>;
-<a name="l00077"></a>00077         <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a29053ac1ee4155248a113b362b33114f">GetMuonModule</a>(Int_t i) <span class="keyword">const</span>;
+<a name="l00074"></a>00074         <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a787737ea794e27f7176517353c51f2b4">GetSamba</a>(Int_t i) <span class="keyword">const</span>;
+<a name="l00075"></a>00075         <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a>* <a class="code" href="class_k_h_l_a_event.html#addbf84b04145a3b4271c05c171f781ba">GetBolo</a>(Int_t i) <span class="keyword">const</span>;
+<a name="l00076"></a>00076         <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a>* <a class="code" href="class_k_h_l_a_event.html#ac77aa5b8440e4ba94f96cebeb551e66d">GetBoloPulse</a>(Int_t i) <span class="keyword">const</span>;
+<a name="l00077"></a>00077         <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a>* <a class="code" href="class_k_h_l_a_event.html#adf5946d554eb2085a8f133cc79b4637f">GetMuonModule</a>(Int_t i) <span class="keyword">const</span>;
 <a name="l00078"></a>00078         
 <a name="l00079"></a>00079         <span class="comment">//pointers to TClonesArrays of SubRecord objects. </span>
 <a name="l00080"></a>00080         <span class="comment">//unless you need some specific informaton from the TClonesArray</span>
 <a name="l00081"></a>00081         <span class="comment">//its best to use the methods above to get pointers</span>
 <a name="l00082"></a>00082         <span class="comment">//directly to the subRecords</span>
-<a name="l00083"></a><a class="code" href="class_k_h_l_a_event.html#a50478591793b6e7696d14da51c315a82">00083</a>         TClonesArray* <a class="code" href="class_k_h_l_a_event.html#a50478591793b6e7696d14da51c315a82">GetSambaSubRecords</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> fSamba;}
+<a name="l00083"></a><a class="code" href="class_k_h_l_a_event.html#a539579e54317b2992e442dc7ca8c5632">00083</a>         TClonesArray* <a class="code" href="class_k_h_l_a_event.html#a539579e54317b2992e442dc7ca8c5632">GetSambaRecords</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> fSamba;}
 <a name="l00084"></a><a class="code" href="class_k_h_l_a_event.html#ad22e00b0ade2bb687be4601f6c44cb16">00084</a>         TClonesArray* <a class="code" href="class_k_h_l_a_event.html#ad22e00b0ade2bb687be4601f6c44cb16">GetBoloSubRecords</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> fBolo;}
-<a name="l00085"></a><a class="code" href="class_k_h_l_a_event.html#a28112fb5128cec01aed382478f45ea3f">00085</a>         TClonesArray* <a class="code" href="class_k_h_l_a_event.html#a28112fb5128cec01aed382478f45ea3f">GetBoloPulseSubRecords</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> fBoloPulse;}
-<a name="l00086"></a><a class="code" href="class_k_h_l_a_event.html#a6a94fe0de8b0c09b32fd68e042737c6e">00086</a>         TClonesArray* <a class="code" href="class_k_h_l_a_event.html#a6a94fe0de8b0c09b32fd68e042737c6e">GetMuonModuleSubRecords</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> fMuonModule;}
+<a name="l00085"></a><a class="code" href="class_k_h_l_a_event.html#a7d7b8e2205f4aa368cd78c095fc01beb">00085</a>         TClonesArray* <a class="code" href="class_k_h_l_a_event.html#a7d7b8e2205f4aa368cd78c095fc01beb">GetBoloPulseRecords</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> fBoloPulse;}
+<a name="l00086"></a><a class="code" href="class_k_h_l_a_event.html#a6ad154d8bf109ae00dd60c75aa3026bc">00086</a>         TClonesArray* <a class="code" href="class_k_h_l_a_event.html#a6ad154d8bf109ae00dd60c75aa3026bc">GetMuonModuleRecords</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> fMuonModule;}
 <a name="l00087"></a>00087         
 <a name="l00088"></a>00088         <span class="comment">//Adders</span>
-<a name="l00089"></a>00089         <a class="code" href="class_k_h_l_a_samba_sub_record.html">KHLASambaSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#ad6c33610d04176e501e477aa04955b56">AddSamba</a>();
-<a name="l00090"></a>00090         <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#ab302bdb3cc4ebfac0bf16ddaef40d482">AddBolo</a>();
-<a name="l00091"></a>00091         <a class="code" href="class_k_h_l_a_bolo_pulse_sub_record.html">KHLABoloPulseSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#ae5cd4414660ad3be69903decb368b581">AddBoloPulse</a>();
-<a name="l00092"></a>00092         <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a03c7f41ac061e3c44874613c53765d5b">AddMuonModule</a>();
+<a name="l00089"></a>00089         <a class="code" href="class_k_h_l_a_samba_record.html">KHLASambaRecord</a>* <a class="code" href="class_k_h_l_a_event.html#abce5f0283b8a996d547ca30edb126cde">AddSamba</a>();
+<a name="l00090"></a>00090         <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a>* <a class="code" href="class_k_h_l_a_event.html#aa37f5347dbbbfc81fb96f26e835939ae">AddBolo</a>();
+<a name="l00091"></a>00091         <a class="code" href="class_k_h_l_a_bolo_pulse_record.html">KHLABoloPulseRecord</a>* <a class="code" href="class_k_h_l_a_event.html#aed1ae21569b64b7d61218d5132f62f82">AddBoloPulse</a>();
+<a name="l00092"></a>00092         <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a>* <a class="code" href="class_k_h_l_a_event.html#a8708c175eac459c6a7a94c57867666a5">AddMuonModule</a>();
 <a name="l00093"></a>00093         
 <a name="l00094"></a>00094         <span class="comment">//Remove</span>
 <a name="l00095"></a>00095         <span class="comment">//RemoveSamba(Int_t i);</span>
@@ -208,7 +208,7 @@
 <a name="l00183"></a>00183 
 <a name="l00184"></a>00184 <span class="preprocessor">#endif // __KHLAEVENT_H__</span>
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 15 15:16:04 2010 by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 17 01:29:17 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

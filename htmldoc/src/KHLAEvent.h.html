@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@pcroot.cern.ch)  -->
 <!--                                             -->
-<!--   Date: Sun Aug 15 15:40:41 2010            -->
+<!--   Date: Tue Aug 17 01:27:40 2010            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -38,10 +38,10 @@
 <span class="cpp">#include "TRef.h"</span>
 <span class="comment">//sub record forward declarrations</span>
 <span class="keyword">class</span> TClonesArray; 
-<span class="keyword">class</span> <a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a>;
-<span class="keyword">class</span> <a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a>;
-<span class="keyword">class</span> <a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a>;
-<span class="keyword">class</span> <a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a>;
+<span class="keyword">class</span> <a href="../KHLASambaRecord.html">KHLASambaRecord</a>;
+<span class="keyword">class</span> <a href="../KHLABolometerRecord.html">KHLABolometerRecord</a>;
+<span class="keyword">class</span> <a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>;
+<span class="keyword">class</span> <a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>;
 <span class="keyword">class</span> <a href="../KRawEvent.html">KRawEvent</a>;
 <span class="comment">//class KHLANCSysRecord;</span>
 <span class="keyword">class</span> TBits;
@@ -92,25 +92,25 @@
 <a name="I6Eq6C"></a>	<a href="../KHLAMuonVetoSysRecord.html">KHLAMuonVetoSysRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetMuonVetoSystemRecord" title="KHLAMuonVetoSysRecord* KHLAEvent::GetMuonVetoSystemRecord()">GetMuonVetoSystemRecord</a>(<span class="keyword">void</span>) {<span class="keyword">return</span> &amp;<a href="../KHLAEvent.html#KHLAEvent:fMuonSystem" title="KHLAMuonVetoSysRecord KHLAEvent::fMuonSystem">fMuonSystem</a>;}
 	<span class="comment">//KHLANCSysRecord* GetHLANCSysRecord(<a href="../ListOfTypes.html#void">void</a>) {return &amp;fKHLANCSysRecord;}</span>
 	
-	<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaSubRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
-	<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
-	<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
-	<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
+	<a href="../KHLASambaRecord.html">KHLASambaRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
+	<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
+	<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
+	<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
 	
 	<span class="comment">//pointers to TClonesArrays of SubRecord objects. </span>
 	<span class="comment">//unless you need some specific informaton from the TClonesArray</span>
 	<span class="comment">//its best to use the methods above to get pointers</span>
 	<span class="comment">//directly to the subRecords</span>
-<a name="hka_rD"></a>	TClonesArray* <a href="../KHLAEvent.html#KHLAEvent:GetSambaSubRecords" title="TClonesArray* KHLAEvent::GetSambaSubRecords()">GetSambaSubRecords</a>(<span class="keyword">void</span>) <span class="keyword">const</span> {<span class="keyword">return</span> <a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>;}
+<a name="o68yYE"></a>	TClonesArray* <a href="../KHLAEvent.html#KHLAEvent:GetSambaRecords" title="TClonesArray* KHLAEvent::GetSambaRecords()">GetSambaRecords</a>(<span class="keyword">void</span>) <span class="keyword">const</span> {<span class="keyword">return</span> <a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>;}
 <a name="EIHa7C"></a>	TClonesArray* <a href="../KHLAEvent.html#KHLAEvent:GetBoloSubRecords" title="TClonesArray* KHLAEvent::GetBoloSubRecords()">GetBoloSubRecords</a>(<span class="keyword">void</span>) <span class="keyword">const</span> {<span class="keyword">return</span> <a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>;}
-<a name="j4.lcD"></a>	TClonesArray* <a href="../KHLAEvent.html#KHLAEvent:GetBoloPulseSubRecords" title="TClonesArray* KHLAEvent::GetBoloPulseSubRecords()">GetBoloPulseSubRecords</a>(<span class="keyword">void</span>) <span class="keyword">const</span> {<span class="keyword">return</span> <a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>;}
-<a name="MP85VD"></a>	TClonesArray* <a href="../KHLAEvent.html#KHLAEvent:GetMuonModuleSubRecords" title="TClonesArray* KHLAEvent::GetMuonModuleSubRecords()">GetMuonModuleSubRecords</a>(<span class="keyword">void</span>) <span class="keyword">const</span> {<span class="keyword">return</span> <a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>;}
+<a name="rl2IkE"></a>	TClonesArray* <a href="../KHLAEvent.html#KHLAEvent:GetBoloPulseRecords" title="TClonesArray* KHLAEvent::GetBoloPulseRecords()">GetBoloPulseRecords</a>(<span class="keyword">void</span>) <span class="keyword">const</span> {<span class="keyword">return</span> <a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>;}
+<a name="GArsYC"></a>	TClonesArray* <a href="../KHLAEvent.html#KHLAEvent:GetMuonModuleRecords" title="TClonesArray* KHLAEvent::GetMuonModuleRecords()">GetMuonModuleRecords</a>(<span class="keyword">void</span>) <span class="keyword">const</span> {<span class="keyword">return</span> <a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>;}
 	
 	<span class="comment">//Adders</span>
-	<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:AddSamba" title="KHLASambaSubRecord* KHLAEvent::AddSamba()">AddSamba</a>();
-	<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:AddBolo" title="KHLASingleBoloSubRecord* KHLAEvent::AddBolo()">AddBolo</a>();
-	<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:AddBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::AddBoloPulse()">AddBoloPulse</a>();
-	<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:AddMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::AddMuonModule()">AddMuonModule</a>();
+	<a href="../KHLASambaRecord.html">KHLASambaRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:AddSamba" title="KHLASambaRecord* KHLAEvent::AddSamba()">AddSamba</a>();
+	<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:AddBolo" title="KHLABolometerRecord* KHLAEvent::AddBolo()">AddBolo</a>();
+	<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:AddBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::AddBoloPulse()">AddBoloPulse</a>();
+	<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>* <a href="../KHLAEvent.html#KHLAEvent:AddMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::AddMuonModule()">AddMuonModule</a>();
 	
 	<span class="comment">//Remove</span>
 	<span class="comment">//RemoveSamba(<a href="../ListOfTypes.html#Int_t">Int_t</a> i);</span>
@@ -211,7 +211,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2010-08-15 15:40 </em><em>&raquo; Last generated: 2010-08-15 15:40</em><br />
+<em>&raquo; Last changed: 2010-08-17 01:27 </em><em>&raquo; Last generated: 2010-08-17 01:27</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
 </div>
 </div>

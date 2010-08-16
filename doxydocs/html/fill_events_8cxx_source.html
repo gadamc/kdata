@@ -34,8 +34,8 @@
 <a name="l00009"></a>00009 
 <a name="l00010"></a>00010 <span class="preprocessor">#include &quot;TFile.h&quot;</span>
 <a name="l00011"></a>00011 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_event_8h.html">KHLAEvent.h</a>&quot;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_muon_module_sub_record_8h.html">KHLAMuonModuleSubRecord.h</a>&quot;</span>
-<a name="l00013"></a>00013 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_single_bolo_sub_record_8h.html">KHLASingleBoloSubRecord.h</a>&quot;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_muon_module_record_8h.html">KHLAMuonModuleRecord.h</a>&quot;</span>
+<a name="l00013"></a>00013 <span class="preprocessor">#include &quot;<a class="code" href="_k_h_l_a_bolometer_record_8h.html">KHLABolometerRecord.h</a>&quot;</span>
 <a name="l00014"></a>00014 <span class="preprocessor">#include &quot;TTree.h&quot;</span>
 <a name="l00015"></a>00015 <span class="preprocessor">#include &lt;iostream&gt;</span>
 <a name="l00016"></a>00016 <span class="preprocessor">#include &quot;TRandom.h&quot;</span>
@@ -59,7 +59,7 @@
 <a name="l00034"></a>00034         <span class="comment">//We don&#39;t need the fUniqueID and fBits words in</span>
 <a name="l00035"></a>00035         <span class="comment">//the TObject for these classes. </span>
 <a name="l00036"></a>00036         <span class="comment">//TClass::GetClass(&quot;TBits&quot;)-&gt;IgnoreTObjectStreamer();</span>
-<a name="l00037"></a>00037         <span class="comment">//TClass::GetClass(&quot;KHLAMuonModuleSubRecord&quot;)-&gt;IgnoreTObjectStreamer();</span>
+<a name="l00037"></a>00037         <span class="comment">//TClass::GetClass(&quot;KHLAMuonModuleRecord&quot;)-&gt;IgnoreTObjectStreamer();</span>
 <a name="l00038"></a>00038         <span class="comment">/*</span>
 <a name="l00039"></a>00039 <span class="comment">        TFile f(&quot;new.root&quot;,&quot;recreate&quot;);</span>
 <a name="l00040"></a>00040 <span class="comment">        cout &lt;&lt; &quot;Open Root File&quot; &lt;&lt; endl;</span>
@@ -124,12 +124,12 @@
 <a name="l00099"></a>00099                                                 
 <a name="l00100"></a>00100                         <span class="keywordflow">for</span>(Int_t i = 0; i &lt; nMod; i++) {
 <a name="l00101"></a>00101                                 bIsMuonEvent = <span class="keyword">true</span>;
-<a name="l00102"></a>00102                                 <a class="code" href="class_k_h_l_a_muon_module_sub_record.html">KHLAMuonModuleSubRecord</a>* mMuonModule = mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#a03c7f41ac061e3c44874613c53765d5b">AddMuonModule</a>();
-<a name="l00103"></a>00103                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#ac04b4812f647fc488e59819153f79bec">SetModuleNumber</a>(40*gRandom-&gt;Rndm());
-<a name="l00104"></a>00104                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#a963cf3707f0795d662a42a692eb8f705">SetAdc</a>(0,(Int_t)(290*gRandom-&gt;Rndm()));
-<a name="l00105"></a>00105                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#a963cf3707f0795d662a42a692eb8f705">SetAdc</a>(1,(Int_t)(4056*gRandom-&gt;Rndm()));
-<a name="l00106"></a>00106                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#a8ff6c6be4aa0ab139863f8a606eb9576">SetTdc</a>(0,200.0*gRandom-&gt;Rndm());
-<a name="l00107"></a>00107                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#a8ff6c6be4aa0ab139863f8a606eb9576">SetTdc</a>(1,mMuonModule-&gt;<a class="code" href="class_k_muon_module_sub_record.html#a3e5268eda36efcbede652a370b65ae5b">GetTdc</a>(0) + 200.0*gRandom-&gt;Rndm());
+<a name="l00102"></a>00102                                 <a class="code" href="class_k_h_l_a_muon_module_record.html">KHLAMuonModuleRecord</a>* mMuonModule = mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#a8708c175eac459c6a7a94c57867666a5">AddMuonModule</a>();
+<a name="l00103"></a>00103                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#a2fb3711346e51a59bbd88f03e60f4a00">SetModuleNumber</a>(40*gRandom-&gt;Rndm());
+<a name="l00104"></a>00104                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#ad4256b655413ef05f9d2a80d1ddea672">SetAdc</a>(0,(Int_t)(290*gRandom-&gt;Rndm()));
+<a name="l00105"></a>00105                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#ad4256b655413ef05f9d2a80d1ddea672">SetAdc</a>(1,(Int_t)(4056*gRandom-&gt;Rndm()));
+<a name="l00106"></a>00106                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#a6bba7b47a0b088d454ca0f2d5cb2674d">SetTdc</a>(0,200.0*gRandom-&gt;Rndm());
+<a name="l00107"></a>00107                                 mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#a6bba7b47a0b088d454ca0f2d5cb2674d">SetTdc</a>(1,mMuonModule-&gt;<a class="code" href="class_k_muon_module_record.html#a83d8f43f562de13791c1a5fabc1e416d">GetTdc</a>(0) + 200.0*gRandom-&gt;Rndm());
 <a name="l00108"></a>00108                                 mMuonModule-&gt;SetEnergy(0,(Int_t)(2048*gRandom-&gt;Rndm()/1.0e6)); <span class="comment">//divide by 1 MeV...?</span>
 <a name="l00109"></a>00109                                 mMuonModule-&gt;SetEnergy(1,(Int_t)(2048*gRandom-&gt;Rndm()/1.0e6));
 <a name="l00110"></a>00110                         }
@@ -140,19 +140,19 @@
 <a name="l00115"></a>00115                         Int_t nBolo = 1 + (gRandom-&gt;Poisson(0.95));
 <a name="l00116"></a>00116                         <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nBolo; i++) {
 <a name="l00117"></a>00117                                 bIsBoloEvent = <span class="keyword">true</span>;
-<a name="l00118"></a>00118                                 <a class="code" href="class_k_h_l_a_single_bolo_sub_record.html">KHLASingleBoloSubRecord</a>* mBolo2 = mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#ab302bdb3cc4ebfac0bf16ddaef40d482">AddBolo</a>();
+<a name="l00118"></a>00118                                 <a class="code" href="class_k_h_l_a_bolometer_record.html">KHLABolometerRecord</a>* mBolo2 = mEv-&gt;<a class="code" href="class_k_h_l_a_event.html#aa37f5347dbbbfc81fb96f26e835939ae">AddBolo</a>();
 <a name="l00119"></a>00119                                 
-<a name="l00120"></a>00120                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#acba93ddea93a633661c850c57e61f2ee">SetQvalue</a>(gRandom-&gt;Rndm());
-<a name="l00121"></a>00121                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#a2785fa8c915f98ec70b961ea54a14ca4">SetEnergyRecoil</a>(100.0*gRandom-&gt;Rndm());
-<a name="l00122"></a>00122                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#afbc80efd47b14e2b2f3911306a6591dd">SetEnergyIon</a>(100.0*gRandom-&gt;Rndm());
-<a name="l00123"></a>00123                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_single_bolo_sub_record.html#a147d6e5650347ef851cae07fea57d21c">SetEnergyHeat</a>(100.0*gRandom-&gt;Rndm());
+<a name="l00120"></a>00120                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#a87185bf7c03cb8305aa96a9d0fa3d98f">SetQvalue</a>(gRandom-&gt;Rndm());
+<a name="l00121"></a>00121                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#ad01b32064face616cf173f691a85bffe">SetEnergyRecoil</a>(100.0*gRandom-&gt;Rndm());
+<a name="l00122"></a>00122                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#ae668f3d74992a8bb96c117c8a98488df">SetEnergyIon</a>(100.0*gRandom-&gt;Rndm());
+<a name="l00123"></a>00123                                 mBolo2-&gt;<a class="code" href="class_k_h_l_a_bolometer_record.html#aee24d443af5730d9bc9703c9465e2f07">SetEnergyHeat</a>(100.0*gRandom-&gt;Rndm());
 <a name="l00124"></a>00124                                 <span class="keywordflow">if</span>(i==0) {
-<a name="l00125"></a>00125                                         mBolo2-&gt;<a class="code" href="class_k_single_bolo_sub_record.html#a12a507708f34863eecc13f03092261b8">SetDetectorName</a>(<span class="stringliteral">&quot;FID401&quot;</span>,6);
-<a name="l00126"></a>00126                                         mBolo2-&gt;<a class="code" href="class_k_single_bolo_sub_record.html#aa1413d449501ce8b0a8cf9501d727a48">SetDetectorNumber</a>(5);
+<a name="l00125"></a>00125                                         mBolo2-&gt;<a class="code" href="class_k_bolometer_record.html#a934a601a33dd2ec8af5edd0851a34dcc">SetDetectorName</a>(<span class="stringliteral">&quot;FID401&quot;</span>,6);
+<a name="l00126"></a>00126                                         mBolo2-&gt;<a class="code" href="class_k_bolometer_record.html#af737f1e3b8d1c01308afe0b0ac277084">SetDetectorNumber</a>(5);
 <a name="l00127"></a>00127                                 }
 <a name="l00128"></a>00128                                 <span class="keywordflow">else</span> {
-<a name="l00129"></a>00129                                         mBolo2-&gt;<a class="code" href="class_k_single_bolo_sub_record.html#a12a507708f34863eecc13f03092261b8">SetDetectorName</a>(<span class="stringliteral">&quot;ID2&quot;</span>,3);
-<a name="l00130"></a>00130                                         mBolo2-&gt;<a class="code" href="class_k_single_bolo_sub_record.html#aa1413d449501ce8b0a8cf9501d727a48">SetDetectorNumber</a>(2);
+<a name="l00129"></a>00129                                         mBolo2-&gt;<a class="code" href="class_k_bolometer_record.html#a934a601a33dd2ec8af5edd0851a34dcc">SetDetectorName</a>(<span class="stringliteral">&quot;ID2&quot;</span>,3);
+<a name="l00130"></a>00130                                         mBolo2-&gt;<a class="code" href="class_k_bolometer_record.html#af737f1e3b8d1c01308afe0b0ac277084">SetDetectorNumber</a>(2);
 <a name="l00131"></a>00131                                 }
 <a name="l00132"></a>00132                         }
 <a name="l00133"></a>00133                  
@@ -192,7 +192,7 @@
 <a name="l00167"></a>00167         <span class="comment">//gObjectTable-&gt;Print();</span>
 <a name="l00168"></a>00168 }
 </pre></div></div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 15 15:15:57 2010 by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 17 01:29:17 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

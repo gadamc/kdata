@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: ROOT team (rootdev@pcroot.cern.ch)  -->
+<!--                                             -->
+<!--   Date: Tue Aug 17 01:27:37 2010            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KDataAnalysis</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo, object oriented, unix, x11, windows, c++, html, rene brun, fons rademakers, cern" />
+<meta name="description" content="ROOT - An Object Oriented Framework For Large Scale Data Analysis." />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="root_header"><img src="http://root.cern.ch/drupal/sites/default/files/rootdrawing-logo.png" alt="ROOT logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KDataAnalysis','','KDataAnalysis.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KDataAnalysis.h.html">header file</a>
+<a class="descrheadentry" href="src/KDataAnalysis.cxx.html">source file</a>
+
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KDataAnalysis:description">class description</a> 
+<a class="descrheadentry" href="#KDataAnalysis:Function_Members">function members</a>
+<a class="descrheadentry" href="#KDataAnalysis:Data_Members">data members</a>
+<a class="descrheadentry" href="#KDataAnalysis:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">K-Data</a>
+ &#187; <a class="locationlevel" href="./SRC_Index.html">SRC</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KDataAnalysis</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KDataAnalysis:description"></a>class KDataAnalysis</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KDataAnalysis.html">KDataAnalysis</a>.cc
+ KEdwDataStructure
+
+ Author: Adam Cox &lt;mailto:adam.cox@ik.fzk.de&gt; on 3/25/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ This class could be developed into an interface for many different
+ types of analysis algorithms.
+
+ Right now it just opens a file for you and allows you to progress through
+ the file, event-by-event, and then gives you the option to save any
+ interesting events (<a href="./KDataAnalysis.html#KDataAnalysis:SaveThisEvent" title="Int_t KDataAnalysis::SaveThisEvent(KEvent* e) or overloads">SaveThisEvent</a>) to an output file, in the same KEdwDS format.
+
+ It also has a method that is used with an KEdwEventCollection object.
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KDataAnalysis:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:KDataAnalysis">KDataAnalysis</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName = 0)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:KDataAnalysis%1">KDataAnalysis</a>(<span class="keyword">const</span> <a href="./KDataAnalysis.html">KDataAnalysis</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:_KDataAnalysis">~KDataAnalysis</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:Close">Close</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:CloseInput">CloseInput</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:CloseOutput">CloseOutput</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetBoloPhysicsEventTime">GetBoloPhysicsEventTime</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./KHLAEvent.html">KHLAEvent</a>* ev = 0)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KEventCollection.html">KEventCollection</a>*</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetCoincEvent">GetCoincEvent</a>(<a href="./KEventCollection.html">KEventCollection</a>* mCoincE = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> fForwardTime = 5.00000001e-3, <a href="./ListOfTypes.html#Double_t">Double_t</a> fBackwardTime = 5.00000001e-3)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetCurrentEntryNumber">GetCurrentEntryNumber</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetEntries">GetEntries</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetEntry">GetEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KEvent.html">KEvent</a>*</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetEvent">GetEvent</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetEventClassName">GetEventClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KDataReader.html">KDataReader</a>*</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetFileReader">GetFileReader</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KDataWriter.html">KDataWriter</a>*</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetFileWriter">GetFileWriter</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetNextEntry">GetNextEntry</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:GetPreviousEntry">GetPreviousEntry</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:OpenEdsFile">OpenEdsFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:OpenOutputKDataFile">OpenOutputKDataFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:OpenOutputKDataFile%1">OpenOutputKDataFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aLevel)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:OpenOutputKDataFile%2">OpenOutputKDataFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName, <a href="./KEvent.html">KEvent</a>** anEvent)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KDataAnalysis.html">KDataAnalysis</a>&amp;</td><td class="funcname"><a class="funcname" href="#KDataAnalysis:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KDataAnalysis.html">KDataAnalysis</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:SaveThisEvent%1">SaveThisEvent</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:SaveThisEvent">SaveThisEvent</a>(<a href="./KEvent.html">KEvent</a>* e)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:ShowMembers">ShowMembers</a>(TMemberInspector&amp; insp, <span class="keyword">char</span>* parent)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:Streamer">Streamer</a>(TBuffer&amp; b)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; b)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:Write">Write</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = TObject::kWriteDelete, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataAnalysis:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KDataAnalysis:Data_Members"></a>Data Members</h2>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./KDataReader.html">KDataReader</a>*</td><td class="dataname"><a name="KDataAnalysis:fFileReader"></a>fFileReader</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KDataWriter.html">KDataWriter</a>*</td><td class="dataname"><a name="KDataAnalysis:fFileWriter"></a>fFileWriter</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KDataAnalysis:Class_Charts"></a>Class Charts</h2>
+<map name="MapKDataAnalysis_Lib" id="MapKDataAnalysis_Lib">
+<area shape="rect" id="node1" href="LibraryDependencies.html" title="All Libraries" alt="" coords="129,237,249,285"/>
+</map>
+<div class="tabs">
+<a id="imgKDataAnalysis_Inh" class="tabsel" href="inh/KDataAnalysis_Inh.png" onclick="javascript:return SetImg('Charts','inh/KDataAnalysis_Inh.png');">Inheritance</a>
+<a id="imgKDataAnalysis_InhMem" class="tab" href="inhmem/KDataAnalysis_InhMem.png" onclick="javascript:return SetImg('Charts','inhmem/KDataAnalysis_InhMem.png');">Inherited Members</a>
+<a id="imgKDataAnalysis_Incl" class="tab" href="incl/KDataAnalysis_Incl.png" onclick="javascript:return SetImg('Charts','incl/KDataAnalysis_Incl.png');">Includes</a>
+<a id="imgKDataAnalysis_Lib" class="tab" href="lib/KDataAnalysis_Lib.png" onclick="javascript:return SetImg('Charts','lib/KDataAnalysis_Lib.png');">Libraries</a><br/>
+</div><div class="classcharts"><div class="classchartswidth"></div>
+<img id="Charts" alt="Class Charts" class="classcharts" usemap="#MapKDataAnalysis_Inh" src="inh/KDataAnalysis_Inh.png"/></div>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KDataAnalysis:KDataAnalysis" href="src/KDataAnalysis.cxx.html#aIOVUD">KDataAnalysis</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KDataAnalysis:_KDataAnalysis" href="src/KDataAnalysis.cxx.html#yYqSCE">~KDataAnalysis</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KDataAnalysis:InitializeMembers" href="src/KDataAnalysis.cxx.html#fdddyE">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KDataAnalysis:Close" href="src/KDataAnalysis.cxx.html#c9.cpC">Close</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KDataAnalysis:CloseOutput" href="src/KDataAnalysis.cxx.html#XI85qE">CloseOutput</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KDataAnalysis:CloseInput" href="src/KDataAnalysis.cxx.html#O2q3AB">CloseInput</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:OpenEdsFile" href="src/KDataAnalysis.cxx.html#LBX2W">OpenEdsFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KEvent.html">KEvent</a>* <a class="funcname" name="KDataAnalysis:GetEvent" href="src/KDataAnalysis.cxx.html#U.slGD">GetEvent</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:GetCurrentEntryNumber" href="src/KDataAnalysis.cxx.html#VLemAC">GetCurrentEntryNumber</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:GetNextEntry" href="src/KDataAnalysis.cxx.html#m0p.QE">GetNextEntry</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:GetPreviousEntry" href="src/KDataAnalysis.cxx.html#iuUuGE">GetPreviousEntry</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:GetEntry" href="src/KDataAnalysis.cxx.html#PjuzYE">GetEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:GetEntries" href="src/KDataAnalysis.cxx.html#DPQr1D">GetEntries</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KDataAnalysis:OpenOutputKDataFile" href="src/KDataAnalysis.cxx.html#eyqCwB">OpenOutputKDataFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KDataAnalysis:OpenOutputKDataFile" href="src/KDataAnalysis.cxx.html#IY1P4B">OpenOutputKDataFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aLevel)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KDataAnalysis:OpenOutputKDataFile" href="src/KDataAnalysis.cxx.html#uQbBoE">OpenOutputKDataFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName, <a href="./KEvent.html">KEvent</a> **anEvent)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:SaveThisEvent" href="src/KDataAnalysis.cxx.html#nGy6mE">SaveThisEvent</a>(<a href="./KEvent.html">KEvent</a>* e)</span><br />
+<div class="funccomm"><pre>Save a particular event into the output Eds File.
+The type of the event need not be the same type of
+event expected by the output Eds file (HLA, Raw, etc..)
+However, the output Eds file will contain a single tree
+with a single branch of a particular event type. For example,
+if you call OpenOutputEdsFile(<span class="string">"file.root"</span>,<span class="string">"HLA"</span>), then
+all of the events in file.root will be of type KEdwHLAEvent.
+If you call this method and pass in an event of type KEdwHLAEvent,
+then it will copy it normally into your output file. If you call
+this method and pass in an event of type KEdwRawEvent, then
+the KEdwHLAEvent class will copy all of the base information
+AND compute any High Level parameters that it can based upon
+the information that is available in the RawEvent class.
+The other example is if you call OpenOutputEdsFile(<span class="string">"file.root"</span>, <span class="string">"Raw"</span>).
+If you then call this method and pass in an event of type KEdwRawEvent
+it will copy the event normally. If you call this method
+and pass in an event of type KEdwHLAEvent, it will only copy the
+data members that both classes share - namely, the data members
+that exist in the KEdwEventBase class. Any data members
+specifically in the KEdwRawEvent
+class (and not in the base class) will not be set.
+
+Returns -1 if it fails to save the event in your output EDS file
+otherwise returns from KEdwDSWriter::Fill. (TTree::Fill)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:SaveThisEvent" href="src/KDataAnalysis.cxx.html#k_h98C">SaveThisEvent</a>(<a href="./KEvent.html">KEvent</a>* e)</span><br />
+<div class="funccomm"><pre>Saves the current event into the output Eds file.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataAnalysis:Write" href="src/KDataAnalysis.cxx.html#QSwZsC">Write</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = TObject::kWriteDelete, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</span><br />
+<div class="funccomm"><pre>The options are the same as those options in TObject::<a href="./KDataAnalysis.html#KDataAnalysis:Write" title="Int_t KDataAnalysis::Write(const Char_t* name=0,Int_t option=TObject::kWriteDelete,Int_t bufsize=0)">Write</a>.
+This writes the output KEdwDS data file to disk.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KDataAnalysis:GetEventClassName" href="src/KDataAnalysis.cxx.html#wM0lED">GetEventClassName</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KEventCollection.html">KEventCollection</a>* <a class="funcname" name="KDataAnalysis:GetCoincEvent" href="src/KDataAnalysis.cxx.html#qoIgjE">GetCoincEvent</a>(<a href="./KEventCollection.html">KEventCollection</a>* mCoincE = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> fForwardTime = 5.00000001e-3, <a href="./ListOfTypes.html#Double_t">Double_t</a> fBackwardTime = 5.00000001e-3)</span><br />
+<div class="funccomm"><pre>This routine finds, for the current event that the file is pointing to,
+nearby events that match a particular criteria set by the input
+arguments and packages them into an KEdwEventCollection object.
+The current set of criteria is only a time window defined by the
+two variables fForwardTime and fBackwardTime
+If the pointer to the KEdwEventCollection is NULL, this routine will
+make a new object, which you must delete when you're done with it.
+
+	 version: 0
+	 This routine only looks for coincidences within a specific time frame.
+	
+	 In version 0, we only look for coincidences with the time stamp parameter.***
+	 The primary event must have an Energy and Q value in a specified range.
+	 Then, once that event is found, it searches backwards and forward in time
+	 searching for any other type of event that is specified by another set of
+	 conditions.
+	
+	 ***In order to be more inclusive, this routine should be modified somehow
+	 to search for physics event times by examining the ion pulse offset time.
+	 However, this is difficult with the current data stream because we are
+	 not guaranteed that events are in order in the data stream according to
+	 their physics time. In fact, its probably likely to find events <span class="string">"out of</span>
+	 order<span class="string">" during high-rate situations. These are events where the heat trigger</span>
+	 times are sequenced in a different way that the full reconstructed event
+	 time would have sequenced them. For example, event 1 has a stamp time
+	 of 10000 and the reconstructed ion pulse time is 0. Event 2 has a
+	 stamp time of 10100, but the reconstructed ion pulse time is -200. So,
+	 in the data stream Event 2 would come after Event 1, even though
+	 physically Event 2 occurred before Event 1. Now, imagine a
+	 series of events like this. If one were to perform a coincidence search,
+	 its not clear when to stop searching for events away from the event
+	 of interest because the order of events is not guaranteed to be chronological.
+	 The simplest thing to do would be to search for coincdences
+	 in time that is significantly large - beyond what is reasonably expected -
+	 and then analyze that subset in more detail.
+	 Another possible work around is to write a new program that will break
+	 up the HLA event structure and re-organize it into an event structure
+	 that is based upon the physics event time ( = time stamp + ion pulse time),
+	 forcing that the events are arranged in the file in order.
+	
+	
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KDataAnalysis:GetBoloPhysicsEventTime" href="src/KDataAnalysis.cxx.html#eltqRD">GetBoloPhysicsEventTime</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./KHLAEvent.html">KHLAEvent</a>* ev = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KDataAnalysis:KDataAnalysis" href="src/KDataAnalysis.h.html#k12vM">KDataAnalysis</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName = 0)</span><br />
+<div class="funccomm"><pre>Constructors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KDataReader.html">KDataReader</a>* <a class="funcname" name="KDataAnalysis:GetFileReader" href="src/KDataAnalysis.h.html#Squ7bE">GetFileReader</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KDataAnalysis.html#KDataAnalysis:fFileReader" title="KDataReader* KDataAnalysis::fFileReader">fFileReader</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KDataWriter.html">KDataWriter</a>* <a class="funcname" name="KDataAnalysis:GetFileWriter" href="src/KDataAnalysis.h.html#OW_BqE">GetFileWriter</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KDataAnalysis.html#KDataAnalysis:fFileWriter" title="KDataWriter* KDataAnalysis::fFileWriter">fFileWriter</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Aug 17 01:27:38 2010 </em><em>&raquo; Last generated: 2010-08-17 01:27</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

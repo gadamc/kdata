@@ -52,9 +52,9 @@ Collaboration diagram for KHLaMCEvent:</div>
 <tr><td class="memItemLeft" align="right" valign="top">Bool_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_h_la_m_c_event.html#a72f7b755d75cae8628164db321afe922">operator!=</a> (const <a class="el" href="class_k_h_la_m_c_event.html">KHLaMCEvent</a> &amp;anEvent) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">Int_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_h_la_m_c_event.html#a99dcb7c2ed3a2582c2b28e1b915dd189">GetNumBolos</a> (void) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_h_la_m_c_event.html#a656f003c7bc4004c80b4bff8ea2fdd46">SetNumBolo</a> (Int_t aNum)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_k_m_c_single_bolo_sub_record.html">KMCSingleBoloSubRecord</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_h_la_m_c_event.html#a328eba6c59861505b9b91e8ae37ade14">GetBolo</a> (Int_t i) const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_k_m_c_bolometer_record.html">KMCBolometerRecord</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_h_la_m_c_event.html#ae2fef82cd80be4bbf561e4b0314204a8">GetBolo</a> (Int_t i) const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">TClonesArray *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_h_la_m_c_event.html#afe9509dc5a4aa424d3fc2684bd40be4b">GetBoloSubRecords</a> (void) const </td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_k_m_c_single_bolo_sub_record.html">KMCSingleBoloSubRecord</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_h_la_m_c_event.html#ad1c434b331b1a5f7e50283c3d6059246">AddBolo</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_k_m_c_bolometer_record.html">KMCBolometerRecord</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_k_h_la_m_c_event.html#ad8021464afacc88729f6219ca3253f25">AddBolo</a> ()</td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 
@@ -121,12 +121,12 @@ Collaboration diagram for KHLaMCEvent:</div>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="ad1c434b331b1a5f7e50283c3d6059246"></a><!-- doxytag: member="KHLaMCEvent::AddBolo" ref="ad1c434b331b1a5f7e50283c3d6059246" args="()" -->
+<a class="anchor" id="ad8021464afacc88729f6219ca3253f25"></a><!-- doxytag: member="KHLaMCEvent::AddBolo" ref="ad8021464afacc88729f6219ca3253f25" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_k_m_c_single_bolo_sub_record.html">KMCSingleBoloSubRecord</a> * KHLaMCEvent::AddBolo </td>
+          <td class="memname"><a class="el" href="class_k_m_c_bolometer_record.html">KMCBolometerRecord</a> * KHLaMCEvent::AddBolo </td>
           <td>(</td>
           <td class="paramtype">void&nbsp;</td>
           <td class="paramname"></td>
@@ -163,12 +163,12 @@ Collaboration diagram for KHLaMCEvent:</div>
 
 </div>
 </div>
-<a class="anchor" id="a328eba6c59861505b9b91e8ae37ade14"></a><!-- doxytag: member="KHLaMCEvent::GetBolo" ref="a328eba6c59861505b9b91e8ae37ade14" args="(Int_t i) const " -->
+<a class="anchor" id="ae2fef82cd80be4bbf561e4b0314204a8"></a><!-- doxytag: member="KHLaMCEvent::GetBolo" ref="ae2fef82cd80be4bbf561e4b0314204a8" args="(Int_t i) const " -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_k_m_c_single_bolo_sub_record.html">KMCSingleBoloSubRecord</a> * KHLaMCEvent::GetBolo </td>
+          <td class="memname"><a class="el" href="class_k_m_c_bolometer_record.html">KMCBolometerRecord</a> * KHLaMCEvent::GetBolo </td>
           <td>(</td>
           <td class="paramtype">Int_t&nbsp;</td>
           <td class="paramname"> <em>i</em></td>
@@ -359,7 +359,7 @@ Collaboration diagram for KHLaMCEvent:</div>
 <li>src/<a class="el" href="_k_h_la_m_c_event_8cxx_source.html">KHLaMCEvent.cxx</a></li>
 </ul>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>Generated on Sun Aug 15 15:16:10 2010 by&nbsp;
+<hr class="footer"/><address style="text-align: right;"><small>Generated on Tue Aug 17 01:29:31 2010 by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3 </small></address>
 </body>

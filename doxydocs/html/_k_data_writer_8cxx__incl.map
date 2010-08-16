@@ -1,12 +1,14 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$_k_data_writer_8h.html" title="KDataWriter.h" alt="" coords="179,160,296,190"/>
-<area shape="rect" id="node17" href="$_k_event_factory_8h.html" title="KEventFactory.h" alt="" coords="961,160,1095,190"/>
-<area shape="rect" id="node20" href="$_k_event_8h.html" title="KEvent.h" alt="" coords="337,160,420,190"/>
-<area shape="rect" id="node25" href="$_k_h_l_a_event_8h.html" title="KHLAEvent.h" alt="" coords="475,83,584,112"/>
-<area shape="rect" id="node5" href="$_k_data_file_i_o_8h.html" title="KDataFileIO.h" alt="" coords="25,238,140,267"/>
-<area shape="rect" id="node28" href="$_k_h_l_a_bolo_sys_record_8h.html" title="KHLABoloSysRecord.h" alt="" coords="444,160,615,190"/>
-<area shape="rect" id="node38" href="$_k_h_l_a_muon_veto_sys_record_8h.html" title="KHLAMuonVetoSysRecord.h" alt="" coords="639,160,847,190"/>
-<area shape="rect" id="node30" href="$_k_bolo_system_record_8h.html" title="KBoloSystemRecord.h" alt="" coords="447,238,617,267"/>
-<area shape="rect" id="node32" href="$_k_system_record_8h.html" title="KSystemRecord.h" alt="" coords="568,315,709,344"/>
-<area shape="rect" id="node40" href="$_k_muon_veto_system_record_8h.html" title="KMuonVetoSystemRecord.h" alt="" coords="641,238,852,267"/>
+<area shape="rect" id="node3" href="$_k_data_writer_8h.html" title="KDataWriter.h" alt="" coords="131,160,248,189"/>
+<area shape="rect" id="node17" href="$_k_event_factory_8h.html" title="KEventFactory.h" alt="" coords="963,160,1096,189"/>
+<area shape="rect" id="node20" href="$_k_event_8h.html" title="KEvent.h" alt="" coords="339,160,421,189"/>
+<area shape="rect" id="node24" href="$_k_raw_event_8h.html" title="KRawEvent.h" alt="" coords="227,83,339,112"/>
+<area shape="rect" id="node27" href="$_k_h_l_a_event_8h.html" title="KHLAEvent.h" alt="" coords="568,83,677,112"/>
+<area shape="rect" id="node49" href="$_k_h_la_m_c_event_8h.html" title="KHLaMCEvent.h" alt="" coords="363,83,493,112"/>
+<area shape="rect" id="node5" href="$_k_data_file_i_o_8h.html" title="KDataFileIO.h" alt="" coords="25,237,140,267"/>
+<area shape="rect" id="node30" href="$_k_h_l_a_bolo_sys_record_8h.html" title="KHLABoloSysRecord.h" alt="" coords="445,160,616,189"/>
+<area shape="rect" id="node40" href="$_k_h_l_a_muon_veto_sys_record_8h.html" title="KHLAMuonVetoSysRecord.h" alt="" coords="640,160,848,189"/>
+<area shape="rect" id="node32" href="$_k_bolo_system_record_8h.html" title="KBoloSystemRecord.h" alt="" coords="447,237,617,267"/>
+<area shape="rect" id="node34" href="$_k_system_record_8h.html" title="KSystemRecord.h" alt="" coords="568,315,709,344"/>
+<area shape="rect" id="node42" href="$_k_muon_veto_system_record_8h.html" title="KMuonVetoSystemRecord.h" alt="" coords="641,237,852,267"/>
 </map>

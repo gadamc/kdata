@@ -1,19 +1,19 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$_k_data_reader_8h.html" title="KDataReader.h" alt="" coords="333,83,459,112"/>
-<area shape="rect" id="node17" href="$_k_h_l_a_event_8h.html" title="KHLAEvent.h" alt="" coords="560,160,669,189"/>
-<area shape="rect" id="node19" href="$_k_event_8h.html" title="KEvent.h" alt="" coords="1216,237,1299,267"/>
+<area shape="rect" id="node3" href="$_k_data_reader_8h.html" title="KDataReader.h" alt="" coords="336,83,461,112"/>
+<area shape="rect" id="node17" href="$_k_h_l_a_event_8h.html" title="KHLAEvent.h" alt="" coords="563,160,672,189"/>
+<area shape="rect" id="node19" href="$_k_event_8h.html" title="KEvent.h" alt="" coords="1177,237,1260,267"/>
 <area shape="rect" id="node42" href="$_k_data_writer_8h.html" title="KDataWriter.h" alt="" coords="176,83,293,112"/>
-<area shape="rect" id="node51" href="$_k_h_l_a_muon_module_sub_record_8h.html" title="KHLAMuonModuleSubRecord.h" alt="" coords="993,160,1220,189"/>
-<area shape="rect" id="node58" href="$_k_h_l_a_single_bolo_sub_record_8h.html" title="KHLASingleBoloSubRecord.h" alt="" coords="708,160,919,189"/>
-<area shape="rect" id="node65" href="$_k_h_l_a_samba_sub_record_8h.html" title="KHLASambaSubRecord.h" alt="" coords="909,237,1096,267"/>
+<area shape="rect" id="node51" href="$_k_h_l_a_muon_module_record_8h.html" title="KHLAMuonModuleRecord.h" alt="" coords="979,160,1181,189"/>
+<area shape="rect" id="node58" href="$_k_h_l_a_bolometer_record_8h.html" title="KHLABolometerRecord.h" alt="" coords="715,160,904,189"/>
+<area shape="rect" id="node65" href="$_k_h_l_a_samba_record_8h.html" title="KHLASambaRecord.h" alt="" coords="909,237,1072,267"/>
 <area shape="rect" id="node5" href="$_k_data_file_i_o_8h.html" title="KDataFileIO.h" alt="" coords="177,160,292,189"/>
 <area shape="rect" id="node23" href="$_k_h_l_a_bolo_sys_record_8h.html" title="KHLABoloSysRecord.h" alt="" coords="523,237,693,267"/>
 <area shape="rect" id="node33" href="$_k_h_l_a_muon_veto_sys_record_8h.html" title="KHLAMuonVetoSysRecord.h" alt="" coords="291,237,499,267"/>
-<area shape="rect" id="node25" href="$_k_bolo_system_record_8h.html" title="KBoloSystemRecord.h" alt="" coords="523,315,693,344"/>
+<area shape="rect" id="node25" href="$_k_bolo_system_record_8h.html" title="KBoloSystemRecord.h" alt="" coords="532,315,703,344"/>
 <area shape="rect" id="node27" href="$_k_system_record_8h.html" title="KSystemRecord.h" alt="" coords="316,392,457,421"/>
 <area shape="rect" id="node35" href="$_k_muon_veto_system_record_8h.html" title="KMuonVetoSystemRecord.h" alt="" coords="152,315,363,344"/>
-<area shape="rect" id="node53" href="$_k_muon_module_sub_record_8h.html" title="KMuonModuleSubRecord.h" alt="" coords="1107,315,1304,344"/>
-<area shape="rect" id="node55" href="$_k_sub_record_8h.html" title="KSubRecord.h" alt="" coords="1047,392,1161,421"/>
-<area shape="rect" id="node60" href="$_k_single_bolo_sub_record_8h.html" title="KSingleBoloSubRecord.h" alt="" coords="717,315,899,344"/>
-<area shape="rect" id="node67" href="$_k_samba_sub_record_8h.html" title="KSambaSubRecord.h" alt="" coords="923,315,1083,344"/>
+<area shape="rect" id="node53" href="$_k_muon_module_record_8h.html" title="KMuonModuleRecord.h" alt="" coords="1073,315,1247,344"/>
+<area shape="rect" id="node55" href="$_k_sub_record_8h.html" title="KSubRecord.h" alt="" coords="1013,392,1128,421"/>
+<area shape="rect" id="node60" href="$_k_bolometer_record_8h.html" title="KBolometerRecord.h" alt="" coords="727,315,889,344"/>
+<area shape="rect" id="node67" href="$_k_samba_record_8h.html" title="KSambaRecord.h" alt="" coords="913,315,1049,344"/>
 </map>

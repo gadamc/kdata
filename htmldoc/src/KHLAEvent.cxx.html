@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@pcroot.cern.ch)  -->
 <!--                                             -->
-<!--   Date: Sun Aug 15 15:40:40 2010            -->
+<!--   Date: Tue Aug 17 01:27:39 2010            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -48,10 +48,10 @@
 
 <span class="comment">//sub record includes</span>
 <span class="cpp">#include "TClonesArray.h"</span>
-<span class="cpp">#include "<a href="../KHLASambaSubRecord.h">KHLASambaSubRecord.h</a>"</span>
-<span class="cpp">#include "<a href="../KHLASingleBoloSubRecord.h">KHLASingleBoloSubRecord.h</a>"</span>
-<span class="cpp">#include "<a href="../KHLABoloPulseSubRecord.h">KHLABoloPulseSubRecord.h</a>"</span>
-<span class="cpp">#include "<a href="../KHLAMuonModuleSubRecord.h">KHLAMuonModuleSubRecord.h</a>"</span>
+<span class="cpp">#include "<a href="../KHLASambaRecord.h">KHLASambaRecord.h</a>"</span>
+<span class="cpp">#include "<a href="../KHLABolometerRecord.h">KHLABolometerRecord.h</a>"</span>
+<span class="cpp">#include "<a href="../KHLABoloPulseRecord.h">KHLABoloPulseRecord.h</a>"</span>
+<span class="cpp">#include "<a href="../KHLAMuonModuleRecord.h">KHLAMuonModuleRecord.h</a>"</span>
 <span class="cpp">#include &lt;iostream&gt;</span>
 
 <span class="keyword">using</span> <span class="keyword">namespace</span> std;
@@ -215,10 +215,10 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 {
 	<span class="comment">//</span>
 	<span class="comment">//ClonesArray assignment doesn't appear to work in the following way</span>
-	<span class="comment">//*<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a> = *anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetSambaSubRecords" title="TClonesArray* KHLAEvent::GetSambaSubRecords()">GetSambaSubRecords</a>();</span>
+	<span class="comment">//*<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a> = *anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetSambaRecords" title="TClonesArray* KHLAEvent::GetSambaRecords()">GetSambaRecords</a>();</span>
 	<span class="comment">//*<a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a> = *anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBoloSubRecords" title="TClonesArray* KHLAEvent::GetBoloSubRecords()">GetBoloSubRecords</a>();</span>
-	<span class="comment">//*<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a> = *anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBoloPulseSubRecords" title="TClonesArray* KHLAEvent::GetBoloPulseSubRecords()">GetBoloPulseSubRecords</a>();</span>
-	<span class="comment">//*<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a> = *anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetMuonModuleSubRecords" title="TClonesArray* KHLAEvent::GetMuonModuleSubRecords()">GetMuonModuleSubRecords</a>();</span>
+	<span class="comment">//*<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a> = *anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBoloPulseRecords" title="TClonesArray* KHLAEvent::GetBoloPulseRecords()">GetBoloPulseRecords</a>();</span>
+	<span class="comment">//*<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a> = *anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetMuonModuleRecords" title="TClonesArray* KHLAEvent::GetMuonModuleRecords()">GetMuonModuleRecords</a>();</span>
 	<span class="comment">//</span>
 	<span class="comment">//so, I just clear this object's array, and create as many objects as I need.</span>
 	<span class="comment">//this might be inefficient, but I don't think so. besides,</span>
@@ -235,8 +235,8 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	<a href="../ListOfTypes.html#Int_t">Int_t</a> ObjectNumber = TProcessID::GetObjectCount();
 	<span class="comment">/*
 	for(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetNumSambas" title="Int_t KHLAEvent::GetNumSambas()">GetNumSambas</a>(); i++){
-		<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:AddSamba" title="KHLASambaSubRecord* KHLAEvent::AddSamba()">AddSamba</a>();
-		<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *sO = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaSubRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(i);
+		<a href="../KHLASambaRecord.html">KHLASambaRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:AddSamba" title="KHLASambaRecord* KHLAEvent::AddSamba()">AddSamba</a>();
+		<a href="../KHLASambaRecord.html">KHLASambaRecord</a> *sO = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(i);
 		if(s != 0 &amp;&amp; sO != 0) 
 			*s = *sO;
 		else
@@ -248,10 +248,10 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	<span class="comment">//BECAUSE EACH SAMBA RECORD MUST BE ADDED TO THE EVENT. </span>
 	
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetNumBolos" title="Int_t KHLAEvent::GetNumBolos()">GetNumBolos</a>(); i++){
-		<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a> *bolo = <a href="../KHLAEvent.html#KHLAEvent:AddBolo" title="KHLASingleBoloSubRecord* KHLAEvent::AddBolo()">AddBolo</a>();
-		<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a> *boloO = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i);
-		<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *sambaO = boloO-&gt;GetSambaRecord();
-		<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *samba = 0;
+		<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a> *bolo = <a href="../KHLAEvent.html#KHLAEvent:AddBolo" title="KHLABolometerRecord* KHLAEvent::AddBolo()">AddBolo</a>();
+		<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a> *boloO = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i);
+		<a href="../KHLASambaRecord.html">KHLASambaRecord</a> *sambaO = boloO-&gt;GetSambaRecord();
+		<a href="../KHLASambaRecord.html">KHLASambaRecord</a> *samba = 0;
 		
 		<span class="keyword">if</span>(bolo != 0 &amp;&amp; boloO != 0) 
 			*bolo = *boloO;
@@ -259,7 +259,7 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 			<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent::operator= Invalid SingleBolo Pointer"</span> &lt;&lt; endl;
 		
 		<span class="keyword">if</span>(sambaO != 0) {
-			samba = <a href="../KHLAEvent.html#KHLAEvent:AddSamba" title="KHLASambaSubRecord* KHLAEvent::AddSamba()">AddSamba</a>();
+			samba = <a href="../KHLAEvent.html#KHLAEvent:AddSamba" title="KHLASambaRecord* KHLAEvent::AddSamba()">AddSamba</a>();
 			*samba = *sambaO;
 			<span class="keyword">if</span>(samba) bolo-&gt;SetSambaRecord(samba);
 		}
@@ -275,8 +275,8 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	<span class="comment">//RECORD IS DONE ABOVE, INSTEAD OF THIS CURRENT METHOD THAT</span>
 	<span class="comment">//DOESN'T PRESERVE PROPER TREF LINKING TO THIS EVENT</span>
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetNumBoloPulses" title="Int_t KHLAEvent::GetNumBoloPulses()">GetNumBoloPulses</a>(); i++){
-		<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:AddBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::AddBoloPulse()">AddBoloPulse</a>();
-		<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a> *sO = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(i);
+		<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:AddBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::AddBoloPulse()">AddBoloPulse</a>();
+		<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a> *sO = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(i);
 		<span class="keyword">if</span>(s != 0 &amp;&amp; sO != 0) 
 			*s = *sO;
 		<span class="keyword">else</span>
@@ -284,8 +284,8 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	}
 	
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetNumMuonModules" title="Int_t KHLAEvent::GetNumMuonModules()">GetNumMuonModules</a>(); i++){
-		<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:AddMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::AddMuonModule()">AddMuonModule</a>();
-		<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a> *sO = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(i);
+		<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:AddMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::AddMuonModule()">AddMuonModule</a>();
+		<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a> *sO = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(i);
 		<span class="keyword">if</span>(s != 0 &amp;&amp; sO != 0) 
 			*s = *sO;
 		<span class="keyword">else</span>
@@ -363,16 +363,16 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	<span class="comment">//been allocated.</span>
 	
 	<span class="keyword">if</span>(!<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>)
-		<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KHLASambaSubRecord"</span>,5);
+		<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KHLASambaRecord"</span>,5);
 	
 	<span class="keyword">if</span>(!<a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>)
-		<a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KHLASingleBoloSubRecord"</span>,5);
+		<a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KHLABolometerRecord"</span>,5);
 	
 	<span class="keyword">if</span>(!<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>)
-		<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KHLABoloPulseSubRecord"</span>,10);
+		<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KHLABoloPulseRecord"</span>,10);
 	
 	<span class="keyword">if</span>(!<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>)
-		<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KHLAMuonModuleSubRecord"</span>,5);
+		<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a> = <span class="keyword">new</span> TClonesArray(<span class="string">"KHLAMuonModuleRecord"</span>,5);
 
 	
 	<span class="comment">//why doesn't this create a memory leak? <a href="../KHLAEvent.html#KHLAEvent:CreateArrays" title="void KHLAEvent::CreateArrays()">CreateArrays</a> is called</span>
@@ -398,73 +398,73 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	<span class="keyword">return</span> mNewSubRecord;
 }
 
-<a name="nHa_6E"></a><a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a>* <a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:AddSamba" title="KHLASambaSubRecord* KHLAEvent::AddSamba()">AddSamba</a>(<span class="keyword">void</span>)
+<a name="YWjamE"></a><a href="../KHLASambaRecord.html">KHLASambaRecord</a>* <a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:AddSamba" title="KHLASambaRecord* KHLAEvent::AddSamba()">AddSamba</a>(<span class="keyword">void</span>)
 {
 	<span class="comment">//Use this event only when creating an event and you want to add</span>
 	<span class="comment">//a new SubRecord.</span>
 	
-	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a>&gt;(<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>,<a href="../KHLAEvent.html#KHLAEvent:fNumSamba" title="Int_t KHLAEvent::fNumSamba">fNumSamba</a>);
+	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KHLASambaRecord.html">KHLASambaRecord</a>&gt;(<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>,<a href="../KHLAEvent.html#KHLAEvent:fNumSamba" title="Int_t KHLAEvent::fNumSamba">fNumSamba</a>);
 }
 
-<a name="A2pcH"></a><a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a>* <a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:AddBolo" title="KHLASingleBoloSubRecord* KHLAEvent::AddBolo()">AddBolo</a>(<span class="keyword">void</span>)
+<a name="oqwKx"></a><a href="../KHLABolometerRecord.html">KHLABolometerRecord</a>* <a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:AddBolo" title="KHLABolometerRecord* KHLAEvent::AddBolo()">AddBolo</a>(<span class="keyword">void</span>)
 {
 	<span class="comment">//Use this event only when creating an event and you want to add</span>
 	<span class="comment">//a new SubRecord.</span>
 	
 	<a href="../KEvent.html#KEvent:AddTriggerType" title="void KEvent::AddTriggerType(Int_t aNum)">AddTriggerType</a>(kBoloTriggerType);
-	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a>&gt;(<a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>,<a href="../KHLAEvent.html#KHLAEvent:fNumBolo" title="Int_t KHLAEvent::fNumBolo">fNumBolo</a>);
+	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a>&gt;(<a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>,<a href="../KHLAEvent.html#KHLAEvent:fNumBolo" title="Int_t KHLAEvent::fNumBolo">fNumBolo</a>);
 }
 
-<a name="RV22qC"></a><a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a>* <a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:AddBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::AddBoloPulse()">AddBoloPulse</a>()
+<a name="fJPVDB"></a><a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:AddBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::AddBoloPulse()">AddBoloPulse</a>()
 {
 	<span class="comment">//Use this event only when creating an event and you want to add</span>
 	<span class="comment">//a new SubRecord.</span>
 	
-	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a>&gt;(<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>,<a href="../KHLAEvent.html#KHLAEvent:fNumBoloPulse" title="Int_t KHLAEvent::fNumBoloPulse">fNumBoloPulse</a>);
+	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>&gt;(<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>,<a href="../KHLAEvent.html#KHLAEvent:fNumBoloPulse" title="Int_t KHLAEvent::fNumBoloPulse">fNumBoloPulse</a>);
 }
 
-<a name="b1oLw"></a><a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a>* <a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:AddMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::AddMuonModule()">AddMuonModule</a>()
+<a name="bhKNyE"></a><a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>* <a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:AddMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::AddMuonModule()">AddMuonModule</a>()
 {
 	<span class="comment">//Use this event only when creating an event and you want to add</span>
 	<span class="comment">//a new SubRecord.</span>
 	
 	<a href="../KEvent.html#KEvent:AddTriggerType" title="void KEvent::AddTriggerType(Int_t aNum)">AddTriggerType</a>(kMuonVetoTriggerType);
-	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a>&gt;(<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>,<a href="../KHLAEvent.html#KHLAEvent:fNumMuonModule" title="Int_t KHLAEvent::fNumMuonModule">fNumMuonModule</a>);
+	<span class="keyword">return</span> AddSubRecord&lt;<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>&gt;(<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>,<a href="../KHLAEvent.html#KHLAEvent:fNumMuonModule" title="Int_t KHLAEvent::fNumMuonModule">fNumMuonModule</a>);
 }
 
-<a name="YxchB"></a><a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *<a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaSubRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
+<a name="h073v"></a><a href="../KHLASambaRecord.html">KHLASambaRecord</a> *<a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
 {
   <span class="comment">// Return the i'th Samba Sub Record for this event.</span>
 	
-  <a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *ms = 0;
-  <span class="keyword">if</span> (i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumSamba" title="Int_t KHLAEvent::fNumSamba">fNumSamba</a>) ms = (<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *)<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>-&gt;At(i);
+  <a href="../KHLASambaRecord.html">KHLASambaRecord</a> *ms = 0;
+  <span class="keyword">if</span> (i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumSamba" title="Int_t KHLAEvent::fNumSamba">fNumSamba</a>) ms = (<a href="../KHLASambaRecord.html">KHLASambaRecord</a> *)<a href="../KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>-&gt;At(i);
   <span class="keyword">return</span> ms;
 }
 
-<a name="wOS6BE"></a><a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a> *<a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
+<a name="TLVs4"></a><a href="../KHLABolometerRecord.html">KHLABolometerRecord</a> *<a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
 {
   <span class="comment">// Return the i'th Bolometer Sub Record for this event.</span>
 	
-  <a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a> *ms = 0;
-  <span class="keyword">if</span> (i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumBolo" title="Int_t KHLAEvent::fNumBolo">fNumBolo</a>) ms = (<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a> *)<a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>-&gt;At(i);
+  <a href="../KHLABolometerRecord.html">KHLABolometerRecord</a> *ms = 0;
+  <span class="keyword">if</span> (i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumBolo" title="Int_t KHLAEvent::fNumBolo">fNumBolo</a>) ms = (<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a> *)<a href="../KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>-&gt;At(i);
   <span class="keyword">return</span> ms;
 }
 
-<a name="HodCT"></a><a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a> *<a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
+<a name="F.WH1B"></a><a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a> *<a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
 {
   <span class="comment">// Return the i'th Bolometer Pulse Sub Record for this event.</span>
 	
-  <a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a> *ms = 0;
-  <span class="keyword">if</span> (i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumBoloPulse" title="Int_t KHLAEvent::fNumBoloPulse">fNumBoloPulse</a>) ms = (<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a> *)<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>-&gt;At(i);
+  <a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a> *ms = 0;
+  <span class="keyword">if</span> (i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumBoloPulse" title="Int_t KHLAEvent::fNumBoloPulse">fNumBoloPulse</a>) ms = (<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a> *)<a href="../KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>-&gt;At(i);
   <span class="keyword">return</span> ms;
 }
 
-<a name="DFWBPD"></a><a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a> *<a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
+<a name="FZ5gqB"></a><a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a> *<a href="../KHLAEvent.html">KHLAEvent</a>::<a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>
 {
   <span class="comment">// Return the i'th Muon Module Sub Record for this event.</span>
 	
-  <a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a> *ms = 0;
-  <span class="keyword">if</span> (i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumMuonModule" title="Int_t KHLAEvent::fNumMuonModule">fNumMuonModule</a>) ms = (<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a> *)<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>-&gt;At(i);
+  <a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a> *ms = 0;
+  <span class="keyword">if</span> (i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumMuonModule" title="Int_t KHLAEvent::fNumMuonModule">fNumMuonModule</a>) ms = (<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a> *)<a href="../KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>-&gt;At(i);
   <span class="keyword">return</span> ms;
 }
 
@@ -513,12 +513,12 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	
 	<span class="keyword">if</span>(<a href="../KHLAEvent.html#KHLAEvent:fNumSamba" title="Int_t KHLAEvent::fNumSamba">fNumSamba</a> == anEvent.<a href="../KHLAEvent.html#KHLAEvent:fNumSamba" title="Int_t KHLAEvent::fNumSamba">fNumSamba</a>){
 		<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumSamba" title="Int_t KHLAEvent::fNumSamba">fNumSamba</a>; i++){
-			<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaSubRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(i);
-			<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a> *sOther = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaSubRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(i);
+			<a href="../KHLASambaRecord.html">KHLASambaRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(i);
+			<a href="../KHLASambaRecord.html">KHLASambaRecord</a> *sOther = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(i);
 			<span class="keyword">if</span>(s != 0 &amp;&amp; sOther != 0){
 				<span class="keyword">if</span>(!s-&gt;<a href="../KHLAEvent.html#KHLAEvent:IsSame" title="Bool_t KHLAEvent::IsSame(const KHLAEvent&amp; anEvent,Bool_t bPrint=false)">IsSame</a>(*sOther, bPrint)){
 					<span class="keyword">if</span> (bPrint) 
-						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent KHLASambaSubRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
+						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent KHLASambaRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
 					bIsEqual = <span class="keyword">false</span>;
 					<span class="keyword">if</span>(!bPrint)
 						<span class="keyword">return</span> <span class="keyword">false</span>;
@@ -536,12 +536,12 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	
 	<span class="keyword">if</span>(<a href="../KHLAEvent.html#KHLAEvent:fNumBolo" title="Int_t KHLAEvent::fNumBolo">fNumBolo</a> == anEvent.<a href="../KHLAEvent.html#KHLAEvent:fNumBolo" title="Int_t KHLAEvent::fNumBolo">fNumBolo</a>){
 		<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumBolo" title="Int_t KHLAEvent::fNumBolo">fNumBolo</a>; i++){
-			<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i);
-			<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a> *sOther = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i);
+			<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i);
+			<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a> *sOther = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i);
 			<span class="keyword">if</span>(s != 0 &amp;&amp; sOther != 0){
 				<span class="keyword">if</span>(!s-&gt;<a href="../KHLAEvent.html#KHLAEvent:IsSame" title="Bool_t KHLAEvent::IsSame(const KHLAEvent&amp; anEvent,Bool_t bPrint=false)">IsSame</a>(*sOther, bPrint)){
 					<span class="keyword">if</span> (bPrint) 
-						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent KHLASingleBoloSubRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
+						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent KHLABolometerRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
 					bIsEqual = <span class="keyword">false</span>;
 					<span class="keyword">if</span>(!bPrint)
 						<span class="keyword">return</span> <span class="keyword">false</span>;
@@ -559,12 +559,12 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	
 	<span class="keyword">if</span>(<a href="../KHLAEvent.html#KHLAEvent:fNumBoloPulse" title="Int_t KHLAEvent::fNumBoloPulse">fNumBoloPulse</a> == anEvent.<a href="../KHLAEvent.html#KHLAEvent:fNumBoloPulse" title="Int_t KHLAEvent::fNumBoloPulse">fNumBoloPulse</a>){
 		<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumBoloPulse" title="Int_t KHLAEvent::fNumBoloPulse">fNumBoloPulse</a>; i++){
-			<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(i);
-			<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a> *sOther = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(i);
+			<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(i);
+			<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a> *sOther = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(i);
 			<span class="keyword">if</span>(s != 0 &amp;&amp; sOther != 0){
 				<span class="keyword">if</span>(!s-&gt;<a href="../KHLAEvent.html#KHLAEvent:IsSame" title="Bool_t KHLAEvent::IsSame(const KHLAEvent&amp; anEvent,Bool_t bPrint=false)">IsSame</a>(*sOther, bPrint)){
 					<span class="keyword">if</span> (bPrint) 
-						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent KHLABoloPulseSubRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
+						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent KHLABoloPulseRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
 					bIsEqual = <span class="keyword">false</span>;
 					<span class="keyword">if</span>(!bPrint)
 						<span class="keyword">return</span> <span class="keyword">false</span>;
@@ -582,12 +582,12 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	
 	<span class="keyword">if</span>(<a href="../KHLAEvent.html#KHLAEvent:fNumMuonModule" title="Int_t KHLAEvent::fNumMuonModule">fNumMuonModule</a> == anEvent.<a href="../KHLAEvent.html#KHLAEvent:fNumMuonModule" title="Int_t KHLAEvent::fNumMuonModule">fNumMuonModule</a>){
 		<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:fNumMuonModule" title="Int_t KHLAEvent::fNumMuonModule">fNumMuonModule</a>; i++){
-			<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(i);
-			<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a> *sOther = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(i);
+			<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a> *s = <a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(i);
+			<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a> *sOther = anEvent.<a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(i);
 			<span class="keyword">if</span>(s != 0 &amp;&amp; sOther != 0){
 				<span class="keyword">if</span>(!s-&gt;<a href="../KHLAEvent.html#KHLAEvent:IsSame" title="Bool_t KHLAEvent::IsSame(const KHLAEvent&amp; anEvent,Bool_t bPrint=false)">IsSame</a>(*sOther, bPrint)){
 					<span class="keyword">if</span> (bPrint) 
-						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent KHLABoloPulseSubRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
+						<a href="../ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"KHLAEvent KHLABoloPulseRecord number "</span> &lt;&lt; i &lt;&lt; <span class="string">" Not Equal"</span> &lt;&lt; endl;		
 					bIsEqual = <span class="keyword">false</span>;
 					<span class="keyword">if</span>(!bPrint)
 						<span class="keyword">return</span> <span class="keyword">false</span>;
@@ -627,19 +627,19 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	<a href="../KHLAEvent.html#KHLAEvent:fMuonSystem" title="KHLAMuonVetoSysRecord KHLAEvent::fMuonSystem">fMuonSystem</a>.<a href="../KHLAMuonVetoSysRecord.html#KHLAMuonVetoSysRecord:Compact" title="void KHLAMuonVetoSysRecord::Compact()">Compact</a>();
 	
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:GetNumSambas" title="Int_t KHLAEvent::GetNumSambas()">GetNumSambas</a>(); i++){
-		<a href="../KHLASambaSubRecord.html">KHLASambaSubRecord</a>* samba = <a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaSubRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(i);
+		<a href="../KHLASambaRecord.html">KHLASambaRecord</a>* samba = <a href="../KHLAEvent.html#KHLAEvent:GetSamba" title="KHLASambaRecord* KHLAEvent::GetSamba(Int_t i)">GetSamba</a>(i);
 		samba-&gt;<a href="../KHLAEvent.html#KHLAEvent:Compact" title="void KHLAEvent::Compact()">Compact</a>();
 	}
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:GetNumBolos" title="Int_t KHLAEvent::GetNumBolos()">GetNumBolos</a>(); i++){
-		<a href="../KHLASingleBoloSubRecord.html">KHLASingleBoloSubRecord</a>* bolo = <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i);
+		<a href="../KHLABolometerRecord.html">KHLABolometerRecord</a>* bolo = <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i);
 		bolo-&gt;<a href="../KHLAEvent.html#KHLAEvent:Compact" title="void KHLAEvent::Compact()">Compact</a>();
 	}
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:GetNumBoloPulses" title="Int_t KHLAEvent::GetNumBoloPulses()">GetNumBoloPulses</a>(); i++){
-		<a href="../KHLABoloPulseSubRecord.html">KHLABoloPulseSubRecord</a>* bp = <a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseSubRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(i);
+		<a href="../KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* bp = <a href="../KHLAEvent.html#KHLAEvent:GetBoloPulse" title="KHLABoloPulseRecord* KHLAEvent::GetBoloPulse(Int_t i)">GetBoloPulse</a>(i);
 		bp-&gt;<a href="../KHLAEvent.html#KHLAEvent:Compact" title="void KHLAEvent::Compact()">Compact</a>();
 	}
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:GetNumMuonModules" title="Int_t KHLAEvent::GetNumMuonModules()">GetNumMuonModules</a>(); i++){
-		<a href="../KHLAMuonModuleSubRecord.html">KHLAMuonModuleSubRecord</a>* module = <a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleSubRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(i);
+		<a href="../KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>* module = <a href="../KHLAEvent.html#KHLAEvent:GetMuonModule" title="KHLAMuonModuleRecord* KHLAEvent::GetMuonModule(Int_t i)">GetMuonModule</a>(i);
 		module-&gt;<a href="../KHLAEvent.html#KHLAEvent:Compact" title="void KHLAEvent::Compact()">Compact</a>();
 	}
 }
@@ -653,7 +653,7 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	
 	<a href="../ListOfTypes.html#Double_t">Double_t</a> energy = 0;
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:GetNumBolos" title="Int_t KHLAEvent::GetNumBolos()">GetNumBolos</a>(); i++)
-		energy += <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i)-><a href="../KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyRecoil" title="Double32_t KHLASingleBoloSubRecord::GetEnergyRecoil()">GetEnergyRecoil</a>();
+		energy += <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i)-><a href="../KHLABolometerRecord.html#KHLABolometerRecord:GetEnergyRecoil" title="Double32_t KHLABolometerRecord::GetEnergyRecoil()">GetEnergyRecoil</a>();
 	
 	<span class="keyword">return</span> energy;
 }
@@ -665,7 +665,7 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	
 	<a href="../ListOfTypes.html#Double_t">Double_t</a> energy = 0;
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:GetNumBolos" title="Int_t KHLAEvent::GetNumBolos()">GetNumBolos</a>(); i++)
-		energy += <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i)-><a href="../KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyHeat" title="Double32_t KHLASingleBoloSubRecord::GetEnergyHeat()">GetEnergyHeat</a>();
+		energy += <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i)-><a href="../KHLABolometerRecord.html#KHLABolometerRecord:GetEnergyHeat" title="Double32_t KHLABolometerRecord::GetEnergyHeat()">GetEnergyHeat</a>();
 	
 	<span class="keyword">return</span> energy;
 }
@@ -679,7 +679,7 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 	
 	<a href="../ListOfTypes.html#Double_t">Double_t</a> energy = 0;
 	<span class="keyword">for</span>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i = 0; i &lt; <a href="../KHLAEvent.html#KHLAEvent:GetNumBolos" title="Int_t KHLAEvent::GetNumBolos()">GetNumBolos</a>(); i++)
-		energy += <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLASingleBoloSubRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i)-><a href="../KHLASingleBoloSubRecord.html#KHLASingleBoloSubRecord:GetEnergyIon" title="Double32_t KHLASingleBoloSubRecord::GetEnergyIon()">GetEnergyIon</a>();
+		energy += <a href="../KHLAEvent.html#KHLAEvent:GetBolo" title="KHLABolometerRecord* KHLAEvent::GetBolo(Int_t i)">GetBolo</a>(i)-><a href="../KHLABolometerRecord.html#KHLABolometerRecord:GetEnergyIon" title="Double32_t KHLABolometerRecord::GetEnergyIon()">GetEnergyIon</a>();
 	
 	<span class="keyword">return</span> energy;
 }
@@ -692,7 +692,7 @@ ClassImp(<a href="../KHLAEvent.html">KHLAEvent</a>);
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2010-08-15 15:40 </em><em>&raquo; Last generated: 2010-08-15 15:40</em><br />
+<em>&raquo; Last changed: 2010-08-17 01:27 </em><em>&raquo; Last generated: 2010-08-17 01:27</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
 </div>
 </div>

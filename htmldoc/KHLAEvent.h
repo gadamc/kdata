@@ -17,10 +17,10 @@
 #include "TRef.h"
 //sub record forward declarrations
 class TClonesArray; 
-class KHLASambaSubRecord;
-class KHLASingleBoloSubRecord;
-class KHLABoloPulseSubRecord;
-class KHLAMuonModuleSubRecord;
+class KHLASambaRecord;
+class KHLABolometerRecord;
+class KHLABoloPulseRecord;
+class KHLAMuonModuleRecord;
 class KRawEvent;
 //class KHLANCSysRecord;
 class TBits;
@@ -71,25 +71,25 @@ public:
 	KHLAMuonVetoSysRecord* GetMuonVetoSystemRecord(void) {return &fMuonSystem;}
 	//KHLANCSysRecord* GetHLANCSysRecord(void) {return &fKHLANCSysRecord;}
 	
-	KHLASambaSubRecord* GetSamba(Int_t i) const;
-	KHLASingleBoloSubRecord* GetBolo(Int_t i) const;
-	KHLABoloPulseSubRecord* GetBoloPulse(Int_t i) const;
-	KHLAMuonModuleSubRecord* GetMuonModule(Int_t i) const;
+	KHLASambaRecord* GetSamba(Int_t i) const;
+	KHLABolometerRecord* GetBolo(Int_t i) const;
+	KHLABoloPulseRecord* GetBoloPulse(Int_t i) const;
+	KHLAMuonModuleRecord* GetMuonModule(Int_t i) const;
 	
 	//pointers to TClonesArrays of SubRecord objects. 
 	//unless you need some specific informaton from the TClonesArray
 	//its best to use the methods above to get pointers
 	//directly to the subRecords
-	TClonesArray* GetSambaSubRecords(void) const {return fSamba;}
+	TClonesArray* GetSambaRecords(void) const {return fSamba;}
 	TClonesArray* GetBoloSubRecords(void) const {return fBolo;}
-	TClonesArray* GetBoloPulseSubRecords(void) const {return fBoloPulse;}
-	TClonesArray* GetMuonModuleSubRecords(void) const {return fMuonModule;}
+	TClonesArray* GetBoloPulseRecords(void) const {return fBoloPulse;}
+	TClonesArray* GetMuonModuleRecords(void) const {return fMuonModule;}
 	
 	//Adders
-	KHLASambaSubRecord* AddSamba();
-	KHLASingleBoloSubRecord* AddBolo();
-	KHLABoloPulseSubRecord* AddBoloPulse();
-	KHLAMuonModuleSubRecord* AddMuonModule();
+	KHLASambaRecord* AddSamba();
+	KHLABolometerRecord* AddBolo();
+	KHLABoloPulseRecord* AddBoloPulse();
+	KHLAMuonModuleRecord* AddMuonModule();
 	
 	//Remove
 	//RemoveSamba(Int_t i);

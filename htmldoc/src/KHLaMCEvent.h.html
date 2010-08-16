@@ -4,7 +4,7 @@
 <!--                                             -->
 <!-- Author: ROOT team (rootdev@pcroot.cern.ch)  -->
 <!--                                             -->
-<!--   Date: Sun Aug 15 15:40:46 2010            -->
+<!--   Date: Tue Aug 17 01:27:42 2010            -->
 <!--                                             -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -36,7 +36,7 @@
 <span class="comment">//class <a href="../#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>;</span>
 <span class="comment">//class <a href="../KEventFactory.html">KEventFactory</a>;</span>
 <span class="keyword">class</span> TClonesArray; 
-<span class="keyword">class</span> <a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>;
+<span class="keyword">class</span> <a href="../KMCBolometerRecord.html">KMCBolometerRecord</a>;
 
 <span class="keyword">const</span> <a href="../ListOfTypes.html#Char_t">Char_t</a> kHLaMCEventName[] = <span class="string">"HLaMC"</span>;
 <span class="keyword">const</span> <a href="../ListOfTypes.html#Char_t">Char_t</a> kHLaMCClassName[] = <span class="string">"KHLaMCEvent"</span>;
@@ -64,18 +64,18 @@
 
 <a name="siHCKE"></a>	<span class="keyword">void</span> <a href="../KHLaMCEvent.html#KHLaMCEvent:SetNumBolo" title="void KHLaMCEvent::SetNumBolo(Int_t aNum)">SetNumBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> aNum){<a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a> = aNum;}
 	
-	<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>* <a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCSingleBoloSubRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
+	<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a>* <a href="../KHLaMCEvent.html#KHLaMCEvent:GetBolo" title="KMCBolometerRecord* KHLaMCEvent::GetBolo(Int_t i)">GetBolo</a>(<a href="../ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span>;
 	
 <a name="EIHa7C"></a>	TClonesArray* <a href="../KHLaMCEvent.html#KHLaMCEvent:GetBoloSubRecords" title="TClonesArray* KHLaMCEvent::GetBoloSubRecords()">GetBoloSubRecords</a>(<span class="keyword">void</span>) <span class="keyword">const</span> {<span class="keyword">return</span> <a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a>;}
 	
-	<a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a>* <a href="../KHLaMCEvent.html#KHLaMCEvent:AddBolo" title="KMCSingleBoloSubRecord* KHLaMCEvent::AddBolo()">AddBolo</a>();
+	<a href="../KMCBolometerRecord.html">KMCBolometerRecord</a>* <a href="../KHLaMCEvent.html#KHLaMCEvent:AddBolo" title="KMCBolometerRecord* KHLaMCEvent::AddBolo()">AddBolo</a>();
 	
 	
 	
 <span class="keyword">private</span>: 
-	<a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a>;  <span class="comment">//the number of <a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> in this event. </span>
+	<a href="../ListOfTypes.html#Int_t">Int_t</a> <a href="../KHLaMCEvent.html#KHLaMCEvent:fNumBolo" title="Int_t KHLaMCEvent::fNumBolo">fNumBolo</a>;  <span class="comment">//the number of <a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> in this event. </span>
 	
-	TClonesArray *<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a>; <span class="comment">//-&gt;  pointer to an array of <a href="../KMCSingleBoloSubRecord.html">KMCSingleBoloSubRecord</a> found in this event.</span>
+	TClonesArray *<a href="../KHLaMCEvent.html#KHLaMCEvent:fBolo" title="TClonesArray* KHLaMCEvent::fBolo">fBolo</a>; <span class="comment">//-&gt;  pointer to an array of <a href="../KMCBolometerRecord.html">KMCBolometerRecord</a> found in this event.</span>
 	
 	<span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt; T* AddSubRecord(TClonesArray *mArray, <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;mCount);
 	<span class="keyword">void</span> <a href="../KHLaMCEvent.html#KHLaMCEvent:ClearArray" title="void KHLaMCEvent::ClearArray(Option_t* anOpt,TClonesArray* mArray,Int_t&amp; mCount)">ClearArray</a>(<a href="../ListOfTypes.html#Option_t">Option_t</a> *anOpt, TClonesArray *mArray, <a href="../ListOfTypes.html#Int_t">Int_t</a> &amp;mCount);
@@ -98,7 +98,7 @@
 <!--SIGNATURE-->
 <div id="footer">
 
-<em>&raquo; Last changed: 2010-08-15 15:40 </em><em>&raquo; Last generated: 2010-08-15 15:40</em><br />
+<em>&raquo; Last changed: 2010-08-17 01:27 </em><em>&raquo; Last generated: 2010-08-17 01:27</em><br />
 <em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
 </div>
 </div>
