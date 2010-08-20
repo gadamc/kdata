@@ -30,7 +30,7 @@ int main(int argc, char* argv[] )
 	cout << "Filling Global Software Event Number" << endl;
 	cout << "The number of arguments should be 3. You passed in " << argc << endl;
 	for(Int_t i = 0; i < argc; i++){
-		cout << argv[i] << " ";
+		cout << argv[i];
 	}
 	cout << endl << endl;
 	

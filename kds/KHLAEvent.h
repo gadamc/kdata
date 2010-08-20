@@ -15,8 +15,8 @@
 #include "KHLABoloSysRecord.h"
 #include "KHLAMuonVetoSysRecord.h"
 #include "TRef.h"
+#include "TClonesArray.h"
 //sub record forward declarrations
-class TClonesArray; 
 class KHLASambaRecord;
 class KHLABolometerRecord;
 class KHLABoloPulseRecord;

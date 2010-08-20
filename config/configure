@@ -1,0 +1,532 @@
+#!/usr/bin/perl -w
+#
+# File:         configure
+#
+# Description:  Perl script to configure KW C++ analysis installation
+#               (temporary version for test KDATA release)
+#
+# Author:       Adam Cox
+#
+# Syntax:       configure [libs] [default]
+#
+#                libs    - installs KDATA libraries only
+#                default - doesn't prompt for variables if a default exists
+#
+
+require 5.002;
+use strict;
+use Cwd;
+use vars qw( $min_root_ver);
+
+sub GetEnv($;$$$);
+sub EnvCommand($$);
+sub CheckExists($);
+sub SimplifyDirName($);
+sub GetMakeCommand();
+sub MakeDirectory($);
+sub InstallGMake();
+sub GetInstallDir($);
+sub DownloadLastVersion($$$$$;$$);
+sub WriteSetupScript($);
+sub YKDATA(;$$);
+sub Exit($);
+
+my $opt_all = 1;
+my $opt_default = 0;
+
+
+my $install_dir = cwd();
+my $tmpfile = "$install_dir/install_KDATA.tmp";
+
+my %KDATA_env;  # KDATA environment variables
+
+my $library_path = 'LD_LIBRARY_PATH';
+$ENV{'OSTYPE'} eq 'darwin' and $library_path = "DY$library_path";
+
+# parse command line options
+foreach (@ARGV) {
+    /^libs$/i and $opt_all = 0, next;
+    /^default$/i and $opt_default = 1, next;
+    print "configure: Unknown command line option: $_\n";
+}
+
+print "-------------------------------------------------------------------------------\n";
+print "Configuring KDATA...\n\n";
+
+# list of environment variables that we need to set
+my @env_list = ( 'KDATA_ROOT',
+                 #'KDATA_DATA',
+                 'ROOTSYS',
+                 #'KW_KWMAN_VER',
+                 #'KW_ROOT',
+                 'MAKE'
+               );
+
+if ($opt_all) {
+    push(@env_list, #'CERNDIR',
+                    'FFTW_DIR',
+                    #'HISTO_DIR'
+				);
+}
+
+# set FFTW_DIR to '/usr/lib' by default
+$ENV{FFTW_DIR} or $ENV{FFTW_DIR} = '/usr/lib';
+       
+# initialize our environment from current settings
+$KDATA_env{$_} = $ENV{$_} foreach @env_list;
+
+$KDATA_env{KDATA_ROOT} = $install_dir;  # override this with the current directory
+
+require "$install_dir/config/min_versions.pm";
+
+$KDATA_env{MAKE} = GetMakeCommand();
+
+print "Checking environment variables...\n";
+
+# get and verify KDATA_ROOT environment
+# set KDATA_DATA to ${KDATA_ROOT}_data by default
+#my $KDATA_data = $KDATA_env{KDATA_DATA};
+#unless ($KDATA_data) {
+#    $KDATA_data = $KDATA_env{KDATA_ROOT};
+#    $KDATA_data =~ s{/$}{};
+#    $KDATA_data .= '_data';
+#    $KDATA_env{KDATA_DATA} = $KDATA_data;
+#}
+#GetEnv('KDATA_DATA','KDATA_data.txt','This is the base directory for the KDATA data files');
+# get and verify ROOTSYS environment
+for (;;) {
+    GetEnv('ROOTSYS','bin/root');
+	print "$KDATA_env{KDATA_ROOT}";
+    unless ($KDATA_env{ROOTSYS} =~ /.*(\d+)\.(\d+)[._](\d+)/) {
+        print "Warning: Unknown ROOT version (must be $min_root_ver or higher)\n";
+       last;
+    }
+    my $root_ver = sprintf("%d.%.2d%.2d",$1,$2,$3);
+    my $min_root = $min_root_ver;
+	print "$root_ver";
+    $min_root =~ s/_//; # remove '_' to compare as floating point
+    last if $root_ver >= $min_root;
+    print "ERROR: ROOT version must be $min_root_ver or higher\n";
+}
+
+my $prog = "$KDATA_env{ROOTSYS}/bin/root-config";
+-e $prog or Exit("ERROR: Can't find $prog");
+
+# get and verify KW_ROOT and KW_KWMAN_VER
+#for (;;) {
+#    GetEnv('KW_ROOT','','This is only needed if you are compiling for KWMAN (KWmanpp or usr modules).');
+#    last unless $KDATA_env{'KW_ROOT'};
+#    for (;;) {
+#        GetEnv('KW_KWMAN_VER');
+#        last if $KDATA_env{KW_KWMAN_VER} ge $min_KWman_ver;
+#        print "ERROR: KWMAN version must be $min_KWman_ver or higher\n";
+#        if ($opt_default) {
+#            print "KDATA may have been compiled for an older version of KWMAN\n";
+#            print "Run 'make distclean' in the KDATAROOT directory then try again\n";
+#            Exit("Installation aborted.");
+#        }
+#    }
+#    last if CheckExists("$KDATA_env{KW_ROOT}/KWman/$KDATA_env{KW_KWMAN_VER}/code/libKWlib.a");
+#    print "\nTry again:\n";
+#}
+
+# get other environment variables if required
+if ($opt_all and $KDATA_env{KW_ROOT}) {
+    #GetEnv('CERNDIR','liblepto.a');
+    GetEnv('FFTW_DIR','libfftw.a');
+    #GetEnv('HISTO_DIR','libFHistoHB.a','This only needs to be set if KWMAN was extracted with HISTOSCOPE_PRESENT.');
+}
+
+# were any of our environment variables changed?
+my $env_changed = 0;
+foreach (keys(%KDATA_env)) {
+    unless ($ENV{$_} and $ENV{$_} eq $KDATA_env{$_}) {
+        $env_changed = 1;
+    }
+}
+
+# generate setup_KDATA scripts if necessary
+my $rtnval = 0;
+my $script_csh = "$install_dir/config/setup_kdata.csh";
+my $script_sh = "$install_dir/config/setup_kdata.sh";
+if ($env_changed or not -e $script_csh or not -e $script_sh) {
+
+    WriteSetupScript($script_csh);
+    WriteSetupScript($script_sh);
+
+    $rtnval = 1;  # indicates the configuration changed
+}
+
+# print out our environment
+print "---------- Environment settings ----------\n";
+foreach (keys(%KDATA_env)) {
+    print "$_ = $KDATA_env{$_}\n" if defined $KDATA_env{$_};
+}
+print "------------------------------------------\n";
+
+Exit($rtnval);  # all done
+
+
+#================================================================
+# subroutines
+
+# Exit with a return value
+# Inputs: Numerical return value or error message string
+sub Exit($)
+{
+    my $msg = shift;
+    my $val;
+    if (not $msg) {
+        $val = 0;
+    } elsif ($msg =~ /^\d+$/) {
+        $val = int($msg);
+    } else {
+        print "$msg\n";
+        $val = 100;  # use a return value of 100 if an error string is provided
+    }
+    exit($val);
+}
+
+
+# get environment directory
+sub GetEnv($;$$$)
+{
+    my $env = shift;        # 1) name of environment variable to obtain
+    my $checkfile = shift;  # 2) file that must exist if the variable is a directory
+    my $fail_msg = shift;   # 3) prompt string if this variable is optional
+    my $prompt = shift;     # 4) prompt string to override normal prompt
+    my $val = $KDATA_env{$env};
+
+    unless ($prompt) {
+        $prompt = "Please enter $env";
+        if ($checkfile) {
+            $prompt .= " (where $checkfile is found)";
+        }
+        if ($fail_msg) {
+            $prompt .= ", or 'none' to skip this setting.\nNote: $fail_msg";
+        }
+    }
+    my $default = '';
+    if ($val) {
+        $default = $val;
+    }
+    $default = 'none' if $fail_msg and not $default;
+
+    for (;;) {
+        if ($opt_default and $default) {
+            print "$env set to default of $default from KDATA settings\n";
+            $val = $default;
+        } else {
+			print "\n$prompt\n[$default]: ";
+			$val = <STDIN>;
+			$val =~ s/\s//g;    # remove all whitespace
+			$val or $val = $default;    # use default if no value entered
+		}
+		if ($val eq 'none') {
+			if ($fail_msg) {
+				$val = '';
+				print "$env skipped.\n";
+				last;
+			} else {
+				print "You can not skip this setting!\n";
+				next;
+			}
+		}
+        # we are done if the there is no file to check      
+        last unless $checkfile;
+        # make sure this is an absolute path
+        unless ($val =~ /^\//) {
+            $val = SimplifyDirName("$install_dir/$val");
+        }
+        # we are done if the checkfile exists
+        last if CheckExists("$val/$checkfile");
+    }
+    # add to our KDATA environment
+    $KDATA_env{$env} = $val;
+    
+    return($val);
+}
+
+# write the KDATA setup script
+sub WriteSetupScript($)
+{
+    my $script_file = shift;
+
+    if ($script_file =~ /csh$/) {
+        # write script for csh family
+        open(KDATA_SH,">$script_file") or Exit("Can't create $script_file");
+        print KDATA_SH "# This file automatically generated by install_KDATA.\n";
+        print KDATA_SH "# It should be source'd from your login script.\n\n";
+        foreach (keys(%KDATA_env)) {
+            print KDATA_SH "setenv $_ $KDATA_env{$_}\n" if defined $KDATA_env{$_};
+        }
+        # Set other environment variables that depend on the ones above
+        print KDATA_SH <<__END__;
+setenv PATH {\$KDATA_ROOT}/bin:{\$ROOTSYS}/bin:{\$PATH}
+if ({\$?$library_path}) then
+setenv $library_path {\$KDATA_ROOT}/lib:{\$ROOTSYS}/lib:{\$$library_path}
+else
+setenv $library_path {\$KDATA_ROOT}/lib:{\$ROOTSYS}/lib
+endif
+__END__
+        print KDATA_SH "setenv MACOSX_DEPLOYMENT_TARGET 10.6\n" if $ENV{'OSTYPE'} eq 'darwin';
+        close(KDATA_SH);
+
+    } else {
+        # write script for sh family
+        $script_file = $script_sh;
+        open(KDATA_SH,">$script_file") or Exit("Can't create $script_file");
+        print KDATA_SH "# This file automatically generated by install_KDATA.\n";
+        print KDATA_SH "# It should be source'd from your login script.\n\n";
+        foreach (keys(%KDATA_env)) {
+            print KDATA_SH "export $_=$KDATA_env{$_}\n" if defined $KDATA_env{$_};
+        }
+        # Set other environment variables that depend on the ones above
+        print KDATA_SH <<__END__;
+export PATH=\$KDATA_ROOT/bin:\$ROOTSYS/bin:\$PATH
+if (test "\$$library_path") then
+export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib:\$$library_path
+else
+export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib
+fi
+__END__
+        print KDATA_SH "export MACOSX_DEPLOYMENT_TARGET=10.6\n" if $ENV{'OSTYPE'} eq 'darwin';
+        close(KDATA_SH);
+    }
+}
+
+# simplify directory name by removing "dirname/../"
+sub SimplifyDirName($)
+{
+  $_ = shift;
+
+  # do quick check and only rework directory names if they contain "/."
+  if (/\/\./) {
+    my @parts = split /\//;
+    my $i;
+    for ($i=1; $i<=$#parts; ) {
+      # remove "xxx/.." but not "../.."
+      if ($parts[$i] eq '..' and $parts[$i-1] ne '..') {
+        splice @parts, $i-1, 2;  # remove 2 elements from list
+        --$i if $i>1;
+      # remove "."
+      } elsif ($parts[$i] eq '.') {
+        splice @parts, $i, 1;    # remove one element from list
+      } else {
+        ++$i;
+      }
+    }
+    $_ = join '/', @parts;
+  }
+  return $_;
+}
+
+# check that the file exists
+sub CheckExists($)
+{
+    my $file = shift;
+    if (-e $file) {
+        return 1;
+    } else {
+        print "ERROR: $file doesn't exist\n";
+        if ($opt_default) {
+        	print "Switching to manual input mode...\n";
+        	$opt_default = 0;
+        }
+        return 0;
+    }
+}
+
+# get command line for GNU make utility
+# - returns command line for GNU make
+sub GetMakeCommand()
+{
+    my $make = ($KDATA_env{MAKE} or 'make');
+
+    print "Checking for GNU make... ";
+    for (;;) {
+        my $make_ver = `$make --version 2>&1`;
+        if ($make_ver =~ /^GNU/) {
+            print "OK\n";
+            last;
+        } else {
+            print "Not GNU make!\n";
+            print "GNU make should be available if you compiled ROOT.\n";
+            for (;;) {
+                print "Enter full path to run GNU make\n[or RTN to download]: ";
+                $make = <STDIN>;
+                $make =~ s/\s//g;    # remove all whitespace
+                unless ($make) {
+                    #$make = InstallGMake(); #let's not try to install make. Just tell the user.
+                    Exit(" You Should Install GMake");
+                }
+                unless (-e $make) {
+                    print "ERROR: $make doesn't exist\n";
+                    next;
+                }
+                unless (-x $make) {
+                    print "ERROR: $make isn't executable\n";
+                    next;
+                }
+                last;   # exit this loop to test the make version
+            }
+        }
+    }
+    return($make);
+}
+
+# install gmake
+# - returns command line to execute gmake, or nil on error
+sub InstallGMake()
+{
+    my $dir = GetInstallDir('gmake');
+    my $ver = DownloadLastVersion('ftp.gnu.org','/pub/gnu/make','make-','.tar.gz',$dir);
+    $ver or $ver = DownloadLastVersion('gatekeeper.dec.com','/pub/GNU/make','make-','.tar.gz',$dir);
+    $ver or Exit("ERROR: Can't download gmake source code");
+    
+    system("echo Extracting files...; cd $dir; gzip -dc $ver.tar.gz | tar -xf -");
+    
+    -d "$dir/$ver" or return;   # be sure the make directory exists
+    
+    system("echo Building gmake...; cd $dir/$ver; ./configure; make");
+    
+    # test to be sure the executable exists
+    my $make = "$dir/$ver/make";
+    -x $make or $make = '';
+    
+    # return full make pathname
+    return($make);
+}
+
+# get absolute directory name to install specified package
+sub GetInstallDir($)
+{
+    my $package_name = shift;
+    
+    print "Base directory to install $package_name? ";
+    my $install_dir = <STDIN>;
+    chomp $install_dir;
+    my $pwd = `pwd`;
+    chomp $pwd;
+    # make install directory absolute
+    if ($install_dir) {
+        unless ($install_dir =~ /^\//) {
+            $install_dir = SimplifyDirName("$pwd/$install_dir");
+        }
+    } else {
+        $install_dir = $pwd;
+    }
+    
+    MakeDirectory($install_dir);        # be sure the directory exists
+    
+    return($install_dir);
+}
+
+# download last version of a software release
+# - returns name of downloaded file, without suffix (or nil on error)
+sub DownloadLastVersion($$$$$;$$)
+{
+    my $ftp_host = shift;
+    my $ftp_dir = shift;
+    my $ftp_file_prefix = shift;
+    my $ftp_file_suffix = shift;
+    my $install_dir = shift;
+    my $ftp_user = shift;
+    my $ftp_passwd = shift;
+    
+    # first, find the latest version
+    open(TMPFILE,">$tmpfile") or die "Error creating $tmpfile";
+    print TMPFILE <<END;
+user $ftp_user $ftp_passwd
+cd $ftp_dir
+ls
+END
+    close(TMPFILE);
+    print "Contacting ftp server $ftp_host...\n";
+    my $files = `ftp -n $ftp_host < $tmpfile`;
+    unlink($tmpfile);
+
+    my @files = split /^/m, $files;  #,,
+    my $file_version;
+    foreach (@files) {
+        next unless /^$ftp_file_prefix(\S+?)$ftp_file_suffix\s/;
+        $file_version = $1;
+    }
+    unless ($file_version) {
+        print "Can't find file to download: $ftp_dir/${ftp_file_prefix}*$ftp_file_suffix\n";
+        return;
+    }
+    
+    my $file_version_name = "$ftp_file_prefix$file_version";
+    my $file_name = "$file_version_name$ftp_file_suffix";
+    unless (YKDATA("Download $file_name")) {
+        print "OK then.  Install it yourself and call me in the morning.";
+        return;
+    }
+    
+    # download this version of the file
+    open(TMPFILE,">$tmpfile") or die "Error creating $tmpfile";
+    print TMPFILE <<END;
+user $ftp_user $ftp_passwd
+binary
+cd $ftp_dir
+get $file_name $install_dir/$file_name
+END
+    close(TMPFILE);
+    print "Downloading $file_name to directory $install_dir (be patient)...\n";
+    system("ftp -n $ftp_host < $tmpfile");
+    unlink($tmpfile);
+    
+    unless (-e "$install_dir/$file_name") {
+        print "Error downloading $file_name";
+        return;
+    }
+    return($file_version_name);
+}
+
+# ask a Yes/No question
+# - returns non-zero if the answer is Yes
+sub YKDATA(;$$)
+{
+    my $prompt = shift;
+    my $default = shift;
+    
+    $prompt and print $prompt;
+    
+    my $yes;
+    if ($opt_default and $default) {
+    	print ": $yes\n";
+    	$yes = $default;
+    } else {
+		do {
+			print " [y/n]? ";
+			chomp($yes = <STDIN>);
+		} until ($yes =~ /^(y|n)$/i);
+	}
+    return($yes eq 'y' || $yes eq 'Y');
+}
+
+# ensure that the specified directory exists
+# - returns non-zero on success
+sub MakeDirectory($)
+{
+  my $dirname = shift;
+  my $sep = '/';
+
+  if ($dirname) {
+    my @dirs = split /${sep}/, $dirname;
+    my $spec = "";
+    foreach (@dirs) {
+      $spec .= "$_${sep}";   # add "${sep}" to separate directory names
+      # check to see that this directory exists,
+      # and create it if it doesn't
+      if ( ! -d $spec ) {
+        mkdir($spec, 0777) or return(0);
+      }
+    }
+  }
+  return(1);
+}
+
+
+# end of file

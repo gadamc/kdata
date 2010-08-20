@@ -203,10 +203,9 @@ TObject* KDataReader::Get(const Char_t* namecycle) const
 	else return 0;
 }
 
+//anEntry has to be the entry number for the allBolosVetoFile it is the same as GSEventNumber, but not for skimmed files
 Int_t KDataReader::GetNextMuonEntry(Int_t anEntry) 
 {
-	//anEntry has to be the entry number for the allBolosVetoFile it is the same as GSEventNumber, but not for skimmed files
-
 	Int_t size=0;
 	KHLAEvent* e=0;
 	e = dynamic_cast<KHLAEvent*>(GetEvent());

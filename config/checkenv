@@ -1,0 +1,114 @@
+#!/usr/bin/perl -w
+#
+# File:         checkenv
+#
+# Description:  Check that our environment is set up properly for a KDATA build
+#
+# Author:       Adam. Cox
+#
+
+require 5.002;
+use strict;
+use vars qw($min_root_ver);
+
+sub YKDATA(;$);
+
+my $warnings = 0;
+my $errors = 0;
+my %checked;
+
+foreach (qw(KDATA_ROOT ROOTSYS)) {
+    next if $ENV{$_};
+    print STDERR "Error: $_ is not set\n";
+    ++$errors;
+}
+
+# check minimum ROOT versions
+unless ($errors) {
+    require "$ENV{KDATA_ROOT}/config/min_versions.pm";
+    #if ($ENV{kw_kwMAN_VER} and $ENV{kw_kwMAN_VER} lt $min_kwman_ver) {
+    #    print STDERR "Error: Minimum kwMAN version is $min_kwman_ver\n";
+    #    exit(1);
+    #}
+    # try to get ROOT version number
+    if ($ENV{ROOTSYS} =~ /.*(\d+)\.(\d+)[._](\d+)/) {
+        my $root_ver = sprintf("%d.%.2d%.2d",$1,$2,$3);
+        my $min_root = $min_root_ver;
+        $min_root =~ s/_//; # remove '_' to compare as floating pointcd 
+        if ($root_ver < $min_root) {
+            print STDERR "Error: Minimum ROOT version is $min_root_ver\n";
+            exit(1);
+        }
+    }
+    
+}
+
+my $setup_file = 'config/setup_kdata.csh';
+
+if (open(FILE, $setup_file)) {
+
+	while (<FILE>) {
+		/^setenv\s+(\S+)\s+(\S*)\s*/ or next;
+		my $var = $1;
+		my $val = $2;
+		$checked{$var} and next;  # don't consider the same thing twice
+		$checked{$var} = 1;
+		# expand shell variables in $val using our $ENV values
+		while ($val =~ /\{\$([^}]+)}/) {
+			if ($ENV{$1}) {
+				$val = "$`$ENV{$1}$'";
+			} else {
+				$val = "$`$'";
+			}
+		}
+		if (defined($ENV{$var})) {
+			if ($var =~ /PATH$/) {
+				my @val_list = split /:/, $val;
+				my @env_list = split /:/, $ENV{$var};
+				next if @val_list>1 and @env_list>1 and
+						$val_list[0] eq $env_list[0] and
+						$val_list[1] eq $env_list[1];
+			} else {
+				next if $ENV{$var} eq $val;
+			}
+			print STDERR "Warning: $var may not be set properly\n";
+			++$warnings;
+		} else {
+			print STDERR "Error: $var is not defined\n";
+			++$errors;
+		}
+	}
+	close(FILE);
+	
+} else {
+	print STDERR "Error: $setup_file not found\n";
+	++$errors;
+}
+
+if ($errors) {
+	print STDERR "You shouldn't be running make directly!\n";
+	print STDERR "Instead, run 'install_KDATA' and follow the directions.\n";
+	exit(1);
+}
+
+if ($warnings) {
+	print STDERR "You should 'source $setup_file' before building KDATA\n";
+	unless (YKDATA("Continue with make")) {
+		exit(1);
+	}
+}
+exit(0);
+
+sub YKDATA(;$)
+{
+    my $prompt = shift;
+    $prompt and print $prompt;
+    my $yes;
+    do {
+        print " [y/n]? ";
+        chomp($yes = <STDIN>);
+    } until ($yes =~ /^(y|n)$/i); #||
+    return($yes eq 'y' || $yes eq 'Y');
+}
+
+# end

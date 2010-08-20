@@ -26,7 +26,6 @@
 //#include "KHLAMuonVetoSysRecord.h"
 
 //sub record includes
-#include "TClonesArray.h"
 #include "KHLASambaRecord.h"
 #include "KHLABolometerRecord.h"
 #include "KHLABoloPulseRecord.h"

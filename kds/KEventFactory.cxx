@@ -21,7 +21,7 @@
 //
 // KDS Developer's Note: If you want the KDataReader and KDataWriter classes
 // to recognize your Event class, you must derive from KEvent and 
-// you must include your class here. The KHLaMCEvent class (along with 
+// you must implement your class here. The KHLaMCEvent class (along with 
 // KHLAEvent and KRawEvent) is an example of this. 
 
 #include "KEventFactory.h"

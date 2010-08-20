@@ -105,8 +105,8 @@ int main(int /*argc*/, const char* /*argv[]*/)
 				mMuonModule->SetAdc(1,(Int_t)(4056*gRandom->Rndm()));
 				mMuonModule->SetTdc(0,200.0*gRandom->Rndm());
 				mMuonModule->SetTdc(1,mMuonModule->GetTdc(0) + 200.0*gRandom->Rndm());
-				mMuonModule->SetEnergy(0,(Int_t)(2048*gRandom->Rndm()/1.0e6)); //divide by 1 MeV...?
-				mMuonModule->SetEnergy(1,(Int_t)(2048*gRandom->Rndm()/1.0e6));
+				//mMuonModule->SetEnergy(0,(Int_t)(2048*gRandom->Rndm()/1.0e6)); //divide by 1 MeV...?
+				//mMuonModule->SetEnergy(1,(Int_t)(2048*gRandom->Rndm()/1.0e6));
 			}
 			
 		}
