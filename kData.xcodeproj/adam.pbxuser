@@ -1,0 +1,103 @@
+// !$*UTF8*$!
+{
+	6610DD48121ECAAA0047036E /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeTarget = 6610DD53121ECAB90047036E /* make */;
+		addToTargets = (
+		);
+		codeSenseManager = 6610DD4D121ECAAA0047036E /* Code sense */;
+		ignoreBreakpointsInProjectsDict = {
+		};
+		perUserDictionary = {
+			PBXPerProjectTemplateStateSaveDate = 304007927;
+			PBXWorkspaceStateSaveDate = 304007927;
+		};
+		sourceControlManager = 6610DD4C121ECAAA0047036E /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	6610DD4C121ECAAA0047036E /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = Edw;
+			};
+		};
+	};
+	6610DD4D121ECAAA0047036E /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	6610DD53121ECAB90047036E /* make */ = {
+		activeExec = 0;
+	};
+	6610DDEC121ECC290047036E /* MakeHTML.C */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
+			sepNavSelRange = "{178, 0}";
+			sepNavVisRange = "{0, 334}";
+			sepNavWindowFrame = "{{490, 0}, {1101, 878}}";
+		};
+	};
+	6610DE34121ED9740047036E /* clean */ = {
+		activeExec = 0;
+	};
+	6610DE3B121EDA680047036E /* KMyTemplateClass.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
+			sepNavSelRange = "{7, 16}";
+			sepNavVisRange = "{0, 322}";
+			sepNavWindowFrame = "{{265, 0}, {1101, 878}}";
+		};
+	};
+	6610DE3C121EDA680047036E /* KMyTemplateClass.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 711}}";
+			sepNavSelRange = "{275, 0}";
+			sepNavVisRange = "{0, 429}";
+		};
+	};
+	6610DE3E121EDADB0047036E /* Module_libs.mk */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
+			sepNavSelRange = "{34, 0}";
+			sepNavVisRange = "{0, 88}";
+			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
+		};
+	};
+	6610DE3F121EDADB0047036E /* Module.mk */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 1728}}";
+			sepNavSelRange = "{1453, 0}";
+			sepNavVisRange = "{335, 2007}";
+			sepNavWindowFrame = "{{249, 0}, {1101, 878}}";
+		};
+	};
+	6610DE4C121F20D10047036E /* Module.mk */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 1968}}";
+			sepNavSelRange = "{3861, 8}";
+			sepNavVisRange = "{2936, 1334}";
+			sepNavWindowFrame = "{{89, 0}, {1101, 878}}";
+		};
+	};
+	6610DE4D121F20D10047036E /* Module_libs.mk */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
+			sepNavSelRange = "{38, 8}";
+			sepNavVisRange = "{0, 83}";
+			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
+		};
+	};
+	6610DE6D121F226F0047036E /* EdwParams.cxx */ = {
+		uiCtxt = {
+			sepNavFolds = "{\n    c =     (\n                {\n            r = \"{1604, 6103}\";\n            s = 0;\n        },\n                {\n            r = \"{7742, 259}\";\n            s = 0;\n        },\n                {\n            r = \"{8038, 265}\";\n            s = 0;\n        },\n                {\n            r = \"{8342, 636}\";\n            s = 0;\n        },\n                {\n            r = \"{9019, 495}\";\n            s = 0;\n        },\n                {\n            r = \"{9552, 494}\";\n            s = 0;\n        },\n                {\n            r = \"{10091, 504}\";\n            s = 0;\n        },\n                {\n            r = \"{10635, 370}\";\n            s = 0;\n        },\n                {\n            r = \"{11049, 370}\";\n            s = 0;\n        }\n    );\n    r = \"{0, 11421}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 1328}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{1013, 921}";
+			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
+		};
+	};
+}
