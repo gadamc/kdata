@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$class_edw_h_l_a_bolo_pulse_sub_record.html" title="EdwHLABoloPulseSubRecord" alt="" coords="127,161,351,188"/>
-<area shape="rect" href="$class_edw_bolo_pulse_sub_record_base.html" title="EdwBoloPulseSubRecordBase" alt="" coords="5,84,237,111"/>
-<area shape="rect" href="$class_edw_sub_record_base.html" title="EdwSubRecordBase" alt="" coords="40,7,203,33"/>
-<area shape="rect" href="$class_edw_h_l_a_sub_record_base.html" title="EdwHLASubRecordBase" alt="" coords="261,84,451,111"/>
-<area shape="rect" href="$class_edw_data_sub_record_base.html" title="EdwDataSubRecordBase" alt="" coords="375,161,572,188"/>
-</map>

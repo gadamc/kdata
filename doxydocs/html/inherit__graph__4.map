@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node1" href="$class_k_event.html" title="KEvent" alt="" coords="5,59,77,88"/>
-<area shape="rect" id="node3" href="$class_k_h_l_a_event.html" title="KHLAEvent" alt="" coords="136,5,235,35"/>
-<area shape="rect" id="node5" href="$class_k_h_la_m_c_event.html" title="KHLaMCEvent" alt="" coords="125,59,245,88"/>
-<area shape="rect" id="node7" href="$class_k_raw_event.html" title="KRawEvent" alt="" coords="135,112,236,141"/>
-</map>

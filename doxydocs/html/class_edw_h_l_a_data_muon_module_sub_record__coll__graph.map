@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$class_edw_h_l_a_muon_module_sub_record.html" title="EdwHLAMuonModuleSubRecord" alt="" coords="132,161,380,188"/>
-<area shape="rect" href="$class_edw_muon_module_sub_record_base.html" title="EdwMuonModuleSubRecordBase" alt="" coords="5,84,261,111"/>
-<area shape="rect" href="$class_edw_sub_record_base.html" title="EdwSubRecordBase" alt="" coords="52,7,215,33"/>
-<area shape="rect" href="$class_edw_h_l_a_sub_record_base.html" title="EdwHLASubRecordBase" alt="" coords="285,84,475,111"/>
-<area shape="rect" href="$class_edw_data_sub_record_base.html" title="EdwDataSubRecordBase" alt="" coords="404,161,601,188"/>
-</map>
