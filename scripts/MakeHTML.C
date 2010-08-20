@@ -1,19 +1,10 @@
 {
-gSystem.Load("$ROOTSYS/lib/libMinuit.so");
-gSystem.Load("$ROOTSYS/lib/libHtml.so");
-gSystem.Load("libqdisp.so");
-gSystem.Load("libqphysics1.so");
-gSystem.Load("libqphysics2.so");
-gSystem.Load("libqphysics3.so");
-gSystem.Load("libqtree.so");
-gSystem.Load("libqana.so");
-gSystem.Load("libqoca.so");
-gSystem.Load("libqsnoed.so");
-gSystem.Load("libqdist.so");
-gSystem.Load("libqc.so");
-gSystem.Load("libqncd.so");
-gSystem.Load("libqsigex.so");
-gSystem.Load("libqdisp.so");
-THtml h;
-h->MakeAll();
+  gSystem.Load("$ROOTSYS/lib/libMinuit.so");
+  gSystem.Load("$ROOTSYS/lib/libHtml.so");
+  gSystem.Load("libKData.so");
+  
+  THtml h;
+  h.SetProductName("KData");
+  h.SetSourceDir("./kds"); //list all module directories like this "./kds:./kpsa:./ktemplate"
+  h->MakeAll();
 }
