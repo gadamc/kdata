@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace>
+   <FileRef
+      location = "self:kData.xcodeproj">
+   </FileRef>
+   <Group
+      location = "container:../kds"
+      name = "kds">
+      <FileRef
+         location = "container:../kds/Module.mk">
+      </FileRef>
+      <FileRef
+         location = "container:../kds/Module_libs.mk">
+      </FileRef>
+      <Group
+         name = "executables">
+         <FileRef
+            location = "container:../kds/skimNoNoiseBolos.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/allPassOne_GSEventNumbers.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/breakupKDataFile.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/fillEvents.cxx">
+         </FileRef>
+      </Group>
+      <Group
+         name = "Utilities">
+         <FileRef
+            location = "container:../kds/KDataAnalysis.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KDataAnalysis.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KDataFileIO.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KDataFileIO.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KDataReader.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KDataReader.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KDataWriter.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KDataWriter.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KEventCollection.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KEventCollection.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KEventFactory.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KEventFactory.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KTimeStamp.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KTimeStamp.h">
+         </FileRef>
+      </Group>
+      <Group
+         name = "RecordClasses">
+         <Group
+            name = "SystemRecords">
+            <FileRef
+               location = "container:../kds/KHLAMuonVetoSysRecord.cxx">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLAMuonVetoSysRecord.h">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLABoloSysRecord.cxx">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLABoloSysRecord.h">
+            </FileRef>
+            <Group
+               name = "Bases">
+               <FileRef
+                  location = "container:../kds/KMuonVetoSystemRecord.cxx">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KMuonVetoSystemRecord.h">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KSystemRecord.cxx">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KSystemRecord.h">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KBoloSystemRecord.cxx">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KBoloSystemRecord.h">
+               </FileRef>
+            </Group>
+         </Group>
+         <Group
+            name = "SubRecords">
+            <FileRef
+               location = "container:../kds/KHLABolometerRecord.cxx">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLABolometerRecord.h">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLABoloPulseRecord.cxx">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLABoloPulseRecord.h">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLAMuonModuleRecord.cxx">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLAMuonModuleRecord.h">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLASambaRecord.cxx">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KHLASambaRecord.h">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KMCBolometerRecord.cxx">
+            </FileRef>
+            <FileRef
+               location = "container:../kds/KMCBolometerRecord.h">
+            </FileRef>
+            <Group
+               name = "Bases">
+               <FileRef
+                  location = "container:../kds/KSambaRecord.cxx">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KSambaRecord.h">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KSubRecord.cxx">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KSubRecord.h">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KMuonModuleRecord.cxx">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KMuonModuleRecord.h">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KBolometerRecord.cxx">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KBolometerRecord.h">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KBoloPulseRecord.cxx">
+               </FileRef>
+               <FileRef
+                  location = "container:../kds/KBoloPulseRecord.h">
+               </FileRef>
+            </Group>
+         </Group>
+      </Group>
+      <Group
+         name = "EventClasses">
+         <FileRef
+            location = "container:../kds/KHLAEvent.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KHLAEvent.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KHLaMCEvent.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KHLaMCEvent.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KRawEvent.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KRawEvent.h">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KEvent.cxx">
+         </FileRef>
+         <FileRef
+            location = "container:../kds/KEvent.h">
+         </FileRef>
+      </Group>
+   </Group>
+   <Group
+      location = "container:../scripts"
+      name = "scripts">
+      <FileRef
+         location = "container:../scripts/depend.sh">
+      </FileRef>
+      <FileRef
+         location = "container:../scripts/MakeHTML.C">
+      </FileRef>
+   </Group>
+</Workspace>
