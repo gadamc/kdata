@@ -5,7 +5,6 @@
 #
 #
 #
-# Author: Fons Rademakers, 29/2/2000
 #       : Adam Cox, 19/3/2010
 #
 
@@ -18,7 +17,6 @@ SRCDIR = kera/
 
 #select if you want to compile with the debugging switch
 DEBUG = -g 
-#-D_EDW_DEBUG_EVENT_ASSIGNOP
 #DEBUG = 
 
 #
@@ -38,25 +36,14 @@ CLASSES := $(filter-out EdwParams, $(CLASSES))
 
 CLASSES += Pulse FitPulse OffsetFFT SambaToRoot
 
-#fillEvents -- CHANGE THIS NAME HERE TO COMPILE A DIFFERENT EXECUTABLE
-
-#EXE = fillinG4Events
 
 EXE = edwrootana
-#EXE = fillinG4Events
 
 FILLEVENT    = bin/$(EXE)$(ExeSuf)
 FILLEVENTO   = $(addprefix $(SRCDIR),$(EXE).$(ObjSuf))
 PROGRAMS     = $(FILLEVENT) 
 OBJS        += $(FILLEVENTO)
 
-
-#fillEventTest  -- THIS DOESN'T WORK. 
-#EXE = fillEventTest
-#FILLEVENTTEST    = bin/$(EXE)$(ExeSuf)
-#FILLEVENTTESTO   = $(addprefix $(SRCDIR),$(EXE).$(ObjSuf))
-#PROGRAMS      += $(FILLEVENTTEST) 
-#OBJS        += $(FILLEVENTTESTO)
 
 ############################
 ############################
