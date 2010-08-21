@@ -102,6 +102,8 @@
 			6610DF3B122090D60047036E /* PBXBookmark */ = 6610DF3B122090D60047036E /* PBXBookmark */;
 			6610DF3E122091520047036E /* PBXTextBookmark */ = 6610DF3E122091520047036E /* PBXTextBookmark */;
 			6610DF3F122091880047036E /* PBXTextBookmark */ = 6610DF3F122091880047036E /* PBXTextBookmark */;
+			6610DF40122095BF0047036E /* PBXTextBookmark */ = 6610DF40122095BF0047036E /* PBXTextBookmark */;
+			6610DF44122096020047036E /* PBXTextBookmark */ = 6610DF44122096020047036E /* PBXTextBookmark */;
 		};
 		sourceControlManager = 6610DD4C121ECAAA0047036E /* Source Control */;
 		userBuildSettings = {
@@ -176,10 +178,10 @@
 	};
 	6610DE4C121F20D10047036E /* Module.mk */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 2624}}";
-			sepNavSelRange = "{619, 0}";
-			sepNavVisRange = "{298, 1380}";
-			sepNavWindowFrame = "{{528, 0}, {1101, 878}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1042, 2512}}";
+			sepNavSelRange = "{1299, 0}";
+			sepNavVisRange = "{3049, 1253}";
+			sepNavWindowFrame = "{{418, -20}, {1101, 878}}";
 		};
 	};
 	6610DE4D121F20D10047036E /* Module_libs.mk */ = {
@@ -526,7 +528,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 50";
 		rLen = 0;
-		rLoc = 2212;
+		rLoc = 1799;
 		rType = 0;
 		vrLen = 1647;
 		vrLoc = 1452;
@@ -536,7 +538,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 50";
 		rLen = 0;
-		rLoc = 2212;
+		rLoc = 1799;
 		rType = 0;
 		vrLen = 1647;
 		vrLoc = 1452;
@@ -546,7 +548,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 53";
 		rLen = 0;
-		rLoc = 2392;
+		rLoc = 1979;
 		rType = 0;
 		vrLen = 1648;
 		vrLoc = 1452;
@@ -560,7 +562,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 51";
 		rLen = 0;
-		rLoc = 2212;
+		rLoc = 1799;
 		rType = 0;
 		vrLen = 1643;
 		vrLoc = 1285;
@@ -607,7 +609,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 53";
 		rLen = 0;
-		rLoc = 2312;
+		rLoc = 1899;
 		rType = 0;
 		vrLen = 1690;
 		vrLoc = 1505;
@@ -631,7 +633,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 48";
 		rLen = 0;
-		rLoc = 1936;
+		rLoc = 1523;
 		rType = 0;
 		vrLen = 1589;
 		vrLoc = 1430;
@@ -661,7 +663,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 53";
 		rLen = 0;
-		rLoc = 2212;
+		rLoc = 1799;
 		rType = 0;
 		vrLen = 1600;
 		vrLoc = 1430;
@@ -691,7 +693,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 54";
 		rLen = 0;
-		rLoc = 2212;
+		rLoc = 1799;
 		rType = 0;
 		vrLen = 1626;
 		vrLoc = 1480;
@@ -721,7 +723,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 62";
 		rLen = 0;
-		rLoc = 2631;
+		rLoc = 2218;
 		rType = 0;
 		vrLen = 1734;
 		vrLoc = 1530;
@@ -751,7 +753,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 53";
 		rLen = 0;
-		rLoc = 2212;
+		rLoc = 1799;
 		rType = 0;
 		vrLen = 1721;
 		vrLoc = 1530;
@@ -761,7 +763,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 90";
 		rLen = 0;
-		rLoc = 3390;
+		rLoc = 2977;
 		rType = 0;
 		vrLen = 1654;
 		vrLoc = 1986;
@@ -771,7 +773,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 90";
 		rLen = 0;
-		rLoc = 3390;
+		rLoc = 2977;
 		rType = 0;
 		vrLen = 1476;
 		vrLoc = 2934;
@@ -826,7 +828,7 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 138";
 		rLen = 0;
-		rLoc = 3747;
+		rLoc = 3334;
 		rType = 0;
 		vrLen = 1418;
 		vrLoc = 2872;
@@ -836,9 +838,29 @@
 		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
 		name = "Module.mk: 25";
 		rLen = 0;
-		rLoc = 619;
+		rLoc = 553;
 		rType = 0;
 		vrLen = 1380;
 		vrLoc = 298;
+	};
+	6610DF40122095BF0047036E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
+		name = "Module.mk: 8";
+		rLen = 0;
+		rLoc = 229;
+		rType = 0;
+		vrLen = 1385;
+		vrLoc = 0;
+	};
+	6610DF44122096020047036E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DE4C121F20D10047036E /* Module.mk */;
+		name = "Module.mk: 47";
+		rLen = 0;
+		rLoc = 1299;
+		rType = 0;
+		vrLen = 1329;
+		vrLoc = 0;
 	};
 }

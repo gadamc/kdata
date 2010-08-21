@@ -172,6 +172,7 @@
 		6610DEBD121F2D440047036E /* testMem.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testMem.C; sourceTree = "<group>"; };
 		6610DF2512208ED10047036E /* edwrootana.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = edwrootana.cxx; sourceTree = "<group>"; };
 		6610DF2812208FB10047036E /* exampleProgram.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = exampleProgram.cxx; sourceTree = "<group>"; };
+		6610DF47122096630047036E /* install_kdata */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.csh; path = install_kdata; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -182,6 +183,7 @@
 				6610DE9E121F2D180047036E /* BugList.rtf */,
 				6610DE9F121F2D210047036E /* WishList.rtf */,
 				6610DEA0121F2D2A0047036E /* Modules.mk */,
+				6610DF47122096630047036E /* install_kdata */,
 				6610DEAE121F2D440047036E /* examples */,
 				6610DEA1121F2D390047036E /* config */,
 				6610DDEA121ECC290047036E /* scripts */,
