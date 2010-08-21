@@ -129,8 +129,7 @@
 		6610DE6F121F226F0047036E /* EdwPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwPulse.cxx; sourceTree = "<group>"; };
 		6610DE70121F226F0047036E /* EdwQualityFlags.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwQualityFlags.cxx; sourceTree = "<group>"; };
 		6610DE71121F226F0047036E /* EdwRawDB.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwRawDB.cxx; sourceTree = "<group>"; };
-		6610DE72121F226F0047036E /* edwrootana_tests.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = edwrootana_tests.cxx; sourceTree = "<group>"; };
-		6610DE73121F226F0047036E /* edwrootana.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = edwrootana.cxx; sourceTree = "<group>"; };
+		6610DE72121F226F0047036E /* mRootAna_tests.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mRootAna_tests.cxx; sourceTree = "<group>"; };
 		6610DE74121F226F0047036E /* EdwRunData.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwRunData.cxx; sourceTree = "<group>"; };
 		6610DE75121F226F0047036E /* EdwSetupData.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwSetupData.cxx; sourceTree = "<group>"; };
 		6610DE76121F226F0047036E /* EdwTemplate.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwTemplate.cxx; sourceTree = "<group>"; };
@@ -140,12 +139,51 @@
 		6610DE7B121F226F0047036E /* OffsetFFT.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OffsetFFT.cxx; sourceTree = "<group>"; };
 		6610DE7C121F226F0047036E /* Pulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pulse.cxx; sourceTree = "<group>"; };
 		6610DE7D121F226F0047036E /* SambaToRoot.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SambaToRoot.cxx; sourceTree = "<group>"; };
+		6610DE9D121F2D100047036E /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		6610DE9E121F2D180047036E /* BugList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = BugList.rtf; sourceTree = "<group>"; };
+		6610DE9F121F2D210047036E /* WishList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = WishList.rtf; sourceTree = "<group>"; };
+		6610DEA0121F2D2A0047036E /* Modules.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Modules.mk; sourceTree = "<group>"; };
+		6610DEA2121F2D390047036E /* checkenv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = checkenv; sourceTree = "<group>"; };
+		6610DEA3121F2D390047036E /* configure */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = configure; sourceTree = "<group>"; };
+		6610DEA4121F2D3A0047036E /* Makefile.linux */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.linux; sourceTree = "<group>"; };
+		6610DEA5121F2D3A0047036E /* Makefile.linuxx8664gcc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.linuxx8664gcc; sourceTree = "<group>"; };
+		6610DEA6121F2D3A0047036E /* Makefile.macosx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.macosx; sourceTree = "<group>"; };
+		6610DEA7121F2D3A0047036E /* Makefile.macosx64 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.macosx64; sourceTree = "<group>"; };
+		6610DEA8121F2D3A0047036E /* Makefile.solarisCC5 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.solarisCC5; sourceTree = "<group>"; };
+		6610DEA9121F2D3A0047036E /* Makefile.solarisgcc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.solarisgcc; sourceTree = "<group>"; };
+		6610DEAA121F2D3A0047036E /* min_versions.pm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = min_versions.pm; sourceTree = "<group>"; };
+		6610DEAB121F2D3A0047036E /* setup_edw.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = setup_edw.C; sourceTree = "<group>"; };
+		6610DEAC121F2D3A0047036E /* setup_kdata.csh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.csh; path = setup_kdata.csh; sourceTree = "<group>"; };
+		6610DEAD121F2D3A0047036E /* setup_kdata.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = setup_kdata.sh; sourceTree = "<group>"; };
+		6610DEAF121F2D440047036E /* concatDst.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = concatDst.cc; sourceTree = "<group>"; };
+		6610DEB0121F2D440047036E /* ExampleAnalysis.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExampleAnalysis.cc; sourceTree = "<group>"; };
+		6610DEB1121F2D440047036E /* fillEraToKEds.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillEraToKEds.cc; sourceTree = "<group>"; };
+		6610DEB2121F2D440047036E /* fillExample.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillExample.cc; sourceTree = "<group>"; };
+		6610DEB3121F2D440047036E /* fillMuonVetoEvents.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillMuonVetoEvents.cc; sourceTree = "<group>"; };
+		6610DEB4121F2D440047036E /* HowToFillEDS.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HowToFillEDS.txt; sourceTree = "<group>"; };
+		6610DEB5121F2D440047036E /* mergeKEdsTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mergeKEdsTree.cc; sourceTree = "<group>"; };
+		6610DEB6121F2D440047036E /* processMuonVetoToKEDSOnKalinka.root.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = processMuonVetoToKEDSOnKalinka.root.C; sourceTree = "<group>"; };
+		6610DEB7121F2D440047036E /* rootScript_concatBoloEra.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatBoloEra.c; sourceTree = "<group>"; };
+		6610DEB8121F2D440047036E /* rootScript_concatMuonKEdwDS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatMuonKEdwDS.c; sourceTree = "<group>"; };
+		6610DEB9121F2D440047036E /* rootScript_fillEraToKEdsEvents.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_fillEraToKEdsEvents.c; sourceTree = "<group>"; };
+		6610DEBA121F2D440047036E /* rootScript_fillExample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_fillExample.c; sourceTree = "<group>"; };
+		6610DEBB121F2D440047036E /* rootScript_mergeKEdsTrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_mergeKEdsTrees.c; sourceTree = "<group>"; };
+		6610DEBC121F2D440047036E /* scriptStartMerge.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scriptStartMerge.sh; sourceTree = "<group>"; };
+		6610DEBD121F2D440047036E /* testMem.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testMem.C; sourceTree = "<group>"; };
+		6610DF2512208ED10047036E /* edwrootana.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = edwrootana.cxx; sourceTree = "<group>"; };
+		6610DF2812208FB10047036E /* exampleProgram.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = exampleProgram.cxx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		6610DD46121ECAAA0047036E = {
 			isa = PBXGroup;
 			children = (
+				6610DE9D121F2D100047036E /* Makefile */,
+				6610DE9E121F2D180047036E /* BugList.rtf */,
+				6610DE9F121F2D210047036E /* WishList.rtf */,
+				6610DEA0121F2D2A0047036E /* Modules.mk */,
+				6610DEAE121F2D440047036E /* examples */,
+				6610DEA1121F2D390047036E /* config */,
 				6610DDEA121ECC290047036E /* scripts */,
 				6610DE3A121EDA680047036E /* ktemplate */,
 				6610DDED121ECC440047036E /* kds */,
@@ -299,6 +337,7 @@
 				6610DE3F121EDADB0047036E /* Module.mk */,
 				6610DE3B121EDA680047036E /* KMyTemplateClass.cxx */,
 				6610DE3C121EDA680047036E /* KMyTemplateClass.h */,
+				6610DF2812208FB10047036E /* exampleProgram.cxx */,
 			);
 			path = ktemplate;
 			sourceTree = "<group>";
@@ -337,8 +376,7 @@
 				6610DE6F121F226F0047036E /* EdwPulse.cxx */,
 				6610DE70121F226F0047036E /* EdwQualityFlags.cxx */,
 				6610DE71121F226F0047036E /* EdwRawDB.cxx */,
-				6610DE72121F226F0047036E /* edwrootana_tests.cxx */,
-				6610DE73121F226F0047036E /* edwrootana.cxx */,
+				6610DE72121F226F0047036E /* mRootAna_tests.cxx */,
 				6610DE74121F226F0047036E /* EdwRunData.cxx */,
 				6610DE75121F226F0047036E /* EdwSetupData.cxx */,
 				6610DE76121F226F0047036E /* EdwTemplate.cxx */,
@@ -348,10 +386,52 @@
 				6610DE7B121F226F0047036E /* OffsetFFT.cxx */,
 				6610DE7C121F226F0047036E /* Pulse.cxx */,
 				6610DE7D121F226F0047036E /* SambaToRoot.cxx */,
+				6610DF2512208ED10047036E /* edwrootana.cxx */,
 				6610DE4C121F20D10047036E /* Module.mk */,
 				6610DE4D121F20D10047036E /* Module_libs.mk */,
 			);
 			path = kera;
+			sourceTree = "<group>";
+		};
+		6610DEA1121F2D390047036E /* config */ = {
+			isa = PBXGroup;
+			children = (
+				6610DEA2121F2D390047036E /* checkenv */,
+				6610DEA3121F2D390047036E /* configure */,
+				6610DEA4121F2D3A0047036E /* Makefile.linux */,
+				6610DEA5121F2D3A0047036E /* Makefile.linuxx8664gcc */,
+				6610DEA6121F2D3A0047036E /* Makefile.macosx */,
+				6610DEA7121F2D3A0047036E /* Makefile.macosx64 */,
+				6610DEA8121F2D3A0047036E /* Makefile.solarisCC5 */,
+				6610DEA9121F2D3A0047036E /* Makefile.solarisgcc */,
+				6610DEAA121F2D3A0047036E /* min_versions.pm */,
+				6610DEAB121F2D3A0047036E /* setup_edw.C */,
+				6610DEAC121F2D3A0047036E /* setup_kdata.csh */,
+				6610DEAD121F2D3A0047036E /* setup_kdata.sh */,
+			);
+			path = config;
+			sourceTree = "<group>";
+		};
+		6610DEAE121F2D440047036E /* examples */ = {
+			isa = PBXGroup;
+			children = (
+				6610DEAF121F2D440047036E /* concatDst.cc */,
+				6610DEB0121F2D440047036E /* ExampleAnalysis.cc */,
+				6610DEB1121F2D440047036E /* fillEraToKEds.cc */,
+				6610DEB2121F2D440047036E /* fillExample.cc */,
+				6610DEB3121F2D440047036E /* fillMuonVetoEvents.cc */,
+				6610DEB4121F2D440047036E /* HowToFillEDS.txt */,
+				6610DEB5121F2D440047036E /* mergeKEdsTree.cc */,
+				6610DEB6121F2D440047036E /* processMuonVetoToKEDSOnKalinka.root.C */,
+				6610DEB7121F2D440047036E /* rootScript_concatBoloEra.c */,
+				6610DEB8121F2D440047036E /* rootScript_concatMuonKEdwDS.c */,
+				6610DEB9121F2D440047036E /* rootScript_fillEraToKEdsEvents.c */,
+				6610DEBA121F2D440047036E /* rootScript_fillExample.c */,
+				6610DEBB121F2D440047036E /* rootScript_mergeKEdsTrees.c */,
+				6610DEBC121F2D440047036E /* scriptStartMerge.sh */,
+				6610DEBD121F2D440047036E /* testMem.C */,
+			);
+			path = examples;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
