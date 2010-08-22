@@ -96,49 +96,6 @@
 		6610DE3C121EDA680047036E /* KMyTemplateClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMyTemplateClass.h; sourceTree = "<group>"; };
 		6610DE3E121EDADB0047036E /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		6610DE3F121EDADB0047036E /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
-		6610DE4C121F20D10047036E /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
-		6610DE4D121F20D10047036E /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
-		6610DE51121F226E0047036E /* EdwAnaDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwAnaDB.h; sourceTree = "<group>"; };
-		6610DE52121F226E0047036E /* EdwAutomateData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwAutomateData.h; sourceTree = "<group>"; };
-		6610DE53121F226E0047036E /* EdwDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwDB.h; sourceTree = "<group>"; };
-		6610DE54121F226E0047036E /* EdwEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwEvent.h; sourceTree = "<group>"; };
-		6610DE55121F226E0047036E /* EdwEventHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwEventHeader.h; sourceTree = "<group>"; };
-		6610DE56121F226E0047036E /* EdwNtpBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwNtpBuffer.h; sourceTree = "<group>"; };
-		6610DE57121F226E0047036E /* EdwNtuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwNtuple.h; sourceTree = "<group>"; };
-		6610DE58121F226E0047036E /* EdwPreprocessData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwPreprocessData.h; sourceTree = "<group>"; };
-		6610DE59121F226E0047036E /* EdwPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwPulse.h; sourceTree = "<group>"; };
-		6610DE5A121F226E0047036E /* EdwQualityFlags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwQualityFlags.h; sourceTree = "<group>"; };
-		6610DE5B121F226E0047036E /* EdwRawDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwRawDB.h; sourceTree = "<group>"; };
-		6610DE5C121F226E0047036E /* EdwRunData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwRunData.h; sourceTree = "<group>"; };
-		6610DE5D121F226E0047036E /* EdwSetupData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwSetupData.h; sourceTree = "<group>"; };
-		6610DE5E121F226E0047036E /* EdwTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwTemplate.h; sourceTree = "<group>"; };
-		6610DE5F121F226E0047036E /* EdwUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdwUtils.h; sourceTree = "<group>"; };
-		6610DE62121F226E0047036E /* FitPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FitPulse.h; sourceTree = "<group>"; };
-		6610DE63121F226E0047036E /* OffsetFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OffsetFFT.h; sourceTree = "<group>"; };
-		6610DE64121F226E0047036E /* Pulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pulse.h; sourceTree = "<group>"; };
-		6610DE65121F226E0047036E /* SambaToRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SambaToRoot.h; sourceTree = "<group>"; };
-		6610DE66121F226E0047036E /* EdwAnaDB.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwAnaDB.cxx; sourceTree = "<group>"; };
-		6610DE67121F226F0047036E /* EdwAutomateData.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwAutomateData.cxx; sourceTree = "<group>"; };
-		6610DE68121F226F0047036E /* EdwDB.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwDB.cxx; sourceTree = "<group>"; };
-		6610DE69121F226F0047036E /* EdwEvent.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwEvent.cxx; sourceTree = "<group>"; };
-		6610DE6A121F226F0047036E /* EdwEventHeader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwEventHeader.cxx; sourceTree = "<group>"; };
-		6610DE6B121F226F0047036E /* EdwNtpBuffer.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwNtpBuffer.cxx; sourceTree = "<group>"; };
-		6610DE6C121F226F0047036E /* EdwNtuple.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwNtuple.cxx; sourceTree = "<group>"; };
-		6610DE6D121F226F0047036E /* EdwParams.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwParams.cxx; sourceTree = "<group>"; };
-		6610DE6E121F226F0047036E /* EdwPreprocessData.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwPreprocessData.cxx; sourceTree = "<group>"; };
-		6610DE6F121F226F0047036E /* EdwPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwPulse.cxx; sourceTree = "<group>"; };
-		6610DE70121F226F0047036E /* EdwQualityFlags.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwQualityFlags.cxx; sourceTree = "<group>"; };
-		6610DE71121F226F0047036E /* EdwRawDB.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwRawDB.cxx; sourceTree = "<group>"; };
-		6610DE72121F226F0047036E /* mRootAna_tests.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mRootAna_tests.cxx; sourceTree = "<group>"; };
-		6610DE74121F226F0047036E /* EdwRunData.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwRunData.cxx; sourceTree = "<group>"; };
-		6610DE75121F226F0047036E /* EdwSetupData.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwSetupData.cxx; sourceTree = "<group>"; };
-		6610DE76121F226F0047036E /* EdwTemplate.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwTemplate.cxx; sourceTree = "<group>"; };
-		6610DE77121F226F0047036E /* EdwUtils.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdwUtils.cxx; sourceTree = "<group>"; };
-		6610DE79121F226F0047036E /* FitPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FitPulse.cxx; sourceTree = "<group>"; };
-		6610DE7A121F226F0047036E /* Mixfft.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mixfft.cxx; sourceTree = "<group>"; };
-		6610DE7B121F226F0047036E /* OffsetFFT.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OffsetFFT.cxx; sourceTree = "<group>"; };
-		6610DE7C121F226F0047036E /* Pulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pulse.cxx; sourceTree = "<group>"; };
-		6610DE7D121F226F0047036E /* SambaToRoot.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SambaToRoot.cxx; sourceTree = "<group>"; };
 		6610DE9D121F2D100047036E /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		6610DE9E121F2D180047036E /* BugList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = BugList.rtf; sourceTree = "<group>"; };
 		6610DE9F121F2D210047036E /* WishList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = WishList.rtf; sourceTree = "<group>"; };
@@ -170,7 +127,6 @@
 		6610DEBB121F2D440047036E /* rootScript_mergeKEdsTrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_mergeKEdsTrees.c; sourceTree = "<group>"; };
 		6610DEBC121F2D440047036E /* scriptStartMerge.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scriptStartMerge.sh; sourceTree = "<group>"; };
 		6610DEBD121F2D440047036E /* testMem.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testMem.C; sourceTree = "<group>"; };
-		6610DF2512208ED10047036E /* edwrootana.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = edwrootana.cxx; sourceTree = "<group>"; };
 		6610DF2812208FB10047036E /* exampleProgram.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = exampleProgram.cxx; sourceTree = "<group>"; };
 		6610DF47122096630047036E /* install_kdata */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.csh; path = install_kdata; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,7 +145,6 @@
 				6610DDEA121ECC290047036E /* scripts */,
 				6610DE3A121EDA680047036E /* ktemplate */,
 				6610DDED121ECC440047036E /* kds */,
-				6610DE4B121F20D10047036E /* kera */,
 			);
 			sourceTree = "<group>";
 		};
@@ -342,57 +297,6 @@
 				6610DF2812208FB10047036E /* exampleProgram.cxx */,
 			);
 			path = ktemplate;
-			sourceTree = "<group>";
-		};
-		6610DE4B121F20D10047036E /* kera */ = {
-			isa = PBXGroup;
-			children = (
-				6610DE51121F226E0047036E /* EdwAnaDB.h */,
-				6610DE52121F226E0047036E /* EdwAutomateData.h */,
-				6610DE53121F226E0047036E /* EdwDB.h */,
-				6610DE54121F226E0047036E /* EdwEvent.h */,
-				6610DE55121F226E0047036E /* EdwEventHeader.h */,
-				6610DE56121F226E0047036E /* EdwNtpBuffer.h */,
-				6610DE57121F226E0047036E /* EdwNtuple.h */,
-				6610DE58121F226E0047036E /* EdwPreprocessData.h */,
-				6610DE59121F226E0047036E /* EdwPulse.h */,
-				6610DE5A121F226E0047036E /* EdwQualityFlags.h */,
-				6610DE5B121F226E0047036E /* EdwRawDB.h */,
-				6610DE5C121F226E0047036E /* EdwRunData.h */,
-				6610DE5D121F226E0047036E /* EdwSetupData.h */,
-				6610DE5E121F226E0047036E /* EdwTemplate.h */,
-				6610DE5F121F226E0047036E /* EdwUtils.h */,
-				6610DE62121F226E0047036E /* FitPulse.h */,
-				6610DE63121F226E0047036E /* OffsetFFT.h */,
-				6610DE64121F226E0047036E /* Pulse.h */,
-				6610DE65121F226E0047036E /* SambaToRoot.h */,
-				6610DE66121F226E0047036E /* EdwAnaDB.cxx */,
-				6610DE67121F226F0047036E /* EdwAutomateData.cxx */,
-				6610DE68121F226F0047036E /* EdwDB.cxx */,
-				6610DE69121F226F0047036E /* EdwEvent.cxx */,
-				6610DE6A121F226F0047036E /* EdwEventHeader.cxx */,
-				6610DE6B121F226F0047036E /* EdwNtpBuffer.cxx */,
-				6610DE6C121F226F0047036E /* EdwNtuple.cxx */,
-				6610DE6D121F226F0047036E /* EdwParams.cxx */,
-				6610DE6E121F226F0047036E /* EdwPreprocessData.cxx */,
-				6610DE6F121F226F0047036E /* EdwPulse.cxx */,
-				6610DE70121F226F0047036E /* EdwQualityFlags.cxx */,
-				6610DE71121F226F0047036E /* EdwRawDB.cxx */,
-				6610DE72121F226F0047036E /* mRootAna_tests.cxx */,
-				6610DE74121F226F0047036E /* EdwRunData.cxx */,
-				6610DE75121F226F0047036E /* EdwSetupData.cxx */,
-				6610DE76121F226F0047036E /* EdwTemplate.cxx */,
-				6610DE77121F226F0047036E /* EdwUtils.cxx */,
-				6610DE79121F226F0047036E /* FitPulse.cxx */,
-				6610DE7A121F226F0047036E /* Mixfft.cxx */,
-				6610DE7B121F226F0047036E /* OffsetFFT.cxx */,
-				6610DE7C121F226F0047036E /* Pulse.cxx */,
-				6610DE7D121F226F0047036E /* SambaToRoot.cxx */,
-				6610DF2512208ED10047036E /* edwrootana.cxx */,
-				6610DE4C121F20D10047036E /* Module.mk */,
-				6610DE4D121F20D10047036E /* Module_libs.mk */,
-			);
-			path = kera;
 			sourceTree = "<group>";
 		};
 		6610DEA1121F2D390047036E /* config */ = {

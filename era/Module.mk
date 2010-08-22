@@ -8,9 +8,9 @@
 #       : Adam Cox, 19/3/2010
 #
 
-include kera/Module_libs.mk
+include era/Module_libs.mk
 -include ../MyConfig.mk
-SRCDIR = kera/
+SRCDIR = era/
 
 #------------------------------------------------------------------------------
 

@@ -177,6 +177,12 @@
 		};
 	};
 	6610DE4C121F20D10047036E /* Module.mk */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = text;
+		name = Module.mk;
+		path = /Users/adam/softwareDev/kData/kera/Module.mk;
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1042, 2512}}";
 			sepNavSelRange = "{1299, 0}";
@@ -184,339 +190,18 @@
 			sepNavWindowFrame = "{{418, -20}, {1101, 878}}";
 		};
 	};
-	6610DE4D121F20D10047036E /* Module_libs.mk */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{38, 8}";
-			sepNavVisRange = "{0, 83}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE51121F226E0047036E /* EdwAnaDB.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1615, 1376}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 2672}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE52121F226E0047036E /* EdwAutomateData.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1468, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1425}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE53121F226E0047036E /* EdwDB.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1081}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE54121F226E0047036E /* EdwEvent.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1300, 976}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 2020}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE55121F226E0047036E /* EdwEventHeader.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 992}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1756}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE56121F226E0047036E /* EdwNtpBuffer.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1048, 2064}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1722}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE57121F226E0047036E /* EdwNtuple.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1874, 2704}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1137}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE58121F226E0047036E /* EdwPreprocessData.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1181, 1264}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 2438}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE59121F226E0047036E /* EdwPulse.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1335, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1546}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE5A121F226E0047036E /* EdwQualityFlags.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1902, 944}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{4, 2410}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE5B121F226E0047036E /* EdwRawDB.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 1040}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{27, 2396}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE5C121F226E0047036E /* EdwRunData.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1587, 864}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1985}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE5D121F226E0047036E /* EdwSetupData.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 554}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE5E121F226E0047036E /* EdwTemplate.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1594, 2192}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 2720}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE5F121F226E0047036E /* EdwUtils.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1328, 2992}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{3321, 1517}";
-			sepNavWindowFrame = "{{595, 0}, {1101, 878}}";
-		};
-	};
-	6610DE62121F226E0047036E /* FitPulse.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1979, 3024}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{1174, 2914}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE63121F226E0047036E /* OffsetFFT.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1209, 960}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 2275}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE64121F226E0047036E /* Pulse.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 816}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1710}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE65121F226E0047036E /* SambaToRoot.h */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1730}";
-			sepNavWindowFrame = "{{339, 0}, {1101, 878}}";
-		};
-	};
-	6610DE66121F226E0047036E /* EdwAnaDB.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 9680}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1625}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE67121F226F0047036E /* EdwAutomateData.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 468}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE68121F226F0047036E /* EdwDB.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1068}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE69121F226F0047036E /* EdwEvent.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 3184}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1175}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE6A121F226F0047036E /* EdwEventHeader.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 939}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE6B121F226F0047036E /* EdwNtpBuffer.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 2624}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1526}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE6C121F226F0047036E /* EdwNtuple.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 12560}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1411}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE6D121F226F0047036E /* EdwParams.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1503, 5632}}";
-			sepNavSelRange = "{11419, 0}";
-			sepNavVisRange = "{10092, 1329}";
-			sepNavWindowFrame = "{{156, 0}, {1101, 878}}";
-		};
-	};
-	6610DE6E121F226F0047036E /* EdwPreprocessData.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 5264}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1125}";
-		};
-	};
-	6610DE6F121F226F0047036E /* EdwPulse.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 297}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE70121F226F0047036E /* EdwQualityFlags.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1398, 2336}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1377}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE71121F226F0047036E /* EdwRawDB.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 8960}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1540}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE72121F226F0047036E /* mRootAna_tests.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 8608}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1439}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE74121F226F0047036E /* EdwRunData.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 960}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1393}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE75121F226F0047036E /* EdwSetupData.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 309}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE76121F226F0047036E /* EdwTemplate.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 6464}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1352}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
 	6610DE77121F226F0047036E /* EdwUtils.cxx */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = EdwUtils.cxx;
+		path = /Users/adam/softwareDev/kData/kera/EdwUtils.cxx;
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1042, 6432}}";
 			sepNavSelRange = "{166, 6}";
 			sepNavVisRange = "{0, 1373}";
 			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE79121F226F0047036E /* FitPulse.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 12912}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1145}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE7A121F226F0047036E /* Mixfft.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 9712}}";
-			sepNavSelRange = "{7403, 6}";
-			sepNavVisRange = "{6494, 1674}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE7B121F226F0047036E /* OffsetFFT.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 1728}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1335}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE7C121F226F0047036E /* Pulse.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 929}";
-			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
-		};
-	};
-	6610DE7D121F226F0047036E /* SambaToRoot.cxx */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1042, 2576}}";
-			sepNavSelRange = "{3891, 0}";
-			sepNavVisRange = "{0, 1563}";
-			sepNavWindowFrame = "{{339, 0}, {1101, 878}}";
 		};
 	};
 	6610DE8F121F28D60047036E /* PBXBookmark */ = {
@@ -589,7 +274,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
 			sepNavSelRange = "{74, 0}";
-			sepNavVisRange = "{0, 123}";
+			sepNavVisRange = "{0, 126}";
 			sepNavWindowFrame = "{{19, 0}, {1101, 878}}";
 		};
 	};
