@@ -1,11 +1,20 @@
-# Makefile for the Edw Data Structure and Analyis Toolkit (EAT).
+# Makefile for the ERA module of KData.
 # Derived from the example makefile from the ROOT framework
 # written by Rene Brun and Fons Rademakers
 # using the ROOT libraries on all supported platforms.
+# This is not a standard Module.mk file for a module within KData, but is specially written
+# for the ERA since the ERA was written independently of KData
+# and can thus remain independent of KData should KData not survive! :)
+# This makefile builds a libEra.so which can be loaded from ROOT CINT and used
+# to read the ROOT event files produced in the initial ERA processing
+# However, as of now (21.8.10), the c-functions in EdwUtils are not part of the library
+# and to use this library from the ROOT CINT, one must load this file 
+# root[0] .L /path/to/kdata/era/EdwUtils.cxx
+# In addition, since many functions within libEra depend upon the c-funtions in EdwUtils.cxx
+# and these don't appear to be in the library, I suspect that any program that links to this library will break.
 #
 #
-#
-#       : Adam Cox, 19/3/2010
+#       : Adam Cox, 21/8/2010
 #
 
 include era/Module_libs.mk
