@@ -1,6 +1,6 @@
 ##### List of KDATA modules to build #####
 
-MODULES      := era kds kpsa
+MODULES      := kds kpsa kraw era
 
 #kds requires era now if its going to use TRefs to get to pulse traces. 
 
