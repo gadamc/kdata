@@ -284,6 +284,12 @@
 		6610E3081223FA250047036E /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		6610E30B1223FA7E0047036E /* KEraEventReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KEraEventReader.h; sourceTree = "<group>"; };
 		6610E30C1223FA7E0047036E /* KEraEventReader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KEraEventReader.cxx; sourceTree = "<group>"; };
+		6610E364122422170047036E /* KPulseAnalysisChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPulseAnalysisChain.h; sourceTree = "<group>"; };
+		6610E365122422170047036E /* KPulseAnalysisChain.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPulseAnalysisChain.cxx; sourceTree = "<group>"; };
+		6610E44B1224695B0047036E /* KBaselineRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBaselineRemoval.h; sourceTree = "<group>"; };
+		6610E44C1224695B0047036E /* KBaselineRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KBaselineRemoval.cxx; sourceTree = "<group>"; };
+		6610E44D122469D30047036E /* KPatternRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPatternRemoval.h; sourceTree = "<group>"; };
+		6610E44E122469D30047036E /* KPatternRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPatternRemoval.cxx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -639,6 +645,12 @@
 				6610E2DE1223D1EB0047036E /* Module_libs.mk */,
 				6610E2EC1223D5B30047036E /* KPsaProcessor.h */,
 				6610E2ED1223D5B30047036E /* KPsaProcessor.cxx */,
+				6610E364122422170047036E /* KPulseAnalysisChain.h */,
+				6610E365122422170047036E /* KPulseAnalysisChain.cxx */,
+				6610E44B1224695B0047036E /* KBaselineRemoval.h */,
+				6610E44C1224695B0047036E /* KBaselineRemoval.cxx */,
+				6610E44D122469D30047036E /* KPatternRemoval.h */,
+				6610E44E122469D30047036E /* KPatternRemoval.cxx */,
 			);
 			path = kpsa;
 			sourceTree = "<group>";

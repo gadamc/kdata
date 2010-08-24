@@ -75,7 +75,6 @@ void KDataFileIO::CreateTree(void)
 	if(fTree->IsZombie())
 		cout << "KDataFileIO::CreateTree TTree is Zombie" << endl; 	
 	else {
-		//fTree->BranchRef(); //force the user to turn this on 
 		fTree->SetCacheSize(10000000);
 		fTree->AddBranchToCache("*");
 	}
@@ -171,6 +170,15 @@ const char* KDataFileIO::GetEventClassName(void) const
 		else return "";
 	}
 	else return "";
+}
+
+
+void KDataFileIO::ls(Option_t *anOpt) const
+{
+	if(fFile != 0){
+		fFile->ls(anOpt);
+	}
+	
 }
 
 

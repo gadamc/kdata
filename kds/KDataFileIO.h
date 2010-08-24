@@ -42,6 +42,7 @@ public:
 	virtual Int_t GetEntries(void) const;
 	const char* GetFileName(void) const;
 	const char* GetEventClassName(void) const;
+	void ls(Option_t *opt = "") const;
 	
 private:
 	string fTreeName;

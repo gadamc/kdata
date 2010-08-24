@@ -10,7 +10,7 @@
 
 #include "KPsaProcessor.h"
 
-ClassImp(KPsaProcessor);
+//ClassImp(KPsaProcessor);
 
 KPsaProcessor::KPsaProcessor(void)
 {

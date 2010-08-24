@@ -82,33 +82,33 @@ include/%.h:    $(KRAW_DIRI)/%.h
 
 # rule for compiling our source files
 $(KRAW_DIRS)/%.o:    $(KRAW_DIRS)/%.cxx
-	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS)  -o $@ -c $< 
+	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS) -I$(ERAINCS)  -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KRAW_DIRS)/%.o $(KDATAED_LIB) 
+bin/%: $(KRAW_DIRS)/%.o $(KDATAED_LIB) $(ERA_LIB)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KRAWLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KRAWLIBS) $(ERALIBS)
                 
 # rules for building dictionary
 $(KRAW_DO):         $(KRAW_DC)
-	$(CXX) $(NOOPT) $(KRAW_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
+	$(CXX) $(NOOPT) $(KRAW_FLAGS) $(ROOTINCS) -I. -I$(ERAINCS) -o $@ -c $< 
 
 $(KRAW_DC):         $(KRAW_EH) $(KRAW_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KRAW_EH) $(KRAW_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(ERAINCS) $(KRAW_EH) $(KRAW_LH) 
 
 # rule for building library
-$(KRAW_LIB):        $(KRAW_EO) $(KRAW_DO) $(KRAW_LIBDEP)
+$(KRAW_LIB):        $(KRAW_EO) $(KRAW_DO) $(KRAW_LIBDEP) $(ERA_LIB)
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KRAW_LIB)" $@  "$(KRAW_EO) $(KRAW_DO)" \
-	   "$(ROOTLIBS) $(KRAW_FLAGS)"  -I/opt/include -Iinclude 
+	   "$(ROOTLIBS) $(ERALIBS) $(KRAW_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kraw:       $(KRAW_LIB)
 
 clean-kraw:
 		@rm -f $(KRAW_DIRS)/*~ $(KRAW_DIRS)/*.o
-		@rm -f $(KRAW_DC) $(KRAW_DH) $(KRAW_DEP)
+		@rm -f $(KRAW_DC) $(KRAW_DH) $(KRAW_DEP) $(KRAW_LIB)
 
 clean::         clean-kraw
 

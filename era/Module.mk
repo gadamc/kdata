@@ -22,16 +22,20 @@
 #       : Adam Cox, 21/8/2010
 #
 
-include era/Module_libs.mk
--include ../MyConfig.mk
-SRCDIR = era/
-
 #------------------------------------------------------------------------------
 
 
 #select if you want to compile with the debugging switch
 DEBUG = -g 
 #DEBUG = 
+
+# the Module_libs.mk file is needed for ExeSuf, ObjSuf, DllSuf, OutputOpt, ROOTCFLAGS, ROOTLDFLAGS
+# ROOTLIBS, UNDEFOPT, SYSLIBS, LDFLAGS, SOFLAGS have been defined elsewhere 
+include era/Module_libs.mk
+
+-include ../MyConfig.mk
+SRCDIR = era/
+
 
 #
 # ANY CLASS THAT BEGINS WITH "Edw" THAT YOU ADD TO THE kera/ DIRECTORY WILL BE COMPILED
@@ -96,8 +100,8 @@ EDSDICT = $(SRCDIR)ERADict
 EDSDICTO = $(EDSDICT).$(ObjSuf)
 EDSDICTS = $(EDSDICT).$(SrcSuf)
 OBJS   += $(EDSDICTO) 
-#BOOSTDIR = /usr/local/include
-#CXXFLAGS += -I$(BOOSTDIR) #include the directly that holds the BOOST libraries
+
+ERALDFLAGS := $(LDFLAGS) $(ROOTLDFLAGS)
 
 #------------------------------------------------------------------------------
 
@@ -115,12 +119,12 @@ $(LIBEDWDSO):     $(COBJS) $(EDSDICTO)
 
 ifeq ($(PLATFORM),macosx)
 # We need to make both the .dylib and the .so
-		$(LD) $(SOFLAGS)$@ $(LDFLAGS) $(LIBS) $^ $(OutPutOpt) $@
+		$(LD) $(SOFLAGS)$@ $(ERALDFLAGS) $(ROOTLIBS) $(SYSLIBS) $^ $(OutPutOpt) $@
 ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
 ifeq ($(MACOSX_MINOR),4)
 		ln -sf $@ $(subst .$(DllSuf),.so,$@)
 else
-		$(LD) -bundle -undefined $(UNDEFOPT) $(LDFLAGS) $(LIBS) $^ \
+		$(LD) -bundle -undefined $(UNDEFOPT) $(ERALDFLAGS) $(ROOTLIBS) $(SYSLIBS) $^ \
 			$(OutPutOpt) $(subst .$(DllSuf),.so,$@)
 endif
 endif
@@ -129,17 +133,17 @@ ifeq ($(PLATFORM),win32)
 		bindexplib $* $^ > $*.def
 		lib -nologo -MACHINE:IX86 $^ -def:$*.def \
 			$(OutPutOpt)$(EVENTLIB)
-		$(LD) $(SOFLAGS) $(LDFLAGS) $^ $*.exp $(LIBS) \
+		$(LD) $(SOFLAGS) $(ERALDFLAGS) $^ $*.exp $(ROOTLIBS) $(SYSLIBS) \
 			$(OutPutOpt)$@
 		$(MT_DLL)
 else
-	$(LD) $(SOFLAGS) $(LDFLAGS) $(LIBS) $^ $(OutPutOpt) $@ $(EXPLLINKLIBS)
+	$(LD) $(SOFLAGS) $(ERALDFLAGS) $(ROOTLIBS)  $(SYSLIBS) $^ $(OutPutOpt) $@ 
 endif
 endif
 		@echo "$@ done"
 
 $(FILLEVENT):       $(LIBEDWDSO) $(FILLEVENTO)
-		$(LD) $(LDFLAGS) $(FILLEVENTO) $(COBJS) $(EDSDICTO) $(LIBS) $(OutPutOpt)$@	
+		$(LD) $(ERALDFLAGS) $(FILLEVENTO) $(COBJS) $(EDSDICTO) $(ROOTLIBS) $(SYSLIBS) $(OutPutOpt)$@	
 		$(MT_EXE)
 		@echo "$@ done"
 
@@ -182,5 +186,5 @@ $(LINKDEF) : $(addsuffix, .$(ObjSuf), $(addprefix $(SRCDIR), $(CLASSES))) $(addp
 
 
 .$(SrcSuf).$(ObjSuf):
-	$(CXX)  $(CXXFLAGS) $(OutPutOpt) $@ $(DEBUG) -c $<
+	$(CXX)  $(CXXFLAGS) $(ROOTCFLAGS) $(OutPutOpt) $@ $(DEBUG) -c $<
 

@@ -1,7 +1,7 @@
 //_____________________________________________
 //
 // KDataAnalysis.cc
-// KEdwDataStructure
+// KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.
 //

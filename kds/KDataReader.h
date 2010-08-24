@@ -33,7 +33,7 @@ public:
 	Int_t GetEntry(Int_t anEntry);
 	Int_t GetEntryWithGSEventNumber(Int_t anEntry);
 	Int_t GetEntries(void) const {return fEntries;}
-	void ls(Option_t *opt = "") const;
+	
 	TObject* Get(const Char_t* namecycle) const;
 	
 	Int_t GetNextMuonEntry(Int_t anEntry=-1) ;

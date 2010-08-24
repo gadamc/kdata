@@ -1,6 +1,6 @@
 //______________________________________________________________________
-
-// KEraEventReader.h
+//
+// KPatternRemoval.h
 // Author: Adam Cox <mailto:adam.cox@kit.edu>
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved
@@ -8,18 +8,18 @@
 //
 
 
-#ifndef __KERAEVENTREADER_H__
-#define __KERAEVENTREADER_H__
+#ifndef __KPATTERNREMOVAL_H__
+#define __KPATTERNREMOVAL_H__
 
-#include "Rtypes.h"
+#include "KPsaProcessor.h"
 
-class KEraEventReader  { 
+class KPatternRemoval : public KPsaProcessor { 
 
 public:
   //Constructors
-  KEraEventReader(void);
-  virtual ~KEraEventReader(void);
-  virtual void Clear(Option_t *opt = "C");
+  KPatternRemoval(void);
+  virtual ~KPatternRemoval(void);
+	virtual bool RunProcess(void);
 
   //getters
 
@@ -29,8 +29,8 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  ClassDef(KEraEventReader,1);
+  //ClassDef(KPatternRemoval,1);
 };
 
 
-#endif // __KERAEVENTREADER_H__
+#endif // __KPATTERNREMOVAL_H__

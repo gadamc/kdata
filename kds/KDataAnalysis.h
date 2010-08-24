@@ -1,6 +1,6 @@
 /*
  *  KDataAnalysis.h
- *  KEdwDataStructure
+ *  KDataStructure
  *
  *  Created by Adam Cox on 5/8/10.
  *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.

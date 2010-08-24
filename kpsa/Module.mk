@@ -8,23 +8,17 @@
 # 'kpsa' to Modules.mk in the $KDATA_ROOT directory,
 # then type "make" (or gmake) in $KDATA_ROOT.
 #
-# To use this template as the base for developing a standalone
-# module, follow these steps:
+# This is not a standard module. It is intended to be ROOT independent.
+# For now, the only ROOT parts that are used are to create a dictionary
+# and link it to the rest of the objects in order to be able to access
+# these classes from within ROOT CINT. The idea is that this module
+# could be a pulse shape analysis library that is completely indepenent
+# of ROOT. 
 #
-#   1) Create a new directory for your development project.
-#   2) Make soft links to Makefile and config in $KDATA_ROOT.
-#   3) Create a Modules.mk file defining your development modules in the new dir.
-#   4) Put each of your development modules in a separate directory with
-#      the same name as the module, with a Module.mk and Module_libs.mk file
-#      in each directory.  You can use this file and Module_libs.mk as a basis
-#      for any module, but you should replace "kpsa" throughout with a unique
-#      name specific to your module.  You may also have to make changes to the
-#      compile and link commands depending on the structure of your module.
-#   5) If your executables depend on the library produced by this module, then
-#      add $(KPSA_LIB) to the dependencies and -lkpsa to the link line for
-#      building the executables.
-#   6) Type "make" (or gmake) in the $KDATA_ROOT directory to build your new
-#      modules.
+# However, if this restriction is debilitating for development of 
+# this library or for physics reasons, we should reconsider how this
+# is done. In that case, please contact the KData Czar (Adam Cox) 
+# to discuss this. 
 #
 # Author: Adam Cox 08/19/10
 
@@ -82,12 +76,12 @@ include/%.h:    $(KPSA_DIRI)/%.h
 
 # rule for compiling our source files
 $(KPSA_DIRS)/%.o:    $(KPSA_DIRS)/%.cxx
-	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS)  -o $@ -c $< 
+	$(CXX) $(OPT) $(CXXFLAGS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KPSA_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KPSALIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(SYSLIBS) $(KPSALIBS)
                 
 # rules for building dictionary
 $(KPSA_DO):         $(KPSA_DC)
@@ -102,13 +96,13 @@ $(KPSA_LIB):        $(KPSA_EO) $(KPSA_DO) $(KPSA_LIBDEP)
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KPSA_LIB)" $@  "$(KPSA_EO) $(KPSA_DO)" \
-	   "$(ROOTLIBS) $(KPSA_FLAGS)"  -I/opt/include -Iinclude 
+	   "$(KPSA_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kpsa:       $(KPSA_LIB)
 
 clean-kpsa:
 		@rm -f $(KPSA_DIRS)/*~ $(KPSA_DIRS)/*.o
-		@rm -f $(KPSA_DC) $(KPSA_DH) $(KPSA_DEP)
+		@rm -f $(KPSA_DC) $(KPSA_DH) $(KPSA_DEP) $(KPSA_LIB)
 
 clean::         clean-kpsa
 

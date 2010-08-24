@@ -13,6 +13,11 @@
 // to add the event to an output tree. This file creates an KDS file with
 // trees filled with KHLAEvents, but you can also select Raw and HLaMC events.
 //
+// This class automatically assume that we're going to use TRefs, by calling
+// TTree::BranchRef when opening the file. 
+// But, the user of this object will have to make sure they are dealing
+// with the object count properly. See the TRef documentation. 
+//
 
 #include "KDataWriter.h"
 #include "KEventFactory.h"
@@ -20,7 +25,6 @@
 #include "KRawEvent.h"
 #include "KHLAEvent.h"
 #include "KHLaMCEvent.h"
-//#include "TBranchElement.h"
 #include <typeinfo>
 #include <exception> 
 #include <iostream>
@@ -104,6 +108,9 @@ Bool_t KDataWriter::OpenFile(const Char_t* fileName, KEvent **anEvent,
 		
 		if(SetTreeBranch(anEvent)){
 			//cout << "KDataWriter Done Opening File" << endl;
+			fTree->BranchRef(); //automatically assume that we're going to use TRefs
+			//But, the user of this object will have to make sure they are dealing
+			//with the object count properly. See the TRef documentation. 
 			bIsReady = true;
 			return true;
 		}

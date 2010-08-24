@@ -187,14 +187,6 @@ Int_t KDataReader::GetEntryWithGSEventNumber(Int_t anEntry)
 	}
 }
 
-void KDataReader::ls(Option_t *anOpt) const
-{
-	if(fFile != 0){
-		fFile->ls(anOpt);
-	}
-	
-}
-
 TObject* KDataReader::Get(const Char_t* namecycle) const
 {
 	if(fFile != 0){

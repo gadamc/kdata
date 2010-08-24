@@ -8,7 +8,7 @@
 # 'kds' to Modules.mk in the $KDATA_ROOT directory,
 # then type "make" (or gmake) in $KDATA_ROOT.
 #
-# To use this template as the base for developing a standalone
+# To use this template as the base for developing a standalone 
 # module, follow these steps:
 #
 #   1) Create a new directory for your development project.
@@ -28,7 +28,7 @@
 #
 # Author: Adam Cox 08/19/10
 
-MODNAME      := KDS
+MODNAME      := kds
 MODDIR       := kds
 
 KDS_FLAGS  := $(CXXFLAGS)
@@ -81,36 +81,36 @@ include/%.h:    $(KDS_DIRI)/%.h
 		$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
-$(KDS_DIRS)/%.o:    $(KDS_DIRS)/%.cxx
-	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS)  -o $@ -c $< 
+$(KDS_DIRS)/%.o:    $(KDS_DIRS)/%.cxx 
+	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KDS_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KDSLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KDSLIBS) 
                 
 # rules for building dictionary
 $(KDS_DO):         $(KDS_DC)
-	$(CXX) $(NOOPT) $(KDS_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
+	$(CXX) $(NOOPT) $(KDS_FLAGS) $(ROOTINCS) -I.  -o $@ -c $< 
 
 $(KDS_DC):         $(KDS_EH) $(KDS_LH)
 	@echo "Generating dictionary $@..."
 	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KDS_EH) $(KDS_LH) 
 
 # rule for building library
-$(KDS_LIB):        $(KDS_EO) $(KDS_DO) $(KDS_LIBDEP)
+$(KDS_LIB):        $(KDS_EO) $(KDS_DO) $(KDS_LIBDEP) 
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KDS_LIB)" $@  "$(KDS_EO) $(KDS_DO)" \
 	   "$(ROOTLIBS) $(KDS_FLAGS)"  -I/opt/include -Iinclude 
 
-all-KDS:       $(KDS_LIB)
+all-kds:       $(KDS_LIB)
 
-clean-KDS:
+clean-kds:
 		@rm -f $(KDS_DIRS)/*~ $(KDS_DIRS)/*.o
-		@rm -f $(KDS_DC) $(KDS_DH) $(KDS_DEP)
+		@rm -f $(KDS_DC) $(KDS_DH) $(KDS_DEP) $(KDS_LIB)
 
-clean::         clean-KDS
+clean::         clean-kds
 
 #end
 

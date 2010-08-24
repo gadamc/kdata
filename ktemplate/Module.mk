@@ -108,7 +108,7 @@ all-ktemplate:       $(KTMP_LIB)
 
 clean-ktemplate:
 		@rm -f $(KTMP_DIRS)/*~ $(KTMP_DIRS)/*.o
-		@rm -f $(KTMP_DC) $(KTMP_DH) $(KTMP_DEP)
+		@rm -f $(KTMP_DC) $(KTMP_DH) $(KTMP_DEP) $(KTMP_LIB)
 
 clean::         clean-ktemplate
 
