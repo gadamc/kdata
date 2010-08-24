@@ -232,7 +232,13 @@ vector<string> GlobalRunList() {
   return lList;
 }
 
-vector<string> GlobalAnaDBList() {
+vector<string> GlobalAnaDBList(string aFile)
+{
+	gAnaDBListFile = aFile;
+	return GlobalAnaDBList();
+}
+
+vector<string> GlobalAnaDBList() {  
   ifstream lFile(gAnaDBListFile.c_str(),ios::in);
   string s;
   vector<string> lList;

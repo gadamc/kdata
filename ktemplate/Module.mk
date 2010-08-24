@@ -28,7 +28,7 @@
 #
 # Author: Adam Cox 08/19/10
 
-MODNAME      := KTMP
+MODNAME      := ktemplate
 MODDIR       := ktemplate
 
 KTMP_FLAGS  := $(CXXFLAGS)
@@ -104,13 +104,13 @@ $(KTMP_LIB):        $(KTMP_EO) $(KTMP_DO) $(KTMP_LIBDEP)
 	   "$(SOFLAGS)" "$(KTMP_LIB)" $@  "$(KTMP_EO) $(KTMP_DO)" \
 	   "$(ROOTLIBS) $(KTMP_FLAGS)"  -I/opt/include -Iinclude 
 
-all-KTMP:       $(KTMP_LIB)
+all-ktemplate:       $(KTMP_LIB)
 
-clean-KTMP:
+clean-ktemplate:
 		@rm -f $(KTMP_DIRS)/*~ $(KTMP_DIRS)/*.o
 		@rm -f $(KTMP_DC) $(KTMP_DH) $(KTMP_DEP)
 
-clean::         clean-KTMP
+clean::         clean-ktemplate
 
 #end
 

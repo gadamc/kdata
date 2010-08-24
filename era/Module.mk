@@ -2,17 +2,22 @@
 # Derived from the example makefile from the ROOT framework
 # written by Rene Brun and Fons Rademakers
 # using the ROOT libraries on all supported platforms.
-# This is not a standard Module.mk file for a module within KData, but is specially written
+#
+# NOTE: This is not a standard Module.mk file for a module within KData, but is specially written
 # for the ERA since the ERA was written independently of KData
 # and can thus remain independent of KData should KData not survive! :)
+#
 # This makefile builds a libEra.so which can be loaded from ROOT CINT and used
 # to read the ROOT event files produced in the initial ERA processing
-# However, as of now (21.8.10), the c-functions in EdwUtils are not part of the library
+# However, as of now (21.8.10), the c-functions in EdwUtils and EdwParams are not part of the library
 # and to use this library from the ROOT CINT, one must load this file 
 # root[0] .L /path/to/kdata/era/EdwUtils.cxx
+# root[0] .L /path/to/kdata/era/EdwParams.cxx
 # In addition, since many functions within libEra depend upon the c-funtions in EdwUtils.cxx
-# and these don't appear to be in the library, I suspect that any program that links to this library will break.
-#
+# and these don't appear to be in the library, I suspect that any external 
+# program that links to this library might break.
+# or you must make sure to #include EdwUtils.cxx explicitly in your external program.
+# I'm not sure if this is true though, since I have not yet tested it. 
 #
 #       : Adam Cox, 21/8/2010
 #
@@ -58,12 +63,18 @@ OBJS        += $(FILLEVENTO)
 ############################
 ############################
 
-#automatically generate the ERA_LinkDef.h file! Don't call it Edw_LinkDef
-LINKDEF := $(SRCDIR)ERA_LinkDef.h
-
 #automatically extract the headers and object file names
 EDWHEADERS = $(addsuffix .h, $(CLASSES))
 #NEDWHEADERS = $(addprefix $(SRCDIR), $(EDWHEADERS)) 
+
+# used in the main Makefile
+#ALLHDRS      += $(patsubst $(SRCDIR)/%.h,include/%.h,$(EDWHEADERS))
+#
+#ALLEXECS     += $(FILLEVENT)
+
+
+#automatically generate the ERA_LinkDef.h file! Don't call it Edw_LinkDef
+LINKDEF := $(SRCDIR)ERA_LinkDef.h
 
 COBJS = $(addprefix $(SRCDIR),$(addsuffix .$(ObjSuf), $(CLASSES)))
 OBJS          = $(COBJS)
@@ -76,6 +87,9 @@ EVENTLIB      = lib/libEra.lib
 else
 EVENTLIB      = $(shell pwd)/$(LIBEDWDSO)
 endif
+
+# include all dependency files
+#INCLUDEFILES += $(addsuffix .o, $(CLASSES)) $(addsuffix .d, $(CLASSES))
 
 #ROOT Dictionary -- dont call this EdwDict... 
 EDSDICT = $(SRCDIR)ERADict
@@ -91,6 +105,12 @@ OBJS   += $(EDSDICTO)
 
 all:            $(PROGRAMS)
 
+all-era:        all
+
+# we depend on all of our header files being up to date in the include directory
+#include/%.h:    $(SRCDIR)/%.h
+#	$(COPY_HEADER) $< $@
+	
 $(LIBEDWDSO):     $(COBJS) $(EDSDICTO) 
 
 ifeq ($(PLATFORM),macosx)
@@ -124,10 +144,10 @@ $(FILLEVENT):       $(LIBEDWDSO) $(FILLEVENTO)
 		@echo "$@ done"
 
 
-clean-KERA: 
-		@rm -f $(SRCDIR)*.o $(SRCDIR)*.d $(LINKDEF)* $(EDSDICT)* $(SRCDIR)core
+clean-era: 
+		@rm -f $(SRCDIR)*.o $(SRCDIR)*.d $(LINKDEF)* $(EDSDICT)* $(SRCDIR)core $(LIBEDWDSO) $(FILLEVENT)
 
-clean::     clean-KERA
+clean::     clean-era
 
 
 .SUFFIXES: .$(SrcSuf)
@@ -158,6 +178,7 @@ $(LINKDEF) : $(addsuffix, .$(ObjSuf), $(addprefix $(SRCDIR), $(CLASSES))) $(addp
 	@echo "" >> $@.tmp
 	@echo "#endif" >> $@.tmp
 	@mv $@.tmp $@
+
 
 
 .$(SrcSuf).$(ObjSuf):

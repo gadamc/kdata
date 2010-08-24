@@ -89,6 +89,7 @@ include $(ROOTSYS)/config/Makefile.$(ARCH)
 LPATH          := lib
 F77            := gfortran
 KDATALIBDIRS    := -L$(LPATH)
+ERAPATH       := era
 
 # add KDATA_ROOT directories if not building modules from there
 ifneq ($(shell pwd),$(KDATA_ROOT))
@@ -108,6 +109,9 @@ CERNLIBS       :=  -L$(CERNDIR) -llepto -lpythia -lpythiad -ljetset74\
 
 FFTWLIBS       := -L$(FFTW_DIR) -lrfftw -lfftw
 
+#special paths to the local ERA libraries. Needed for modules that depend upon ERA. 
+ERALIBS := $(LPATH)/libEra.$(SOEXT)
+ERAINCS  :=  $(ERAPATH)
 
 ##### Utilities #####
 

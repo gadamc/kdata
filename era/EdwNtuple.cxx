@@ -275,43 +275,55 @@ void EdwNtuple::FillEvtFromBuffer(UInt_t ievt, EdwNtpBuffer& aBuffer) {
 PulseVariables EdwNtuple::ComputeSinglePulse(EdwPulse* aEdwPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, 
 																						 Short_t aSign, Int_t aCenterScanBin, const vector<Float_t> *aFixTimes) {
 	
-  FitPulse lPulse(aEdwPulse);
+  FitPulse *lPulse = new FitPulse(aEdwPulse);
+  PulseVariables lData = {0};
+	lData = ComputeSinglePulse(lPulse, aTmplt, aPreprocess, aSign, aCenterScanBin, aFixTimes);
+	delete lPulse;
+	return lData;
+	
+}
+	
+ 
+
+PulseVariables EdwNtuple::ComputeSinglePulse(FitPulse* lPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, 
+																						 Short_t aSign, Int_t aCenterScanBin, const vector<Float_t> *aFixTimes) {
+	
   PulseVariables lData = {0};
 	
   // First basic processing 
-  if (aSign != 0) lPulse.SetSign(aSign);
-  lPulse.SetBaseFromPeakBin(aTmplt.PulseBin());
+  if (aSign != 0) lPulse->SetSign(aSign);
+  lPulse->SetBaseFromPeakBin(aTmplt.PulseBin());
   // (si pas de vrai template c'est pas grave, le bin=0 donc ca fait rien...)
-  lPulse.BasicPreprocess();
-  lPulse.FindPeaks(FP_STRICT); // to debatte
+  lPulse->BasicPreprocess();
+  lPulse->FindPeaks(FP_STRICT); // to debatte
   // Fit operations, using the preprocessing database
-  lData.RawBaseline=lPulse.MeanBase();
-  lData.RawNoise=lPulse.ComputeNoise();
-  lData.NbPeaks=lPulse.GetPeakBins().size();
-  lData.RawAmpl=lPulse.GetSimpleAmpl();
-  lData.RawBin=lPulse.GetSimpleAmplBin();
-  if (lPulse.IsHeat()) { // Calcule seuleemnt pour chaleur! (gain cpu)
+  lData.RawBaseline=lPulse->MeanBase();
+  lData.RawNoise=lPulse->ComputeNoise();
+  lData.NbPeaks=lPulse->GetPeakBins().size();
+  lData.RawAmpl=lPulse->GetSimpleAmpl();
+  lData.RawBin=lPulse->GetSimpleAmplBin();
+  if (lPulse->IsHeat()) { // Calcule seuleemnt pour chaleur! (gain cpu)
     if (fShapeFlag == SHAPE_RISE || fShapeFlag == SHAPE_ALL) 
-      lData.RiseTime=lPulse.GetRiseTime();
+      lData.RiseTime=lPulse->GetRiseTime();
     if (fShapeFlag == SHAPE_FALL || fShapeFlag == SHAPE_ALL) 
-      lData.FallTime=lPulse.GetFallTime();
+      lData.FallTime=lPulse->GetFallTime();
     if (fShapeFlag == SHAPE_FWHM || fShapeFlag == SHAPE_ALL) 
-      lData.FWHM=lPulse.GetFWHM();
+      lData.FWHM=lPulse->GetFWHM();
   }
   if (fAmplFlag == AMPL_FIT || fAmplFlag == AMPL_ALL) {
     vector<Float_t> lTimeFitParams;
     if (aCenterScanBin != NOCENTER) {
       Float_t lOffsetMin = aCenterScanBin-SCANRANGE_IONBIN_FROM_HEAT ;
       Float_t lOffsetMax = aCenterScanBin+SCANRANGE_IONBIN_FROM_HEAT ;
-      lTimeFitParams = lPulse.GetFitAmpl(aTmplt.Trace(),1,1,lOffsetMin,lOffsetMax);
+      lTimeFitParams = lPulse->GetFitAmpl(aTmplt.Trace(),1,1,lOffsetMin,lOffsetMax);
     } else {
-      lTimeFitParams = lPulse.GetFitAmpl(aTmplt.Trace());
+      lTimeFitParams = lPulse->GetFitAmpl(aTmplt.Trace());
     }
     lData.FitAmpl=lTimeFitParams.at(0);
     lData.FitBin=lTimeFitParams.at(1);
     lData.FitChi2=lTimeFitParams.at(2);
     lData.FitAmplErr=lTimeFitParams.at(3);
-    lData.FitZeroAmpl = (lPulse.GetFitAmpl(aTmplt.Trace(),0))[0];
+    lData.FitZeroAmpl = (lPulse->GetFitAmpl(aTmplt.Trace(),0))[0];
   }
   if (fAmplFlag == AMPL_WIENER || fAmplFlag == AMPL_ALL) {
     if (aPreprocess.NoiseSpectrum().size() != 0) {
@@ -320,13 +332,13 @@ PulseVariables EdwNtuple::ComputeSinglePulse(EdwPulse* aEdwPulse, EdwTemplate& a
       if (aCenterScanBin != NOCENTER) {
 				Float_t lOffsetMin = aCenterScanBin-SCANRANGE_IONBIN_FROM_HEAT ;
 				Float_t lOffsetMax = aCenterScanBin+SCANRANGE_IONBIN_FROM_HEAT ;
-				lWienerFitParams = lPulse.GetFitWiener(&aTmplt,aPreprocess.NoiseSpectrum(),lFast,0,lOffsetMin,lOffsetMax);
-      } else lWienerFitParams = lPulse.GetFitWiener(&aTmplt,aPreprocess.NoiseSpectrum(),lFast); // Note: now with 0.2 bin accuracy for heat par default.
+				lWienerFitParams = lPulse->GetFitWiener(&aTmplt,aPreprocess.NoiseSpectrum(),lFast,0,lOffsetMin,lOffsetMax);
+      } else lWienerFitParams = lPulse->GetFitWiener(&aTmplt,aPreprocess.NoiseSpectrum(),lFast); // Note: now with 0.2 bin accuracy for heat par default.
       lData.WienerAmpl=lWienerFitParams.at(0);
       lData.WienerBin=lWienerFitParams.at(1);
       lData.WienerChi2=lWienerFitParams.at(2);
       lData.WienerAmplErr=lWienerFitParams.at(3);
-      lData.WienerZeroAmpl=(lPulse.GetWienerAmpl(aTmplt.TraceFFT(),aPreprocess.NoiseSpectrum(),1))[0];
+      lData.WienerZeroAmpl=(lPulse->GetWienerAmpl(aTmplt.TraceFFT(),aPreprocess.NoiseSpectrum(),1))[0];
     } // sinon eh ben amplitude nulle pour le fit, facile a couper!
   }
 	
@@ -341,7 +353,7 @@ PulseVariables EdwNtuple::ComputeSinglePulse(EdwPulse* aEdwPulse, EdwTemplate& a
       Bool_t DoFFT=0; Bool_t DoChi2=1;
       Float_t lOffset = lFixTimes[k]-aTmplt.PulseBin(); // !! convention bin/time...!!
       FloatVect lTmpltFFT = aTmplt.GetNonIntegerOffsetFFT(lOffset);
-      vector<Float_t> lParams = lPulse.GetWienerAmpl(lTmpltFFT,aPreprocess.NoiseSpectrum(),DoFFT,lOffset,DoChi2);
+      vector<Float_t> lParams = lPulse->GetWienerAmpl(lTmpltFFT,aPreprocess.NoiseSpectrum(),DoFFT,lOffset,DoChi2);
       (lData.WienerSyncAmpl)[k]=lParams.at(0);
       (lData.WienerSyncChi2)[k]=lParams.at(2);
     }
@@ -350,25 +362,27 @@ PulseVariables EdwNtuple::ComputeSinglePulse(EdwPulse* aEdwPulse, EdwTemplate& a
   // This step must be done in the end because the processed trace is modified
   // by the filtering operation!
   if (fAmplFlag == AMPL_FITFILT || fAmplFlag == AMPL_ALL) {
-    lPulse.FilterTrace(aTmplt.GetDirectFilter(),aTmplt.GetInverseFilter());
+    lPulse->FilterTrace(aTmplt.GetDirectFilter(),aTmplt.GetInverseFilter());
     vector<Float_t> lTimeFitParams;
     if (aCenterScanBin != NOCENTER) {
       Float_t lOffsetMin = aCenterScanBin-SCANRANGE_IONBIN_FROM_HEAT ;
       Float_t lOffsetMax = aCenterScanBin+SCANRANGE_IONBIN_FROM_HEAT ;
-      lTimeFitParams = lPulse.GetFitAmpl(aTmplt.FilteredTrace(),1,1,lOffsetMin,lOffsetMax);
+      lTimeFitParams = lPulse->GetFitAmpl(aTmplt.FilteredTrace(),1,1,lOffsetMin,lOffsetMax);
     } else {
-      lTimeFitParams = lPulse.GetFitAmpl(aTmplt.FilteredTrace());
+      lTimeFitParams = lPulse->GetFitAmpl(aTmplt.FilteredTrace());
     }
     lData.FitFilterAmpl=lTimeFitParams.at(0);
     lData.FitFilterBin=lTimeFitParams.at(1);
     lData.FitFilterChi2=lTimeFitParams.at(2);
     lData.FitFilterAmplErr=lTimeFitParams.at(3);
-    lData.FitFilterZeroAmpl=(lPulse.GetFitAmpl(aTmplt.FilteredTrace(),0))[0];
+    lData.FitFilterZeroAmpl=(lPulse->GetFitAmpl(aTmplt.FilteredTrace(),0))[0];
   }
   
 	
   return lData;
 }
+
+
 
 void EdwNtuple::SingleChannelEventLoop(UInt_t jchannel, TChain* aChain, EdwNtpBuffer& aBuffer, EdwAnaDB* aDB, 
 																			 EdwRawDB* aRawDB, EdwEvent* aEvt, EdwPulse* aPulse, UInt_t aOffset, 

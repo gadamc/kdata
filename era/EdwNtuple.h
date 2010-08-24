@@ -72,7 +72,10 @@ class EdwNtuple : public TObject {
   PulseVariables ComputeSinglePulse(EdwPulse* aEdwPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, Short_t aSign=0, Int_t aCenterScanBin=NOCENTER, const vector<Float_t> *aFixTimes = NULL);
   /**< Basic step : computation of amplitudes and pulse shape parameters associated to a single pulse. 
      The relative timing parameters of the pulse wrt another pulse may be fixed or constrained by making use of the aCenterScanBin and aFixTimes arguments. A PulseVariables structure is returned. */
-  void SingleChannelEventLoop(UInt_t jchannel, TChain* aChain, EdwNtpBuffer& aBuffer, EdwAnaDB* aDB, EdwRawDB* aRawDB, EdwEvent* aEvt, EdwPulse* aPulse, UInt_t aOffset=0, Int_t aSynchroFlag=0);
+  PulseVariables ComputeSinglePulse(FitPulse* lPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, Short_t aSign = 0, Int_t aCenterScanBin = NOCENTER, const vector<Float_t> *aFixTimes = NULL);
+	/**<Same as ComputSinglePulse(EdwPulse* ), but you must pass in a FitPulse pointer. The advantage of this is that you get to see the resulting processed waveform via the FitPulse object.*/
+	
+	void SingleChannelEventLoop(UInt_t jchannel, TChain* aChain, EdwNtpBuffer& aBuffer, EdwAnaDB* aDB, EdwRawDB* aRawDB, EdwEvent* aEvt, EdwPulse* aPulse, UInt_t aOffset=0, Int_t aSynchroFlag=0);
   /**< Fundamental loop over the events for a single channel. 
      The aBuffer object is filled. The possible synchronization of the channel wrt other channels is taken into account with the aSynchroFlag argument: 0 = no sync; 1 = heat->ion (constrain the time search window); 2 = ion->heat (fix the time completely). */
 
@@ -92,6 +95,8 @@ class EdwNtuple : public TObject {
   vector<string> GetSyncIonChannels(string aHeatChannel) const; /**< Synchro params between channels */
   string GetSyncHeatChannel(string aIonChannel) const; /**< Synchro params between channels */
 
+	void SetChannels(vector<string> aChanList){fChannels = aChanList;}
+	
  private:
   UInt_t fEvtBufferSize; /**< Size of the intermediate buffer */
   string fFileName ; /**< Name of the root file */
