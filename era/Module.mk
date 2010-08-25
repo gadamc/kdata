@@ -172,7 +172,7 @@ $(LINKDEF) : $(addsuffix, .$(ObjSuf), $(addprefix $(SRCDIR), $(CLASSES))) $(addp
 	@echo "#pragma link off all functions;" >> $@.tmp
 	@echo "" >> $@.tmp
 	@for i in $(CLASSES); do \
-		if [ "$${i}" == "EdwUtils" ]; then \
+		if [ "$${i}" = "EdwUtils" ]; then \
 			echo "removing EdwUtils";\
 		else \
 			echo "#pragma link C++ class $$i+;" >> $@.tmp; \
