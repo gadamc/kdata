@@ -86,7 +86,7 @@ include $(ROOTSYS)/config/Makefile.$(ARCH)
 
 #EXE = allPassOne_GSEventNumbers
 
-LPATH          := ./lib
+LPATH          := lib
 F77            := gfortran
 KDATALIBDIRS    := -L$(LPATH)
 ERADIR       := ./era

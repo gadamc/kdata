@@ -5,6 +5,7 @@
  */
 
 #include "FitPulse.h"
+#include <climits>
 
 ClassImp(FitPulse); /**< Root dictionnary */
 
