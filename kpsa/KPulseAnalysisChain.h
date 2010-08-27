@@ -11,8 +11,6 @@
 #ifndef __KPULSEANALYSISCHAIN_H__
 #define __KPULSEANALYSISCHAIN_H__
 
-//#include "Rtypes.h"
-//#include "TObjArray.h"
 #include "KPsaProcessor.h"
 #include <vector>
 
@@ -39,7 +37,6 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  //ClassDef(KPulseAnalysisChain,1);
 };
 
 //

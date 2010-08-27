@@ -14,7 +14,6 @@
 
 using namespace std;
 
-//ClassImp(KPulseAnalysisChain);
 
 KPulseAnalysisChain::KPulseAnalysisChain(void)
 {
