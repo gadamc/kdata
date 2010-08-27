@@ -34,6 +34,7 @@ extern void G__set_cpp_environmentkpsa_Dict();
 #include "kpsa/KPatternRemoval.h"
 #include "kpsa/KPsaProcessor.h"
 #include "kpsa/KPulseAnalysisChain.h"
+#include "kpsa/KRealToHalfComplexDFT.h"
 #include <algorithm>
 namespace std { }
 using namespace std;
@@ -41,15 +42,20 @@ using namespace std;
 #ifndef G__MEMFUNCBODY
 #endif
 
+extern G__linked_taginfo G__kpsa_DictLN_vectorlEshortcOallocatorlEshortgRsPgR;
+extern G__linked_taginfo G__kpsa_DictLN_vectorlEfloatcOallocatorlEfloatgRsPgR;
 extern G__linked_taginfo G__kpsa_DictLN_vectorlEdoublecOallocatorlEdoublegRsPgR;
 extern G__linked_taginfo G__kpsa_DictLN_string;
 extern G__linked_taginfo G__kpsa_DictLN_vectorlEROOTcLcLTSchemaHelpercOallocatorlEROOTcLcLTSchemaHelpergRsPgR;
 extern G__linked_taginfo G__kpsa_DictLN_reverse_iteratorlEvectorlEROOTcLcLTSchemaHelpercOallocatorlEROOTcLcLTSchemaHelpergRsPgRcLcLiteratorgR;
 extern G__linked_taginfo G__kpsa_DictLN_KPsaProcessor;
+extern G__linked_taginfo G__kpsa_DictLN_vectorlEintcOallocatorlEintgRsPgR;
+extern G__linked_taginfo G__kpsa_DictLN_reverse_iteratorlEvectorlEintcOallocatorlEintgRsPgRcLcLiteratorgR;
 extern G__linked_taginfo G__kpsa_DictLN_KBaselineRemoval;
 extern G__linked_taginfo G__kpsa_DictLN_KPatternRemoval;
 extern G__linked_taginfo G__kpsa_DictLN_KPulseAnalysisChain;
 extern G__linked_taginfo G__kpsa_DictLN_vectorlEKPsaProcessormUcOallocatorlEKPsaProcessormUgRsPgR;
 extern G__linked_taginfo G__kpsa_DictLN_reverse_iteratorlEvectorlEKPsaProcessormUcOallocatorlEKPsaProcessormUgRsPgRcLcLiteratorgR;
+extern G__linked_taginfo G__kpsa_DictLN_KRealToHalfComplexDFT;
 
 /* STUB derived class for protected member access */

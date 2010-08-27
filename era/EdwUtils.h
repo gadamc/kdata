@@ -49,6 +49,7 @@ string int2str(Int_t aNum,Int_t aWidth = 3) ; /**< Convert an integer to a strin
 string int2str(UInt_t aNum,Int_t aWidth = 3) ; /**< Convert an integer to string with a given length */
 
 vector<Float_t> hist2vect(const TH1F* aHist); /**< Conversion TH1F -> STL vector */
+TH1D* vect2hist(const vector<double> & aVect, string aVectName = "Vector"); /**< Conversion STL vector -> TH1D. Warning there is a 'new' operator in this function. */
 TH1F* vect2hist(const vector<Float_t> & aVect, string aVectName = "Vector"); /**< Conversion STL vector -> TH1F. Warning there is a 'new' operator in this function. */
 TH1F* vect2hist(const vector<Short_t> & aVect, string aVectName = "Vector"); /**< Conversion STL vector -> TH1F. Warning there is a 'new' operator in this function. */
 

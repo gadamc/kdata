@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef __KEraRawFileIO_H__
-#define __KEraRawFileIO_H__
+#ifndef __KERARAWFILEIO_H__
+#define __KERARAWFILEIO_H__
 
 #include "Rtypes.h"
 #include "TTree.h"
@@ -59,5 +59,5 @@ private:
 };
 
 
-#endif // __KEraRawFileIO_H__
+#endif // __KERARAWFILEIO_H__
 

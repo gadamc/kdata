@@ -15,7 +15,6 @@
 #include "KEraRawEventReader.h"
 #include <typeinfo>
 #include <iostream>
-#include "TClass.h"
 #include <string>
 
 using namespace std;
@@ -24,7 +23,6 @@ ClassImp(KEraRawEventReader);
 
 KEraRawEventReader::KEraRawEventReader(const Char_t* fileName, EdwEvent **anEvent)
 {
-	//TClass::GetClass("TBits")->IgnoreTObjectStreamer(),
 
 	fLocalEvent = 0;
 	InitializeMembers();
@@ -62,7 +60,7 @@ void KEraRawEventReader::InitializeMembers(void)
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	fCurrentEntry = 0;
 	fEntries = 0;
-//	fGSEventIndex=0;
+  fSambaNumberIndex=0;
 }
 
 
@@ -165,10 +163,10 @@ Int_t KEraRawEventReader::GetEntry(Int_t anEntry)
 /*
 Int_t KEraRawEventReader::GetEntryWithGSEventNumber(Int_t anEntry)
 {
-	if(fGSEventIndex==0){
+	if(fSambaNumberIndex==0){
 		cout << "Building index..." << endl;
-		fTree->BuildIndex("fGSEventNumber");
-		fGSEventIndex=1;
+		fTree->BuildIndex("fGSEventNumber");  --> How do we get the samba number if the file isn't split?
+		fSambaNumberIndex=1; 
 	}
 
 	//will load (if possible) Entry cooresponding to GSEventNumber'anEntry' and
@@ -188,7 +186,6 @@ Int_t KEraRawEventReader::GetEntryWithGSEventNumber(Int_t anEntry)
 		return theRet;
 	}
 }
-
 */
 
 TObject* KEraRawEventReader::Get(const Char_t* namecycle) const
@@ -198,75 +195,4 @@ TObject* KEraRawEventReader::Get(const Char_t* namecycle) const
 	}
 	else return 0;
 }
-
-//anEntry has to be the entry number for the allBolosVetoFile it is the same as GSEventNumber, but not for skimmed files
-
-/*
-Int_t KEraRawEventReader::GetNextMuonEntry(Int_t anEntry)
-{
-	Int_t size=0;
-	KHLAEvent* e=0;
-	e = dynamic_cast<KHLAEvent*>(GetEvent());
-	if(e==0)return -1;
-
-	if(anEntry<0){
-		size=GetNextEntry();
-	}
-	else{
-		size=GetEntry(anEntry+1);
-	}
-	while(size>0 && e->GetNumMuonModules()==0){
-	size=GetNextEntry();
-	}
-	return size;
-}
-
-Int_t KEraRawEventReader::GetPreviousMuonEntry(Int_t anEntry)
-{
-	Int_t size=0;
-	KHLAEvent* e=0;
-	e = dynamic_cast<KHLAEvent*>(GetEvent());
-	if(e==0)return -1;
-	if(anEntry<0)
-		size=GetPreviousEntry();
-	else
-		size=GetEntry(anEntry-1);
-	while(size>0 && e->GetNumMuonModules()==0){
-	size=GetPreviousEntry();
-	}
-	return size;
-}
-
-Int_t KEraRawEventReader::GetNextBoloEntry(Int_t anEntry)
-{
-	Int_t size=0;
-	KHLAEvent* e=0;
-	e = dynamic_cast<KHLAEvent*>(GetEvent());
-	if(e==0)return -1;
-	if(anEntry<0)
-		size=GetNextEntry();
-	else
-		size=GetEntry(anEntry+1);
-	while(size>0 && e->GetNumBolos()==0){
-	size=GetNextEntry();
-	}
-	return size;
-}
-
-Int_t KEraRawEventReader::GetPreviousBoloEntry(Int_t anEntry)
-{
-	Int_t size=0;
-	KHLAEvent* e=0;
-	e = dynamic_cast<KHLAEvent*>(GetEvent());
-	if(e==0)return -1;
-	if(anEntry<0)
-		size=GetPreviousEntry();
-	else
-		size=GetEntry(anEntry-1);
-	while(size>0 && e->GetNumBolos()==0){
-	size=GetPreviousEntry();
-	}
-	return size;
-}
-*/
 

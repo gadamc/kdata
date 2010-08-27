@@ -42,5 +42,5 @@ private:
   //ClassDef(KPulseAnalysisChain,1);
 };
 
-
+//
 #endif // __KPULSEANALYSISCHAIN_H__

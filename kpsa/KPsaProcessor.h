@@ -10,6 +10,7 @@
 #ifndef __KPSAPROCESSOR_H__
 #define __KPSAPROCESSOR_H__
 
+#include <stdexcept> 
 #include <iostream>
 #include <vector>
 
@@ -19,11 +20,21 @@ class KPsaProcessor  {
 
 public:
 
-	virtual void SetInputPulse(vector<double> aPulse){fInputPulse = aPulse;}
-	virtual vector<double> GetOutputPulse(void){return fOutputPulse;}
+	virtual void SetInputPulse(const vector<double> &aPulse){fInputPulse = aPulse;} //Set the input pulse
+	virtual void SetInputPulse(const vector<short> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse 
+	virtual void SetInputPulse(const vector<float> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse
+	virtual void SetInputPulse(const vector<int> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse
+	virtual void SetInputPulse(const char* aFile);
+	
+	virtual vector<double> GetOutputPulse(void) const {return fOutputPulse;}  //obtain a copy of the output pulse with double precision
+	virtual void GetOutputPulse(vector<float> &myPulse) const; //demote the precision and obtian a copy of the output pulse in single precision
+	
+	virtual vector<double> GetInputPulse(void) const {return fInputPulse;}  //obtain a copy of the input pulse
+	virtual void GetInputPulse(vector<float> &myPulse) const; //demote the precision and obtian a copy of the output pulse in single precision
+
 	virtual bool RunProcess(void) = 0;
   //getters
-	virtual const char* GetName(void){return fProcessorName.c_str();}
+	virtual const char* GetName(void) const {return fProcessorName.c_str();}
   //setter
 	virtual void SetName(const char* aName){fProcessorName = aName;}
 	
@@ -38,11 +49,10 @@ protected:
 	
 private:
 	
-
+	template<class T> void SetThisToInputPulse(const vector<T> &aPulse);
   //private methods
   void InitializeMembers(void);
-
-  //ClassDef(KPsaProcessor,1);
+	
 };
 
 

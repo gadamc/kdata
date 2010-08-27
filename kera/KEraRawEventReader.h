@@ -13,14 +13,12 @@
 #include "KEraRawFileIO.h"
 #include "TBranchElement.h"
 #include "EdwEvent.h"
-//#include "KHLAEvent.h" // I guess I need this for the GetNextMuonEntry()/ GetNextBoloEntry() methods
 
 
 class KEraRawEventReader : public KEraRawFileIO {
 
 public:
   //Constructors
-	//KDataReader(const Char_t* fileName);
 	KEraRawEventReader(const Char_t* fileName, EdwEvent **anEvent = 0);
   virtual ~KEraRawEventReader(void);
 
@@ -36,16 +34,12 @@ public:
 
 	TObject* Get(const Char_t* namecycle) const;
 
-	//Int_t GetNextMuonEntry(Int_t anEntry=-1) ;
-	//Int_t GetPreviousMuonEntry(Int_t anEntry=-1) ;
-	//Int_t GetNextBoloEntry(Int_t anEntry=-1) ;
-	//Int_t GetPreviousBoloEntry(Int_t anEntry=-1) ;
 
 private:
 
 	Int_t fCurrentEntry;
 	Int_t fEntries;
-	Bool_t fGSEventIndex;
+	Bool_t fSambaNumberIndex;
 
 	EdwEvent *fLocalEvent;
   //private methods

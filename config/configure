@@ -133,7 +133,7 @@ my $prog = "$KDATA_env{ROOTSYS}/bin/root-config";
 # get other environment variables if required
 if ($opt_all and $KDATA_env{KW_ROOT}) {
     #GetEnv('CERNDIR','liblepto.a');
-    GetEnv('FFTW_DIR','libfftw.a');
+    GetEnv('FFTW_DIR','libfftw3.a');
     #GetEnv('HISTO_DIR','libFHistoHB.a','This only needs to be set if KWMAN was extracted with HISTOSCOPE_PRESENT.');
 }
 

@@ -43,6 +43,13 @@ TH1F* vect2hist(const vector<Float_t> & aVect, string aVectName) {
   return lHist;
 }
 
+TH1D* vect2hist(const vector<double> & aVect, string aVectName) {
+  Int_t lNbPts = aVect.size();
+  TH1D* lHist = new TH1D(aVectName.c_str(),aVectName.c_str(),lNbPts,-0.5,lNbPts-0.5);
+  for (Int_t i=0; i<lNbPts; i++) lHist->SetBinContent(i+1,aVect[i]); // Warning ROOT binning
+  return lHist;
+}
+
 TH1F* vect2hist(const vector<Short_t> & aVect, string aVectName) {
   Int_t lNbPts = aVect.size();
   TH1F* lHist = new TH1F(aVectName.c_str(),aVectName.c_str(),lNbPts,-0.5,lNbPts-0.5);
@@ -301,6 +308,8 @@ vector<Float_t> EdwRealFFT(vector<Float_t> aVect) {
   // Output in "Root" semi-complex format
   // r0 ... rN/2 i(N/2-1) ... i1
   vector<Float_t> lOutput;
+	lOutput.reserve(lSize);  //prepare the vector for memory allocation. this should be a bit faster? :-S
+	
   for (Int_t i=0; i<= lSize/2; i++) lOutput.push_back((Float_t)(out_re[i]));
   for (Int_t i=((lSize/2)-1); i>0; i--) lOutput.push_back((Float_t)(out_im[i]));
   delete[] in_re;

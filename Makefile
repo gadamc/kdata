@@ -107,7 +107,7 @@ ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -
 CERNLIBS       :=  -L$(CERNDIR) -llepto -lpythia -lpythiad -ljetset74\
                    -lpdflib804 -lpawlib -lgraflib -lgrafX11 -lmathlib -lpacklib
 
-FFTWLIBS       := -L$(FFTW_DIR) -lrfftw -lfftw
+FFTWLIBS       := -L$(FFTW_DIR) -lfftw3 -lm
 
 #special paths to the local ERA libraries. Needed for modules that depend upon ERA. 
 ERA_LIB := $(LPATH)/libEra.$(SOEXT)

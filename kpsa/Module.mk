@@ -76,12 +76,12 @@ include/%.h:    $(KPSA_DIRI)/%.h
 
 # rule for compiling our source files
 $(KPSA_DIRS)/%.o:    $(KPSA_DIRS)/%.cxx
-	$(CXX) $(OPT) $(CXXFLAGS) -o $@ -c $< 
+	$(CXX) $(OPT) $(CXXFLAGS) $(FFTWINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KPSA_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(SYSLIBS) $(KPSALIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(SYSLIBS) $(KPSALIBS) $(FFTWLIBS)
                 
 # rules for building dictionary
 $(KPSA_DO):         $(KPSA_DC)
@@ -89,14 +89,14 @@ $(KPSA_DO):         $(KPSA_DC)
 
 $(KPSA_DC):         $(KPSA_EH) $(KPSA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KPSA_EH) $(KPSA_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(FFTWINCS) $(KPSA_EH) $(KPSA_LH) 
 
 # rule for building library
 $(KPSA_LIB):        $(KPSA_EO) $(KPSA_DO) $(KPSA_LIBDEP)
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KPSA_LIB)" $@  "$(KPSA_EO) $(KPSA_DO)" \
-	   "$(KPSA_FLAGS)"  -I/opt/include -Iinclude 
+	   "$(FFTWLIBS) $(KPSA_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kpsa:       $(KPSA_LIB)
 

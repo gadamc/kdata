@@ -17,7 +17,6 @@
 #include "KEventFactory.h"
 #include <typeinfo>
 #include <iostream>
-#include "TClass.h"
 #include <string>
 
 using namespace std;
@@ -26,7 +25,6 @@ ClassImp(KDataReader);
 
 KDataReader::KDataReader(const Char_t* fileName, KEvent **anEvent)
 {
-	//TClass::GetClass("TBits")->IgnoreTObjectStreamer(),
 	
 	fLocalEvent = 0;
 	InitializeMembers();

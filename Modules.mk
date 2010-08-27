@@ -1,10 +1,8 @@
 ##### List of KDATA modules to build #####
 
-MODULES      := kds kpsa kraw era kera
+MODULES      := kds era kera
 
-#kds requires era now if its going to use TRefs to get to pulse traces. 
-
-#ifneq ($(FFTW_DIR),)
-#MODULES      +=
-#endif
+ifneq ($(FFTW_DIR),)
+MODULES      += kpsa
+endif
 
