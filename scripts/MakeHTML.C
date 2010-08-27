@@ -1,12 +1,15 @@
 {
   gSystem.Load("$ROOTSYS/lib/libMinuit.so");
   gSystem.Load("$ROOTSYS/lib/libHtml.so");
-  gSystem.Load("libKData.so");
-	gSystem.Load("libktmp.so");
-	gSystem.Load("libkera.so");
+  gSystem.Load("$KDATA_ROOT/lib/libkds.so");
   
+  gSystem.Load("$KDATA_ROOT/lib/libkera.so");
+  gSystem.Load("$KDATA_ROOT/lib/libEra.so");
+  gSystem.Load("$KDATA_ROOT/lib/libkpsa.so");
+
   THtml h;
   h.SetProductName("KData");
-  h.SetSourceDir("./kds"); //list all module directories like this "./kds:./kpsa:./ktemplate"
+  h.SetSourceDir("$KDATA_ROOT/include:$KDATA_ROOT/kds:$KDATA_ROOT/kera:$KDATA_ROOT/era:$KDATA_ROOT/kpsa:$KDATA_ROOT"); //list all module directories like this "./kds:./kpsa:./ktemplate"
+  h.SetOutputDir("$KDATA_ROOT/html");
   h->MakeAll();
 }

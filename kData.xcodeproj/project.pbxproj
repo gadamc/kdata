@@ -294,6 +294,12 @@
 		6610E7CE122703DA0047036E /* KEraRawFileIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KEraRawFileIO.h; sourceTree = "<group>"; };
 		6610E7CF122703DA0047036E /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
 		6610E7D0122703DA0047036E /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
+		6610EA6C1228100F0047036E /* KHalfComplexToRealDFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHalfComplexToRealDFT.h; sourceTree = "<group>"; };
+		6610EA6D1228100F0047036E /* KHalfComplexToRealDFT.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexToRealDFT.cxx; sourceTree = "<group>"; };
+		6610EA73122818DC0047036E /* KHalfComplexPower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHalfComplexPower.h; sourceTree = "<group>"; };
+		6610EA74122818DC0047036E /* KHalfComplexPower.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexPower.cxx; sourceTree = "<group>"; };
+		6610EA8E12281F360047036E /* KPsaTestPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPsaTestPulse.h; sourceTree = "<group>"; };
+		6610EA8F12281F360047036E /* KPsaTestPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPsaTestPulse.cxx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -657,6 +663,12 @@
 				6610E44E122469D30047036E /* KPatternRemoval.cxx */,
 				6610E7811226D91F0047036E /* KRealToHalfComplexDFT.h */,
 				6610E7821226D91F0047036E /* KRealToHalfComplexDFT.cxx */,
+				6610EA6C1228100F0047036E /* KHalfComplexToRealDFT.h */,
+				6610EA6D1228100F0047036E /* KHalfComplexToRealDFT.cxx */,
+				6610EA73122818DC0047036E /* KHalfComplexPower.h */,
+				6610EA74122818DC0047036E /* KHalfComplexPower.cxx */,
+				6610EA8E12281F360047036E /* KPsaTestPulse.h */,
+				6610EA8F12281F360047036E /* KPsaTestPulse.cxx */,
 			);
 			path = kpsa;
 			sourceTree = "<group>";

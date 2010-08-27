@@ -29,8 +29,8 @@ public:
 	double GetBaselineStop(void) const {return fBaselineStop;}
   
 	//setters
-	virtual void GetBaselineStart(double aVal) {fBaselineStart = aVal;}
-	virtual void GetBaselineStop(double aVal) {fBaselineStop = aVal;}
+	virtual void SetBaselineStart(double aVal) {fBaselineStart = aVal;}
+	virtual void SetBaselineStop(double aVal) {fBaselineStop = aVal;}
 	
 private:
 
