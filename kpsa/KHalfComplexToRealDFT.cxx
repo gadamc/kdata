@@ -15,6 +15,12 @@
 // the r2r transformation 'plans'. 
 // http://www.fftw.org/fftw3_doc/More-DFTs-of-Real-Data.html#More-DFTs-of-Real-Data
 //
+// However, there is a difference in this class. The output array is "normalized" by 1/N
+//
+// BEGIN_LATEX
+// #scale[1.5]{Y_{k} = #frac{1}{N} \sum_{j=0}^{n-1} X_{j} e^{2 #pi j k #sqrt{-1}/n}}
+// END_LATEX
+//
 // To use this processor
 // 1. SetInputPulse(vector<double> aPulse); // or vector of floats, shorts, or ints in half-complex format. 
 // 2. (optional). SetFlags(const char* ); // set a fftw specific flag. See the fftw documentation for details.
@@ -76,7 +82,7 @@ bool KHalfComplexToRealDFT::CopyArrayToOutput(void)
 {
 	try{
 		for(unsigned int i = 0; i < fOutputPulse.size(); i++){
-			fOutputPulse.at(i) = fOut_fft[i];
+			fOutputPulse.at(i) = fOut_fft[i]/fOutputPulse.size();  // this IS NORMALIZED
 		}
 	}
 	catch (out_of_range &e) {
