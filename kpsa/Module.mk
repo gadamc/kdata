@@ -89,7 +89,7 @@ $(KPSA_DO):         $(KPSA_DC)
 
 $(KPSA_DC):         $(KPSA_EH) $(KPSA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(FFTWINCS) $(KPSA_EH) $(KPSA_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KPSA_EH) $(KPSA_LH) 
 
 # rule for building library
 $(KPSA_LIB):        $(KPSA_EO) $(KPSA_DO) $(KPSA_LIBDEP)

@@ -1,4 +1,4 @@
-#!/bin/tcsh
+#!/bin/csh
 #
 # File:         install_kdata
 #
