@@ -86,7 +86,7 @@ include $(ROOTSYS)/config/Makefile.$(ARCH)
 
 #EXE = allPassOne_GSEventNumbers
 
-LPATH          := lib
+LPATH          := $(KDATA_ROOT)/lib
 F77            := gfortran
 KDATALIBDIRS    := -L$(LPATH)
 ERADIR       := ./era
@@ -94,7 +94,7 @@ ERADIR       := ./era
 # add KDATA_ROOT directories if not building modules from there
 ifneq ($(shell pwd),$(KDATA_ROOT))
 EXTRA_CXXFLAGS += -I$(KDATA_ROOT)/include 
-KDATALIBDIRS    += -L$(KDATA_ROOT)/lib
+# KDATALIBDIRS    += -L$(KDATA_ROOT)/lib
 endif
 
 ROOTINCS       := -I$(ROOTSYS)/include

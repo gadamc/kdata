@@ -57,7 +57,7 @@ CLASSES += Pulse FitPulse OffsetFFT SambaToRoot
 
 EXE = edwrootana
 
-FILLEVENT    = bin/$(EXE)$(ExeSuf)
+FILLEVENT    = $(KDATA_ROOT)/bin/$(EXE)$(ExeSuf)
 FILLEVENTO   = $(addprefix $(SRCDIR),$(EXE).$(ObjSuf))
 PROGRAMS     = $(FILLEVENT) 
 OBJS        += $(FILLEVENTO)
@@ -84,10 +84,10 @@ COBJS = $(addprefix $(SRCDIR),$(addsuffix .$(ObjSuf), $(CLASSES)))
 OBJS          = $(COBJS)
 
 ## Library and Executable
-LIBEDWDSO       = lib/libEra.$(DllSuf)
+LIBEDWDSO       = $(KDATA_ROOT)/lib/libEra.$(DllSuf)
 
 ifeq ($(PLATFORM),win32)
-EVENTLIB      = lib/libEra.lib
+EVENTLIB      = $(KDATA_ROOT)/lib/libEra.lib
 else
 EVENTLIB      = $(shell pwd)/$(LIBEDWDSO)
 endif
