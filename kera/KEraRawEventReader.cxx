@@ -19,7 +19,13 @@
 
 using namespace std;
 
+
 ClassImp(KEraRawEventReader);
+
+KEraRawEventReader::KEraRawEventReader() {
+    	fLocalEvent = 0;
+	InitializeMembers();
+}
 
 KEraRawEventReader::KEraRawEventReader(const Char_t* fileName, EdwEvent **anEvent)
 {
@@ -83,15 +89,24 @@ Bool_t  KEraRawEventReader::OpenFile(const Char_t* fileName, EdwEvent **anEvent)
 	return theRet;
 }
 
+
+void  KEraRawEventReader::Open(const Char_t* fileName, EdwEvent **anEvent) {
+
+  if(!OpenFile(fileName, anEvent)){
+		cout << "KEraRawEventReader - Could not open " << fileName << endl;
+	}
+
+}
+
+
 Bool_t KEraRawEventReader::Close(Option_t *opt)
 {
-	return this->KEraRawFileIO::Close(opt);
-	if(fLocalEvent!=0) {
+    	if(fLocalEvent!=0) {
 	    delete fLocalEvent;
 		//KEventFactory::DeleteEvent(fLocalEvent);
 		fLocalEvent = 0;
 	}
-
+	return this->KEraRawFileIO::Close(opt);
 }
 
 Bool_t KEraRawEventReader::SetBranchAddress(EdwEvent **anEvent)
@@ -166,7 +181,7 @@ Int_t KEraRawEventReader::GetEntryWithGSEventNumber(Int_t anEntry)
 	if(fSambaNumberIndex==0){
 		cout << "Building index..." << endl;
 		fTree->BuildIndex("fGSEventNumber");  --> How do we get the samba number if the file isn't split?
-		fSambaNumberIndex=1; 
+		fSambaNumberIndex=1;
 	}
 
 	//will load (if possible) Entry cooresponding to GSEventNumber'anEntry' and

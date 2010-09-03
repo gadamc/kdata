@@ -89,7 +89,7 @@ $(KERA_DIRS)/%.o:    $(KERA_DIRS)/%.cxx
 # rule for building executables
 bin/%: $(KERA_DIRS)/%.o $(KDATAED_LIB) $(ERA_LIB)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KERALIBS) $(ERALIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KERALIBS) $(ERALIBS) $(KDSLIBS)
                 
 # rules for building dictionary
 $(KERA_DO):         $(KERA_DC)
@@ -100,10 +100,10 @@ $(KERA_DC):         $(KERA_EH) $(KERA_LH)
 	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(ERAINCS)  $(KERA_EH) $(KERA_LH) 
 
 # rule for building library
-$(KERA_LIB):        $(KERA_EO) $(KERA_DO) $(KERA_LIBDEP) $(ERA_LIB)
+$(KERA_LIB):        $(KERA_EO) $(KERA_DO) $(KERA_LIBDEP) $(ERA_LIB) $(KDS_LIB)
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KERA_LIB)" $@  "$(KERA_EO) $(KERA_DO) $(ERALIBS)"\
+	   "$(SOFLAGS)" "$(KERA_LIB)" $@  "$(KERA_EO) $(KERA_DO) $(KDSLIBS) $(ERALIBS)"\
 	   "$(ROOTLIBS)  $(KERA_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kera:       $(KERA_LIB)

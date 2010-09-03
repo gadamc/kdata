@@ -19,8 +19,10 @@ class KEraRawEventReader : public KEraRawFileIO {
 
 public:
   //Constructors
+    KEraRawEventReader(void);
 	KEraRawEventReader(const Char_t* fileName, EdwEvent **anEvent = 0);
-  virtual ~KEraRawEventReader(void);
+	void Open(const Char_t* fileName, EdwEvent **anEvent = 0);
+    virtual ~KEraRawEventReader(void);
 
 	Bool_t Close(Option_t *opt = "");
 
@@ -29,7 +31,7 @@ public:
 	Int_t GetNextEntry(void);
 	Int_t GetPreviousEntry(void);
 	Int_t GetEntry(Int_t anEntry);
-	Int_t GetEntryWithGSEventNumber(Int_t anEntry);
+	//Int_t GetEntryWithGSEventNumber(Int_t anEntry);
 	Int_t GetEntries(void) const {return fEntries;}
 
 	TObject* Get(const Char_t* namecycle) const;
@@ -50,7 +52,7 @@ private:
 
 	//discourage / do not allow copy and assignment
 	KEraRawEventReader(const KEraRawEventReader &aReader);
-	KEraRawEventReader& operator=( const KEraRawEventReader &aReader );
+	KEraRawEventReader& operator=(const KEraRawEventReader &aReader);
 
   ClassDef(KEraRawEventReader,1);
 };
