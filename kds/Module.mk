@@ -33,6 +33,13 @@ MODDIR       := kds
 
 KDS_FLAGS  := $(CXXFLAGS)
 
+#add for debuging purposes
+#assignment operator
+#KDS_FLAGS  += -D_K_DEBUG_EVENT_ASSIGNOP
+
+
+###
+
 KDS_DIR    := $(MODDIR)
 KDS_DIRS   := $(MODDIR)
 KDS_DIRI   := $(MODDIR)
@@ -46,9 +53,12 @@ KDS_DH     := $(KDS_DC:.C=.h)
 KDS_H      := $(filter-out $(KDS_LH) $(KDS_DH),$(wildcard $(KDS_DIRI)/*.h))
 KDS_ECXX   := $(wildcard $(KDS_DIRS)/K*.cxx)
 KDS_CXX    := $(filter-out $(KDS_ECXX),$(wildcard $(KDS_DIRS)/*.cxx))
+
+
 KDS_O      := $(KDS_CXX:.cxx=.o)
 KDS_EO     := $(KDS_ECXX:.cxx=.o)
 KDS_EH     := $(KDS_ECXX:.cxx=.h)
+
 
 KDS_EXE    := $(patsubst $(KDS_DIRS)/%.cxx,bin/%,$(KDS_CXX))
 
@@ -82,7 +92,7 @@ include/%.h:    $(KDS_DIRI)/%.h
 
 # rule for compiling our source files
 $(KDS_DIRS)/%.o:    $(KDS_DIRS)/%.cxx 
-	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS) -o $@ -c $< 
+	$(CXX) $(OPT) $(KDS_FLAGS) $(ROOTINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KDS_DIRS)/%.o $(KDATAED_LIB) 

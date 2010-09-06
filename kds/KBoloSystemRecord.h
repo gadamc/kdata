@@ -32,20 +32,20 @@ public:
 	
 	//getters
 	//Double_t GetTimeSinceLastBoloSysEvent(void) const;
-	string GetRunName(void) const {return fRunName;}
-	Int_t GetRunYear(void) const {return fRunName[0]-'a' + 2000;}
-	Int_t GetRunMonth(void) const {return fRunName[1]-'a' + 1;}
-	Int_t GetRunDay(void) const {return atoi(fRunName.substr(2,2).c_str());}
+	//const char* GetRunName(void) const {return fRunName.c_str();}
+	//Int_t GetRunYear(void) const {return fRunName[0]-'a' + 2000;}
+	//Int_t GetRunMonth(void) const {return fRunName[1]-'a' + 1;}
+	//Int_t GetRunDay(void) const {return atoi(fRunName.substr(2,2).c_str());}
 	
 	//setters
 	//void SetTimeSinceLastBoloSysEvent(Double_t aNum);
-	void SetRunName(string aWord) {fRunName=aWord.substr(0,4);}  //only save the first four characters
+	//void SetRunName(string aWord) {fRunName=aWord.substr(0,4);}  //only save the first four characters
 	//of the run name since the remaining characters are mac/hour specific.
 
 	
 private:
 	
-	string fRunName;  //the Bolo System Run Name (kc21, or jg14, etc...)
+	//string fRunName;  //the Bolo System Run Name (kc21, or jg14, etc...) This doesn't really make sense
 	
 		
 	//private methods

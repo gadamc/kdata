@@ -50,7 +50,7 @@ public:
 
 	Double_t GetFiducialVolume(void) const {return fFiducialVolume;}
 	
-	KHLASambaRecord* GetSambaRecord() const {return (KHLASambaRecord*)fSambaRecord.GetObject();}
+	Int_t GetSambaRecordNum() const {return fSambaRecordNum;}
 	
 	Double32_t GetEnergyCollectrode(Int_t i) const;
 	Double32_t GetEnergyVeto(Int_t i) const;
@@ -90,7 +90,7 @@ public:
 	
 	void SetFiducialVolume(Double_t aWord) {fFiducialVolume = aWord;}
 	
-	void SetSambaRecord(KHLASambaRecord* aRec){fSambaRecord = aRec;}
+	void SetSambaRecordNum(Int_t aRec){fSambaRecordNum = aRec;}
 	
 	void SetEnergyCollectrode(Int_t i, Double32_t aVal);
 	void SetEnergyVeto(Int_t i, Double32_t aVal);
@@ -128,7 +128,7 @@ private:
 	
 	Double_t fFiducialVolume;  //the value of the fiducial volume, in grams, for this detector.
 	
-	TRef fSambaRecord;  //points to the samba record associated with this event.
+	Int_t fSambaRecordNum;  //This number is index of the TClonesArray holding the Samba Record for this bolometer record.
 	
 	//adding data from eion, eheat and cuts files from the ERA output
 	//many of these values might want to be stored in boloPulse Sub record

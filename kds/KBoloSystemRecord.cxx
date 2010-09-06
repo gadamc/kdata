@@ -49,7 +49,7 @@ KBoloSystemRecord& KBoloSystemRecord::operator=(const KBoloSystemRecord &aRec)
 void KBoloSystemRecord::CopyLocalMembers(const KBoloSystemRecord &aRec)
 {
 
-	fRunName = aRec.fRunName;
+	//fRunName = aRec.fRunName;
 
 }
 
@@ -72,7 +72,7 @@ void KBoloSystemRecord::InitializeMembers(void)
 {
 	//Initialize local members.
 	
-	fRunName = "";
+	//fRunName = "";
 	
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
@@ -102,14 +102,14 @@ Bool_t KBoloSystemRecord::IsSame(const KBoloSystemRecord &aRec, Bool_t bPrint) c
 		//the operator== method uses this functionality.
 	}
 	
-	if(fRunName != aRec.fRunName){
+	/*if(fRunName != aRec.fRunName){
 		bIsEqual = false;
 		if (bPrint) 
 			cout << "KBoloSystemRecord fDistanceEst Not Equal. lhs: " 
 			<< fRunName << " != rhs " << aRec.fRunName << endl;	
 		else
 			return false;  
-	}
+	}*/
 
 	
 	return bIsEqual;

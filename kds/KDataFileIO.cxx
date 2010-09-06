@@ -181,4 +181,12 @@ void KDataFileIO::ls(Option_t *anOpt) const
 	
 }
 
+Bool_t KDataFileIO::cd(const char *path)
+{
+	if(fFile != 0){
+		return fFile->cd(path);
+	}
+	else return false;
+}
+
 

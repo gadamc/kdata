@@ -26,7 +26,7 @@ public:
 	//SHOULD access these methods. 
 	//However, in order for ROOT's I/O and rootcint to work properly
 	//the constructor and destructor
-	//have to be public. l4m3. Otherwise, I would have made them protected or private
+	//have to be public. Otherwise, I would have made them protected or private
 	KEvent(void);
 	KEvent(const KEvent &anEvent);
 	virtual ~KEvent(void);
@@ -74,7 +74,7 @@ public:
 	void myPrintB() const;
 	 
 protected:
-	void AddTriggerType(Int_t aNum) {fTriggerType |= aNum;}
+	void AddTriggerType(Int_t aNum) {fTriggerType |= aNum;}  
 	
 private:
 	void SetTriggerType(Int_t aNum) {fTriggerType = aNum;}

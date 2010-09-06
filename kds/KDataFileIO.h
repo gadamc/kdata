@@ -43,6 +43,7 @@ public:
 	const char* GetFileName(void) const;
 	const char* GetEventClassName(void) const;
 	void ls(Option_t *opt = "") const;
+	virtual Bool_t cd(const char *path = 0);
 	
 private:
 	string fTreeName;

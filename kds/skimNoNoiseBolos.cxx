@@ -78,6 +78,7 @@ int main(int argc, char* argv[] )
 		mEout->Clear("C");
 		Int_t ObjectNumber = TProcessID::GetObjectCount();
 		
+		//mEout->Set(*mEv,fEdsFile);
 		*mEout = *mEv;
 		
 		mEout->IsSame(*mEv, true); //is there a problem with the Stamp? 
@@ -100,14 +101,14 @@ int main(int argc, char* argv[] )
 					KHLABolometerRecord *outBolo = mEout->AddBolo();
 					KHLASambaRecord *outSamba = mEout->AddSamba();
 					*outBolo = *inBolo;  //copy the bolo sub record
-					KHLASambaRecord *inSamba = inBolo->GetSambaRecord();
+					KHLASambaRecord *inSamba = mEv->GetSamba(inBolo->GetSambaRecordNum());
 					//cout << "Copying Samba Record" << endl;
 					*outSamba = *inSamba; //copy the samba sub record information 
 					//cout << "Setting Samba Record" << endl;
 					
 					//cout << "GetSambaRecord in: " << inBolo->GetSambaRecord() << endl;
 					//cout << "GetSambaRecord out: " << outBolo->GetSambaRecord() << endl;
-					outBolo->SetSambaRecord(outSamba);
+					outBolo->SetSambaRecordNum(mEout->GetNumSambas()-1);
 					//cout << "GetSambaRecord in: " << inBolo->GetSambaRecord() << endl;
 					//cout << "GetSambaRecord out: " << outBolo->GetSambaRecord() << endl;
 					

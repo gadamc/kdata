@@ -85,8 +85,8 @@ int main(int /*argc*/, const char* /*argv[]*/)
 		mEv->SetGSEventNumber(i);
 		//gObjectTable->AddObj((TObject *)mEv->GetMuonVetoSystemRecord());
 		//gObjectTable->AddObj((TObject *)mEv->GetHLABoloSysRecord());
-		mEv->GetBoloSystemRecord()->SetRunStartTime(1257638400);
-		mEv->GetBoloSystemRecord()->SetRunEndTime(1270512000);
+		//mEv->GetBoloSystemRecord()->SetRunStartTime(1257638400);
+		//mEv->GetBoloSystemRecord()->SetRunEndTime(1270512000);
 		mEv->GetMuonVetoSystemRecord()->SetIsSystemOn(true);
 		mEv->GetMuonVetoSystemRecord()->SetRunNumber(63);
 		mEv->GetMuonVetoSystemRecord()->SetRunStartTime(1257638400);  //Nov 8, 2009 at 00:00

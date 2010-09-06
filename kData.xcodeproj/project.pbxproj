@@ -119,7 +119,6 @@
 		6610DE3E121EDADB0047036E /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		6610DE3F121EDADB0047036E /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
 		6610DE9D121F2D100047036E /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		6610DE9E121F2D180047036E /* BugList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = BugList.rtf; sourceTree = "<group>"; };
 		6610DE9F121F2D210047036E /* WishList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = WishList.rtf; sourceTree = "<group>"; };
 		6610DEA0121F2D2A0047036E /* Modules.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Modules.mk; sourceTree = "<group>"; };
 		6610DEA2121F2D390047036E /* checkenv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = checkenv; sourceTree = "<group>"; };
@@ -134,21 +133,6 @@
 		6610DEAB121F2D3A0047036E /* setup_edw.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = setup_edw.C; sourceTree = "<group>"; };
 		6610DEAC121F2D3A0047036E /* setup_kdata.csh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.csh; path = setup_kdata.csh; sourceTree = "<group>"; };
 		6610DEAD121F2D3A0047036E /* setup_kdata.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = setup_kdata.sh; sourceTree = "<group>"; };
-		6610DEAF121F2D440047036E /* concatDst.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = concatDst.cc; sourceTree = "<group>"; };
-		6610DEB0121F2D440047036E /* ExampleAnalysis.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExampleAnalysis.cc; sourceTree = "<group>"; };
-		6610DEB1121F2D440047036E /* fillEraToKEds.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillEraToKEds.cc; sourceTree = "<group>"; };
-		6610DEB2121F2D440047036E /* fillExample.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillExample.cc; sourceTree = "<group>"; };
-		6610DEB3121F2D440047036E /* fillMuonVetoEvents.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillMuonVetoEvents.cc; sourceTree = "<group>"; };
-		6610DEB4121F2D440047036E /* HowToFillEDS.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HowToFillEDS.txt; sourceTree = "<group>"; };
-		6610DEB5121F2D440047036E /* mergeKEdsTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mergeKEdsTree.cc; sourceTree = "<group>"; };
-		6610DEB6121F2D440047036E /* processMuonVetoToKEDSOnKalinka.root.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = processMuonVetoToKEDSOnKalinka.root.C; sourceTree = "<group>"; };
-		6610DEB7121F2D440047036E /* rootScript_concatBoloEra.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatBoloEra.c; sourceTree = "<group>"; };
-		6610DEB8121F2D440047036E /* rootScript_concatMuonKEdwDS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatMuonKEdwDS.c; sourceTree = "<group>"; };
-		6610DEB9121F2D440047036E /* rootScript_fillEraToKEdsEvents.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_fillEraToKEdsEvents.c; sourceTree = "<group>"; };
-		6610DEBA121F2D440047036E /* rootScript_fillExample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_fillExample.c; sourceTree = "<group>"; };
-		6610DEBB121F2D440047036E /* rootScript_mergeKEdsTrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_mergeKEdsTrees.c; sourceTree = "<group>"; };
-		6610DEBC121F2D440047036E /* scriptStartMerge.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scriptStartMerge.sh; sourceTree = "<group>"; };
-		6610DEBD121F2D440047036E /* testMem.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testMem.C; sourceTree = "<group>"; };
 		6610DF2812208FB10047036E /* exampleProgram.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = exampleProgram.cxx; sourceTree = "<group>"; };
 		6610DF47122096630047036E /* install_kdata */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.csh; path = install_kdata; sourceTree = "<group>"; };
 		6610DF4E122149780047036E /* _old_module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = _old_module.mk; sourceTree = "<group>"; };
@@ -300,6 +284,29 @@
 		6610EA74122818DC0047036E /* KHalfComplexPower.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexPower.cxx; sourceTree = "<group>"; };
 		6610EA8E12281F360047036E /* KPsaTestPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPsaTestPulse.h; sourceTree = "<group>"; };
 		6610EA8F12281F360047036E /* KPsaTestPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPsaTestPulse.cxx; sourceTree = "<group>"; };
+		662EC1AA12343BD3007E432B /* concatDst.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = concatDst.cc; sourceTree = "<group>"; };
+		662EC1AB12343BD3007E432B /* ExampleAnalysis.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExampleAnalysis.cc; sourceTree = "<group>"; };
+		662EC1AC12343BD3007E432B /* fillEraToKEds.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillEraToKEds.cc; sourceTree = "<group>"; };
+		662EC1AD12343BD3007E432B /* fillExample.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillExample.cc; sourceTree = "<group>"; };
+		662EC1AE12343BD3007E432B /* fillMuonVetoEvents.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillMuonVetoEvents.cc; sourceTree = "<group>"; };
+		662EC1AF12343BD3007E432B /* HowToFillEDS.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HowToFillEDS.txt; sourceTree = "<group>"; };
+		662EC1B012343BD3007E432B /* mergeKEdsTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mergeKEdsTree.cc; sourceTree = "<group>"; };
+		662EC1B112343BD3007E432B /* processMuonVetoToKEDSOnKalinka.root.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = processMuonVetoToKEDSOnKalinka.root.C; sourceTree = "<group>"; };
+		662EC1B212343BD3007E432B /* rootScript_concatBoloEra.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatBoloEra.c; sourceTree = "<group>"; };
+		662EC1B312343BD3007E432B /* rootScript_concatMuonKEdwDS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatMuonKEdwDS.c; sourceTree = "<group>"; };
+		662EC1B412343BD3007E432B /* rootScript_fillEraToKEdsEvents.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_fillEraToKEdsEvents.c; sourceTree = "<group>"; };
+		662EC1B512343BD3007E432B /* rootScript_fillExample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_fillExample.c; sourceTree = "<group>"; };
+		662EC1B612343BD3007E432B /* rootScript_mergeKEdsTrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_mergeKEdsTrees.c; sourceTree = "<group>"; };
+		662EC1B712343BD3007E432B /* scriptStartMerge.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scriptStartMerge.sh; sourceTree = "<group>"; };
+		662EC1B812343BD3007E432B /* testMem.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testMem.C; sourceTree = "<group>"; };
+		66834214122D710300A73231 /* allPassOne_GSEventNumbers */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = allPassOne_GSEventNumbers; path = ../kData/bin/allPassOne_GSEventNumbers; sourceTree = SOURCE_ROOT; };
+		66834215122D710300A73231 /* breakupKDataFile */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = breakupKDataFile; path = ../kData/bin/breakupKDataFile; sourceTree = SOURCE_ROOT; };
+		66834216122D710300A73231 /* edwrootana */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = edwrootana; path = ../kData/bin/edwrootana; sourceTree = SOURCE_ROOT; };
+		66834217122D710300A73231 /* fillEvents */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = fillEvents; path = ../kData/bin/fillEvents; sourceTree = SOURCE_ROOT; };
+		66834218122D710300A73231 /* skimNoNoiseBolos */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = skimNoNoiseBolos; path = ../kData/bin/skimNoNoiseBolos; sourceTree = SOURCE_ROOT; };
+		6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEventTest.cxx; path = ../kData/kds/fillEventTest.cxx; sourceTree = SOURCE_ROOT; };
+		6687D1C3122F863B005AD0F9 /* KMergeKds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMergeKds.h; sourceTree = "<group>"; };
+		6687D1C4122F863B005AD0F9 /* KMergeKds.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeKds.cxx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -307,11 +314,10 @@
 			isa = PBXGroup;
 			children = (
 				6610DE9D121F2D100047036E /* Makefile */,
-				6610DE9E121F2D180047036E /* BugList.rtf */,
 				6610DE9F121F2D210047036E /* WishList.rtf */,
 				6610DEA0121F2D2A0047036E /* Modules.mk */,
 				6610DF47122096630047036E /* install_kdata */,
-				6610DEAE121F2D440047036E /* examples */,
+				662EC1A912343BD3007E432B /* kdsScripts */,
 				6610DEA1121F2D390047036E /* config */,
 				6610DDEA121ECC290047036E /* scripts */,
 				6610DE3A121EDA680047036E /* ktemplate */,
@@ -319,6 +325,7 @@
 				6610E2DC1223D1EB0047036E /* kpsa */,
 				6610DF4D122149780047036E /* era */,
 				6610E7CA122703DA0047036E /* kera */,
+				66F8B9D8122D5D720063FC9B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -347,6 +354,7 @@
 		6610DE2A121ED8080047036E /* executables */ = {
 			isa = PBXGroup;
 			children = (
+				6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */,
 				6610DDEE121ECC440047036E /* allPassOne_GSEventNumbers.cxx */,
 				6610DDEF121ECC440047036E /* breakupKDataFile.cxx */,
 				6610DDF0121ECC440047036E /* fillEvents.cxx */,
@@ -388,6 +396,8 @@
 				6610DDFC121ECC440047036E /* KDataReader.h */,
 				6610DDFD121ECC440047036E /* KDataWriter.cxx */,
 				6610DDFE121ECC440047036E /* KDataWriter.h */,
+				6687D1C4122F863B005AD0F9 /* KMergeKds.cxx */,
+				6687D1C3122F863B005AD0F9 /* KMergeKds.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -490,28 +500,6 @@
 				6610DEAD121F2D3A0047036E /* setup_kdata.sh */,
 			);
 			path = config;
-			sourceTree = "<group>";
-		};
-		6610DEAE121F2D440047036E /* examples */ = {
-			isa = PBXGroup;
-			children = (
-				6610DEAF121F2D440047036E /* concatDst.cc */,
-				6610DEB0121F2D440047036E /* ExampleAnalysis.cc */,
-				6610DEB1121F2D440047036E /* fillEraToKEds.cc */,
-				6610DEB2121F2D440047036E /* fillExample.cc */,
-				6610DEB3121F2D440047036E /* fillMuonVetoEvents.cc */,
-				6610DEB4121F2D440047036E /* HowToFillEDS.txt */,
-				6610DEB5121F2D440047036E /* mergeKEdsTree.cc */,
-				6610DEB6121F2D440047036E /* processMuonVetoToKEDSOnKalinka.root.C */,
-				6610DEB7121F2D440047036E /* rootScript_concatBoloEra.c */,
-				6610DEB8121F2D440047036E /* rootScript_concatMuonKEdwDS.c */,
-				6610DEB9121F2D440047036E /* rootScript_fillEraToKEdsEvents.c */,
-				6610DEBA121F2D440047036E /* rootScript_fillExample.c */,
-				6610DEBB121F2D440047036E /* rootScript_mergeKEdsTrees.c */,
-				6610DEBC121F2D440047036E /* scriptStartMerge.sh */,
-				6610DEBD121F2D440047036E /* testMem.C */,
-			);
-			path = examples;
 			sourceTree = "<group>";
 		};
 		6610DF4D122149780047036E /* era */ = {
@@ -686,6 +674,29 @@
 			path = kera;
 			sourceTree = "<group>";
 		};
+		662EC1A912343BD3007E432B /* kdsScripts */ = {
+			isa = PBXGroup;
+			children = (
+				662EC1AA12343BD3007E432B /* concatDst.cc */,
+				662EC1AB12343BD3007E432B /* ExampleAnalysis.cc */,
+				662EC1AC12343BD3007E432B /* fillEraToKEds.cc */,
+				662EC1AD12343BD3007E432B /* fillExample.cc */,
+				662EC1AE12343BD3007E432B /* fillMuonVetoEvents.cc */,
+				662EC1AF12343BD3007E432B /* HowToFillEDS.txt */,
+				662EC1B012343BD3007E432B /* mergeKEdsTree.cc */,
+				662EC1B112343BD3007E432B /* processMuonVetoToKEDSOnKalinka.root.C */,
+				662EC1B212343BD3007E432B /* rootScript_concatBoloEra.c */,
+				662EC1B312343BD3007E432B /* rootScript_concatMuonKEdwDS.c */,
+				662EC1B412343BD3007E432B /* rootScript_fillEraToKEdsEvents.c */,
+				662EC1B512343BD3007E432B /* rootScript_fillExample.c */,
+				662EC1B612343BD3007E432B /* rootScript_mergeKEdsTrees.c */,
+				662EC1B712343BD3007E432B /* scriptStartMerge.sh */,
+				662EC1B812343BD3007E432B /* testMem.C */,
+			);
+			name = kdsScripts;
+			path = ../kData/kdsScripts;
+			sourceTree = SOURCE_ROOT;
+		};
 		6674AD0A12215BD100630388 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,6 +727,18 @@
 			name = Event;
 			sourceTree = "<group>";
 		};
+		66F8B9D8122D5D720063FC9B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				66834214122D710300A73231 /* allPassOne_GSEventNumbers */,
+				66834215122D710300A73231 /* breakupKDataFile */,
+				66834216122D710300A73231 /* edwrootana */,
+				66834217122D710300A73231 /* fillEvents */,
+				66834218122D710300A73231 /* skimNoNoiseBolos */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXProject section */
@@ -728,6 +751,7 @@
 				en,
 			);
 			mainGroup = 6610DD46121ECAAA0047036E;
+			productRefGroup = 66F8B9D8122D5D720063FC9B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -798,6 +822,7 @@
 		6610DD49121ECAAA0047036E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 			};
 			name = Debug;
@@ -805,6 +830,7 @@
 		6610DD4A121ECAAA0047036E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COPY_PHASE_STRIP = YES;
 			};
 			name = Release;

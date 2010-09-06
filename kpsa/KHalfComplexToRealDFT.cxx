@@ -236,7 +236,7 @@ void KHalfComplexToRealDFT::FillFFTArrays(void)
 	}
 	catch (out_of_range &e) {
 		//I think this should be impossible... 
-		cerr << "vector<float> KPsaProcessor::GetOutputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
+		cerr << "KHalfComplexToRealDFT::FillFFTArrays. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
 	}
 	
 }

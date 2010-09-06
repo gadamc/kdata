@@ -146,7 +146,7 @@ void mySetZero(Long64_t *myArray, Int_t aNum){
 
 Int_t fillSambaDetectorNumber(string detectorName, Int_t boloNumber){
 	if(boloNumber!=13){
-		cout<< "Function fillSambaDetectorNumber assumes 12 Bolos (Configuration Run12)";
+		cout<< "Function fillSambaDetectorNumber assumes 13 Bolos (Configuration Run12)";
 		return -1;
 	}
 	string allBolos[13]=
@@ -232,30 +232,44 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 	//Int_t polarflag;
 	//Bool_t vetocut;
 	inEionTree->SetBranchAddress("E0col1", &e0col1);
-	inEionTree->SetBranchAddress("E0col2", &e0col2);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("E0col2", &e0col2);
+	
 	if(!kDetectorName.compare(0, 3, "FID") == 0) {
+		
 		inEionTree->SetBranchAddress("E0gar1", &e0gar1);
-		inEionTree->SetBranchAddress("E0gar2", &e0gar2);
+		if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+			inEionTree->SetBranchAddress("E0gar2", &e0gar2);
 		inEionTree->SetBranchAddress("Egar1", &egar1);
-		inEionTree->SetBranchAddress("Egar2", &egar2);
+		if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+			inEionTree->SetBranchAddress("Egar2", &egar2);
 		inEionTree->SetBranchAddress("LdbGar1", &ldbgar1);
-		inEionTree->SetBranchAddress("LdbGar2", &ldbgar2);
+		if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+			inEionTree->SetBranchAddress("LdbGar2", &ldbgar2);
 	}
-	inEionTree->SetBranchAddress("E0vet1", &e0vet1);
-	inEionTree->SetBranchAddress("E0vet2", &e0vet2);
+	
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("E0vet1", &e0vet1);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("E0vet2", &e0vet2);
 	inEionTree->SetBranchAddress("Ecol1", &ecol1);
-	inEionTree->SetBranchAddress("Ecol2", &ecol2);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("Ecol2", &ecol2);
 	inEionTree->SetBranchAddress("Efid", &efid);
 	
 	inEionTree->SetBranchAddress("Etot", &etot);
-	inEionTree->SetBranchAddress("Evet1", &evet1);
-	inEionTree->SetBranchAddress("Evet2", &evet2);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("Evet1", &evet1);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("Evet2", &evet2);
 	inEionTree->SetBranchAddress("LdbCol1", &ldbcol1);
-	inEionTree->SetBranchAddress("LdbCol2", &ldbcol2);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("LdbCol2", &ldbcol2);
 	inEionTree->SetBranchAddress("LdbFid", &ldbfid);
-
-	inEionTree->SetBranchAddress("LdbVet1", &ldbvet1);
-	inEionTree->SetBranchAddress("LdbVet2", &ldbvet2);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("LdbVet1", &ldbvet1);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+		inEionTree->SetBranchAddress("LdbVet2", &ldbvet2);
 	
 	cout << "EIon file branches read" << endl;
 	
@@ -275,23 +289,29 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 	Bool_t CutChi2Col1, CutChi2Col2, CutChi2Vet1, CutChi2Vet2, CutChi2, CutChi2Gar1, CutChi2Gar2;
 	inCutsTree->SetBranchAddress("CutRun", &CutRun);
 	inCutsTree->SetBranchAddress("CutHeatBase", &CutHeatBase);
-	inCutsTree->SetBranchAddress("CutCol1Base", &CutCol1Base);	
-	inCutsTree->SetBranchAddress("CutCol2Base", &CutCol2Base);
-	inCutsTree->SetBranchAddress("CutVet1Base", &CutVet1Base);
-	inCutsTree->SetBranchAddress("CutVet2Base", &CutVet2Base);
+	inCutsTree->SetBranchAddress("CutCol1Base", &CutCol1Base);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0){
+		inCutsTree->SetBranchAddress("CutCol2Base", &CutCol2Base);
+		inCutsTree->SetBranchAddress("CutVet1Base", &CutVet1Base);
+		inCutsTree->SetBranchAddress("CutVet2Base", &CutVet2Base);
+	}
 
 	inCutsTree->SetBranchAddress("CutBases", &CutBases);
 	inCutsTree->SetBranchAddress("CutChi2Heat", &CutChi2Heat);
 	inCutsTree->SetBranchAddress("CutChi2Col1", &CutChi2Col1);
-	inCutsTree->SetBranchAddress("CutChi2Col2", &CutChi2Col2);
-	inCutsTree->SetBranchAddress("CutChi2Vet1", &CutChi2Vet1);
-	inCutsTree->SetBranchAddress("CutChi2Vet2", &CutChi2Vet2);
+	if(!kDetectorName.compare(0, 4, "GGA4") == 0){
+		inCutsTree->SetBranchAddress("CutChi2Col2", &CutChi2Col2);
+		inCutsTree->SetBranchAddress("CutChi2Vet1", &CutChi2Vet1);
+		inCutsTree->SetBranchAddress("CutChi2Vet2", &CutChi2Vet2);
+	}
 	inCutsTree->SetBranchAddress("CutChi2", &CutChi2);
 	if(!kDetectorName.compare(0, 3, "FID") == 0) {
 		inCutsTree->SetBranchAddress("CutChi2Gar1", &CutChi2Gar1);
-		inCutsTree->SetBranchAddress("CutChi2Gar2", &CutChi2Gar2);
+		if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+			inCutsTree->SetBranchAddress("CutChi2Gar2", &CutChi2Gar2);
 		inCutsTree->SetBranchAddress("CutGar1Base", &CutGar1Base);
-		inCutsTree->SetBranchAddress("CutGar2Base", &CutGar2Base);
+		if(!kDetectorName.compare(0, 4, "GGA4") == 0)
+			inCutsTree->SetBranchAddress("CutGar2Base", &CutGar2Base);
 	}
 	
 
@@ -367,9 +387,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			mEv->SetRunStartTime(kKRun12StartTime);//WHERE TO PUT THIS RUN CONFIGURATION INFORMATION IT HAS TO BE SOMEWHERE WITH EASY ACCESS FOR THE FUTURE probabliy best to put in its own file and include this file StartTime and EndTime can be taken from the first and last Event once everything is filled in
 			mEv->SetRunEndTime(kKRun12EndTime);
 			
-			mEv->SetEventTriggerTime((Double_t)dateSec);  //hmm... this doesn't work here! should be in the
-			//samba record! There are more than one of these per bolo event.
-			
+			mEv->SetEventTriggerTime((Double_t)dateSec);  //hmm... this doesn't work here! but we keep it for a rough estimate of the event time. This could be filled with the PcTime of any of the Samba machines or the Muon Veto Mac. 			
 			//getting the stamp:
 			if(runName==ericsSpecialRun && eventNum==1){
 				if(firstElementFilejl14){
@@ -416,12 +434,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			}
 			
 			mEv->SetStamp(stamp);
-			//mEv->SetTriggerType(Int_t);
-			//mEv->SetDataType(Int_t);
-			//mEv->SetDetectorStatusWord(Int_t);
-			//mEv->SetBlindnessWord(Int_t);
-			//mEv->SetGSEventNumber(UInt_t);
-			//mEv->SetDataCleaningWord(Int_t);
+		
 			KHLABolometerRecord* bolo = mEv->AddBolo();
 			
 			bolo->SetQvalue((double)q);
@@ -488,34 +501,19 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			}
 			
 			
-			//bolo->SetTriggerBit1(Int_t);
-			//bolo->SetTriggerBit2(Int_t);
-			//bolo->SetFiducialVolume(Double_t);	
-			
 			KHLASambaRecord* sam=mEv->AddSamba();
 			sam-> SetSambaEventNumber(eventNum);
 			sam-> SetRunName(runName, 10);
 			sam-> SetNtpDateSec(dateSec);
-			//sam-> SetNtpDateMicroSec(dateSec%1000);
 			sam-> SetSambaDAQNumber(sRunName.compare(4,1,"a") + 1); 
+
 			
-			//sam-> SetPosition(Int_t aWord);
-			//sam-> SetDelai(Double_t aWord);
-			//sam-> SetSambaMajorVersionNum(Int_t aWord);
-			//sam-> SetSambaMinorVersionNum(Int_t aWord);
-			
-			bolo->SetSambaRecord(sam);
-			
-			//KHLAMuonModuleRecord* muon=mEv->AddMuonModule();
-			//muon-> SetModuleNumber(3);
+			bolo->SetSambaRecordNum(mEv->GetNumSambas()-1);
 			
 			// For boloSysRecors:
-			mEv->GetBoloSystemRecord()->SetRunName(sRunName);
-			//mEv->GetHLABoloSysRecord()->SetRunStartTime(Double_t)
-			//mEv->GetHLABoloSysRecord()->SetRunEndTime(Double_t) //currently doesn't make sense
-			//for the bolo system because not all machines are started at the same time. 
-			//maybe this will somehow change in the next version of Samba.
-			//cout << "Before fill "<<bolo->GetDetectorName()<<endl;
+			mEv->GetBoloSystemRecord()->SetIsSystemOn(true);
+			
+		
 			if(bFillGoodEvent) fOutFile.Fill();
 			mPreviousStamp = stamp;
 		}

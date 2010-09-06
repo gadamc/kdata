@@ -162,7 +162,7 @@ int concatKDS(string *inputFiles, Int_t numFiles, string outputFile){
 		mFilesToMerge[i] = new KDataReader(inputFiles[i].c_str());
 		
 		if(mFilesToMerge[i]->GetTTree() == 0){
-			cout << " woops! File doesn't seem to be an EDS File. Quitting." << endl;
+			cout << " woops! File doesn't seem to be an KData File. Quitting." << endl;
 			return  -1;
 		}
 		mList->Add(mFilesToMerge[i]->GetTTree());

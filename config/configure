@@ -63,14 +63,15 @@ my @env_list = ( 'KDATA_ROOT',
                );
 
 if ($opt_all) {
-    push(@env_list, #'CERNDIR',
+    push(@env_list, 
                     'FFTW_DIR',
-                    #'HISTO_DIR'
+                    #'HISTO_DIR',
+                    #'CERNDIR'
 				);
 }
 
-# set FFTW_DIR to '/usr/lib' by default
-$ENV{FFTW_DIR} or $ENV{FFTW_DIR} = '/usr/lib';
+# set FFTW_DIR to '/usr/local/lib' by default
+$ENV{FFTW_DIR} or $ENV{FFTW_DIR} = '/usr/local/lib';
        
 # initialize our environment from current settings
 $KDATA_env{$_} = $ENV{$_} foreach @env_list;
@@ -131,7 +132,7 @@ my $prog = "$KDATA_env{ROOTSYS}/bin/root-config";
 #}
 
 # get other environment variables if required
-if ($opt_all and $KDATA_env{KW_ROOT}) {
+if ($opt_all) {
     #GetEnv('CERNDIR','liblepto.a');
     GetEnv('FFTW_DIR','libfftw3.a');
     #GetEnv('HISTO_DIR','libFHistoHB.a','This only needs to be set if KWMAN was extracted with HISTOSCOPE_PRESENT.');

@@ -82,7 +82,7 @@ include/%.h:    $(KTMP_DIRI)/%.h
 
 # rule for compiling our source files
 $(KTMP_DIRS)/%.o:    $(KTMP_DIRS)/%.cxx
-	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS)  -o $@ -c $< 
+	$(CXX) $(OPT) $(KTMP_FLAGS) $(ROOTINCS)  -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KTMP_DIRS)/%.o $(KDATAED_LIB) 

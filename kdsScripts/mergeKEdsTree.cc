@@ -18,6 +18,7 @@
 #include "TCanvas.h"
 #include "TH1F.h"
 #include "TProcessID.h"
+#include "TTree.h"
 
 #include "Rtypes.h"
 
@@ -37,101 +38,91 @@ const Char_t kEDSBranchName[] = "event";
 
 using namespace std;
 
+void printInfo(KHLAEvent& ev);
 
-
-KHLAEvent* mergeBoloSysRecord(KHLAEvent* ev1, KHLAEvent* ev2){
-	string n1, n2;
-	string h1, h2;
-	n1=ev1->GetBoloSystemRecord()->GetRunName();
-	n2=ev2->GetBoloSystemRecord()->GetRunName();
-	h1=n1.substr(0,4);
-	h2=n2.substr(0,4);
-	if(n1=="" && n2!=""){
-		ev1->GetBoloSystemRecord()->SetRunName(n2);
-	}
-	else{
-		 if((n2=="" && n1!="" )|| h2==h1){// do notihng
-		 }
-		 else{
-			 cout << "No Run name or different run names found please check manually: RunNames "
-				<< n1 << " : "<< n2 << endl;
-		 }
-	}
-	return ev1;		
-	//mEv->GetBoloSystemRecord()->SetRunStartTime(Double_t)
-	//mEv->GetBoloSystemRecord()->SetRunEndTime(Double_t) //does it make sense for bolos?
+/*void mergeBoloSysRecord(KHLAEvent& eout, KHLAEvent& ev1, KHLAEvent& ev2)
+{
+		
 }
+
 
 // no handling of Events where both have muonSysRecord information, implemented so far, only checking the new // event and copying if it has information
-KHLAEvent* mergeMuonVetoSysRecord(KHLAEvent* ev1, KHLAEvent* ev2){
-	if(ev2->GetMuonVetoSystemRecord()->GetRunNumber()!=0){
-		*ev1->GetMuonVetoSystemRecord() = *ev2->GetMuonVetoSystemRecord();
-	}
-	return ev1;
+void mergeMuonVetoSysRecord(KHLAEvent& eout, KHLAEvent& ev1, KHLAEvent& ev2)
+{
+	//default assignment operator should work. system records have no objects on the heap;
+	
+	
+	
+	
+	//*eout.GetMuonVetoSystemRecord() = *ev1.GetMuonVetoSystemRecord();
+
 }
 
 
-KHLAEvent* mergeSubRecords(KHLAEvent* ev1, KHLAEvent* ev2){ 
-	Int_t samba2, bolo2, muon2, pulse2;
-	samba2 = ev2->GetNumSambas();
-	bolo2 = ev2->GetNumBolos();
-	muon2 = ev2->GetNumMuonModules();
-	pulse2 = ev2->GetNumBoloPulses();
+void mergeSubRecords(KHLAEvent& eout, KHLAEvent& ev1, KHLAEvent& ev2)
+{ 
+	//eout.ClearArrays("C");  //removes all subrecords.
+	//eout.AddSubRecords(ev1);
 	
-	Int_t ObjectNumber = TProcessID::GetObjectCount();
-	
-	TClonesArray *boloArray2 = ev2->GetBoloSubRecords();
-	for(Int_t i =0; i<bolo2;i++){
-		KHLABolometerRecord* singleBoloSub=ev1->AddBolo();
-		KHLABolometerRecord* singleBoloSub2=(KHLABolometerRecord*)boloArray2->At(i);
-		*singleBoloSub = *singleBoloSub2; 
-		KHLASambaRecord* sambaSub2 = singleBoloSub2->GetSambaRecord();
-		KHLASambaRecord* sambaSub = 0;
-		
-		if(sambaSub2 != 0){
-			sambaSub = ev1->AddSamba();
-			*sambaSub = *sambaSub2;
-			if(sambaSub) singleBoloSub->SetSambaRecord(sambaSub);
-		}
-	}
-	//the same for pulse muon etc.
-	TClonesArray *muonArray2 = ev2->GetMuonModuleRecords();
-	for(Int_t i =0; i<muon2;i++){
-		KHLAMuonModuleRecord* muonModuleSub=ev1->AddMuonModule();
-		KHLAMuonModuleRecord* muonModuleSub2=(KHLAMuonModuleRecord*)muonArray2->At(i);
-		*muonModuleSub = *muonModuleSub2;
-	}
-	
-	//Restore Object count                                                                                                     
-	//To save space in the table keeping track of all referenced objects 
-	//and computation time,
-	//we assume that our events DO NOT address each other. We reset the                                                        
-	//object count to what it was at the beginning of the event.                                                               
-	TProcessID::SetObjectCount(ObjectNumber);
-	
-	return ev1;	
 }
+*/
 
-//at the moment it is strictly necessary that a muon event is handled as event 2
-KHLAEvent* mergeEdsEvent(KHLAEvent* ev1, KHLAEvent* ev2){
-	ev1 = mergeBoloSysRecord(ev1, ev2);//okay
-	ev1 = mergeMuonVetoSysRecord( ev1,  ev2);//always takes ev2 if this one has information other than default
-	ev1 = mergeSubRecords( ev1, ev2);// to check
+
+void mergeEdsEvent(KHLAEvent &eout, KHLAEvent &ev1, KHLAEvent &ev2, TTree *t1, Int_t entry1, 
+									 TTree *t2, Int_t entry2){
+	
+	//at the moment it is strictly necessary that a muon event is handled as event 2
+	
+	t1->GetEntry(entry1);
+	eout  = ev1; //if their stamps are the same, then everything else should be, right? right?
+	
+	t2->GetEntry(entry2);
+	eout.AddTriggerType(ev2.GetTriggerType());
+	
+	//mergeBoloSysRecord(eout, ev1, ev2);//okay
+	KHLABoloSysRecord *b2 = ev2.GetBoloSystemRecord();
+	
+	if(!eout.GetBoloSystemRecord()->IsSystemOn())
+		eout.GetBoloSystemRecord()->SetIsSystemOn( b2->IsSystemOn() );
+	
+	//right now there is really nothing in the BoloSystemRecord. But this will drastically
+	//change when the IPE DAQ is used. Make sure the properly merge system records. 
+	
+	//mergeMuonVetoSysRecord(eout, ev1,  ev2);//always takes ev2 if this one has information other than default
+	if(ev2.GetMuonVetoSystemRecord()->GetRunNumber()!=0){
+		*eout.GetMuonVetoSystemRecord()= *ev2.GetMuonVetoSystemRecord();
+	}
+	
+	//merge the sub records by adding ev2.
+	eout.AddSubRecords(ev2);
+	
+//	mergeSubRecords(eout, ev1, ev2);// to check
 	//mergeEventInformation?
-	return ev1; 
+	
+	if(eout.GetStamp() < 0 || ev1.GetStamp() < 0 || ev2.GetStamp() < 0){
+		cout << "Merged Events!" << endl;
+		printInfo(ev1);
+		printInfo(ev2);
+		printInfo(eout);
+	}
+
+	return;
 }
 
 
 
-void printInfo(KHLAEvent* ev){
-	ev->myPrint();
-	ev->myPrintB();
-	if((ev->GetNumSambas())!=0){
-		TClonesArray* sambaArray=ev->GetSambaRecords();
-		KHLASambaRecord* sam=(KHLASambaRecord*)sambaArray->At(0);
-		cout <<  "FileName: "<< sam->GetRunName()	<< " Samba Event Number: "<< sam->GetSambaEventNumber() <<endl;
-	}
-	else cout << "No Samba information available." << endl;
+void printInfo(KHLAEvent& ev){
+	ev.myPrint();
+	ev.myPrintB();
+	
+	for(Int_t i = 0; i < ev.GetNumSambas(); i++){
+		KHLASambaRecord* sam= ev.GetSamba(i);
+		cout <<  "FileName: "<< sam->GetRunName()	<< " Samba Event Number: "<< sam->GetSambaEventNumber() << endl;
+	}	
+	
+	if(ev.GetNumSambas() == 0) 
+		cout << "No Samba information available." << endl;
+	
 }
 
 
@@ -177,7 +168,8 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 	KHLAEvent *mEv = dynamic_cast<KHLAEvent *>(f.GetEvent());
 	if(mEv == 0) return -1;
 	f.GetTTree()->BranchRef(); //creates an extra Branch table filled with Branches that have TRefs or TRefArrays
-
+	//this should already have been done within KDataWriter.
+	
 	Long64_t oldStamp1=0, stamp1=0;
 	Long64_t oldStamp2=0, stamp2=0;
 	Int_t entry1=0, entry2=0, entries1, entries2;
@@ -195,12 +187,13 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				cout << "Entry does not exist entry1: " << entry1 <<endl;
 				for(; entry2 < entries2;entry2++){
 					inFile2.GetEntry(entry2);
-					*mEv=*oldEv2;
+					//mEv->Set(*oldEv2, inFile2);
+					*mEv = *oldEv2;
 					f.Fill();
 					mEv->Clear();
 					globalEntry++;
 				}
-				goto end; // I want to have the summary infomartion!
+				goto theEnd; // I want to have the summary infomartion!
 
 			}
 /*			while(checkSpecialCase(specialFile, oldEv1)){// just looping over the events and not filling them into the Eds structure
@@ -221,12 +214,13 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				cout << "Entry does not exist entry2: "<< entry2 << endl;
 				for(; entry1 < entries1; entry1++){
 					inFile1.GetEntry(entry1);
-					*mEv=*oldEv1;
+					//mEv->Set(*oldEv1, inFile1);
+					*mEv = *oldEv1;
 					f.Fill();
 					mEv->Clear();
 					globalEntry++;
 				}
-				goto end;
+				goto theEnd;
 
 			}
 /*
@@ -259,8 +253,8 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 						cout << "Scanned 10000 events in File2 and did not find the time restart of File 1; i:"<< i << endl;
 						cout << "entry1 : entry2 : oldStamp1 : stamp1 : oldStamp2 : stamp2 \n"<< entry1 << " : "<< entry2 
 							<< " : "<< oldStamp1 << " : "<< stamp1 <<" : "<< oldStamp2 << " : "<< stamp2 << endl;
-						printInfo(oldEv1);
-						printInfo(oldEv2);
+						printInfo(*oldEv1);
+						printInfo(*oldEv2);
 						//char d; cin >> d;		
 					}
 				}
@@ -268,7 +262,8 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				oldStamp2=0;
 				for(Int_t k=0; k < i; k++){
 					inFile2.GetEntry(entry2+k);
-					*mEv=*oldEv2;
+					//mEv->Set(*oldEv2, inFile2);
+					*mEv = *oldEv2;
 					f.Fill();
 					mEv->Clear();
 					globalEntry++;
@@ -288,8 +283,8 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 						cout << "Scanned 10000 events in File1 and did not find the time restart of File 2; i:"<< i << endl;
 						cout << "entry1 : entry2 : oldStamp1 : stamp1 : oldStamp2 : stamp2 \n"<< entry1 << " : "<< entry2 
 								<< " : "<< oldStamp1 << " : "<< stamp1 <<" : "<< oldStamp2 << " : "<< stamp2 << endl;
-						printInfo(oldEv1);
-						printInfo(oldEv2);
+						printInfo(*oldEv1);
+						printInfo(*oldEv2);
 						//char d; cin >> d;		
 					}
 				}
@@ -297,7 +292,8 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				oldStamp1=0;
 				for(Int_t k=0; k < i; k++){
 					inFile1.GetEntry(entry1+k);
-					*mEv=*oldEv1;
+					//mEv->Set(*oldEv1,inFile1);
+					*mEv = *oldEv1;
 					f.Fill();
 					mEv->Clear();
 					globalEntry++;
@@ -313,7 +309,9 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				//if(entry1==236278){ //some special file issue
 				//	cout << "Mit Entry1 = 236278 sind wir in der merge loop gelandet!!! \n";
 				//}
-				*mEv=*mergeEdsEvent(oldEv1, oldEv2); //seems to work fine (except after time reset loop)
+				
+				mergeEdsEvent(*mEv, *oldEv1, *oldEv2, inFile1.GetTTree(), inFile1.GetCurrentEntryNumber(), 
+											inFile2.GetTTree(), inFile2.GetCurrentEntryNumber());  //seems to work fine (except after time reset loop)
 				f.Fill();
 				mEv->Clear();
 				globalEntry++;
@@ -322,7 +320,7 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				oldStamp1=stamp1;
 				oldStamp2=stamp2;
 				mergeLoop++;
-				if(mergeLoop%100000==0){
+				if(mergeLoop%10000==0){
 					cout << "Merge loop hit: "<< mergeLoop <<endl;
 				}
 			}
@@ -330,7 +328,10 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				//if(entry1>=14654)cout << "stamps were not equal" <<endl;
 				if(stamp1 < stamp2){
 					//if(entry1>=14654)cout << "Entry1 to fill, entry2: "<< entry2 << endl;
-					*mEv=*oldEv1;
+					//inFile1.GetTFile()->cd();
+					inFile1.GetEntry(inFile1.GetCurrentEntryNumber());
+					//mEv->Set(*oldEv1, inFile1);
+					*mEv = *oldEv1;
 					//mEv->IsSame(*oldEv1,true);
 					f.Fill();
 					mEv->Clear();
@@ -346,7 +347,10 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				}
 				else{ 
 					if(stamp1 > stamp2){
-						*mEv=*oldEv2;
+						//inFile2.GetTFile()->cd();
+						inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+						//mEv->Set(*oldEv2, inFile2);
+						*mEv = *oldEv2;
 						//mEv->IsSame(*oldEv2,true);
 						f.Fill();
 						mEv->Clear();
@@ -369,7 +373,7 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 		}
 		
 	}
-	end:
+	theEnd:
 	cout << "In total "<<globalEntry<<" events filled." << endl;
 	f.Write();
 	cout << "Write Tree" << endl;
@@ -445,8 +449,10 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 	
 	//fillMuonEventsUntilBolosStart not a nice way to do this, but fast and has to be changed of course whenever producing other data then uVeto Run54 with Bolo Run12
 	while(entry2< kEntryOfBoloStart){
+		//inFile2.GetTFile()->cd();
 		inFile2.GetEntry(entry2);
-		*mEv=*oldEv2;
+		//mEv->Set(*oldEv2, inFile2);
+		*mEv = *oldEv2;
 		f.Fill();
 		mEv->Clear();
 		globalEntry++;
@@ -464,13 +470,15 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 			if(inFile1.GetEntry(entry1)<=0) { //we ran into the end of file 1, thus just fill in the rest of file 2
 				cout << "Entry does not exist entry1: " << entry1 <<endl;
 				for(; entry2 < entries2;entry2++){
+					//inFile2.GetTFile()->cd();
 					inFile2.GetEntry(entry2);
-					*mEv=*oldEv2;
+					//mEv->Set(*oldEv2, inFile2);
+					*mEv = *oldEv2;
 					f.Fill();
 					mEv->Clear();
 					globalEntry++;
 				}
-				goto end;
+				goto theEnd;
 			}
 		}
 		if(nextEntry2){
@@ -479,13 +487,15 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 			if(inFile2.GetEntry(entry2)<=0) { //we ran into the end of file 2, thus just fill in the rest of file 1
 				cout << "Entry does not exist entry2: "<< entry2 << endl;
 				for(; entry1 < entries1; entry1++){
+					//inFile1.GetTFile()->cd();
 					inFile1.GetEntry(entry1);
-					*mEv=*oldEv1;
+					//mEv->Set(*oldEv1, inFile1);
+					*mEv = *oldEv1;
 					f.Fill();
 					mEv->Clear();
 					globalEntry++;
 				}
-				goto end;
+				goto theEnd;
 			}
 		}
 		stamp1=oldEv1->GetStamp();
@@ -515,7 +525,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 			//next: bad or unnecessary muon veto periods with restarts and without bolo data -> just filling them in where they come (Run12 speciality)
 			if( (oldEv2->GetEventTriggerTime()>=1239.095e6 && oldEv2->GetEventTriggerTime()<=1239.116e6) ||  (oldEv2->GetEventTriggerTime() >= 1238.662366e6 && oldEv2->GetEventTriggerTime() <= 1238.675884e6) ) {
 				if(debug)cout << "bad muon period" << endl;
-				*mEv=*oldEv2;
+				//mEv->Set(*oldEv2, inFile2);
+				inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+				*mEv = *oldEv2;
 				f.Fill();
 				mEv->Clear();
 				globalEntry++;
@@ -529,7 +541,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 						if(debug)cout << "bad Stamp" << endl;
 						goodStampBool=false;
 						// bad stamp,thus we fill the event in right here and get the next uVeto event
-						*mEv=*oldEv2;
+						//mEv->Set(*oldEv2, inFile2);
+						inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+						*mEv = *oldEv2;
 						f.Fill();
 
 						nextEntry2=true;
@@ -546,7 +560,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 					if(debug)cout << "bad Stamp 2" << endl;
 					goodStampBool=false;
 					// bad stamp,thus we fill the event in right here and get the next uVeto event
-					*mEv=*oldEv2;
+					
+					inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+					*mEv = *oldEv2;
 					mEv->GetMuonVetoSystemRecord()->SetEventQualityBit(0,0);
 					f.Fill();
 					nextEntry2=true;
@@ -571,7 +587,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 								inFile2.GetEntry(entry2);
 								if(!checkTBit(oldEv2)){
 									// bad stamp,thus we fill the event in right here and get the next uVeto event
-									*mEv=*oldEv2;
+									
+									inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+									*mEv = *oldEv2;
 									f.Fill();
 									entry2++;
 									badVetoStamp++;
@@ -581,7 +599,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 								else{
 									stamp2=oldEv2->GetStamp();
 									//pcTime=oldEv2->GetPcTime();
-									*mEv=*oldEv2;
+									
+									inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+									*mEv = *oldEv2;
 									f.Fill();
 									//muonTiming=timingIsReliabale(oldStamp2, stamp2, oldPcTime2, pcTime2, oldEv1 );
 								}
@@ -611,7 +631,7 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 								entry1++;
 								oldStamp1=stamp1;
 								inFile1.GetEntry(entry1);
-								*mEv=*oldEv1;
+								*mEv = *oldEv1;
 								f.Fill();
 								stamp1=oldEv1->GetStamp();
 								if(i==10000){
@@ -640,7 +660,8 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 							//if(entry1==236278){ //some special file issue
 							//	cout << "Mit Entry1 = 236278 sind wir in der merge loop gelandet!!! \n";
 							//}
-							*mEv=*mergeEdsEvent(oldEv1, oldEv2); //seems to work fine (except after time reset loop)
+							mergeEdsEvent(*mEv, *oldEv1, *oldEv2, inFile1.GetTTree(), inFile1.GetCurrentEntryNumber(), 
+														inFile2.GetTTree(), inFile2.GetCurrentEntryNumber()); //seems to work fine (except after time reset loop)
 							f.Fill();
 							//mEv->Clear();
 							globalEntry++;
@@ -658,7 +679,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 							if(stamp1 < stamp2){
 								if(debug)cout << "fill bolo" << endl;
 								//if(entry1>=14654)cout << "Entry1 to fill, entry2: "<< entry2 << endl;
-								*mEv=*oldEv1;
+								
+								//mEv->Set(*oldEv1, inFile1);
+								*mEv = *oldEv1;
 								f.Fill();
 								globalEntry++;
 								nextEntry1=true;
@@ -673,7 +696,8 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 							else{ 
 								if(stamp1 > stamp2){
 									if(debug)cout << "fill Muon" << endl;
-									*mEv=*oldEv2;
+									//mEv->Set(*oldEv2, inFile2);
+									*mEv = *oldEv2;
 									f.Fill();
 									globalEntry++;
 									nextEntry2=true;
@@ -696,7 +720,7 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 			}
 		}
 	}
-	end:
+	theEnd:
 	cout << "In total "<<globalEntry<<" events filled." << endl;
 	f.Write();
 	cout << "Write Tree" << endl;

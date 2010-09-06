@@ -28,21 +28,18 @@ public:
 	
 	//getters
 	//Int_t GetRunNumber(void) {return fRunNumber;}
-	Double_t GetRunStartTime(void) const {return fRunStartTime;}
-	Double_t GetRunEndTime(void) const {return fRunEndTime;}
+
 	Bool_t IsSystemOn(void) const {return fIsSystemOn;}	
 	
 	//setters
 	//void SetRunNumber(Int_t aNum) {fRunNumber = aNum;}
-	void SetRunStartTime(Double_t aNum) {fRunStartTime = aNum;}
-	void SetRunEndTime(Double_t aNum) {fRunEndTime = aNum;}
+
 	void SetIsSystemOn(Bool_t a) {fIsSystemOn = a;}
 	
 private:
 	
 	//Int_t fRunNumber; //run number of the system
-	Double_t fRunStartTime; //start time, in unix time, for the beginning of the current system run
-	Double_t fRunEndTime; //start time, in unix time, for the beginning of the current system run
+	
 	Bool_t fIsSystemOn; //set to true if the system is on.
 	//Double_t fTSLSysRecord;
 	

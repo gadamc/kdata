@@ -45,6 +45,9 @@ public:
 	Int_t GetRunNumber(void) const {return fRunNumber;}
 	Int_t GetCommonStopTime(void) const {return fCommonStopTime;}
 	
+	Double_t GetRunStartTime(void) const {return fRunStartTime;}
+	Double_t GetRunEndTime(void) const {return fRunEndTime;}
+	
 	//setters
 	void SetIsMuonSystemOn(Bool_t a) {SetIsSystemOn(a);}
 	void SetMultiADC(Int_t a) {fMultiADC = a;}
@@ -60,6 +63,9 @@ public:
 	void SetRunNumber(Int_t aNum) {fRunNumber = aNum;}
 	void SetCommonStopTime(Int_t aNum) {fCommonStopTime = aNum;}
 	
+	void SetRunStartTime(Double_t aNum) {fRunStartTime = aNum;}
+	void SetRunEndTime(Double_t aNum) {fRunEndTime = aNum;}
+	
 private:
 	Int_t fRunNumber; //run number of the Muon Veto system
 	Int_t fMultiADC;  //the number of PMTs in the MuVeto system with an ADC value  
@@ -71,6 +77,9 @@ private:
 	Int_t fPcTimeSec; //the time in seconds (presumably since Jan 1, 1970) returned by the DAQ PC
 	Int_t fPcTimeMuSec; //the microseconds elaspsed within the PC time
 	Int_t fCommonStopTime; //the TDC value of the common stop signal for Muon Veto Events. 
+	
+	Double_t fRunStartTime; //start time, in unix time, for the beginning of the current system run
+	Double_t fRunEndTime; //start time, in unix time, for the beginning of the current system run
 	
 	//Int_t fAdcA[kSizeOfChannelArrays]; //****MOVE TO RAW*****// 
 	//Int_t fTdcA[kSizeOfChannelArrays]; //****MOVE TO RAW*****//

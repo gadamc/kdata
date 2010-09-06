@@ -62,8 +62,8 @@ void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
 	
 	aRec.GetIonFlags(fIonFlags, kSizeOfIonFlags);
 	
-	//fSambaRecord = aRec.fSambaRecord;  //don't copy TRef value.
-	fSambaRecord = 0;
+	fSambaRecordNum = aRec.fSambaRecordNum;  //don't copy this value?, it might need to change.
+	//fSambaRecordNum = -1;
 	
 	for(Int_t i = 0; i < 2; i++){
 		SetEnergyCollectrode(i, aRec.GetEnergyCollectrode(i) );
@@ -132,7 +132,7 @@ void KHLABolometerRecord::InitializeMembers(void)
 		SetIonFlagNumber(i,-99);
 	}
 	
-	fSambaRecord = 0;
+	fSambaRecordNum = -1;
 	
 	for(Int_t i = 0; i < 2; i++){
 		SetEnergyCollectrode(i, -99.0 );
@@ -301,16 +301,7 @@ Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrin
 			return false;  
 	}
 	
-	/*
-	if(fSambaRecord != aRec.fSambaRecord){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fSambaRecord Not Equal" << endl;		
-		else
-			return false;  
-	}
-	 WE DON'T EXPECT THE TREFS TO BE EQUAL! in fact, we don't want it to be equal.
-	*/
+
 	for(Int_t i = 0; i < 2; i++){
 		if(fEnergyCollectrode[i] != aRec.fEnergyCollectrode[i]){
 			bIsEqual = false;

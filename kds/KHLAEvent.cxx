@@ -116,6 +116,63 @@ KHLAEvent::~KHLAEvent(void)
 	
 	
 }
+/*
+void KHLAEvent::Set(const KHLAEvent &ev,  TTree &tree, Int_t anEntry)
+{
+	//This method is essentially the same as a normal assignment operator. In fact
+	//it calls the private assignment operator= method. However, in order
+	//to absolutely ensure that the correct data is being assigned to this
+	//we must use this class.
+	//
+	//The following conditions MUST be true, otherwise you will probably
+	//get erratic behavior. 
+	//
+	//ev -- is the object you wish to assign to 'this'. 
+	//file -- the file where ev comes from from
+	//tree -- the tree that holds ev as the top-level branch
+	//anEntry -- the particular entry in the tree to be assigned.
+	//
+	//alternatively, if you use KDataReader to open the data files, 
+	//you can use the method KHLAEvent::Set(KHLAEvent &ev, KDataReader &aReader),
+	//where the KHLAEvent ev is obtained from the file opened by KDataReader
+	//and the current entry loaded by the KDataReader is the entry you wish to copy.
+	//
+	//This method does the following
+	//1. forces that the event is loaded 
+	//     tree.GetEntry(anEntry)
+	//2. calls the private assignment operator
+	//    this->operator=(ev);
+	
+	tree.GetEntry(anEntry);
+	this->operator=(ev);
+	
+	
+}
+
+void KHLAEvent::Set(const KHLAEvent &ev, const KDataReader &aReader)
+{
+	//In order to assign the data in the KHLAEvent ev to "this", one must
+	//use this Set method (or the Set(KHLAEvent&, TTree&, Int_t) method above.
+	//The event object, ev, must have been obtained from the 'aReader' object
+	//otherwise this will result in erratic behavior. 
+	//
+	//See the Set(KHLAEvent&, TTree&, Int_t) method above for details. 
+	
+	Set(ev, *aReader.GetTTree(), aReader.GetCurrentEntryNumber());
+}
+
+
+void KHLAEvent::AddSubRecords(const KHLAEvent &ev, TTree &t, Int_t anEntry)
+{
+	t.GetEntry(anEntry);
+	AddSubRecords(ev);
+}
+
+void KHLAEvent::AddSubRecords(const KHLAEvent &ev, const KDataReader &aReader)
+{
+	AddSubRecords(ev,*aReader.GetTTree(), aReader.GetCurrentEntryNumber());
+}
+*/
 
 KHLAEvent& KHLAEvent::operator=(const KEvent &anEvent)
 {
@@ -189,62 +246,59 @@ KHLAEvent& KHLAEvent::operator=(const KHLAEvent &anEvent)
 	return *this;
 }
 
-void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
+void KHLAEvent::AddSubRecords(const KHLAEvent &anEvent)
 {
-	//
-	//ClonesArray assignment doesn't appear to work in the following way
-	//*fSamba = *anEvent.GetSambaRecords();
-	//*fBolo = *anEvent.GetBoloSubRecords();
-	//*fBoloPulse = *anEvent.GetBoloPulseRecords();
-	//*fMuonModule = *anEvent.GetMuonModuleRecords();
-	//
-	//so, I just clear this object's array, and create as many objects as I need.
-	//this might be inefficient, but I don't think so. besides,
-	//we likely won't be creating many many instances of the Event class.
-	//at least, we shouldn't do that. 
-	//if your code is really slow and you think it has something
-	//to do with copying HLAEvents, look here for possible fixes. 
-	//
-	//MUST copy all TRef's appropriately to the new file. Otherwise
-	//they will point to records in a different File!
-
-	ClearArrays("C");
 	
 	Int_t ObjectNumber = TProcessID::GetObjectCount();
-	/*
-	for(Int_t i = 0; i < anEvent.GetNumSambas(); i++){
-		KHLASambaRecord *s = AddSamba();
-		KHLASambaRecord *sO = anEvent.GetSamba(i);
-		if(s != 0 && sO != 0) 
-			*s = *sO;
-		else
-			cout << "KHLAEvent::operator= Invalid Samba Pointer" << endl;
+	
+	/*if(fAssignmentOptionNoTref){
+		
+		for(Int_t i = 0; i < anEvent.GetNumSambas(); i++){
+			KHLASambaRecord *s = AddSamba();
+			KHLASambaRecord *sO = anEvent.GetSamba(i);
+			if(s != 0 && sO != 0) 
+				*s = *sO;
+			else
+				cout << "KHLAEvent::operator= Invalid Samba Pointer" << endl;
+		}
+		
+		for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
+			KHLABolometerRecord *bolo = AddBolo();
+			KHLABolometerRecord *bolo0 = anEvent.GetBolo(i);
+					if(bolo != 0 && bolo0 != 0) 
+				*bolo = *bolo0;
+			else
+				cout << "KHLAEvent::operator= Invalid SingleBolo Pointer" << endl;
+			
+		}
+		
 	}
 	*/
 	//UNFORTUNATELY, WE CAN'T PUT THE COPYING OF THE TREF'D SAMBA
 	//OBJECT INSIDE OF THE SINGLEBOLO ASSIGNMENT OPERATOR METHOD
 	//BECAUSE EACH SAMBA RECORD MUST BE ADDED TO THE EVENT. 
+	//else {
+		
 	
 	for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
 		KHLABolometerRecord *bolo = AddBolo();
-		KHLABolometerRecord *boloO = anEvent.GetBolo(i);
-		KHLASambaRecord *sambaO = boloO->GetSambaRecord();
+		KHLABolometerRecord *bolo0 = anEvent.GetBolo(i);
+		//Int_t fSambaNum = bolo0->GetSambaRecordNum();
+		KHLASambaRecord *samba0 = anEvent.GetSamba(bolo0->GetSambaRecordNum());
 		KHLASambaRecord *samba = 0;
 		
-		if(bolo != 0 && boloO != 0) 
-			*bolo = *boloO;
+		if(bolo != 0 && bolo0 != 0) 
+			*bolo = *bolo0;
 		else
 			cout << "KHLAEvent::operator= Invalid SingleBolo Pointer" << endl;
 		
-		if(sambaO != 0) {
+		if(samba0 != 0) {
 			samba = AddSamba();
-			*samba = *sambaO;
-			if(samba) bolo->SetSambaRecord(samba);
+			*samba = *samba0;
+			if(samba) bolo->SetSambaRecordNum(GetNumSambas()-1);
 		}
-		//else
-			//cout << "KHLAEvent::operator= Invalid Samba Pointer" << endl;
-			//no need to print out an error message here. it may be the desired
-			//behavior that there is not an associated samba record. 
+		else
+			cout << "KHLAEvent::operator= Invalid Samba Pointer" << endl;
 		
 	}
 	
@@ -276,6 +330,31 @@ void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 	//we assume that our events DO NOT address each other. We reset the                                                        
 	//object count to what it was at the beginning of the event.                                                               
 	TProcessID::SetObjectCount(ObjectNumber);
+
+}
+
+void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
+{
+	//
+	//ClonesArray assignment doesn't appear to work in the following way
+	//*fSamba = *anEvent.GetSambaRecords();
+	//*fBolo = *anEvent.GetBoloSubRecords();
+	//*fBoloPulse = *anEvent.GetBoloPulseRecords();
+	//*fMuonModule = *anEvent.GetMuonModuleRecords();
+	//
+	//so, I just clear this object's array, and create as many objects as I need.
+	//this might be inefficient, but I don't think so. besides,
+	//we likely won't be creating many many instances of the Event class.
+	//at least, we shouldn't do that. 
+	//if your code is really slow and you think it has something
+	//to do with copying HLAEvents, look here for possible fixes. 
+	//
+	//MUST copy all TRef's appropriately to the new file. Otherwise
+	//they will point to records in a different File!
+
+	ClearArrays("C");
+	
+	AddSubRecords(anEvent);
 	
 }
 
@@ -332,7 +411,7 @@ void KHLAEvent::InitializeMembers(void)
 {
 	//fDataCleaningWord.Clear();
 	//SetDataType(kHLADataType);
-	
+	//SetAssignmentOptionNoTref(false);
 }
 
 void KHLAEvent::CreateArrays(void)
@@ -415,7 +494,7 @@ KHLASambaRecord *KHLAEvent::GetSamba(Int_t i) const
   // Return the i'th Samba Sub Record for this event.
 	
   KHLASambaRecord *ms = 0;
-  if (i < fNumSamba) ms = (KHLASambaRecord *)fSamba->At(i);
+  if (i < fNumSamba && i >= 0) ms = (KHLASambaRecord *)fSamba->At(i);
   return ms;
 }
 
@@ -424,7 +503,7 @@ KHLABolometerRecord *KHLAEvent::GetBolo(Int_t i) const
   // Return the i'th Bolometer Sub Record for this event.
 	
   KHLABolometerRecord *ms = 0;
-  if (i < fNumBolo) ms = (KHLABolometerRecord *)fBolo->At(i);
+  if (i < fNumBolo && i >= 0) ms = (KHLABolometerRecord *)fBolo->At(i);
   return ms;
 }
 
@@ -433,7 +512,7 @@ KHLABoloPulseRecord *KHLAEvent::GetBoloPulse(Int_t i) const
   // Return the i'th Bolometer Pulse Sub Record for this event.
 	
   KHLABoloPulseRecord *ms = 0;
-  if (i < fNumBoloPulse) ms = (KHLABoloPulseRecord *)fBoloPulse->At(i);
+  if (i < fNumBoloPulse && i >= 0) ms = (KHLABoloPulseRecord *)fBoloPulse->At(i);
   return ms;
 }
 
@@ -442,7 +521,7 @@ KHLAMuonModuleRecord *KHLAEvent::GetMuonModule(Int_t i) const
   // Return the i'th Muon Module Sub Record for this event.
 	
   KHLAMuonModuleRecord *ms = 0;
-  if (i < fNumMuonModule) ms = (KHLAMuonModuleRecord *)fMuonModule->At(i);
+  if (i < fNumMuonModule && i >= 0) ms = (KHLAMuonModuleRecord *)fMuonModule->At(i);
   return ms;
 }
 
@@ -588,9 +667,7 @@ void KHLAEvent::myPrint()
 {
 	cout << "fNumSamba : fNumBolo : fNumBoloPulse : fNumMuonModule"<<endl;
 	cout << fNumSamba  <<" : " << fNumBolo <<" : " << fNumBoloPulse <<" : " << fNumMuonModule << endl;
-	//cout <<  "fRunNumber : fStamp : fTriggerType : fDataType : fDetectorStatusWord : fBlindnessWord : fGSEventNumber" << endl;
-	//cout << fRunNumber  <<" : " << fStamp <<" : " << fTriggerType <<" : " << fDataType <<" : " <<fDetectorStatusWord <<" : " << fBlindnessWord <<" : " << fGSEventNumber  << endl;
-
+	
 }
 
 void KHLAEvent::Compact(void)

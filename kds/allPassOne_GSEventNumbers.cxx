@@ -30,7 +30,7 @@ int main(int argc, char* argv[] )
 	cout << "Filling Global Software Event Number" << endl;
 	cout << "The number of arguments should be 3. You passed in " << argc << endl;
 	for(Int_t i = 0; i < argc; i++){
-		cout << argv[i];
+		cout << argv[i] << " ";
 	}
 	cout << endl << endl;
 	
@@ -52,15 +52,40 @@ int main(int argc, char* argv[] )
 	
 	Int_t fGSEventNumber = 0;	
 	
-	do
-	{
-		mEvOut->Clear("C");
+	for(Int_t i = 0; i < fInEds.GetEntries(); i++){
 		
+		//cout << i << endl;
+		mEvOut->Clear("C");
+		//mEvIn->Clear("C");
+		
+		fInEds.GetEntry(i);
+		
+		//mEvIn->Dump();
+		
+		//mEvOut->Set(*mEvIn, fInEds);
 		*mEvOut = *mEvIn;
 		
-		mEvOut->IsSame(*mEvIn, true); //is there a problem with the copy? 
+		//mEvOut->Dump();
+		//mEvIn->Dump();
+		
+		if(!mEvOut->IsSame(*mEvIn, true)){
+			cout << "Break Here" << endl;
+			
+			//for(Int_t s = 0; s < mEvOut->GetNumSambas(); s++){
+			//	KHLASambaRecord *sam = mEvOut->GetSamba(s);
+			//}
+		} //is there a problem with the copy? 
+		
+		//cout << "After Is Same" << endl << endl;
+		//mEvOut->Dump();
+		//mEvIn->Dump();
 		
 		mEvOut->SetGSEventNumber(fGSEventNumber++);
+		
+		//cout << "After Setting GS Event Number" << endl;
+		
+		//mEvOut->Dump();
+		//mEvIn->Dump();
 		
 		fOutEds.Fill();
 		
@@ -69,7 +94,7 @@ int main(int argc, char* argv[] )
 		
 		
 		
-	} while(fInEds.GetNextEntry() > 0);
+	} 
 	
 	
 	fInEds.Close();

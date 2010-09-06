@@ -16,13 +16,14 @@
 #include "KHLAMuonVetoSysRecord.h"
 #include "TRef.h"
 #include "TClonesArray.h"
+
+
 //sub record forward declarrations
 class KHLASambaRecord;
 class KHLABolometerRecord;
 class KHLABoloPulseRecord;
 class KHLAMuonModuleRecord;
 class KRawEvent;
-//class KHLANCSysRecord;
 class TBits;
 
 const Char_t kHLAEventName[] = "HLA";
@@ -39,15 +40,20 @@ public:
 	KHLAEvent(void);
 	KHLAEvent(const KHLAEvent &anEvent);
 	virtual ~KHLAEvent(void);
-	KHLAEvent& operator=(const KEvent &anEvent);
-	KHLAEvent& operator=(const KRawEvent &anEvent);
-	KHLAEvent& operator=(const KHLAEvent &anEvent);
 	virtual void Clear(Option_t *option = "C");
 	virtual void ClearArrays(Option_t *anOption = "C");
 	Bool_t IsSame(const KHLAEvent &anEvent, Bool_t bPrint = false) const;
 	Bool_t operator==(const KHLAEvent &anEvent) const { return IsSame(anEvent,false); }
 	Bool_t operator!=(const KHLAEvent &anEvent) const { return !(*this==anEvent); }
 	virtual void Compact(void);
+
+	KHLAEvent& operator=(const KEvent &anEvent);
+	KHLAEvent& operator=(const KRawEvent &anEvent);
+	KHLAEvent& operator=(const KHLAEvent &anEvent);
+	void AddSubRecords(const KHLAEvent &ev);
+	
+	//virtual void Set(KRawEvent &ev, TFile &f, Int_t anEntry);
+	//virtual void Set(KRawEvent &ev, KDataReader &aReader);
 	
 	//Easy Access Methods
 	//These methods access commonly requested quantities without
@@ -106,6 +112,17 @@ public:
 	void SetNumBoloPulse(Int_t aNum){fNumBoloPulse = aNum;} //Only use these if you know what you're doing. 
 	void SetNumMuonModule(Int_t aNum){fNumMuonModule = aNum;} //Only use these if you know what you're doing. 
 	
+	//void SetAssignmentOptionNoTref(bool opt){
+	//	fAssignmentOptionNoTref = opt;
+	//}
+	/*
+	void Set(const KHLAEvent &ev, TTree &t, Int_t anEntry);
+	void Set(const KHLAEvent &ev, const KDataReader &aReader);
+	
+	void AddSubRecords(const KHLAEvent &ev, TTree &t, Int_t anEntry);
+	void AddSubRecords(const KHLAEvent &ev, const KDataReader &aReader);
+	 */
+	
 	//Print data members //Probably it would be much easier to implement it in Event and just overload it, but I don't really know how to do it and I only really nead it for testing.
 	void myPrint();
 	
@@ -122,6 +139,7 @@ private:
 	Int_t fNumBoloPulse; //the number of Bolo Pulse Sub Records in this event
 	Int_t fNumMuonModule; //the number of Muon Module Sub Records in this event. 
 	
+	//bool fAssignmentOptionNoTref;
 	//do we need to store these values in the tree? how much disk space would
 	//we save? There are two ways
 	//a user can determine the number of these records in the event.

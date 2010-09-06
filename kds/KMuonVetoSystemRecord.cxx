@@ -56,6 +56,9 @@ void KMuonVetoSystemRecord::CopyLocalMembers(const KMuonVetoSystemRecord &aRec)
 	fEventQuality = aRec.fEventQuality;
 	fEventQuality.Compact();
 	
+	fRunStartTime = aRec.fRunStartTime;
+	fRunEndTime = aRec.fRunEndTime;
+	
 }
 
 KMuonVetoSystemRecord::~KMuonVetoSystemRecord(void)
@@ -100,6 +103,8 @@ void KMuonVetoSystemRecord::InitializeMembers(void)
 	SetRunNumber(-99);
 	SetCommonStopTime(-99);
 	fEventQuality.Clear();
+	fRunStartTime = -99.;
+	fRunEndTime = -99.;
 }
 
 Bool_t KMuonVetoSystemRecord::IsTimeReconstructed(void) const
@@ -233,6 +238,25 @@ Bool_t KMuonVetoSystemRecord::IsSame(const KMuonVetoSystemRecord &aRec, Bool_t b
 		else
 			return false;  
 	}
+	
+	if(fRunStartTime != aRec.fRunStartTime){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KMuonVetoSystemRecord fRunStartTime Not Equal. lhs: " 
+			<< fRunStartTime << " != rhs " << aRec.fRunStartTime << endl;		
+		else
+			return false;  
+	}
+	
+	if(fRunEndTime != aRec.fRunEndTime){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KMuonVetoSystemRecord fRunEndTime Not Equal. lhs: " 
+			<< fRunEndTime << " != rhs " << aRec.fRunEndTime << endl;	
+		else
+			return false;  
+	}
+
 	
 	return bIsEqual;
 }

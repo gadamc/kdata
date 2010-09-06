@@ -151,6 +151,7 @@ Int_t KDataReader::GetEntry(Int_t anEntry)
 		return -1;
 	}
 	else {
+		fTree->GetCurrentFile()->cd();  //make sure we are in the right directory
 		theRet = fTree->GetEntry(anEntry);
 		if(theRet > 0) 
 			fCurrentEntry = anEntry;

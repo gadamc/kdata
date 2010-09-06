@@ -38,8 +38,7 @@ KSystemRecord& KSystemRecord::operator=(const KSystemRecord &aRec)
 
 void KSystemRecord::CopyLocalMembers(const KSystemRecord &aRec)
 {
-	fRunStartTime = aRec.fRunStartTime;
-	fRunEndTime = aRec.fRunEndTime;
+	
 	fIsSystemOn = aRec.fIsSystemOn;
 }
 KSystemRecord::~KSystemRecord(void)
@@ -75,8 +74,7 @@ void KSystemRecord::InitializeMembers(void)
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	
 	//fRunNumber=0;
-	fRunStartTime = -99.;
-	fRunEndTime = -99.;
+	
 	fIsSystemOn = 0;
 }
 
@@ -89,24 +87,7 @@ Bool_t KSystemRecord::IsSame(const KSystemRecord &aRec, Bool_t bPrint) const
 	
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
-	if(fRunStartTime != aRec.fRunStartTime){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KSystemRecord fRunStartTime Not Equal. lhs: " 
-			<< fRunStartTime << " != rhs " << aRec.fRunStartTime << endl;		
-		else
-			return false;  
-	}
-	
-	if(fRunEndTime != aRec.fRunEndTime){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KSystemRecord fRunEndTime Not Equal. lhs: " 
-			<< fRunEndTime << " != rhs " << aRec.fRunEndTime << endl;	
-		else
-			return false;  
-	}
-	
+		
 	if(fIsSystemOn != aRec.fIsSystemOn){
 		bIsEqual = false;
 		if (bPrint) 

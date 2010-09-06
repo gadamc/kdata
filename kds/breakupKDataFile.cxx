@@ -113,6 +113,10 @@ int main(int argc, char* argv[])
 		fin.GetEntry(i);
 		*fEventOut = *fEventIn;
 		
+		fEventOut->IsSame(*fEventIn,true);
+		
+		//fEventOut->Set(*fEventIn, fin);
+		
 		fout->Fill();
 		
 		/*
