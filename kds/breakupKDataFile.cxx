@@ -85,9 +85,9 @@ int main(int argc, char* argv[])
 	
 	Int_t subFileCounter = 0;
 	
-	for(Int_t i = 0; i < fin.GetEntries(); i++){
+	for(Int_t j = 0; j < fin.GetEntries(); j++){
 		
-		if(i % fBreakAfterThisNumEvents == 0){
+		if(j % fBreakAfterThisNumEvents == 0){
 			if(fout != 0){
 				cout << "Writing and Closing sub file." << endl;
 				fout->Write();
@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 		}
 		
 		fEventOut->Clear();
-		fin.GetEntry(i);
+		fin.GetEntry(j);
 		*fEventOut = *fEventIn;
 		
 		fEventOut->IsSame(*fEventIn,true);

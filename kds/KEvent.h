@@ -73,7 +73,6 @@ public:
 	
 	void myPrintB() const;
 	 
-protected:
 	void AddTriggerType(Int_t aNum) {fTriggerType |= aNum;}  
 	
 private:

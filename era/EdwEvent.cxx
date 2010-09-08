@@ -13,7 +13,7 @@ EdwEvent::EdwEvent() : TObject() {
   fPulses = new TObjArray() ;
 }
 
-void EdwEvent::Clear() {
+void EdwEvent::Clear(const Option_t * /*opt*/) {
   fPulses->Delete();
   fHeader->Clear() ;
 }

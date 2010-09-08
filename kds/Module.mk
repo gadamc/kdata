@@ -32,11 +32,15 @@ MODNAME      := kds
 MODDIR       := kds
 
 KDS_FLAGS  := $(CXXFLAGS)
+KDS_LDFLAGS := $(LDFLAGS)
+KDS_OPT     := $(OPT)
 
 #add for debuging purposes
 #assignment operator
 #KDS_FLAGS  += -D_K_DEBUG_EVENT_ASSIGNOP
-
+#remove the optimization in order to improve debugging
+KDS_OPT  := $(filter-out -O2,$(KDS_OPT))
+KDS_LDFLAGS := $(filter-out -O2,$(KDS_LDFLAGS))
 
 ###
 
@@ -92,12 +96,12 @@ include/%.h:    $(KDS_DIRI)/%.h
 
 # rule for compiling our source files
 $(KDS_DIRS)/%.o:    $(KDS_DIRS)/%.cxx 
-	$(CXX) $(OPT) $(KDS_FLAGS) $(ROOTINCS) -o $@ -c $< 
+	$(CXX) $(KDS_OPT) $(KDS_FLAGS) $(ROOTINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KDS_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KDSLIBS) 
+		$(LD) $(KDS_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KDSLIBS) 
                 
 # rules for building dictionary
 $(KDS_DO):         $(KDS_DC)
@@ -110,7 +114,7 @@ $(KDS_DC):         $(KDS_EH) $(KDS_LH)
 # rule for building library
 $(KDS_LIB):        $(KDS_EO) $(KDS_DO) $(KDS_LIBDEP) 
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
+	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KDS_LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KDS_LIB)" $@  "$(KDS_EO) $(KDS_DO)" \
 	   "$(ROOTLIBS) $(KDS_FLAGS)"  -I/opt/include -Iinclude 
 

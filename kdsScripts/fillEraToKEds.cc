@@ -14,6 +14,7 @@
 #include "KHLAMuonModuleRecord.h"
 #include "KHLABolometerRecord.h"
 #include "KHLASambaRecord.h"
+#include "KHLABoloPulseRecord.h"
 #include "TTree.h"
 #include <iostream>
 #include <fstream>
@@ -255,6 +256,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 	inEionTree->SetBranchAddress("Ecol1", &ecol1);
 	if(!kDetectorName.compare(0, 4, "GGA4") == 0)
 		inEionTree->SetBranchAddress("Ecol2", &ecol2);
+	
 	inEionTree->SetBranchAddress("Efid", &efid);
 	
 	inEionTree->SetBranchAddress("Etot", &etot);
@@ -440,7 +442,6 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			bolo->SetQvalue((double)q);
 			bolo->SetEnergyRecoil((double)eRec);
 			bolo->SetEnergyIon((double)eIon);
-			bolo->SetEnergyHeat((double)eHeat);
 			bolo->SetEventFlag(eventFlag);
 			bolo->SetChi2Flag(chi2);
 			bolo->SetVoltageFlag(vFlag);
@@ -448,67 +449,121 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			bolo->SetDetectorName(kDetectorName.c_str(),kDetectorName.length());
 			bolo->SetIonPulseTimeOffset(tOffset);
 			bolo->SetDetectorNumber(detectorNumber);
-			
-			bolo->SetEnergyCollectrode(0, ecol1);
-			bolo->SetEnergyCollectrode(1, ecol2);
-			bolo->SetEnergyVeto(0, evet1);
-			bolo->SetEnergyVeto(1, evet2);
-			
-			bolo->SetEnergyBaselineCollectrode(0, e0col1);
-			bolo->SetEnergyBaselineCollectrode(1, e0col2);
-			bolo->SetEnergyBaselineVeto(0, e0vet1);
-			bolo->SetEnergyBaselineVeto(1, e0vet2);
-	
-			bolo->SetBaselineNoiseCollectrode(0, ldbcol1);
-			bolo->SetBaselineNoiseCollectrode(1, ldbcol2);
-			bolo->SetBaselineNoiseVeto(0, ldbvet1);
-			bolo->SetBaselineNoiseVeto(1, ldbvet2);
-
 			bolo->SetEnergyIonFiducial(efid);
 			bolo->SetEnergySumIonChannels(etot);
 			bolo->SetBaselineIonFiducial(ldbfid);
-			bolo->SetEnergyBaselineHeat(E0heat);
-			bolo->SetBaselineNoiseHeat(LdbHeat);
-			if(!kDetectorName.compare(0, 3, "FID") == 0) {
-				bolo->SetEnergyGuard(0, egar1);
-				bolo->SetEnergyGuard(1, egar2);
-				bolo->SetEnergyBaselineGuard(0, e0gar1);
-				bolo->SetEnergyBaselineGuard(1, e0gar2);
-				bolo->SetBaselineNoiseGuard(0, ldbgar1);
-				bolo->SetBaselineNoiseGuard(1, ldbgar2);
+			
+			bolo->SetCutsBit(16, CutRun);
+			bolo->SetCutsBit(14, CutHeatBase);
+			bolo->SetCutsBit(15, CutBases);
+			bolo->SetCutsBit(0, CutChi2Col1);
+			bolo->SetCutsBit(8, CutCol1Base);
+			bolo->SetCutsBit(7, CutChi2);
+			bolo->SetCutsBit(6, CutChi2Heat);
+			
+			if(!kDetectorName.compare(0, 4, "GGA4") == 0){
+			
+				bolo->SetCutsBit(1, CutChi2Col2);
+				bolo->SetCutsBit(2, CutChi2Vet1);
+				bolo->SetCutsBit(3, CutChi2Vet2);
+				bolo->SetCutsBit(9, CutCol2Base);
+				bolo->SetCutsBit(10, CutVet1Base);
+				bolo->SetCutsBit(11, CutVet2Base);
 			}
 			
-			bolo->SetCutsBitNumber(0, CutChi2Col1);
-			bolo->SetCutsBitNumber(1, CutChi2Col2);
-			bolo->SetCutsBitNumber(2, CutChi2Vet1);
-			bolo->SetCutsBitNumber(3, CutChi2Vet2);
-
-			bolo->SetCutsBitNumber(6, CutChi2Heat);
-			bolo->SetCutsBitNumber(7, CutChi2);
-			bolo->SetCutsBitNumber(8, CutCol1Base);
-			bolo->SetCutsBitNumber(9, CutCol2Base);
-			bolo->SetCutsBitNumber(10, CutVet1Base);
-			bolo->SetCutsBitNumber(11, CutVet2Base);
-
-			bolo->SetCutsBitNumber(14, CutHeatBase);
-			bolo->SetCutsBitNumber(15, CutBases);
-			bolo->SetCutsBitNumber(16, CutRun);
+			
 			if(!kDetectorName.compare(0, 3, "FID") == 0){
-				bolo->SetCutsBitNumber(4, CutChi2Gar1);
-				bolo->SetCutsBitNumber(5, CutChi2Gar2);
-				bolo->SetCutsBitNumber(12, CutGar1Base);
-				bolo->SetCutsBitNumber(13, CutGar2Base);
+				bolo->SetCutsBit(4, CutChi2Gar1);
+				bolo->SetCutsBit(12, CutGar1Base);
+				if(!kDetectorName.compare(0, 4, "GGA4") == 0){
+					bolo->SetCutsBit(13, CutGar2Base);
+					bolo->SetCutsBit(5, CutChi2Gar2);
+				}
+			}
+
+			
+			KHLABoloPulseRecord *pulse = 0;
+			
+			pulse = mEv->AddBoloPulse();
+			pulse->SetChannelNumber(1);
+			pulse->SetPulseIsHeatType();
+			pulse->SetEnergy(eHeat);
+			pulse->SetEnergyBaseline(E0heat);
+			pulse->SetBaselineNoise(LdbHeat);
+			bolo->AddPulseRecord(pulse);
+			pulse->SetBolometerRecord(bolo);
+			
+			pulse = mEv->AddBoloPulse();
+			pulse->SetChannelNumber(1);
+			pulse->SetPulseIsCollectrodeType();
+			pulse->SetEnergy(ecol1);
+			pulse->SetEnergyBaseline(e0col1);
+			pulse->SetBaselineNoise(ldbcol1);
+			bolo->AddPulseRecord(pulse);
+			pulse->SetBolometerRecord(bolo);;
+			
+			
+			if(!kDetectorName.compare(0, 4, "GGA4") == 0){
+				pulse = mEv->AddBoloPulse();
+				pulse->SetChannelNumber(2);
+				pulse->SetPulseIsCollectrodeType();
+				pulse->SetEnergy(ecol2);
+				pulse->SetEnergyBaseline(e0col2);
+				pulse->SetBaselineNoise(ldbcol2);
+				bolo->AddPulseRecord(pulse);
+				pulse->SetBolometerRecord(bolo);
+				
+				pulse = mEv->AddBoloPulse();
+				pulse->SetChannelNumber(1);
+				pulse->SetPulseIsVetoType();
+				pulse->SetEnergy(evet1);
+				pulse->SetEnergyBaseline(e0vet1);
+				pulse->SetBaselineNoise(ldbvet1);
+				bolo->AddPulseRecord(pulse);
+				pulse->SetBolometerRecord(bolo);
+				
+				pulse = mEv->AddBoloPulse();
+				pulse->SetChannelNumber(2);
+				pulse->SetPulseIsVetoType();
+				pulse->SetEnergy(evet2);
+				pulse->SetEnergyBaseline(e0vet2);
+				pulse->SetBaselineNoise(ldbvet2);
+				bolo->AddPulseRecord(pulse);
+				pulse->SetBolometerRecord(bolo);
 			}
 			
 			
-			KHLASambaRecord* sam=mEv->AddSamba();
+			
+			if(!kDetectorName.compare(0, 3, "FID") == 0) {
+				pulse = mEv->AddBoloPulse();
+				pulse->SetChannelNumber(1);
+				pulse->SetPulseIsGuardType();
+				pulse->SetEnergy(egar1);
+				pulse->SetEnergyBaseline(e0gar1);
+				pulse->SetBaselineNoise(ldbgar1);
+				bolo->AddPulseRecord(pulse);
+				pulse->SetBolometerRecord(bolo);
+				
+				if(!kDetectorName.compare(0, 4, "GGA4") == 0) {
+					pulse = mEv->AddBoloPulse();
+					pulse->SetChannelNumber(2);
+					pulse->SetPulseIsGuardType();
+					pulse->SetEnergy(egar2);
+					pulse->SetEnergyBaseline(e0gar2);
+					pulse->SetBaselineNoise(ldbgar2);
+					bolo->AddPulseRecord(pulse);
+					pulse->SetBolometerRecord(bolo);
+				}
+			}
+			
+			KHLASambaRecord* sam = mEv->AddSamba();
 			sam-> SetSambaEventNumber(eventNum);
-			sam-> SetRunName(runName, 10);
+			sam-> SetRunName(runName, 8); //je25b000 - only 8 characters!
 			sam-> SetNtpDateSec(dateSec);
 			sam-> SetSambaDAQNumber(sRunName.compare(4,1,"a") + 1); 
 
 			
-			bolo->SetSambaRecordNum(mEv->GetNumSambas()-1);
+			bolo->SetSambaRecord(sam);
 			
 			// For boloSysRecors:
 			mEv->GetBoloSystemRecord()->SetIsSystemOn(true);

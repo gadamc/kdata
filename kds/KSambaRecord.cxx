@@ -44,7 +44,7 @@ KSambaRecord::KSambaRecord(const KSambaRecord &aRec)
 	fRunNameSize=0;
 	//fFileNameSize=0;
 	
-	SetRunName(aRec.GetRunName().data(), aRec.GetRunNameSize());
+	SetRunName(aRec.GetRunName().c_str(), aRec.GetRunNameSize());
 	//SetFileName(aRec.GetFileName().data(), aRec.GetFileNameSize());
 	
 }
@@ -56,7 +56,7 @@ KSambaRecord& KSambaRecord::operator=(const KSambaRecord &aRec)
 	this->KSubRecord::operator=(aRec);
 	CopyLocalMembers(aRec);
 	
-	SetRunName(aRec.GetRunName().data(), aRec.GetRunNameSize());
+	SetRunName(aRec.GetRunName().c_str(), aRec.GetRunNameSize());
 	//SetFileName(aRec.GetFileName().data(), aRec.GetFileNameSize());
 	
 	return *this;
@@ -135,7 +135,7 @@ void KSambaRecord::SetRunName(const Char_t* aWord, Int_t aSize)
 		if(aSize>0)fRunName= new Char_t[aSize];
 		fRunNameSize=aSize;
 	}
-	if(aSize>0)memcpy(fRunName, aWord, fRunNameSize*sizeof(Char_t));
+	if(aSize>0 && aWord != 0)memcpy(fRunName, aWord, fRunNameSize*sizeof(Char_t));
 }
 
 
@@ -159,11 +159,13 @@ string KSambaRecord::GetRunName(void) const
 {
 	string str=""; 
 	
-	if(fRunName==0) 
+	if(fRunName == 0 || fRunNameSize == 0) 
 		return str;
 	
-	else return str.assign(fRunName, fRunNameSize);
+	else 
+		str.assign(fRunName, fRunNameSize);
 	
+	return str;
 }
 
 /*string KSambaRecord::GetFileName(void) const 
@@ -334,4 +336,14 @@ void KSambaRecord::Compact(void)
 	KSubRecord::Compact();
 }
 
-
+void KSambaRecord::print(void)
+{
+		
+	cout << "Me 0x" << this << endl;
+	//cout << "Me* " << *this << endl;
+	cout << "fSambaEventNumber " << fSambaEventNumber << endl;
+	cout << "fNtpDataSec " << fNtpDateSec << endl;
+	cout << "fSambaDAQNumber "  << fSambaDAQNumber << endl;
+	cout << "fRunName " << fRunName << endl;
+	
+}

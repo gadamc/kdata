@@ -46,7 +46,7 @@ KBoloSystemRecord& KBoloSystemRecord::operator=(const KBoloSystemRecord &aRec)
 	return *this;
 }
 
-void KBoloSystemRecord::CopyLocalMembers(const KBoloSystemRecord &aRec)
+void KBoloSystemRecord::CopyLocalMembers(const KBoloSystemRecord &/*aRec*/)
 {
 
 	//fRunName = aRec.fRunName;

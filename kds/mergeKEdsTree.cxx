@@ -17,7 +17,6 @@
 #include "TClonesArray.h"
 #include "TCanvas.h"
 #include "TH1F.h"
-#include "TProcessID.h"
 #include "TTree.h"
 
 #include "Rtypes.h"
@@ -40,41 +39,14 @@ using namespace std;
 
 void printInfo(KHLAEvent& ev);
 
-/*void mergeBoloSysRecord(KHLAEvent& eout, KHLAEvent& ev1, KHLAEvent& ev2)
-{
-		
-}
-
-
-// no handling of Events where both have muonSysRecord information, implemented so far, only checking the new // event and copying if it has information
-void mergeMuonVetoSysRecord(KHLAEvent& eout, KHLAEvent& ev1, KHLAEvent& ev2)
-{
-	//default assignment operator should work. system records have no objects on the heap;
-	
-	
-	
-	
-	//*eout.GetMuonVetoSystemRecord() = *ev1.GetMuonVetoSystemRecord();
-
-}
-
-
-void mergeSubRecords(KHLAEvent& eout, KHLAEvent& ev1, KHLAEvent& ev2)
-{ 
-	//eout.ClearArrays("C");  //removes all subrecords.
-	//eout.AddSubRecords(ev1);
-	
-}
-*/
-
-
 void mergeEdsEvent(KHLAEvent &eout, KHLAEvent &ev1, KHLAEvent &ev2, TTree *t1, Int_t entry1, 
 									 TTree *t2, Int_t entry2){
 	
 	//at the moment it is strictly necessary that a muon event is handled as event 2
-	
+	//cout << "Merged Events!" << endl;
 	t1->GetEntry(entry1);
-	eout  = ev1; //if their stamps are the same, then everything else should be, right? right?
+	
+	eout = ev1; //if their stamps are the same, then everything else should be, right? right?
 	
 	t2->GetEntry(entry2);
 	eout.AddTriggerType(ev2.GetTriggerType());
@@ -93,19 +65,21 @@ void mergeEdsEvent(KHLAEvent &eout, KHLAEvent &ev1, KHLAEvent &ev2, TTree *t1, I
 		*eout.GetMuonVetoSystemRecord()= *ev2.GetMuonVetoSystemRecord();
 	}
 	
+	
 	//merge the sub records by adding ev2.
 	eout.AddSubRecords(ev2);
+	
 	
 //	mergeSubRecords(eout, ev1, ev2);// to check
 	//mergeEventInformation?
 	
 	if(eout.GetStamp() < 0 || ev1.GetStamp() < 0 || ev2.GetStamp() < 0){
-		cout << "Merged Events!" << endl;
 		printInfo(ev1);
 		printInfo(ev2);
 		printInfo(eout);
 	}
 
+	//cout << "Done Merging Events" << endl;
 	return;
 }
 
@@ -188,9 +162,11 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				for(; entry2 < entries2;entry2++){
 					inFile2.GetEntry(entry2);
 					//mEv->Set(*oldEv2, inFile2);
-					*mEv = *oldEv2;
-					f.Fill();
 					mEv->Clear();
+					*mEv = *oldEv2;
+					mEv->IsSame(*oldEv2,true);
+					f.Fill();
+					
 					globalEntry++;
 				}
 				goto theEnd; // I want to have the summary infomartion!
@@ -215,9 +191,11 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				for(; entry1 < entries1; entry1++){
 					inFile1.GetEntry(entry1);
 					//mEv->Set(*oldEv1, inFile1);
-					*mEv = *oldEv1;
-					f.Fill();
 					mEv->Clear();
+					*mEv = *oldEv1;
+					mEv->IsSame(*oldEv1,true);
+					f.Fill();
+					
 					globalEntry++;
 				}
 				goto theEnd;
@@ -263,9 +241,11 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				for(Int_t k=0; k < i; k++){
 					inFile2.GetEntry(entry2+k);
 					//mEv->Set(*oldEv2, inFile2);
-					*mEv = *oldEv2;
-					f.Fill();
 					mEv->Clear();
+					*mEv = *oldEv2;
+					mEv->IsSame(*oldEv2,true);
+					f.Fill();
+					
 					globalEntry++;
 				}
 				nextEntry2=true;
@@ -293,9 +273,11 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				for(Int_t k=0; k < i; k++){
 					inFile1.GetEntry(entry1+k);
 					//mEv->Set(*oldEv1,inFile1);
-					*mEv = *oldEv1;
-					f.Fill();
 					mEv->Clear();
+					*mEv = *oldEv1;
+					mEv->IsSame(*oldEv1,true);
+					f.Fill();
+					
 					globalEntry++;
 				}
 				nextEntry1=true;
@@ -309,11 +291,11 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 				//if(entry1==236278){ //some special file issue
 				//	cout << "Mit Entry1 = 236278 sind wir in der merge loop gelandet!!! \n";
 				//}
-				
+				mEv->Clear();
 				mergeEdsEvent(*mEv, *oldEv1, *oldEv2, inFile1.GetTTree(), inFile1.GetCurrentEntryNumber(), 
 											inFile2.GetTTree(), inFile2.GetCurrentEntryNumber());  //seems to work fine (except after time reset loop)
 				f.Fill();
-				mEv->Clear();
+				
 				globalEntry++;
 				nextEntry1=true;nextEntry2=true;
 				entry1++; entry2++;
@@ -331,10 +313,11 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 					//inFile1.GetTFile()->cd();
 					inFile1.GetEntry(inFile1.GetCurrentEntryNumber());
 					//mEv->Set(*oldEv1, inFile1);
-					*mEv = *oldEv1;
-					//mEv->IsSame(*oldEv1,true);
-					f.Fill();
 					mEv->Clear();
+					*mEv = *oldEv1;
+					mEv->IsSame(*oldEv1,true);
+					f.Fill();
+					
 					globalEntry++;
 					nextEntry1=true;
 					entry1++;
@@ -350,10 +333,11 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 						//inFile2.GetTFile()->cd();
 						inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
 						//mEv->Set(*oldEv2, inFile2);
-						*mEv = *oldEv2;
-						//mEv->IsSame(*oldEv2,true);
-						f.Fill();
 						mEv->Clear();
+						*mEv = *oldEv2;
+						mEv->IsSame(*oldEv2,true);
+						f.Fill();
+						
 						globalEntry++;
 						nextEntry2=true;
 						entry2++;
@@ -452,9 +436,11 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 		//inFile2.GetTFile()->cd();
 		inFile2.GetEntry(entry2);
 		//mEv->Set(*oldEv2, inFile2);
-		*mEv = *oldEv2;
-		f.Fill();
 		mEv->Clear();
+		*mEv = *oldEv2;
+		mEv->IsSame(*oldEv2,true);
+		f.Fill();
+		
 		globalEntry++;
 		entry2++;
 	}
@@ -473,9 +459,11 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 					//inFile2.GetTFile()->cd();
 					inFile2.GetEntry(entry2);
 					//mEv->Set(*oldEv2, inFile2);
-					*mEv = *oldEv2;
-					f.Fill();
 					mEv->Clear();
+					*mEv = *oldEv2;
+					mEv->IsSame(*oldEv2,true);
+					f.Fill();
+					
 					globalEntry++;
 				}
 				goto theEnd;
@@ -490,9 +478,11 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 					//inFile1.GetTFile()->cd();
 					inFile1.GetEntry(entry1);
 					//mEv->Set(*oldEv1, inFile1);
-					*mEv = *oldEv1;
-					f.Fill();
 					mEv->Clear();
+					*mEv = *oldEv1;
+					mEv->IsSame(*oldEv1,true);
+					f.Fill();
+					
 					globalEntry++;
 				}
 				goto theEnd;
@@ -527,9 +517,11 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 				if(debug)cout << "bad muon period" << endl;
 				//mEv->Set(*oldEv2, inFile2);
 				inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
-				*mEv = *oldEv2;
-				f.Fill();
 				mEv->Clear();
+				*mEv = *oldEv2;
+				mEv->IsSame(*oldEv2,true);
+				f.Fill();
+				
 				globalEntry++;
 				entry2++;
 				nextEntry2=true;
@@ -544,6 +536,7 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 						//mEv->Set(*oldEv2, inFile2);
 						inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
 						*mEv = *oldEv2;
+						mEv->IsSame(*oldEv2,true);
 						f.Fill();
 
 						nextEntry2=true;
@@ -562,7 +555,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 					// bad stamp,thus we fill the event in right here and get the next uVeto event
 					
 					inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+					mEv->Clear();
 					*mEv = *oldEv2;
+					mEv->IsSame(*oldEv2,true);
 					mEv->GetMuonVetoSystemRecord()->SetEventQualityBit(0,0);
 					f.Fill();
 					nextEntry2=true;
@@ -589,7 +584,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 									// bad stamp,thus we fill the event in right here and get the next uVeto event
 									
 									inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+									mEv->Clear();
 									*mEv = *oldEv2;
+									mEv->IsSame(*oldEv2,true);
 									f.Fill();
 									entry2++;
 									badVetoStamp++;
@@ -601,7 +598,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 									//pcTime=oldEv2->GetPcTime();
 									
 									inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+									mEv->Clear();
 									*mEv = *oldEv2;
+									mEv->IsSame(*oldEv2,true);
 									f.Fill();
 									//muonTiming=timingIsReliabale(oldStamp2, stamp2, oldPcTime2, pcTime2, oldEv1 );
 								}
@@ -631,7 +630,9 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 								entry1++;
 								oldStamp1=stamp1;
 								inFile1.GetEntry(entry1);
+								mEv->Clear();
 								*mEv = *oldEv1;
+								mEv->IsSame(*oldEv1,true);
 								f.Fill();
 								stamp1=oldEv1->GetStamp();
 								if(i==10000){
@@ -660,10 +661,11 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 							//if(entry1==236278){ //some special file issue
 							//	cout << "Mit Entry1 = 236278 sind wir in der merge loop gelandet!!! \n";
 							//}
+							mEv->Clear();
 							mergeEdsEvent(*mEv, *oldEv1, *oldEv2, inFile1.GetTTree(), inFile1.GetCurrentEntryNumber(), 
 														inFile2.GetTTree(), inFile2.GetCurrentEntryNumber()); //seems to work fine (except after time reset loop)
 							f.Fill();
-							//mEv->Clear();
+
 							globalEntry++;
 							nextEntry1=true;nextEntry2=true;
 							entry1++; entry2++;
@@ -679,9 +681,11 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 							if(stamp1 < stamp2){
 								if(debug)cout << "fill bolo" << endl;
 								//if(entry1>=14654)cout << "Entry1 to fill, entry2: "<< entry2 << endl;
-								
+								inFile1.GetEntry(inFile1.GetCurrentEntryNumber());
 								//mEv->Set(*oldEv1, inFile1);
+								mEv->Clear();
 								*mEv = *oldEv1;
+								mEv->IsSame(*oldEv1,true);
 								f.Fill();
 								globalEntry++;
 								nextEntry1=true;
@@ -696,8 +700,10 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 							else{ 
 								if(stamp1 > stamp2){
 									if(debug)cout << "fill Muon" << endl;
-									//mEv->Set(*oldEv2, inFile2);
+									inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+									mEv->Clear();
 									*mEv = *oldEv2;
+									mEv->IsSame(*oldEv2,true);
 									f.Fill();
 									globalEntry++;
 									nextEntry2=true;
@@ -734,4 +740,29 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 	return returnValue;
 }
 
+
+#ifndef __CINT__
+//we only compile with the main if we're not in the CINT.
+//you can still compile this file with the ACLiC compiler when you start a ROOT session, but then you 
+//should call MuonVetoToDS directly since a function titled 'main' cannot be used in this case. 
+int main(int argc, char* argv[])
+{
+	if(argc == 5)
+		//mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, string log){
+		return mergeKEdsTree(argv[1], argv[2], argv[3], argv[4]);
+	else if(argc == 8){
+		
+		Bool_t b ( (atoi(argv[6]) > 0) ? true : false); 
+		
+		
+		return mergeKEdsTree(argv[1], argv[2], argv[3], argv[4], atoi(argv[5]), b, atoi(argv[7]) );
+	}
+		
+	else {
+		cout << "Incorrect number of arguements: " << argc << ". You should provide 4 or 7 arguments." << endl;
+		return -1;
+	}
+		
+}
+#endif
 

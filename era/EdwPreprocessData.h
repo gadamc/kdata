@@ -28,7 +28,7 @@ class EdwPreprocessData : public TObject {
   ~EdwPreprocessData() ;
   EdwPreprocessData(time_t, time_t, string) ; /**< Standard constructor: period of validity and channel */
 
-  void Clear(); /**< clear data*/
+  virtual void Clear(); /**< clear data*/
   void DumpInfo() const ; /**< Print basic information on the data to stdout */
   time_t StartTime() const { return fStartTime; } /**< Period of validity of these data */
   time_t EndTime() const { return fEndTime; } /**< Period of validity of these data */

@@ -9,6 +9,7 @@
 #include "KHLAEvent.h"
 #include "KHLABolometerRecord.h"
 #include "KHLASambaRecord.h"
+#include "KHLABoloPulseRecord.h"
 #include "TProcessID.h"
 #include "TFile.h"
 #include "TTree.h"
@@ -65,25 +66,38 @@ void makeInputFile1(Int_t &j)
 	KHLAEvent *e1 = new KHLAEvent;
 	TTree *t = new TTree("t","K tree");
 	t->Branch("event", &e1);
+	t->BranchRef();
 	
 	for(Int_t i = 0; i < 8; i++)
 	{
-		//Int_t ObjectNumber = TProcessID::GetObjectCount();
+		Int_t ObjectNumber = TProcessID::GetObjectCount();
 		
-		KHLABolometerRecord *bolo = e1->AddBolo();
-		bolo->SetEnergyHeat(10*i+1);
-		bolo->SetDetectorNumber(1);
-		e1->SetStamp(j++);
-		
-		KHLASambaRecord *samba = e1->AddSamba();
-		samba->SetSambaEventNumber(i);
-		samba->SetSambaDAQNumber(7);
-		
-		bolo->SetSambaRecordNum(e1->GetNumSambas()-1);  
+		for(Int_t b = 0; b < 2; b++){
+			KHLABolometerRecord *bolo = e1->AddBolo();
+			bolo->SetEnergyRecoil(10*i+1 + 10000*(b+1));
+			bolo->SetDetectorNumber(1);
+			e1->SetStamp(j++);
+			
+			KHLASambaRecord *samba = e1->AddSamba();
+			samba->SetSambaEventNumber(i);
+			samba->SetSambaDAQNumber(7);
+			
+			bolo->SetSambaRecord(samba);  
+			
+			for(Int_t k = 0; k < 2; k++){
+				KHLABoloPulseRecord *pulse = e1->AddBoloPulse();
+				pulse->SetEnergy(10*i+3 + 10000*(b+1) + 1000*(k+1));
+				pulse->SetPulseIsCollectrodeType();
+				pulse->SetChannelNumber(k);
+				bolo->AddPulseRecord(pulse);
+				pulse->SetBolometerRecord(bolo);
+			}
+		}
+	
 		
 		t->Fill();
 		
-		//TProcessID::SetObjectCount(ObjectNumber);
+		TProcessID::SetObjectCount(ObjectNumber);
 		
 		e1->Clear("C");
 	}
@@ -103,24 +117,35 @@ void makeInputFile2(Int_t &j)
 	KHLAEvent *e2 = new KHLAEvent;
 	TTree *t = new TTree("t","K tree");
 	t->Branch("event", &e2);
+	t->BranchRef();
 	
 	for(Int_t i = 0; i < 8; i++)
 	{
-		//Int_t ObjectNumber = TProcessID::GetObjectCount();
-		
-		KHLABolometerRecord *bolo = e2->AddBolo();
-		bolo->SetEnergyHeat(10*i+201);
-		bolo->SetDetectorNumber(2);
-		e2->SetStamp(j++);
-		
-		KHLASambaRecord *samba = e2->AddSamba();
-		samba->SetSambaEventNumber(i);
-		samba->SetSambaDAQNumber(17);
-		
-		bolo->SetSambaRecordNum(e2->GetNumSambas()-1);  
+		Int_t ObjectNumber = TProcessID::GetObjectCount();
+		for(Int_t b = 0; b < 2; b++){
+			KHLABolometerRecord *bolo = e2->AddBolo();
+			bolo->SetEnergyRecoil(10*i+201 + 10000*(b+1));
+			bolo->SetDetectorNumber(2);
+			e2->SetStamp(j++);
+			
+			KHLASambaRecord *samba = e2->AddSamba();
+			samba->SetSambaEventNumber(i);
+			samba->SetSambaDAQNumber(17);
+			
+			bolo->SetSambaRecord(samba);  
+			
+			for(Int_t k = 0; k < 2; k++){
+				KHLABoloPulseRecord *pulse = e2->AddBoloPulse();
+				pulse->SetEnergy(10*i+203 + 10000*(b+1) + 1000*(k+1));
+				pulse->SetPulseIsCollectrodeType();
+				pulse->SetChannelNumber(k);
+				bolo->AddPulseRecord(pulse);
+				pulse->SetBolometerRecord(bolo);
+			}
+		}
 		
 		t->Fill();
-		//TProcessID::SetObjectCount(ObjectNumber);
+		TProcessID::SetObjectCount(ObjectNumber);
 		
 		e2->Clear("C");
 	}
@@ -145,6 +170,7 @@ void RunTest(const char *file, bool /*option*/)
 	KHLAEvent *e3 = new KHLAEvent;
 	TTree *t3 = new TTree("t","K tree");
 	t3->Branch("event", &e3);
+	t3->BranchRef();
 	
 	TFile *fr1 = new TFile("input1.root","read");
 	TTree *t1 = (TTree *)fr1->Get("t");
@@ -163,17 +189,20 @@ void RunTest(const char *file, bool /*option*/)
 	//e2->Clear("C");
 	t2->GetEntry(0);
 	t1->GetEntry(0);
+	t2->SetScanField(0);
+	t1->SetScanField(0);
 	
 	cout << "TTree::Scan for input1.root" << endl;
-	t1->Scan("fEnergyHeat:fDetectorNumber:fSambaEventNumber:fSambaDAQNumber","","colsize = 30");
+	t1->Scan("fEnergyRecoil:fDetectorNumber:fSambaEventNumber:fSambaDAQNumber:fEnergy:fBolometerRecordNum:fPulseType:fChannelNumber","","colsize = 30");
 	cout << endl;
 	
 	cout << "TTree::Scan for input2.root" << endl;
-	t2->Scan("fEnergyHeat:fDetectorNumber:fSambaEventNumber:fSambaDAQNumber","","colsize = 30");
+	t2->Scan("fEnergyRecoil:fDetectorNumber:fSambaEventNumber:fSambaDAQNumber:fEnergy:fBolometerRecordNum:fPulseType:fChannelNumber","","colsize = 30");
 	cout << endl;
 	
 	t2->GetEntry(0);
 	t1->GetEntry(0);
+
 	
 	//e3->SetAssignmentOptionNoTref(option);  
 	
@@ -187,7 +216,7 @@ void RunTest(const char *file, bool /*option*/)
 		
 		//uncomment the next line  to see the difference. This line is
 		//required for the assignment operator to work properly!
-		//t1->GetEntry(entry1);  //I've already called this!
+		t1->GetEntry(entry1);  //I've already called this!
 		
 		
 		*e3 = *e1;  //SEE THE ASSIGNMENT OPERATOR. 
@@ -199,7 +228,7 @@ void RunTest(const char *file, bool /*option*/)
 	
 	//uncomment the next line  to see the difference. This line is
 	//required for the assignment operator to work properly!
-	//t2->GetEntry(entry2);
+	t2->GetEntry(entry2);
 	
 	*e3 = *e2; 
 	t3->Fill();
@@ -211,7 +240,7 @@ void RunTest(const char *file, bool /*option*/)
 	for(Int_t i = 0; i < 3; i++){
 		//uncomment the next line  to see the difference. This line is
 		//required for the assignment operator to work properly!
-		//t1->GetEntry(entry1);
+		t1->GetEntry(entry1);
 		
 		*e3 = *e1;
 		t3->Fill();
@@ -223,7 +252,7 @@ void RunTest(const char *file, bool /*option*/)
 	for(Int_t i = 0; i < 3; i++){
 		//uncomment the next line  to see the difference. This line is
 		//required for the assignment operator to work properly!
-		//t2->GetEntry(entry2);
+		t2->GetEntry(entry2);
 		
 		*e3 = *e2;
 		t3->Fill();
@@ -248,10 +277,10 @@ void RunTest(const char *file, bool /*option*/)
 	TTree *tr3 = (TTree *)fr3->Get("t");
 	KHLAEvent *er3 = new KHLAEvent;
 	tr3->SetBranchAddress("event", &er3);
-	
+	tr3->SetScanField(0);
 	cout << "TTree::Scan for " << file << endl;
 	cout << "Should be in order first 3 events from input1, one event from input2, next 3 events from input1, next 3 events from input2" << endl;
-	tr3->Scan("fEnergyHeat:fDetectorNumber:fSambaEventNumber:fSambaDAQNumber","","colsize = 30");
+	tr3->Scan("fEnergyRecoil:fDetectorNumber:fSambaEventNumber:fSambaDAQNumber:fEnergy:fBolometerRecordNum:fPulseType:fChannelNumber","","colsize = 30");
 	cout << endl;
 	
 }

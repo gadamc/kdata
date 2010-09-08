@@ -29,8 +29,8 @@
 	
 	TString kdsLibrary = devPath + "/lib/libkds.so";
 	gSystem->Load(kdsLibrary.Data()); 
-	TString mergeScript = ".L " + devPath + "/kdsScripts/mergeKEdsTree.cc++"; 
-	gROOT->ProcessLine(mergeScript.Data());
+	TString mergeScript = ".L " + devPath + "/kds/mergeKEdsTree.cxx++"; 
+	//gROOT->ProcessLine(mergeScript.Data());
 
 	//defining input and outputpath, bolonames:
 	Int_t kNumberBolos=13;
@@ -40,7 +40,7 @@
 	"ID6", "ID401", "ID402",
 	"ID403", "ID404", "ID405", "GGA4"};
 	
-
+	TString command;
 	string kRoot=".root";
 	string kdst="dst_";
 	string kEds="Kds_";
@@ -65,8 +65,10 @@
 		out.append(kEds); out.append(kDetectorNames[i]);out.append(kDetectorNames[i+1]); out.append(kRoot);
 		cout << "loop 1" << endl;
 		cout << "merging " << in1 << " and " << in2 << endl;
-		mergeKEdsTree(in1, in2, out, log);
-		//in1.replace(in1.find("Bckgd"), 5,"Neutron" );
+		//mergeKEdsTree(in1, in2, out, log);
+	 command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	 gSystem->Exec(command.Data());
+	 //in1.replace(in1.find("Bckgd"), 5,"Neutron" );
 		//in2.replace(in2.find("Bckgd"), 5,"Neutron" );
 		//out.replace(out.find("Bckgd"), 5,"Neutron" );
 		//log.replace(log.find("Bckgd"), 5,"Neutron" );
@@ -96,7 +98,9 @@
 		out.append(kDetectorNames[i+2]); out.append(kDetectorNames[i+3]); out.append(kRoot);
 		cout << "loop 2" << endl;
 		cout << "merging " << in1 << " and " << in2 << endl;
-		mergeKEdsTree(in1, in2, out, log);
+		command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+		gSystem->Exec(command.Data());
+		//mergeKEdsTree(in1, in2, out, log);
 		//in1.replace(in1.find("Bckgd"), 5,"Neutron" );
 		//in2.replace(in2.find("Bckgd"), 5,"Neutron" );
 		//out.replace(out.find("Bckgd"), 5,"Neutron" );
@@ -111,7 +115,7 @@
 	
 	
 	//merging step3 
-		//3 single merging operations left (merge 4+4) merge(4+GGA4) -> merge (8+5)
+	//3 single merging operations left (merge 4+4) merge(4+GGA4) -> merge (8+5)
 	in1 = kOutputPath; 
 	in1.append("Kds_FID401FID402ID2ID3.root");
 	in2 = kOutputPath;
@@ -120,8 +124,12 @@
 	out.append("Kds_AlmostAll1.root");
 	log = kOutputPath;
 	log.append("Merge_AlmostAll1.log");
-	mergeKEdsTree(in1, in2, out, log);
-
+	//mergeKEdsTree(in1, in2, out, log);
+	cout << "step 3" << endl;
+	cout << "merging " << in1 << " and " << in2 << endl;
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	gSystem->Exec(command.Data());
+	
 	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll1.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AlmostAll1.log");
 	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AlmostAll1.log");
 	cout <<"Merging AlmosAll1 finished" << endl;
@@ -134,8 +142,12 @@
 	out.append("Kds_AlmostAll2.root");
 	log = kOutputPath;
 	log.append("Merge_AlmostAll2.log");
-	mergeKEdsTree(in1, in2, out, log);
-	
+	//mergeKEdsTree(in1, in2, out, log);
+	cout << "step 4" << endl;
+	cout << "merging " << in1 << " and " << in2 << endl;
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	gSystem->Exec(command.Data());
+
 	
 	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll2.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AlmostAll2.log");
 	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AlmostAll2.log", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll2.root");
@@ -149,8 +161,13 @@
 	out.append("Kds_AllBolos.root");
 	log = kOutputPath;
 	log.append("Merge_AllBolos.log");
-	mergeKEdsTree(in1, in2, out, log);	
+	//mergeKEdsTree(in1, in2, out, log);	
+	cout << "step 5" << endl;
+	cout << "merging " << in1 << " and " << in2 << endl;
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	gSystem->Exec(command.Data());
 
+	
 	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AllBolos.log");
 	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AllBolos.log");
 	cout <<"Merging AllBolos finished" << endl;

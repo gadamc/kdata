@@ -43,7 +43,7 @@ KHLAMuonModuleRecord& KHLAMuonModuleRecord::operator=(const KHLAMuonModuleRecord
 	return *this;
 }
 
-void KHLAMuonModuleRecord::CopyLocalMembers(const KHLAMuonModuleRecord &aRec)
+void KHLAMuonModuleRecord::CopyLocalMembers(const KHLAMuonModuleRecord &/*aRec*/)
 {
 	//SetEnergy(0, aRec.GetEnergy(0));
 	//SetEnergy(1, aRec.GetEnergy(1));

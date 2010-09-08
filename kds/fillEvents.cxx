@@ -97,7 +97,7 @@ int main(int /*argc*/, const char* /*argv[]*/)
 		if(gRandom->Rndm() < 0.5){
 			Int_t nMod = 1 + (Int_t)(3*gRandom->Rndm());
 						
-			for(Int_t i = 0; i < nMod; i++) {
+			for(Int_t j = 0; j < nMod; j++) {
 				bIsMuonEvent = true;
 				KHLAMuonModuleRecord* mMuonModule = mEv->AddMuonModule();
 				mMuonModule->SetModuleNumber(40*gRandom->Rndm());
@@ -113,14 +113,13 @@ int main(int /*argc*/, const char* /*argv[]*/)
 		else {
 						
 			Int_t nBolo = 1 + (gRandom->Poisson(0.95));
-			for (Int_t i = 0; i < nBolo; i++) {
+			for (Int_t j = 0; j < nBolo; j++) {
 				bIsBoloEvent = true;
 				KHLABolometerRecord* mBolo2 = mEv->AddBolo();
 				
 				mBolo2->SetQvalue(gRandom->Rndm());
 				mBolo2->SetEnergyRecoil(100.0*gRandom->Rndm());
 				mBolo2->SetEnergyIon(100.0*gRandom->Rndm());
-				mBolo2->SetEnergyHeat(100.0*gRandom->Rndm());
 				if(i==0) {
 					mBolo2->SetDetectorName("FID401",6);
 					mBolo2->SetDetectorNumber(5);

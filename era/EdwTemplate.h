@@ -48,7 +48,7 @@ class EdwTemplate : public OffsetFFT {
   /**< Constructor of EdwTemplate, defined by a given period [aStart,aEnd] for a given channel, computed from a list of runs aRuns  */
   EdwTemplate(time_t aStart, time_t aEnd, vector<string> aRuns, string aChannel, string aASCIIDir, string aPlotDir="None");
   /**< Constructor from asii file */
-  void Clear(); 
+  virtual void Clear(const Option_t *opt = ""); 
   /**< Clear the template */
   void DumpInfo() const ; /**< dump info but not all the trace points */
   void DumpTrace(string aFile) const ; /**< Dump trace points */

@@ -65,7 +65,7 @@ public:
 	Int_t GetRunMonth(void) const {return GetRunName()[1] - 'a' + 1;}
 	Int_t GetRunDay(void) const {return atoi(GetRunName().substr(2,2).c_str());}
 	
-	
+	void print(void);
 private:
 	Int_t fSambaEventNumber;  //the event number according to the Samba NTP record
 	Int_t fNtpDateSec;  //the DateSec according to the Samba NTP record

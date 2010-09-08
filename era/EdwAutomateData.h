@@ -20,7 +20,7 @@ class EdwAutomateData : public TObject {
  public:
   EdwAutomateData();
   ~EdwAutomateData();
-  void Clear(); /**< Resets the variables */
+  virtual void Clear(); /**< Resets the variables */
 
   time_t fDate; /**< Timestamp (standard Unix format) */
   Float_t fTBolo; /**< Bolometer temperature */

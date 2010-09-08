@@ -20,7 +20,7 @@ class EdwRunData : public TObject {
  public:
   EdwRunData();
   ~EdwRunData();
-  void Clear(); /**< Clear */
+  virtual void Clear(); /**< Clear */
   void Dump(); /**< Print most of the informations to stdout */
 
   string fRunName ; /**< Samba run name */

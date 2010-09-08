@@ -31,11 +31,11 @@ class EdwEvent : public TObject {
   /**< Returns a pulse from its channel name. If no pulse with such a name is found in the event, the NULL pointer is returned. */
   void PlotTraces(string aPlotName, Bool_t aPerBolo=0);
   /**< Plots all raw traces */
-  void Dump(string aFile="None") ; /**< Prints header and all traces to standard output */
+  virtual void Dump(string aFile="None") ; /**< Prints header and all traces to standard output */
   
   void AddPulse(EdwPulse* aPulse) { fPulses->Add(aPulse); } 
   /**< Adds an EdwPulse in the TObjArray structure */
-  void Clear() ; /**< Resets the event */
+  virtual void Clear(const Option_t *opt = "") ; /**< Resets the event */
 
  private:
   EdwEventHeader* fHeader ; /**< Event header */

@@ -42,10 +42,16 @@ KHLABoloPulseRecord& KHLABoloPulseRecord::operator=(const KHLABoloPulseRecord &a
 	return *this;
 }
 
-void KHLABoloPulseRecord::CopyLocalMembers(const KHLABoloPulseRecord &/*aRec*/)
+void KHLABoloPulseRecord::CopyLocalMembers(const KHLABoloPulseRecord &aRec)
 {
 	//nothing to do
 	
+	//fBolometerRecordNum = aRec.fBolometerRecordNum;  have to set this value manually
+	fBolometerRecord = 0;
+	
+	fEnergy = aRec.fEnergy;
+	fEnergyBaseline = aRec.fEnergyBaseline;
+	fBaselineNoise = aRec.fBaselineNoise;
 }
 
 KHLABoloPulseRecord::~KHLABoloPulseRecord(void)
@@ -78,6 +84,14 @@ void KHLABoloPulseRecord::InitializeMembers(void)
 	
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+	
+	fBolometerRecord = 0; 
+	
+	fEnergy = -99;
+	fEnergyBaseline = -99;
+	fBaselineNoise = -99;
+
+	
 }
 
 Bool_t KHLABoloPulseRecord::IsSame(const KHLABoloPulseRecord &aRec, Bool_t bPrint) const
@@ -95,6 +109,48 @@ Bool_t KHLABoloPulseRecord::IsSame(const KHLABoloPulseRecord &aRec, Bool_t bPrin
 		if(!bPrint)
 			return false;  //if we're not printing out, just return false at first failure
 		//the operator== method uses this functionality.
+	}
+	
+	/*if(fBolometerRecordNum != aRec.fBolometerRecordNum){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KHLABoloPulseRecord fBolometerRecordNum Not Equal. lhs: " 
+			<< fBolometerRecordNum << " != rhs " << aRec.fBolometerRecordNum << endl;		
+		else
+			return false;  
+	}
+	*/
+	
+	//HMM...if the following lines of code produce a lot of Not Equal messages to cout, its probably
+	//because I'm asking if two floating point values are exactly the same!
+	//this is inherently dangerous.  its probably better to specify an allowed 
+	//range that's on the order of machine error. 
+	
+	if(fEnergy != aRec.fEnergy){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KHLABoloPulseRecord fEnergy Not Equal. lhs: " 
+			<< fEnergy << " != rhs " << aRec.fEnergy << endl;		
+		else
+			return false;  
+	}
+	
+	if(fEnergyBaseline != aRec.fEnergyBaseline){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KHLABoloPulseRecord fEnergyBaseline Not Equal. lhs: " 
+			<< fEnergyBaseline << " != rhs " << aRec.fEnergyBaseline << endl;		
+		else
+			return false;  
+	}
+	
+	if(fBaselineNoise != aRec.fBaselineNoise){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KHLABoloPulseRecord fBaselineNoise Not Equal. lhs: " 
+			<< fBaselineNoise << " != rhs " << aRec.fBaselineNoise << endl;		
+		else
+			return false;  
 	}
 	
 	

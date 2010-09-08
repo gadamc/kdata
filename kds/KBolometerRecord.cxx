@@ -129,7 +129,7 @@ string KBolometerRecord::GetDetectorName(void) const
 {
 	string str=""; 
 	
-	if(fDetectorName==0) 
+	if(fDetectorName==0 || fDetectorNameSize == 0) 
 		return str;
 	
 	else return str.assign(fDetectorName, fDetectorNameSize);

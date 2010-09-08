@@ -16,7 +16,7 @@ EdwEventHeader::EdwEventHeader() : TObject() {
   fSambaDelay = 0;
 }
 
-void EdwEventHeader::Clear() {
+void EdwEventHeader::Clear(const Option_t* /*opt*/) {
   fRun="run-name";
   fNum = 0 ;
   this->SetDateSec(0);

@@ -290,7 +290,7 @@
 		662EC1AD12343BD3007E432B /* fillExample.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillExample.cc; sourceTree = "<group>"; };
 		662EC1AE12343BD3007E432B /* fillMuonVetoEvents.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillMuonVetoEvents.cc; sourceTree = "<group>"; };
 		662EC1AF12343BD3007E432B /* HowToFillEDS.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HowToFillEDS.txt; sourceTree = "<group>"; };
-		662EC1B012343BD3007E432B /* mergeKEdsTree.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mergeKEdsTree.cc; sourceTree = "<group>"; };
+		662EC1B012343BD3007E432B /* mergeKEdsTree.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mergeKEdsTree.cxx; path = ../kData/kds/mergeKEdsTree.cxx; sourceTree = "<group>"; };
 		662EC1B112343BD3007E432B /* processMuonVetoToKEDSOnKalinka.root.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = processMuonVetoToKEDSOnKalinka.root.C; sourceTree = "<group>"; };
 		662EC1B212343BD3007E432B /* rootScript_concatBoloEra.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatBoloEra.c; sourceTree = "<group>"; };
 		662EC1B312343BD3007E432B /* rootScript_concatMuonKEdwDS.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_concatMuonKEdwDS.c; sourceTree = "<group>"; };
@@ -299,6 +299,7 @@
 		662EC1B612343BD3007E432B /* rootScript_mergeKEdsTrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rootScript_mergeKEdsTrees.c; sourceTree = "<group>"; };
 		662EC1B712343BD3007E432B /* scriptStartMerge.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scriptStartMerge.sh; sourceTree = "<group>"; };
 		662EC1B812343BD3007E432B /* testMem.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testMem.C; sourceTree = "<group>"; };
+		6641B4B8123831BF0002C5A1 /* testAllEventsForUniqueIDs.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testAllEventsForUniqueIDs.cxx; path = ../kData/kds/testAllEventsForUniqueIDs.cxx; sourceTree = "<group>"; };
 		66834214122D710300A73231 /* allPassOne_GSEventNumbers */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = allPassOne_GSEventNumbers; path = ../kData/bin/allPassOne_GSEventNumbers; sourceTree = SOURCE_ROOT; };
 		66834215122D710300A73231 /* breakupKDataFile */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = breakupKDataFile; path = ../kData/bin/breakupKDataFile; sourceTree = SOURCE_ROOT; };
 		66834216122D710300A73231 /* edwrootana */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = edwrootana; path = ../kData/bin/edwrootana; sourceTree = SOURCE_ROOT; };
@@ -307,6 +308,12 @@
 		6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEventTest.cxx; path = ../kData/kds/fillEventTest.cxx; sourceTree = SOURCE_ROOT; };
 		6687D1C3122F863B005AD0F9 /* KMergeKds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMergeKds.h; sourceTree = "<group>"; };
 		6687D1C4122F863B005AD0F9 /* KMergeKds.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeKds.cxx; sourceTree = "<group>"; };
+		66E03A511237CBFD00415B79 /* calitransfer.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = calitransfer.cxx; path = ../kData/kera/calitransfer.cxx; sourceTree = SOURCE_ROOT; };
+		66E03A521237CBFD00415B79 /* eventFinderTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eventFinderTest.cxx; path = ../kData/kera/eventFinderTest.cxx; sourceTree = SOURCE_ROOT; };
+		66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KEraEventFinder.cxx; path = ../kData/kera/KEraEventFinder.cxx; sourceTree = SOURCE_ROOT; };
+		66E03A541237CBFD00415B79 /* KEraEventFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KEraEventFinder.h; path = ../kData/kera/KEraEventFinder.h; sourceTree = SOURCE_ROOT; };
+		66E03A551237CBFD00415B79 /* KFileTransfer.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KFileTransfer.cxx; path = ../kData/kera/KFileTransfer.cxx; sourceTree = SOURCE_ROOT; };
+		66E03A561237CBFD00415B79 /* KFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KFileTransfer.h; path = ../kData/kera/KFileTransfer.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -354,6 +361,8 @@
 		6610DE2A121ED8080047036E /* executables */ = {
 			isa = PBXGroup;
 			children = (
+				662EC1B012343BD3007E432B /* mergeKEdsTree.cxx */,
+				6641B4B8123831BF0002C5A1 /* testAllEventsForUniqueIDs.cxx */,
 				6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */,
 				6610DDEE121ECC440047036E /* allPassOne_GSEventNumbers.cxx */,
 				6610DDEF121ECC440047036E /* breakupKDataFile.cxx */,
@@ -664,6 +673,12 @@
 		6610E7CA122703DA0047036E /* kera */ = {
 			isa = PBXGroup;
 			children = (
+				66E03A511237CBFD00415B79 /* calitransfer.cxx */,
+				66E03A521237CBFD00415B79 /* eventFinderTest.cxx */,
+				66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */,
+				66E03A541237CBFD00415B79 /* KEraEventFinder.h */,
+				66E03A551237CBFD00415B79 /* KFileTransfer.cxx */,
+				66E03A561237CBFD00415B79 /* KFileTransfer.h */,
 				6610E7CB122703DA0047036E /* KEraRawEventReader.cxx */,
 				6610E7CC122703DA0047036E /* KEraRawEventReader.h */,
 				6610E7CD122703DA0047036E /* KEraRawFileIO.cxx */,
@@ -683,7 +698,6 @@
 				662EC1AD12343BD3007E432B /* fillExample.cc */,
 				662EC1AE12343BD3007E432B /* fillMuonVetoEvents.cc */,
 				662EC1AF12343BD3007E432B /* HowToFillEDS.txt */,
-				662EC1B012343BD3007E432B /* mergeKEdsTree.cc */,
 				662EC1B112343BD3007E432B /* processMuonVetoToKEDSOnKalinka.root.C */,
 				662EC1B212343BD3007E432B /* rootScript_concatBoloEra.c */,
 				662EC1B312343BD3007E432B /* rootScript_concatMuonKEdwDS.c */,

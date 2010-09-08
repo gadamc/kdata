@@ -24,7 +24,7 @@ class KHLABolometerRecord;
 class KHLABoloPulseRecord;
 class KHLAMuonModuleRecord;
 class KRawEvent;
-class TBits;
+//class TBits;
 
 const Char_t kHLAEventName[] = "HLA";
 const Char_t kHLAClassName[] = "KHLAEvent";
@@ -50,7 +50,7 @@ public:
 	KHLAEvent& operator=(const KEvent &anEvent);
 	KHLAEvent& operator=(const KRawEvent &anEvent);
 	KHLAEvent& operator=(const KHLAEvent &anEvent);
-	void AddSubRecords(const KHLAEvent &ev);
+	Int_t AddSubRecords(const KHLAEvent &ev, Bool_t skimNoise = false);
 	
 	//virtual void Set(KRawEvent &ev, TFile &f, Int_t anEntry);
 	//virtual void Set(KRawEvent &ev, KDataReader &aReader);
@@ -59,7 +59,7 @@ public:
 	//These methods access commonly requested quantities without
 	//having to dig down into the branch structure.
 	Double_t GetSumBoloEnergyRecoil(void);
-	Double_t GetSumBoloEnergyHeat(void);
+	//Double_t GetSumBoloEnergyHeat(void);
 	Double_t GetSumBoloEnergyIon(void);
 	//Int_t GetNumberBoloHits(void);
 	
@@ -87,7 +87,7 @@ public:
 	//its best to use the methods above to get pointers
 	//directly to the subRecords
 	TClonesArray* GetSambaRecords(void) const {return fSamba;}
-	TClonesArray* GetBoloSubRecords(void) const {return fBolo;}
+	TClonesArray* GetBoloRecords(void) const {return fBolo;}
 	TClonesArray* GetBoloPulseRecords(void) const {return fBoloPulse;}
 	TClonesArray* GetMuonModuleRecords(void) const {return fMuonModule;}
 	
@@ -194,6 +194,9 @@ private:
 	void CopyLocalMembers(const KHLAEvent &anEvent);
 	void CopyClonesArrays(const KHLAEvent &anEvent);
 	void CopyFromRawEvent(const KRawEvent &anEvent);
+	
+	UInt_t GetLargestUniqueIDNumber(void);
+
 	
 	ClassDef(KHLAEvent ,1);
 };

@@ -25,8 +25,8 @@ KBoloPulseRecord::KBoloPulseRecord(void)
 	
 	//we must take care of members on the heap differently
 	//than members created on the stack.
-	fChannelNameSize=0;
-	fChannelName=0;
+	//fChannelNameSize=0;
+	//fChannelName=0;
 	
 }
 
@@ -34,9 +34,9 @@ KBoloPulseRecord::KBoloPulseRecord(const KBoloPulseRecord &aRec)
 : KSubRecord(aRec)
 {
 	CopyLocalMembers(aRec);
-	fChannelNameSize=0;
-	fChannelName=0;
-	SetChannelName(aRec.GetChannelName().data(), aRec.GetChannelNameSize());
+	//fChannelNameSize=0;
+	//fChannelName=0;
+	//SetChannelName(aRec.GetChannelName().data(), aRec.GetChannelNameSize());
 	
 }
 
@@ -47,16 +47,18 @@ KBoloPulseRecord& KBoloPulseRecord::operator=(const KBoloPulseRecord &aRec)
 	this->KSubRecord::operator=(aRec);
 	CopyLocalMembers(aRec);
 	
-	SetChannelName(aRec.GetChannelName().data(), aRec.GetChannelNameSize());
+	//SetChannelName(aRec.GetChannelName().data(), aRec.GetChannelNameSize());
 	
 	return *this;
 }
 
 void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
 {
-	SetPeakAmp(aRec.GetPeakAmp());
-	SetBaselineMean(aRec.GetBaselineMean());
-	SetBaselineFWHM(aRec.GetBaselineFWHM());
+	//SetPeakAmp(aRec.GetPeakAmp());
+	//SetBaselineMean(aRec.GetBaselineMean());
+	//SetBaselineFWHM(aRec.GetBaselineFWHM());
+	fPulseType = aRec.fPulseType;
+	fChannelNumber = aRec.fChannelNumber;
 }
 
 KBoloPulseRecord::~KBoloPulseRecord(void)
@@ -64,11 +66,13 @@ KBoloPulseRecord::~KBoloPulseRecord(void)
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
 	
+	/*
 	if(fChannelName!=0){
 		delete[] fChannelName;
 		fChannelNameSize=0;
 		fChannelName=0;
 	}
+	 */
 }
 
 void KBoloPulseRecord::Clear(Option_t *anopt)
@@ -83,11 +87,11 @@ void KBoloPulseRecord::Clear(Option_t *anopt)
 	KSubRecord::Clear(anopt);
 	
   //Clear and delete local objects here. 
-	if(fChannelName!=0){
+	/*if(fChannelName!=0){
 		delete[] fChannelName;
 		fChannelNameSize=0;
 		fChannelName=0;
-	}
+	}*/
 	
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
@@ -99,14 +103,16 @@ void KBoloPulseRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	
-	SetPeakAmp(-99.0);
-	SetBaselineMean(-99.0);
-	SetBaselineFWHM(-99.0);
+	//SetPeakAmp(-99.0);
+	//SetBaselineMean(-99.0);
+	//SetBaselineFWHM(-99.0);
+	fPulseType = -99;   
+	fChannelNumber = -99;
 	
 }
 
 
-void KBoloPulseRecord::SetChannelName(const Char_t* aWord, Int_t aSize)
+/*void KBoloPulseRecord::SetChannelName(const Char_t* aWord, Int_t aSize)
 {
 	if(aSize!=fChannelNameSize){
 		if(fChannelName!=0){
@@ -119,7 +125,7 @@ void KBoloPulseRecord::SetChannelName(const Char_t* aWord, Int_t aSize)
 	}
 	if(aSize>0) memcpy(fChannelName, aWord, fChannelNameSize*sizeof(Char_t));
 }
-
+*/
 Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) const
 {
 	Bool_t bIsEqual = true; //assume its true, then test for differences
@@ -131,8 +137,26 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
 			return false;  //if we're not printing out, just return false at first failure
 		//the operator== method uses this functionality.
 	}
-
-	if(fChannelNameSize != aRec.fChannelNameSize){
+	
+	if(fPulseType != aRec.fPulseType){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KBoloPulseRecord fPulseType Not Equal. lhs: " 
+			<< fPulseType << " != rhs " << aRec.fPulseType << endl;		
+		else
+			return false;  
+	}
+	
+	if(fChannelNumber != aRec.fChannelNumber){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KBoloPulseRecord fChannelNumber Not Equal. lhs: " 
+			<< fChannelNumber << " != rhs " << aRec.fChannelNumber << endl;		
+		else
+			return false;  
+	}
+	
+	/*if(fChannelNameSize != aRec.fChannelNameSize){
 		bIsEqual = false;
 		if (bPrint) 
 			cout << "KBoloPulseRecord fChannelNameSize Not Equal. lhs: " 
@@ -149,8 +173,9 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
 		else
 			return false;  
 	}
+	*/
 	
-	if(fPeakAmp != aRec.fPeakAmp){
+	/*if(fPeakAmp != aRec.fPeakAmp){
 		bIsEqual = false;
 		if (bPrint) 
 			cout << "KBoloPulseRecord fPeakAmp Not Equal. lhs: " 
@@ -175,7 +200,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
 			<< fBaselineFWHM << " != rhs " << aRec.fBaselineFWHM << endl;		
 		else
 			return false;  
-	}
+	}*/
 	
 	return bIsEqual;
 }

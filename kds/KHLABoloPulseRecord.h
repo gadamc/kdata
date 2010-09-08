@@ -11,7 +11,8 @@
 #define __KHLABOLOPULSERECORD_H__
 
 #include "KBoloPulseRecord.h"
-
+#include "KHLABolometerRecord.h"
+#include "TRef.h"
 
 class KHLABoloPulseRecord : public KBoloPulseRecord
 {
@@ -28,6 +29,18 @@ public:
 	Bool_t operator!=(const KHLABoloPulseRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
 
+	Double32_t GetEnergy(void) const {return fEnergy;}
+	Double32_t GetEnergyBaseline(void) const {return fEnergyBaseline;}
+	Double32_t GetBaselineNoise(void) const {return fBaselineNoise;}
+	
+	void SetEnergy(Double32_t aVal){fEnergy = aVal;}
+	void SetEnergyBaseline(Double32_t aVal){fEnergyBaseline = aVal;}
+	void SetBaselineNoise(Double32_t aVal){fBaselineNoise = aVal;}
+	
+	KHLABolometerRecord* GetBolometerRecord(void) const {return (KHLABolometerRecord*)fBolometerRecord.GetObject();	}
+	void SetBolometerRecord(KHLABolometerRecord *aRec) {fBolometerRecord = aRec;	}
+	//void SetBolometerRecordNum(Int_t aVal){fBolometerRecordNum = aVal;}
+	
 private:
 
 	//derived quantites such as
@@ -35,14 +48,18 @@ private:
 	//Double32_t fRiseTime;
 	//Double32_t fDecayTime;
 	
-	//TRef fHLABolometerRecord; //the HLA SingleBolo Sub Record associated with this pulse record
-	//TRef fRawPulseSubRecord; //the Raw PulseSub Record associated with this pulse record
+	TRef fBolometerRecord;  //the value of this is the entry number of the TClonesArray that holds the KHLABolometerRecord object that this pulse belongs to.
+
+	Double32_t fEnergy;
+	Double32_t fEnergyBaseline;
+	Double32_t fBaselineNoise;
+	
 	
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLABoloPulseRecord &aRec);
 	
-  ClassDef(KHLABoloPulseRecord,1);
+  ClassDef(KHLABoloPulseRecord,2);
 };
 
 

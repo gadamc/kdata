@@ -81,16 +81,27 @@ int main(int argc, char* argv[] )
 		//mEout->Set(*mEv,fEdsFile);
 		*mEout = *mEv;
 		
-		mEout->IsSame(*mEv, true); //is there a problem with the Stamp? 
+		mEout->IsSame(*mEv, true);  
 		
 		if(mEv->GetNumBolos() > 0){
 			//manually clear out all of the bolo sub records and
 			//samba records. then add them back in accordingly if they
 			//are valid. 
-			mEout->GetBoloSubRecords()->Clear("C");
+			
+			mEout->ClearArrays("C");
+			if(mEout->AddSubRecords(*mEv, true) > 0) // Add the SubRecords, but only use the skimNoise option.
+				isGoodEvent = true; 
+			
+			//see KHLAEvent::AddSubRecords;
+			
+			/*
+			mEout->GetBoloRecords()->Clear("C");
 			mEout->GetSambaRecords()->Clear("C");
+			mEout->GetBoloPulseRecords()->Clear("C");
 			mEout->SetNumBolo(0);
 			mEout->SetNumSamba(0);
+			mEout->SetNumBoloPulse(0);
+			
 			for(Int_t i = 0; i < mEv->GetNumBolos(); i++){
 				if(mEv->GetBolo(i)->GetEventFlag() > 0 &&
 					 (fEventFlagCut > 0 ? mEv->GetBolo(i)->GetEventFlag()==fEventFlagCut : true)
@@ -101,23 +112,28 @@ int main(int argc, char* argv[] )
 					KHLABolometerRecord *outBolo = mEout->AddBolo();
 					KHLASambaRecord *outSamba = mEout->AddSamba();
 					*outBolo = *inBolo;  //copy the bolo sub record
-					KHLASambaRecord *inSamba = mEv->GetSamba(inBolo->GetSambaRecordNum());
+					//KHLASambaRecord *inSamba = mEv->GetSamba(inBolo->GetSambaRecordNum());
+					KHLASambaRecord *inSamba = inBolo->GetSambaRecord();
 					//cout << "Copying Samba Record" << endl;
 					*outSamba = *inSamba; //copy the samba sub record information 
 					//cout << "Setting Samba Record" << endl;
 					
 					//cout << "GetSambaRecord in: " << inBolo->GetSambaRecord() << endl;
 					//cout << "GetSambaRecord out: " << outBolo->GetSambaRecord() << endl;
-					outBolo->SetSambaRecordNum(mEout->GetNumSambas()-1);
+					outBolo->SetSambaRecord(outSamba);
 					//cout << "GetSambaRecord in: " << inBolo->GetSambaRecord() << endl;
 					//cout << "GetSambaRecord out: " << outBolo->GetSambaRecord() << endl;
+				
+					for(UInt_t j = 0; j < inBolo->GetNumPulseRecords(); j++){
+						//need to copy the pulse records!
+					}
 					
 				}
 			}
-			
+			*/
 		}
 		
-		if(mEv->GetNumMuonModules() > 0)
+		if(mEout->GetNumMuonModules() > 0)
 			isGoodEvent = true;
 		
 		if(isGoodEvent)

@@ -44,7 +44,7 @@ class EdwEventHeader : public TObject {
   /**< Set Samba delay */
   void SetTriggerBit(UInt_t aNum, UInt_t aBit) ;
   /**< Set the trigger bit num. 1 or 2 */
-  void Clear() ; /**< Clear the header */
+  virtual void Clear(const Option_t *opt = "") ; /**< Clear the header */
 
  private:
   string fRun ; /**< Run name */

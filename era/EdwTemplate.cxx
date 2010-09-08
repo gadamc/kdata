@@ -47,7 +47,7 @@ void EdwTemplate::SetValidity(time_t aTStart, time_t aTEnd) {
 	
 }
 
-void EdwTemplate::Clear() {
+void EdwTemplate::Clear(const Option_t * /*opt*/) {
   fBuildRuns.clear();
   fTrace.clear();
   fEventsUsed.clear();
