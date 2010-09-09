@@ -45,8 +45,7 @@ KHLAMuonModuleRecord& KHLAMuonModuleRecord::operator=(const KHLAMuonModuleRecord
 
 void KHLAMuonModuleRecord::CopyLocalMembers(const KHLAMuonModuleRecord &/*aRec*/)
 {
-	//SetEnergy(0, aRec.GetEnergy(0));
-	//SetEnergy(1, aRec.GetEnergy(1));
+	
 	
 }
 
@@ -80,8 +79,8 @@ void KHLAMuonModuleRecord::InitializeMembers(void)
 	
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-	//SetEnergy(0, -99.0);
-	//SetEnergy(1, -99.0);
+
+	
 }
 
 Bool_t KHLAMuonModuleRecord::IsSame(const KHLAMuonModuleRecord &aRec, Bool_t bPrint) const
@@ -101,18 +100,7 @@ Bool_t KHLAMuonModuleRecord::IsSame(const KHLAMuonModuleRecord &aRec, Bool_t bPr
 		//the operator== method uses this functionality.
 	}
 	
-	
-	
-	/*for(Int_t i = 0; i < kNumPmtsPerMuonModule; i++){
-		if(fEnergy[i] != aRec.fEnergy[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLAMuonModuleRecord fEnergy["<<i<<"] Not Equal. lhs: " 
-				<< fEnergy[i] << " != rhs " << aRec.fEnergy[i] << endl;		
-			else
-				return false;  
-		}
-	}*/
+
 	
 	return bIsEqual;
 }

@@ -52,7 +52,6 @@ void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
 	SetQvalue(aRec.GetQvalue());
 	SetEnergyRecoil(aRec.GetEnergyRecoil());
 	SetEnergyIon(aRec.GetEnergyIon());
-	//SetEnergyHeat(aRec.GetEnergyHeat());
 	
 	SetEventFlag(aRec.GetEventFlag());
 	SetChi2Flag(aRec.GetChi2Flag());
@@ -61,37 +60,15 @@ void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
 	SetVoltageFlag(aRec.GetVoltageFlag());
 	SetIonPulseTimeOffset(aRec.GetIonPulseTimeOffset());	
 	
-	//SetFiducialVolume(aRec.GetFiducialVolume());
 	fIonFlags = aRec.fIonFlags;
 	fIonFlags.Compact();
 	
-	//aRec.GetIonFlags(fIonFlags, kSizeOfIonFlags);
-	
-	//fSambaRecordNum = aRec.fSambaRecordNum;  //don't copy this value?, it might need to change.
-	//fSambaRecordNum = -1;
-	fSambaRecord = 0;
+	fSambaRecord = 0;  //will need to set these by hand!
 	fPulseRecords.Clear();
-	
-	//fPulseRecordNums.clear(); //clear the vector holding the pulse numbers. These will need to be 
-	//added manually. 
-	
-	/*for(Int_t i = 0; i < 2; i++){
-		SetEnergyCollectrode(i, aRec.GetEnergyCollectrode(i) );
-		SetEnergyVeto(i, aRec.GetEnergyVeto(i));
-		SetEnergyGuard(i, aRec.GetEnergyGuard(i) );
-		SetEnergyBaselineCollectrode(i, aRec.GetEnergyBaselineCollectrode(i));
-		SetEnergyBaselineVeto(i, aRec.GetEnergyBaselineVeto(i));
-		SetEnergyBaselineGuard(i, aRec.GetEnergyBaselineGuard(i) );
-		SetBaselineNoiseCollectrode(i, aRec.GetBaselineNoiseCollectrode(i));
-		SetBaselineNoiseVeto(i, aRec.GetBaselineNoiseVeto(i));
-		SetBaselineNoiseGuard(i, aRec.GetBaselineNoiseGuard(i));
-	}*/
 	
 	SetEnergyIonFiducial(aRec.GetEnergyIonFiducial());
 	SetEnergySumIonChannels(aRec.GetEnergySumIonChannels());
 	SetBaselineIonFiducial(aRec.GetBaselineIonFiducial());
-	//SetEnergyBaselineHeat(aRec.GetEnergyBaselineHeat());
-	//SetBaselineNoiseHeat(aRec.GetBaselineNoiseHeat());
 	
 	fCuts = aRec.fCuts;
 	fCuts.Compact();
@@ -129,7 +106,6 @@ void KHLABolometerRecord::InitializeMembers(void)
 	SetQvalue(-99.0);
 	SetEnergyRecoil(-99.0);
 	SetEnergyIon(-99.0);
-	//SetEnergyHeat(-99.0);
 	
 	SetEventFlag(-99);
 	SetChi2Flag(-99);
@@ -137,68 +113,18 @@ void KHLABolometerRecord::InitializeMembers(void)
 	//SetTriggerBit2(-99);
 	SetVoltageFlag(-99);
 	SetIonPulseTimeOffset(-99);	
-	
-	//SetFiducialVolume(-99.0);
-	
+		
 	fIonFlags.Clear();
 	
-	//fSambaRecordNum = -1;
 	fSambaRecord = 0;
-	fPulseRecords.Clear();  //Clear or Delete???
-	
-	/*for(Int_t i = 0; i < 2; i++){
-		SetEnergyCollectrode(i, -99.0 );
-		SetEnergyVeto(i, -99.0);
-		SetEnergyGuard(i, -99.0 );
-		SetEnergyBaselineCollectrode(i, -99.0);
-		SetEnergyBaselineVeto(i, -99.0);
-		SetEnergyBaselineGuard(i, -99.0 );
-		SetBaselineNoiseCollectrode(i, -99.0);
-		SetBaselineNoiseVeto(i, -99.0);
-		SetBaselineNoiseGuard(i, -99.0);
-	}*/
+	fPulseRecords.Clear();  
 	
 	SetEnergyIonFiducial(-99.0);
 	SetEnergySumIonChannels(-99.0);
 	SetBaselineIonFiducial(-99.0);
-	//SetEnergyBaselineHeat(-99.0);
-	//SetBaselineNoiseHeat(-99.0);
 	
-	//fPulseRecordNums.clear();
 	fCuts.Clear();  //resets all the values to zero and the array size to zero.
 }
-
-/* 
-Int_t KHLABolometerRecord::GetIonFlagNumber(Int_t index) const
-{
-	if(index < kSizeOfIonFlags && index >= 0){
-		return fIonFlags[index];
-	}
-	else
-		return -1;
-}
-
-Bool_t KHLABolometerRecord::GetIonFlags(Int_t* anArray, Int_t aSize) const
-{
-	if(aSize == kSizeOfIonFlags){
-		memcpy(anArray, fIonFlags, sizeof(Int_t)*kSizeOfIonFlags);
-		return true;
-	}
-	else
-		return false;
-}
- */
-/*
-Int_t KHLABolometerRecord::SetIonFlagNumber(Int_t index, Int_t aVal)
-{
-	if(index < kSizeOfIonFlags && index >= 0){
-		fIonFlags[index] = aVal;
-		return fIonFlags[index];
-	}
-	else
-		return -1;
-}
-*/
 
 Bool_t KHLABolometerRecord::SetIonFlags(Int_t *anArray, Int_t aSize)
 {
@@ -254,45 +180,6 @@ Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrin
 			return false;  
 	}
 	
-	/*
-	if(fEnergyHeat != aRec.fEnergyHeat){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fEnergyHeat Not Equal. lhs: " 
-			<< fEnergyHeat << " != rhs " << aRec.fEnergyHeat << endl;		
-		else
-			return false;  
-	}
-	
-	for(Int_t i = 0; i < kSizeOfIonFlags; i++){
-		if(fIonFlags[i] != aRec.fIonFlags[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fIonFlags["<<i<<"] Not Equal. lhs: " 
-				<< fIonFlags[i] << " != rhs " << aRec.fIonFlags[i] << endl;		
-			else
-				return false;  
-		}
-	}
-	*/
-	/*if(fTriggerBit1 != aRec.fTriggerBit1){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fTriggerBit1 Not Equal. lhs: " 
-			<< fTriggerBit1 << " != rhs " << aRec.fTriggerBit1 << endl;		
-		else
-			return false;  
-	}
-	
-	if(fTriggerBit2 != aRec.fTriggerBit2){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fTriggerBit2 Not Equal. lhs: " 
-			<< fTriggerBit2 << " != rhs " << aRec.fTriggerBit2 << endl;		
-		else
-			return false;  
-	}*/
-	
 	if(fVoltageFlag != aRec.fVoltageFlag){
 		bIsEqual = false;
 		if (bPrint) 
@@ -311,99 +198,7 @@ Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrin
 			return false;  
 	}
 	
-	/*if(fFiducialVolume != aRec.fFiducialVolume){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fFiducialVolume Not Equal. lhs: " 
-			<< fFiducialVolume << " != rhs " << aRec.fFiducialVolume << endl;		
-		else
-			return false;  
-	}*/
 	
-/*
-	for(Int_t i = 0; i < 2; i++){
-		if(fEnergyCollectrode[i] != aRec.fEnergyCollectrode[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fEnergyCollectrode[" << i << "] Not Equal. lhs: " 
-				<< fEnergyCollectrode[i] << " != rhs " << aRec.fEnergyCollectrode[i] << endl;		
-			else
-				return false;  
-		}
-		
-		if(fEnergyVeto[i] != aRec.fEnergyVeto[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fEnergyVeto[" << i << "] Not Equal. lhs: " 
-				<< fEnergyVeto[i] << " != rhs " << aRec.fEnergyVeto[i] << endl;		
-			else
-				return false;  
-		}
-		
-		if(fEnergyGuard[i] != aRec.fEnergyGuard[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fEnergyGuard[" << i << "] Not Equal. lhs: " 
-				<< fEnergyGuard[i] << " != rhs " << aRec.fEnergyGuard[i] << endl;		
-			else
-				return false;  
-		}
-		
-		if(fEnergyBaselineCollectrode[i] != aRec.fEnergyBaselineCollectrode[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fEnergyBaselineCollectrode[" << i << "] Not Equal. lhs: " 
-				<< fEnergyBaselineCollectrode[i] << " != rhs " << aRec.fEnergyBaselineCollectrode[i] << endl;		
-			else
-				return false;  
-		}
-		
-		if(fEnergyBaselineVeto[i] != aRec.fEnergyBaselineVeto[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fEnergyBaselineVeto[" << i << "] Not Equal. lhs: " 
-				<< fEnergyBaselineVeto[i] << " != rhs " << aRec.fEnergyBaselineVeto[i] << endl;		
-			else
-				return false;  
-		}
-		
-		if(fEnergyBaselineGuard[i] != aRec.fEnergyBaselineGuard[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fEnergyBaselineGuard[" << i << "] Not Equal. lhs: " 
-				<< fEnergyBaselineGuard[i] << " != rhs " << aRec.fEnergyBaselineGuard[i] << endl;			
-			else
-				return false;  
-		}
-		
-		if(fBaselineNoiseCollectrode[i] != aRec.fBaselineNoiseCollectrode[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fBaselineNoiseCollectrode[" << i << "] Not Equal. lhs: " 
-				<< fBaselineNoiseCollectrode[i] << " != rhs " << aRec.fBaselineNoiseCollectrode[i] << endl;		
-			else
-				return false;  
-		}
-		
-		if(fBaselineNoiseVeto[i] != aRec.fBaselineNoiseVeto[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fBaselineNoiseVeto[" << i << "] Not Equal. lhs: " 
-				<< fBaselineNoiseVeto[i] << " != rhs " << aRec.fBaselineNoiseVeto[i] << endl;	
-			else
-				return false;  
-		}
-		
-		if(fBaselineNoiseGuard[i] != aRec.fBaselineNoiseGuard[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KHLABolometerRecord fBaselineNoiseGuard[" << i << "] Not Equal. lhs: " 
-				<< fBaselineNoiseGuard[i] << " != rhs " << aRec.fBaselineNoiseGuard[i] << endl;		
-			else
-				return false;  
-		}
-	}
-	*/	
 	if(fEnergyIonFiducial != aRec.fEnergyIonFiducial){
 		bIsEqual = false;
 		if (bPrint) 
@@ -431,25 +226,6 @@ Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrin
 		else
 			return false;  
 	}
-	/*
-	if(fEnergyBaselineHeat != aRec.fEnergyBaselineHeat){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fEnergyBaselineHeat Not Equal. lhs: " 
-			<< fEnergyBaselineHeat << " != rhs " << aRec.fEnergyBaselineHeat << endl;		
-		else
-			return false;  
-	}
-	
-	if(fBaselineNoiseHeat != aRec.fBaselineNoiseHeat){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fBaselineNoiseHeat Not Equal. lhs: " 
-			<< fBaselineNoiseHeat << " != rhs " << aRec.fBaselineNoiseHeat << endl;		
-		else
-			return false;  
-	}
-	*/
 	
 	if(fCuts != aRec.fCuts){
 		bIsEqual = false;
@@ -544,70 +320,6 @@ Double32_t KHLABolometerRecord::GetBaselineNoiseGuard(Int_t i) const
 	else return -99999.;
 }
 
-
-void KHLABolometerRecord::SetEnergyCollectrode(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fEnergyCollectrode[i] = aVal;
-	
-}
-
-void KHLABolometerRecord::SetEnergyVeto(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fEnergyVeto[i] = aVal;
-	
-}
-
-void KHLABolometerRecord::SetEnergyGuard(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fEnergyGuard[i] = aVal;
-	
-}
-
-void KHLABolometerRecord::SetEnergyBaselineCollectrode(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fEnergyBaselineCollectrode[i] = aVal;
-
-}
-
-void KHLABolometerRecord::SetEnergyBaselineVeto(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fEnergyBaselineVeto[i] = aVal;
-	
-}
-
-void KHLABolometerRecord::SetEnergyBaselineGuard(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fEnergyBaselineGuard[i] = aVal;
-	
-}
-
-void KHLABolometerRecord::SetBaselineNoiseCollectrode(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fBaselineNoiseCollectrode[i] = aVal;
-	
-}
-
-void KHLABolometerRecord::SetBaselineNoiseVeto(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fBaselineNoiseVeto[i] = aVal;
-	
-}
-
-void KHLABolometerRecord::SetBaselineNoiseGuard(Int_t i, Double_t aVal) 
-{
-	if(i >= 0 && i < 2)
-		fBaselineNoiseGuard[i] = aVal;
-
-}
-
 */
 
 void KHLABolometerRecord::SetCuts(const TBits *mCuts)
@@ -675,31 +387,6 @@ Bool_t KHLABolometerRecord::TestIonFlag(Int_t i) const
 	return fIonFlags.TestBitNumber(i);
 	
 }
-/*
-void KHLABolometerRecord::SetPulseRecordNum(Int_t aNum, UInt_t index)
-{
-	try {
-		fPulseRecordNums.at(index) = aNum;
-	}
-	catch (out_of_range &e) {
-		cerr << "KHLABolometerRecord::SetPulseRecordNum. " << index << " is too large" << endl;
-	}	
-}
-
-
-
-Int_t KHLABolometerRecord::GetPulseRecordNumAt(UInt_t index) const 
-{	
-	try {
-		return fPulseRecordNums.at(index);
-	}
-	catch (out_of_range &e) {
-		cerr << "KHLABolometerRecord::GetPulseRecordAt. " << index << " is too large" << endl;
-		return -1;
-	}
-	
-}
-*/
 
 void KHLABolometerRecord::AddPulseRecord(KHLABoloPulseRecord* aPulseRecord)
 {

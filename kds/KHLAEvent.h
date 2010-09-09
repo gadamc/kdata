@@ -51,21 +51,15 @@ public:
 	KHLAEvent& operator=(const KRawEvent &anEvent);
 	KHLAEvent& operator=(const KHLAEvent &anEvent);
 	Int_t AddSubRecords(const KHLAEvent &ev, Bool_t skimNoise = false);
-	
-	//virtual void Set(KRawEvent &ev, TFile &f, Int_t anEntry);
-	//virtual void Set(KRawEvent &ev, KDataReader &aReader);
-	
+		
 	//Easy Access Methods
 	//These methods access commonly requested quantities without
 	//having to dig down into the branch structure.
 	Double_t GetSumBoloEnergyRecoil(void);
 	//Double_t GetSumBoloEnergyHeat(void);
 	Double_t GetSumBoloEnergyIon(void);
-	//Int_t GetNumberBoloHits(void);
 	
 	//Getters and Setters to member variables
-	//Bool_t TestDataCleaningBit(Int_t i) const {return fDataCleaningWord.TestBitNumber(i);}
-	//Bool_t TestDataCleaningWord(Int_t aWord); //this does a bit-wise comparison
 	
 	Int_t GetNumSambas(void) const {return fNumSamba;}
 	Int_t GetNumBolos(void) const {return fNumBolo;}
@@ -75,7 +69,6 @@ public:
 	//system record pointers
 	KHLABoloSysRecord* GetBoloSystemRecord(void) {return &fBoloSystem;}
 	KHLAMuonVetoSysRecord* GetMuonVetoSystemRecord(void) {return &fMuonSystem;}
-	//KHLANCSysRecord* GetHLANCSysRecord(void) {return &fKHLANCSysRecord;}
 	
 	KHLASambaRecord* GetSamba(Int_t i) const;
 	KHLABolometerRecord* GetBolo(Int_t i) const;
@@ -97,41 +90,21 @@ public:
 	KHLABoloPulseRecord* AddBoloPulse();
 	KHLAMuonModuleRecord* AddMuonModule();
 	
-	//Remove
-	//RemoveSamba(Int_t i);
-	//RemoveBolo(Int_t i);
-	//RemoveBoloPulse(Int_t i);
-	//RemoveMuonModule(Int_t i);
-	
 	//Setters to local members
-	//void SetDataCleaningBit(Int_t i, Bool_t val = true) {fDataCleaningWord.SetBitNumber(i,val);}
 		
 	//Only use these if you know what you're doing. 
 	void SetNumSamba(Int_t aNum){fNumSamba = aNum;} //Only use these if you know what you're doing. 
 	void SetNumBolo(Int_t aNum){fNumBolo = aNum;} //Only use these if you know what you're doing. 
 	void SetNumBoloPulse(Int_t aNum){fNumBoloPulse = aNum;} //Only use these if you know what you're doing. 
 	void SetNumMuonModule(Int_t aNum){fNumMuonModule = aNum;} //Only use these if you know what you're doing. 
-	
-	//void SetAssignmentOptionNoTref(bool opt){
-	//	fAssignmentOptionNoTref = opt;
-	//}
-	/*
-	void Set(const KHLAEvent &ev, TTree &t, Int_t anEntry);
-	void Set(const KHLAEvent &ev, const KDataReader &aReader);
-	
-	void AddSubRecords(const KHLAEvent &ev, TTree &t, Int_t anEntry);
-	void AddSubRecords(const KHLAEvent &ev, const KDataReader &aReader);
-	 */
-	
+		
 	//Print data members //Probably it would be much easier to implement it in Event and just overload it, but I don't really know how to do it and I only really nead it for testing.
 	void myPrint();
 	
 private: 
 
-	//TBits fDataCleaningWord;  //each bit in this word represents the pass/fail of this event to specific data cleaning cuts
-
-	KHLABoloSysRecord fBoloSystem;  
-	KHLAMuonVetoSysRecord fMuonSystem; 
+	KHLABoloSysRecord fBoloSystem;  //the Bolometer System Record
+	KHLAMuonVetoSysRecord fMuonSystem; //Muon Veto System Record
 	
 	//Array of SubRecords containing event information
 	Int_t fNumSamba; //the number of Samba Sub Records in this event

@@ -50,9 +50,9 @@ private:
 	
 	TRef fBolometerRecord;  //the value of this is the entry number of the TClonesArray that holds the KHLABolometerRecord object that this pulse belongs to.
 
-	Double32_t fEnergy;
-	Double32_t fEnergyBaseline;
-	Double32_t fBaselineNoise;
+	Double32_t fEnergy;  //the energy of the pulse in keV.
+	Double32_t fEnergyBaseline; //the energy of the pulse in keV in the baseline region. 
+	Double32_t fBaselineNoise; //the rms of the baseline in keV.
 	
 	
 	//private methods

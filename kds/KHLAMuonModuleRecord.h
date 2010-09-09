@@ -27,16 +27,9 @@ public:
 	Bool_t operator!=(const KHLAMuonModuleRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
 	
-	//Danger! don't keep these inline. Need to check i for valid range.
-	//Double_t GetEnergy(Int_t i) const {return fEnergy[i];}
-	
-	//void SetEnergy(Int_t i, Double_t a) {fEnergy[i] = a;}
-
 	
 private:
-	
-	//Double_t fEnergy[kNumPmtsPerMuonModule];  //the energy deposited in both PMTs of the muon module - currently this isn't calculated :(
-	
+		
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLAMuonModuleRecord &aRec);

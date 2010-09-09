@@ -21,10 +21,6 @@
 
 #include "TProcessID.h"
 
-//system Record Includes
-//#include "KHLABoloSysRecord.h"
-//#include "KHLAMuonVetoSysRecord.h"
-
 //sub record includes
 #include "KHLASambaRecord.h"
 #include "KHLABolometerRecord.h"
@@ -116,63 +112,6 @@ KHLAEvent::~KHLAEvent(void)
 	
 	
 }
-/*
-void KHLAEvent::Set(const KHLAEvent &ev,  TTree &tree, Int_t anEntry)
-{
-	//This method is essentially the same as a normal assignment operator. In fact
-	//it calls the private assignment operator= method. However, in order
-	//to absolutely ensure that the correct data is being assigned to this
-	//we must use this class.
-	//
-	//The following conditions MUST be true, otherwise you will probably
-	//get erratic behavior. 
-	//
-	//ev -- is the object you wish to assign to 'this'. 
-	//file -- the file where ev comes from from
-	//tree -- the tree that holds ev as the top-level branch
-	//anEntry -- the particular entry in the tree to be assigned.
-	//
-	//alternatively, if you use KDataReader to open the data files, 
-	//you can use the method KHLAEvent::Set(KHLAEvent &ev, KDataReader &aReader),
-	//where the KHLAEvent ev is obtained from the file opened by KDataReader
-	//and the current entry loaded by the KDataReader is the entry you wish to copy.
-	//
-	//This method does the following
-	//1. forces that the event is loaded 
-	//     tree.GetEntry(anEntry)
-	//2. calls the private assignment operator
-	//    this->operator=(ev);
-	
-	tree.GetEntry(anEntry);
-	this->operator=(ev);
-	
-	
-}
-
-void KHLAEvent::Set(const KHLAEvent &ev, const KDataReader &aReader)
-{
-	//In order to assign the data in the KHLAEvent ev to "this", one must
-	//use this Set method (or the Set(KHLAEvent&, TTree&, Int_t) method above.
-	//The event object, ev, must have been obtained from the 'aReader' object
-	//otherwise this will result in erratic behavior. 
-	//
-	//See the Set(KHLAEvent&, TTree&, Int_t) method above for details. 
-	
-	Set(ev, *aReader.GetTTree(), aReader.GetCurrentEntryNumber());
-}
-
-
-void KHLAEvent::AddSubRecords(const KHLAEvent &ev, TTree &t, Int_t anEntry)
-{
-	t.GetEntry(anEntry);
-	AddSubRecords(ev);
-}
-
-void KHLAEvent::AddSubRecords(const KHLAEvent &ev, const KDataReader &aReader)
-{
-	AddSubRecords(ev,*aReader.GetTTree(), aReader.GetCurrentEntryNumber());
-}
-*/
 
 KHLAEvent& KHLAEvent::operator=(const KEvent &anEvent)
 {
@@ -307,40 +246,10 @@ Int_t KHLAEvent::AddSubRecords(const KHLAEvent &anEvent, Bool_t skimNoise)
 	UInt_t aNumber = GetLargestUniqueIDNumber();
 	if(aNumber != 0) TProcessID::SetObjectCount(aNumber);
 	
-	/*if(fAssignmentOptionNoTref){
-		
-		for(Int_t i = 0; i < anEvent.GetNumSambas(); i++){
-			KHLASambaRecord *s = AddSamba();
-			KHLASambaRecord *sO = anEvent.GetSamba(i);
-			if(s != 0 && sO != 0) 
-				*s = *sO;
-			else
-				cout << "KHLAEvent::operator= Invalid Samba Pointer" << endl;
-		}
-		
-		for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
-			KHLABolometerRecord *bolo = AddBolo();
-			KHLABolometerRecord *bolo0 = anEvent.GetBolo(i);
-					if(bolo != 0 && bolo0 != 0) 
-				*bolo = *bolo0;
-			else
-				cout << "KHLAEvent::operator= Invalid SingleBolo Pointer" << endl;
 			
-		}
-		
-	}
-	*/
-	//UNFORTUNATELY, WE CAN'T PUT THE COPYING OF THE TREF'D SAMBA
-	//OBJECT INSIDE OF THE SINGLEBOLO ASSIGNMENT OPERATOR METHOD
-	//BECAUSE EACH SAMBA RECORD MUST BE ADDED TO THE EVENT. 
-	//else {
-		
 	KHLASambaRecord mySamba;
 	KHLASambaRecord mySambaOrig;
 	//KHLABolometerRecord myBolo;
-	
-	//Maybe, what I need to do is to copy these things to local varialbes,
-	//then copy them into new pointer objects!!!
 	
 	for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
 		KHLABolometerRecord *bolo0 = anEvent.GetBolo(i);
@@ -419,19 +328,7 @@ Int_t KHLAEvent::AddSubRecords(const KHLAEvent &anEvent, Bool_t skimNoise)
 		
 	}
 	
-	//EVENTUALLY, THE BOLO PULSES WILL HAVE TO BE ADDED
-	//AND LINKED VIA THE TREF IN THE SAME WAY THAT THE SAMBA
-	//RECORD IS DONE ABOVE, INSTEAD OF THIS CURRENT METHOD THAT
-	//DOESN'T PRESERVE PROPER TREF LINKING TO THIS EVENT
-	/*for(Int_t i = 0; i < anEvent.GetNumBoloPulses(); i++){
-		KHLABoloPulseRecord *s = AddBoloPulse();
-		KHLABoloPulseRecord *sO = anEvent.GetBoloPulse(i);
-		if(s != 0 && sO != 0) 
-			*s = *sO;
-		else
-			cout << "KHLAEvent::operator= Invalid BoloPulse Pointer" << endl;
-	}*/
-	
+		
 	for(Int_t i = 0; i < anEvent.GetNumMuonModules(); i++){
 		KHLAMuonModuleRecord *s = AddMuonModule();
 		KHLAMuonModuleRecord *sO = anEvent.GetMuonModule(i);
@@ -528,9 +425,8 @@ void KHLAEvent::Clear(Option_t *anOption)
 
 void KHLAEvent::InitializeMembers(void)
 {
-	//fDataCleaningWord.Clear();
-	//SetDataType(kHLADataType);
-	//SetAssignmentOptionNoTref(false);
+
+	
 }
 
 void KHLAEvent::CreateArrays(void)
@@ -662,14 +558,6 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 		//the operator== method uses this functionality.
 	}
 	
-	/*if(fDataCleaningWord != anEvent.fDataCleaningWord){
-		if (bPrint) 
-			cout << "KHLAEvent fDataCleaningWord Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}*/
 	
 	if(!fBoloSystem.IsSame(anEvent.fBoloSystem, bPrint)){
 		if (bPrint) 
@@ -687,29 +575,6 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 			return false;
 	}
 	
-	/*if(fNumSamba == anEvent.fNumSamba){
-		for(Int_t i = 0; i < fNumSamba; i++){
-			KHLASambaRecord *s = GetSamba(i);
-			KHLASambaRecord *sOther = anEvent.GetSamba(i);
-			if(s != 0 && sOther != 0){
-				if(!s->IsSame(*sOther, bPrint)){
-					if (bPrint) 
-						cout << "KHLAEvent KHLASambaRecord number " << i << " Not Equal" << endl;		
-					bIsEqual = false;
-					if(!bPrint)
-						return false;
-				}
-			}
-		}
-	}
-	else {
-		if (bPrint) 
-			cout << "KHLAEvent fNumSamba Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;
-	}
-	*/
 	
 	if(fNumBolo == anEvent.fNumBolo){
 		
@@ -800,29 +665,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 			return false;
 	}
 	
-	/*if(fNumBoloPulse == anEvent.fNumBoloPulse){
-		for(Int_t i = 0; i < fNumBoloPulse; i++){
-			KHLABoloPulseRecord *s = GetBoloPulse(i);
-			KHLABoloPulseRecord *sOther = anEvent.GetBoloPulse(i);
-			if(s != 0 && sOther != 0){
-				if(!s->IsSame(*sOther, bPrint)){
-					if (bPrint) 
-						cout << "KHLAEvent KHLABoloPulseRecord number " << i << " Not Equal" << endl;		
-					bIsEqual = false;
-					if(!bPrint)
-						return false;
-				}
-			}
-		}
-	}
-	else {
-		if (bPrint) 
-			cout << "KHLAEvent fNumBoloPulse Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;
-	}
-	*/
+	
 	
 	if(fNumMuonModule == anEvent.fNumMuonModule){
 		for(Int_t i = 0; i < fNumMuonModule; i++){

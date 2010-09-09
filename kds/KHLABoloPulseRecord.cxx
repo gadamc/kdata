@@ -111,16 +111,6 @@ Bool_t KHLABoloPulseRecord::IsSame(const KHLABoloPulseRecord &aRec, Bool_t bPrin
 		//the operator== method uses this functionality.
 	}
 	
-	/*if(fBolometerRecordNum != aRec.fBolometerRecordNum){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABoloPulseRecord fBolometerRecordNum Not Equal. lhs: " 
-			<< fBolometerRecordNum << " != rhs " << aRec.fBolometerRecordNum << endl;		
-		else
-			return false;  
-	}
-	*/
-	
 	//HMM...if the following lines of code produce a lot of Not Equal messages to cout, its probably
 	//because I'm asking if two floating point values are exactly the same!
 	//this is inherently dangerous.  its probably better to specify an allowed 
