@@ -162,12 +162,11 @@ const char* KEraRawFileIO::GetFileName(void) const
 
 const char* KEraRawFileIO::GetEventClassName(void) const
 {
-	if(fTree != 0){
+	if(fTree != 0) {
 		TBranchElement *branch = (TBranchElement *)fTree->GetBranch(fBranchName.c_str());
 		if(branch != 0)
 			return branch->GetClassName();
-
-		else return "";
+            else return "";
 	}
 	else return "";
 }

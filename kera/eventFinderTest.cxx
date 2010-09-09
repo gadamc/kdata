@@ -15,20 +15,23 @@
  #include "TString.h"
  #include "TApplication.h"
  #include <iostream>
+ #include <list>
+
 
  using namespace std;
+
+
 
 int main(int argc, char** argv) {
     TApplication* app = new TApplication("test",&argc,argv);
 
-
- 	TString aUser("gadamc");
-    TString aServer("ccali.in2p3.fr");
-    TString aSourceDir("/sps/edelweis/EdwRootAna/ID Run12/NeutronF2/rootevts/");
-    TString aTargetDir("/var/tmp/.");
-    KDataReader* kReader = new KDataReader("/home/enzi/Desktop/BoloData/Kds_FID401FID402_test.root");
+    string kEventSourceFile("/home/enzi/Desktop/BoloData/Kds_FID401FID402_test.root");
+    KDataReader* kReader = new KDataReader(kEventSourceFile.c_str());
     KEvent* kEvent = kReader->GetEvent();
-    kReader->GetEntry(0);
+    Int_t kEntries = kReader->GetEntries();
+    cout << "Open " << kEventSourceFile << endl;
+    cout << "with " << kEntries << " entries" << endl;
+    kReader->GetEntry(10000);
     KHLAEvent* kHLAEvent;
 
 	try {
@@ -43,11 +46,26 @@ int main(int argc, char** argv) {
 	KBolometerRecord* bolo = dynamic_cast<KBolometerRecord*>(kHLAEvent->GetBolo(0));
 	// either KHLA*Record pointers are return by the getters or the KEraEventFinder class expect KHLA*Record pointers
 
-	KEraEventFinder* finder = new KEraEventFinder(samba,bolo,aUser,aServer,aSourceDir,aTargetDir);
+
+    string aUser("gadamc");
+    string aServer("ccali.in2p3.fr");
+
+
+
+    string aSourceDir("/sps/edelweis/EdwRootAna/ID_Run12/");
+    string aTargetDir("/var/tmp/");
+
+	KEraEventFinder* finder = new KEraEventFinder(samba,bolo,aUser,aServer,aSourceDir,aTargetDir,"");
 	cout << &kHLAEvent << endl;
 	EdwEvent* edwEvent = finder->GetEvent();
+	if(edwEvent != 0) {
+        cout << "edwEvent found" << endl;
+
+        edwEvent->Header()->Inspect();
+	}
 
     app->Run();
+    app->ReturnPressed("");
     return 0;
 
 }

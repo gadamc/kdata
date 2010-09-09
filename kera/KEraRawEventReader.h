@@ -13,15 +13,18 @@
 #include "KEraRawFileIO.h"
 #include "TBranchElement.h"
 #include "EdwEvent.h"
+#include <string>
+using namespace std;
 
+class KEraEventFinder;
 
 class KEraRawEventReader : public KEraRawFileIO {
 
 public:
   //Constructors
     KEraRawEventReader(void);
-	KEraRawEventReader(const Char_t* fileName, EdwEvent **anEvent = 0);
-	void Open(const Char_t* fileName, EdwEvent **anEvent = 0);
+	KEraRawEventReader(const string fileName, EdwEvent **anEvent = 0);
+	void Open(const string fileName, EdwEvent **anEvent = 0);
     virtual ~KEraRawEventReader(void);
 
 	Bool_t Close(Option_t *opt = "");
@@ -34,7 +37,9 @@ public:
 	//Int_t GetEntryWithGSEventNumber(Int_t anEntry);
 	Int_t GetEntries(void) const {return fEntries;}
 
-	TObject* Get(const Char_t* namecycle) const;
+	TObject* Get(const string namecycle) const;
+
+	friend class KEraEventFinder;
 
 
 private:
@@ -48,7 +53,7 @@ private:
   void InitializeMembers(void);
 	Bool_t SetBranchAddress(EdwEvent **anEvent = 0);
 	//Bool_t OpenFile(const Char_t* fileName);
-	Bool_t OpenFile(const Char_t* fileName, EdwEvent **anEvent = 0);
+	Bool_t OpenFile(const string fileName, EdwEvent **anEvent = 0);
 
 	//discourage / do not allow copy and assignment
 	KEraRawEventReader(const KEraRawEventReader &aReader);

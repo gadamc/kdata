@@ -27,7 +27,7 @@ KEraRawEventReader::KEraRawEventReader() {
 	InitializeMembers();
 }
 
-KEraRawEventReader::KEraRawEventReader(const Char_t* fileName, EdwEvent **anEvent)
+KEraRawEventReader::KEraRawEventReader(const string fileName, EdwEvent **anEvent)
 {
 
 	fLocalEvent = 0;
@@ -70,10 +70,10 @@ void KEraRawEventReader::InitializeMembers(void)
 }
 
 
-Bool_t  KEraRawEventReader::OpenFile(const Char_t* fileName, EdwEvent **anEvent)
+Bool_t  KEraRawEventReader::OpenFile(const string fileName, EdwEvent **anEvent)
 {
 	Close();  //close the file, if one is already open.
-	fFile = OpenFileForReading(fileName);
+	fFile = OpenFileForReading(fileName.c_str());
 	Bool_t theRet = false;
 
 	if(fFile != 0){
@@ -90,7 +90,7 @@ Bool_t  KEraRawEventReader::OpenFile(const Char_t* fileName, EdwEvent **anEvent)
 }
 
 
-void  KEraRawEventReader::Open(const Char_t* fileName, EdwEvent **anEvent) {
+void  KEraRawEventReader::Open(const string fileName, EdwEvent **anEvent) {
 
   if(!OpenFile(fileName, anEvent)){
 		cout << "KEraRawEventReader - Could not open " << fileName << endl;
@@ -203,10 +203,10 @@ Int_t KEraRawEventReader::GetEntryWithGSEventNumber(Int_t anEntry)
 }
 */
 
-TObject* KEraRawEventReader::Get(const Char_t* namecycle) const
+TObject* KEraRawEventReader::Get(const string namecycle) const
 {
 	if(fFile != 0){
-		return fFile->Get(namecycle);
+		return fFile->Get(namecycle.c_str());
 	}
 	else return 0;
 }

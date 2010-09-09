@@ -11,6 +11,6 @@
 int main() {
 
     KFileTransfer trans("gadamc","ccali.in2p3.fr","/sps/edelweis/EdwRootAna/ID_Run12/NeutronS2/rootevts/","/var/tmp/.");
-    trans.Transfer("je25b003_022.root");
+    trans.Transfer("je25b003_004.root");
 }
 

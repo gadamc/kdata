@@ -16,24 +16,37 @@
 #include "KSambaRecord.h"
 #include "KBolometerRecord.h"
 #include "KHLAEvent.h"
-#include <string>
+#include "EdwEvent.h"
 #include "TString.h"
+#include <string>
+using namespace std;
 
 class KEraEventFinder {
 
     public:
-        KEraEventFinder(KSambaRecord* aSambaRecord,KBolometerRecord* aBoloRecord, const TString& aUser,const TString& aServer,const TString& aSourceDir,const TString& aTargetDir);
+        //Constructors
+        KEraEventFinder(const KEraEventFinder& aFinder);
+        KEraEventFinder(KSambaRecord* aSambaRecord,KBolometerRecord* aBoloRecord,string aUser,string aServer,string aSourceDir,string aTargetDir,string aSubDir = "");
         EdwEvent* GetEvent(void);
-        ~KEraEventFinder();
+        virtual ~KEraEventFinder();
 
+        //getters
+        KSambaRecord* GetSamba(void) const { return fSambaRecord; }
+        KBolometerRecord* GetBolo(void) const { return fBoloRecord; }
+
+        //setters
+        void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }
+        void SetBolo(KBolometerRecord* aRec) { fBoloRecord = aRec; }
 
     private:
-        TString GetNextFileName(void);
+        string GetNextFileName(bool reset = false);
 
-        KFileTransfer* fTrans;
-        KEraRawEventReader* fReader;
-        KSambaRecord* fSambaRecord;
-        KBolometerRecord* fBoloRecord;
+        KFileTransfer* fTrans; //Handles the data transfer
+        KEraRawEventReader* fReader; //Reads the files
+        KSambaRecord* fSambaRecord; //Contains the samba event number in the KDATA structure
+        KBolometerRecord* fBoloRecord; //
+
+
 
 
         ClassDef(KEraEventFinder,1);

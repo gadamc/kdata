@@ -20,19 +20,37 @@
  class KFileTransfer {
 
      public:
-        KFileTransfer(const TString& aUser,const TString& aServer,const TString& aSourcePath,const TString& aTargetPath);
-        void Transfer(const TString& aFileName);
+        //Constructors
+        KFileTransfer(const KFileTransfer& aTrans);
+        KFileTransfer(string aUser,string aServer,string aSourcePath,string aTargetPath, string aSubPath = "");
+        void Transfer(string aFileName);
         virtual ~KFileTransfer(void);
 
+        //getters
+        string GetUser() const { return fUser; }
+        string GetServer() const { return fServer; }
+        string GetSourcePath() const { return fSourcePath; }
+        string GetTargetPath() const { return fTargetPath; }
+        string GetSubPath() const { return fSubPath; }
+
+        //setters
+        void SetUser(string aUser) { fUser = aUser; }
+        void SetServer(string aServer) { fServer = aServer; }
+        void SetSourcePath(string aSourcePath) { fSourcePath = aSourcePath; }
+        void SetTargetPath(string aTargetPath) { fTargetPath = aTargetPath; }
+        void SetSubPath(string aSubPath) { fSubPath = aSubPath; }
+
+        bool FileExists(string aFilename);
+
     private:
-        TString fUser;
-        TString fServer;
-        TString fSourcePath;
-        TString fTargetPath;
-        TSystem* fSystem;
+        string fUser; //User name
+        string fServer; //Server name
+        string fSourcePath; //Source path
+        string fTargetPath; //Target path
+        string fSubPath; //Sub path
+        TSystem* fSystem; //Local TSystem object executing rsync commands
 
     ClassDef(KFileTransfer,1);
-
  };
 
  #endif
