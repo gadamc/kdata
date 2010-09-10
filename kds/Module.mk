@@ -38,9 +38,9 @@ KDS_OPT     := $(OPT)
 #add for debuging purposes
 #assignment operator
 #KDS_FLAGS  += -D_K_DEBUG_EVENT_ASSIGNOP
-#remove the optimization in order to improve debugging
-KDS_OPT  := $(filter-out -O2,$(KDS_OPT))
-KDS_LDFLAGS := $(filter-out -O2,$(KDS_LDFLAGS))
+#remove the optimization in order to improve debugging if you want
+#KDS_OPT  := $(filter-out -O2,$(KDS_OPT))
+#KDS_LDFLAGS := $(filter-out -O2,$(KDS_LDFLAGS))
 
 ###
 
