@@ -196,6 +196,10 @@ int concatKDS(string *inputFiles, Int_t numFiles, string outputFile){
 //should call MuonVetoToDS directly since a function titled 'main' cannot be used in this case. 
 int main(int argc, char* argv[])
 {
+  if(argc == 1) {
+    cout << "Can't run without args!" << endl;
+    return -1;
+  }
 	string argOne, argTwo, argThree;
 
 	argOne = argv[2];
