@@ -71,7 +71,7 @@
 			theTime += + ".";
 			theTime += myTimeNano;
 
-			myFileName  = kQSubScriptFileDir + "concatDstBckgd" + theTime.Data();
+			myFileName  = kQSubScriptFileDir + "concatDstBckgd" + theTime.Data() + ".sh";
 			cout << " opening " << myFileName.Data() << endl;
 			myFile.open(myFileName.Data());
 			
@@ -92,7 +92,7 @@
 			cout << command << endl;
 			gSystem->Exec(command.Data());
 
-			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V " + myFileName;
 			cout << command << endl;
 	
 			gSystem->Exec(command.Data());
@@ -105,7 +105,7 @@
 
 			
 			//theTime = myTime.GetDate() + "." myTime.GetTime() + "." + myTime.GetNanoSec();
-			myFileName  = kQSubScriptFileDir + "concatDstNeutron" + theTime.Data();
+			myFileName  = kQSubScriptFileDir + "concatDstNeutron" + theTime.Data() + ".sh";
 			cout << " opening " << myFileName.Data() << endl;
 			myFile.open(myFileName.Data());
 			
@@ -127,7 +127,7 @@
 			cout << command << endl;
 			gSystem->Exec(command.Data());
 			
-			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V  " + myFileName;
 			cout << command << endl;
 			
 			gSystem->Exec(command.Data());
@@ -138,7 +138,7 @@
 			in2.replace(in2.find("Neutron"),7, "Gamma");
 			
 			//theTime = myTime.GetDate() + "." myTime.GetTime() + "." + myTime.GetNanoSec();
-			myFileName  = kQSubScriptFileDir + "concatDstGamma" + theTime.Data();
+			myFileName  = kQSubScriptFileDir + "concatDstGamma" + theTime.Data() + ".sh";
 			cout << " opening " << myFileName.Data() << endl;
 			myFile.open(myFileName.Data());
 			
@@ -160,7 +160,7 @@
 			cout << command << endl;
 			gSystem->Exec(command.Data());
 
-			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V " + myFileName;
 			cout << command << endl;
 			
 			gSystem->Exec(command.Data());

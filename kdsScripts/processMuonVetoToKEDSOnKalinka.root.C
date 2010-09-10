@@ -9,26 +9,32 @@
 
 {
 	//gSystem->Load("$HOME/dev/KDataStructure/lib/libKDS.so");  //load the KDataStructure library
-	gSystem->Load("$KDATA_ROOT/lib/libkds.so");
-	gSystem->AddIncludePath("-I$KDATA_ROOT/include");
-	gROOT->ProcessLine(".L $KDATA_ROOT/kdsScripts/fillMuonVetoEvents.cc+"); //compile your code, which uses the KDataStructure class library
-	RedirectHandle_t *h = new RedirectHandle_t;
-	//TString outputLog = "/kalinka/home/gadamc/data/muonVeto/eds/MuonVetoToEDS_log.txt";
-	TString outputLog = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/uVeto/MuonVetoToEDS_log.txt";
-	cout << " The Script is running... see the output file:" << endl;
-	cout << outputLog.Data() << endl;
-	gSystem->RedirectOutput(outputLog.Data(),"w",h);
-	gSystem->ShowOutput(h)
+	string myKdataPath = "$KDATA_ROOT";
+	string kQSubScriptFileDir = "/kalinka/storage/edelweiss/Bolo/Run12/Eds/scripts/";
+	TString qsubWorkingDir = "/kalinka/storage/edelweiss/qsubOutputs/";
 	TString fMuonVetoDataInPath = "/kalinka/home/edelweiss/Runs/";
 	//TString fDataOutPath = "/kalinka/home/gadamc/data/muonVeto/eds/";
 	TString fDataOutPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/uVeto/";
+	
 	Int_t startMuonRun=54; 
-	Int_t stopMuonRun=67; // should be 67
+	Int_t stopMuonRun=67; // should be 54 to 67 for Run 12
 	TString fIn;
 	TString fOut;
-		
 	
 	for(Int_t i = startMuonRun ; i <= stopMuonRun; i++){
+		
+		TTimeStamp myTime;
+		UInt_t myTimeDate = myTime.GetDate();
+		UInt_t myTimeTime = myTime.GetTime();
+		Int_t myTimeNano = myTime.GetNanoSec();
+		theTime = ".";
+		theTime += myTimeDate;
+		theTime += + ".";
+		theTime +=  myTimeTime;
+		theTime += + ".";
+		theTime += myTimeNano;
+
+		
 	  fIn = fMuonVetoDataInPath;
 	  fIn += "Events_Run";
 	  fIn += i;
@@ -37,10 +43,41 @@
 	  fOut += "KdsRun12_MvRun";
 	  fOut += i;
 	  fOut += ".root"; 
-	  MuonVetoToDS(fIn.Data(), fOut.Data());
-	  cout << "Finished MuonVetoToDS()" << endl;
+		
+		myFileName = kQSubScriptFileDir + "fillMuonVetoEvents" + theTime.Data();
+		cout << endl << "opending " << myFileName.Data() << endl;
+		myFile.open(myFileName.Data());
+		
+		myFileContents = "#!/bin/bash"; 
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		
+		//the executable
+		myFileContents = myKdataPath + "/bin/fillMuonVetoEvents ";
+		
+		//the arguments
+		myFileContents += fIn;
+		myFileContents += fOut;
+		
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFileContents = "exit 0";
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFile.close();
+		
+		command = "chmod +x " + myFileName;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
+		
+		command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+		cout << command << endl;
+		
+		gSystem->Exec(command.Data());
+		
+	  //MuonVetoToDS(fIn.Data(), fOut.Data());
 	}
-	cout << "closing programm";
-	gROOT->Reset();
+
+		
 }
 

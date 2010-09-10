@@ -9,21 +9,15 @@
 
 
 {
-	
-	//TString devPath = "/kalinka/storage/edelweiss/EdwSoftware/Kdata";
-	TString devPath = "$KDATA_ROOT";
-	TString libPath = devPath + "/lib/libkds.so";
-	TString includePath = "-I" + devPath + "/include";
-	TString includePath2 = "-I" + devPath + "/era";
-	TString processLine = ".L " + devPath + "/kdsScripts/fillEraToKEds.cc++"; 
-	TString dataInputPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/Bckgd/";
-	//TString dataInputPath = "/Users/adam/analysis/edelweiss/data/eraConcat/eraFullNeutron/";
-	
-	TString dataOutputPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
-	
+	string myKdataPath = "$KDATA_ROOT";
+	string kQSubScriptFileDir = "/kalinka/storage/edelweiss/Bolo/Run12/Eds/scripts/";
+	TString qsubWorkingDir = "/kalinka/storage/edelweiss/qsubOutputs/";
+	string inPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/Bckgd/";
+	//TString inPath = "/Users/adam/analysis/edelweiss/data/eraConcat/eraFullNeutron/";
+	TString dataOutputPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";	
 	//TString dataOutputPath = "/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/";
 	//TString tstNewPath = "/Users/adam/analysis/edelweiss/data/tstnew/";
-	TString tstNewPath = "/kalinka/home/edelweiss/Bolo/Run12/tstnew/";
+	string tstNewPath = "/kalinka/home/edelweiss/Bolo/Run12/tstnew/";
 	
 	Int_t kNumberBolos=13;
 	string kDetectorNames[kNumberBolos]=
@@ -32,52 +26,135 @@
 		"ID6", "ID401", "ID402",
 		"ID403", "ID404", "ID405", "GGA4"};
 	
-	cout << includePath.Data() << endl;
-	cout << libPath.Data() << endl;
-	cout << processLine.Data() << endl;
-	//cout << tstNewPath.Data() << endl;
 	
 	/////////////////////////////////////
 	
-	gSystem->AddIncludePath(includePath.Data());
-	gSystem->AddIncludePath(includePath2.Data());
-
-	gSystem->Load(libPath.Data());  //load the KDataStructure library
-	gROOT->ProcessLine(processLine.Data());
+	TString kRoot=".root";
+	TString kEds="Kds_";
 	
-	string kInputPath = dataInputPath.Data();
-	string kOutputPath= dataOutputPath.Data();
-	string kRoot=".root";
-	string kEds="Kds_";
+	string outFile;
+	string inPath;
+	string logFile;
 	
-	//string ststnewpath = tstNewPath.Data();
-	string inPath, outFile;
+	TString command;
+	TString theTime;
+	TString myFileName;
+	TString myFileContents;
+	
+	
+	ofstream myFile;
+	
 	
 	//for loop creating all Eds files from the dstTrees
-
+	
 	for(int i=0; i<kNumberBolos;i++){
-	  TString logFile = dataOutputPath;
-	  logFile += "eraToKEds_";
-	  logFile += kDetectorNames[i];
-	  logFile += ".log";
-	  string kLogFile= logFile.Data();
+	  
+		TTimeStamp myTime;
+		UInt_t myTimeDate = myTime.GetDate();
+		UInt_t myTimeTime = myTime.GetTime();
+		Int_t myTimeNano = myTime.GetNanoSec();
+		theTime = ".";
+		theTime += myTimeDate;
+		theTime += + ".";
+		theTime +=  myTimeTime;
+		theTime += + ".";
+		theTime += myTimeNano;
 		
-	  cout << logFile.Data() << endl;
-	  inPath=kInputPath;
+		logFile = dataOutputPath.Data();
+	  logFile.append("eraToKEds_"); logFile.append(kDetectorNames[i]); logFile.append(".log");
 		
-	  outFile=kOutputPath;
+	  outFile = dataOutputPath.Data();
 	  outFile.append(kEds); outFile.append(kDetectorNames[i]); outFile.append(kRoot);	
 		
 		
-	  eraToKEds(inPath, kDetectorNames[i], outFile, kLogFile, tstNewPath.Data());
+		myFileName = kQSubScriptFileDir + "fillEraToKEds_Bckgd" + theTime.Data() + ".sh";
+		cout << endl << "opending " << myFileName.Data() << endl;
+		myFile.open(myFileName.Data());
+		
+		myFileContents = "#!/bin/bash"; 
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFileContents = myKdataPath + "/bin/fillEraToKEds ";
+		myFileContents += inPath;
+		myFileContents += kDetectorNames[i] + " " + outFile + " " + logFile + " " + tstNewPath; 
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFileContents = "exit 0";
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFile.close();
+		
+		command = "chmod +x " + myFileName;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
+		
+		command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+		cout << command << endl;
+		
+		gSystem->Exec(command.Data());
+		
+	
 	  inPath.replace(inPath.find("Bckgd"), 5, "Neutron");
 	  outFile.replace(outFile.find("Bckgd"),5, "Neutron");
-	  kLogFile.replace(kLogFile.find("Bckgd"),5, "Neutron");
-	  eraToKEds(inPath, kDetectorNames[i], outFile, kLogFile);
+	  logFile.replace(logFile.find("Bckgd"),5, "Neutron");
+		
+		myFileName = kQSubScriptFileDir + "fillEraToKEds_Neutron" + theTime.Data() + ".sh";
+		cout << endl << "opending " << myFileName.Data() << endl;
+		myFile.open(myFileName.Data());
+		
+		myFileContents = "#!/bin/bash"; 
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFileContents = myKdataPath + "/bin/fillEraToKEds ";
+		myFileContents += inPath;
+		myFileContents += kDetectorNames[i] + " " + outFile + " " + logFile + " " + tstNewPath; 
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFileContents = "exit 0";
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFile.close();
+		
+		command = "chmod +x " + myFileName;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
+		
+		command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+		cout << command << endl;
+		
+		gSystem->Exec(command.Data());
+		
+		
 	  inPath.replace(inPath.find("Neutron"), 7, "Gamma");
 	  outFile.replace(outFile.find("Neutron"),7, "Gamma");
-	  kLogFile.replace(kLogFile.find("Neutron"),7, "Gamma");
-	  eraToKEds(inPath, kDetectorNames[i], outFile, kLogFile);
+	  logFile.replace(logFile.find("Neutron"),7, "Gamma");
+	  myFileName = kQSubScriptFileDir + "fillEraToKEds_Gamma" + theTime.Data() + ".sh";
+		cout << endl << "opending " << myFileName.Data() << endl;
+		myFile.open(myFileName.Data());
+		
+		myFileContents = "#!/bin/bash"; 
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFileContents = myKdataPath + "/bin/fillEraToKEds ";
+		myFileContents += inPath;
+		myFileContents += kDetectorNames[i] + " " + outFile + " " + logFile + " " + tstNewPath; 
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFileContents = "exit 0";
+		cout << myFileContents.Data() << endl;
+		myFile << myFileContents.Data() << endl;
+		myFile.close();
+		
+		command = "chmod +x " + myFileName;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
+		
+		command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+		cout << command << endl;
+		
+		gSystem->Exec(command.Data());
+		
+		
 	}
  	
 	//You may compile your own classes in this same way

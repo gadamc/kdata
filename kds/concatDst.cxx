@@ -196,10 +196,11 @@ int concatKDS(string *inputFiles, Int_t numFiles, string outputFile){
 //should call MuonVetoToDS directly since a function titled 'main' cannot be used in this case. 
 int main(int argc, char* argv[])
 {
-  if(argc == 1) {
-    cout << "Can't run without args!" << endl;
-    return -1;
-  }
+	if(argc == 1) {
+		cout << "Can't run without args!" << endl;
+		return -1;
+	}
+
 	string argOne, argTwo, argThree;
 
 	argOne = argv[2];
@@ -226,6 +227,7 @@ int main(int argc, char* argv[])
 			
 		case 5:
 			//concatDst 5 outputFile inFile1 inFile2 ....
+			//this case will be used for the muon veto concatenation!
 			if(argc >= 4){
 				string *listOfFiles = new string[argc-3];
 				for(Int_t i = 0; i < argc-3; i++){
