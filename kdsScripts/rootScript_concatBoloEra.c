@@ -12,11 +12,12 @@
 
 {
 	string myKdataPath = "$KDATA_ROOT"; //locating of the directory where bin/concatDst lives.
-	string kInputPath1="/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/";
-	string kInputPath2="/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/";
-	string kOutputPath="/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/";
-	string kQSubScriptFileDir = "/kalinka/home/edelweiss/Bolo/Run12/Eds/scripts/";
-		
+	string kInputPath1="/kalinka/storage/edelweiss/Bolo/Run12/Eds/Input/";
+	string kInputPath2="/kalinka/storage/edelweiss/Bolo/Run12/Eds/Input/";
+	string kOutputPath="/kalinka/storage/edelweiss/Bolo/Run12/Eds/Input/";
+	string kQSubScriptFileDir = "/kalinka/storage/edelweiss/Bolo/Run12/Eds/scripts/concatDst/";
+	TString qsubWorkingDir = "/kalinka/storage/edelweiss/qsubOutputs/concatDst";
+
 	Int_t kNumberBolos=13;
 	string kDetectorNames[kNumberBolos]=
 	{"FID401", "FID402", "ID2",
@@ -26,14 +27,18 @@
 	
 	
 
-	kInputPath1.append("/Bckgd/EricRun12FirstPart/");
-	kInputPath2.append("/Bckgd/EricRun12SecondPart/");
+	kInputPath1.append("Bckgd/EricRun12FirstPart/");
+	kInputPath2.append("Bckgd/EricRun12SecondPart/");
+	kOutputPath.append("Bckgd/");
 	
 	string kRoot=".root";
-	string kdst="dst_";
-	string keheat = "eheat_";
-	string keion = "eion_";
-	string kcuts = "cuts_";
+	string keraName[5];
+	//the order here is IMPORTANT!
+	keraName[1] ="dst_";
+	keraName[2] = "cuts_";
+	keraName[3] = "eheat_";
+	keraName[4] = "eion_";
+	
 	
 	string in1, in2, out;
 
@@ -48,57 +53,83 @@
 		
 		for(Int_t i = 0; i < kNumberBolos; i++){
 			in1=kInputPath1;
-			in1.append(kdst); in1.append(kDetectorNames[i]); in1.append(kRoot);
+			in1.append(keraName[j]); in1.append(kDetectorNames[i]); in1.append(kRoot);
 			in2=kInputPath2;
-			in2.append(kdst); in2.append(kDetectorNames[i]); in2.append(kRoot);
+			in2.append(keraName[j]); in2.append(kDetectorNames[i]); in2.append(kRoot);
 			out=kOutputPath;
-			out.append(kdst); out.append(kDetectorNames[i]); out.append(kRoot);
+			out.append(keraName[j]); out.append(kDetectorNames[i]); out.append(kRoot);
 			
 			TTimeStamp myTime;
-			theTime = myTime.GetDate() + "." myTime.GetTime() + "." + myTime.GetNanoSec();
-			myFileName  = kQSubScriptFileDir + "/concatDstBckgd." + theTime;
+			UInt_t myTimeDate = myTime.GetDate();
+			UInt_t myTimeTime = myTime.GetTime();
+			Int_t myTimeNano = myTime.GetNanoSec();
+
+			theTime = ".";
+			theTime += myTimeDate;
+			theTime += + ".";
+			theTime +=  myTimeTime;
+			theTime += + ".";
+			theTime += myTimeNano;
+
+			myFileName  = kQSubScriptFileDir + "concatDstBckgd" + theTime.Data();
 			cout << " opening " << myFileName.Data() << endl;
 			myFile.open(myFileName.Data());
 			
 			myFileContents = "#!/bin/bash";
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
-			myFileContents = myKdataPath + "/bin/concatDst " + j + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
+			myFileContents = myKdataPath + "/bin/concatDst ";
+			myFileContents += j;
+			myFileContents += + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
+			
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
-			myFileContents = "exit 0" << endl;
+			myFileContents = "exit 0";
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
 			myFile.close();
-			
+			command = "chmod +x " + myFileName;
 			cout << command << endl;
-			command = "qsub -wd /kalinka/storage/edelweiss/qsubOutputs -q all.q -V -b y " + myFileName.Data();
+			gSystem->Exec(command.Data());
+
+			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+			cout << command << endl;
+	
 			gSystem->Exec(command.Data());
 			
 			//Do the same thing for the neutrons.
 			
-			in1.replace(in1.find("Bckgd"), 5, "Neutron");
-			out.replace(out.find("Bckgd"),5, "Neutron");
+			in1.replace(in1.find("Bckgd"),5, "Neutron");
 			in2.replace(in2.find("Bckgd"),5, "Neutron");
+			out.replace(out.find("Bckgd"),5, "Neutron");
+
 			
-			theTime = myTime.GetDate() + "." myTime.GetTime() + "." + myTime.GetNanoSec();
-			myFileName  = kQSubScriptFileDir + "/concatDstNeutron." + theTime;
+			//theTime = myTime.GetDate() + "." myTime.GetTime() + "." + myTime.GetNanoSec();
+			myFileName  = kQSubScriptFileDir + "concatDstNeutron" + theTime.Data();
 			cout << " opening " << myFileName.Data() << endl;
 			myFile.open(myFileName.Data());
 			
 			myFileContents = "#!/bin/bash";
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
-			myFileContents = myKdataPath + "/bin/concatDst " + j + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
+			myFileContents = myKdataPath + "/bin/concatDst ";
+			myFileContents += j;
+			myFileContents += + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
+			
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
-			myFileContents = "exit 0" << endl;
+			myFileContents = "exit 0";
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
 			myFile.close();
-			
+
+			command = "chmod +x " + myFileName;
 			cout << command << endl;
-			command = "qsub -wd /kalinka/storage/edelweiss/qsubOutputs -q all.q -V -b y " + myFileName.Data();
+			gSystem->Exec(command.Data());
+			
+			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+			cout << command << endl;
+			
 			gSystem->Exec(command.Data());
 			
 			
@@ -106,53 +137,34 @@
 			out.replace(out.find("Neutron"),7, "Gamma");
 			in2.replace(in2.find("Neutron"),7, "Gamma");
 			
-			theTime = myTime.GetDate() + "." myTime.GetTime() + "." + myTime.GetNanoSec();
-			myFileName  = kQSubScriptFileDir + "/concatDstGamma." + theTime;
+			//theTime = myTime.GetDate() + "." myTime.GetTime() + "." + myTime.GetNanoSec();
+			myFileName  = kQSubScriptFileDir + "concatDstGamma" + theTime.Data();
 			cout << " opening " << myFileName.Data() << endl;
 			myFile.open(myFileName.Data());
 			
 			myFileContents = "#!/bin/bash";
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
-			myFileContents = myKdataPath + "/bin/concatDst " + j + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
+			myFileContents = myKdataPath + "/bin/concatDst ";
+			myFileContents += j;
+			myFileContents += + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
+			
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
-			myFileContents = "exit 0" << endl;
+			myFileContents = "exit 0";
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
 			myFile.close();
 			
+			command = "chmod +x " + myFileName;
 			cout << command << endl;
-			command = "qsub -wd /kalinka/storage/edelweiss/qsubOutputs -q all.q -V -b y " + myFileName.Data();
+			gSystem->Exec(command.Data());
+
+			command = "qsub -wd " + qsubWorkingDir + " -q all.q -V -b y " + myFileName;
+			cout << command << endl;
+			
 			gSystem->Exec(command.Data());
 			
-			/*
-			 in1=kInputPath1;
-			 in1.append(keion); in1.append(kDetectorNames[i]); in1.append(kRoot);
-			 in2=kInputPath2;
-			 in2.append(keion); in2.append(kDetectorNames[i]); in2.append(kRoot);
-			 out=kOutputPath;
-			 out.append(keion); out.append(kDetectorNames[i]); out.append(kRoot);
-			 concatEion(in1, in2, out);
-			 
-			 
-			 in1=kInputPath1;
-			 in1.append(keheat); in1.append(kDetectorNames[i]); in1.append(kRoot);
-			 in2=kInputPath2;
-			 in2.append(keheat); in2.append(kDetectorNames[i]); in2.append(kRoot);
-			 out=kOutputPath;
-			 out.append(keheat); out.append(kDetectorNames[i]); out.append(kRoot);
-			 concatEheat(in1, in2, out);
-			 
-			 
-			 in1=kInputPath1;
-			 in1.append(kcuts); in1.append(kDetectorNames[i]); in1.append(kRoot);
-			 in2=kInputPath2;
-			 in2.append(kcuts); in2.append(kDetectorNames[i]); in2.append(kRoot);
-			 out=kOutputPath;
-			 out.append(kcuts); out.append(kDetectorNames[i]); out.append(kRoot);
-			 concatCuts(in1, in2, out);
-			 */
 		}
 		
 	}
