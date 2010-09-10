@@ -284,11 +284,11 @@
 		6610EA74122818DC0047036E /* KHalfComplexPower.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexPower.cxx; sourceTree = "<group>"; };
 		6610EA8E12281F360047036E /* KPsaTestPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPsaTestPulse.h; sourceTree = "<group>"; };
 		6610EA8F12281F360047036E /* KPsaTestPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPsaTestPulse.cxx; sourceTree = "<group>"; };
-		662EC1AA12343BD3007E432B /* concatDst.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = concatDst.cc; sourceTree = "<group>"; };
+		662EC1AA12343BD3007E432B /* concatDst.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = concatDst.cxx; path = ../kData/kds/concatDst.cxx; sourceTree = "<group>"; };
 		662EC1AB12343BD3007E432B /* ExampleAnalysis.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExampleAnalysis.cc; sourceTree = "<group>"; };
-		662EC1AC12343BD3007E432B /* fillEraToKEds.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillEraToKEds.cc; sourceTree = "<group>"; };
+		662EC1AC12343BD3007E432B /* fillEraToKEds.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEraToKEds.cxx; path = ../kData/kds/fillEraToKEds.cxx; sourceTree = "<group>"; };
 		662EC1AD12343BD3007E432B /* fillExample.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillExample.cc; sourceTree = "<group>"; };
-		662EC1AE12343BD3007E432B /* fillMuonVetoEvents.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fillMuonVetoEvents.cc; sourceTree = "<group>"; };
+		662EC1AE12343BD3007E432B /* fillMuonVetoEvents.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillMuonVetoEvents.cxx; path = ../kData/kds/fillMuonVetoEvents.cxx; sourceTree = "<group>"; };
 		662EC1AF12343BD3007E432B /* HowToFillEDS.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HowToFillEDS.txt; sourceTree = "<group>"; };
 		662EC1B012343BD3007E432B /* mergeKEdsTree.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mergeKEdsTree.cxx; path = ../kData/kds/mergeKEdsTree.cxx; sourceTree = "<group>"; };
 		662EC1B112343BD3007E432B /* processMuonVetoToKEDSOnKalinka.root.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = processMuonVetoToKEDSOnKalinka.root.C; sourceTree = "<group>"; };
@@ -308,6 +308,7 @@
 		6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEventTest.cxx; path = ../kData/kds/fillEventTest.cxx; sourceTree = SOURCE_ROOT; };
 		6687D1C3122F863B005AD0F9 /* KMergeKds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMergeKds.h; sourceTree = "<group>"; };
 		6687D1C4122F863B005AD0F9 /* KMergeKds.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeKds.cxx; sourceTree = "<group>"; };
+		66D23498123A52BD00792DEC /* submitConcatBoloJobs.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = submitConcatBoloJobs.C; sourceTree = "<group>"; };
 		66E03A511237CBFD00415B79 /* calitransfer.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = calitransfer.cxx; path = ../kData/kera/calitransfer.cxx; sourceTree = SOURCE_ROOT; };
 		66E03A521237CBFD00415B79 /* eventFinderTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eventFinderTest.cxx; path = ../kData/kera/eventFinderTest.cxx; sourceTree = SOURCE_ROOT; };
 		66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KEraEventFinder.cxx; path = ../kData/kera/KEraEventFinder.cxx; sourceTree = SOURCE_ROOT; };
@@ -361,6 +362,9 @@
 		6610DE2A121ED8080047036E /* executables */ = {
 			isa = PBXGroup;
 			children = (
+				662EC1AC12343BD3007E432B /* fillEraToKEds.cxx */,
+				662EC1AE12343BD3007E432B /* fillMuonVetoEvents.cxx */,
+				662EC1AA12343BD3007E432B /* concatDst.cxx */,
 				662EC1B012343BD3007E432B /* mergeKEdsTree.cxx */,
 				6641B4B8123831BF0002C5A1 /* testAllEventsForUniqueIDs.cxx */,
 				6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */,
@@ -692,14 +696,12 @@
 		662EC1A912343BD3007E432B /* kdsScripts */ = {
 			isa = PBXGroup;
 			children = (
-				662EC1AA12343BD3007E432B /* concatDst.cc */,
 				662EC1AB12343BD3007E432B /* ExampleAnalysis.cc */,
-				662EC1AC12343BD3007E432B /* fillEraToKEds.cc */,
 				662EC1AD12343BD3007E432B /* fillExample.cc */,
-				662EC1AE12343BD3007E432B /* fillMuonVetoEvents.cc */,
 				662EC1AF12343BD3007E432B /* HowToFillEDS.txt */,
 				662EC1B112343BD3007E432B /* processMuonVetoToKEDSOnKalinka.root.C */,
 				662EC1B212343BD3007E432B /* rootScript_concatBoloEra.c */,
+				66D23498123A52BD00792DEC /* submitConcatBoloJobs.C */,
 				662EC1B312343BD3007E432B /* rootScript_concatMuonKEdwDS.c */,
 				662EC1B412343BD3007E432B /* rootScript_fillEraToKEdsEvents.c */,
 				662EC1B512343BD3007E432B /* rootScript_fillExample.c */,

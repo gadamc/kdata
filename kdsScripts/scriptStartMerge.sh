@@ -1,7 +1,7 @@
 #!/bin/bash
 # sleep 7
 
-#root -q -l rootScript_concatBoloEra.c
+root -q -l rootScript_concatBoloEra.c
 # Erics has two sets of files for Run12, and within a set there are a few files per bolometer,  but we process the complete data in one step
 
 root -q -l rootScript_fillEraToKEdsEvents.c

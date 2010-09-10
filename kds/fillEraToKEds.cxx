@@ -596,3 +596,39 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 	cout.rdbuf(cout_rdbuf);
 	return fNumDuplicateStamps;
 }
+
+
+#ifndef __CINT__
+//we only compile with the main if we're not in the CINT.
+//you can still compile this file with the ACLiC compiler when you start a ROOT session, but then you 
+//should call MuonVetoToDS directly since a function titled 'main' cannot be used in this case. 
+int main(int argc, char* argv[])
+{
+	string arg1, arg2, arg3, arg4, arg5;
+	
+	if(argc == 5)
+	{
+		arg1 = argv[1];
+		arg2 = argv[2];
+		arg3 = argv[3];
+		arg4 = argv[4];
+		return eraToKEds(arg1, arg2, arg3, arg4);
+	}	
+	else if(argc == 6)
+	{
+		arg1 = argv[1];
+		arg2 = argv[2];
+		arg3 = argv[3];
+		arg4 = argv[4];
+		arg5 = argv[5];
+		return eraToKEds(arg1, arg2, arg3, arg4, arg5);
+	}
+	else {
+			cout << "Incorrect number of arguements: " << argc << ". You should provide 5 or 6 arguments." << endl;
+			return -1;
+		}
+		
+	}
+#endif
+	
+

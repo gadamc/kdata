@@ -31,16 +31,16 @@
 #include "TList.h"
 
 //outputFile =firstFile , inputPath=second read only file
-int concatDst(string inputPath1, string inputPath2, string outputFile){
+int concatDst(string inputFile1, string inputFile2, string outputFile){
 	
 	cout << "Concatenate two DST files: "<< outputFile 
-	<< " = " << inputPath1 << " + " << inputPath2 << endl;
+	<< " = " << inputFile1 << " + " << inputFile2 << endl;
 	
-	TFile *inFile1 = new TFile(inputPath1.c_str(),"read");
-	TFile *inFile2 = new TFile(inputPath2.c_str(),"read");
+	TFile *inFile1 = new TFile(inputFile1.c_str(),"read");
+	TFile *inFile2 = new TFile(inputFile2.c_str(),"read");
 	TFile *f = new TFile(outputFile.c_str(),"recreate");
 	if(!inFile1->IsOpen() || !inFile2->IsOpen()){
-		cout << "Could not open Input Files: " << inputPath1 << " \n"<< inputPath2 << endl;
+		cout << "Could not open Input Files: " << inputFile1 << " \n"<< inputFile2 << endl;
 		return 1;
 	}
 	TTree *inTree1 =(TTree*)inFile1->Get("dsttree");
@@ -61,13 +61,13 @@ int concatDst(string inputPath1, string inputPath2, string outputFile){
 	return 0;
 }
 
-int concatEheat(string inputPath1, string inputPath2, string outputFile){
+int concatEheat(string inputFile1, string inputFile2, string outputFile){
 	
 	cout << "Concatenate two eheat files: "<< outputFile 
-	<< " = " << inputPath1 << " + " << inputPath2 << endl;
+	<< " = " << inputFile1 << " + " << inputFile2 << endl;
 	
-	TFile *inFile1 = new TFile(inputPath1.c_str(),"read");
-	TFile *inFile2 = new TFile(inputPath2.c_str(),"read");
+	TFile *inFile1 = new TFile(inputFile1.c_str(),"read");
+	TFile *inFile2 = new TFile(inputFile2.c_str(),"read");
 	TFile *f = new TFile(outputFile.c_str(),"recreate");
 	
 	TTree *inTree1 =(TTree*)inFile1->Get("energytree");
@@ -88,13 +88,13 @@ int concatEheat(string inputPath1, string inputPath2, string outputFile){
 	return 0;
 }
 
-int concatEion(string inputPath1, string inputPath2, string outputFile){
+int concatEion(string inputFile1, string inputFile2, string outputFile){
 	
 	cout << "Concatenate two eion files: "<< outputFile 
-	<< " = " << inputPath1 << " + " << inputPath2 << endl;
+	<< " = " << inputFile1 << " + " << inputFile2 << endl;
 	
-	TFile *inFile1 = new TFile(inputPath1.c_str(),"read");
-	TFile *inFile2 = new TFile(inputPath2.c_str(),"read");
+	TFile *inFile1 = new TFile(inputFile1.c_str(),"read");
+	TFile *inFile2 = new TFile(inputFile2.c_str(),"read");
 	TFile *f = new TFile(outputFile.c_str(),"recreate");
 	
 	TTree *inTree1 =(TTree*)inFile1->Get("energytree");
@@ -116,13 +116,13 @@ int concatEion(string inputPath1, string inputPath2, string outputFile){
 }
 
 
-int concatCuts(string inputPath1, string inputPath2, string outputFile){
+int concatCuts(string inputFile1, string inputFile2, string outputFile){
 	
 	cout << "Concatenate two cuts files: "<< outputFile 
-	<< " = " << inputPath1 << " + " << inputPath2 << endl;
+	<< " = " << inputFile1 << " + " << inputFile2 << endl;
 	
-	TFile *inFile1 = new TFile(inputPath1.c_str(),"read");
-	TFile *inFile2 = new TFile(inputPath2.c_str(),"read");
+	TFile *inFile1 = new TFile(inputFile1.c_str(),"read");
+	TFile *inFile2 = new TFile(inputFile2.c_str(),"read");
 	TFile *f = new TFile(outputFile.c_str(),"recreate");
 	
 	TTree *inTree1 =(TTree*)inFile1->Get("cuttree");
@@ -188,3 +188,64 @@ int concatKDS(string *inputFiles, Int_t numFiles, string outputFile){
 	
 	return 0;
 }
+
+
+#ifndef __CINT__
+//we only compile with the main if we're not in the CINT.
+//you can still compile this file with the ACLiC compiler when you start a ROOT session, but then you 
+//should call MuonVetoToDS directly since a function titled 'main' cannot be used in this case. 
+int main(int argc, char* argv[])
+{
+	string argOne, argTwo, argThree;
+
+	argOne = argv[2];
+	argTwo = argv[3];
+	argThree = argv[4];
+	
+	switch (atoi(argv[1])) {
+		case 1:
+			
+			return concatDst(argOne, argTwo, argThree);
+			break;
+			
+		case 2:
+			return concatCuts(argOne, argTwo, argThree);
+			break;
+			
+		case 3:
+			return concatEheat(argOne, argTwo, argThree);
+			break;
+			
+		case 4:
+			return concatEion(argOne, argTwo, argThree);
+			break;
+			
+		case 5:
+			//concatDst 5 outputFile inFile1 inFile2 ....
+			if(argc >= 4){
+				string *listOfFiles = new string[argc-3];
+				for(Int_t i = 0; i < argc-3; i++){
+					listOfFiles[i] = argv[i+3];
+				}
+				Int_t theRet = concatKDS(listOfFiles, argc-3, argTwo);
+				delete [] listOfFiles;
+				return theRet;
+			}
+			else {
+				cout << "Not enough arguments for case 5" << endl;
+			}
+			break;
+			
+			
+		default:
+			cout << "Unknown case " << atoi(argv[1]) << endl;
+			cout << "1 = concatDst. 2 = concatCuts. 3 = concatEheat. 4 = concatEion. 5 = concatKDS" << endl;
+			return -1;
+			break;
+	}
+	
+	return -1;
+}
+#endif
+
+
