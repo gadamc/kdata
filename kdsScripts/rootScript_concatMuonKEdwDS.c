@@ -11,9 +11,9 @@
 //root[0] .x examples/rootScript_fillExample.c
 
 {
-	gSystem->Load("/kalinka/storage/edelweiss/EdwSoftware/Kdata/lib/libKData.so");  //load the KDataStructure library
-	gSystem->AddIncludePath("-I/kalinka/storage/edelweiss/EdwSoftware/Kdata/src");//changed to absolute path, thus I can execute it from kalinka account
-	gROOT->ProcessLine(".L concatDst.cc+"); //compile your code, which uses the KDataStructure class library
+	gSystem->Load("$KDATA_ROOT/lib/libkds.so");  //load the KDataStructure library
+	gSystem->AddIncludePath("-I$KDATA_ROOT/include");//changed to absolute path, thus I can execute it from kalinka account
+	gROOT->ProcessLine(".L $KDATA_ROOT/kdsScripts/concatDst.cc+"); //compile your code, which uses the KDataStructure class library
 
 	
 	Int_t vetoRuns=14; //14 but File 66 is huge 40 000 000 events

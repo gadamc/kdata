@@ -15,12 +15,12 @@
 	TString devPath = "$KDATA_ROOT";
 	//TString devPath = "/kalinka/home/edelweiss/EdwSoftware/Kdata";
 	
-	//string kInputPath1="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
-	string kInputPath1="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/";
-	//string kOutputPath="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
-	string kOutputPath="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/Merge/";
-	//string kLogFile="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge.log";
-	string kLogFile="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/Merge/Merge.log";
+	string kInputPath1="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
+	//string kInputPath1="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/";
+	string kOutputPath="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
+	//string kOutputPath="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/Merge/";
+	string kLogFile="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Merge.log";
+	//string kLogFile="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/Merge/Merge.log";
 
 	TString includePath = "-I" + devPath + "/include/";
 	gSystem->AddIncludePath(includePath.Data());
@@ -64,19 +64,24 @@
 		out=kOutputPath;
 		out.append(kEds); out.append(kDetectorNames[i]);out.append(kDetectorNames[i+1]); out.append(kRoot);
 		cout << "loop 1" << endl;
-		cout << "merging " << in1 << " and " << in2 << endl;
+		command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
+		in1.replace(in1.find("Bckgd"), 5,"Neutron" );
+		in2.replace(in2.find("Bckgd"), 5,"Neutron" );
+		out.replace(out.find("Bckgd"), 5,"Neutron" );
+		log.replace(log.find("Bckgd"), 5,"Neutron" );
+		command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
 		//mergeKEdsTree(in1, in2, out, log);
-	 command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
-	 gSystem->Exec(command.Data());
-	 //in1.replace(in1.find("Bckgd"), 5,"Neutron" );
-		//in2.replace(in2.find("Bckgd"), 5,"Neutron" );
-		//out.replace(out.find("Bckgd"), 5,"Neutron" );
-		//log.replace(log.find("Bckgd"), 5,"Neutron" );
-		//mergeKEdsTree(in1, in2, out, log);
-		//in1.replace(in1.find("Neutron"), 7,"Gamma" );
-		//in2.replace(in2.find("Neutron"), 7,"Gamma" );
-		//out.replace(out.find("Neutron"), 7,"Gamma" );
-		//log.replace(log.find("Neutron"), 7,"Gamma" );
+		in1.replace(in1.find("Neutron"), 7,"Gamma" );
+		in2.replace(in2.find("Neutron"), 7,"Gamma" );
+		out.replace(out.find("Neutron"), 7,"Gamma" );
+		log.replace(log.find("Neutron"), 7,"Gamma" );
+		command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
 		//mergeKEdsTree(in1, in2, out, log);
  	}	
 	
@@ -99,17 +104,24 @@
 		cout << "loop 2" << endl;
 		cout << "merging " << in1 << " and " << in2 << endl;
 		command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+		cout << command << endl;
 		gSystem->Exec(command.Data());
 		//mergeKEdsTree(in1, in2, out, log);
-		//in1.replace(in1.find("Bckgd"), 5,"Neutron" );
-		//in2.replace(in2.find("Bckgd"), 5,"Neutron" );
-		//out.replace(out.find("Bckgd"), 5,"Neutron" );
-		//log.replace(log.find("Bckgd"), 5,"Neutron" );
+		in1.replace(in1.find("Bckgd"), 5,"Neutron" );
+		in2.replace(in2.find("Bckgd"), 5,"Neutron" );
+		out.replace(out.find("Bckgd"), 5,"Neutron" );
+		log.replace(log.find("Bckgd"), 5,"Neutron" );
+		command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
 		//mergeKEdsTree(in1, in2, out, log);
-		//in1.replace(in1.find("Neutron"), 7,"Gamma" );
-		//in2.replace(in2.find("Neutron"), 7,"Gamma" );
-		//out.replace(out.find("Neutron"), 7,"Gamma" );
-		//log.replace(log.find("Neutron"), 7,"Gamma" );
+		in1.replace(in1.find("Neutron"), 7,"Gamma" );
+		in2.replace(in2.find("Neutron"), 7,"Gamma" );
+		out.replace(out.find("Neutron"), 7,"Gamma" );
+		log.replace(log.find("Neutron"), 7,"Gamma" );
+		command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+		cout << command << endl;
+		gSystem->Exec(command.Data());
 		//mergeKEdsTree(in1, in2, out, log); 
  	}
 	
@@ -126,12 +138,26 @@
 	log.append("Merge_AlmostAll1.log");
 	//mergeKEdsTree(in1, in2, out, log);
 	cout << "step 3" << endl;
-	cout << "merging " << in1 << " and " << in2 << endl;
 	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
 	gSystem->Exec(command.Data());
 	
-	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll1.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AlmostAll1.log");
-	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_FID401FID402ID2ID3.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_ID4ID5ID6ID401.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AlmostAll1.log");
+	in1.replace(in1.find("Bckgd"), 5,"Neutron" );
+	in2.replace(in2.find("Bckgd"), 5,"Neutron" );
+	out.replace(out.find("Bckgd"), 5,"Neutron" );
+	log.replace(log.find("Bckgd"), 5,"Neutron" );
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
+	gSystem->Exec(command.Data());
+	
+	in1.replace(in1.find("Neutron"), 7,"Gamma" );
+	in2.replace(in2.find("Neutron"), 7,"Gamma" );
+	out.replace(out.find("Neutron"), 7,"Gamma" );
+	log.replace(log.find("Neutron"), 7,"Gamma" );
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
+	gSystem->Exec(command.Data());
+	
 	cout <<"Merging AlmosAll1 finished" << endl;
 
 	in1 = kOutputPath; 
@@ -144,13 +170,25 @@
 	log.append("Merge_AlmostAll2.log");
 	//mergeKEdsTree(in1, in2, out, log);
 	cout << "step 4" << endl;
-	cout << "merging " << in1 << " and " << in2 << endl;
 	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
 	gSystem->Exec(command.Data());
 
+	in1.replace(in1.find("Bckgd"), 5,"Neutron" );
+	in2.replace(in2.find("Bckgd"), 5,"Neutron" );
+	out.replace(out.find("Bckgd"), 5,"Neutron" );
+	log.replace(log.find("Bckgd"), 5,"Neutron" );
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
+	gSystem->Exec(command.Data());
 	
-	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll2.root","/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AlmostAll2.log");
-	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_ID402ID403ID404ID405.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_GGA4.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AlmostAll2.log", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll2.root");
+	in1.replace(in1.find("Neutron"), 7,"Gamma" );
+	in2.replace(in2.find("Neutron"), 7,"Gamma" );
+	out.replace(out.find("Neutron"), 7,"Gamma" );
+	log.replace(log.find("Neutron"), 7,"Gamma" );
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
+	gSystem->Exec(command.Data());
 	cout <<"Merging AlmosAll2 finished" << endl;
 	
 	in1 = kOutputPath; 
@@ -163,18 +201,35 @@
 	log.append("Merge_AllBolos.log");
 	//mergeKEdsTree(in1, in2, out, log);	
 	cout << "step 5" << endl;
-	cout << "merging " << in1 << " and " << in2 << endl;
 	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
 	gSystem->Exec(command.Data());
 
+	in1.replace(in1.find("Bckgd"), 5,"Neutron" );
+	in2.replace(in2.find("Bckgd"), 5,"Neutron" );
+	out.replace(out.find("Bckgd"), 5,"Neutron" );
+	log.replace(log.find("Bckgd"), 5,"Neutron" );
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
+	gSystem->Exec(command.Data());
 	
+	in1.replace(in1.find("Neutron"), 7,"Gamma" );
+	in2.replace(in2.find("Neutron"), 7,"Gamma" );
+	out.replace(out.find("Neutron"), 7,"Gamma" );
+	log.replace(log.find("Neutron"), 7,"Gamma" );
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log;
+	cout << command << endl;
+	gSystem->Exec(command.Data());
+	cout <<"Merging AlmosAll2 finished" << endl;
+	
+
 	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Merge_AllBolos.log");
 	//mergeKEdsTree("/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll1.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AlmostAll2.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AllBolos.root", "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Merge_AllBolos.log");
 	cout <<"Merging AllBolos finished" << endl;
 	
 
 	//merging of the muonVetoSystem
-	/*
+	
 	//First produce the concatenated muonVetoFile and the merged bolo files!
 	//Long64_t startTime=1258735463;
 	Int_t kEntryOfBoloStart=272394; //From this event on the timelines match and merging begins, before this event we just fill in the uVeto data
@@ -183,14 +238,24 @@
 	// first bad entry, second bad entry, period of time resets in uVeto
 	//third bad Entry to fourth bad Entry: no bolo data available + time resets in uVeto
 	
-	string logfile="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/MergeAllBolosVeto.log";
-	 in1 ="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolos.root";
-	 in2 ="/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/uVeto/KdsRun12_MuonVetoAll.root";
-	 out="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolosVeto.root";
-	Bool_t bigNeutron=false; //defines if the data of the big Neutron calibration should be included, default is off
-	Int_t debug=-24129205;
-	mergeKEdsTree( in1, in2, out, logfile, kEntryOfBoloStart, bigNeutron, debug);
-	 */
+	log = kOutputPath;
+	log.append("Merge_AllBolosVeto.log");
+	in1 = kOutputPath;
+	in1.append("Kds_AllBolos.root");
+	in2 = kOutputPath;
+	out.replace(out.find("Bckgd"), 5,"uVeto" );
+	in2.append("KdsRun12_MuonVetoAll.root");
+	out = kOutputPath;
+	out.append("Kds_AllBoloVetos.root");
+	string bigNeutron = "0"; //defines if the data of the big Neutron calibration should be included, default is off
+	string debug = "-24129205";
+	command = "mergeKEdsTree " + in1 + " " + in2 + " " + out + " " + log + " " + binNeutron + " " + debug;;
+	cout << command << endl;
+	gSystem->Exec(command.Data());
+	cout <<"Merging AlmosAll2 finished" << endl;
+	
+	//mergeKEdsTree( in1, in2, out, logfile, kEntryOfBoloStart, bigNeutron, debug);
+	 
 	
 }
 

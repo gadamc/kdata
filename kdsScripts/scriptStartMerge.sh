@@ -17,7 +17,11 @@ root -q -l rootScript_mergeKEdsTrees.c
 #merging always 2files together until at last also the uVeto data is included
 
 #make sure these following programms have been compiled
-/kalinka/home/edelweiss/EdwSoftware/Kdata/v2.0/bin/allPassOne_GSEventNumbers /kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolosVeto.root /kalinka/home/edelweiss/Bolo/Run12/Eds/Final/Bckgd/Kds_Run12_v2.0.root 
+$KDATA_ROOT/allPassOne_GSEventNumbers /kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolosVeto.root /kalinka/home/edelweiss/Bolo/Run12/Eds/Final/Bckgd/Kds_Run12_v3.0.root 
+
+$KDATA_ROOT/allPassOne_GSEventNumbers /kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Gamma/Kds_AllBolosVeto.root /kalinka/home/edelweiss/Bolo/Run12/Eds/Final/Gamma/Kds_Run12_v3.0.root 
+
+$KDATA_ROOT/allPassOne_GSEventNumbers /kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Neutron/Kds_AllBolosVeto.root /kalinka/home/edelweiss/Bolo/Run12/Eds/Final/Neutron/Kds_Run12_v3.0.root 
 # setting a new global EventNumber
 
 # filling of SystemRecord information

@@ -16,13 +16,14 @@
 	TString includePath = "-I" + devPath + "/include";
 	TString includePath2 = "-I" + devPath + "/era";
 	TString processLine = ".L " + devPath + "/kdsScripts/fillEraToKEds.cc++"; 
-	//TString dataInputPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/Bckgd/";
-	TString dataInputPath = "/Users/adam/analysis/edelweiss/data/eraConcat/eraFullNeutron/";
+	TString dataInputPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/Bckgd/";
+	//TString dataInputPath = "/Users/adam/analysis/edelweiss/data/eraConcat/eraFullNeutron/";
 	
-	//TString dataOutputPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
+	TString dataOutputPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
 	
-	TString dataOutputPath = "/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/";
-	TString tstNewPath = "/Users/adam/analysis/edelweiss/data/tstnew/";
+	//TString dataOutputPath = "/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/";
+	//TString tstNewPath = "/Users/adam/analysis/edelweiss/data/tstnew/";
+	TString tstNewPath = "/kalinka/home/edelweiss/Bolo/Run12/tstnew/";
 	
 	Int_t kNumberBolos=13;
 	string kDetectorNames[kNumberBolos]=
@@ -42,10 +43,6 @@
 	gSystem->AddIncludePath(includePath2.Data());
 
 	gSystem->Load(libPath.Data());  //load the KDataStructure library
-	//gSystem->AddIncludePath("-I/kalinka/home/gadamc/dev/KDataStructure");
-	//gSystem->Load("/kalinka/home/gadamc/dev/KDataStructure/lib/libKDS.so");  //load the KDataStructure library
-	//gSystem->AddIncludePath("-I/kalinka/home/gadamc/dev/KDataStructure/src");//changed to absolute path, thus I can execute it from kalinka account
-	//gROOT->ProcessLine(".L mergeEdsTree.cc+"); //compile your code, which uses the KDataStructure class library
 	gROOT->ProcessLine(processLine.Data());
 	
 	string kInputPath = dataInputPath.Data();
@@ -73,14 +70,14 @@
 		
 		
 	  eraToKEds(inPath, kDetectorNames[i], outFile, kLogFile, tstNewPath.Data());
-	  //inPath.replace(inPath.find("Bckgd"), 5, "Neutron");
-	  //outFile.replace(outFile.find("Bckgd"),5, "Neutron");
-	  //kLogFile.replace(kLogFile.find("Bckgd"),5, "Neutron");
-	  //eraToKEds(inPath, kDetectorNames[i], outFile, kLogFile);
-	  //inPath.replace(inPath.find("Neutron"), 7, "Gamma");
-	  //outFile.replace(outFile.find("Neutron"),7, "Gamma");
-	  //kLogFile.replace(kLogFile.find("Neutron"),7, "Gamma");
-	  //eraToKEds(inPath, kDetectorNames[i], outFile, kLogFile);
+	  inPath.replace(inPath.find("Bckgd"), 5, "Neutron");
+	  outFile.replace(outFile.find("Bckgd"),5, "Neutron");
+	  kLogFile.replace(kLogFile.find("Bckgd"),5, "Neutron");
+	  eraToKEds(inPath, kDetectorNames[i], outFile, kLogFile);
+	  inPath.replace(inPath.find("Neutron"), 7, "Gamma");
+	  outFile.replace(outFile.find("Neutron"),7, "Gamma");
+	  kLogFile.replace(kLogFile.find("Neutron"),7, "Gamma");
+	  eraToKEds(inPath, kDetectorNames[i], outFile, kLogFile);
 	}
  	
 	//You may compile your own classes in this same way

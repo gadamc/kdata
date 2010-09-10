@@ -9,9 +9,9 @@
 
 {
 	//gSystem->Load("$HOME/dev/KDataStructure/lib/libKDS.so");  //load the KDataStructure library
-	gSystem->Load("/kalinka/storage/edelweiss/EdwSoftware/Kdata/lib/libKData.so");
-	gSystem->AddIncludePath("-I/kalinka/storage/edelweiss/EdwSoftware/Kdata/src");
-	gROOT->ProcessLine(".L fillMuonVetoEvents.cc+"); //compile your code, which uses the KDataStructure class library
+	gSystem->Load("$KDATA_ROOT/lib/libkds.so");
+	gSystem->AddIncludePath("-I$KDATA_ROOT/include");
+	gROOT->ProcessLine(".L $KDATA_ROOT/kdsScripts/fillMuonVetoEvents.cc+"); //compile your code, which uses the KDataStructure class library
 	RedirectHandle_t *h = new RedirectHandle_t;
 	//TString outputLog = "/kalinka/home/gadamc/data/muonVeto/eds/MuonVetoToEDS_log.txt";
 	TString outputLog = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/uVeto/MuonVetoToEDS_log.txt";
