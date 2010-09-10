@@ -17,7 +17,6 @@
 #include "TRef.h"
 #include "TClonesArray.h"
 
-
 //sub record forward declarrations
 class KHLASambaRecord;
 class KHLABolometerRecord;
@@ -133,7 +132,7 @@ private:
 	TClonesArray *fBolo; //->  pointer to the array of Single Bolo Sub Records
 	TClonesArray *fBoloPulse;  //-> pointer to the array of Bolo Pulse Sub Records
 	TClonesArray *fMuonModule; //-> pointer to the array of Muon Module Sub Records
-	
+		
 	/*NOTE - I am using short names here in order to improve the readability
 	 of the TTree when looking at the file from the TBrowser or from
 	 the TTree::Show TTree::Scan methods. 
@@ -162,6 +161,7 @@ private:
 	//private methods
 	template<class T> T* AddSubRecord(TClonesArray *mArray, Int_t &mCount);
 	void ClearArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);
+	void DeleteArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);
 	void CreateArrays(void);
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLAEvent &anEvent);

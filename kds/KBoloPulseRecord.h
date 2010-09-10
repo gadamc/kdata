@@ -35,11 +35,6 @@ public:
 	virtual void Compact(void);
 	
 	//getters
-	//Int_t GetChannelNameSize(void) const {return fChannelNameSize;}
-	//string GetChannelName(void) const {string str=""; if(fChannelName==0) return str; str = fChannelName; return str;}
-	//Double_t GetPeakAmp(void) const {return fPeakAmp;}
-	//Double_t GetBaselineMean(void) const {return fBaselineMean;}
-	//Double_t GetBaselineFWHM(void) const {return fBaselineFWHM;}
 	Int_t GetPulseType(void) const {return fPulseType;}
 	Int_t GetChannelNumber(void) const {return fChannelNumber;}
 	
@@ -49,10 +44,7 @@ public:
 	Bool_t IsHeat(void) const {	return (fPulseType == kHeatType) ? true : false; 	}
 	
 	//setters
-	//void SetChannelName(const Char_t *aWord, Int_t aSize);
-	//void SetPeakAmp(Double_t aWord) {fPeakAmp = aWord;}
-	//void SetBaselineMean(Double_t aWord) {fBaselineMean = aWord;}
-	//void SetBaselineFWHM(Double_t aWord) {fBaselineFWHM = aWord;}
+
 	void SetChannelNumber(Int_t aNum) {fChannelNumber = aNum;}
 	
 	void SetPulseIsCollectrodeType(void) {fPulseType = kCollectrodeType;}
@@ -65,12 +57,6 @@ private:
 	Int_t fChannelNumber; 
 	Int_t fPulseType;  
 	
-	//Int_t fChannelNameSize; //number of charaters in the channel name.
-	//Char_t *fChannelName; //[fChannelNameSize] Guard, Heat, A, B, etc... Currently not used.
-	//Double_t fPeakAmp;  //measured by Samba (found in NTP file) - Currently not used
-	//Double_t fBaselineMean; //measured by Samba (found in NTP file) - Currently not used
-	//Double_t fBaselineFWHM; //measured by Samba (found in NTP file) - Currently not used
-
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KBoloPulseRecord &aRec);

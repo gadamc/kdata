@@ -25,28 +25,19 @@ KSambaRecord::KSambaRecord(void)
 	
 	//We must deal with members on the heap separately 
 	//from members on the stack
-	fRunName=0;
-	//fFileName=0;
-	fRunNameSize=0;
-	//fFileNameSize=0;
-
-	
+	//fRunName=0;
+	//fRunName = new TString;
+		
 }
 
 
 KSambaRecord::KSambaRecord(const KSambaRecord &aRec)
 : KSubRecord(aRec)
 {
+	//fRunName=0;
+	//fRunName = new TString;
 	CopyLocalMembers(aRec);
-	
-	fRunName=0;
-	//fFileName=0;
-	fRunNameSize=0;
-	//fFileNameSize=0;
-	
-	SetRunName(aRec.GetRunName().c_str(), aRec.GetRunNameSize());
-	//SetFileName(aRec.GetFileName().data(), aRec.GetFileNameSize());
-	
+
 }
 
 KSambaRecord& KSambaRecord::operator=(const KSambaRecord &aRec)
@@ -55,10 +46,7 @@ KSambaRecord& KSambaRecord::operator=(const KSambaRecord &aRec)
 	
 	this->KSubRecord::operator=(aRec);
 	CopyLocalMembers(aRec);
-	
-	SetRunName(aRec.GetRunName().c_str(), aRec.GetRunNameSize());
-	//SetFileName(aRec.GetFileName().data(), aRec.GetFileNameSize());
-	
+		
 	return *this;
 }
 
@@ -69,27 +57,19 @@ void KSambaRecord::CopyLocalMembers(const KSambaRecord &aRec)
 	SetNtpDateMicroSec(aRec.GetNtpDateMicroSec()); 
 	SetSambaDAQNumber(aRec.GetSambaDAQNumber());
 	
-	//SetPosition(aRec.GetPosition());
-	//SetDelai(aRec.GetDelai());
+	SetRunName(aRec.fRunName.c_str());
 	
-	//SetSambaMajorVersionNum(aRec.GetSambaMajorVersionNum());
-	//SetSambaMinorVersionNum(aRec.GetSambaMinorVersionNum());
 }
 
 KSambaRecord::~KSambaRecord(void)
 {
 	Clear("C");
 
-	if(fRunName!=0){
-		delete[] fRunName;
-		fRunName=0;	
-		fRunNameSize=0;
-	}
-	/*if(fFileName!=0){
-		delete[] fFileName;	
-		fFileName=0;
-		fFileNameSize=0;
-	}*/
+	//if(fRunName!=0){
+	//	delete fRunName;
+	//	fRunName=0;	
+	//}
+	
 	
 }
 
@@ -107,77 +87,36 @@ void KSambaRecord::Clear(Option_t *opt)
   //Clear and delete local objects here. 
 	//delete local stuff here
 
-	if(fRunName!=0){
-		delete[] fRunName;
-		fRunNameSize=0;	
-		fRunName=0;
-	}
+	//if(fRunName!=0){
+	//	delete fRunName;
+	//	fRunName=0;
+	//}
 
-	/*if(fFileName!=0){
-		delete[] fFileName;
-		fFileNameSize=0;
-		fFileName=0;
-	}*/
-	
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
 
 }
 
-void KSambaRecord::SetRunName(const Char_t* aWord, Int_t aSize)
+void KSambaRecord::SetRunName(const Char_t* aWord)
 {
-	if(aSize!=fRunNameSize){
-		if(fRunName!=0){
-			delete[] fRunName;
-			fRunName=0;
-			fRunNameSize=0;	
-		}
-		if(aSize>0)fRunName= new Char_t[aSize];
-		fRunNameSize=aSize;
-	}
-	if(aSize>0 && aWord != 0)memcpy(fRunName, aWord, fRunNameSize*sizeof(Char_t));
+	//if(fRunName == 0)
+	//	fRunName = new TString;
+	
+	fRunName = aWord;
+
 }
-
-
-
-/*void KSambaRecord::SetFileName(const Char_t* aWord, Int_t aSize)
-{
-	if(aSize!=fFileNameSize){
-		if(fFileName!=0){
-			delete[] fFileName;	
-			fFileName=0;
-			fFileNameSize=0;	
-		}
-		if(aSize>0)fFileName= new Char_t[aSize];
-		fFileNameSize=aSize;
-	}
-	if(aSize>0)memcpy(fFileName, aWord, fFileNameSize*sizeof(Char_t));
-}
-*/
 
 string KSambaRecord::GetRunName(void) const 
 {
-	string str=""; 
-	
-	if(fRunName == 0 || fRunNameSize == 0) 
-		return str;
-	
-	else 
-		str.assign(fRunName, fRunNameSize);
-	
-	return str;
+	//if(fRunName != 0){
+	//	string str = fRunName->Data();
+	//	return str;
+	//}
+	//else{
+	//	return "";
+	//}
+	return fRunName;
 }
-
-/*string KSambaRecord::GetFileName(void) const 
-{
-	string str=""; 
-	
-	if(fFileName==0) 
-		return str;
-	
-	else return str.assign(fFileName, fFileNameSize);
-	
-}*/
 
 void KSambaRecord::InitializeMembers(void)
 {
@@ -191,11 +130,7 @@ void KSambaRecord::InitializeMembers(void)
 	SetNtpDateMicroSec(-99); 
 	SetSambaDAQNumber(-99);
 	
-	//SetPosition(-99);
-	//SetDelai(-99.0);
-	
-	//SetSambaMajorVersionNum(-99);
-	//SetSambaMinorVersionNum(-99);
+
 }
 
 
@@ -252,75 +187,32 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
 			return false;  
 	}
 	
-	if(fRunNameSize != aRec.fRunNameSize){
+	if(fRunName != aRec.fRunName){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KSambaRecord fRunNameSize Not Equal. lhs: " 
-			<< fRunNameSize << " != rhs " << aRec.fRunNameSize << endl;		
-		else
-			return false;  
-	}
-	
-	if(strncmp(fRunName, aRec.fRunName, sizeof(Char_t)*fRunNameSize)){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KSambaRecord fDetectorName Not Equal. lhs: " 
+			cout << "KSambaRecord fRunName Not Equal. lhs: " 
 			<< fRunName << " != rhs " << aRec.fRunName << endl;		
 		else
 			return false;  
 	}
 	
-	/*if(fFileNameSize != aRec.fFileNameSize){
-		bIsEqual = false;
+	/*
+	if(fRunName != 0 && aRec.fRunName != 0){
+		if(*fRunName != *aRec.fRunName){
+			bIsEqual = false;
+			if (bPrint) 
+				cout << "KSambaRecord fRunName Not Equal. lhs: " 
+				<< *fRunName << " != rhs " << *aRec.fRunName << endl;		
+			else
+				return false;  
+		}
+	}
+	else {
 		if (bPrint) 
-			cout << "KSambaRecord fFileNameSize Not Equal. lhs: " 
-			<< fFileNameSize << " != rhs " << aRec.fFileNameSize << endl;		
+			cout << "KSambaRecord a fRunName pointer is zero " 
+			<< fRunName << " != rhs " << aRec.fRunName << endl;		
 		else
-			return false;  
-	}*/
-	
-	/*if(strncmp(fFileName, aRec.fFileName, sizeof(Char_t)*fFileNameSize)){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KSambaRecord fFileName Not Equal" << fFileName << " != " << aRec.fFileName << "_" << endl;		
-		else
-			return false;  
-	}*/
-	
-	/*if(fPosition != aRec.fPosition){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KSambaRecord fPosition Not Equal. lhs: " 
-			<< fPosition << " != rhs " << aRec.fPosition << endl;		
-		else
-			return false;  
-	}*/
-	
-	/*if(fDelai != aRec.fDelai){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KSambaRecord fDelai Not Equal. lhs: " 
-			<< fDelai << " != rhs " << aRec.fDelai << endl;		
-		else
-			return false;  
-	}*/
-	
-	/*if(fSambaMajorVersionNum != aRec.fSambaMajorVersionNum){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KSambaRecord fSambaMajorVersionNum Not Equal. lhs: " 
-			<< fSambaMajorVersionNum << " != rhs " << aRec.fSambaMajorVersionNum << endl;		
-		else
-			return false;  
-	}*/
-	
-	/*if(fSambaMinorVersionNum != aRec.fSambaMinorVersionNum){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KSambaRecord fSambaMinorVersionNum Not Equal. lhs: " 
-			<< fSambaMinorVersionNum << " != rhs " << aRec.fSambaMinorVersionNum << endl;		
-		else
-			return false;  
+			return false;
 	}*/
 	
 	return bIsEqual;

@@ -398,8 +398,8 @@ void KHLAEvent::CopyFromRawEvent(const KRawEvent &/*anEvent*/)
 
 void KHLAEvent::ClearArrays(Option_t *anOption)
 {
-	ClearArray(anOption, fSamba,fNumSamba);
-	ClearArray(anOption, fBolo,fNumBolo);
+	DeleteArray(anOption, fSamba,fNumSamba);  //have to call delete on Samba array because the KSambaRecord class contains a string
+	DeleteArray(anOption, fBolo,fNumBolo); // also contains a string, like KSambaRecord
 	ClearArray(anOption, fBoloPulse,fNumBoloPulse);
 	ClearArray(anOption, fMuonModule,fNumMuonModule);
 }
@@ -441,7 +441,7 @@ void KHLAEvent::CreateArrays(void)
 		fBolo = new TClonesArray("KHLABolometerRecord",5);
 	
 	if(!fBoloPulse)
-		fBoloPulse = new TClonesArray("KHLABoloPulseRecord",10);
+		fBoloPulse = new TClonesArray("KHLABoloPulseRecord",20);
 	
 	if(!fMuonModule)
 		fMuonModule = new TClonesArray("KHLAMuonModuleRecord",5);
@@ -457,8 +457,15 @@ void KHLAEvent::ClearArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCou
 {
 	if(mArray) {
 		mArray->Clear( (anOption && *anOption) ? anOption : "C" );
+		mCount = 0;
+	}
+}
+
+void KHLAEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
+{
+	if(mArray) {
 		//we have to delete because our sub-records contain TString members! :(
-		//mArray->Delete( (anOption && *anOption) ? anOption : "C" );
+		mArray->Delete( (anOption && *anOption) ? anOption : "C" );
 		mCount = 0;
 	}
 }

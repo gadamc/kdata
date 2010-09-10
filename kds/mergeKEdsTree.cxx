@@ -535,6 +535,7 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 						// bad stamp,thus we fill the event in right here and get the next uVeto event
 						//mEv->Set(*oldEv2, inFile2);
 						inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
+						mEv->Clear();
 						*mEv = *oldEv2;
 						mEv->IsSame(*oldEv2,true);
 						f.Fill();

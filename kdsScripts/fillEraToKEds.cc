@@ -348,7 +348,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 	//string myStop="jd01a001";
 	//string kDetectorName = GetDetectorNameDst(inputPath);
 	
-	Int_t detectorNumber= fillSambaDetectorNumber(kDetectorName, kNumberMyBolos);
+	//Int_t detectorNumber= fillSambaDetectorNumber(kDetectorName, kNumberMyBolos);
 	
 	cout << "    " << entries  << " entries" << endl;
 	
@@ -446,9 +446,9 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			bolo->SetChi2Flag(chi2);
 			bolo->SetVoltageFlag(vFlag);
 			bolo->SetIonFlags(ionFlags,6);
-			bolo->SetDetectorName(kDetectorName.c_str(),kDetectorName.length());
+			bolo->SetDetectorName(kDetectorName.c_str());
 			bolo->SetIonPulseTimeOffset(tOffset);
-			bolo->SetDetectorNumber(detectorNumber);
+			//bolo->SetDetectorNumber(detectorNumber);
 			bolo->SetEnergyIonFiducial(efid);
 			bolo->SetEnergySumIonChannels(etot);
 			bolo->SetBaselineIonFiducial(ldbfid);
@@ -558,7 +558,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			
 			KHLASambaRecord* sam = mEv->AddSamba();
 			sam-> SetSambaEventNumber(eventNum);
-			sam-> SetRunName(runName, 8); //je25b000 - only 8 characters!
+			sam-> SetRunName(runName); //je25b000
 			sam-> SetNtpDateSec(dateSec);
 			sam-> SetSambaDAQNumber(sRunName.compare(4,1,"a") + 1); 
 

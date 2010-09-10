@@ -75,7 +75,7 @@ void makeInputFile1(Int_t &j)
 		for(Int_t b = 0; b < 2; b++){
 			KHLABolometerRecord *bolo = e1->AddBolo();
 			bolo->SetEnergyRecoil(10*i+1 + 10000*(b+1));
-			bolo->SetDetectorNumber(1);
+			bolo->SetDetectorName("FID1");
 			e1->SetStamp(j++);
 			
 			KHLASambaRecord *samba = e1->AddSamba();
@@ -125,7 +125,7 @@ void makeInputFile2(Int_t &j)
 		for(Int_t b = 0; b < 2; b++){
 			KHLABolometerRecord *bolo = e2->AddBolo();
 			bolo->SetEnergyRecoil(10*i+201 + 10000*(b+1));
-			bolo->SetDetectorNumber(2);
+			bolo->SetDetectorName("FID2");
 			e2->SetStamp(j++);
 			
 			KHLASambaRecord *samba = e2->AddSamba();
@@ -193,11 +193,11 @@ void RunTest(const char *file, bool /*option*/)
 	t1->SetScanField(0);
 	
 	cout << "TTree::Scan for input1.root" << endl;
-	t1->Scan("fEnergyRecoil:fDetectorNumber:fSambaEventNumber:fSambaDAQNumber:fEnergy:fBolometerRecordNum:fPulseType:fChannelNumber","","colsize = 30");
+	t1->Scan("fEnergyRecoil:fDetectorName.fData:fSambaEventNumber:fSambaDAQNumber:fEnergy:fBolometerRecordNum:fPulseType:fChannelNumber","","colsize = 30");
 	cout << endl;
 	
 	cout << "TTree::Scan for input2.root" << endl;
-	t2->Scan("fEnergyRecoil:fDetectorNumber:fSambaEventNumber:fSambaDAQNumber:fEnergy:fBolometerRecordNum:fPulseType:fChannelNumber","","colsize = 30");
+	t2->Scan("fEnergyRecoil:fDetectorName.fData:fSambaEventNumber:fSambaDAQNumber:fEnergy:fBolometerRecordNum:fPulseType:fChannelNumber","","colsize = 30");
 	cout << endl;
 	
 	t2->GetEntry(0);

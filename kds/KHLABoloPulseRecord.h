@@ -39,15 +39,9 @@ public:
 	
 	KHLABolometerRecord* GetBolometerRecord(void) const {return (KHLABolometerRecord*)fBolometerRecord.GetObject();	}
 	void SetBolometerRecord(KHLABolometerRecord *aRec) {fBolometerRecord = aRec;	}
-	//void SetBolometerRecordNum(Int_t aVal){fBolometerRecordNum = aVal;}
 	
 private:
 
-	//derived quantites such as
-	//Double32_t fPeakTime;
-	//Double32_t fRiseTime;
-	//Double32_t fDecayTime;
-	
 	TRef fBolometerRecord;  //the value of this is the entry number of the TClonesArray that holds the KHLABolometerRecord object that this pulse belongs to.
 
 	Double32_t fEnergy;  //the energy of the pulse in keV.

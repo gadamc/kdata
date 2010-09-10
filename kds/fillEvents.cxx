@@ -69,7 +69,7 @@ int main(int /*argc*/, const char* /*argv[]*/)
 	}*/
 	
 	gRandom->SetSeed(0);
-	Int_t numEvents = 70000 + (Int_t)2000*gRandom->Rndm();
+	Int_t numEvents = 300000 + (Int_t)2000*gRandom->Rndm();
 
 	cout <<"Will create " << numEvents << " events" << endl;
 	Bool_t bIsBoloEvent, bIsMuonEvent; 
@@ -120,16 +120,32 @@ int main(int /*argc*/, const char* /*argv[]*/)
 				mBolo2->SetQvalue(gRandom->Rndm());
 				mBolo2->SetEnergyRecoil(100.0*gRandom->Rndm());
 				mBolo2->SetEnergyIon(100.0*gRandom->Rndm());
-				if(i==0) {
-					mBolo2->SetDetectorName("FID401",6);
-					mBolo2->SetDetectorNumber(5);
+				if( (i % 2) == 0) {
+					mBolo2->SetDetectorName("FID401");
+					//mBolo2->SetDetectorNumber(5);
 				}
 				else {
-					mBolo2->SetDetectorName("ID2",3);
-					mBolo2->SetDetectorNumber(2);
+					mBolo2->SetDetectorName("ID2");
+					//mBolo2->SetDetectorNumber(2);
 				}
+				
 			}
+			
+			KHLASambaRecord *sam = mEv->AddSamba();
+			sam->SetNtpDateSec(3.023432*i + 1257638400);
+			sam->SetSambaDAQNumber(0);
+			sam->SetSambaEventNumber(i);
+			if( (i % 10) != 0){
+				sam->SetRunName("iMod10");
+			}
+			else {
+				//sam->SetRunName("notIMod10");
+			}
+			
+			if( (i % 3) == 0)
+				sam->SetRunName("iMod3");
 		 
+			
 		}
 		/*
 		if(i == 1){

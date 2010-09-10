@@ -27,19 +27,18 @@ KBolometerRecord::KBolometerRecord(void)
 	//we must take care of members on the heap outside of 
 	//InitializeMembers...
 	
-	fDetectorName=0;
-	fDetectorNameSize=0;
+	//fDetectorName=0;
+	//fDetectorName = new TString;
 	
 }
 
 KBolometerRecord::KBolometerRecord(const KBolometerRecord &aRec)
 : KSubRecord(aRec)
 {
+	//fDetectorName = 0;
+	//fDetectorName = new TString;
 	CopyLocalMembers(aRec);
-	fDetectorNameSize = 0;
-	fDetectorName = 0;
-	SetDetectorName(aRec.GetDetectorName().c_str(), aRec.GetDetectorNameSize());
-
+	
 }
 
 KBolometerRecord& KBolometerRecord::operator=(const KBolometerRecord &aRec)
@@ -49,15 +48,15 @@ KBolometerRecord& KBolometerRecord::operator=(const KBolometerRecord &aRec)
 	this->KSubRecord::operator=(aRec);
 	CopyLocalMembers(aRec);
 	
-	SetDetectorName(aRec.GetDetectorName().c_str(), aRec.GetDetectorNameSize());
 	
 	return *this;
 }
 
 void KBolometerRecord::CopyLocalMembers(const KBolometerRecord &aRec)
 {
-
-	SetDetectorNumber(aRec.GetDetectorNumber());
+	
+	SetDetectorName(aRec.fDetectorName.c_str());
+	
 	//SetVoie(aRec.GetVoie());
 	//SetHeatPositiveThreshold(aRec.GetHeatPositiveThreshold());
 	//SetHeatNegativeThreshold(aRec.GetHeatNegativeThreshold());
@@ -70,11 +69,10 @@ KBolometerRecord::~KBolometerRecord(void)
   Clear("C");
 	
 	//clean up 
-	if(fDetectorName!=0){
-		delete[] fDetectorName;
-		fDetectorName=0;
-		fDetectorNameSize=0;
-	}
+	//if(fDetectorName!=0){
+	//	delete fDetectorName;
+	//	fDetectorName=0;
+	//}
 }
 
 void KBolometerRecord::Clear(Option_t *opt)
@@ -88,11 +86,10 @@ void KBolometerRecord::Clear(Option_t *opt)
 	KSubRecord::Clear(opt);
 	
   //Clear and delete local objects here. 
-	if(fDetectorName!=0){
-		delete[] fDetectorName;
-		fDetectorNameSize=0;
-		fDetectorName=0;
-	}
+	//if(fDetectorName!=0){
+	//	delete fDetectorName;
+	//	fDetectorName=0;
+	//}
 	
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
@@ -103,7 +100,7 @@ void KBolometerRecord::InitializeMembers(void)
 {
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-	SetDetectorNumber(-99);
+	//SetDetectorNumber(-99);
 	//SetDetectorName("",1);
 	//SetVoie(-99);
 	//SetHeatPositiveThreshold(-99);
@@ -111,29 +108,24 @@ void KBolometerRecord::InitializeMembers(void)
 	//SetTimeOfLastThresholdChange(-99);
 }
 
-void KBolometerRecord::SetDetectorName(const Char_t* aWord, Int_t aSize)
+void KBolometerRecord::SetDetectorName(const Char_t* aWord)
 {
-	if(aSize!=fDetectorNameSize){
-		if(fDetectorName!=0){
-			delete[] fDetectorName;	
-			fDetectorName=0;
-			fDetectorNameSize=0;
-		}
-		if(aSize>0)fDetectorName= new Char_t[aSize];
-		fDetectorNameSize=aSize;
-	}
-	if(aSize>0)memcpy(fDetectorName, aWord, fDetectorNameSize*sizeof(Char_t));
+	//if(fDetectorName == 0)
+	//	fDetectorName = new TString;
+	fDetectorName = aWord;
 }
 
 string KBolometerRecord::GetDetectorName(void) const 
 {
-	string str=""; 
-	
-	if(fDetectorName==0 || fDetectorNameSize == 0) 
+	/*if(fDetectorName != 0){
+		string str = fDetectorName->Data();
 		return str;
-	
-	else return str.assign(fDetectorName, fDetectorNameSize);
-	
+	}
+	else{
+		return "";
+	}
+	*/
+	return fDetectorName;
 }
 
 
@@ -153,37 +145,35 @@ Bool_t KBolometerRecord::IsSame(const KBolometerRecord &aRec, Bool_t bPrint) con
 			return false;  //if we're not printing out, just return false at first failure
 		//the operator== method uses this functionality.
 	}
-	
-	if(fDetectorNumber != aRec.fDetectorNumber){
-		if (bPrint) 
-			cout << "KBolometerRecord fDetectorNumber Not Equal. lhs: " 
-			<< fDetectorNumber << " != rhs " << aRec.fDetectorNumber << endl;		
+
+	if(fDetectorName != aRec.fDetectorName){
 		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}
-	
-	if(fDetectorNameSize != aRec.fDetectorNameSize){
-		if (bPrint) 
-			cout << "KBolometerRecord fDetectorNameSize Not Equal. lhs: " 
-			<< fDetectorNameSize << " != rhs " << aRec.fDetectorNameSize << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}
-	
-	if(strncmp(fDetectorName, aRec.fDetectorName, sizeof(Char_t)*fDetectorNameSize)){
 		if (bPrint) 
 			cout << "KBolometerRecord fDetectorName Not Equal. lhs: " 
 			<< fDetectorName << " != rhs " << aRec.fDetectorName << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
+		else
+			return false;  
 	}
 	
+	/*
+	if(fDetectorName != 0 && aRec.fDetectorName != 0){
+		if(*fDetectorName != *aRec.fDetectorName){
+			bIsEqual = false;
+			if (bPrint) 
+				cout << "KBolometerRecord fDetectorName Not Equal. lhs: " 
+				<< *fDetectorName << " != rhs " << *aRec.fDetectorName << endl;		
+			else
+				return false;  
+		}
+	}
+	else {
+		if (bPrint) 
+			cout << "KBolometerRecord a fDetectorName pointer is zero " 
+			<< fDetectorName << " != rhs " << aRec.fDetectorName << endl;		
+		else
+			return false;
+	}
+*/
 	/*if(fHeatPositiveThreshold != aRec.fHeatPositiveThreshold){
 		if (bPrint) 
 			cout << "KBolometerRecord fHeatPositiveThreshold Not Equal. lhs: " 

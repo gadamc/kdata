@@ -30,9 +30,7 @@ public:
 	virtual void Compact(void);
 	
 	//getters
-	Int_t GetDetectorNumber(void) const {return fDetectorNumber;}
 	string GetDetectorName(void) const;
-	Int_t GetDetectorNameSize(void) const {return fDetectorNameSize;}
 	//Int_t GetListe2(void) const {return fListe2;}
 	//Int_t GetListe1(void) const {return fListe1;}
 	//Int_t GetVoie(void) const {return fVoie;}
@@ -41,8 +39,7 @@ public:
 	//Int_t GetTimeOfLastThresholdChange(void) const {return fTimeOfLastThresholdChange;}
 	
 	//setters
-	void SetDetectorNumber(Int_t aWord) {fDetectorNumber = aWord;}
-	void SetDetectorName(const Char_t* aWord, Int_t aSize); 
+	void SetDetectorName(const Char_t* aWord); 
 	//void SetListe2(Int_t aWord) {fListe2 = aWord;}
 	//void SetListe1(Int_t aWord) {fListe1 = aWord;}
 	//void SetVoie(Int_t aWord) {fVoie = aWord;}
@@ -53,9 +50,8 @@ public:
 	//void NullPointers(void){fDetectorName=0; fDetectorNameSize=0;}
 
 private:
-	Int_t fDetectorNumber;  //the number of the Bolometer.
-	Int_t fDetectorNameSize; //the number of characters in the name of the bolometer
-	Char_t *fDetectorName; //[fDetectorNameSize]  //The name of the bolometer.
+		
+	string fDetectorName; 
 	
 	//Int_t fHeatPositiveThreshold;   
 	//Int_t fHeatNegativeThreshold;
