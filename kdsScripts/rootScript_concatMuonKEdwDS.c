@@ -41,7 +41,9 @@
 	for(Int_t i=0; i<  vetoRuns; i++){
 		myArray[i]=path+myNames[i];
 	}
-	
+
+	ofstream myFile;
+
 	TTimeStamp myTime;
 	UInt_t myTimeDate = myTime.GetDate();
 	UInt_t myTimeTime = myTime.GetTime();
@@ -56,7 +58,7 @@
 	
 	TString myFileName  = kQSubScriptFileDir + "concatDst_Muon" + theTime.Data() + ".sh";
 	cout << " opening " << myFileName.Data() << endl;
-	ofstream myFile.open(myFileName.Data());
+	myFile.open(myFileName.Data());
 	
 	TString myFileContents = "#!/bin/bash";
 	cout << myFileContents.Data() << endl;
@@ -82,6 +84,5 @@
 	
 	gSystem->Exec(command.Data());
 	
-	concatKDS(myArray, vetoRuns, );
-	
+		
 }

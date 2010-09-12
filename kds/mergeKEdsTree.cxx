@@ -26,6 +26,7 @@
 #include "KHLAMuonVetoSysRecord.h"
 #include "KHLABolometerRecord.h"
 #include "KHLASambaRecord.h"
+#include "KHLABoloPulseRecord.h"
 #include "KDataReader.h"
 #include "KDataWriter.h"
 
@@ -88,15 +89,44 @@ void mergeEdsEvent(KHLAEvent &eout, KHLAEvent &ev1, KHLAEvent &ev2, TTree *t1, I
 void printInfo(KHLAEvent& ev){
 	ev.myPrint();
 	ev.myPrintB();
-	
+
+	for(Int_t i = 0; i < ev.GetNumBolos(); i++){
+	  KHLABolometerRecord* bolo= ev.GetBolo(i);
+	  cout <<  "DetectorName: "<< bolo->GetDetectorName() << endl;
+	  cout << "Sam Pointer " << bolo->GetSambaRecord() << endl;
+	  for(Int_t j = 0; j < bolo->GetNumPulseRecords(); j++){
+	    cout << "BoloPulse Pointer " << j << " " << bolo->GetPulseRecord(j) << endl;
+	  }
+	}	
+	if(ev.GetNumBolos() == 0) 
+	  cout << "No Bolometer Records information available." << endl;
+
+	cout << endl;
+
 	for(Int_t i = 0; i < ev.GetNumSambas(); i++){
 		KHLASambaRecord* sam= ev.GetSamba(i);
 		cout <<  "FileName: "<< sam->GetRunName()	<< " Samba Event Number: "<< sam->GetSambaEventNumber() << endl;
+		cout << "sam pointer" << sam << endl;
 	}	
 	
 	if(ev.GetNumSambas() == 0) 
 		cout << "No Samba information available." << endl;
+
 	
+	cout << endl;
+
+	for(Int_t i = 0; i < ev.GetNumBoloPulses(); i++){
+	  KHLABoloPulseRecord* pulse = ev.GetBoloPulse(i);
+	  cout << "BoloPulse Pointer: " << pulse << endl;
+	  cout << "Energy " << pulse->GetEnergy() << endl;
+	  cout << "Baseline " << pulse->GetEnergyBaseline() << endl;
+	  cout << "Noise " << pulse->GetBaselineNoise() << endl;
+	  cout << "Pulse Type " << pulse->GetPulseType() << endl;
+	  cout << "Channel Number " << pulse->GetChannelNumber() << endl;
+	}
+	if(ev.GetNumBoloPulses() == 0)
+	  cout << "No Pulse Records" << endl;
+
 }
 
 
@@ -164,7 +194,11 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 					//mEv->Set(*oldEv2, inFile2);
 					mEv->Clear();
 					*mEv = *oldEv2;
-					mEv->IsSame(*oldEv2,true);
+					if(!mEv->IsSame(*oldEv2,true)){
+					  cout << "merge line 168 entry file 2" << entry2<< endl;
+					  printInfo(*mEv);
+					  printInfo(*oldEv2);
+					}
 					f.Fill();
 					
 					globalEntry++;
@@ -193,7 +227,12 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 					//mEv->Set(*oldEv1, inFile1);
 					mEv->Clear();
 					*mEv = *oldEv1;
-					mEv->IsSame(*oldEv1,true);
+					//mEv->IsSame(*oldEv1,true);
+					if(!mEv->IsSame(*oldEv1,true)){
+					  cout << "merge line 229 entry file 1 " << entry1 <<  endl;
+					  printInfo(*mEv);
+					  printInfo(*oldEv1);
+					}
 					f.Fill();
 					
 					globalEntry++;
@@ -243,7 +282,12 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 					//mEv->Set(*oldEv2, inFile2);
 					mEv->Clear();
 					*mEv = *oldEv2;
-					mEv->IsSame(*oldEv2,true);
+					//mEv->IsSame(*oldEv2,true);
+					if(!mEv->IsSame(*oldEv2,true)){
+					  cout << "merge line 168 entry file 2 " << inFile2.GetCurrentEntryNumber() <<endl;
+					  printInfo(*mEv);
+					  printInfo(*oldEv2);
+					}
 					f.Fill();
 					
 					globalEntry++;
@@ -275,7 +319,12 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 					//mEv->Set(*oldEv1,inFile1);
 					mEv->Clear();
 					*mEv = *oldEv1;
-					mEv->IsSame(*oldEv1,true);
+					//mEv->IsSame(*oldEv1,true);
+					if(!mEv->IsSame(*oldEv1,true)){
+					  cout << "merge line 321 entry file 1 " << inFile1.GetCurrentEntryNumber() << endl;
+					  printInfo(*mEv);
+					  printInfo(*oldEv1);
+					}
 					f.Fill();
 					
 					globalEntry++;
@@ -315,7 +364,12 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 					//mEv->Set(*oldEv1, inFile1);
 					mEv->Clear();
 					*mEv = *oldEv1;
-					mEv->IsSame(*oldEv1,true);
+					//mEv->IsSame(*oldEv1,true);
+					if(!mEv->IsSame(*oldEv1,true)){
+					  cout << "merge line 366 entry file 1 " << inFile1.GetCurrentEntryNumber()<< endl;
+					  printInfo(*mEv);
+					  printInfo(*oldEv1);
+					}
 					f.Fill();
 					
 					globalEntry++;
@@ -335,7 +389,12 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 						//mEv->Set(*oldEv2, inFile2);
 						mEv->Clear();
 						*mEv = *oldEv2;
-						mEv->IsSame(*oldEv2,true);
+						//mEv->IsSame(*oldEv2,true);
+						if(!mEv->IsSame(*oldEv2,true)){
+						  cout << "merge line 652 entry file 2 " << inFile2.GetCurrentEntryNumber()<< endl;
+						  printInfo(*mEv);
+						  printInfo(*oldEv2);
+						}
 						f.Fill();
 						
 						globalEntry++;
@@ -438,7 +497,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 		//mEv->Set(*oldEv2, inFile2);
 		mEv->Clear();
 		*mEv = *oldEv2;
-		mEv->IsSame(*oldEv2,true);
+		//mEv->IsSame(*oldEv2,true);
+		if(!mEv->IsSame(*oldEv2,true)){
+		  cout << "merge line 499 entry file 2 " << inFile2.GetCurrentEntryNumber() << endl;
+		  printInfo(*mEv);
+		  printInfo(*oldEv2);
+		}
 		f.Fill();
 		
 		globalEntry++;
@@ -461,7 +525,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 					//mEv->Set(*oldEv2, inFile2);
 					mEv->Clear();
 					*mEv = *oldEv2;
-					mEv->IsSame(*oldEv2,true);
+					if(!mEv->IsSame(*oldEv2,true)){
+					  cout << "merge line 526 entry file 2 " <<inFile2.GetCurrentEntryNumber()<< endl;
+					  printInfo(*mEv);
+					  printInfo(*oldEv2);
+					}
+					//mEv->IsSame(*oldEv2,true);
 					f.Fill();
 					
 					globalEntry++;
@@ -480,7 +549,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 					//mEv->Set(*oldEv1, inFile1);
 					mEv->Clear();
 					*mEv = *oldEv1;
-					mEv->IsSame(*oldEv1,true);
+					//mEv->IsSame(*oldEv1,true);
+					if(!mEv->IsSame(*oldEv1,true)){
+					  cout << "merge line 551 entry file 1 " <<inFile1.GetCurrentEntryNumber()<< endl;
+					  printInfo(*mEv);
+					  printInfo(*oldEv1);
+					}
 					f.Fill();
 					
 					globalEntry++;
@@ -519,7 +593,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 				inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
 				mEv->Clear();
 				*mEv = *oldEv2;
-				mEv->IsSame(*oldEv2,true);
+				if(!mEv->IsSame(*oldEv2,true)){
+				  cout << "merge line 594 entry file 2 " <<inFile2.GetCurrentEntryNumber() <<  endl;
+				  printInfo(*mEv);
+				  printInfo(*oldEv2);
+				}
+				//mEv->IsSame(*oldEv2,true);
 				f.Fill();
 				
 				globalEntry++;
@@ -537,7 +616,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 						inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
 						mEv->Clear();
 						*mEv = *oldEv2;
-						mEv->IsSame(*oldEv2,true);
+						//mEv->IsSame(*oldEv2,true);
+						if(!mEv->IsSame(*oldEv2,true)){
+						  cout << "merge line 618 entry file 2 " <<inFile2.GetCurrentEntryNumber() << endl;
+						  printInfo(*mEv);
+						  printInfo(*oldEv2);
+						}
 						f.Fill();
 
 						nextEntry2=true;
@@ -559,6 +643,11 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 					mEv->Clear();
 					*mEv = *oldEv2;
 					mEv->IsSame(*oldEv2,true);
+					if(!mEv->IsSame(*oldEv2,true)){
+					  cout << "merge line 644 entry file 2 " << inFile2.GetCurrentEntryNumber() << endl;
+					  printInfo(*mEv);
+					  printInfo(*oldEv2);
+					}
 					mEv->GetMuonVetoSystemRecord()->SetEventQualityBit(0,0);
 					f.Fill();
 					nextEntry2=true;
@@ -587,7 +676,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 									inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
 									mEv->Clear();
 									*mEv = *oldEv2;
-									mEv->IsSame(*oldEv2,true);
+									//mEv->IsSame(*oldEv2,true);
+									if(!mEv->IsSame(*oldEv2,true)){
+									  cout << "merge line 678 entry file 2 " << inFile2.GetCurrentEntryNumber() <<  endl;
+									  printInfo(*mEv);
+									  printInfo(*oldEv2);
+									}
 									f.Fill();
 									entry2++;
 									badVetoStamp++;
@@ -601,7 +695,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 									inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
 									mEv->Clear();
 									*mEv = *oldEv2;
-									mEv->IsSame(*oldEv2,true);
+									//mEv->IsSame(*oldEv2,true);
+									if(!mEv->IsSame(*oldEv2,true)){
+									  cout << "merge line 697 entry file 2 " << inFile2.GetCurrentEntryNumber()<< endl;
+									  printInfo(*mEv);
+									  printInfo(*oldEv2);
+									}
 									f.Fill();
 									//muonTiming=timingIsReliabale(oldStamp2, stamp2, oldPcTime2, pcTime2, oldEv1 );
 								}
@@ -633,7 +732,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 								inFile1.GetEntry(entry1);
 								mEv->Clear();
 								*mEv = *oldEv1;
-								mEv->IsSame(*oldEv1,true);
+								//mEv->IsSame(*oldEv1,true);
+								if(!mEv->IsSame(*oldEv1,true)){
+								  cout << "merge line 734 entry file 1 " << inFile1.GetCurrentEntryNumber() << endl;
+								  printInfo(*mEv);
+								  printInfo(*oldEv1);
+								}
 								f.Fill();
 								stamp1=oldEv1->GetStamp();
 								if(i==10000){
@@ -686,7 +790,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 								//mEv->Set(*oldEv1, inFile1);
 								mEv->Clear();
 								*mEv = *oldEv1;
-								mEv->IsSame(*oldEv1,true);
+								//mEv->IsSame(*oldEv1,true);
+								if(!mEv->IsSame(*oldEv1,true)){
+								  cout << "merge line 792 entry in file 1 " << inFile1.GetCurrentEntryNumber()<<  endl;
+								  printInfo(*mEv);
+								  printInfo(*oldEv1);
+								}
 								f.Fill();
 								globalEntry++;
 								nextEntry1=true;
@@ -704,7 +813,12 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 									inFile2.GetEntry(inFile2.GetCurrentEntryNumber());
 									mEv->Clear();
 									*mEv = *oldEv2;
-									mEv->IsSame(*oldEv2,true);
+									//mEv->IsSame(*oldEv2,true);
+									if(!mEv->IsSame(*oldEv2,true)){
+									  cout << "merge line 815 entry in file 2 " <<inFile2.GetCurrentEntryNumber()<< endl;
+									  printInfo(*mEv);
+									  printInfo(*oldEv2);
+									}
 									f.Fill();
 									globalEntry++;
 									nextEntry2=true;

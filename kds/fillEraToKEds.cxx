@@ -29,10 +29,24 @@ const Int_t kKRunNumber = 12;
 const Double_t kKRun12StartTime = 1235646944.0; //Thu, 26 Feb 2009 11:15:44 +0000 (UTC) +        0 nsec  First event of Muon Veto Run 54.
 const Double_t kKRun12EndTime = 1274115600.0; //Mon, 17 May 2010 15:00:00 +0000 (UTC) +        0 nsec.  Approximate end of Run 12. 
 
+bool isNanRet = false;
 
 using namespace std;
 
-
+template <class T> bool isNan(T &aVal, const char* name)
+{
+  if(aVal != aVal){
+    cout << name << " is " << aVal << endl;
+    aVal = -9999;
+    isNanRet = true;
+    return true;
+      
+  }
+  else {
+    isNanRet = false || isNanRet; //if isNanRet was previously set to be true, then don't undo it.
+    return false;
+  }
+}
 //string manipulation to get detector name from input path
 /*string GetDetectorNameDst( string inPath){
 	inPath.replace(0, (inPath.find("dst_")+4),"");
@@ -439,19 +453,24 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 		
 			KHLABolometerRecord* bolo = mEv->AddBolo();
 			
-			bolo->SetQvalue((double)q);
-			bolo->SetEnergyRecoil((double)eRec);
-			bolo->SetEnergyIon((double)eIon);
-			bolo->SetEventFlag(eventFlag);
-			bolo->SetChi2Flag(chi2);
-			bolo->SetVoltageFlag(vFlag);
+			//check for NaN values!!
+			//if isNan finds that the value is 'nan', then it sets it to -9999
+			//and then there won't be a bunch of print statments when one calls
+			//the comparison operator for KHLAEvents in later processes. 
+			isNanRet = false;
+			isNan(q,"qvalue"); bolo->SetQvalue(q);
+			isNan(eRec,"energy recoil"); bolo->SetEnergyRecoil(eRec);
+			isNan(eIon,"energy ion"); bolo->SetEnergyIon(eIon);
+			isNan(eventFlag,"event flag"); bolo->SetEventFlag(eventFlag);
+			isNan(chi2,"chi2"); bolo->SetChi2Flag(chi2);
+			isNan(vFlag,"vFlag"); bolo->SetVoltageFlag(vFlag);
 			bolo->SetIonFlags(ionFlags,6);
 			bolo->SetDetectorName(kDetectorName.c_str());
-			bolo->SetIonPulseTimeOffset(tOffset);
+			isNan(tOffset,"tOffset"); bolo->SetIonPulseTimeOffset(tOffset);
 			//bolo->SetDetectorNumber(detectorNumber);
-			bolo->SetEnergyIonFiducial(efid);
-			bolo->SetEnergySumIonChannels(etot);
-			bolo->SetBaselineIonFiducial(ldbfid);
+			isNan(efid,"efid"); bolo->SetEnergyIonFiducial(efid);
+			isNan(etot, "etot"); bolo->SetEnergySumIonChannels(etot);
+			isNan(ldbfid, "ldbfid"); bolo->SetBaselineIonFiducial(ldbfid);
 			
 			bolo->SetCutsBit(16, CutRun);
 			bolo->SetCutsBit(14, CutHeatBase);
@@ -487,18 +506,18 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			pulse = mEv->AddBoloPulse();
 			pulse->SetChannelNumber(1);
 			pulse->SetPulseIsHeatType();
-			pulse->SetEnergy(eHeat);
-			pulse->SetEnergyBaseline(E0heat);
-			pulse->SetBaselineNoise(LdbHeat);
+			isNan(eHeat,"eHeat"); pulse->SetEnergy(eHeat);
+			isNan(E0heat,"e0Heat");pulse->SetEnergyBaseline(E0heat);
+			isNan(LdbHeat,"LdbHeat"); pulse->SetBaselineNoise(LdbHeat);
 			bolo->AddPulseRecord(pulse);
 			pulse->SetBolometerRecord(bolo);
 			
 			pulse = mEv->AddBoloPulse();
 			pulse->SetChannelNumber(1);
 			pulse->SetPulseIsCollectrodeType();
-			pulse->SetEnergy(ecol1);
-			pulse->SetEnergyBaseline(e0col1);
-			pulse->SetBaselineNoise(ldbcol1);
+			isNan(ecol1,"ecol1");pulse->SetEnergy(ecol1);
+			isNan(e0col1,"e0col1"); pulse->SetEnergyBaseline(e0col1);
+			isNan(ldbcol1,"ldbcol1");pulse->SetBaselineNoise(ldbcol1);
 			bolo->AddPulseRecord(pulse);
 			pulse->SetBolometerRecord(bolo);;
 			
@@ -507,27 +526,27 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 				pulse = mEv->AddBoloPulse();
 				pulse->SetChannelNumber(2);
 				pulse->SetPulseIsCollectrodeType();
-				pulse->SetEnergy(ecol2);
-				pulse->SetEnergyBaseline(e0col2);
-				pulse->SetBaselineNoise(ldbcol2);
+				isNan(ecol2,"ecol2"); pulse->SetEnergy(ecol2);
+				isNan(e0col2,"e0col2");pulse->SetEnergyBaseline(e0col2);
+				isNan(ldbcol2,"ldbcol2");pulse->SetBaselineNoise(ldbcol2);
 				bolo->AddPulseRecord(pulse);
 				pulse->SetBolometerRecord(bolo);
 				
 				pulse = mEv->AddBoloPulse();
 				pulse->SetChannelNumber(1);
 				pulse->SetPulseIsVetoType();
-				pulse->SetEnergy(evet1);
-				pulse->SetEnergyBaseline(e0vet1);
-				pulse->SetBaselineNoise(ldbvet1);
+				isNan(evet1,"evet1"); pulse->SetEnergy(evet1);
+				isNan(e0vet1,"e0vet1"); pulse->SetEnergyBaseline(e0vet1);
+				isNan(ldbvet1,"ldbvet1"); pulse->SetBaselineNoise(ldbvet1);
 				bolo->AddPulseRecord(pulse);
 				pulse->SetBolometerRecord(bolo);
 				
 				pulse = mEv->AddBoloPulse();
 				pulse->SetChannelNumber(2);
 				pulse->SetPulseIsVetoType();
-				pulse->SetEnergy(evet2);
-				pulse->SetEnergyBaseline(e0vet2);
-				pulse->SetBaselineNoise(ldbvet2);
+				isNan(evet2,"evet2"); pulse->SetEnergy(evet2);
+				isNan(e0vet2,"e0vet2"); pulse->SetEnergyBaseline(e0vet2);
+				isNan(ldbvet2,"ldbvet2"); pulse->SetBaselineNoise(ldbvet2);
 				bolo->AddPulseRecord(pulse);
 				pulse->SetBolometerRecord(bolo);
 			}
@@ -538,9 +557,9 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 				pulse = mEv->AddBoloPulse();
 				pulse->SetChannelNumber(1);
 				pulse->SetPulseIsGuardType();
-				pulse->SetEnergy(egar1);
-				pulse->SetEnergyBaseline(e0gar1);
-				pulse->SetBaselineNoise(ldbgar1);
+				isNan(egar1,"egar1"); pulse->SetEnergy(egar1);
+				isNan(e0gar1,"e0gar1"); pulse->SetEnergyBaseline(e0gar1);
+				isNan(ldbgar1,"ldbgar1"); pulse->SetBaselineNoise(ldbgar1);
 				bolo->AddPulseRecord(pulse);
 				pulse->SetBolometerRecord(bolo);
 				
@@ -548,18 +567,18 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 					pulse = mEv->AddBoloPulse();
 					pulse->SetChannelNumber(2);
 					pulse->SetPulseIsGuardType();
-					pulse->SetEnergy(egar2);
-					pulse->SetEnergyBaseline(e0gar2);
-					pulse->SetBaselineNoise(ldbgar2);
+					isNan(egar2,"egar2"); pulse->SetEnergy(egar2);
+					isNan(e0gar2,"e0gar2"); pulse->SetEnergyBaseline(e0gar2);
+					isNan(ldbgar2,"ldbgar2"); pulse->SetBaselineNoise(ldbgar2);
 					bolo->AddPulseRecord(pulse);
 					pulse->SetBolometerRecord(bolo);
 				}
 			}
 			
 			KHLASambaRecord* sam = mEv->AddSamba();
-			sam-> SetSambaEventNumber(eventNum);
+			isNan(eventNum,"eventNum"); sam-> SetSambaEventNumber(eventNum);
 			sam-> SetRunName(runName); //je25b000
-			sam-> SetNtpDateSec(dateSec);
+			isNan(dateSec,"dateSec"); sam-> SetNtpDateSec(dateSec);
 			sam-> SetSambaDAQNumber(sRunName.compare(4,1,"a") + 1); 
 
 			
@@ -568,7 +587,15 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			// For boloSysRecors:
 			mEv->GetBoloSystemRecord()->SetIsSystemOn(true);
 			
-		
+			if(isNanRet) {
+			  cout << kDetectorName << endl;
+			  cout << sRunName << endl;
+			  cout << "Samba Event Number " << eventNum << endl;
+			  cout << "dateSec " << dateSec << endl;
+			  cout << "stamp " << stamp << endl;
+			  cout << "entry " << i << endl;
+			  
+			}
 			if(bFillGoodEvent) fOutFile.Fill();
 			mPreviousStamp = stamp;
 		}

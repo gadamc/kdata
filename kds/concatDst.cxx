@@ -233,7 +233,8 @@ int main(int argc, char* argv[])
 				for(Int_t i = 0; i < argc-3; i++){
 					listOfFiles[i] = argv[i+3];
 				}
-				Int_t theRet = concatKDS(listOfFiles, argc-3, argTwo);
+				//argOne above points to the second argument
+				Int_t theRet = concatKDS(listOfFiles, argc-3, argOne);
 				delete [] listOfFiles;
 				return theRet;
 			}
