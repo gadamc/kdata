@@ -23,13 +23,16 @@
 #include <list>
 #include <vector>
 
+class KEventDisplay; 
+
 using namespace std;
 
 class KEraEventFinder {
 	
 public:
 	//Constructors
-	KEraEventFinder(string aUser);
+	KEraEventFinder(void);
+  KEraEventFinder(string aUser);
 	KEraEventFinder(const KEraEventFinder& aFinder);
 	KEraEventFinder(KSambaRecord* aSambaRecord,KBolometerRecord* aBoloRecord,
                   string aUser, string aServer, string aSourceDir, string aTargetDir);
@@ -39,23 +42,30 @@ public:
   EdwEvent* GetEvent(void);  //returns the event pointer from the KEraRawEventReader class
   
   void AddPathToSearch(const char* aPath){fDirNames.push_back(aPath);}
+  void ClearSearchPaths(void){ fDirNames.clear(); }
   
+  void DisplayEvent(void);
+  void DisplayEvent(KBolometerRecord *aRec);
+
 	//getters
 	KSambaRecord* GetSamba(void) const { return fSambaRecord; }
 	KBolometerRecord* GetBolo(void) const { return fBoloRecord; }
 	Bool_t IsSearchLocally(void){return fSearchLocally;  }
-  
+  Bool_t IsForceRemoteSearch(void){return fForceRemoteSearch;  }
   
   
 	//setters
 	void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }
 	void SetBolo(KBolometerRecord *aRec);
-	void SearchLocally(Bool_t aChoice = true){ fSearchLocally = aChoice;  }
+	void SetSearchLocally(Bool_t aChoice = true){ fSearchLocally = aChoice;  }
+  void SetForceRemoteSearch(Bool_t aChoice = true){ fForceRemoteSearch = aChoice;  }
   void SetTargetPath(const char* aPath){fTargetPath = aPath;}
   
 	
 private:
   Bool_t fSearchLocally;
+  Bool_t fForceRemoteSearch;
+  Bool_t fEventHasBeenTransfered;
   
 	KFileTransfer* fTrans; //Handles the data transfer
 	KEraRawEventReader* fReader; //Reads the files
@@ -63,7 +73,7 @@ private:
 	KBolometerRecord* fBoloRecord; //
 	list<string> fDirNames;
 	string fTargetPath;
-  
+  KEventDisplay *fDisplay;
   
   Bool_t GetEventFile(const char* aPath, const char* aFileName);
   string GetNextFileName(const char* name = 0);

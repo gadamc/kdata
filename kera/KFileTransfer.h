@@ -33,12 +33,14 @@ public:
 	string GetServer() const { return fServer; }
 	string GetSourcePath() const { return fSourcePath; }
 	string GetTargetPath() const { return fTargetPath; }
-	
+	string GetExtraRsyncOptions() const { return fExtraRsyncOptions; }
+  
 	//setters
 	void SetUser(string aUser) { fUser = aUser; }
 	void SetServer(string aServer) { fServer = aServer; }
 	void SetSourcePath(string aSourcePath) { fSourcePath = aSourcePath; }
 	void SetTargetPath(string aTargetPath) { fTargetPath = aTargetPath; }
+  void SetExtraRsyncOptions(string anOption) { fExtraRsyncOptions = anOption; }
 	void SetDefaultValues(void);
 
 	bool FileExists(string aFilename);
@@ -50,6 +52,8 @@ private:
 	string fTargetPath; //Target path
 	TSystem* fSystem; //Local TSystem object executing rsync commands
 	
+  string fExtraRsyncOptions; 
+  
 	ClassDef(KFileTransfer,1);
 };
 

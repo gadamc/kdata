@@ -85,7 +85,7 @@ void KEventDisplay::DisplayEvent()
   fPulseCanvas->Draw();
   
   fStatCanvas->cd();
-  cout << "Ready to draw to the Stat Canvas" << endl;
+  //cout << "Ready to draw to the Stat Canvas" << endl;
 }
 
 void KEventDisplay::SetEvent(EdwEvent *e, KHLABolometerRecord *b)
@@ -110,7 +110,7 @@ void KEventDisplay::SetUpCanvas(void)
   }
   
   if(fPulseCanvas == 0){
-    fPulseCanvas = new TCanvas("KED_fPulseCanvas", "KEventDisplay - Pulse Canvas", 10, 10, 900, 900);
+    fPulseCanvas = new TCanvas("KED_fPulseCanvas", "KEventDisplay - Pulse Canvas", 10, 10, 700, 700);
     fPulseCanvas->Divide(3,3);
     //fPulseCanvas->cd(1);
   }
@@ -173,7 +173,10 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
     for(UInt_t i = 0; i < fNumPulseHists || i < fPulseIndex.size(); i++){
       //cout << "Loading " << i << "th Pulse at Index " << fPulseIndex.at(i) << endl;
       pulse = fEdwEvent->Pulse(fPulseIndex.at(i));
+      fPulseHists[i].AddDirectory(0); //don't let these be deleted by any TFiles that get deleted.
       fPulseHists[i].SetBins(pulse->TraceSize(), 0, pulse->TraceSize());
+      fPulseHists[i].SetTitle(pulse->Channel().c_str());
+      fPulseHists[i].SetName(pulse->Channel().c_str());
       for(Short_t bin = 1; bin <= pulse->TraceSize(); bin++)
         fPulseHists[i].SetBinContent(bin, pulse->Trace(bin-1));  //need the bin-1 because the data is stored in vector with first index 0
       //cout << "Done Loading into hist." << endl;

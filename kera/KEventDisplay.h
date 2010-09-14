@@ -25,7 +25,7 @@ public:
   KEventDisplay(EdwEvent *e, KHLABolometerRecord *b);
   virtual ~KEventDisplay(void);
   
-  void DisplayEvent();
+  void DisplayEvent(void);
   
   //getters
   TH1D GetPulseHistogram(UInt_t i) const;
@@ -41,7 +41,8 @@ private:
   EdwEvent *fEdwEvent;
   KHLABolometerRecord *fBolo;
   vector<Int_t> fPulseIndex;
-  UInt_t fNumPulseHists; //number of fPulseHists. 
+  UInt_t fNumPulseHists; //number of fPulseHists.
+  
   
   //private methods
   void InitializeMembers(void);

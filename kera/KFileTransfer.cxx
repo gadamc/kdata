@@ -88,6 +88,7 @@ void KFileTransfer::SetDefaultValues(void)
 	fServer = "ccali.in2p3.fr";
 	fSourcePath = "/sps/edelweis/kdata/data/rootevts/";
 	fTargetPath = "/tmp/";
+  fExtraRsyncOptions = "";
 	
 }
 
@@ -101,9 +102,13 @@ void KFileTransfer::Transfer(string aFilename)
   if(!aSourcePath.EndsWith("/"))
     aSourcePath += "/";
   fSourcePath = aSourcePath.Data();
-  cout << fSourcePath << endl;
-	string commandline = "rsync -Lvz " + fUser + "@" + fServer + ":" + fSourcePath +  aFilename + " " + fTargetPath;
-	cout << commandline.c_str() << endl;
+  
+  //cout << fSourcePath << endl;
+	
+  string commandline = "rsync -Lz " + fExtraRsyncOptions + fUser + 
+  "@" + fServer + ":" + fSourcePath +  aFilename + " " + fTargetPath;
+	
+  cout << commandline.c_str() << endl;
 	fSystem->Exec(commandline.c_str());
 
 }
