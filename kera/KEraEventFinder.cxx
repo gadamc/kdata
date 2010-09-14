@@ -152,9 +152,12 @@ EdwEvent* KEraEventFinder::TransferEvent(void)
   for(it = tempDirNames.begin(); it!= tempDirNames.end(); ++it) {
     //cout << "Searching for file in " << it->c_str() << endl;
     string sambaName = GetNextFileName();
+    string theFilePath;
+    if(fSearchLocally) theFilePath = it->c_str();
+    else theFilePath = fTargetPath.c_str();
     
     if(GetEventFile(it->c_str(), sambaName.c_str())){
-      if(!OpenEventFile(fTargetPath.c_str(), sambaName.c_str())){
+      if(!OpenEventFile(theFilePath.c_str(), sambaName.c_str())){
         cout  << "KEraEventFinder::TransferEvent. Failed Opening the File! Not an ERA Event File?" << endl;
         return 0;
       }
@@ -182,7 +185,7 @@ EdwEvent* KEraEventFinder::TransferEvent(void)
       sambaName = GetNextFileName(sambaName.c_str());
       
       if(GetEventFile(it->c_str(), sambaName.c_str())) {
-        if(!OpenEventFile(fTargetPath.c_str(), sambaName.c_str())){
+        if(!OpenEventFile(theFilePath.c_str(), sambaName.c_str())){
           cout  << "KEraEventFinder::TransferEvent. Failed Opening the File! Not an ERA Event File?" << endl;
           return 0;
         }
