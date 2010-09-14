@@ -19,16 +19,16 @@ using namespace std;
 class KEraEventFinder;
 
 class KEraRawEventReader : public KEraRawFileIO {
-
+  
 public:
   //Constructors
-    KEraRawEventReader(void);
+  KEraRawEventReader(void);
 	KEraRawEventReader(const string fileName, EdwEvent **anEvent = 0);
-	void Open(const string fileName, EdwEvent **anEvent = 0);
-    virtual ~KEraRawEventReader(void);
-
+	Bool_t Open(const string fileName, EdwEvent **anEvent = 0);
+  virtual ~KEraRawEventReader(void);
+  
 	Bool_t Close(Option_t *opt = "");
-
+  
 	EdwEvent* GetEvent(void);
 	Int_t GetCurrentEntryNumber(void) const {return fCurrentEntry;}
 	Int_t GetNextEntry(void);
@@ -36,29 +36,29 @@ public:
 	Int_t GetEntry(Int_t anEntry);
 	//Int_t GetEntryWithGSEventNumber(Int_t anEntry);
 	Int_t GetEntries(void) const {return fEntries;}
-
+  
 	TObject* Get(const string namecycle) const;
-
+  
 	friend class KEraEventFinder;
-
-
+  
+  
 private:
-
+  
 	Int_t fCurrentEntry;
 	Int_t fEntries;
 	Bool_t fSambaNumberIndex;
-
+  
 	EdwEvent *fLocalEvent;
   //private methods
   void InitializeMembers(void);
 	Bool_t SetBranchAddress(EdwEvent **anEvent = 0);
 	//Bool_t OpenFile(const Char_t* fileName);
 	Bool_t OpenFile(const string fileName, EdwEvent **anEvent = 0);
-
+  
 	//discourage / do not allow copy and assignment
 	KEraRawEventReader(const KEraRawEventReader &aReader);
 	KEraRawEventReader& operator=(const KEraRawEventReader &aReader);
-
+  
   ClassDef(KEraRawEventReader,1);
 };
 

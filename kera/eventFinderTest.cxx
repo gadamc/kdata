@@ -55,9 +55,9 @@ int main(int argc, char** argv) {
     string aSourceDir("/sps/edelweis/EdwRootAna/ID_Run12/");
     string aTargetDir("/var/tmp/");
 
-	KEraEventFinder* finder = new KEraEventFinder(samba,bolo,aUser,aServer,aSourceDir,aTargetDir,"");
+	KEraEventFinder* finder = new KEraEventFinder(samba,bolo,aUser,aServer,aSourceDir,aTargetDir);
 	cout << &kHLAEvent << endl;
-	EdwEvent* edwEvent = finder->GetEvent();
+	EdwEvent* edwEvent = finder->TransferEvent();
 	if(edwEvent != 0) {
         cout << "edwEvent found" << endl;
 

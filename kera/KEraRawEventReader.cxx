@@ -90,12 +90,13 @@ Bool_t  KEraRawEventReader::OpenFile(const string fileName, EdwEvent **anEvent)
 }
 
 
-void  KEraRawEventReader::Open(const string fileName, EdwEvent **anEvent) {
+Bool_t  KEraRawEventReader::Open(const string fileName, EdwEvent **anEvent) {
 
   if(!OpenFile(fileName, anEvent)){
 		cout << "KEraRawEventReader - Could not open " << fileName << endl;
+    return false;
 	}
-
+  else return true;
 }
 
 

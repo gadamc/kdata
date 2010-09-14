@@ -17,39 +17,61 @@
 #include "KBolometerRecord.h"
 #include "KHLAEvent.h"
 #include "EdwEvent.h"
+#include "EdwPulse.h"
 #include "TString.h"
 #include <string>
+#include <list>
+#include <vector>
+
 using namespace std;
 
 class KEraEventFinder {
+	
+public:
+	//Constructors
+	KEraEventFinder(string aUser);
+	KEraEventFinder(const KEraEventFinder& aFinder);
+	KEraEventFinder(KSambaRecord* aSambaRecord,KBolometerRecord* aBoloRecord,
+                  string aUser, string aServer, string aSourceDir, string aTargetDir);
+	virtual ~KEraEventFinder();
+	
+  EdwEvent* TransferEvent(void);
+  EdwEvent* GetEvent(void);  //returns the event pointer from the KEraRawEventReader class
+  
+  void AddPathToSearch(const char* aPath){fDirNames.push_back(aPath);}
+  
+	//getters
+	KSambaRecord* GetSamba(void) const { return fSambaRecord; }
+	KBolometerRecord* GetBolo(void) const { return fBoloRecord; }
+	Bool_t IsSearchLocally(void){return fSearchLocally;  }
+  
+  
+  
+	//setters
+	void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }
+	void SetBolo(KBolometerRecord *aRec);
+	void SearchLocally(Bool_t aChoice = true){ fSearchLocally = aChoice;  }
+  void SetTargetPath(const char* aPath){fTargetPath = aPath;}
+  
+	
+private:
+  Bool_t fSearchLocally;
+  
+	KFileTransfer* fTrans; //Handles the data transfer
+	KEraRawEventReader* fReader; //Reads the files
+	KSambaRecord* fSambaRecord; //Contains the samba event number in the KDATA structure
+	KBolometerRecord* fBoloRecord; //
+	list<string> fDirNames;
+	string fTargetPath;
+  
+  
+  Bool_t GetEventFile(const char* aPath, const char* aFileName);
+  string GetNextFileName(const char* name = 0);
+  Bool_t OpenEventFile(const char* filePath, const char* fileName);
+	void Initialize(void);
 
-    public:
-        //Constructors
-        KEraEventFinder(const KEraEventFinder& aFinder);
-        KEraEventFinder(KSambaRecord* aSambaRecord,KBolometerRecord* aBoloRecord,string aUser,string aServer,string aSourceDir,string aTargetDir,string aSubDir = "");
-        EdwEvent* GetEvent(void);
-        virtual ~KEraEventFinder();
-
-        //getters
-        KSambaRecord* GetSamba(void) const { return fSambaRecord; }
-        KBolometerRecord* GetBolo(void) const { return fBoloRecord; }
-
-        //setters
-        void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }
-        void SetBolo(KBolometerRecord* aRec) { fBoloRecord = aRec; }
-
-    private:
-        string GetNextFileName(bool reset = false);
-
-        KFileTransfer* fTrans; //Handles the data transfer
-        KEraRawEventReader* fReader; //Reads the files
-        KSambaRecord* fSambaRecord; //Contains the samba event number in the KDATA structure
-        KBolometerRecord* fBoloRecord; //
-
-
-
-
-        ClassDef(KEraEventFinder,1);
+	
+	ClassDef(KEraEventFinder,1);
 };
 
 #endif

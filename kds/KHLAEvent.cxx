@@ -628,7 +628,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 						if(pulse != 0 && pulseOther != 0){
 							if(!pulse->IsSame(*pulseOther, bPrint)){
 								if(bPrint)
-									cout << "KHLAEvent KHLABolometerRecord number " << i << " Pulse Records not equal" << endl;
+									cout << "KHLAEvent KHLABolometerRecord number " << i << " Pulse Record " << k << " not equal" << endl;
 								bIsEqual = false;
 								if(!bPrint)
 									return false;

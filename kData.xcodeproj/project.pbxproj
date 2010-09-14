@@ -300,6 +300,8 @@
 		662EC1B712343BD3007E432B /* scriptStartMerge.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scriptStartMerge.sh; sourceTree = "<group>"; };
 		662EC1B812343BD3007E432B /* testMem.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testMem.C; sourceTree = "<group>"; };
 		6641B4B8123831BF0002C5A1 /* testAllEventsForUniqueIDs.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testAllEventsForUniqueIDs.cxx; path = ../kData/kds/testAllEventsForUniqueIDs.cxx; sourceTree = "<group>"; };
+		66696F77123F5ACD005B9DB7 /* KEventDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KEventDisplay.h; sourceTree = "<group>"; };
+		66696F78123F5ACD005B9DB7 /* KEventDisplay.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KEventDisplay.cxx; sourceTree = "<group>"; };
 		66834214122D710300A73231 /* allPassOne_GSEventNumbers */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = allPassOne_GSEventNumbers; path = ../kData/bin/allPassOne_GSEventNumbers; sourceTree = SOURCE_ROOT; };
 		66834215122D710300A73231 /* breakupKDataFile */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = breakupKDataFile; path = ../kData/bin/breakupKDataFile; sourceTree = SOURCE_ROOT; };
 		66834216122D710300A73231 /* edwrootana */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = edwrootana; path = ../kData/bin/edwrootana; sourceTree = SOURCE_ROOT; };
@@ -692,6 +694,8 @@
 				6610E7CE122703DA0047036E /* KEraRawFileIO.h */,
 				6610E7CF122703DA0047036E /* Module.mk */,
 				6610E7D0122703DA0047036E /* Module_libs.mk */,
+				66696F77123F5ACD005B9DB7 /* KEventDisplay.h */,
+				66696F78123F5ACD005B9DB7 /* KEventDisplay.cxx */,
 			);
 			path = kera;
 			sourceTree = "<group>";
