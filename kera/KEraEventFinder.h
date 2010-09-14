@@ -56,7 +56,7 @@ public:
   
 	//setters
 	void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }
-	void SetBolo(KBolometerRecord *aRec);
+	Bool_t SetBolo(KBolometerRecord *aRec);
 	void SetSearchLocally(Bool_t aChoice = true){ fSearchLocally = aChoice;  }
   void SetForceRemoteSearch(Bool_t aChoice = true){ fForceRemoteSearch = aChoice;  }
   void SetTargetPath(const char* aPath){fTargetPath = aPath;}

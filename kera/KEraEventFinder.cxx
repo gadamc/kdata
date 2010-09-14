@@ -27,8 +27,8 @@ KEraEventFinder::KEraEventFinder(void)
   fDisplay = 0;
   Initialize();
   fDirNames.clear();
-  AddPathToSearch(fTargetPath.c_str());
   AddPathToSearch(fTrans->GetSourcePath().c_str());  //if you're running "locally", you're probably on ccali
+  AddPathToSearch(fTargetPath.c_str());  
   fSearchLocally = true;
 }
 
@@ -274,8 +274,13 @@ EdwEvent* KEraEventFinder::GetEvent(void)
 
 
 
-void KEraEventFinder::SetBolo(KBolometerRecord* aRec) 
+ Bool_t KEraEventFinder::SetBolo(KBolometerRecord* aRec) 
 { 
+  if(aRec == 0) {
+    cout << "KEraEventFinder::SetBolo. BolometerRecord is NULL." << endl;
+    return false; 
+  }
+  
   fBoloRecord = aRec;
   fEventHasBeenTransfered  = false;
   //check to see if this pointer is really a KHLABolometerRecord
@@ -284,17 +289,19 @@ void KEraEventFinder::SetBolo(KBolometerRecord* aRec)
     KHLABolometerRecord *bolo = dynamic_cast<KHLABolometerRecord*>(fBoloRecord);
     if(bolo->GetSambaRecord() != 0)
       SetSamba(bolo->GetSambaRecord());
+    return true;
   }
   catch(bad_cast) {
     //do nothing.
+    return false;
   }
   
 }
 
 void KEraEventFinder::DisplayEvent(KBolometerRecord *aRec)
 {
-  SetBolo(aRec);
-  DisplayEvent();
+  if(SetBolo(aRec))
+    DisplayEvent();
 }
 
 void KEraEventFinder::DisplayEvent(void)

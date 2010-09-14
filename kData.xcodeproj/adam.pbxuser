@@ -871,6 +871,28 @@
 			6669716B12401DC0005B9DB7 /* PBXTextBookmark */ = 6669716B12401DC0005B9DB7 /* PBXTextBookmark */;
 			6669716C12401DC0005B9DB7 /* PBXTextBookmark */ = 6669716C12401DC0005B9DB7 /* PBXTextBookmark */;
 			6669716D12401DC0005B9DB7 /* PBXTextBookmark */ = 6669716D12401DC0005B9DB7 /* PBXTextBookmark */;
+			6669716E12402892005B9DB7 /* PBXTextBookmark */ = 6669716E12402892005B9DB7 /* PBXTextBookmark */;
+			6669716F12402892005B9DB7 /* PBXTextBookmark */ = 6669716F12402892005B9DB7 /* PBXTextBookmark */;
+			6669717012402892005B9DB7 /* PBXTextBookmark */ = 6669717012402892005B9DB7 /* PBXTextBookmark */;
+			6669717112402892005B9DB7 /* PBXTextBookmark */ = 6669717112402892005B9DB7 /* PBXTextBookmark */;
+			6669717212402892005B9DB7 /* PBXTextBookmark */ = 6669717212402892005B9DB7 /* PBXTextBookmark */;
+			6669717312402892005B9DB7 /* PBXTextBookmark */ = 6669717312402892005B9DB7 /* PBXTextBookmark */;
+			6669717412402892005B9DB7 /* PBXTextBookmark */ = 6669717412402892005B9DB7 /* PBXTextBookmark */;
+			6669717512402892005B9DB7 /* PBXTextBookmark */ = 6669717512402892005B9DB7 /* PBXTextBookmark */;
+			6669717612402892005B9DB7 /* PBXTextBookmark */ = 6669717612402892005B9DB7 /* PBXTextBookmark */;
+			6669717712402892005B9DB7 /* PBXTextBookmark */ = 6669717712402892005B9DB7 /* PBXTextBookmark */;
+			6669717812402892005B9DB7 /* PBXTextBookmark */ = 6669717812402892005B9DB7 /* PBXTextBookmark */;
+			6669717D12402E85005B9DB7 /* PBXTextBookmark */ = 6669717D12402E85005B9DB7 /* PBXTextBookmark */;
+			6669717E12402E85005B9DB7 /* PBXTextBookmark */ = 6669717E12402E85005B9DB7 /* PBXTextBookmark */;
+			6669717F12402E85005B9DB7 /* PBXTextBookmark */ = 6669717F12402E85005B9DB7 /* PBXTextBookmark */;
+			6669718012402E85005B9DB7 /* PBXTextBookmark */ = 6669718012402E85005B9DB7 /* PBXTextBookmark */;
+			6669718112402E85005B9DB7 /* PBXTextBookmark */ = 6669718112402E85005B9DB7 /* PBXTextBookmark */;
+			6669718212402E85005B9DB7 /* PBXTextBookmark */ = 6669718212402E85005B9DB7 /* PBXTextBookmark */;
+			6669718312402E85005B9DB7 /* PBXTextBookmark */ = 6669718312402E85005B9DB7 /* PBXTextBookmark */;
+			6669718412402E85005B9DB7 /* PBXTextBookmark */ = 6669718412402E85005B9DB7 /* PBXTextBookmark */;
+			6669718512402E85005B9DB7 /* PBXTextBookmark */ = 6669718512402E85005B9DB7 /* PBXTextBookmark */;
+			6669718612402E85005B9DB7 /* PBXTextBookmark */ = 6669718612402E85005B9DB7 /* PBXTextBookmark */;
+			6669718712402E85005B9DB7 /* PBXTextBookmark */ = 6669718712402E85005B9DB7 /* PBXTextBookmark */;
 			66D234641239137000792DEC = 66D234641239137000792DEC /* PBXBookmark */;
 			66D2346B1239139A00792DEC = 66D2346B1239139A00792DEC /* PBXTextBookmark */;
 			66D2346C1239139A00792DEC = 66D2346C1239139A00792DEC /* PBXTextBookmark */;
@@ -2518,7 +2540,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 154";
 		rLen = 1;
-		rLoc = 8213;
+		rLoc = 8218;
 		rType = 0;
 		vrLen = 1193;
 		vrLoc = 3659;
@@ -2558,7 +2580,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 37";
 		rLen = 0;
-		rLoc = 1375;
+		rLoc = 1377;
 		rType = 0;
 		vrLen = 1385;
 		vrLoc = 365;
@@ -2568,7 +2590,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 163";
 		rLen = 0;
-		rLoc = 9501;
+		rLoc = 9664;
 		rType = 0;
 		vrLen = 1095;
 		vrLoc = 3763;
@@ -2658,7 +2680,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 163";
 		rLen = 0;
-		rLoc = 9501;
+		rLoc = 9664;
 		rType = 0;
 		vrLen = 1095;
 		vrLoc = 3763;
@@ -2758,7 +2780,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 163";
 		rLen = 0;
-		rLoc = 9501;
+		rLoc = 9664;
 		rType = 0;
 		vrLen = 1095;
 		vrLoc = 3763;
@@ -2798,7 +2820,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 47";
 		rLen = 0;
-		rLoc = 2051;
+		rLoc = 2053;
 		rType = 0;
 		vrLen = 1185;
 		vrLoc = 179;
@@ -2818,7 +2840,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 160";
 		rLen = 0;
-		rLoc = 8428;
+		rLoc = 8551;
 		rType = 0;
 		vrLen = 1002;
 		vrLoc = 3829;
@@ -2858,7 +2880,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 48";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1228;
 		vrLoc = 179;
@@ -2878,7 +2900,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 88";
 		rLen = 0;
-		rLoc = 4460;
+		rLoc = 4462;
 		rType = 0;
 		vrLen = 1320;
 		vrLoc = 1326;
@@ -2888,7 +2910,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 79";
 		rLen = 0;
-		rLoc = 3584;
+		rLoc = 3586;
 		rType = 0;
 		vrLen = 1331;
 		vrLoc = 1559;
@@ -2928,7 +2950,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 49";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1237;
 		vrLoc = 179;
@@ -2938,7 +2960,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 140";
 		rLen = 0;
-		rLoc = 6267;
+		rLoc = 6269;
 		rType = 0;
 		vrLen = 1588;
 		vrLoc = 2265;
@@ -2978,7 +3000,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 49";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1237;
 		vrLoc = 179;
@@ -2998,7 +3020,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 54";
 		rLen = 0;
-		rLoc = 2309;
+		rLoc = 2311;
 		rType = 0;
 		vrLen = 1197;
 		vrLoc = 1240;
@@ -3008,7 +3030,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 54";
 		rLen = 0;
-		rLoc = 2309;
+		rLoc = 2311;
 		rType = 0;
 		vrLen = 1536;
 		vrLoc = 1769;
@@ -3048,7 +3070,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 51";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1323;
 		vrLoc = 179;
@@ -3068,7 +3090,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 54";
 		rLen = 0;
-		rLoc = 2064;
+		rLoc = 2066;
 		rType = 0;
 		vrLen = 1257;
 		vrLoc = 487;
@@ -3078,7 +3100,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 3739;
+		rLoc = 3741;
 		rType = 0;
 		vrLen = 1582;
 		vrLoc = 1976;
@@ -3108,7 +3130,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 51";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1323;
 		vrLoc = 179;
@@ -3128,7 +3150,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 3739;
+		rLoc = 3741;
 		rType = 0;
 		vrLen = 1582;
 		vrLoc = 1976;
@@ -3148,7 +3170,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 51";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1323;
 		vrLoc = 179;
@@ -3173,7 +3195,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 41";
 		rLen = 0;
-		rLoc = 1505;
+		rLoc = 1507;
 		rType = 0;
 		vrLen = 1290;
 		vrLoc = 48;
@@ -3183,7 +3205,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 45";
 		rLen = 0;
-		rLoc = 1837;
+		rLoc = 1839;
 		rType = 0;
 		vrLen = 1282;
 		vrLoc = 261;
@@ -3213,7 +3235,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1323;
 		vrLoc = 179;
@@ -3288,7 +3310,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 79";
 		rLen = 13;
-		rLoc = 3301;
+		rLoc = 3303;
 		rType = 0;
 		vrLen = 1414;
 		vrLoc = 1431;
@@ -3298,7 +3320,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 79";
 		rLen = 13;
-		rLoc = 3301;
+		rLoc = 3303;
 		rType = 0;
 		vrLen = 1607;
 		vrLoc = 2099;
@@ -3318,7 +3340,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 53";
 		rLen = 0;
-		rLoc = 2064;
+		rLoc = 2066;
 		rType = 0;
 		vrLen = 1141;
 		vrLoc = 1207;
@@ -3328,7 +3350,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 3744;
+		rLoc = 3746;
 		rType = 0;
 		vrLen = 1077;
 		vrLoc = 3706;
@@ -3348,7 +3370,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1328;
 		vrLoc = 179;
@@ -3358,7 +3380,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 79";
 		rLen = 13;
-		rLoc = 3301;
+		rLoc = 3303;
 		rType = 0;
 		vrLen = 1607;
 		vrLoc = 2099;
@@ -3368,7 +3390,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 3744;
+		rLoc = 3746;
 		rType = 0;
 		vrLen = 1077;
 		vrLoc = 3706;
@@ -3388,7 +3410,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1328;
 		vrLoc = 179;
@@ -3398,7 +3420,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 46";
 		rLen = 0;
-		rLoc = 1837;
+		rLoc = 1839;
 		rType = 0;
 		vrLen = 1303;
 		vrLoc = 241;
@@ -3408,7 +3430,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 97";
 		rLen = 0;
-		rLoc = 4578;
+		rLoc = 4580;
 		rType = 0;
 		vrLen = 1653;
 		vrLoc = 2195;
@@ -3418,7 +3440,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 69";
 		rLen = 7;
-		rLoc = 2683;
+		rLoc = 2685;
 		rType = 0;
 		vrLen = 934;
 		vrLoc = 1228;
@@ -3428,7 +3450,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 103";
 		rLen = 0;
-		rLoc = 3744;
+		rLoc = 3746;
 		rType = 0;
 		vrLen = 1299;
 		vrLoc = 3146;
@@ -3448,7 +3470,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1330;
 		vrLoc = 179;
@@ -3458,7 +3480,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 70";
 		rLen = 7;
-		rLoc = 2683;
+		rLoc = 2685;
 		rType = 0;
 		vrLen = 1007;
 		vrLoc = 1231;
@@ -3468,7 +3490,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 107";
 		rLen = 0;
-		rLoc = 3744;
+		rLoc = 3746;
 		rType = 0;
 		vrLen = 1934;
 		vrLoc = 2292;
@@ -3488,7 +3510,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1330;
 		vrLoc = 179;
@@ -3532,7 +3554,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 85";
 		rLen = 0;
-		rLoc = 2801;
+		rLoc = 2803;
 		rType = 0;
 		vrLen = 1237;
 		vrLoc = 1379;
@@ -3542,7 +3564,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 83";
 		rLen = 0;
-		rLoc = 2782;
+		rLoc = 2784;
 		rType = 0;
 		vrLen = 1237;
 		vrLoc = 1379;
@@ -3552,7 +3574,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 53";
 		rLen = 9;
-		rLoc = 2173;
+		rLoc = 2175;
 		rType = 0;
 		vrLen = 1304;
 		vrLoc = 240;
@@ -3562,7 +3584,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 55";
 		rLen = 0;
-		rLoc = 2309;
+		rLoc = 2311;
 		rType = 0;
 		vrLen = 1233;
 		vrLoc = 882;
@@ -3572,7 +3594,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 97";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1228;
 		vrLoc = 1317;
@@ -3592,7 +3614,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3602,7 +3624,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 83";
 		rLen = 0;
-		rLoc = 2791;
+		rLoc = 2793;
 		rType = 0;
 		vrLen = 1236;
 		vrLoc = 1379;
@@ -3612,7 +3634,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 97";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1227;
 		vrLoc = 1317;
@@ -3632,7 +3654,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3642,7 +3664,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 84";
 		rLen = 0;
-		rLoc = 2801;
+		rLoc = 2803;
 		rType = 0;
 		vrLen = 1240;
 		vrLoc = 1379;
@@ -3652,7 +3674,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 97";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1231;
 		vrLoc = 1317;
@@ -3672,7 +3694,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3682,7 +3704,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 72";
 		rLen = 0;
-		rLoc = 2621;
+		rLoc = 2623;
 		rType = 0;
 		vrLen = 1241;
 		vrLoc = 1379;
@@ -3692,7 +3714,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 97";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1232;
 		vrLoc = 1317;
@@ -3712,7 +3734,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3722,7 +3744,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 90";
 		rLen = 0;
-		rLoc = 2846;
+		rLoc = 2848;
 		rType = 0;
 		vrLen = 1286;
 		vrLoc = 1379;
@@ -3732,7 +3754,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 99";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1205;
 		vrLoc = 1317;
@@ -3752,7 +3774,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3778,7 +3800,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 77";
 		rLen = 0;
-		rLoc = 2670;
+		rLoc = 2672;
 		rType = 0;
 		vrLen = 1287;
 		vrLoc = 1379;
@@ -3788,7 +3810,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 83";
 		rLen = 0;
-		rLoc = 2789;
+		rLoc = 2791;
 		rType = 0;
 		vrLen = 1288;
 		vrLoc = 1379;
@@ -3798,7 +3820,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 99";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1207;
 		vrLoc = 1317;
@@ -3818,7 +3840,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3828,7 +3850,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 83";
 		rLen = 0;
-		rLoc = 2781;
+		rLoc = 2783;
 		rType = 0;
 		vrLen = 1279;
 		vrLoc = 1379;
@@ -3838,7 +3860,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 100";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1256;
 		vrLoc = 1317;
@@ -3858,7 +3880,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3868,7 +3890,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 83";
 		rLen = 0;
-		rLoc = 2781;
+		rLoc = 2783;
 		rType = 0;
 		vrLen = 1277;
 		vrLoc = 1379;
@@ -3878,7 +3900,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 100";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1254;
 		vrLoc = 1317;
@@ -3898,7 +3920,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3908,7 +3930,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 2846;
+		rLoc = 2848;
 		rType = 0;
 		vrLen = 1290;
 		vrLoc = 1379;
@@ -3918,7 +3940,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3928,7 +3950,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 100";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1267;
 		vrLoc = 1317;
@@ -3948,7 +3970,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 83";
 		rLen = 0;
-		rLoc = 2777;
+		rLoc = 2779;
 		rType = 0;
 		vrLen = 1290;
 		vrLoc = 1379;
@@ -3958,7 +3980,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -3968,7 +3990,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 100";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1267;
 		vrLoc = 1317;
@@ -3988,7 +4010,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 116";
 		rLen = 15;
-		rLoc = 4562;
+		rLoc = 4564;
 		rType = 0;
 		vrLen = 1675;
 		vrLoc = 2327;
@@ -3998,7 +4020,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -4008,7 +4030,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1180;
 		vrLoc = 1317;
@@ -4058,7 +4080,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 142";
 		rLen = 0;
-		rLoc = 6007;
+		rLoc = 6009;
 		rType = 0;
 		vrLen = 1696;
 		vrLoc = 2883;
@@ -4068,7 +4090,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -4078,7 +4100,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1180;
 		vrLoc = 1317;
@@ -4098,7 +4120,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 105";
 		rLen = 0;
-		rLoc = 3681;
+		rLoc = 3683;
 		rType = 0;
 		vrLen = 1624;
 		vrLoc = 2206;
@@ -4108,7 +4130,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 52";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1334;
 		vrLoc = 175;
@@ -4118,7 +4140,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1180;
 		vrLoc = 1317;
@@ -4138,7 +4160,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 61";
 		rLen = 0;
-		rLoc = 2064;
+		rLoc = 2066;
 		rType = 0;
 		vrLen = 1128;
 		vrLoc = 775;
@@ -4168,7 +4190,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1415;
 		vrLoc = 175;
@@ -4178,7 +4200,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 91";
 		rLen = 0;
-		rLoc = 3088;
+		rLoc = 3090;
 		rType = 0;
 		vrLen = 1180;
 		vrLoc = 1317;
@@ -4208,7 +4230,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 178";
 		rLen = 0;
-		rLoc = 7209;
+		rLoc = 7211;
 		rType = 0;
 		vrLen = 1247;
 		vrLoc = 4384;
@@ -4218,7 +4240,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 62";
 		rLen = 0;
-		rLoc = 2309;
+		rLoc = 2311;
 		rType = 0;
 		vrLen = 1102;
 		vrLoc = 1262;
@@ -4228,7 +4250,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1415;
 		vrLoc = 175;
@@ -4248,7 +4270,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 50";
 		rLen = 0;
-		rLoc = 1835;
+		rLoc = 1837;
 		rType = 0;
 		vrLen = 1451;
 		vrLoc = 399;
@@ -4258,7 +4280,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 43";
 		rLen = 67;
-		rLoc = 1606;
+		rLoc = 1608;
 		rType = 0;
 		vrLen = 1188;
 		vrLoc = 364;
@@ -4268,7 +4290,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 168";
 		rLen = 0;
-		rLoc = 7084;
+		rLoc = 7086;
 		rType = 0;
 		vrLen = 1374;
 		vrLoc = 3898;
@@ -4295,7 +4317,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 59";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1429;
 		vrLoc = 175;
@@ -4315,7 +4337,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 65";
 		rLen = 0;
-		rLoc = 2312;
+		rLoc = 2314;
 		rType = 0;
 		vrLen = 1224;
 		vrLoc = 1299;
@@ -4335,7 +4357,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 59";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1429;
 		vrLoc = 175;
@@ -4355,7 +4377,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 50";
 		rLen = 0;
-		rLoc = 1835;
+		rLoc = 1837;
 		rType = 0;
 		vrLen = 1451;
 		vrLoc = 399;
@@ -4365,7 +4387,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 176";
 		rLen = 0;
-		rLoc = 7237;
+		rLoc = 7239;
 		rType = 0;
 		vrLen = 1171;
 		vrLoc = 4277;
@@ -4375,7 +4397,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 194";
 		rLen = 0;
-		rLoc = 7748;
+		rLoc = 7750;
 		rType = 0;
 		vrLen = 1067;
 		vrLoc = 4511;
@@ -4395,7 +4417,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 59";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1429;
 		vrLoc = 175;
@@ -4415,7 +4437,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 193";
 		rLen = 0;
-		rLoc = 7738;
+		rLoc = 7740;
 		rType = 0;
 		vrLen = 1100;
 		vrLoc = 4511;
@@ -4435,7 +4457,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 59";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1429;
 		vrLoc = 175;
@@ -4475,7 +4497,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 59";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1429;
 		vrLoc = 175;
@@ -4511,7 +4533,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 56";
 		rLen = 18;
-		rLoc = 1991;
+		rLoc = 1993;
 		rType = 0;
 		vrLen = 1525;
 		vrLoc = 498;
@@ -4521,7 +4543,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 195";
 		rLen = 13;
-		rLoc = 7880;
+		rLoc = 7882;
 		rType = 0;
 		vrLen = 1098;
 		vrLoc = 4906;
@@ -4531,7 +4553,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 169";
 		rLen = 0;
-		rLoc = 6958;
+		rLoc = 6960;
 		rType = 0;
 		vrLen = 1619;
 		vrLoc = 3723;
@@ -4551,7 +4573,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -4571,7 +4593,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 174";
 		rLen = 0;
-		rLoc = 6948;
+		rLoc = 6950;
 		rType = 0;
 		vrLen = 1730;
 		vrLoc = 3723;
@@ -4591,7 +4613,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -4627,7 +4649,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 13;
-		rLoc = 2357;
+		rLoc = 2359;
 		rType = 0;
 		vrLen = 1525;
 		vrLoc = 498;
@@ -4637,7 +4659,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 145";
 		rLen = 0;
-		rLoc = 5980;
+		rLoc = 5982;
 		rType = 0;
 		vrLen = 1737;
 		vrLoc = 2881;
@@ -4647,7 +4669,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 129";
 		rLen = 41;
-		rLoc = 5080;
+		rLoc = 5082;
 		rType = 0;
 		vrLen = 1737;
 		vrLoc = 2881;
@@ -4667,7 +4689,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -4687,7 +4709,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 13;
-		rLoc = 2357;
+		rLoc = 2359;
 		rType = 0;
 		vrLen = 1525;
 		vrLoc = 498;
@@ -4697,7 +4719,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 129";
 		rLen = 41;
-		rLoc = 5080;
+		rLoc = 5082;
 		rType = 0;
 		vrLen = 1770;
 		vrLoc = 2585;
@@ -4707,7 +4729,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 122";
 		rLen = 0;
-		rLoc = 4610;
+		rLoc = 4612;
 		rType = 0;
 		vrLen = 1629;
 		vrLoc = 2727;
@@ -4727,7 +4749,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -4747,7 +4769,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 145";
 		rLen = 0;
-		rLoc = 5980;
+		rLoc = 5982;
 		rType = 0;
 		vrLen = 1775;
 		vrLoc = 3360;
@@ -4767,7 +4789,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -4819,7 +4841,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 122";
 		rLen = 0;
-		rLoc = 4590;
+		rLoc = 4592;
 		rType = 0;
 		vrLen = 1755;
 		vrLoc = 3053;
@@ -4829,7 +4851,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 123";
 		rLen = 0;
-		rLoc = 4897;
+		rLoc = 4899;
 		rType = 0;
 		vrLen = 1833;
 		vrLoc = 2749;
@@ -4839,7 +4861,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 13;
-		rLoc = 2357;
+		rLoc = 2359;
 		rType = 0;
 		vrLen = 1525;
 		vrLoc = 498;
@@ -4849,7 +4871,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -4869,7 +4891,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -4905,7 +4927,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 147";
 		rLen = 0;
-		rLoc = 5845;
+		rLoc = 5847;
 		rType = 0;
 		vrLen = 1755;
 		vrLoc = 3028;
@@ -4915,7 +4937,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1081;
 		vrLoc = 5504;
@@ -4925,7 +4947,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -4945,7 +4967,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -4995,7 +5017,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1081;
 		vrLoc = 5504;
@@ -5005,7 +5027,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5015,7 +5037,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5071,7 +5093,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1081;
 		vrLoc = 5504;
@@ -5081,7 +5103,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5091,7 +5113,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5111,7 +5133,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1586;
 		vrLoc = 4051;
@@ -5121,7 +5143,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5131,7 +5153,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5165,7 +5187,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5175,7 +5197,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1586;
 		vrLoc = 4051;
@@ -5185,7 +5207,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5215,7 +5237,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5225,7 +5247,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1586;
 		vrLoc = 4051;
@@ -5235,7 +5257,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5265,7 +5287,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5275,7 +5297,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1574;
 		vrLoc = 4051;
@@ -5285,7 +5307,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5315,7 +5337,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5325,7 +5347,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1574;
 		vrLoc = 4051;
@@ -5335,7 +5357,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5365,7 +5387,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5375,7 +5397,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1574;
 		vrLoc = 4051;
@@ -5385,7 +5407,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5415,7 +5437,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 64";
 		rLen = 0;
-		rLoc = 2356;
+		rLoc = 2358;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5425,7 +5447,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 200";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1574;
 		vrLoc = 4051;
@@ -5435,7 +5457,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5455,7 +5477,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 49";
 		rLen = 11;
-		rLoc = 1811;
+		rLoc = 1813;
 		rType = 0;
 		vrLen = 1527;
 		vrLoc = 498;
@@ -5465,7 +5487,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 195";
 		rLen = 0;
-		rLoc = 7314;
+		rLoc = 7316;
 		rType = 0;
 		vrLen = 1220;
 		vrLoc = 5154;
@@ -5475,7 +5497,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 123";
 		rLen = 13;
-		rLoc = 4650;
+		rLoc = 4652;
 		rType = 0;
 		vrLen = 1678;
 		vrLoc = 2748;
@@ -5495,7 +5517,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 201";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1709;
 		vrLoc = 3581;
@@ -5505,7 +5527,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5525,7 +5547,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 146";
 		rLen = 0;
-		rLoc = 5803;
+		rLoc = 5805;
 		rType = 0;
 		vrLen = 1755;
 		vrLoc = 3415;
@@ -5545,7 +5567,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 201";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1717;
 		vrLoc = 3589;
@@ -5555,7 +5577,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5575,7 +5597,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 146";
 		rLen = 0;
-		rLoc = 5803;
+		rLoc = 5805;
 		rType = 0;
 		vrLen = 843;
 		vrLoc = 6305;
@@ -5585,7 +5607,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 61";
 		rLen = 0;
-		rLoc = 2231;
+		rLoc = 2233;
 		rType = 0;
 		vrLen = 1503;
 		vrLoc = 524;
@@ -5605,7 +5627,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 201";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1717;
 		vrLoc = 3589;
@@ -5615,7 +5637,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 58";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 175;
@@ -5649,7 +5671,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 254";
 		rLen = 0;
-		rLoc = 9500;
+		rLoc = 9663;
 		rType = 0;
 		vrLen = 770;
 		vrLoc = 6378;
@@ -5659,7 +5681,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 256";
 		rLen = 0;
-		rLoc = 9500;
+		rLoc = 9663;
 		rType = 0;
 		vrLen = 452;
 		vrLoc = 6696;
@@ -5689,7 +5711,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 201";
 		rLen = 0;
-		rLoc = 7591;
+		rLoc = 7593;
 		rType = 0;
 		vrLen = 1717;
 		vrLoc = 3589;
@@ -5699,7 +5721,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 61";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1395;
 		vrLoc = 175;
@@ -5735,7 +5757,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 278";
 		rLen = 0;
-		rLoc = 9501;
+		rLoc = 9664;
 		rType = 0;
 		vrLen = 455;
 		vrLoc = 6693;
@@ -5745,7 +5767,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 278";
 		rLen = 0;
-		rLoc = 9501;
+		rLoc = 9664;
 		rType = 0;
 		vrLen = 455;
 		vrLoc = 6693;
@@ -5755,7 +5777,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 63";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1380;
 		vrLoc = 175;
@@ -5825,7 +5847,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 254";
 		rLen = 0;
-		rLoc = 9500;
+		rLoc = 9663;
 		rType = 0;
 		vrLen = 757;
 		vrLoc = 6391;
@@ -5835,7 +5857,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 63";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1380;
 		vrLoc = 175;
@@ -5922,7 +5944,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 254";
 		rLen = 0;
-		rLoc = 9500;
+		rLoc = 9663;
 		rType = 0;
 		vrLen = 757;
 		vrLoc = 6391;
@@ -5932,7 +5954,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 63";
 		rLen = 0;
-		rLoc = 2141;
+		rLoc = 2143;
 		rType = 0;
 		vrLen = 1380;
 		vrLoc = 175;
@@ -6946,7 +6968,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 113";
 		rLen = 0;
-		rLoc = 3685;
+		rLoc = 3687;
 		rType = 0;
 		vrLen = 1726;
 		vrLoc = 3544;
@@ -7053,7 +7075,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 140";
 		rLen = 0;
-		rLoc = 5346;
+		rLoc = 5348;
 		rType = 0;
 		vrLen = 1726;
 		vrLoc = 3544;
@@ -7179,7 +7201,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 140";
 		rLen = 0;
-		rLoc = 5346;
+		rLoc = 5348;
 		rType = 0;
 		vrLen = 1726;
 		vrLoc = 3544;
@@ -7249,7 +7271,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 53";
 		rLen = 0;
-		rLoc = 1619;
+		rLoc = 1621;
 		rType = 0;
 		vrLen = 1506;
 		vrLoc = 563;
@@ -7259,7 +7281,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 136";
 		rLen = 1;
-		rLoc = 5149;
+		rLoc = 5151;
 		rType = 0;
 		vrLen = 1726;
 		vrLoc = 3544;
@@ -7269,7 +7291,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 127";
 		rLen = 12;
-		rLoc = 4593;
+		rLoc = 4595;
 		rType = 0;
 		vrLen = 1694;
 		vrLoc = 3430;
@@ -7369,7 +7391,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 127";
 		rLen = 12;
-		rLoc = 4593;
+		rLoc = 4595;
 		rType = 0;
 		vrLen = 1694;
 		vrLoc = 3430;
@@ -7459,7 +7481,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 271";
 		rLen = 0;
-		rLoc = 9497;
+		rLoc = 9660;
 		rType = 0;
 		vrLen = 999;
 		vrLoc = 6768;
@@ -7692,7 +7714,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 272";
 		rLen = 0;
-		rLoc = 9243;
+		rLoc = 9406;
 		rType = 0;
 		vrLen = 1146;
 		vrLoc = 6892;
@@ -7702,7 +7724,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 274";
 		rLen = 0;
-		rLoc = 9306;
+		rLoc = 9469;
 		rType = 0;
 		vrLen = 1147;
 		vrLoc = 6892;
@@ -7812,7 +7834,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 274";
 		rLen = 0;
-		rLoc = 9306;
+		rLoc = 9469;
 		rType = 0;
 		vrLen = 1147;
 		vrLoc = 6892;
@@ -7912,7 +7934,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 274";
 		rLen = 0;
-		rLoc = 9306;
+		rLoc = 9469;
 		rType = 0;
 		vrLen = 1147;
 		vrLoc = 6892;
@@ -8002,7 +8024,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 274";
 		rLen = 0;
-		rLoc = 9306;
+		rLoc = 9469;
 		rType = 0;
 		vrLen = 1147;
 		vrLoc = 6892;
@@ -8112,7 +8134,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 60";
 		rLen = 18;
-		rLoc = 1738;
+		rLoc = 1740;
 		rType = 0;
 		vrLen = 1730;
 		vrLoc = 636;
@@ -8122,7 +8144,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 140";
 		rLen = 0;
-		rLoc = 4292;
+		rLoc = 4294;
 		rType = 0;
 		vrLen = 1619;
 		vrLoc = 3404;
@@ -8132,7 +8154,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 152";
 		rLen = 0;
-		rLoc = 4538;
+		rLoc = 4540;
 		rType = 0;
 		vrLen = 1628;
 		vrLoc = 3211;
@@ -8242,7 +8264,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 156";
 		rLen = 0;
-		rLoc = 4538;
+		rLoc = 4540;
 		rType = 0;
 		vrLen = 1880;
 		vrLoc = 3852;
@@ -8348,7 +8370,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 155";
 		rLen = 0;
-		rLoc = 4538;
+		rLoc = 4540;
 		rType = 0;
 		vrLen = 1639;
 		vrLoc = 3475;
@@ -8358,7 +8380,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 30";
 		rLen = 0;
-		rLoc = 724;
+		rLoc = 833;
 		rType = 0;
 		vrLen = 1140;
 		vrLoc = 173;
@@ -8448,7 +8470,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 60";
 		rLen = 18;
-		rLoc = 1738;
+		rLoc = 1740;
 		rType = 0;
 		vrLen = 1730;
 		vrLoc = 636;
@@ -8458,7 +8480,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 254";
 		rLen = 13;
-		rLoc = 7880;
+		rLoc = 7882;
 		rType = 0;
 		vrLen = 1060;
 		vrLoc = 6918;
@@ -8468,7 +8490,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 153";
 		rLen = 0;
-		rLoc = 4475;
+		rLoc = 4477;
 		rType = 0;
 		vrLen = 1591;
 		vrLoc = 3294;
@@ -8574,7 +8596,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 69";
 		rLen = 7;
-		rLoc = 2011;
+		rLoc = 2013;
 		rType = 0;
 		vrLen = 1730;
 		vrLoc = 636;
@@ -8584,7 +8606,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 151";
 		rLen = 2563;
-		rLoc = 4474;
+		rLoc = 4476;
 		rType = 0;
 		vrLen = 1565;
 		vrLoc = 2994;
@@ -8594,7 +8616,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 163";
 		rLen = 0;
-		rLoc = 5005;
+		rLoc = 5007;
 		rType = 0;
 		vrLen = 1863;
 		vrLoc = 3954;
@@ -8674,7 +8696,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 31";
 		rLen = 0;
-		rLoc = 788;
+		rLoc = 849;
 		rType = 0;
 		vrLen = 1238;
 		vrLoc = 0;
@@ -8821,7 +8843,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 31";
 		rLen = 0;
-		rLoc = 788;
+		rLoc = 849;
 		rType = 0;
 		vrLen = 1238;
 		vrLoc = 0;
@@ -8831,7 +8853,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 69";
 		rLen = 7;
-		rLoc = 2011;
+		rLoc = 2013;
 		rType = 0;
 		vrLen = 1751;
 		vrLoc = 588;
@@ -8841,7 +8863,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 69";
 		rLen = 7;
-		rLoc = 2011;
+		rLoc = 2013;
 		rType = 0;
 		vrLen = 1751;
 		vrLoc = 588;
@@ -8921,7 +8943,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 69";
 		rLen = 7;
-		rLoc = 2011;
+		rLoc = 2013;
 		rType = 0;
 		vrLen = 1751;
 		vrLoc = 588;
@@ -8931,7 +8953,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 301";
 		rLen = 0;
-		rLoc = 9249;
+		rLoc = 9412;
 		rType = 0;
 		vrLen = 1178;
 		vrLoc = 7894;
@@ -9021,7 +9043,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 302";
 		rLen = 0;
-		rLoc = 9289;
+		rLoc = 9452;
 		rType = 0;
 		vrLen = 1171;
 		vrLoc = 7894;
@@ -9131,7 +9153,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 302";
 		rLen = 0;
-		rLoc = 9289;
+		rLoc = 9452;
 		rType = 0;
 		vrLen = 1171;
 		vrLoc = 7894;
@@ -9141,7 +9163,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 69";
 		rLen = 7;
-		rLoc = 2011;
+		rLoc = 2013;
 		rType = 0;
 		vrLen = 1402;
 		vrLoc = 241;
@@ -9221,7 +9243,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 69";
 		rLen = 7;
-		rLoc = 2011;
+		rLoc = 2013;
 		rType = 0;
 		vrLen = 1402;
 		vrLoc = 241;
@@ -9231,7 +9253,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 161";
 		rLen = 0;
-		rLoc = 4886;
+		rLoc = 4888;
 		rType = 0;
 		vrLen = 1385;
 		vrLoc = 6178;
@@ -9337,7 +9359,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 161";
 		rLen = 0;
-		rLoc = 4886;
+		rLoc = 4888;
 		rType = 0;
 		vrLen = 1385;
 		vrLoc = 6178;
@@ -9347,7 +9369,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 168";
 		rLen = 0;
-		rLoc = 5114;
+		rLoc = 5116;
 		rType = 0;
 		vrLen = 1827;
 		vrLoc = 4902;
@@ -9437,7 +9459,7 @@
 		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
 		name = "KEraEventFinder.h: 63";
 		rLen = 0;
-		rLoc = 1837;
+		rLoc = 1839;
 		rType = 0;
 		vrLen = 1717;
 		vrLoc = 588;
@@ -9447,7 +9469,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 303";
 		rLen = 0;
-		rLoc = 9087;
+		rLoc = 9250;
 		rType = 0;
 		vrLen = 1266;
 		vrLoc = 8178;
@@ -9457,7 +9479,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 303";
 		rLen = 0;
-		rLoc = 9087;
+		rLoc = 9250;
 		rType = 0;
 		vrLen = 1238;
 		vrLoc = 0;
@@ -9547,7 +9569,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 296";
 		rLen = 0;
-		rLoc = 8809;
+		rLoc = 8972;
 		rType = 0;
 		vrLen = 1222;
 		vrLoc = 8180;
@@ -9637,7 +9659,7 @@
 		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
 		name = "KEraEventFinder.cxx: 294";
 		rLen = 59;
-		rLoc = 8646;
+		rLoc = 8804;
 		rType = 0;
 		vrLen = 1238;
 		vrLoc = 8263;
@@ -9723,6 +9745,226 @@
 		vrLoc = 0;
 	};
 	6669716D12401DC0005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DF57122149780047036E /* EdwEvent.h */;
+		name = "EdwEvent.h: 27";
+		rLen = 8;
+		rLoc = 943;
+		rType = 0;
+		vrLen = 1865;
+		vrLoc = 0;
+	};
+	6669716E12402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
+		name = "KEraEventFinder.h: 48";
+		rLen = 0;
+		rLoc = 1236;
+		rType = 0;
+		vrLen = 1712;
+		vrLoc = 588;
+	};
+	6669716F12402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
+		name = "KEraEventFinder.cxx: 156";
+		rLen = 12;
+		rLoc = 4595;
+		rType = 0;
+		vrLen = 1711;
+		vrLoc = 3762;
+	};
+	6669717012402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
+		name = "KEraEventFinder.cxx: 31";
+		rLen = 0;
+		rLoc = 847;
+		rType = 0;
+		vrLen = 1242;
+		vrLoc = 363;
+	};
+	6669717112402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66696FBC123F739C005B9DB7 /* KEventDisplay.cxx */;
+		name = "KEventDisplay.cxx: 88";
+		rLen = 0;
+		rLoc = 1686;
+		rType = 0;
+		vrLen = 1257;
+		vrLoc = 2360;
+	};
+	6669717212402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66696FBC123F739C005B9DB7 /* KEventDisplay.cxx */;
+		name = "KEventDisplay.cxx: 176";
+		rLen = 0;
+		rLoc = 4202;
+		rType = 0;
+		vrLen = 1679;
+		vrLoc = 3269;
+	};
+	6669717312402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610E7CB122703DA0047036E /* KEraRawEventReader.cxx */;
+		name = "KEraRawEventReader.cxx: 73";
+		rLen = 8;
+		rLoc = 1782;
+		rType = 0;
+		vrLen = 1190;
+		vrLoc = 1166;
+	};
+	6669717412402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DF79122149780047036E /* Pulse.h */;
+		name = "Pulse.h: 24";
+		rLen = 15;
+		rLoc = 467;
+		rType = 0;
+		vrLen = 1694;
+		vrLoc = 24;
+	};
+	6669717512402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610E2ED1223D5B30047036E /* KPsaProcessor.cxx */;
+		name = "KPsaProcessor.cxx: 33";
+		rLen = 3;
+		rLoc = 556;
+		rType = 0;
+		vrLen = 1553;
+		vrLoc = 552;
+	};
+	6669717612402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610E44D122469D30047036E /* KPatternRemoval.h */;
+		name = "KPatternRemoval.h: 22";
+		rLen = 32;
+		rLoc = 446;
+		rType = 0;
+		vrLen = 1727;
+		vrLoc = 0;
+	};
+	6669717712402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DF62122149780047036E /* EdwPulse.h */;
+		name = "EdwPulse.h: 20";
+		rLen = 5;
+		rLoc = 593;
+		rType = 0;
+		vrLen = 1546;
+		vrLoc = 0;
+	};
+	6669717812402892005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DF57122149780047036E /* EdwEvent.h */;
+		name = "EdwEvent.h: 27";
+		rLen = 8;
+		rLoc = 943;
+		rType = 0;
+		vrLen = 1865;
+		vrLoc = 0;
+	};
+	6669717D12402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66E03A541237CBFD00415B79 /* KEraEventFinder.h */;
+		name = "KEraEventFinder.h: 59";
+		rLen = 0;
+		rLoc = 1578;
+		rType = 0;
+		vrLen = 1524;
+		vrLoc = 516;
+	};
+	6669717E12402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
+		name = "KEraEventFinder.cxx: 277";
+		rLen = 0;
+		rLoc = 8192;
+		rType = 0;
+		vrLen = 1000;
+		vrLoc = 8061;
+	};
+	6669717F12402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */;
+		name = "KEraEventFinder.cxx: 292";
+		rLen = 0;
+		rLoc = 8733;
+		rType = 0;
+		vrLen = 1017;
+		vrLoc = 8061;
+	};
+	6669718012402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66696FBC123F739C005B9DB7 /* KEventDisplay.cxx */;
+		name = "KEventDisplay.cxx: 88";
+		rLen = 0;
+		rLoc = 1686;
+		rType = 0;
+		vrLen = 1257;
+		vrLoc = 2360;
+	};
+	6669718112402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 66696FBC123F739C005B9DB7 /* KEventDisplay.cxx */;
+		name = "KEventDisplay.cxx: 176";
+		rLen = 0;
+		rLoc = 4202;
+		rType = 0;
+		vrLen = 1679;
+		vrLoc = 3269;
+	};
+	6669718212402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610E7CB122703DA0047036E /* KEraRawEventReader.cxx */;
+		name = "KEraRawEventReader.cxx: 73";
+		rLen = 8;
+		rLoc = 1782;
+		rType = 0;
+		vrLen = 1190;
+		vrLoc = 1166;
+	};
+	6669718312402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DF79122149780047036E /* Pulse.h */;
+		name = "Pulse.h: 24";
+		rLen = 15;
+		rLoc = 467;
+		rType = 0;
+		vrLen = 1694;
+		vrLoc = 24;
+	};
+	6669718412402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610E2ED1223D5B30047036E /* KPsaProcessor.cxx */;
+		name = "KPsaProcessor.cxx: 33";
+		rLen = 3;
+		rLoc = 556;
+		rType = 0;
+		vrLen = 1553;
+		vrLoc = 552;
+	};
+	6669718512402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610E44D122469D30047036E /* KPatternRemoval.h */;
+		name = "KPatternRemoval.h: 22";
+		rLen = 32;
+		rLoc = 446;
+		rType = 0;
+		vrLen = 1727;
+		vrLoc = 0;
+	};
+	6669718612402E85005B9DB7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DF62122149780047036E /* EdwPulse.h */;
+		name = "EdwPulse.h: 20";
+		rLen = 5;
+		rLoc = 593;
+		rType = 0;
+		vrLen = 1546;
+		vrLoc = 0;
+	};
+	6669718712402E85005B9DB7 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 6610DF57122149780047036E /* EdwEvent.h */;
 		name = "EdwEvent.h: 27";
@@ -11253,17 +11495,17 @@
 	};
 	66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1027, 5360}}";
-			sepNavSelRange = "{8646, 59}";
-			sepNavVisRange = "{8263, 1238}";
+			sepNavIntBoundsRect = "{{0, 0}, {1027, 5520}}";
+			sepNavSelRange = "{8733, 0}";
+			sepNavVisRange = "{8061, 1017}";
 			sepNavWindowFrame = "{{730, 168}, {748, 860}}";
 		};
 	};
 	66E03A541237CBFD00415B79 /* KEraEventFinder.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {689, 1344}}";
-			sepNavSelRange = "{1236, 0}";
-			sepNavVisRange = "{588, 1712}";
+			sepNavIntBoundsRect = "{{0, 0}, {689, 1376}}";
+			sepNavSelRange = "{1578, 0}";
+			sepNavVisRange = "{516, 1524}";
 			sepNavWindowFrame = "{{474, 7}, {748, 860}}";
 		};
 	};
