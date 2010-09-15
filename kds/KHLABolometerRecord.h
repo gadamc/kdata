@@ -39,10 +39,10 @@ public:
 	void Compact(void); //make the class as small as possible.
 	
 	//getters
-	Double32_t GetQvalue(void) const {return fQvalue;}
-	Double32_t GetEnergyRecoil(void) const {return fEnergyRecoil;}
-	Double32_t GetEnergyIon(void) const {return fEnergyIon;}
-	//Double32_t GetEnergyHeat(void) const {return fEnergyHeat;}
+	Double32_t GetQvalue(void) const {return fQvalue;} //calculated by ERA. depends on event type. 
+	Double32_t GetEnergyRecoil(void) const {return fEnergyRecoil;} //calculated by ERA. Depends upon event type
+	Double32_t GetEnergyIon(void) const {return fEnergyIon;}  //calculated by ERA. Depends upon event type!
+	
 	
 	Int_t GetEventFlag(void) const {return fEventFlag;}
 	Int_t GetChi2Flag(void) const {return fChi2Flag;}
@@ -59,24 +59,26 @@ public:
 
 	Int_t GetNumPulseRecords(void) const {return (fPulseRecords.GetEntriesFast());}
 	
-	/* Double32_t GetEnergyCollectrode(Int_t i) const;
-	Double32_t GetEnergyVeto(Int_t i) const;
-	Double32_t GetEnergyGuard(Int_t i) const;
-	Double32_t GetEnergyBaselineCollectrode(Int_t i) const;
-	Double32_t GetEnergyBaselineVeto(Int_t i) const;
-	Double32_t GetEnergyBaselineGuard(Int_t i) const;
-	Double32_t GetBaselineNoiseCollectrode(Int_t i) const;
-	Double32_t GetBaselineNoiseVeto(Int_t i) const;
-	Double32_t GetBaselineNoiseGuard(Int_t i) const;
-	 */
-	Double32_t GetEnergyIonFiducial(void) const {return fEnergyIonFiducial;}
+	Double32_t GetEnergyCollectrode(Int_t aChannel) const;
+	Double32_t GetEnergyVeto(Int_t aChannel) const;
+	Double32_t GetEnergyGuard(Int_t aChannel) const;
+  Double32_t GetEnergyHeat(Int_t aChannel) const;
+  
+	Double32_t GetEnergyBaselineCollectrode(Int_t aChannel) const;
+	Double32_t GetEnergyBaselineVeto(Int_t aChannel) const;
+	Double32_t GetEnergyBaselineGuard(Int_t aChannel) const;
+  Double32_t GetEnergyBaselineHeat(Int_t aChannel) const;
+  
+	Double32_t GetBaselineNoiseCollectrode(Int_t aChannel) const;
+	Double32_t GetBaselineNoiseVeto(Int_t aChannel) const;
+	Double32_t GetBaselineNoiseGuard(Int_t aChannel) const;
+  Double32_t GetBaselineNoiseHeat(Int_t aChannel) const;
+  
+	Double32_t GetEnergyIonFiducial(void) const {return fEnergyIonFiducial;} 
 	Double32_t GetEnergySumIonChannels(void) const {return fEnergyIonSum;}
 	Double32_t GetBaselineIonFiducial(void) const {return fBaselineNoiseIonFiducial;}
 	Double32_t GetBaselineNoiseIonFiducial(void) const {return GetBaselineIonFiducial();} //returns GetBaselineIonFidcuial()
-	/* Double32_t GetEnergyBaselineHeat(void) const {return fEnergyBaselineHeat;}
-		Double32_t GetBaselineNoiseHeat(void) const {return fBaselineNoiseHeat;}
-		Double32_t GetBaselineHeat(void) const {return GetBaselineNoiseHeat();} //returns GetBaselineNoiseHeat()
-	 */	
+	
 	
 	Bool_t TestCutsBit(Int_t i) const;
 	TBits* GetCuts(void) {return &fCuts;}
@@ -135,7 +137,11 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLABolometerRecord &aRec);
-	
+	KHLABoloPulseRecord * GetPulseRecord(Int_t channel, Int_t aType) const;
+  Double32_t GetEnergy(Int_t aChannel, Int_t aType) const;
+  Double32_t GetEnergyBaseline(Int_t aChannel, Int_t aType) const;
+  Double32_t GetBaselineNoise(Int_t aChannel, Int_t aType) const;
+
   ClassDef(KHLABolometerRecord,2);
 };
 

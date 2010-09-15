@@ -311,7 +311,6 @@
 		6687D1C3122F863B005AD0F9 /* KMergeKds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMergeKds.h; sourceTree = "<group>"; };
 		6687D1C4122F863B005AD0F9 /* KMergeKds.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeKds.cxx; sourceTree = "<group>"; };
 		66D23498123A52BD00792DEC /* submitConcatBoloJobs.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = submitConcatBoloJobs.C; sourceTree = "<group>"; };
-		66D23565123AB52A00792DEC /* rootScript_mergeKdsTree_Step1.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rootScript_mergeKdsTree_Step1.C; sourceTree = "<group>"; };
 		66D23566123AB55100792DEC /* rootScript_mergeKdsTree_Step2.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rootScript_mergeKdsTree_Step2.C; sourceTree = "<group>"; };
 		66D23567123AB55F00792DEC /* rootScript_mergeKdsTree_Step3.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rootScript_mergeKdsTree_Step3.C; sourceTree = "<group>"; };
 		66E03A511237CBFD00415B79 /* calitransfer.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = calitransfer.cxx; path = ../kData/kera/calitransfer.cxx; sourceTree = SOURCE_ROOT; };
@@ -713,7 +712,6 @@
 				662EC1B412343BD3007E432B /* rootScript_fillEraToKEdsEvents.c */,
 				662EC1B512343BD3007E432B /* rootScript_fillExample.c */,
 				662EC1B612343BD3007E432B /* rootScript_mergeKEdsTrees.c */,
-				66D23565123AB52A00792DEC /* rootScript_mergeKdsTree_Step1.C */,
 				66D23566123AB55100792DEC /* rootScript_mergeKdsTree_Step2.C */,
 				66D23567123AB55F00792DEC /* rootScript_mergeKdsTree_Step3.C */,
 				662EC1B712343BD3007E432B /* scriptStartMerge.sh */,

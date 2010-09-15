@@ -247,80 +247,175 @@ Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrin
 	
 	return bIsEqual;
 }
-/*
-Double32_t KHLABolometerRecord::GetEnergyCollectrode(Int_t i) const 
+
+KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t channel, Int_t aType) const
 {
-	if(i >= 0 && i < 2)
-		return fEnergyCollectrode[i];
-	
-	else return -99999.;
-}
-*
-Double32_t KHLABolometerRecord::GetEnergyVeto(Int_t i) const 
-{
-	if(i >= 0 && i < 2)
-		return fEnergyVeto[i];
-	
-	else return -99999.;
+  KHLABoloPulseRecord* pulse = 0;
+  for(Int_t k = 0; k < GetNumPulseRecords(); k++){
+    pulse = GetPulseRecord(k);
+    if( (pulse->GetPulseType() == aType) && (pulse->GetChannelNumber() == channel))
+      return pulse;
+  }
+  return 0;  //if we get here, then we didn't find the proper pulse
 }
 
-Double32_t KHLABolometerRecord::GetEnergyGuard(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergy(Int_t aChannel, Int_t aType) const
 {
-	if(i >= 0 && i < 2)
-		return fEnergyGuard[i];
-	
-	else return -99999.;
+  KHLABoloPulseRecord* pulse = GetPulseRecord(aChannel,aType);
+  if(pulse)
+    return pulse->GetEnergy();
+  else return -9999.;
 }
 
-Double32_t KHLABolometerRecord::GetEnergyBaselineCollectrode(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyCollectrode(Int_t aChannel) const
 {
-	if(i >= 0 && i < 2)
-		return fEnergyBaselineCollectrode[i];
-	
-	else return -99999.;
+  //returns the calibrated pulse energy (in keV) on a collecltrode channel, as 
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetEnergy(aChannel, KBoloPulseRecord::GetCollectrodeType());
 }
 
-Double32_t KHLABolometerRecord::GetEnergyBaselineVeto(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyVeto(Int_t aChannel) const
 {
-	if(i >= 0 && i < 2)
-		return fEnergyBaselineVeto[i];
-	
-	else return -99999.;
+  //returns the calibrated pulse energy (in keV) on a veto channel, as 
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetEnergy(aChannel, KBoloPulseRecord::GetVetoType());
 }
 
-Double32_t KHLABolometerRecord::GetEnergyBaselineGuard(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyGuard(Int_t aChannel) const
 {
-	if(i >= 0 && i < 2)
-		return fEnergyBaselineGuard[i];
-	
-	else return -99999.;
+  //returns the calibrated pulse energy (in keV) on a guard channel, as 
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetEnergy(aChannel, KBoloPulseRecord::GetGuardType());
 }
 
-Double32_t KHLABolometerRecord::GetBaselineNoiseCollectrode(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyHeat(Int_t aChannel) const
 {
-	if(i >= 0 && i < 2)
-		return fBaselineNoiseCollectrode[i];
-	
-	else return -99999.;
+  //returns the calibrated pulse energy (in keV) on a heat channel, as 
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetEnergy(aChannel, KBoloPulseRecord::GetHeatType());
 }
 
-Double32_t KHLABolometerRecord::GetBaselineNoiseVeto(Int_t i) const 
+Double32_t KHLABolometerRecord::GetEnergyBaseline(Int_t aChannel, Int_t aType) const
 {
-	if(i >= 0 && i < 2)
-		return fBaselineNoiseVeto[i];
-
-	else return -99999.;
+  KHLABoloPulseRecord* pulse = GetPulseRecord(aChannel,aType);
+  if(pulse)
+    return pulse->GetEnergyBaseline();
+  else return -9999.;
 }
 
-Double32_t KHLABolometerRecord::GetBaselineNoiseGuard(Int_t i) const 
+
+Double32_t KHLABolometerRecord::GetEnergyBaselineCollectrode(Int_t aChannel) const
 {
-	if(i >= 0 && i < 2)
-		return fBaselineNoiseGuard[i];
-	
-	else return -99999.;
+  //returns the calibrated pulse energy along the baseline (in keV) on a collecltrode channel, as 
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetCollectrodeType());
 }
 
-*/
+Double32_t KHLABolometerRecord::GetEnergyBaselineVeto(Int_t aChannel) const
+{
+  //returns the calibrated pulse energy along the baseline (in keV) on a veto channel, as 
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetVetoType());
+}
+
+Double32_t KHLABolometerRecord::GetEnergyBaselineGuard(Int_t aChannel) const
+{
+  //returns the calibrated pulse energy along the baseline (in keV) on a guard channel, as 
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetGuardType());
+}
+
+Double32_t KHLABolometerRecord::GetEnergyBaselineHeat(Int_t aChannel) const
+{
+  //returns the calibrated pulse energy along the baseline (in keV) on a heat channel, as 
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetHeatType());
+}
+
+Double32_t KHLABolometerRecord::GetBaselineNoise(Int_t aChannel, Int_t aType) const
+{
+  KHLABoloPulseRecord* pulse = GetPulseRecord(aChannel,aType);
+  if(pulse)
+    return pulse->GetBaselineNoise();
+  else return -9999.;
+}
+
+
+Double32_t KHLABolometerRecord::GetBaselineNoiseCollectrode(Int_t aChannel) const
+{
+  //returns the calibrated pulse RMS noise (in keV) along the baseline 
+  //on a collecltrode channel, as calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetBaselineNoise(aChannel, KBoloPulseRecord::GetCollectrodeType());
+}
+
+Double32_t KHLABolometerRecord::GetBaselineNoiseVeto(Int_t aChannel) const
+{
+  //returns the calibrated pulse RMS noise (in keV) along the baseline 
+  //on a veto channel, as calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetBaselineNoise(aChannel, KBoloPulseRecord::GetVetoType());
+}
+
+Double32_t KHLABolometerRecord::GetBaselineNoiseGuard(Int_t aChannel) const
+{
+  //returns the calibrated pulse RMS noise (in keV) along the baseline 
+  //on a guard channel, as calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetBaselineNoise(aChannel, KBoloPulseRecord::GetGuardType());
+}
+
+Double32_t KHLABolometerRecord::GetBaselineNoiseHeat(Int_t aChannel) const
+{
+  //returns the calibrated pulse RMS noise (in keV) along the baseline 
+  //on a heat channel, as calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. 
+  //
+  
+  return GetBaselineNoise(aChannel, KBoloPulseRecord::GetHeatType());
+}
 
 void KHLABolometerRecord::SetCuts(const TBits *mCuts)
 {

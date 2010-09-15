@@ -22,8 +22,8 @@ ClassImp(KEraEventFinder);
 
 KEraEventFinder::KEraEventFinder(void)
 {
-	fTrans = new KFileTransfer;
-	fReader =new KEraRawEventReader;
+  fTrans = new KFileTransfer;
+  fReader =new KEraRawEventReader;
   fDisplay = 0;
   Initialize();
   fDirNames.clear();
@@ -34,8 +34,8 @@ KEraEventFinder::KEraEventFinder(void)
 
 KEraEventFinder::KEraEventFinder(string aUser)
 {
-	fTrans = new KFileTransfer(aUser);
-	fReader =new KEraRawEventReader();
+  fTrans = new KFileTransfer(aUser);
+  fReader =new KEraRawEventReader();
   fDisplay = 0;
   Initialize();
 }
@@ -52,7 +52,7 @@ KEraEventFinder::KEraEventFinder(const KEraEventFinder& aFinder)
 }
 
 KEraEventFinder::KEraEventFinder(KSambaRecord* aSambaRecord, KBolometerRecord* aBoloRecord,
-																 string aUser, string aServer, string aSourceDir, string aTargetDir)
+                                 string aUser, string aServer, string aSourceDir, string aTargetDir)
 : fSambaRecord(aSambaRecord), fBoloRecord(aBoloRecord)
 {
   //constructor to fill all attributes
@@ -75,7 +75,7 @@ KEraEventFinder::~KEraEventFinder()
 void KEraEventFinder::Initialize(void)
 {
   fDirNames.clear();
-  AddPathToSearch("/sps/edelweis/kdata/data/rootevts/"); //the default path on ccali
+  AddPathToSearch(fTrans->GetSourcePath().c_str()); //the default path on ccali
   fSearchLocally = false; //assume that we're searching over the internets. 
   fForceRemoteSearch = false;  //don't force remote search by default.
   fTargetPath = "/tmp/";  //dump all files to /tmp/ and hope that this directory gets cleaned up.
@@ -90,26 +90,26 @@ string KEraEventFinder::GetNextFileName(const char* name)
   TString subRunName = "";
   string fileName = "";
   Int_t theIndex = -1;
-	
+  
   if(name == 0) {
     subRunName = "000";
   }
   else{
     TString theName = name;
-		if(theName.EndsWith(".root")){
-    
-			sscanf(name, "%*[a-z-A-Z-0-9]_%03d.root", &theIndex);
+    if(theName.EndsWith(".root")){
+      
+      sscanf(name, "%*[a-z-A-Z-0-9]_%03d.root", &theIndex);
       subRunName.Form("%03d",theIndex);
     } 
     
-		else {
-			cout << "KEraEventFinder::GetNextFileName. file does not end in .root" << endl;
+    else {
+      cout << "KEraEventFinder::GetNextFileName. file does not end in .root" << endl;
     }		
-	}
+  }
   if(fSambaRecord != 0){
     string runname = fSambaRecord->GetRunName().c_str();
     fileName =  runname + "_" + subRunName.Data() + ".root";
-	}
+  }
   else
     cout << "KEraEventFinder::GetNextFileName. You must first set the Samba Record (or the Bolo Record with a KHLABolometerRecord*)" << endl;
   return fileName;
@@ -152,6 +152,7 @@ EdwEvent* KEraEventFinder::TransferEvent(void)
   for(it = tempDirNames.begin(); it!= tempDirNames.end(); ++it) {
     //cout << "Searching for file in " << it->c_str() << endl;
     string sambaName = GetNextFileName();
+    
     string theFilePath;
     if(fSearchLocally) theFilePath = it->c_str();
     else theFilePath = fTargetPath.c_str();
@@ -167,7 +168,7 @@ EdwEvent* KEraEventFinder::TransferEvent(void)
       fSearchLocally = bSaveSearchLocalOption; //reset the search local option to its original value.
       continue; //search all of the directories in the list.
     }
-      
+    
     //cout << "Found File" << endl;
     
     //read last EdwEvent entry in first file
@@ -230,7 +231,7 @@ EdwEvent* KEraEventFinder::TransferEvent(void)
   return 0;
 }
 
-Bool_t  KEraEventFinder::GetEventFile(const char* filePath, const char* fileName) 
+Bool_t KEraEventFinder::GetEventFile(const char* filePath, const char* fileName) 
 {
   if(!fSearchLocally){
     
@@ -244,7 +245,7 @@ Bool_t  KEraEventFinder::GetEventFile(const char* filePath, const char* fileName
     return fTrans->FileExists(fTrans->GetTargetPath() + fileName);
   }
   else {
-
+    
     string fullPath = filePath;
     fullPath += fileName;
     ifstream checkFile(fullPath.c_str(), ifstream::binary | ifstream::in);
@@ -255,7 +256,7 @@ Bool_t  KEraEventFinder::GetEventFile(const char* filePath, const char* fileName
     else return false;
     
   }
-
+  
 }
 
 Bool_t KEraEventFinder::OpenEventFile(const char* filePath, const char* fileName)
@@ -277,7 +278,7 @@ EdwEvent* KEraEventFinder::GetEvent(void)
 
 
 
- Bool_t KEraEventFinder::SetBolo(KBolometerRecord* aRec) 
+Bool_t KEraEventFinder::SetBolo(KBolometerRecord* aRec) 
 { 
   if(aRec == 0) {
     cout << "KEraEventFinder::SetBolo. BolometerRecord is NULL." << endl;
@@ -330,6 +331,6 @@ void KEraEventFinder::DisplayEvent(void)
   catch(bad_cast) {
     cout << "Your Bolometer Record is not a HLABolometerRecord. I do not yet know how to display this kind of event! Please program me." << endl;
   }
- 
+  
 }
 

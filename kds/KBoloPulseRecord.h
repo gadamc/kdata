@@ -43,6 +43,11 @@ public:
 	Bool_t IsGuard(void) const {	return (fPulseType == kGuardType) ? true : false; 	}
 	Bool_t IsHeat(void) const {	return (fPulseType == kHeatType) ? true : false; 	}
 	
+  static Int_t GetCollectrodeType(void) {return kCollectrodeType;  }
+  static Int_t GetVetoType(void) {return kVetoType;  }
+  static Int_t GetGuardType(void) {return kGuardType;  }
+  static Int_t GetHeatType(void) {return kHeatType;  }
+  
 	//setters
 
 	void SetChannelNumber(Int_t aNum) {fChannelNumber = aNum;}

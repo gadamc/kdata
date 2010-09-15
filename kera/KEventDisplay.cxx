@@ -86,6 +86,9 @@ void KEventDisplay::DisplayEvent()
   
   fStatCanvas->cd();
   //cout << "Ready to draw to the Stat Canvas" << endl;
+  //Fill the Canvas with statistics from the Event. 
+  
+  
 }
 
 void KEventDisplay::SetEvent(EdwEvent *e, KHLABolometerRecord *b)
@@ -151,7 +154,7 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
         cout << "EdwEvent returned a NULL Pulse! : " << i << endl;
         return false;
       }
-      pulseName = fEdwEvent->Pulse(i)->Channel();
+      pulseName = pulse->Channel();
       if (pulseName.Contains(boloName)) {
         //cout << "KEventDisplay - found pulse: " << pulseName << " contains " << boloName << " index " << i << endl;
         fPulseIndex.push_back(i);
@@ -167,10 +170,11 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
       //cout << "Found " << fNumPulseHists << " pulses " << endl;
     }
 
+    Int_t numHists = (fPulseIndex.size() >= fNumPulseHists) ? fPulseIndex.size() : fNumPulseHists;
     
-    fPulseHists = new TH1D[ (fPulseIndex.size() >= fNumPulseHists) ? fPulseIndex.size() : fNumPulseHists];
+    fPulseHists = new TH1D[ numHists];
     
-    for(UInt_t i = 0; i < fNumPulseHists || i < fPulseIndex.size(); i++){
+    for(UInt_t i = 0; i < numHists; i++){
       //cout << "Loading " << i << "th Pulse at Index " << fPulseIndex.at(i) << endl;
       pulse = fEdwEvent->Pulse(fPulseIndex.at(i));
       fPulseHists[i].AddDirectory(0); //don't let these be deleted by any TFiles that get deleted.
