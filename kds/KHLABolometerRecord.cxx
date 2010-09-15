@@ -8,7 +8,7 @@
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
 // The HLA class for Single Bolo Sub Records. It stores a significant amount
-// of information for each recorded bolometer event. It contains all of the 
+// of information for each recorded bolometer event. It contains all of the
 // calculated values from the ERA processing. See the descriptions below
 // of each of the parameters.
 //
@@ -16,7 +16,7 @@
 #include "KHLABolometerRecord.h"
 #include <iostream>
 #include <cstring>
-#include <stdexcept> 
+#include <stdexcept>
 #include "KHLABoloPulseRecord.h"
 
 using namespace std;
@@ -26,24 +26,24 @@ ClassImp(KHLABolometerRecord);
 KHLABolometerRecord::KHLABolometerRecord(void)
 {
 	InitializeMembers();
-	 
+
 }
 
 KHLABolometerRecord::KHLABolometerRecord(const KHLABolometerRecord &aRec)
 : KBolometerRecord(aRec)
 {
 	CopyLocalMembers(aRec);
-	
+
 }
 
 KHLABolometerRecord& KHLABolometerRecord::operator=(const KHLABolometerRecord &aRec)
 {
 	if(&aRec == this) return *this;
-	
+
 	this->KBolometerRecord::operator=(aRec);
-	
+
 	CopyLocalMembers(aRec);
-	
+
 	return *this;
 }
 
@@ -52,24 +52,24 @@ void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
 	SetQvalue(aRec.GetQvalue());
 	SetEnergyRecoil(aRec.GetEnergyRecoil());
 	SetEnergyIon(aRec.GetEnergyIon());
-	
+
 	SetEventFlag(aRec.GetEventFlag());
 	SetChi2Flag(aRec.GetChi2Flag());
 	//SetTriggerBit1(aRec.GetTriggerBit1());
 	//SetTriggerBit2(aRec.GetTriggerBit2());
 	SetVoltageFlag(aRec.GetVoltageFlag());
-	SetIonPulseTimeOffset(aRec.GetIonPulseTimeOffset());	
-	
+	SetIonPulseTimeOffset(aRec.GetIonPulseTimeOffset());
+
 	fIonFlags = aRec.fIonFlags;
 	fIonFlags.Compact();
-	
+
 	fSambaRecord = 0;  //will need to set these by hand!
 	fPulseRecords.Clear();
-	
+
 	SetEnergyIonFiducial(aRec.GetEnergyIonFiducial());
 	SetEnergySumIonChannels(aRec.GetEnergySumIonChannels());
 	SetBaselineIonFiducial(aRec.GetBaselineIonFiducial());
-	
+
 	fCuts = aRec.fCuts;
 	fCuts.Compact();
 }
@@ -91,12 +91,12 @@ void KHLABolometerRecord::Clear(Option_t *opt)
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
 	KBolometerRecord::Clear(opt);
-	
-  //Clear and delete local objects here. 
-	
+
+  //Clear and delete local objects here.
+
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
-	
+
 }
 
 void KHLABolometerRecord::InitializeMembers(void)
@@ -106,35 +106,35 @@ void KHLABolometerRecord::InitializeMembers(void)
 	SetQvalue(-99.0);
 	SetEnergyRecoil(-99.0);
 	SetEnergyIon(-99.0);
-	
+
 	SetEventFlag(-99);
 	SetChi2Flag(-99);
 	//SetTriggerBit1(-99);
 	//SetTriggerBit2(-99);
 	SetVoltageFlag(-99);
-	SetIonPulseTimeOffset(-99);	
-		
+	SetIonPulseTimeOffset(-99);
+
 	fIonFlags.Clear();
-	
+
 	fSambaRecord = 0;
-	fPulseRecords.Clear();  
-	
+	fPulseRecords.Clear();
+
 	SetEnergyIonFiducial(-99.0);
 	SetEnergySumIonChannels(-99.0);
 	SetBaselineIonFiducial(-99.0);
-	
+
 	fCuts.Clear();  //resets all the values to zero and the array size to zero.
 }
 
 Bool_t KHLABolometerRecord::SetIonFlags(Int_t *anArray, Int_t aSize)
 {
 	if(anArray == 0) return false;
-	
+
 	for(Int_t i = 0; i < aSize; i++){
 		if(anArray[i] > 0)
 			fIonFlags.SetBitNumber(i, true);
 	}
-	
+
 	return true;
 }
 
@@ -142,111 +142,113 @@ Bool_t KHLABolometerRecord::SetIonFlags(Int_t *anArray, Int_t aSize)
 Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrint) const
 {
 	Bool_t bIsEqual = true; //assume its true, then test for differences
-	
+
 	if(bPrint) cout.precision(16);
-	
-	
+
+
 	if(!this->KBolometerRecord::IsSame(aRec,bPrint)){
 		bIsEqual = false;
 		if(!bPrint)
 			return false;  //if we're not printing out, just return false at first failure
 		//the operator== method uses this functionality.
 	}
-	
+
 	if(fQvalue != aRec.fQvalue){
 		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fQvalue Not Equal. lhs: " 
-			<< fQvalue << " != rhs " << aRec.fQvalue << endl;		
+		if (bPrint)
+			cout << "KHLABolometerRecord fQvalue Not Equal. lhs: "
+			<< fQvalue << " != rhs " << aRec.fQvalue << endl;
 		else
-			return false;  
-	}
-	
-	if(fEnergyRecoil != aRec.fEnergyRecoil){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fEnergyRecoil Not Equal. lhs: " 
-			<< fEnergyRecoil << " != rhs " << aRec.fEnergyRecoil << endl;	
-		else
-			return false;  
-	}
-	
-	if(fEnergyIon != aRec.fEnergyIon){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fEnergyIon Not Equal. lhs: " 
-			<< fEnergyIon << " != rhs " << aRec.fEnergyIon << endl;		
-		else
-			return false;  
-	}
-	
-	if(fVoltageFlag != aRec.fVoltageFlag){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fVoltageFlag Not Equal. lhs: " 
-			<< fVoltageFlag << " != rhs " << aRec.fVoltageFlag << endl;		
-		else
-			return false;  
-	}
-	
-	if(fIonPulseTimeOffset != aRec.fIonPulseTimeOffset){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fIonPulseTimeOffset Not Equal. lhs: " 
-			<< fIonPulseTimeOffset << " != rhs " << aRec.fIonPulseTimeOffset << endl;		
-		else
-			return false;  
-	}
-	
-	
-	if(fEnergyIonFiducial != aRec.fEnergyIonFiducial){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fEnergyIonFiducial Not Equal. lhs: " 
-			<< fEnergyIonFiducial << " != rhs " << aRec.fEnergyIonFiducial << endl;	
-		else
-			return false;  
+			return false;
 	}
 
-	
+	if(fEnergyRecoil != aRec.fEnergyRecoil){
+		bIsEqual = false;
+		if (bPrint)
+			cout << "KHLABolometerRecord fEnergyRecoil Not Equal. lhs: "
+			<< fEnergyRecoil << " != rhs " << aRec.fEnergyRecoil << endl;
+		else
+			return false;
+	}
+
+	if(fEnergyIon != aRec.fEnergyIon){
+		bIsEqual = false;
+		if (bPrint)
+			cout << "KHLABolometerRecord fEnergyIon Not Equal. lhs: "
+			<< fEnergyIon << " != rhs " << aRec.fEnergyIon << endl;
+		else
+			return false;
+	}
+
+	if(fVoltageFlag != aRec.fVoltageFlag){
+		bIsEqual = false;
+		if (bPrint)
+			cout << "KHLABolometerRecord fVoltageFlag Not Equal. lhs: "
+			<< fVoltageFlag << " != rhs " << aRec.fVoltageFlag << endl;
+		else
+			return false;
+	}
+
+	if(fIonPulseTimeOffset != aRec.fIonPulseTimeOffset){
+		bIsEqual = false;
+		if (bPrint)
+			cout << "KHLABolometerRecord fIonPulseTimeOffset Not Equal. lhs: "
+			<< fIonPulseTimeOffset << " != rhs " << aRec.fIonPulseTimeOffset << endl;
+		else
+			return false;
+	}
+
+
+	if(fEnergyIonFiducial != aRec.fEnergyIonFiducial){
+		bIsEqual = false;
+		if (bPrint)
+			cout << "KHLABolometerRecord fEnergyIonFiducial Not Equal. lhs: "
+			<< fEnergyIonFiducial << " != rhs " << aRec.fEnergyIonFiducial << endl;
+		else
+			return false;
+	}
+
+
 	if(fEnergyIonSum != aRec.fEnergyIonSum){
 		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fEnergyIonSum Not Equal. lhs: " 
-			<< fEnergyIonSum << " != rhs " << aRec.fEnergyIonSum << endl;		
+		if (bPrint)
+			cout << "KHLABolometerRecord fEnergyIonSum Not Equal. lhs: "
+			<< fEnergyIonSum << " != rhs " << aRec.fEnergyIonSum << endl;
 		else
-			return false;  
+			return false;
 	}
-	
+
 	if(fBaselineNoiseIonFiducial != aRec.fBaselineNoiseIonFiducial){
 		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fBaselineNoiseIonFiducial Not Equal. lhs: " 
-			<< fBaselineNoiseIonFiducial << " != rhs " << aRec.fBaselineNoiseIonFiducial << endl;		
+		if (bPrint)
+			cout << "KHLABolometerRecord fBaselineNoiseIonFiducial Not Equal. lhs: "
+			<< fBaselineNoiseIonFiducial << " != rhs " << aRec.fBaselineNoiseIonFiducial << endl;
 		else
-			return false;  
+			return false;
 	}
-	
+
 	if(fCuts != aRec.fCuts){
 		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fCuts Not Equal" << endl;		
+		if (bPrint)
+			cout << "KHLABolometerRecord fCuts Not Equal" << endl;
 		else
-			return false;  
+			return false;
 	}
-	
+
 	if(fIonFlags != aRec.fIonFlags){
 		bIsEqual = false;
-		if (bPrint) 
-			cout << "KHLABolometerRecord fIonFlags Not Equal" << endl;		
+		if (bPrint)
+			cout << "KHLABolometerRecord fIonFlags Not Equal" << endl;
 		else
-			return false;  
+			return false;
 	}
-	
+
 	cout.precision(8);
-	
+
 	return bIsEqual;
 }
+
+/*
 
 KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t channel, Int_t aType) const
 {
@@ -269,45 +271,45 @@ Double32_t KHLABolometerRecord::GetEnergy(Int_t aChannel, Int_t aType) const
 
 Double32_t KHLABolometerRecord::GetEnergyCollectrode(Int_t aChannel) const
 {
-  //returns the calibrated pulse energy (in keV) on a collecltrode channel, as 
+  //returns the calibrated pulse energy (in keV) on a collecltrode channel, as
   //calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetEnergy(aChannel, KBoloPulseRecord::GetCollectrodeType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyVeto(Int_t aChannel) const
 {
-  //returns the calibrated pulse energy (in keV) on a veto channel, as 
+  //returns the calibrated pulse energy (in keV) on a veto channel, as
   //calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetEnergy(aChannel, KBoloPulseRecord::GetVetoType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyGuard(Int_t aChannel) const
 {
-  //returns the calibrated pulse energy (in keV) on a guard channel, as 
+  //returns the calibrated pulse energy (in keV) on a guard channel, as
   //calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetEnergy(aChannel, KBoloPulseRecord::GetGuardType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyHeat(Int_t aChannel) const
 {
-  //returns the calibrated pulse energy (in keV) on a heat channel, as 
+  //returns the calibrated pulse energy (in keV) on a heat channel, as
   //calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetEnergy(aChannel, KBoloPulseRecord::GetHeatType());
 }
 
@@ -322,45 +324,45 @@ Double32_t KHLABolometerRecord::GetEnergyBaseline(Int_t aChannel, Int_t aType) c
 
 Double32_t KHLABolometerRecord::GetEnergyBaselineCollectrode(Int_t aChannel) const
 {
-  //returns the calibrated pulse energy along the baseline (in keV) on a collecltrode channel, as 
+  //returns the calibrated pulse energy along the baseline (in keV) on a collecltrode channel, as
   //calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetCollectrodeType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyBaselineVeto(Int_t aChannel) const
 {
-  //returns the calibrated pulse energy along the baseline (in keV) on a veto channel, as 
+  //returns the calibrated pulse energy along the baseline (in keV) on a veto channel, as
   //calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetVetoType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyBaselineGuard(Int_t aChannel) const
 {
-  //returns the calibrated pulse energy along the baseline (in keV) on a guard channel, as 
+  //returns the calibrated pulse energy along the baseline (in keV) on a guard channel, as
   //calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetGuardType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyBaselineHeat(Int_t aChannel) const
 {
-  //returns the calibrated pulse energy along the baseline (in keV) on a heat channel, as 
+  //returns the calibrated pulse energy along the baseline (in keV) on a heat channel, as
   //calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetHeatType());
 }
 
@@ -375,46 +377,104 @@ Double32_t KHLABolometerRecord::GetBaselineNoise(Int_t aChannel, Int_t aType) co
 
 Double32_t KHLABolometerRecord::GetBaselineNoiseCollectrode(Int_t aChannel) const
 {
-  //returns the calibrated pulse RMS noise (in keV) along the baseline 
+  //returns the calibrated pulse RMS noise (in keV) along the baseline
   //on a collecltrode channel, as calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetBaselineNoise(aChannel, KBoloPulseRecord::GetCollectrodeType());
 }
 
 Double32_t KHLABolometerRecord::GetBaselineNoiseVeto(Int_t aChannel) const
 {
-  //returns the calibrated pulse RMS noise (in keV) along the baseline 
+  //returns the calibrated pulse RMS noise (in keV) along the baseline
   //on a veto channel, as calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetBaselineNoise(aChannel, KBoloPulseRecord::GetVetoType());
 }
 
 Double32_t KHLABolometerRecord::GetBaselineNoiseGuard(Int_t aChannel) const
 {
-  //returns the calibrated pulse RMS noise (in keV) along the baseline 
+  //returns the calibrated pulse RMS noise (in keV) along the baseline
   //on a guard channel, as calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetBaselineNoise(aChannel, KBoloPulseRecord::GetGuardType());
 }
 
 Double32_t KHLABolometerRecord::GetBaselineNoiseHeat(Int_t aChannel) const
 {
-  //returns the calibrated pulse RMS noise (in keV) along the baseline 
+  //returns the calibrated pulse RMS noise (in keV) along the baseline
   //on a heat channel, as calculated by the ERA processor.
   //
-  //Note that aChannel should be 1 or 2. 
+  //Note that aChannel should be 1 or 2.
   //
-  
+
   return GetBaselineNoise(aChannel, KBoloPulseRecord::GetHeatType());
+}
+
+*/
+
+Double32_t KHLABolometerRecord::GetEnergy(Int_t i) const
+{
+  KHLABoloPulseRecord* aPulseRec = GetPulseRecord(i);
+  if(!aPulseRec)
+    return(aPulseRec->GetEnergy());
+    else
+      if(GetNumPulseRecords())
+      {
+        cout << "KHLABolometerRecord::GetEnergy. specified index " << i << "is out of range [0," << GetNumPulseRecords()-1 << " of PulseRecords" << endl;
+        return 0;
+      }
+      else
+      {
+        cout << "KHLABolometerRecord::GetEnergy. KHLABolometerRecord is not associated with any PulseRecords" << endl;
+        return 0;
+      }
+}
+
+
+
+Double32_t KHLABolometerRecord::GetEnergyBaseline(Int_t i) const
+{
+  KHLABoloPulseRecord* aPulseRec = GetPulseRecord(i);
+  if(!aPulseRec)
+    return(aPulseRec->GetEnergyBaseline());
+    else
+      if(GetNumPulseRecords())
+      {
+        cout << "KHLABolometerRecord::GetEnergyBaseline. specified index " << i << "is out of range [0," << GetNumPulseRecords()-1 << " of PulseRecords" << endl;
+        return 0;
+      }
+      else
+      {
+        cout << "KHLABolometerRecord::GetEnergyBaseline. KHLABolometerRecord is not associated with any PulseRecords" << endl;
+        return 0;
+      }
+}
+
+Double32_t KHLABolometerRecord::GetBaselineNoise(Int_t i) const
+{
+  KHLABoloPulseRecord* aPulseRec = GetPulseRecord(i);
+  if(!aPulseRec)
+    return(aPulseRec->GetBaselineNoise());
+    else
+      if(GetNumPulseRecords())
+      {
+        cout << "KHLABolometerRecord::GetBaselineNoise. specified index " << i << "is out of range [0," << GetNumPulseRecords()-1 << " of PulseRecords" << endl;
+        return 0;
+      }
+      else
+      {
+        cout << "KHLABolometerRecord::GetBaselineNoise. KHLABolometerRecord is not associated with any PulseRecords" << endl;
+        return 0;
+      }
 }
 
 void KHLABolometerRecord::SetCuts(const TBits *mCuts)
@@ -429,15 +489,15 @@ void KHLABolometerRecord::Compact(void)
 	//make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
 	//and base classes
-	
+
 	KBolometerRecord::Compact();
-	
+
 	fCuts.Compact();
 	fIonFlags.Compact();
 	fPulseRecords.Compress();
 }
 
-Bool_t KHLABolometerRecord::TestCutsBit(Int_t i) const 
+Bool_t KHLABolometerRecord::TestCutsBit(Int_t i) const
 {
 	//The ERA cuts file for each bolometer has been read and each cut has been packed into this
 	//TBits object. The cuts correspond to the various cuts listed below.
@@ -458,29 +518,29 @@ Bool_t KHLABolometerRecord::TestCutsBit(Int_t i) const
 	//cuts.CutHeatBase -- 14
 	//cuts.CutBases    -- 15
 	//cuts.CutRun      -- 16
-	
-	
+
+
 	return fCuts.TestBitNumber(i);
 
 }
 
-Bool_t KHLABolometerRecord::TestIonFlag(Int_t i) const 
+Bool_t KHLABolometerRecord::TestIonFlag(Int_t i) const
 {
-	//each element in this array corresponds to a particular ion channel 
-	//(collectrode 1, 2, veto 1, 2, and guard 1, 2). When the value is set, 
+	//each element in this array corresponds to a particular ion channel
+	//(collectrode 1, 2, veto 1, 2, and guard 1, 2). When the value is set,
 	//there was a pulse seen on that channel, as defined by the ERA.
 	//Your analysis may be different, however, and you may define an event
-	//on the ion channel with a different set of conditions. 
-	
+	//on the ion channel with a different set of conditions.
+
 	//i = 0, Collectrode 1
 	//i = 1, Collectrode 2
 	//i = 2, Veto 1
 	//i = 3, Veto 2
 	//i = 4, Guard 1
 	//i = 5, Guard 2
-	
+
 	return fIonFlags.TestBitNumber(i);
-	
+
 }
 
 void KHLABolometerRecord::AddPulseRecord(KHLABoloPulseRecord* aPulseRecord)
@@ -489,8 +549,8 @@ void KHLABolometerRecord::AddPulseRecord(KHLABoloPulseRecord* aPulseRecord)
 	fPulseRecords.Add((TObject *)aPulseRecord);
 }
 
-KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t i) const 
-{ 
+KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t i) const
+{
 	return (KHLABoloPulseRecord*) fPulseRecords.At(i);
 }
 
