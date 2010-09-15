@@ -143,7 +143,7 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
     fNumPulseHists = fBolo->GetNumPulseRecords();
 
     TString boloName = fBolo->GetDetectorName();
-    Char_t* pulseName;
+    TString pulseName;
 
     fPulseIndex.clear();
     EdwPulse *pulse = 0;
@@ -163,8 +163,8 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
       }
       */
 
-      Char_t* detectorSuffix[pulseName.Length()];
-      Char_t* detectorNum[pulseName.Length()];
+      Char_t detectorSuffix[pulseName.Length()];
+      Char_t detectorNum[pulseName.Length()];
       sscanf(pulseName,"%[A-Z]%[0-9]%*[A-Z]",detectorSuffix,detectorNum);
       TString subPulseName = "";
       subPulseName += detectorSuffix;
