@@ -248,7 +248,7 @@ Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrin
 	return bIsEqual;
 }
 
-/*
+
 
 KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t channel, Int_t aType) const
 {
@@ -419,63 +419,7 @@ Double32_t KHLABolometerRecord::GetBaselineNoiseHeat(Int_t aChannel) const
   return GetBaselineNoise(aChannel, KBoloPulseRecord::GetHeatType());
 }
 
-*/
 
-Double32_t KHLABolometerRecord::GetEnergy(Int_t i) const
-{
-  KHLABoloPulseRecord* aPulseRec = GetPulseRecord(i);
-  if(!aPulseRec)
-    return(aPulseRec->GetEnergy());
-    else
-      if(GetNumPulseRecords())
-      {
-        cout << "KHLABolometerRecord::GetEnergy. specified index " << i << "is out of range [0," << GetNumPulseRecords()-1 << " of PulseRecords" << endl;
-        return 0;
-      }
-      else
-      {
-        cout << "KHLABolometerRecord::GetEnergy. KHLABolometerRecord is not associated with any PulseRecords" << endl;
-        return 0;
-      }
-}
-
-
-
-Double32_t KHLABolometerRecord::GetEnergyBaseline(Int_t i) const
-{
-  KHLABoloPulseRecord* aPulseRec = GetPulseRecord(i);
-  if(!aPulseRec)
-    return(aPulseRec->GetEnergyBaseline());
-    else
-      if(GetNumPulseRecords())
-      {
-        cout << "KHLABolometerRecord::GetEnergyBaseline. specified index " << i << "is out of range [0," << GetNumPulseRecords()-1 << " of PulseRecords" << endl;
-        return 0;
-      }
-      else
-      {
-        cout << "KHLABolometerRecord::GetEnergyBaseline. KHLABolometerRecord is not associated with any PulseRecords" << endl;
-        return 0;
-      }
-}
-
-Double32_t KHLABolometerRecord::GetBaselineNoise(Int_t i) const
-{
-  KHLABoloPulseRecord* aPulseRec = GetPulseRecord(i);
-  if(!aPulseRec)
-    return(aPulseRec->GetBaselineNoise());
-    else
-      if(GetNumPulseRecords())
-      {
-        cout << "KHLABolometerRecord::GetBaselineNoise. specified index " << i << "is out of range [0," << GetNumPulseRecords()-1 << " of PulseRecords" << endl;
-        return 0;
-      }
-      else
-      {
-        cout << "KHLABolometerRecord::GetBaselineNoise. KHLABolometerRecord is not associated with any PulseRecords" << endl;
-        return 0;
-      }
-}
 
 void KHLABolometerRecord::SetCuts(const TBits *mCuts)
 {

@@ -14,6 +14,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+#include "TText.h"
+#include "TPad.h"
 
 using namespace std;
 ClassImp(KEventDisplay);
@@ -25,6 +27,7 @@ KEventDisplay::KEventDisplay(void)
   fPulseHists = 0;
   fEdwEvent = 0;
   fBolo = 0;
+  fApplyBasicPulseProcessing = true;
   InitializeMembers();
 }
 
@@ -51,7 +54,11 @@ KEventDisplay::~KEventDisplay(void)
 
   if(fPulseHists != 0)
     delete[] fPulseHists;
+  
+  
 }
+
+
 
 void KEventDisplay::InitializeMembers(void)
 {
@@ -85,6 +92,201 @@ void KEventDisplay::DisplayEvent()
   fPulseCanvas->Draw();
 
   fStatCanvas->cd();
+  
+  TText *aText = (TText *)gPad->GetPrimitive("detectorName");
+  
+  TString aString;
+  string EUnit = "keV";
+  
+  if(aText) {
+    aString = fBolo->GetDetectorName();
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  } 
+  
+  aText = (TText *)gPad->GetPrimitive("qvalue");
+  if(aText){
+    aString.Form("%s %.2f", "Q value ", fBolo->GetQvalue());
+
+    aString += fBolo->GetQvalue();
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("erecoil");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Recoil ", fBolo->GetEnergyRecoil(), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("Ecollectrode1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Collectrode 1 ", fBolo->GetEnergyCollectrode(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("EBasecollectrode1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Baseline Collectrode 1 ", fBolo->GetEnergyBaselineCollectrode(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("ENoisecollectrode1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Nosie Collectrode 1 ", fBolo->GetBaselineNoiseCollectrode(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("Ecollectrode2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Collectrod 2 ", fBolo->GetEnergyCollectrode(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("EBasecollectrode2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Baseline Collectrode 2 ", fBolo->GetEnergyBaselineCollectrode(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("ENoisecollectrode2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Nosie Collectrode 2 ", fBolo->GetBaselineNoiseCollectrode(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("Eveto1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Veto 1 ", fBolo->GetEnergyVeto(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("EBaseveto1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Baseline Veto 1 ", fBolo->GetEnergyBaselineVeto(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("ENoiseveto1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Nosie Veto 1 ", fBolo->GetBaselineNoiseVeto(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("Eveto2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Veto 2 ", fBolo->GetEnergyVeto(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("EBaseveto2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Baseline Veto 2 ", fBolo->GetEnergyBaselineVeto(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("ENoiseveto2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Nosie Veto 2 ", fBolo->GetBaselineNoiseVeto(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("Eguard1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Guard 1 ", fBolo->GetEnergyGuard(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("EBaseguard1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Baseline Guard 1 ", fBolo->GetEnergyBaselineGuard(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("ENoiseguard1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Nosie Guard 1 ", fBolo->GetBaselineNoiseGuard(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("Eguard2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Guard 2 ", fBolo->GetEnergyGuard(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("EBaseguard2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Baseline Guard 2 ", fBolo->GetEnergyBaselineGuard(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("ENoiseguard2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Nosie Guard 2 ", fBolo->GetBaselineNoiseGuard(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("Eheat1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Heat 1 ", fBolo->GetEnergyHeat(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("EBaseheat1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Baseline Heat 1 ", fBolo->GetEnergyBaselineHeat(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("ENoiseheat1");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Nosie Heat 1 ", fBolo->GetBaselineNoiseHeat(1), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("Eheat2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Heat 2 ", fBolo->GetEnergyHeat(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("EBaseheat2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Baseline Heat 2 ", fBolo->GetEnergyBaselineHeat(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
+  
+  aText = (TText *)gPad->GetPrimitive("ENoiseheat2");
+  if(aText){
+    aString.Form("%s %.2f %s", "Energy Nosie Heat 2 ", fBolo->GetBaselineNoiseHeat(2), EUnit.c_str());
+    aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
+    aText->Draw();
+  }
   //cout << "Ready to draw to the Stat Canvas" << endl;
   //Fill the Canvas with statistics from the Event.
 
@@ -108,8 +310,138 @@ void KEventDisplay::SetEvent(EdwEvent *e, KHLABolometerRecord *b)
 void KEventDisplay::SetUpCanvas(void)
 {
   if(fStatCanvas == 0){
-    fStatCanvas = new TCanvas("KED_fStatCanvas", "KEventDisplay - Stat Canvas", 915, 10, 250, 500);
+    fStatCanvas = new TCanvas("KED_fStatCanvas", "KEventDisplay - Stat Canvas", 715, 10, 300, 600);
+    fStatCanvas->cd();
+    Double_t ySpace = 0.03;
+    Double_t yPos = 0.98;
+    Double_t xLeft = 0.05;
+    TText *myText;
+    myText = new TText(xLeft, yPos-=ySpace, "A Detector");
+    myText->SetName("detectorName");
+    myText->Draw();
 
+    myText = new TText(xLeft, yPos-=ySpace, "QValue");
+    myText->SetName("qvalue");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Erecoil");
+    myText->SetName("erecoil");
+    myText->Draw();
+    
+    yPos-= 0.01;
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Ecollectrode1");
+    myText->SetName("Ecollectrode1");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "EBasecollectrode1");
+    myText->SetName("EBasecollectrode1");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "ENoisecollectrode1");
+    myText->SetName("ENoisecollectrode1");
+    myText->Draw();
+    
+    yPos-= 0.01;
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Ecollectrode2");
+    myText->SetName("Ecollectrode2");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "EBasecollectrode2");
+    myText->SetName("EBasecollectrode2");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "ENoisecollectrode2");
+    myText->SetName("ENoisecollectrode2");
+    myText->Draw();
+    
+    yPos-= 0.01;
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Eveto1");
+    myText->SetName("Eveto1");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "EBaseveto1");
+    myText->SetName("EBaseveto1");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "ENoiseveto1");
+    myText->SetName("ENoiseveto1");
+    myText->Draw();
+    
+    yPos-= 0.01;
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Eveto2");
+    myText->SetName("Eveto2");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "EBaseveto2");
+    myText->SetName("EBaseveto2");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "ENoiseveto2");
+    myText->SetName("ENoiseveto2");
+    myText->Draw();
+
+    yPos-= 0.01;
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Eguard1");
+    myText->SetName("Eguard1");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "EBaseguard1");
+    myText->SetName("EBaseguard1");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "ENoiseguard1");
+    myText->SetName("ENoiseguard1");
+    myText->Draw();
+    
+    yPos-= 0.01;
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Eguard2");
+    myText->SetName("Eguard2");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "EBaseguard2");
+    myText->SetName("EBaseguard2");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "ENoiseguard2");
+    myText->SetName("ENoiseguard2");
+    myText->Draw();
+    
+    yPos-= 0.01;
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Eheat1");
+    myText->SetName("Eheat1");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "EBaseheat1");
+    myText->SetName("EBaseheat1");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "ENoiseheat1");
+    myText->SetName("ENoiseheat1");
+    myText->Draw();
+    
+    yPos-= 0.01;
+    
+    myText = new TText(xLeft, yPos-=ySpace, "Eheat2");
+    myText->SetName("Eheat2");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "EBaseheat2");
+    myText->SetName("EBaseheat2");
+    myText->Draw();
+    
+    myText = new TText(xLeft, yPos-=ySpace, "ENoiseheat2");
+    myText->SetName("ENoiseheat2");
+    myText->Draw();
+
+    
+    
   }
 
   if(fPulseCanvas == 0){
@@ -143,7 +475,7 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
     fNumPulseHists = fBolo->GetNumPulseRecords();
 
     TString boloName = fBolo->GetDetectorName();
-    TString pulseName;
+    string pulseName;
 
     fPulseIndex.clear();
     EdwPulse *pulse = 0;
@@ -156,16 +488,10 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
       }
       pulseName = pulse->Channel();
 
-      /*
-      if (pulseName.Contains(boloName)) {
-        //cout << "KEventDisplay - found pulse: " << pulseName << " contains " << boloName << " index " << i << endl;
-        fPulseIndex.push_back(i);
-      }
-      */
 
-      Char_t detectorSuffix[pulseName.Length()];
-      Char_t detectorNum[pulseName.Length()];
-      sscanf(pulseName,"%[A-Z]%[0-9]%*[A-Z]",detectorSuffix,detectorNum);
+      Char_t* detectorSuffix = new Char_t[pulseName.size()];
+      Char_t* detectorNum = new Char_t[pulseName.size()];
+      sscanf(pulseName.c_str(),"%*s %[A-Z]%[0-9]%*[A-Z]",detectorSuffix,detectorNum);
       TString subPulseName = "";
       subPulseName += detectorSuffix;
       subPulseName += detectorNum;
@@ -173,6 +499,11 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
         //cout << "KEventDisplay - found pulse: " << pulseName << " contains " << boloName << " index " << i << endl;
         fPulseIndex.push_back(i);
       }
+      if(detectorSuffix != 0)
+        delete [] detectorSuffix;
+      
+      if(detectorNum != 0)
+        delete [] detectorNum;
     }
 
     if(fPulseIndex.size() != fNumPulseHists){
@@ -195,6 +526,11 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
       fPulseHists[i].SetBins(pulse->TraceSize(), 0, pulse->TraceSize());
       fPulseHists[i].SetTitle(pulse->Channel().c_str());
       fPulseHists[i].SetName(pulse->Channel().c_str());
+      
+      //if(fApplyBasicPulseProcessing)
+        
+        
+        
       for(Short_t bin = 1; bin <= pulse->TraceSize(); bin++)
         fPulseHists[i].SetBinContent(bin, pulse->Trace(bin-1));  //need the bin-1 because the data is stored in vector with first index 0
       //cout << "Done Loading into hist." << endl;

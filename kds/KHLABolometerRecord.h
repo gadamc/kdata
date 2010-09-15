@@ -59,7 +59,7 @@ public:
 
 	Int_t GetNumPulseRecords(void) const {return (fPulseRecords.GetEntriesFast());}
 
-/*
+
 	Double32_t GetEnergyCollectrode(Int_t aChannel) const;
 	Double32_t GetEnergyVeto(Int_t aChannel) const;
 	Double32_t GetEnergyGuard(Int_t aChannel) const;
@@ -75,11 +75,6 @@ public:
 	Double32_t GetBaselineNoiseGuard(Int_t aChannel) const;
   Double32_t GetBaselineNoiseHeat(Int_t aChannel) const;
 
- */
-
-  Double32_t GetEnergy(Int_t i) const;
-  Double32_t GetEnergyBaseline(Int_t i) const;
-  Double32_t GetBaselineNoise(Int_t i) const;
 
 	Double32_t GetEnergyIonFiducial(void) const {return fEnergyIonFiducial;}
 	Double32_t GetEnergySumIonChannels(void) const {return fEnergyIonSum;}
