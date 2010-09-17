@@ -55,7 +55,8 @@ private:
   void InitializeMembers(void);
   Bool_t SetUpPulses(void);
   void SetUpCanvas(void);
-
+  void DrawStatsCanvas(void);
+  
   ClassDef(KEventDisplay,1);
 };
 

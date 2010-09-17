@@ -58,8 +58,8 @@ public:
   //setters
   void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }
   Bool_t SetBolo(KBolometerRecord *aRec);
-  void SetSearchLocally(Bool_t aChoice = true){ fSearchLocally = aChoice; if(aChoice) SetAlwaysKeepSearching(true); }
-  void SetForceRemoteSearch(Bool_t aChoice = true){ fForceRemoteSearch = aChoice; if(aChoice) SetSearchLocally(false);}
+  void SetSearchLocally(Bool_t aChoice = true);
+  void SetForceRemoteSearch(Bool_t aChoice = true);
   void SetTargetPath(const char* aPath){fTargetPath = aPath;}
   void SetUser(const char* aUser);
   void SetApplyBasicPulseProcessing(Bool_t anOpt = true) { fApplyBasicPulseProcessing = anOpt; }
