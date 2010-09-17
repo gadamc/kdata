@@ -216,7 +216,49 @@
 		</dict>
 	</array>
 	<key>OpenEditors</key>
-	<array/>
+	<array>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>667580C61243CF9900128604</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>KEraEventFinder.cxx</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>667580C71243CF9900128604</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>KEraEventFinder.cxx</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>667580CD1243D04000128604</string>
+						<key>history</key>
+						<array>
+							<string>667580CB1243D04000128604</string>
+							<string>667580CC1243D04000128604</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {915, 807}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>224 180 915 848 0 0 1680 1028 </string>
+			</dict>
+		</dict>
+	</array>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -291,6 +333,7 @@
 										<string>6610DE3A121EDA680047036E</string>
 										<string>6610DDED121ECC440047036E</string>
 										<string>6610DE2A121ED8080047036E</string>
+										<string>6610DE2C121ED8260047036E</string>
 										<string>6610DE2D121ED82C0047036E</string>
 										<string>6610DE2E121ED8350047036E</string>
 										<string>6610DE2B121ED8200047036E</string>
@@ -302,13 +345,13 @@
 									<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 									<array>
 										<array>
-											<integer>143</integer>
-											<integer>132</integer>
+											<integer>151</integer>
+											<integer>148</integer>
 											<integer>0</integer>
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 1920}, {469, 596}}</string>
+									<string>{{0, 2192}, {469, 596}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -491,7 +534,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>306432307.45482701</real>
+	<real>306434112.20276999</real>
 	<key>ToolbarConfigUserDefaultsMinorVersion</key>
 	<string>2</string>
 	<key>ToolbarDisplayMode</key>
@@ -508,13 +551,12 @@
 	<integer>0</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>667580751243B3D800128604</string>
-		<string>66757FF312439A1800128604</string>
 		<string>1C335F2C07B51CD20023D4EE</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>1C530D54069F1CE1000CFCEE</string>
 		<string>1C530D52069F1CE1000CFCEE</string>
 		<string>/Users/adam/softwareDev/KData/kData.xcodeproj</string>
+		<string>667580C61243CF9900128604</string>
 	</array>
 	<key>WindowString</key>
 	<string>233 182 486 682 0 0 1680 1028 </string>

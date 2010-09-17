@@ -32,6 +32,7 @@ KEraEventFinder::KEraEventFinder(void)
   AddPathToSearch(fTrans->GetSourcePath().c_str());  //if you're running "locally", you're probably on ccali
   AddPathToSearch(fTargetPath.c_str());  
   fSearchLocally = true;
+  fAlwaysKeepSearching = true; //if we're searching locally, don't bother to ask.
   fSambaRecord = 0;
   fBoloRecord = 0;
 }
@@ -600,4 +601,24 @@ void KEraEventFinder::SetUser(const Char_t* aUser)
 {
   if(fTrans != 0)
     fTrans->SetUser(aUser);
+}
+
+void KEraEventFinder::SetSearchLocally(Bool_t anOpt)
+{ 
+  //Set this to only search in local directories (as specified by the fDirNames)
+  //Also, this will SetAlwaysKeepSearch(true) so that it doesn't prompt the user
+  //to continue searching for files. 
+  fSearchLocally = anOpt; 
+  if(anOpt) 
+    SetAlwaysKeepSearching(true);
+}
+
+void KEraEventFinder::SetForceRemoteSearch(Bool_t aChoice)
+{ 
+  //Force the search for files on the remote server. This
+  //also sets SetSearchLocally(false).
+  
+  fForceRemoteSearch = aChoice; 
+  if(aChoice) 
+    SetSearchLocally(false);
 }

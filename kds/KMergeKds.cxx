@@ -11,9 +11,9 @@
 
 
 #include "KMergeKds.h"
-#include  "KEvent.h";
-#include  "KDataReader.h";
-#include  "KDataWriter.h";
+#include  "KEvent.h"
+#include  "KDataReader.h"
+#include  "KDataWriter.h"
 #include <iostream>
 
 ClassImp(KMergeKds);
