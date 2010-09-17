@@ -38,6 +38,7 @@ public:
   void SetEvent(EdwEvent *e, KHLABolometerRecord *b);
   void SetApplyBasicPulseProcessing(Bool_t anOpt = true){ fApplyBasicPulseProcessing = anOpt;  }
   
+  
 private:
 
   TCanvas* fStatCanvas; 

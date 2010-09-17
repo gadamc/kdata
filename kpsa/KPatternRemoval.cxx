@@ -36,15 +36,18 @@ void KPatternRemoval::InitializeMembers(void)
 
 bool KPatternRemoval::RunProcess(void)
 {
-	cout << "KPatternRemoval process : " << fProcessorName << endl;
-	return true;
+  //cout << "Run Process: " << GetName() << endl;
+	if(CalculatePattern())
+    return SubtractPattern();
+  else {
+    fOutputPulse = fInputPulse;
+    return false;
+  }
 }
 
 template<class T> bool KPatternRemoval::SetThisToPattern(vector<T> &aPattern)
 {
 	fPattern.resize(aPattern.size(), 0);
-	SetPatternLength(aPattern.size());
-	
 	
 	try {
 		for(unsigned int i = 0; i < fPattern.size(); i++){
@@ -54,7 +57,6 @@ template<class T> bool KPatternRemoval::SetThisToPattern(vector<T> &aPattern)
 	catch (out_of_range& e) {
 		//I think this should be impossible... 
 		cerr << "KPatternRemoval::SetThisToPattern. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-		SetPatternLength(0);
 		fPattern.resize(0);  //reduce the size of the pattern. 
 		return false;
 	}
@@ -76,18 +78,19 @@ bool KPatternRemoval::CalculatePattern(void)
 	if(numPatterns < 1) return false; 
 	
 	unsigned int patternCount = 0;
-	
+	unsigned int i;
 	try {
-		for(unsigned int i = fBaselineStart; i < fBaselineStart + numPatterns*GetPatternLength() ; i++){
-			if(patternCount >= fPattern.size())
+		for( i = fBaselineStart; i < fBaselineStart + numPatterns*GetPatternLength() ; i++){
+			if(patternCount == fPattern.size())
 				patternCount = 0;
 			
 			fPattern.at(patternCount++) += fInputPulse.at(i)/numPatterns;
 		}
 	}
 	catch (out_of_range& e) {
-		cerr << "KPatternRemoval::CalculatePattern. exception caught: " << e.what() << endl;
-		cerr << "    stopping calculation";
+		cerr << "KPatternRemoval::CalculatePattern. exception caught: " << e.what() << " at input pulse position " << i << " and pattern position " << patternCount-1 << endl;
+    cerr << "    InputPulse size: " << fInputPulse.size() << " Pattern size: " << fPattern.size() << endl;
+		cerr << "    stopping calculation" << endl;
 		return false;
 		
 	}
@@ -108,7 +111,7 @@ bool KPatternRemoval::SubtractPattern(vector<double> &aPattern)
 	
 	try {
 		for(unsigned int i = 0; i < fOutputPulse.size(); i++){
-			if(patternCount >= aPattern.size())
+			if(patternCount == aPattern.size())
 				patternCount = 0;
 			
 			fOutputPulse.at(i) = fInputPulse.at(i) - aPattern.at(patternCount++);
@@ -129,7 +132,6 @@ bool KPatternRemoval::SetPattern(vector<double> &aPattern)
 { 
 	//Set the pattern and the pattern length;
 	fPattern = aPattern; 
-	SetPatternLength(fPattern.size());
 	return true;
 } 
 

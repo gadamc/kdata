@@ -14,17 +14,20 @@
 #include "KPsaProcessor.h"
 #include <vector>
 
-class KPulseAnalysisChain  { 
+class KPulseAnalysisChain : public KPsaProcessor { 
 
 public:
   //Constructors
   KPulseAnalysisChain(void);
   virtual ~KPulseAnalysisChain(void);
   //virtual void Clear(Option_t *opt = "C");
-	virtual int RunAll(void);
+	virtual bool RunProcess(void);
 	virtual void AddProcessor(KPsaProcessor *p);
 	virtual void AddProcessorAt(KPsaProcessor *p, unsigned int index);
-	
+	virtual void DeleteProcessors(void);
+
+  virtual void SetIsOwner(bool anOpt = true);
+  
   //getters
 	//virtual unsigned int GetNumProcessorsInChain(void);
 	//PrintProcessorList
@@ -34,9 +37,10 @@ public:
   //setters
 private:
 	vector<KPsaProcessor*> fProcessorList;
+  bool fIsOwner; 
   //private methods
   void InitializeMembers(void);
-
+  void SetOutputPulse(const vector<double>);
 };
 
 //

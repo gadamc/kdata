@@ -76,7 +76,7 @@ include/%.h:    $(KPSA_DIRI)/%.h
 
 # rule for compiling our source files
 $(KPSA_DIRS)/%.o:    $(KPSA_DIRS)/%.cxx
-	$(CXX) $(OPT) $(CXXFLAGS) $(FFTWINCS) -o $@ -c $< 
+	$(CXX) $(OPT) $(KPSA_FLAGS) $(FFTWINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KPSA_DIRS)/%.o $(KDATAED_LIB) 

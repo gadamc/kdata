@@ -17,6 +17,9 @@
 #include "TText.h"
 #include "TPad.h"
 
+#include "KBaselineRemoval.h"
+#include "KPulseAnalysisChain.h"
+#include "KPatternRemoval.h"
 using namespace std;
 ClassImp(KEventDisplay);
 
@@ -85,9 +88,12 @@ void KEventDisplay::DisplayEvent()
     return;
   }
 
-  for(UInt_t i = 1; i <= 9 && i <= fNumPulseHists; i++){ //9 is the size of the Canvas
+  for(UInt_t i = 1; i <= 9; i++){ //9 is the number of pads in the Canvas
     fPulseCanvas->cd(i);
-    fPulseHists[i-1].Draw();
+    if(i <= fNumPulseHists)
+      fPulseHists[i-1].Draw();
+    else 
+      gPad->Clear();
   }
   fPulseCanvas->Draw();
 
@@ -115,175 +121,175 @@ void KEventDisplay::DisplayEvent()
   
   aText = (TText *)gPad->GetPrimitive("erecoil");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Recoil ", fBolo->GetEnergyRecoil(), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Recoil ", fBolo->GetEnergyRecoil(), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("Ecollectrode1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Collectrode 1 ", fBolo->GetEnergyCollectrode(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Collectrode 1 ", fBolo->GetEnergyCollectrode(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("EBasecollectrode1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Baseline Collectrode 1 ", fBolo->GetEnergyBaselineCollectrode(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Baseline Collectrode 1 ", fBolo->GetEnergyBaselineCollectrode(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("ENoisecollectrode1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Nosie Collectrode 1 ", fBolo->GetBaselineNoiseCollectrode(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Noise Collectrode 1 ", fBolo->GetBaselineNoiseCollectrode(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("Ecollectrode2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Collectrod 2 ", fBolo->GetEnergyCollectrode(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Collectrode 2 ", fBolo->GetEnergyCollectrode(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("EBasecollectrode2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Baseline Collectrode 2 ", fBolo->GetEnergyBaselineCollectrode(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Baseline Collectrode 2 ", fBolo->GetEnergyBaselineCollectrode(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("ENoisecollectrode2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Nosie Collectrode 2 ", fBolo->GetBaselineNoiseCollectrode(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Noise Collectrode 2 ", fBolo->GetBaselineNoiseCollectrode(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("Eveto1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Veto 1 ", fBolo->GetEnergyVeto(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Veto 1 ", fBolo->GetEnergyVeto(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("EBaseveto1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Baseline Veto 1 ", fBolo->GetEnergyBaselineVeto(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Baseline Veto 1 ", fBolo->GetEnergyBaselineVeto(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("ENoiseveto1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Nosie Veto 1 ", fBolo->GetBaselineNoiseVeto(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Noise Veto 1 ", fBolo->GetBaselineNoiseVeto(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("Eveto2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Veto 2 ", fBolo->GetEnergyVeto(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Veto 2 ", fBolo->GetEnergyVeto(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("EBaseveto2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Baseline Veto 2 ", fBolo->GetEnergyBaselineVeto(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Baseline Veto 2 ", fBolo->GetEnergyBaselineVeto(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("ENoiseveto2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Nosie Veto 2 ", fBolo->GetBaselineNoiseVeto(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Noise Veto 2 ", fBolo->GetBaselineNoiseVeto(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("Eguard1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Guard 1 ", fBolo->GetEnergyGuard(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Guard 1 ", fBolo->GetEnergyGuard(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("EBaseguard1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Baseline Guard 1 ", fBolo->GetEnergyBaselineGuard(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Baseline Guard 1 ", fBolo->GetEnergyBaselineGuard(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("ENoiseguard1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Nosie Guard 1 ", fBolo->GetBaselineNoiseGuard(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Noise Guard 1 ", fBolo->GetBaselineNoiseGuard(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("Eguard2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Guard 2 ", fBolo->GetEnergyGuard(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Guard 2 ", fBolo->GetEnergyGuard(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("EBaseguard2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Baseline Guard 2 ", fBolo->GetEnergyBaselineGuard(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Baseline Guard 2 ", fBolo->GetEnergyBaselineGuard(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("ENoiseguard2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Nosie Guard 2 ", fBolo->GetBaselineNoiseGuard(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Noise Guard 2 ", fBolo->GetBaselineNoiseGuard(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("Eheat1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Heat 1 ", fBolo->GetEnergyHeat(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Heat 1 ", fBolo->GetEnergyHeat(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("EBaseheat1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Baseline Heat 1 ", fBolo->GetEnergyBaselineHeat(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Baseline Heat 1 ", fBolo->GetEnergyBaselineHeat(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("ENoiseheat1");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Nosie Heat 1 ", fBolo->GetBaselineNoiseHeat(1), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Noise Heat 1 ", fBolo->GetBaselineNoiseHeat(1), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("Eheat2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Heat 2 ", fBolo->GetEnergyHeat(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Heat 2 ", fBolo->GetEnergyHeat(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("EBaseheat2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Baseline Heat 2 ", fBolo->GetEnergyBaselineHeat(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Baseline Heat 2 ", fBolo->GetEnergyBaselineHeat(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
   
   aText = (TText *)gPad->GetPrimitive("ENoiseheat2");
   if(aText){
-    aString.Form("%s %.2f %s", "Energy Nosie Heat 2 ", fBolo->GetBaselineNoiseHeat(2), EUnit.c_str());
+    aString.Form("%s %.2f %s", "Noise Heat 2 ", fBolo->GetBaselineNoiseHeat(2), EUnit.c_str());
     aText->SetText(aText->GetX(), aText->GetY(), aString.Data()); 
     aText->Draw();
   }
@@ -507,7 +513,7 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
     }
 
     if(fPulseIndex.size() != fNumPulseHists){
-      cout << "KEventDisplay - Number of Pulses Mismatch." << endl;
+      cout << "KEventDisplay - Number of Pulses Mismatch. Please submit a bug report to https://edwdev-ik.fzk.de/bugs" << endl;
       cout << "EdwEvent Found " << fPulseIndex.size() << endl;
       cout << "KHLABolometrRecord Found " << fNumPulseHists << endl;
     }
@@ -519,7 +525,7 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
 
     fPulseHists = new TH1D[ numHists];
 
-    for(UInt_t i = 0; i < numHists; i++){
+    for(Int_t i = 0; i < numHists; i++){
       //cout << "Loading " << i << "th Pulse at Index " << fPulseIndex.at(i) << endl;
       pulse = fEdwEvent->Pulse(fPulseIndex.at(i));
       fPulseHists[i].AddDirectory(0); //don't let these be deleted by any TFiles that get deleted.
@@ -527,13 +533,45 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
       fPulseHists[i].SetTitle(pulse->Channel().c_str());
       fPulseHists[i].SetName(pulse->Channel().c_str());
       
-      //if(fApplyBasicPulseProcessing)
+      
+      if(fApplyBasicPulseProcessing) {
+        //cout << "Processing pulse: " << pulse->Channel() << endl;
+        KPulseAnalysisChain chain;
+        chain.SetInputPulse(pulse->Trace());
+        chain.SetIsOwner(true);  //the chain will delete all of the processors for me.
         
+        KPatternRemoval *remove1 = 0;
+        KPatternRemoval *remove2 = 0;
+        KBaselineRemoval *baseline = 0;
         
+        baseline = new KBaselineRemoval;
+        chain.AddProcessor(baseline);
         
-      for(Short_t bin = 1; bin <= pulse->TraceSize(); bin++)
-        fPulseHists[i].SetBinContent(bin, pulse->Trace(bin-1));  //need the bin-1 because the data is stored in vector with first index 0
-      //cout << "Done Loading into hist." << endl;
+        if(!pulse->IsHeat()){
+          remove1 = new KPatternRemoval;
+          remove1->SetPatternLength(100);
+          chain.AddProcessor(remove1);
+          remove2 = new KPatternRemoval;
+          remove2->SetPatternLength(200);
+          chain.AddProcessor(remove2);
+        }
+        
+        chain.RunProcess();
+        
+        vector<double> outPulse = chain.GetOutputPulse();
+        
+        for(UInt_t bin = 1; bin <= outPulse.size(); bin++)
+          fPulseHists[i].SetBinContent(bin, outPulse.at(bin-1)); 
+        
+      }
+      
+      else{
+        for(Short_t bin = 1; bin <= pulse->TraceSize(); bin++)
+          fPulseHists[i].SetBinContent(bin, pulse->Trace(bin-1));  //need the bin-1 because the data is stored in vector with first index 0
+        //cout << "Done Loading into hist." << endl;
+      }
+        
+     
     }
 
 

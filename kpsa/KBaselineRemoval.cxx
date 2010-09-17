@@ -33,20 +33,24 @@ void KBaselineRemoval::InitializeMembers(void)
 
 bool KBaselineRemoval::RunProcess(void)
 {
+  //cout << "Run Process: " << GetName() << endl;
 	double theAve = CalculateAverage();
 	if(theAve > -90000)
 		return Subtract(theAve);
-	else return false;
+	else {
+    fOutputPulse = fInputPulse;
+    return false;
+  }
 
 }
 
 double KBaselineRemoval::CalculateAverage(void) const
 {
 	
-	if(fInputPulse.size() < 1) return -1;
-	if(fBaselineStart * fBaselineStop < 0) return -1;
-	if(fBaselineStart > 1.0 || fBaselineStop > 1.0) return -1;
-	if(fBaselineStart > fBaselineStop) return -1;
+	if(fInputPulse.size() < 1) return -99999;
+	if(fBaselineStart * fBaselineStop < 0) return -99999;
+	if(fBaselineStart > 1.0 || fBaselineStop > 1.0) return -99999;
+	if(fBaselineStart > fBaselineStop) return -99999;
 	
 	double theAve = 0;
 	int numBins = 0;
@@ -65,8 +69,8 @@ double KBaselineRemoval::CalculateAverage(void) const
 		theAve = -1;
 	}
 	
-	if(theAve > 0 && numBins > 0) return theAve/numBins;
-	else return -90000;
+	if(numBins > 0) return theAve/numBins;
+	else return -99999;
 }
 
 bool KBaselineRemoval::Subtract(double aVal)

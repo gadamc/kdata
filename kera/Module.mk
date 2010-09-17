@@ -33,11 +33,24 @@ MODDIR       := kera
 
 KERA_FLAGS  := $(CXXFLAGS)
 
+#adding debugging flags here
+#KERA_FLAGS += -D_K_DEBUG_ERAEVENTFINDER
+#KERA_FLAGS += -D_K_DEBUG_FILETRANSFER
+
 KERA_DIR    := $(MODDIR)
 KERA_DIRS   := $(MODDIR)
 KERA_DIRI   := $(MODDIR)
 
+#only need to put the ERAINCS here because ERA files are NOT copied
+# to the projects include directory! This should be changed.
+KERA_XTRAINCS := $(ERAINCS)  
 
+#list all external module libs that this module depends on
+#if this module depends on other modules in this project you MUST
+#make sure that this MODNAME is listed AFTER all of the MODNAMEs
+#that it depends on.
+KERA_XTRALIBS := $(ERALIBS) $(KDSLIBS) $(KPSALIBS)
+KERA_LIBDEP   := $(ERA_LIB) $(KDS_LIB) $(KPSA_LIB)
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KERA_LH     := $(KERA_DIRI)/$(MODNAME)_LinkDef.h
@@ -84,26 +97,26 @@ include/%.h:    $(KERA_DIRI)/%.h
 
 # rule for compiling our source files
 $(KERA_DIRS)/%.o:    $(KERA_DIRS)/%.cxx
-	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS) -I$(ERAINCS) -o $@ -c $< 
+	$(CXX) $(OPT) $(KERA_FLAGS) $(ROOTINCS) -I$(KERA_XTRAINCS) -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KERA_DIRS)/%.o $(KDATAED_LIB) $(ERA_LIB)
+bin/%: $(KERA_DIRS)/%.o $(KDATAED_LIB) $(KERA_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KERALIBS) $(ERALIBS) $(KDSLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KERALIBS) $(KERA_XTRALIBS)
                 
 # rules for building dictionary
 $(KERA_DO):         $(KERA_DC)
-	$(CXX) $(NOOPT) $(KERA_FLAGS) $(ROOTINCS) -I. -I$(ERAINCS) -o $@ -c $< 
+	$(CXX) $(NOOPT) $(KERA_FLAGS) $(ROOTINCS) -I. -I$(KERA_XTRAINCS) -o $@ -c $< 
 
 $(KERA_DC):         $(KERA_EH) $(KERA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(ERAINCS)  $(KERA_EH) $(KERA_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KERA_XTRAINCS)  $(KERA_EH) $(KERA_LH) 
 
 # rule for building library
-$(KERA_LIB):        $(KERA_EO) $(KERA_DO) $(KERA_LIBDEP) $(ERA_LIB) $(KDS_LIB)
+$(KERA_LIB):        $(KERA_EO) $(KERA_DO) $(KERA_LIBDEP) 
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KERA_LIB)" $@  "$(KERA_EO) $(KERA_DO) $(KDSLIBS) $(ERALIBS)"\
+	   "$(SOFLAGS)" "$(KERA_LIB)" $@  "$(KERA_EO) $(KERA_DO) $(KERA_XTRALIBS)"\
 	   "$(ROOTLIBS)  $(KERA_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kera:       $(KERA_LIB)

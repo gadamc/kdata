@@ -39,6 +39,7 @@ public:
   virtual ~KEraEventFinder();
   
   EdwEvent* TransferEvent(void);
+  EdwEvent* TransferEventOld(void);
   EdwEvent* GetEvent(void);  //returns the event pointer from the KEraRawEventReader class
   
   void AddPathToSearch(const char* aPath){fDirNames.push_back(aPath);}
@@ -58,9 +59,12 @@ public:
   void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }
   Bool_t SetBolo(KBolometerRecord *aRec);
   void SetSearchLocally(Bool_t aChoice = true){ fSearchLocally = aChoice;  }
-  void SetForceRemoteSearch(Bool_t aChoice = true){ fForceRemoteSearch = aChoice;  }
+  void SetForceRemoteSearch(Bool_t aChoice = true){ fForceRemoteSearch = aChoice; if(aChoice) SetSearchLocally(false);}
   void SetTargetPath(const char* aPath){fTargetPath = aPath;}
-  
+  void SetUser(const char* aUser);
+  void SetApplyBasicPulseProcessing(Bool_t anOpt = true) { fApplyBasicPulseProcessing = anOpt; }
+  void SetAlwaysKeepSearching(Bool_t anOpt = true) { fAlwaysKeepSearching = anOpt; }
+  string GetNextFileName(const char* name = 0);
   
 private:
   Bool_t fSearchLocally;
@@ -74,10 +78,16 @@ private:
   list<string> fDirNames;
   string fTargetPath;
   KEventDisplay *fDisplay;
+  Bool_t fApplyBasicPulseProcessing;
+  Bool_t fAlwaysKeepSearching;  //if this is set to true, they it won't ask you if you want to download the next file
   
-  Bool_t GetEventFile(const char* aPath, const char* aFileName);
-  string GetNextFileName(const char* name = 0);
+  Bool_t GetEventFile(const char* aPath, const char* aFileName, Bool_t searchLocal);
   Bool_t OpenEventFile(const char* filePath, const char* fileName);
+  Bool_t SearchTargetDirectory(string &aStartingFile);
+  Bool_t SearchDirectoryList(string &aStartingFile);
+  Bool_t DoesCurrentFileHaveEvent(void);
+
+
   void Initialize(void);
   
   

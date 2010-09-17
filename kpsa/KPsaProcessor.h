@@ -19,7 +19,9 @@ using namespace std;
 class KPsaProcessor  { 
 
 public:
-
+  KPsaProcessor(void);
+  virtual ~KPsaProcessor(void);
+  
 	virtual void SetInputPulse(const vector<double> &aPulse){fInputPulse = aPulse;} //Set the input pulse
 	virtual void SetInputPulse(const vector<short> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse 
 	virtual void SetInputPulse(const vector<float> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse
@@ -44,8 +46,6 @@ protected:
 	vector<double> fInputPulse;
 	vector<double> fOutputPulse;
 	
-	KPsaProcessor(void);
-  virtual ~KPsaProcessor(void);
 	
 private:
 	

@@ -106,7 +106,7 @@ void KFileTransfer::Transfer(string aFilename)
   //cout << fSourcePath << endl;
 	
   string commandline = "rsync -Lz " + fExtraRsyncOptions + fUser + 
-  "@" + fServer + ":" + fSourcePath +  aFilename + " " + fTargetPath;
+  "@" + fServer + ":" + fSourcePath +  aFilename + " " + fTargetPath  + aFilename;
 	
   cout << commandline.c_str() << endl;
 	fSystem->Exec(commandline.c_str());
@@ -114,13 +114,22 @@ void KFileTransfer::Transfer(string aFilename)
 }
 
 
-bool KFileTransfer::FileExists(string aFilename)
+bool KFileTransfer::FileExists(string aFileName)
 {
-  //Checks if file "aFilename" exists
-  fstream testfile;
-  testfile.open(aFilename.c_str());
-  //cout << "file exists" << endl;
-  return(testfile.is_open());
+  //Checks if file "aFilename" exists.
+#ifdef _K_DEBUG_FILETRANSFER
+  cout << "Checking for filename: " << aFileName << endl;
+#endif
+  ifstream testfile(aFileName.c_str(),ifstream::binary | ifstream::in);
+  
+  if(testfile.is_open()){
+#ifdef _K_DEBUG_FILETRANSFER
+    cout << "was able to open the file..." << endl;
+#endif
+    return true;
+  }
+    
+  else return false;
 }
 
 /*
