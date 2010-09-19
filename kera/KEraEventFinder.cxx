@@ -95,7 +95,7 @@ void KEraEventFinder::Initialize(void)
 	}
   
   //try to determine if we're on ccali or if we're remote
-  TString hostName = fSystem->Getenv("HOME"); 
+  TString hostName = fSystem->Getenv("HOST"); 
   if(hostName.Contains("ccali")){
     fSearchLocally = true;
     fAlwaysKeepSearching = true; //if we're searching locally, don't bother to ask.
