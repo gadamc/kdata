@@ -23,6 +23,8 @@
 using namespace std;
 ClassImp(KEventDisplay);
 
+const int __k_NumDisplayHists = 9;
+
 KEventDisplay::KEventDisplay(void)
 {
   fStatCanvas = 0;
@@ -89,7 +91,7 @@ void KEventDisplay::DisplayEvent()
   }
 
   //Draw the Pulse Canvas
-  for(UInt_t i = 1; i <= 9; i++){ //9 is the number of pads in the Canvas
+  for(UInt_t i = 1; i <= __k_NumDisplayHists; i++){ //9 is the number of pads in the Canvas
     fPulseCanvas->cd(i);
     if(i <= fNumPulseHists)
       fPulseHists[i-1].Draw();
@@ -574,8 +576,11 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
   if(fEdwEvent == 0)
     return false;
 
-  if(fPulseHists != 0)
-    delete[] fPulseHists;
+  if(fPulseHists == 0){
+    fPulseHists = new TH1D[__k_NumDisplayHists];
+    for(Int_t i = 0; i < __k_NumDisplayHists; i++)
+      fPulseHists[i].AddDirectory(0); //don't let these be deleted by any TFiles that get deleted.
+  }
 
   if(fBolo->GetNumPulseRecords() <= 0) {
     cout << "KHLABolometerRecord is not associated with any PulseRecords." << endl;
@@ -629,12 +634,11 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
 
     Int_t numHists = (fPulseIndex.size() >= fNumPulseHists) ? fPulseIndex.size() : fNumPulseHists;
 
-    fPulseHists = new TH1D[ numHists];
-
+    
     for(Int_t i = 0; i < numHists; i++){
       //cout << "Loading " << i << "th Pulse at Index " << fPulseIndex.at(i) << endl;
       pulse = fEdwEvent->Pulse(fPulseIndex.at(i));
-      fPulseHists[i].AddDirectory(0); //don't let these be deleted by any TFiles that get deleted.
+      fPulseHists[i].Reset();
       fPulseHists[i].SetBins(pulse->TraceSize(), 0, pulse->TraceSize());
       fPulseHists[i].SetTitle(pulse->Channel().c_str());
       fPulseHists[i].SetName(pulse->Channel().c_str());

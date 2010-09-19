@@ -105,7 +105,7 @@ void KFileTransfer::Transfer(string aFilename)
   
   //cout << fSourcePath << endl;
 	
-  string commandline = "rsync -Lz " + fExtraRsyncOptions + fUser + 
+  string commandline = "rsync -Lz " + fExtraRsyncOptions + "--rsh=ssh " + fUser + 
   "@" + fServer + ":" + fSourcePath +  aFilename + " " + fTargetPath  + aFilename;
 	
   cout << commandline.c_str() << endl;
