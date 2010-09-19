@@ -27,14 +27,14 @@ KEraEventFinder::KEraEventFinder(void)
   fTrans = new KFileTransfer;
   fReader =new KEraRawEventReader;
   fDisplay = 0;
-  Initialize();
-  fDirNames.clear();
-  AddPathToSearch(fTrans->GetSourcePath().c_str());  //if you're running "locally", you're probably on ccali
-  AddPathToSearch(fTargetPath.c_str());  
-  fSearchLocally = true;
-  fAlwaysKeepSearching = true; //if we're searching locally, don't bother to ask.
   fSambaRecord = 0;
   fBoloRecord = 0;
+  Initialize();
+  
+  //no username was supplied in this constructor. We set up the object to search locally by default.
+  fSearchLocally = true;
+  fAlwaysKeepSearching = true; //if we're searching locally, don't bother to ask.
+  
 }
 
 KEraEventFinder::KEraEventFinder(string aUser)
@@ -82,9 +82,9 @@ KEraEventFinder::~KEraEventFinder()
 void KEraEventFinder::Initialize(void)
 {
   fDirNames.clear();
-  AddPathToSearch(fTrans->GetSourcePath().c_str()); //the default path on ccali
-  fSearchLocally = false; //assume that we're searching over the internets. 
   fForceRemoteSearch = false;  //don't force remote search by default.
+  AddPathToSearch(fTrans->GetSourcePath().c_str()); //the default path on ccali
+  AddPathToSearch(fTargetPath.c_str()); //add the "target" directory.
   
   TSystem *fSystem = 0;
   try {
@@ -93,14 +93,25 @@ void KEraEventFinder::Initialize(void)
 	catch(bad_cast) {
 		fSystem = new TUnixSystem();
 	}
-  fTargetPath = "/tmp/";  //dump all files to /tmp/USER and hope that this directory gets cleaned up.
-  fTargetPath.append(fSystem->Getenv("USER"));
-  fTargetPath.append("/");
-  fSystem->mkdir(fTargetPath.c_str());
+  
+  //try to determine if we're on ccali or if we're remote
+  TString hostName = fSystem->Getenv("HOME"); 
+  if(hostName.Contains("ccali")){
+    fSearchLocally = true;
+    fAlwaysKeepSearching = true; //if we're searching locally, don't bother to ask.
+  }
+  else { 
+    fSearchLocally = false; //assume that we're searching over the internets. 
+    fAlwaysKeepSearching = false;
+    fTargetPath = "/tmp/";  //dump all files to /tmp/USER and hope that this directory gets cleaned up.
+    fTargetPath.append(fSystem->Getenv("USER"));
+    fTargetPath.append("/");
+    fSystem->mkdir(fTargetPath.c_str());
+  }
+
   if(fSystem != gSystem)
 		delete fSystem;
   
-  fAlwaysKeepSearching = false;
   fApplyBasicPulseProcessing = true;
 }
 
