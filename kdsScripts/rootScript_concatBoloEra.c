@@ -79,7 +79,7 @@
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
 			myFileContents = myKdataPath + "/bin/concatDst ";
-			myFileContents += j;
+			myFileContents += j;  //the option here tells concatDst exactly which type of ERA file its concatenating.
 			myFileContents += + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
 			
 			cout << myFileContents.Data() << endl;
@@ -113,7 +113,7 @@
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
 			myFileContents = myKdataPath + "/bin/concatDst ";
-			myFileContents += j;
+			myFileContents += j; //the option here tells concatDst exactly which type of ERA file its concatenating.
 			myFileContents += + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
 			
 			cout << myFileContents.Data() << endl;
@@ -146,7 +146,7 @@
 			cout << myFileContents.Data() << endl;
 			myFile << myFileContents.Data() << endl;
 			myFileContents = myKdataPath + "/bin/concatDst ";
-			myFileContents += j;
+			myFileContents += j; //the option here tells concatDst exactly which type of ERA file its concatenating.
 			myFileContents += + " " + in1 + " " + in2 + " " + out; //don't forget the '1' to indicate which option you're running
 			
 			cout << myFileContents.Data() << endl;
