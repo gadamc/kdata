@@ -104,12 +104,15 @@ void rootScript_mergeKdsTree(){
   string kFillEraInputPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/Bckgd/";
   string kFillEraOutputPath = kInputPath1;
   string tstNewPath = "/kalinka/home/edelweiss/Bolo/Run12/tstnew/";
-  string fMuonVetoDataInPath = "kalinka/home/edelweiss/Runs/";
-  string fMuonVetoDataOutPath = "kalinka/home/edelweiss/Bolo/Runs12/Eds/Input/uVeto/";
+  string fMuonVetoDataInPath = "/kalinka/home/edelweiss/Runs/";
+  string fMuonVetoDataOutPath = "/kalinka/home/edelweiss/Bolo/Runs12/Eds/Input/uVeto/";
+  bool bFillMuons = false;
   Int_t startMuonRun = 54;
   Int_t stopMuonRun = 67;
   TString muonVetoCommand = myKdataPath + "bin/fillMuonVetoEvents";
-  
+  string bBigNeutron = "0"; //set to 1 if you want the strong AmBe source data added to the output file when merging the muon veto data
+  string kEntryOfBoloStart = "272394"; //need to tell the muon veto merging to start here
+  string kDebugMuonVeto = "-24129205"; //muon veto merge debug flag??
 
   Int_t kNumberBolos=13;
   string kDetectorNames[13]=
@@ -120,9 +123,9 @@ void rootScript_mergeKdsTree(){
   
   string kRoot=".root";
   string kEds="Kds_";
-  string kEntryOfBoloStart = "272394"; //From this event on the timelines match and merging begins, before this event we just fill in the uVeto data
-  string bigNeutron = "0"; //when set to zero, exclude the strong AmBe source data when merging the Muon data to the Bckgd data
-  string debug = "-24129205"; //a debug value for the muon veto merging
+  //string kEntryOfBoloStart = "272394"; //From this event on the timelines match and merging begins, before this event we just fill in the uVeto data
+  //string bigNeutron = "0"; //when set to zero, exclude the strong AmBe source data when merging the Muon data to the Bckgd data
+  //string debug = "-24129205"; //a debug value for the muon veto merging
   //Int_t kEntryOfBoloStart=272395; 
   //Int_t badMuonEntry[2]={396278 ,400838};//first bad entry, last bad entry, period of time resets in uVeto
   string in1, in2, out, log;
@@ -474,8 +477,9 @@ void rootScript_mergeKdsTree(){
     
     myFileName = "fillMuonVetoEvents"; 
   
-    listOfJobsMergeLoopFourBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), muonIn.Data(), muonOut.Data()));
-  
+    if(bFillMuons) listOfJobsMergeLoopFourBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), muonIn.Data(), muonOut.Data()));
+    else 
+    cout << "Skipping Muon Veto Fill " << i << endl;
   }
 
   if(holdListBckgd != 0) delete[] holdListBckgd;
@@ -496,6 +500,9 @@ void rootScript_mergeKdsTree(){
     holdListGamma[k] = listOfJobsMergeLoopFourGamma.at(k);
   }
   
+  //string bBigNeutron = "0"; //set to 1 if you want the strong AmBe source data added to the output file when merging the muon veto data
+  //string kEntryOfBoloStart = "272394"; //need to tell the muon veto merging to start here
+  //string kDebugMuonVeto = "-24129205"; //muon veto merge debug flag??
   
 
   vector<string> listOfJobsMergeMuonVetoBckgd;
@@ -511,7 +518,7 @@ void rootScript_mergeKdsTree(){
   
   myFileName = "mergeKdsTree_MuonVetoAndBckgd";
 
-  listOfJobsMergeMuonVetoBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), in1.c_str(), in2.c_str(), out.c_str(), log.c_str(),"","", "", listOfJobsMergeLoopFourBckgd.size(), holdListBckgd));
+  listOfJobsMergeMuonVetoBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), in1.c_str(), in2.c_str(), out.c_str(), log.c_str(), kEntryOfBoloStart.c_str(), bBigNeutron.c_str(), kDebugMuonVeto.c_str(), listOfJobsMergeLoopFourBckgd.size(), holdListBckgd));
 
 
   if(holdListBckgd != 0) delete[] holdListBckgd;
