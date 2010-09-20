@@ -83,6 +83,13 @@ string submitCommand(const char* fileName, const char* executeCmd, const int arg
 
 void rootScript_mergeKdsTree(){
 
+  //what this script does - fillERAtoKds (need to have rootScript_concatBoloEra first), merges bolometer data together
+  //fills Muon Veto Data into Kds format, concatenates muon veto Kds format into single file, merges that file with the 
+  //background bolo merged file, calls allPassOne_GSEventNumber on all the Merged files, calls skimNoNoiseBolos on all of the
+  //merged files. Results are found in ~edelweiss/Bolo/Run12/Eds/Final
+
+
+
   TString myKdataPath = "$KDATA_ROOT";
   string kInputPath1="/kalinka/home/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/";
   //string kInputPath1="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/";
@@ -97,7 +104,7 @@ void rootScript_mergeKdsTree(){
   string kFillEraOutputPath = kInputPath1;
   string tstNewPath = "/kalinka/home/edelweiss/Bolo/Run12/tstnew/";
   string fMuonVetoDataInPath = "/kalinka/home/edelweiss/Runs/";
-  string fMuonVetoDataOutPath = "/kalinka/home/edelweiss/Bolo/Runs12/Eds/Input/uVeto/";
+  string fMuonVetoDataOutPath = "/kalinka/home/edelweiss/Bolo/Run12/Eds/Input/uVeto/";
   string outMuonVetoCombinedFile = fMuonVetoDataOutPath + "KdsRun12_v3.0_MuonVetoAll.root";
 
   bool bFillMuons = true;
@@ -561,9 +568,10 @@ void rootScript_mergeKdsTree(){
   //and we add these jobs to the listOfJobsMergeLoopFourBckgd.
   command= myKdataPath + "/bin/fillMuonVetoEvents"; //the executeCmd file to be executed by the shell
   
-  Int_t vetoRuns=stopMuonRun - startMuonRun + 1;
+  Int_t vetoRuns = stopMuonRun - startMuonRun + 1;
   string *myArrayOfMuonRuns = new string[vetoRuns];  
-  
+  cout << "Creating " << vetoRuns << " muon veto files. " << endl;
+
   listOfFillMuonJobs.clear(); //should already be empty at this point.
   for(Int_t i = startMuonRun; i <= stopMuonRun; i++) {
 
@@ -575,11 +583,11 @@ void rootScript_mergeKdsTree(){
     TString muonOut = fMuonVetoDataOutPath;
     muonOut += "KdsRun12_";
     muonOut += kVersionNumber;
-    mounOut += "_MuonVetoRun";
+    muonOut += "_MuonVetoRun";
     muonOut += i;
     muonOut += ".root";
     
-    myArrayOfMuonRuns[i] = muonOut.Data();
+    myArrayOfMuonRuns[i-startMuonRun] = muonOut.Data();
     
     myFileName = "fillMuonVetoEvents"; 
     myNumArgs = 2;
@@ -594,18 +602,19 @@ void rootScript_mergeKdsTree(){
     delete [] myArgs;
   }
 
+
   //need to concatenate the Muon Vetos into a single file
   if(holdListMuon != 0) delete [] holdListMuon;
   holdListMuon = new string[listOfFillMuonJobs.size()];
-	for(UInt_t k = 0; k < listOfFillMuonJobs.size(); k++){
+  for(UInt_t k = 0; k < listOfFillMuonJobs.size(); k++){
     holdListMuon[k] = listOfFillMuonJobs.at(k);
   }
   myNumArgs = vetoRuns + 1;
   myArgs = new string[myNumArgs];
   myArgs[0] = outMuonVetoCombinedFile;
   
-  for(Int_t k = 1; i < myNumArgs; k++){
-    myArgs[k] = myArrayOfMuonRuns[k-1];
+  for(UInt_t k = 0; k < vetoRuns; k++){
+    myArgs[k+1] = myArrayOfMuonRuns[k];
   }
   myFileName = "concatenateMuonVeto";
   
@@ -641,15 +650,15 @@ void rootScript_mergeKdsTree(){
   command= myKdataPath + "/bin/mergeKEdsTree"; //the executeCmd file to be executed by the shell
   in1 = kOutputPath;
   in1.append("Kds_AllBolos.root");
-  in2 = muonVetoPath;
-  in2.append("KdsRun12_MuonVetoAll.root");
+  in2 = outMuonVetoCombinedFile;
+  //  in2.append("KdsRun12_MuonVetoAll.root");
   out = kOutputPath;
   out.append("Kds_AllBolosVeto.root");
   log = kOutputPath;
   log.append("Merge_AllBolosVeto.log");
   
   myFileName = "mergeKdsTree_MuonVetoAndBckgd";
-  myNumArgs = 4;
+  myNumArgs = 7;
   myArgs = new string[myNumArgs];
   
   myArgs[0] = in1;
@@ -683,7 +692,7 @@ void rootScript_mergeKdsTree(){
   out.append(".root");
 
   myFileName = "allPassOne_GSEventNumberBckgd";
-  myNumArgs = 4;
+  myNumArgs = 2;
   myArgs = new string[myNumArgs];
   
   myArgs[0] = in1;
