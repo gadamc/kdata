@@ -35,7 +35,7 @@ class EdwEvent : public TObject {
   
   void AddPulse(EdwPulse* aPulse) { fPulses->Add(aPulse); } 
   /**< Adds an EdwPulse in the TObjArray structure */
-  virtual void Clear(const Option_t *opt = "") ; /**< Resets the event */
+  void Clear() ; /**< Resets the event */
 
  private:
   EdwEventHeader* fHeader ; /**< Event header */
