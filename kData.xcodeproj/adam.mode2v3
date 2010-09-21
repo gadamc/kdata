@@ -289,7 +289,7 @@
 										<string>662EC1A912343BD3007E432B</string>
 										<string>6610DDEA121ECC290047036E</string>
 										<string>6610DE3A121EDA680047036E</string>
-										<string>6642D9351248C933007ACA27</string>
+										<string>66DCA1821248D8B000FDE323</string>
 										<string>6610DDED121ECC440047036E</string>
 										<string>6610DE2A121ED8080047036E</string>
 										<string>6610DE2D121ED82C0047036E</string>
@@ -299,13 +299,12 @@
 									<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 									<array>
 										<array>
-											<integer>45</integer>
-											<integer>28</integer>
+											<integer>3</integer>
 											<integer>0</integer>
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 374}, {469, 596}}</string>
+									<string>{{0, 0}, {469, 596}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -467,8 +466,8 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>6642D9051248C3C7007ACA27</string>
-				<string>6642D9061248C3C7007ACA27</string>
+				<string>66F17A9E1248D9770006ACE4</string>
+				<string>66F17A9F1248D9770006ACE4</string>
 				<string>1C9437FD063B20B00039CFAC</string>
 				<string>1C9437FE063B20B00039CFAC</string>
 				<string>1C9437FF063B20B00039CFAC</string>
@@ -488,7 +487,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>306763790.77080297</real>
+	<real>306764151.92330003</real>
 	<key>ToolbarConfigUserDefaultsMinorVersion</key>
 	<string>2</string>
 	<key>ToolbarDisplayMode</key>
@@ -505,6 +504,7 @@
 	<integer>0</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>66F17AA11248D9770006ACE4</string>
 		<string>1C530D52069F1CE1000CFCEE</string>
 		<string>/Users/adam/softwareDev/kData/kData.xcodeproj</string>
 	</array>
@@ -734,7 +734,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D52069F1CE1000CFCEE</string>
-				<string>6642D9091248C3C7007ACA27</string>
+				<string>66F17AA01248D9770006ACE4</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

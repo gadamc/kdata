@@ -292,6 +292,24 @@
 		6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEventTest.cxx; path = ../kData/kds/fillEventTest.cxx; sourceTree = SOURCE_ROOT; };
 		6687D1C3122F863B005AD0F9 /* KMergeKds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMergeKds.h; sourceTree = "<group>"; };
 		6687D1C4122F863B005AD0F9 /* KMergeKds.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeKds.cxx; sourceTree = "<group>"; };
+		66DCA1831248D8B000FDE323 /* KBaselineRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KBaselineRemoval.cxx; sourceTree = "<group>"; };
+		66DCA1841248D8B000FDE323 /* KBaselineRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBaselineRemoval.h; sourceTree = "<group>"; };
+		66DCA1851248D8B000FDE323 /* KHalfComplexPower.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexPower.cxx; sourceTree = "<group>"; };
+		66DCA1861248D8B000FDE323 /* KHalfComplexPower.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHalfComplexPower.h; sourceTree = "<group>"; };
+		66DCA1871248D8B000FDE323 /* KHalfComplexToRealDFT.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexToRealDFT.cxx; sourceTree = "<group>"; };
+		66DCA1881248D8B000FDE323 /* KHalfComplexToRealDFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHalfComplexToRealDFT.h; sourceTree = "<group>"; };
+		66DCA1891248D8B000FDE323 /* KPatternRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPatternRemoval.cxx; sourceTree = "<group>"; };
+		66DCA18A1248D8B000FDE323 /* KPatternRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPatternRemoval.h; sourceTree = "<group>"; };
+		66DCA18B1248D8B000FDE323 /* KPsaProcessor.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPsaProcessor.cxx; sourceTree = "<group>"; };
+		66DCA18C1248D8B000FDE323 /* KPsaProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPsaProcessor.h; sourceTree = "<group>"; };
+		66DCA18D1248D8B000FDE323 /* KPsaTestPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPsaTestPulse.cxx; sourceTree = "<group>"; };
+		66DCA18E1248D8B000FDE323 /* KPsaTestPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPsaTestPulse.h; sourceTree = "<group>"; };
+		66DCA18F1248D8B000FDE323 /* KPulseAnalysisChain.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPulseAnalysisChain.cxx; sourceTree = "<group>"; };
+		66DCA1901248D8B000FDE323 /* KPulseAnalysisChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPulseAnalysisChain.h; sourceTree = "<group>"; };
+		66DCA1911248D8B000FDE323 /* KRealToHalfComplexDFT.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KRealToHalfComplexDFT.cxx; sourceTree = "<group>"; };
+		66DCA1921248D8B000FDE323 /* KRealToHalfComplexDFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRealToHalfComplexDFT.h; sourceTree = "<group>"; };
+		66DCA1931248D8B000FDE323 /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
+		66DCA1941248D8B000FDE323 /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		66DE296A12475D4200A2644D /* rootScript_mergeKdsTree.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rootScript_mergeKdsTree.C; sourceTree = "<group>"; };
 		66E03A511237CBFD00415B79 /* calitransfer.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = calitransfer.cxx; path = ../kData/kera/calitransfer.cxx; sourceTree = SOURCE_ROOT; };
 		66E03A521237CBFD00415B79 /* eventFinderTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eventFinderTest.cxx; path = ../kData/kera/eventFinderTest.cxx; sourceTree = SOURCE_ROOT; };
@@ -313,6 +331,7 @@
 				6610DEA1121F2D390047036E /* config */,
 				6610DDEA121ECC290047036E /* scripts */,
 				6610DE3A121EDA680047036E /* ktemplate */,
+				66DCA1821248D8B000FDE323 /* kpta */,
 				6610DDED121ECC440047036E /* kds */,
 				6610DF4D122149780047036E /* era */,
 				6610E7CA122703DA0047036E /* kera */,
@@ -701,6 +720,31 @@
 				6610DF71122149780047036E /* FitPulse.h */,
 			);
 			name = Event;
+			sourceTree = "<group>";
+		};
+		66DCA1821248D8B000FDE323 /* kpta */ = {
+			isa = PBXGroup;
+			children = (
+				66DCA1831248D8B000FDE323 /* KBaselineRemoval.cxx */,
+				66DCA1841248D8B000FDE323 /* KBaselineRemoval.h */,
+				66DCA1851248D8B000FDE323 /* KHalfComplexPower.cxx */,
+				66DCA1861248D8B000FDE323 /* KHalfComplexPower.h */,
+				66DCA1871248D8B000FDE323 /* KHalfComplexToRealDFT.cxx */,
+				66DCA1881248D8B000FDE323 /* KHalfComplexToRealDFT.h */,
+				66DCA1891248D8B000FDE323 /* KPatternRemoval.cxx */,
+				66DCA18A1248D8B000FDE323 /* KPatternRemoval.h */,
+				66DCA18B1248D8B000FDE323 /* KPsaProcessor.cxx */,
+				66DCA18C1248D8B000FDE323 /* KPsaProcessor.h */,
+				66DCA18D1248D8B000FDE323 /* KPsaTestPulse.cxx */,
+				66DCA18E1248D8B000FDE323 /* KPsaTestPulse.h */,
+				66DCA18F1248D8B000FDE323 /* KPulseAnalysisChain.cxx */,
+				66DCA1901248D8B000FDE323 /* KPulseAnalysisChain.h */,
+				66DCA1911248D8B000FDE323 /* KRealToHalfComplexDFT.cxx */,
+				66DCA1921248D8B000FDE323 /* KRealToHalfComplexDFT.h */,
+				66DCA1931248D8B000FDE323 /* Module.mk */,
+				66DCA1941248D8B000FDE323 /* Module_libs.mk */,
+			);
+			path = kpta;
 			sourceTree = "<group>";
 		};
 		66F8B9D8122D5D720063FC9B /* Products */ = {

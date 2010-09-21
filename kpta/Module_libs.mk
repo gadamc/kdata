@@ -1,3 +1,3 @@
 # Libraries built by the ktemplate module
 
-KPSA_LIB    := $(LPATH)/libkpsa.$(SOEXT)
+KPTA_LIB    := $(LPATH)/libkpta.$(SOEXT)

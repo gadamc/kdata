@@ -127,8 +127,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 306763857;
-			PBXWorkspaceStateSaveDate = 306763857;
+			PBXPerProjectTemplateStateSaveDate = 306764146;
+			PBXWorkspaceStateSaveDate = 306764146;
 		};
 		sourceControlManager = 6610DD4C121ECAAA0047036E /* Source Control */;
 		userBookmarkGroup = 6610E38D12242B250047036E /* PBXBookmarkGroup */;
@@ -608,9 +608,9 @@
 	};
 	6610DE9D121F2D100047036E /* Makefile */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {677, 4992}}";
+			sepNavIntBoundsRect = "{{0, 0}, {677, 4752}}";
 			sepNavSelRange = "{3978, 0}";
-			sepNavVisRange = "{0, 2427}";
+			sepNavVisRange = "{4826, 1140}";
 			sepNavWindowFrame = "{{397, 0}, {736, 878}}";
 		};
 	};
@@ -625,7 +625,7 @@
 	6610DEA0121F2D2A0047036E /* Modules.mk */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1042, 759}}";
-			sepNavSelRange = "{93, 0}";
+			sepNavSelRange = "{196, 0}";
 			sepNavVisRange = "{0, 196}";
 			sepNavWindowFrame = "{{339, 0}, {1101, 878}}";
 		};
