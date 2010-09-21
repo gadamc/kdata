@@ -130,6 +130,10 @@
 			PBXPerProjectTemplateStateSaveDate = 306764146;
 			PBXWorkspaceStateSaveDate = 306764146;
 		};
+		perUserProjectItems = {
+			66F17AAE1248E00B0006ACE4 /* PBXBookmark */ = 66F17AAE1248E00B0006ACE4 /* PBXBookmark */;
+			66F17ABA1248E0760006ACE4 /* PBXTextBookmark */ = 66F17ABA1248E0760006ACE4 /* PBXTextBookmark */;
+		};
 		sourceControlManager = 6610DD4C121ECAAA0047036E /* Source Control */;
 		userBookmarkGroup = 6610E38D12242B250047036E /* PBXBookmarkGroup */;
 		userBuildSettings = {
@@ -1545,5 +1549,19 @@
 		modificationTime = 306589510.319589;
 		originalNumberOfMultipleMatches = 1;
 		state = 2;
+	};
+	66F17AAE1248E00B0006ACE4 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 6610DEA0121F2D2A0047036E /* Modules.mk */;
+	};
+	66F17ABA1248E0760006ACE4 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 6610DEA0121F2D2A0047036E /* Modules.mk */;
+		name = "Modules.mk: 10";
+		rLen = 0;
+		rLoc = 196;
+		rType = 0;
+		vrLen = 196;
+		vrLoc = 0;
 	};
 }
