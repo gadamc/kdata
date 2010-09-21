@@ -7,8 +7,8 @@
 //
 //
 // This object can hold (and own) pointers to objects that derive
-// from KPsaProcessor in order to create a chain of pulse processing steps.
-// In addition, this class is also derived from KPsaProcessor, which means
+// from KPtaProcessor in order to create a chain of pulse processing steps.
+// In addition, this class is also derived from KPtaProcessor, which means
 // that one can create a nested chain of chains. 
 //
 //
@@ -47,7 +47,7 @@ void KPulseAnalysisChain::DeleteProcessors(void)
 
     for(unsigned int i = 0; i < fProcessorList.size(); i++){
       try {
-        KPsaProcessor *p = fProcessorList.at(i);
+        KPtaProcessor *p = fProcessorList.at(i);
         if(p != 0){
           delete p;
           p = 0;
@@ -89,7 +89,7 @@ void KPulseAnalysisChain::InitializeMembers(void)
 
 bool KPulseAnalysisChain::RunProcess(void)
 {
-	//call RunProcess for each KPsaProcessor in the list.
+	//call RunProcess for each KPtaProcessor in the list.
 	//returns the number of processors that return "true".
 	//if a processor fails (returns "false"), will return a -X, 
 	//where X is the Xth processor in the list. 
@@ -99,7 +99,7 @@ bool KPulseAnalysisChain::RunProcess(void)
 	for(unsigned int i = 0; i < fProcessorList.size(); i++){
 		//cout << "Pulse Analysis Chain Processor: " << i << endl;
 		try {
-			KPsaProcessor *p = fProcessorList.at(i);
+			KPtaProcessor *p = fProcessorList.at(i);
 			if(p != 0){
         
         //set the input pulse of the first processor. 
@@ -111,7 +111,7 @@ bool KPulseAnalysisChain::RunProcess(void)
           unsigned int j = i+1;
           while(j < fProcessorList.size()){ //search for the next valid processor in the list. 
             //cout << "Pulse Analysis Chain. Searching for Next Processor: " << j << endl;
-						KPsaProcessor *pnext = fProcessorList.at(j);
+						KPtaProcessor *pnext = fProcessorList.at(j);
 						if(pnext != 0) {
               //cout << "Pulse Analysis Chain. Found Next Processor: " << j << endl;
               //if this fails here, then this will break... the next processor won't get the pulse
@@ -147,12 +147,12 @@ bool KPulseAnalysisChain::RunProcess(void)
   else return false;
 }
 
-void KPulseAnalysisChain::AddProcessor(KPsaProcessor *p)
+void KPulseAnalysisChain::AddProcessor(KPtaProcessor *p)
 {
 	fProcessorList.push_back(p);	
 }
 
-void KPulseAnalysisChain::AddProcessorAt(KPsaProcessor *p, unsigned int index)
+void KPulseAnalysisChain::AddProcessorAt(KPtaProcessor *p, unsigned int index)
 {
 	if(index >= fProcessorList.size())
 		AddProcessor(p);

@@ -1,6 +1,6 @@
 //______________________________________________________________________
 
-// KPsaProcessor.cxx
+// KPtaProcessor.cxx
 // Author: Adam Cox <mailto:adam.cox@kit.edu>
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
@@ -8,27 +8,27 @@
 //
 
 
-#include "KPsaProcessor.h"
+#include "KPtaProcessor.h"
 #include <fstream>
 #include <sstream>
 
-KPsaProcessor::KPsaProcessor(void)
+KPtaProcessor::KPtaProcessor(void)
 {
 
   InitializeMembers();
 }
 
-KPsaProcessor::~KPsaProcessor(void)
+KPtaProcessor::~KPtaProcessor(void)
 {
   
 }
 
-void KPsaProcessor::InitializeMembers(void)
+void KPtaProcessor::InitializeMembers(void)
 {
   fProcessorName = "";
 }
 
-template<class T> void KPsaProcessor::SetThisToInputPulse(const vector<T> &aPulse)
+template<class T> void KPtaProcessor::SetThisToInputPulse(const vector<T> &aPulse)
 {
 	fInputPulse.resize(aPulse.size(),0);
 	
@@ -39,11 +39,11 @@ template<class T> void KPsaProcessor::SetThisToInputPulse(const vector<T> &aPuls
 		}
 		catch (out_of_range& e) {
 			//I think this should be impossible... 
-			cerr << "KPsaProcessor::SetThisToInputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
+			cerr << "KPtaProcessor::SetThisToInputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
 		}
 }
 
-void KPsaProcessor::GetOutputPulse(vector<float> &myPulse) const
+void KPtaProcessor::GetOutputPulse(vector<float> &myPulse) const
 {
 	//Demote the precision and obtain a copy of the output pulse in single precision.
 	//Note that working with floats is slower (because the vector has to be copied 
@@ -59,12 +59,12 @@ void KPsaProcessor::GetOutputPulse(vector<float> &myPulse) const
 	}
 	catch (out_of_range& e) {
 		//I think this should be impossible... 
-		cerr << "vector<float> KPsaProcessor::GetOutputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
+		cerr << "vector<float> KPtaProcessor::GetOutputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
 	}
 
 }
 
-void KPsaProcessor::GetInputPulse(vector<float> &myPulse) const
+void KPtaProcessor::GetInputPulse(vector<float> &myPulse) const
 {
 	//Demote the precision and obtain a copy of the input pulse in single precision.
 	//Note that working with floats is slower (because the vector has to be copied 
@@ -80,12 +80,12 @@ void KPsaProcessor::GetInputPulse(vector<float> &myPulse) const
 	}
 	catch (out_of_range& e) {
 		//I think this should be impossible... 
-		cerr << "vector<float> KPsaProcessor::GetOutputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
+		cerr << "vector<float> KPtaProcessor::GetOutputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
 	}
 	
 }
 
-void KPsaProcessor::SetInputPulse(const char* aFile)
+void KPtaProcessor::SetInputPulse(const char* aFile)
 {
 	//Load a pulse from a file. This is especially useful for loading
 	//a template that is already in a file format.

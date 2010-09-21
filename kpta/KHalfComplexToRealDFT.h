@@ -11,9 +11,9 @@
 #ifndef __KHALFCOMPLEXTOREALDFT_H__
 #define __KHALFCOMPLEXTOREALDFT_H__
 
-#include "KPsaProcessor.h"
+#include "KPtaProcessor.h"
 
-class KHalfComplexToRealDFT : public KPsaProcessor  { 
+class KHalfComplexToRealDFT : public KPtaProcessor  { 
 	
 public:
   //Constructors

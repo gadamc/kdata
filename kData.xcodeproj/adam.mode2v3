@@ -299,12 +299,13 @@
 									<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 									<array>
 										<array>
-											<integer>3</integer>
+											<integer>40</integer>
+											<integer>28</integer>
 											<integer>0</integer>
 										</array>
 									</array>
 									<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-									<string>{{0, 0}, {469, 596}}</string>
+									<string>{{0, 428}, {469, 596}}</string>
 								</dict>
 								<key>PBXTopSmartGroupGIDs</key>
 								<array/>
@@ -487,7 +488,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>306764151.92330003</real>
+	<real>306764730.25490099</real>
 	<key>ToolbarConfigUserDefaultsMinorVersion</key>
 	<string>2</string>
 	<key>ToolbarDisplayMode</key>
@@ -504,7 +505,6 @@
 	<integer>0</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>66F17AA11248D9770006ACE4</string>
 		<string>1C530D52069F1CE1000CFCEE</string>
 		<string>/Users/adam/softwareDev/kData/kData.xcodeproj</string>
 	</array>

@@ -11,9 +11,9 @@
 #ifndef __KHALFCOMPLEXPOWER_H__
 #define __KHALFCOMPLEXPOWER_H__
 
-#include "KPsaProcessor.h"
+#include "KPtaProcessor.h"
 
-class KHalfComplexPower : public KPsaProcessor { 
+class KHalfComplexPower : public KPtaProcessor { 
 
 public:
   //Constructors

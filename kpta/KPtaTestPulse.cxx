@@ -1,6 +1,6 @@
 //______________________________________________________________________
 //
-// KPsaTestPulse.cxx
+// KPtaTestPulse.cxx
 // Author: Adam Cox <mailto:adam.cox@kit.edu>
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
@@ -8,7 +8,7 @@
 //
 
 
-#include "KPsaTestPulse.h"
+#include "KPtaTestPulse.h"
 #include <cmath>
 #include <iostream>
 #include <stdexcept> 
@@ -16,18 +16,18 @@
 #include <ctime>
 
 
-KPsaTestPulse::KPsaTestPulse(void)
+KPtaTestPulse::KPtaTestPulse(void)
 {
 
   InitializeMembers();
 }
 
-KPsaTestPulse::~KPsaTestPulse(void)
+KPtaTestPulse::~KPtaTestPulse(void)
 {
 
 }
 
-void KPsaTestPulse::InitializeMembers(void)
+void KPtaTestPulse::InitializeMembers(void)
 {
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
@@ -36,7 +36,7 @@ void KPsaTestPulse::InitializeMembers(void)
 	fPulse.resize(5000,0);
 }
 
-void KPsaTestPulse::CreateSineWave(void)
+void KPtaTestPulse::CreateSineWave(void)
 {
 	try{
 		for (unsigned int i = 0; i < fPulse.size(); i++) {
@@ -44,12 +44,12 @@ void KPsaTestPulse::CreateSineWave(void)
 		}
 	}
 	catch (out_of_range &e) {
-		cerr << "KPsaTestPulse::CreateSineWave. Exception caught: " << e.what() << endl;
+		cerr << "KPtaTestPulse::CreateSineWave. Exception caught: " << e.what() << endl;
 	}
 	
 }
 
-void KPsaTestPulse::CreateSquareWave(void)
+void KPtaTestPulse::CreateSquareWave(void)
 {
 	try{
 		for (unsigned int i = 0; i < fPulse.size(); i++) {
@@ -61,11 +61,11 @@ void KPsaTestPulse::CreateSquareWave(void)
 		}
 	}
 	catch (out_of_range &e) {
-		cerr << "KPsaTestPulse::CreateSquareWave. Exception caught: " << e.what() << endl;
+		cerr << "KPtaTestPulse::CreateSquareWave. Exception caught: " << e.what() << endl;
 	}
 }
 
-void KPsaTestPulse::CreateWhiteNoise(void)
+void KPtaTestPulse::CreateWhiteNoise(void)
 {
 	srand( time(NULL));
 	
@@ -75,6 +75,6 @@ void KPsaTestPulse::CreateWhiteNoise(void)
 		}
 	}
 	catch (out_of_range &e) {
-		cerr << "KPsaTestPulse::CreateWhiteNoise. Exception caught: " << e.what() << endl;
+		cerr << "KPtaTestPulse::CreateWhiteNoise. Exception caught: " << e.what() << endl;
 	}
 }

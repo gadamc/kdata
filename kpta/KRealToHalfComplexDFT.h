@@ -11,9 +11,9 @@
 #ifndef __KREALTOHALFCOMPLEXDFT_H__
 #define __KREALTOHALFCOMPLEXDFT_H__
 
-#include "KPsaProcessor.h"
+#include "KPtaProcessor.h"
 
-class KRealToHalfComplexDFT : public KPsaProcessor  { 
+class KRealToHalfComplexDFT : public KPtaProcessor  { 
 
 public:
   //Constructors

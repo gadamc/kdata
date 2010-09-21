@@ -11,9 +11,9 @@
 #ifndef __KBASELINEREMOVAL_H__
 #define __KBASELINEREMOVAL_H__
 
-#include "KPsaProcessor.h"
+#include "KPtaProcessor.h"
 
-class KBaselineRemoval : public KPsaProcessor { 
+class KBaselineRemoval : public KPtaProcessor { 
 
 public:
   //Constructors

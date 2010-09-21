@@ -1246,6 +1246,143 @@
 			sepNavWindowFrame = "{{19, 8}, {928, 865}}";
 		};
 	};
+	66DCA1831248D8B000FDE323 /* KBaselineRemoval.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 1616}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{73, 886}";
+		};
+	};
+	66DCA1841248D8B000FDE323 /* KBaselineRemoval.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 768}}";
+			sepNavSelRange = "{352, 0}";
+			sepNavVisRange = "{0, 1215}";
+			sepNavWindowFrame = "{{111, 61}, {1123, 878}}";
+		};
+	};
+	66DCA1851248D8B000FDE323 /* KHalfComplexPower.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 960}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{73, 1073}";
+		};
+	};
+	66DCA1861248D8B000FDE323 /* KHalfComplexPower.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 734}}";
+			sepNavSelRange = "{356, 0}";
+			sepNavVisRange = "{0, 620}";
+			sepNavWindowFrame = "{{134, 40}, {1123, 878}}";
+		};
+	};
+	66DCA1871248D8B000FDE323 /* KHalfComplexToRealDFT.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 4832}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{2823, 1030}";
+		};
+	};
+	66DCA1881248D8B000FDE323 /* KHalfComplexToRealDFT.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 944}}";
+			sepNavSelRange = "{372, 0}";
+			sepNavVisRange = "{0, 1314}";
+			sepNavWindowFrame = "{{157, 19}, {1123, 878}}";
+		};
+	};
+	66DCA1891248D8B000FDE323 /* KPatternRemoval.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 2704}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{73, 1035}";
+		};
+	};
+	66DCA18A1248D8B000FDE323 /* KPatternRemoval.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1300, 896}}";
+			sepNavSelRange = "{348, 0}";
+			sepNavVisRange = "{0, 1668}";
+			sepNavWindowFrame = "{{19, 145}, {1123, 878}}";
+		};
+	};
+	66DCA18B1248D8B000FDE323 /* KPtaProcessor.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 1888}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1059}";
+			sepNavWindowFrame = "{{42, 124}, {1123, 878}}";
+		};
+	};
+	66DCA18C1248D8B000FDE323 /* KPtaProcessor.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 912}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1630}";
+			sepNavWindowFrame = "{{88, 82}, {1123, 878}}";
+		};
+	};
+	66DCA18D1248D8B000FDE323 /* KPtaTestPulse.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 1296}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{679, 908}";
+			sepNavWindowFrame = "{{65, 103}, {1123, 878}}";
+		};
+	};
+	66DCA18E1248D8B000FDE323 /* KPtaTestPulse.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 880}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{95, 1014}";
+		};
+	};
+	66DCA18F1248D8B000FDE323 /* KPulseAnalysisChain.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 2832}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{73, 978}";
+			sepNavWindowFrame = "{{65, 103}, {1123, 878}}";
+		};
+	};
+	66DCA1901248D8B000FDE323 /* KPulseAnalysisChain.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 768}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1104}";
+		};
+	};
+	66DCA1911248D8B000FDE323 /* KRealToHalfComplexDFT.cxx */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 4528}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{105, 1590}";
+			sepNavWindowFrame = "{{88, 82}, {1123, 878}}";
+		};
+	};
+	66DCA1921248D8B000FDE323 /* KRealToHalfComplexDFT.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 944}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1312}";
+		};
+	};
+	66DCA1931248D8B000FDE323 /* Module.mk */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 1696}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{86, 1625}";
+			sepNavWindowFrame = "{{42, 124}, {1123, 878}}";
+		};
+	};
+	66DCA1941248D8B000FDE323 /* Module_libs.mk */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1064, 734}}";
+			sepNavSelRange = "{73, 0}";
+			sepNavVisRange = "{0, 83}";
+			sepNavWindowFrame = "{{19, 145}, {1123, 878}}";
+		};
+	};
 	66DE296A12475D4200A2644D /* rootScript_mergeKdsTree.C */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1202, 12432}}";

@@ -11,10 +11,10 @@
 #ifndef __KPULSEANALYSISCHAIN_H__
 #define __KPULSEANALYSISCHAIN_H__
 
-#include "KPsaProcessor.h"
+#include "KPtaProcessor.h"
 #include <vector>
 
-class KPulseAnalysisChain : public KPsaProcessor { 
+class KPulseAnalysisChain : public KPtaProcessor { 
 
 public:
   //Constructors
@@ -22,8 +22,8 @@ public:
   virtual ~KPulseAnalysisChain(void);
   //virtual void Clear(Option_t *opt = "C");
 	virtual bool RunProcess(void);
-	virtual void AddProcessor(KPsaProcessor *p);
-	virtual void AddProcessorAt(KPsaProcessor *p, unsigned int index);
+	virtual void AddProcessor(KPtaProcessor *p);
+	virtual void AddProcessorAt(KPtaProcessor *p, unsigned int index);
 	virtual void DeleteProcessors(void);
 
   virtual void SetIsOwner(bool anOpt = true);
@@ -36,7 +36,7 @@ public:
 	
   //setters
 private:
-	vector<KPsaProcessor*> fProcessorList;
+	vector<KPtaProcessor*> fProcessorList;
   bool fIsOwner; 
   //private methods
   void InitializeMembers(void);

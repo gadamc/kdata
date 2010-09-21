@@ -109,14 +109,14 @@ bool KRealToHalfComplexDFT::CalculateFFT(void)
 void KRealToHalfComplexDFT::SetInputPulse(const vector<double> &aPulse)
 {
 	//Set the input pulse See the base class
-	//KPsaProcessor::SetInputPulse(const vector<double> &aPulse)
+	//KPtaProcessor::SetInputPulse(const vector<double> &aPulse)
 	
 	bool reAllocate = false;
 	if(aPulse.size() != fInputPulse.size())
 		reAllocate = true;
 	
 	//set it using the base class.
-	KPsaProcessor::SetInputPulse(aPulse);
+	KPtaProcessor::SetInputPulse(aPulse);
 	fOutputPulse.resize(fInputPulse.size(),0);
 	
 	if(reAllocate) 
@@ -127,14 +127,14 @@ void KRealToHalfComplexDFT::SetInputPulse(const vector<double> &aPulse)
 void KRealToHalfComplexDFT::SetInputPulse(const vector<short> &aPulse)
 {
 	//Set the input pulse. See the base class
-	//KPsaProcessor::SetInputPulse(const vector<short> &aPulse)
+	//KPtaProcessor::SetInputPulse(const vector<short> &aPulse)
 	
 	bool reAllocate = false;
 	if(aPulse.size() != fInputPulse.size())
 		reAllocate = true;
 	
 	//set it using the base class.
-	KPsaProcessor::SetInputPulse(aPulse);
+	KPtaProcessor::SetInputPulse(aPulse);
 	fOutputPulse.resize(fInputPulse.size(),0);
 	
 	if(reAllocate) 
@@ -146,14 +146,14 @@ void KRealToHalfComplexDFT::SetInputPulse(const vector<short> &aPulse)
 void KRealToHalfComplexDFT::SetInputPulse(const vector<float> &aPulse)
 { 
 	//Set the input pulse See the base class
-	//KPsaProcessor::SetInputPulse(const vector<float> &aPulse)
+	//KPtaProcessor::SetInputPulse(const vector<float> &aPulse)
 	
 	bool reAllocate = false;
 	if(aPulse.size() != fInputPulse.size())
 		reAllocate = true;
 	
 	//set it using the base class.
-	KPsaProcessor::SetInputPulse(aPulse);
+	KPtaProcessor::SetInputPulse(aPulse);
 	fOutputPulse.resize(fInputPulse.size(),0);
 	
 	if(reAllocate) 
@@ -164,14 +164,14 @@ void KRealToHalfComplexDFT::SetInputPulse(const vector<float> &aPulse)
 void KRealToHalfComplexDFT::SetInputPulse(const vector<int> &aPulse)
 {
 	//Set the input pulse See the base class
-	//KPsaProcessor::SetInputPulse(const vector<int> &aPulse)
+	//KPtaProcessor::SetInputPulse(const vector<int> &aPulse)
 	
 	bool reAllocate = false;
 	if(aPulse.size() != fInputPulse.size())
 		reAllocate = true;
 	
 	//set it using the base class.
-	KPsaProcessor::SetInputPulse(aPulse);
+	KPtaProcessor::SetInputPulse(aPulse);
 	fOutputPulse.resize(fInputPulse.size(),0);
 	
 	if(reAllocate) 
@@ -182,14 +182,14 @@ void KRealToHalfComplexDFT::SetInputPulse(const vector<int> &aPulse)
 void KRealToHalfComplexDFT::SetInputPulse(const char* aFile)
 {
 	//Set the input pulse. See the base class
-	//KPsaProcessor::SetInputPulse(const char* aFile)
+	//KPtaProcessor::SetInputPulse(const char* aFile)
 	
 	//There's no way of knowing the size of the pulse, so we must
 	//reallocate the FFT arrays. 
 	bool reAllocate = true;
 	
 	//set it using the base class.
-	KPsaProcessor::SetInputPulse(aFile);
+	KPtaProcessor::SetInputPulse(aFile);
 	fOutputPulse.resize(fInputPulse.size(),0);
 	
 	if(reAllocate) 

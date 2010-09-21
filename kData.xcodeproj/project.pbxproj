@@ -300,10 +300,10 @@
 		66DCA1881248D8B000FDE323 /* KHalfComplexToRealDFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KHalfComplexToRealDFT.h; sourceTree = "<group>"; };
 		66DCA1891248D8B000FDE323 /* KPatternRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPatternRemoval.cxx; sourceTree = "<group>"; };
 		66DCA18A1248D8B000FDE323 /* KPatternRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPatternRemoval.h; sourceTree = "<group>"; };
-		66DCA18B1248D8B000FDE323 /* KPsaProcessor.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPsaProcessor.cxx; sourceTree = "<group>"; };
-		66DCA18C1248D8B000FDE323 /* KPsaProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPsaProcessor.h; sourceTree = "<group>"; };
-		66DCA18D1248D8B000FDE323 /* KPsaTestPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPsaTestPulse.cxx; sourceTree = "<group>"; };
-		66DCA18E1248D8B000FDE323 /* KPsaTestPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPsaTestPulse.h; sourceTree = "<group>"; };
+		66DCA18B1248D8B000FDE323 /* KPtaProcessor.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPtaProcessor.cxx; sourceTree = "<group>"; };
+		66DCA18C1248D8B000FDE323 /* KPtaProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPtaProcessor.h; sourceTree = "<group>"; };
+		66DCA18D1248D8B000FDE323 /* KPtaTestPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPtaTestPulse.cxx; sourceTree = "<group>"; };
+		66DCA18E1248D8B000FDE323 /* KPtaTestPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPtaTestPulse.h; sourceTree = "<group>"; };
 		66DCA18F1248D8B000FDE323 /* KPulseAnalysisChain.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KPulseAnalysisChain.cxx; sourceTree = "<group>"; };
 		66DCA1901248D8B000FDE323 /* KPulseAnalysisChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPulseAnalysisChain.h; sourceTree = "<group>"; };
 		66DCA1911248D8B000FDE323 /* KRealToHalfComplexDFT.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KRealToHalfComplexDFT.cxx; sourceTree = "<group>"; };
@@ -733,10 +733,10 @@
 				66DCA1881248D8B000FDE323 /* KHalfComplexToRealDFT.h */,
 				66DCA1891248D8B000FDE323 /* KPatternRemoval.cxx */,
 				66DCA18A1248D8B000FDE323 /* KPatternRemoval.h */,
-				66DCA18B1248D8B000FDE323 /* KPsaProcessor.cxx */,
-				66DCA18C1248D8B000FDE323 /* KPsaProcessor.h */,
-				66DCA18D1248D8B000FDE323 /* KPsaTestPulse.cxx */,
-				66DCA18E1248D8B000FDE323 /* KPsaTestPulse.h */,
+				66DCA18B1248D8B000FDE323 /* KPtaProcessor.cxx */,
+				66DCA18C1248D8B000FDE323 /* KPtaProcessor.h */,
+				66DCA18D1248D8B000FDE323 /* KPtaTestPulse.cxx */,
+				66DCA18E1248D8B000FDE323 /* KPtaTestPulse.h */,
 				66DCA18F1248D8B000FDE323 /* KPulseAnalysisChain.cxx */,
 				66DCA1901248D8B000FDE323 /* KPulseAnalysisChain.h */,
 				66DCA1911248D8B000FDE323 /* KRealToHalfComplexDFT.cxx */,

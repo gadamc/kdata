@@ -1,6 +1,6 @@
 //______________________________________________________________________
 //
-// KPsaTestPulse.h
+// KPtaTestPulse.h
 // Author: Adam Cox <mailto:adam.cox@kit.edu>
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved
@@ -8,19 +8,19 @@
 //
 
 
-#ifndef __KPSATESTPULSE_H__
-#define __KPSATESTPULSE_H__
+#ifndef __KPTATESTPULSE_H__
+#define __KPTATESTPULSE_H__
 
 #include <vector>
 
 using namespace std;
 
-class KPsaTestPulse  { 
+class KPtaTestPulse  { 
 
 public:
   //Constructors
-  KPsaTestPulse(void);
-  virtual ~KPsaTestPulse(void);
+  KPtaTestPulse(void);
+  virtual ~KPtaTestPulse(void);
 
 	virtual void CreateSineWave(void);
 	virtual void CreateSquareWave(void);
@@ -51,4 +51,4 @@ private:
 };
 
 
-#endif // __KPSATESTPULSE_H__
+#endif // __KPTATESTPULSE_H__

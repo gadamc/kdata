@@ -11,9 +11,9 @@
 #ifndef __KPATTERNREMOVAL_H__
 #define __KPATTERNREMOVAL_H__
 
-#include "KPsaProcessor.h"
+#include "KPtaProcessor.h"
 
-class KPatternRemoval : public KPsaProcessor { 
+class KPatternRemoval : public KPtaProcessor { 
 
 public:
   //Constructors

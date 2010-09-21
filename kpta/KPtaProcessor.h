@@ -1,5 +1,5 @@
 /*
- *  KPsaProcessor.h
+ *  KPtaProcessor.h
  *  kData
  *
  *  Created by Adam Cox on 8/24/10.
@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef __KPSAPROCESSOR_H__
-#define __KPSAPROCESSOR_H__
+#ifndef __KPTAPROCESSOR_H__
+#define __KPTAPROCESSOR_H__
 
 #include <stdexcept> 
 #include <iostream>
@@ -16,11 +16,11 @@
 
 using namespace std;
 
-class KPsaProcessor  { 
+class KPtaProcessor  { 
 
 public:
-  KPsaProcessor(void);
-  virtual ~KPsaProcessor(void);
+  KPtaProcessor(void);
+  virtual ~KPtaProcessor(void);
   
 	virtual void SetInputPulse(const vector<double> &aPulse){fInputPulse = aPulse;} //Set the input pulse
 	virtual void SetInputPulse(const vector<short> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse 
@@ -56,4 +56,4 @@ private:
 };
 
 
-#endif // __KPSAPROCESSOR_H__
+#endif // __KPTAPROCESSOR_H__
