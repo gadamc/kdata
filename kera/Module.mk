@@ -49,8 +49,8 @@ KERA_XTRAINCS := $(ERAINCS)
 #if this module depends on other modules in this project you MUST
 #make sure that this MODNAME is listed AFTER all of the MODNAMEs
 #that it depends on.
-KERA_XTRALIBS := $(ERALIBS) $(KDSLIBS) $(KPSALIBS)
-KERA_LIBDEP   := $(ERA_LIB) $(KDS_LIB) $(KPSA_LIB)
+KERA_XTRALIBS := $(ERALIBS) $(KDSLIBS) $(KPTALIBS)
+KERA_LIBDEP   := $(ERA_LIB) $(KDS_LIB) $(KPTA_LIB)
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KERA_LH     := $(KERA_DIRI)/$(MODNAME)_LinkDef.h
