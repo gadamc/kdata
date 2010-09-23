@@ -1,6 +1,6 @@
 
 vector<Float_t> GetLDB(string channel, string qualdir, Int_t nblines=0) {
-
+  
   string file=qualdir+"/baseline_"+channel+".txt";
   ifstream buf(file.c_str(),ios::in);
   ULong_t ti, tf; Float_t base; vector<Float_t> ldb;
@@ -11,18 +11,18 @@ vector<Float_t> GetLDB(string channel, string qualdir, Int_t nblines=0) {
     cout << nblines<<" "<<ldb.size()<<endl;
     exit(0);
   }
-
+  
   return ldb;
 }
 
 int UpdateIonEnergy(TChain* chain, string bolo, string eionntp, string qualdir) {
-
+  
   ULong64_t date=0;
   chain->SetBranchStatus("*",0);
   chain->SetBranchAddress("DateSec",&date);
   chain->SetBranchStatus("DateSec",1);
   Int_t nbevts=chain->GetEntries();
-
+  
   vector<ULong_t> ti,tf; ULong_t a,b;
   string file=qualdir+"/period_list.txt";
   ifstream buf(file.c_str(),ios::in);
@@ -31,7 +31,7 @@ int UpdateIonEnergy(TChain* chain, string bolo, string eionntp, string qualdir) 
   }
   buf.close();
   int nbperiods=ti.size();
-
+  
   TFile f(eionntp.c_str(),"UPDATE");
   TTree* Eion = (TTree*)f.Get("energytree");
   if (Eion->GetEntries() != nbevts) cout << "Pbl tree size" << endl;
@@ -68,7 +68,7 @@ int UpdateIonEnergy(TChain* chain, string bolo, string eionntp, string qualdir) 
     v_ldbgar1=GetLDB(ChannelName(bolo,"gar1"),qualdir,nbperiods);
     Eion->Branch("LdbGar1",&ldbgar1,"LdbGar1/F"); ldbgar1=v_ldbgar1[0];
   }
-
+  
   ULong_t ti_loc=ti[0], tf_loc=tf[0];
   Int_t p=0;
   for (Int_t i=0; i<nbevts; i++) {
@@ -79,21 +79,21 @@ int UpdateIonEnergy(TChain* chain, string bolo, string eionntp, string qualdir) 
       ti_loc=ti[p];
       tf_loc=tf[p];
       if (date > tf_loc || date < ti_loc) 
-	cout << "Event timing error.. "<<date<<" "<<ti_loc<<" "<<tf_loc<<endl;
+        cout << "Event timing error.. "<<date<<" "<<ti_loc<<" "<<tf_loc<<endl;
       ldbcol1=v_ldbcol1[p];
       if (boloflag == 2) {
-	ldbgar1=v_ldbgar1[p];
+        ldbgar1=v_ldbgar1[p];
       } else {
-	ldbcol2=v_ldbcol2[p];
-	ldbvet1=v_ldbvet1[p];
-	ldbvet2=v_ldbvet2[p];
-	if (boloflag == 0) {
-	  ldbgar1=v_ldbgar1[p];
-	  ldbgar2=v_ldbgar2[p];
-	}
+        ldbcol2=v_ldbcol2[p];
+        ldbvet1=v_ldbvet1[p];
+        ldbvet2=v_ldbvet2[p];
+        if (boloflag == 0) {
+          ldbgar1=v_ldbgar1[p];
+          ldbgar2=v_ldbgar2[p];
+        }
       }
     }
-
+    
     Eion->GetBranch("LdbCol1")->Fill();
     if (boloflag == 2) {
       Eion->GetBranch("LdbGar1")->Fill();
@@ -102,19 +102,19 @@ int UpdateIonEnergy(TChain* chain, string bolo, string eionntp, string qualdir) 
       Eion->GetBranch("LdbVet1")->Fill();
       Eion->GetBranch("LdbVet2")->Fill();
       if (boloflag == 0) {
-	Eion->GetBranch("LdbGar1")->Fill();
-	Eion->GetBranch("LdbGar2")->Fill();
+        Eion->GetBranch("LdbGar1")->Fill();
+        Eion->GetBranch("LdbGar2")->Fill();
       }
     }
     if (fmod((double)i,(double)100000) == 0) {cout << i << endl;}
   }
-
+  
   //  Int_t optionecriture=TObject::kWriteDelete; // root
   Int_t optionecriture=TObject::kOverwrite; // root
   f.cd(); Eion->Write(0,optionecriture);
   f.Close();
   chain->SetBranchStatus("*",0);
-
+  
   string simplentp=(eionntp.substr(0,eionntp.length()-5))+"_simple.root";
   system(("cp "+eionntp+" "+simplentp).c_str());
   return 0;
@@ -122,13 +122,13 @@ int UpdateIonEnergy(TChain* chain, string bolo, string eionntp, string qualdir) 
 
 
 int UpdateHeatEnergy(TChain* chain, string bolo, string eheatntp, string qualdir) {
-
+  
   ULong64_t date=0;
   chain->SetBranchStatus("*",0);
   chain->SetBranchAddress("DateSec",&date);
   chain->SetBranchStatus("DateSec",1);
   Int_t nbevts=chain->GetEntries();
-
+  
   vector<ULong_t> ti,tf; ULong_t a,b;
   string file=qualdir+"/period_list.txt";
   ifstream buf(file.c_str(),ios::in);
@@ -137,15 +137,15 @@ int UpdateHeatEnergy(TChain* chain, string bolo, string eheatntp, string qualdir
   }
   buf.close();
   int nbperiods=ti.size();
-
+  
   TFile f(eheatntp.c_str(),"UPDATE");
   TTree* Eheat = (TTree*)f.Get("energytree");
   if (Eheat->GetEntries() != nbevts) cout << "Pbl tree size" << endl;
-
+  
   vector<Float_t> v_ldbheat=GetLDB(ChannelName(bolo,"heat"),qualdir,nbperiods);
   Float_t ldbheat=v_ldbheat[0];
   Eheat->Branch("LdbHeat",&ldbheat,"LdbHeat/F");
-
+  
   ULong_t ti_loc=ti[0], tf_loc=tf[0];
   Int_t p=0;
   for (Int_t i=0; i<nbevts; i++) {
@@ -156,14 +156,14 @@ int UpdateHeatEnergy(TChain* chain, string bolo, string eheatntp, string qualdir
       ti_loc=ti[p];
       tf_loc=tf[p];
       if (date > tf_loc || date < ti_loc) 
-	cout << "Event timing error.. "<<date<<" "<<ti_loc<<" "<<tf_loc<<endl;
+        cout << "Event timing error.. "<<date<<" "<<ti_loc<<" "<<tf_loc<<endl;
       ldbheat=v_ldbheat[p];
     }
-
+    
     Eheat->GetBranch("LdbHeat")->Fill();
     if (fmod((double)i,(double)100000) == 0) {cout << i << endl;}
   }
-
+  
   //  Int_t optionecriture=TObject::kWriteDelete; // root
   Int_t optionecriture=TObject::kOverwrite;
   f.cd(); Eheat->Write(0,optionecriture);

@@ -27,16 +27,12 @@ KBolometerRecord::KBolometerRecord(void)
 	//we must take care of members on the heap outside of 
 	//InitializeMembers...
 	
-	//fDetectorName=0;
-	//fDetectorName = new TString;
-	
 }
 
 KBolometerRecord::KBolometerRecord(const KBolometerRecord &aRec)
 : KSubRecord(aRec)
 {
-	//fDetectorName = 0;
-	//fDetectorName = new TString;
+	
 	CopyLocalMembers(aRec);
 	
 }
@@ -57,10 +53,7 @@ void KBolometerRecord::CopyLocalMembers(const KBolometerRecord &aRec)
 	
 	SetDetectorName(aRec.fDetectorName.c_str());
 	
-	//SetVoie(aRec.GetVoie());
-	//SetHeatPositiveThreshold(aRec.GetHeatPositiveThreshold());
-	//SetHeatNegativeThreshold(aRec.GetHeatNegativeThreshold());
-	//SetTimeOfLastThresholdChange(aRec.GetTimeOfLastThresholdChange());
+  
 }
 
 KBolometerRecord::~KBolometerRecord(void)
@@ -68,11 +61,7 @@ KBolometerRecord::~KBolometerRecord(void)
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
 	
-	//clean up 
-	//if(fDetectorName!=0){
-	//	delete fDetectorName;
-	//	fDetectorName=0;
-	//}
+  
 }
 
 void KBolometerRecord::Clear(Option_t *opt)
@@ -98,14 +87,11 @@ void KBolometerRecord::Clear(Option_t *opt)
 
 void KBolometerRecord::InitializeMembers(void)
 {
+  //
+  
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-	//SetDetectorNumber(-99);
-	//SetDetectorName("",1);
-	//SetVoie(-99);
-	//SetHeatPositiveThreshold(-99);
-	//SetHeatNegativeThreshold(-99);
-	//SetTimeOfLastThresholdChange(-99);
+	
 }
 
 void KBolometerRecord::SetDetectorName(const Char_t* aWord)
@@ -154,66 +140,7 @@ Bool_t KBolometerRecord::IsSame(const KBolometerRecord &aRec, Bool_t bPrint) con
 		else
 			return false;  
 	}
-	
-	/*
-	if(fDetectorName != 0 && aRec.fDetectorName != 0){
-		if(*fDetectorName != *aRec.fDetectorName){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KBolometerRecord fDetectorName Not Equal. lhs: " 
-				<< *fDetectorName << " != rhs " << *aRec.fDetectorName << endl;		
-			else
-				return false;  
-		}
-	}
-	else {
-		if (bPrint) 
-			cout << "KBolometerRecord a fDetectorName pointer is zero " 
-			<< fDetectorName << " != rhs " << aRec.fDetectorName << endl;		
-		else
-			return false;
-	}
-*/
-	/*if(fHeatPositiveThreshold != aRec.fHeatPositiveThreshold){
-		if (bPrint) 
-			cout << "KBolometerRecord fHeatPositiveThreshold Not Equal. lhs: " 
-			<< fHeatPositiveThreshold << " != rhs " << aRec.fHeatPositiveThreshold << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}*/
-	
-	/*if(fHeatNegativeThreshold != aRec.fHeatNegativeThreshold){
-		if (bPrint) 
-			cout << "KBolometerRecord fHeatNegativeThreshold Not Equal. lhs: " 
-			<< fHeatNegativeThreshold << " != rhs " << aRec.fHeatNegativeThreshold << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}*/
-	
-	/*if(fTimeOfLastThresholdChange != aRec.fTimeOfLastThresholdChange){
-		if (bPrint) 
-			cout << "KBolometerRecord fTimeOfLastThresholdChange Not Equal. lhs: " 
-			<< fTimeOfLastThresholdChange << " != rhs " << aRec.fTimeOfLastThresholdChange << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}*/
-	
-	/*if(fVoie != aRec.fVoie){
-		if (bPrint) 
-			cout << "KBolometerRecord fVoie Not Equal. lhs: " 
-			<< fVoie << " != rhs " << aRec.fVoie << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}*/
-	
+		
 	return bIsEqual;
 }
 
@@ -226,5 +153,21 @@ void KBolometerRecord::Compact(void)
 	
 	KSubRecord::Compact();
 }
+
+Bool_t KBolometerRecord::IsDetector(const char* name)
+{
+  //returns true if name is equal to the string fDetectorName.
+  //This method is quite useful when using the TTree::Draw methods 
+  //and accessing data via the class methods instead of the variable names
+  //
+  if(name == 0) return false;
+  
+  if(strcmp(fDetectorName.c_str(), name) == 0)
+    return true;
+  
+  else return false;
+
+}
+
 
 
