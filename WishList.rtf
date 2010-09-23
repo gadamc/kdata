@@ -5,26 +5,14 @@
 
 \f0\fs20 \cf0 Preceed each "wish" with a marker *** and then write your descritption. \
 \
-*** method to output smaller EdwDS files based upon a time window, specific bolometer, group of bolometers?, calibration data only, Ba gamma calibration only, Wimp only, heat only, fiducial only, coincidence window... the maximum ion pulse offset time is a few milliseconds\
+*** method to output smaller KData files based upon a time window, specific bolometer, group of bolometers?, calibration data only, Ba gamma calibration only, Wimp only, heat only, fiducial only, coincidence window... the maximum ion pulse offset time is a few milliseconds\
 \
 *** write methods to access Muon System Event Quality Bits.\
-\
-*** Maybe we should remove the Samba Sub Records and make that information available as part of the Bolo Sub Record. There is always a Samba record for each Bolo Sub Record - not more, and not less. Given the complications due to having this TRef around, and some potential other bugs that I can't seem to figure out, maybe our lives would be simpler if we just included the samba information in the bolo sub record. eventually, the samba information would migrate to the raw data level, but for now we could put it in the common bolo sub record base. \
-\
-*** Make Objects Sortable! Looking at page 285 of the ROOT Users's Guide, we can make our objects sortable if we provide two methods, IsSortable and Compare(TObject *obj). The IsSortable will return true and the Compare method will take two objects and return a 1, -1 or 0 depending upon how you want to order them. For example, we could make the subRecords sortable by comparing their event times. This would allow us to sort them by calling the Collection Classes's Sort methods. TObjArray and TClonesArray have Sort methods, which will sort the objects in the collection if those objects have a method IsSortable that returns true and has a Compare method. This might be a very convenient way to implement sorting of the events. \
 \
 *** Add data access methods to the EdwCoincEvent class. otherwise, its too hard to use because one has to be familiar with the TObjectArray methods and also the Event methods. \
 \
 *** Add to the EdwAnalysis class a way of finding physics coincidence events and the providing access to those events.\
 	group by TRef?? or TRefArray?\
-\
-*** save a text file in skim file that explains what is in the skim file. \
-\
-*** Add ability in the code to reproduce the original Muon Data structure and the original Bolo DST files (or others...). This way, "legacy" users could still use their old routines by "using" the new data structures. This task is very very very far down the wish list.\
-\
-*** Clean up the different filling and merging scripts into one script, which will do the complete job, maybe together with parallel processing.\
-\
-*** add ability to write out ascii files of the data from the ROOT files for the "old timers"\
 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
 
@@ -33,11 +21,7 @@
 	TODO - move these arrays into the Muon Raw event records whenver the Raw Event Structure gets built.\
 \
 \
-*** implement TString in subRecord classes (and use TClonesArray::Delete instead of TClonesArray::Clear) whenever ROOT releases a new version of the code that includes changes to TTree::Scan/Draw. ROOT v5.28 will be released on June 30 2010 and we can implement this at that time (though we will then force everybody to upgrade to that version of ROOT in order to properly Scan/Draw)\
-ALSO - this will increase performance because there are lots of calls allocating and deleting memory just in order to store the names of the detectors! One option is that, since we can't see the bolometer detector names in the TTree Show methods, and because we already include the TCuts, that we just remove the names. They take up unnecessary space and time for allocation. \
-\
-*** Add a SetStyleEdwPlain method in the Analysis class for a nice unified look of plots.\
-	-- good idea! But this might be better to provide a .rootlogon.C file for users instead of putting it into a compiled class. Its not really an analysis function, so it shouldn't go in the Analysis class. Maybe create a "EdwStyle" class?? but still. probably too hard to put this into a compiled class. A rootlogon.C script would contain all of these unified setttings and would be automatically loaded at the beginning of any ROOT session.\
+*** provide a .rootlogon.C file for users. A rootlogon.C script would contain all of these unified setttings and would be automatically loaded at the beginning of any ROOT session.\
 \
 --------------------- Completed / Rejected Wish List Items -------------------------------\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural

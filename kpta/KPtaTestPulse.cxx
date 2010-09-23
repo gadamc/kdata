@@ -29,8 +29,8 @@ KPtaTestPulse::~KPtaTestPulse(void)
 
 void KPtaTestPulse::InitializeMembers(void)
 {
-  //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
-  //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+  
+  
 	fAmp = 100;
 	fPeriod = 100;
 	fPulse.resize(5000,0);

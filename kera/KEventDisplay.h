@@ -13,12 +13,13 @@
 
 #include "Rtypes.h"
 #include "EdwEvent.h"
-#include "KHLABolometerRecord.h"
 #include <vector>
+#include "KHLABolometerRecord.h"
 
 class TCanvas;
 class TH1D;
 class TObject;
+class TString;
 
 class KEventDisplay  { 
 
@@ -36,6 +37,8 @@ public:
   
   //setters
   void SetEvent(EdwEvent *e, KHLABolometerRecord *b);
+  void SetEvent(EdwEvent *e, const char* boloName);
+  
   void SetApplyBasicPulseProcessing(Bool_t anOpt = true){ fApplyBasicPulseProcessing = anOpt;  }
   
   
@@ -48,6 +51,7 @@ private:
   KHLABolometerRecord *fBolo;
   vector<Int_t> fPulseIndex;
   UInt_t fNumPulseHists; //number of fPulseHists.
+  string fBoloName;
   
   Bool_t fApplyBasicPulseProcessing;
   
