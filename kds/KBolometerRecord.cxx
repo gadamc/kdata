@@ -160,6 +160,12 @@ Bool_t KBolometerRecord::IsDetector(const char* name)
   //This method is quite useful when using the TTree::Draw methods 
   //and accessing data via the class methods instead of the variable names
   //
+  //Use it like this:
+  //
+  //t->Draw("fQvalue:fEnergyRecoil","fBolo.IsDetector(\"ID3\")")
+  //
+  //
+  
   if(name == 0) return false;
   
   if(strcmp(fDetectorName.c_str(), name) == 0)

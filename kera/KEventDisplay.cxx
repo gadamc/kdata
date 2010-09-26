@@ -24,7 +24,7 @@
 using namespace std;
 ClassImp(KEventDisplay);
 
-const int __k_NumDisplayHists = 9;
+const UInt_t __k_NumDisplayHists = 9;
 
 KEventDisplay::KEventDisplay(void)
 {
@@ -137,123 +137,233 @@ void KEventDisplay::SetEvent(EdwEvent *e, const char* boloName)
 void KEventDisplay::SetUpCanvas(void)
 {
   if(fStatCanvas == 0){
-    fStatCanvas = new TCanvas("KED_fStatCanvas", "KEventDisplay - Stat Canvas", 715, 10, 300, 600);
+    Int_t width = 250;
+    Int_t height = 300;
+    Int_t textHeightInPixels = 15;
+    Int_t textFont = 43;
+    if(fBolo != 0){
+      width = 500;
+      height = 600;
+    }
+      
+    fStatCanvas = new TCanvas("KED_fStatCanvas", "Stat Canvas", 715, 10, width, 600);
     fStatCanvas->cd();
     
     TText *myText;
     myText = new TText(0,0, "");
     myText->SetName("detectorName");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(30);
     myText->Draw();
     
     myText = new TText(0,0, "");
     myText->SetName("qvalue");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("erecoil");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("Ecollectrode1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("EBasecollectrode1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("ENoisecollectrode1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("Ecollectrode2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("EBasecollectrode2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("ENoisecollectrode2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("Eveto1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("EBaseveto1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("ENoiseveto1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
         
     myText = new TText(0, 0, "");
     myText->SetName("Eveto2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("EBaseveto2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("ENoiseveto2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
         
     myText = new TText(0, 0, "");
     myText->SetName("Eguard1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("EBaseguard1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("ENoiseguard1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
         
     myText = new TText(0, 0, "");
     myText->SetName("Eguard2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("EBaseguard2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("ENoiseguard2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
         
     myText = new TText(0, 0, "");
     myText->SetName("Eheat1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("EBaseheat1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("ENoiseheat1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
         
     myText = new TText(0, 0, "");
     myText->SetName("Eheat2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("EBaseheat2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
     
     myText = new TText(0, 0, "");
     myText->SetName("ENoiseheat2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
 
+    myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderRun");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderNum");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderDateSec");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+   
+    myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderDateMuSec");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderHumanDate");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderSambaDelay");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderTriggerBit1");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderTriggerBit2");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
     
   }
 
   if(fPulseCanvas == 0){
-    fPulseCanvas = new TCanvas("KED_fPulseCanvas", "KEventDisplay - Pulse Canvas", 10, 10, 700, 700);
+    fPulseCanvas = new TCanvas("KED_fPulseCanvas", "Pulse Canvas", 10, 10, 700, 700);
     fPulseCanvas->Divide(3,3);
     //fPulseCanvas->cd(1);
   }
@@ -267,11 +377,11 @@ void KEventDisplay::DrawStatsCanvas(void)
   
   fStatCanvas->cd();
   
+  Double_t yTop = 0.98;
   Double_t ySpace = 0.03;
-  Double_t yPos = 0.98;
-  Double_t xLeft = 0.05;
-
-   
+  Double_t yPos = yTop;
+  Double_t xLeft = 0.02;
+  
   TString aString;
   string EUnit = "keV";
   
@@ -281,8 +391,116 @@ void KEventDisplay::DrawStatsCanvas(void)
     aText->Draw();
   } 
   
-  if(fBolo != 0){
+  EdwEventHeader *header = fEdwEvent->Header();
+
+  
+  if(fEdwEvent != 0 && header != 0){
+    //now draw the raw pulse stats.
+    yPos -= 0.01;
     
+    aText = (TText *)gPad->GetPrimitive("edwHeaderRun");
+    if(aText){
+      aString.Form("%s %s", "Run ", header->Run().c_str());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
+    aText = (TText *)gPad->GetPrimitive("edwHeaderNum");
+    if(aText){
+
+      aString.Form("%s %d", "Event Num ", header->Num());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
+    yPos -= 0.01;
+    
+    aText = (TText *)gPad->GetPrimitive("edwHeaderDateSec");
+    if(aText){
+      aString.Form("%s %d", "DateSec ", header->DateSec());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else  {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
+    aText = (TText *)gPad->GetPrimitive("edwHeaderDateMuSec");
+    if(aText){
+      aString.Form("%s %d", "DateMuSec ", header->DateMuSec());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
+    yPos -= 0.01;
+    
+    aText = (TText *)gPad->GetPrimitive("edwHeaderHumanDate");
+    if(aText){
+      TTimeStamp eventTime(header->DateSec(), header->DateMuSec()*1000.);
+      aString.Form("%s",eventTime.AsString("c"));
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
+    yPos -= 0.01;
+    
+    aText = (TText *)gPad->GetPrimitive("edwHeaderSambaDelay");
+    if(aText){
+      aString.Form("%s %#.4f","Samba Delay ", header->SambaDelay());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else if(aText) {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
+    aText = (TText *)gPad->GetPrimitive("edwHeaderTriggerBit1");
+    if(aText){
+      aString.Form("%s 0x%X","Trigger Bit 1 ", header->TriggerBit(1));
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
+    aText = (TText *)gPad->GetPrimitive("edwHeaderTriggerBit2");
+    if(aText){
+      aString.Form("%s 0x%X","Trigger Bit 2 ", header->TriggerBit(2));
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
+
+  }
+  
+  if(fBolo != 0){
+    yPos = yTop - ySpace -0.01;
+    xLeft = xLeft + 0.50 + 0.02;
+
     aText = (TText *)gPad->GetPrimitive("qvalue");
     if(aText){
       //double qval = fBolo->GetQvalue();
@@ -401,9 +619,7 @@ void KEventDisplay::DrawStatsCanvas(void)
       aText->SetText(0, 0, ""); 
       aText->Draw();
     }
-    
-    
-    
+        
     yPos-= 0.01;
     
     aText = (TText *)gPad->GetPrimitive("Ecollectrode2");
@@ -509,7 +725,6 @@ void KEventDisplay::DrawStatsCanvas(void)
       aText->Draw();
     }
     
-    
     yPos-= 0.01;
     
     aText = (TText *)gPad->GetPrimitive("Eguard1");
@@ -582,7 +797,9 @@ void KEventDisplay::DrawStatsCanvas(void)
 
     
   }
-    
+
+  
+  
     
   
 }
@@ -599,7 +816,7 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
 
   if(fPulseHists == 0){
     fPulseHists = new TH1D[__k_NumDisplayHists];
-    for(Int_t i = 0; i < __k_NumDisplayHists; i++)
+    for(UInt_t i = 0; i < __k_NumDisplayHists; i++)
       fPulseHists[i].AddDirectory(0); //don't let these be deleted by any TFiles that get deleted.
   }
 
@@ -646,12 +863,12 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
     fNumPulseHists = 0;
     
     if(fBolo != 0){
-      if(fPulseIndex.size() != fBolo->GetNumPulseRecords()){
+      if((Int_t)fPulseIndex.size() != fBolo->GetNumPulseRecords()){
         cout << "KEventDisplay - Number of Pulses Mismatch. Please submit a bug report to https://edwdev-ik.fzk.de/bugs" << endl;
         cout << "EdwEvent Found " << fPulseIndex.size() << endl;
         cout << "KHLABolometrRecord Found " << fBolo->GetNumPulseRecords() << endl;
       }
-      fNumPulseHists = (fPulseIndex.size() >= fBolo->GetNumPulseRecords()) ? fPulseIndex.size() : fBolo->GetNumPulseRecords();
+      fNumPulseHists = ((Int_t)fPulseIndex.size() >= fBolo->GetNumPulseRecords()) ? fPulseIndex.size() : fBolo->GetNumPulseRecords();
     }
     else {
       fNumPulseHists = fPulseIndex.size();
