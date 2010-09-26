@@ -53,7 +53,7 @@ public:
   KBolometerRecord* GetBolo(void) const { return fBoloRecord; }
   Bool_t IsSearchLocally(void){return fSearchLocally;  }
   Bool_t IsForceRemoteSearch(void){return fForceRemoteSearch;  }
-  
+  KEventDisplay* GetDisplay(void) {return fDisplay;  }
   
   //setters
   void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }

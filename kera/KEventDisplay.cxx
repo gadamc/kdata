@@ -70,6 +70,19 @@ void KEventDisplay::InitializeMembers(void)
 {
   fPulseIndex.clear();
   fNumPulseHists = 0;
+  fResizeStatWindow = true;
+}
+
+void KEventDisplay::DisplayEvent(EdwEvent *e, KHLABolometerRecord *b)
+{
+  SetEvent(e,b);
+  DisplayEvent();
+}
+
+void KEventDisplay::DisplayEvent(EdwEvent *e, const char* boloName)
+{
+  SetEvent(e,boloName);
+  DisplayEvent();
 }
 
 void KEventDisplay::DisplayEvent()
@@ -110,7 +123,11 @@ void KEventDisplay::SetEvent(EdwEvent *e, KHLABolometerRecord *b)
 
   fEdwEvent = e;
   fBoloName = b->GetDetectorName();
+  
+  if(fBolo == 0)
+    fResizeStatWindow = true;
   fBolo = b;
+  
   
   //need to find the appropriate pulses
   if(!SetUpPulses()){
@@ -125,6 +142,9 @@ void KEventDisplay::SetEvent(EdwEvent *e, const char* boloName)
   
   fEdwEvent = e;
   fBoloName = boloName;
+  if(fBolo != 0)
+    fResizeStatWindow = true;
+  
   fBolo = 0;
   //need to find the appropriate pulses
   if(!SetUpPulses()){
@@ -136,17 +156,16 @@ void KEventDisplay::SetEvent(EdwEvent *e, const char* boloName)
 
 void KEventDisplay::SetUpCanvas(void)
 {
+  Int_t width = 250;
+  Int_t height = 300;
+  
+  
   if(fStatCanvas == 0){
-    Int_t width = 250;
-    Int_t height = 300;
-    Int_t textHeightInPixels = 15;
+
+    Int_t textHeightInPixels = 14;
     Int_t textFont = 43;
-    if(fBolo != 0){
-      width = 500;
-      height = 600;
-    }
-      
-    fStatCanvas = new TCanvas("KED_fStatCanvas", "Stat Canvas", 715, 10, width, 600);
+ 
+    fStatCanvas = new TCanvas("KED_fStatCanvas", "Stat Canvas", 715, 10, width, height);
     fStatCanvas->cd();
     
     TText *myText;
@@ -164,6 +183,42 @@ void KEventDisplay::SetUpCanvas(void)
     
     myText = new TText(0, 0, "");
     myText->SetName("erecoil");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("eventFlag");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("chi2Flag");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("voltageFlag");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("ionFlag");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+
+    myText = new TText(0, 0, "");
+    myText->SetName("cutFlag");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
+    myText->SetName("ionPulseTimeOffset");
     myText->SetTextFont(textFont);
     myText->SetTextSizePixels(textHeightInPixels);
     myText->Draw();
@@ -319,6 +374,12 @@ void KEventDisplay::SetUpCanvas(void)
     myText->Draw();
     
     myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderSambaNumber");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
     myText->SetName("edwHeaderNum");
     myText->SetTextFont(textFont);
     myText->SetTextSizePixels(textHeightInPixels);
@@ -343,6 +404,12 @@ void KEventDisplay::SetUpCanvas(void)
     myText->Draw();
     
     myText = new TText(0, 0, "");
+    myText->SetName("edwHeaderHumanDateNotify");
+    myText->SetTextFont(textFont);
+    myText->SetTextSizePixels(textHeightInPixels);
+    myText->Draw();
+    
+    myText = new TText(0, 0, "");
     myText->SetName("edwHeaderSambaDelay");
     myText->SetTextFont(textFont);
     myText->SetTextSizePixels(textHeightInPixels);
@@ -361,7 +428,20 @@ void KEventDisplay::SetUpCanvas(void)
     myText->Draw();
     
   }
-
+  
+  if(fBolo != 0){
+    width = 550;
+    height = 700;
+  }
+  else {
+    width = 250;
+    height = 300;
+  }
+  if(fResizeStatWindow) fStatCanvas->SetWindowSize(width, height);
+  fResizeStatWindow = false;  //if the user manipulates the size of the stat window
+                              //then it won't change sizes unless the bolometer
+                              //record pointer changes from 0 to non-zero or vice-versa.
+  
   if(fPulseCanvas == 0){
     fPulseCanvas = new TCanvas("KED_fPulseCanvas", "Pulse Canvas", 10, 10, 700, 700);
     fPulseCanvas->Divide(3,3);
@@ -409,6 +489,18 @@ void KEventDisplay::DrawStatsCanvas(void)
       aText->Draw();
     }
     
+    aText = (TText *)gPad->GetPrimitive("edwHeaderSambaNumber");
+    if(aText){
+      
+      aString.Form("%s %d", "Samba DAQ ", header->SambaNum());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
+    
     aText = (TText *)gPad->GetPrimitive("edwHeaderNum");
     if(aText){
 
@@ -446,6 +538,17 @@ void KEventDisplay::DrawStatsCanvas(void)
     }
     
     yPos -= 0.01;
+    
+    aText = (TText *)gPad->GetPrimitive("edwHeaderHumanDateNotify");
+    if(aText){
+      aString.Form("%s","Year-M-D HH:MM:SS.ns");
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    else {
+      aText->SetText(0, 0, ""); 
+      aText->Draw();
+    }
     
     aText = (TText *)gPad->GetPrimitive("edwHeaderHumanDate");
     if(aText){
@@ -498,8 +601,8 @@ void KEventDisplay::DrawStatsCanvas(void)
   }
   
   if(fBolo != 0){
-    yPos = yTop - ySpace -0.01;
-    xLeft = xLeft + 0.50 + 0.02;
+    yPos = yTop;
+    xLeft = xLeft + 0.45 + 0.02;
 
     aText = (TText *)gPad->GetPrimitive("qvalue");
     if(aText){
@@ -515,7 +618,61 @@ void KEventDisplay::DrawStatsCanvas(void)
       aText->Draw();
     }
     
+    aText = (TText *)gPad->GetPrimitive("eventFlag");
+    if(aText){
+      aString.Form("%s %d (= %s)", "ERA Event Flag ", fBolo->GetEventFlag(), fBolo->GetEventCategory().c_str());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    
+    aText = (TText *)gPad->GetPrimitive("chi2Flag");
+    if(aText){
+      aString.Form("%s %d", "ERA Chi2 Flag ", fBolo->GetChi2Flag());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    
     yPos-= 0.01;
+    
+    aText = (TText *)gPad->GetPrimitive("voltageFlag");
+    if(aText){
+      aString.Form("%s %d", "Voltage Flag ", fBolo->GetVoltageFlag());
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    
+    aText = (TText *)gPad->GetPrimitive("ionFlag");
+    if(aText){
+      aString.Form("%s %d%d %d%d %d%d", "Ion Flags ", fBolo->TestIonFlag(0),
+                   fBolo->TestIonFlag(1), fBolo->TestIonFlag(2), fBolo->TestIonFlag(3),
+                   fBolo->TestIonFlag(4), fBolo->TestIonFlag(5));
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    
+    aText = (TText *)gPad->GetPrimitive("cutFlag");
+    if(aText){
+      aString.Form("%s %d%d %d%d %d%d %d %d %d%d %d%d %d%d %d %d %d", "Cut Flags ", fBolo->TestCutsBit(0),
+                   fBolo->TestCutsBit(1), fBolo->TestCutsBit(2), fBolo->TestCutsBit(3),
+                   fBolo->TestCutsBit(4), fBolo->TestCutsBit(5), fBolo->TestCutsBit(6),
+                   fBolo->TestCutsBit(7), fBolo->TestCutsBit(8), fBolo->TestCutsBit(9), 
+                   fBolo->TestCutsBit(10), fBolo->TestCutsBit(11), fBolo->TestCutsBit(12),
+                   fBolo->TestCutsBit(13), fBolo->TestCutsBit(14), fBolo->TestCutsBit(15),
+                   fBolo->TestCutsBit(16));
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+    
+    yPos-= 0.01;
+    
+    aText = (TText *)gPad->GetPrimitive("ionPulseTimeOffset");
+    if(aText){
+      aString.Form("%s %d", "Ion Pulse Time Offset [micro-sec] ", fBolo->GetIonPulseTimeOffset()*10);
+      aText->SetText(xLeft, yPos-=ySpace, aString.Data()); 
+      aText->Draw();
+    }
+
+    yPos -= 0.01;
     
     aText = (TText *)gPad->GetPrimitive("Eheat1");
     if(aText && fBolo->GetEnergyHeat(1) != -9999.){
@@ -795,6 +952,8 @@ void KEventDisplay::DrawStatsCanvas(void)
       aText->Draw();
     }
 
+    yPos-= 0.01;
+    
     
   }
 
@@ -883,7 +1042,7 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
       fNumPulseHists = __k_NumDisplayHists;
     }
     
-    for(Int_t i = 0; i < fNumPulseHists; i++){
+    for(UInt_t i = 0; i < fNumPulseHists; i++){
       //cout << "Loading " << i << "th Pulse at Index " << fPulseIndex.at(i) << endl;
       pulse = fEdwEvent->Pulse(fPulseIndex.at(i));
       fPulseHists[i].Reset();

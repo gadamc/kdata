@@ -49,3 +49,85 @@ void myAnalysisScript(int arg1, const char* arg2)
 	fIn.Close();
 	fSaveOut.Close();
 }
+
+//example script using the KPTA library classes.
+{
+  KPulseAnalysisChain myChain;
+  myChain.SetIsOwner(false);
+  KBaselineRemoval *baseRemove = new KBaselineRemoval;
+  myChain.AddProcessor(baseRemove);
+  KPatternRemoval *patternRemove = new KPatternRemoval;
+  myChain.AddProcessor(patternRemove);
+  KRealToHalfComplexDFT *real2hcomp = new KRealToHalfComplexDFT;
+  real2hcomp->SetFlags("EX");
+  myChain.AddProcessor(real2hcomp);
+  KHalfComplexPower *power = new KHalfComplexPower;
+  myChain.AddProcessor(power);
+  
+  vector< vector<double> > myHeatPowerSpectrum;
+  
+  KEraRawEventReader myEraEventFile("je25b001_000.root");
+  
+  for(Int_t i = 0; i < myEraEventFile.GetEntries(); i++){
+    myEraEventFile.GetEntry(i);
+    
+    EdwEvent *e = myEraEventFile.GetEvent();
+    
+    for(UInt_t p = 0; p < e->NbPulses(); p++){
+      EdwPulse* pulse = e->Pulse(p);
+      if(pulse->IsHeat()){
+        vector<double> aPowerSpectrum;
+        myChain.SetInputPulse(pulse->Trace());
+        if(myChain.RunProcess()){ //RunProcess returns true if successful
+          aPowerSpectrum = myChain.GetOutputPulse();
+          myHeatPowerSpectrum.push_back(aPowerSpectrum);
+        }
+      }
+    }
+  }
+  
+  //now do something with your myHeatPowerSpectrum!
+  
+  //clean up
+  delete baseRemove;
+  delete patternRemove;
+  delete real2hcomp;
+  delete power;
+}
+
+{
+  KDataReader f("Kds_Run12_v3.0_skim.root");  
+  
+  Bool_t desiredEvent = false;
+  Int_t desiredBolo = 0;
+  string bolo = "ID3";
+  Double_t fMaxQ = 0.4;
+  Double_t fMinQ = 0.1;
+  Double_t fMaxE = 50.0;
+  Double_t fMinE = 10.0;
+  
+  //KDataReader::GetEntry(0) is already called in the constructor.
+  do {
+    KHLAEvent *e = (KHLAEvent *)f.GetEvent();
+
+    for(Int_t i = 0; i < e->GetNumBolos(); i++){
+      KHLABolometerRecord *b = e->GetBolo(i);
+      if(b->GetDetectorName() == bolo && b->GetQvalue() < fMaxQ && 
+         b->GetQvalue() > fMinQ && b->GetEnergyRecoil() < fMaxE && 
+         b->GetEnergyRecoil() > fMinE) {
+        desiredEvent = true;  //we found an interesting event!
+        desiredBolo = i;
+        break;  //quit the loop
+      }
+    }
+        
+    if(!desiredEvent) f.GetNextBoloEntry();
+  }while (!desiredEvent);
+
+  KEraEventFinder myFinder("gadamc"); 
+  
+  EdwEvent *edwEvent = myFinder.TransferEvent(e->GetBolo(desiredBolo));
+  myFinder.DisplayEvent();
+  
+}
+

@@ -32,10 +32,18 @@ MODNAME      := kera
 MODDIR       := kera
 
 KERA_FLAGS  := $(CXXFLAGS)
+KERA_LDFLAGS := $(LDFLAGS)
+KERA_OPT     := $(OPT)
+
+
+#KERA_OPT  += -g
+KERA_OPT  := $(filter-out -O2,$(KERA_OPT))
+KERA_LDFLAGS := $(filter-out -O2,$(KERA_LDFLAGS))
 
 #adding debugging flags here
 #KERA_FLAGS += -D_K_DEBUG_ERAEVENTFINDER
 #KERA_FLAGS += -D_K_DEBUG_FILETRANSFER
+
 
 KERA_DIR    := $(MODDIR)
 KERA_DIRS   := $(MODDIR)
@@ -97,12 +105,12 @@ include/%.h:    $(KERA_DIRI)/%.h
 
 # rule for compiling our source files
 $(KERA_DIRS)/%.o:    $(KERA_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KERA_FLAGS) $(ROOTINCS) -I$(KERA_XTRAINCS) -o $@ -c $< 
+	$(CXX) $(KERA_OPT) $(KERA_FLAGS) $(ROOTINCS) -I$(KERA_XTRAINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KERA_DIRS)/%.o $(KDATAED_LIB) $(KERA_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KERALIBS) $(KERA_XTRALIBS)
+		$(LD) $(KERA_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KERALIBS) $(KERA_XTRALIBS)
                 
 # rules for building dictionary
 $(KERA_DO):         $(KERA_DC)
@@ -115,7 +123,7 @@ $(KERA_DC):         $(KERA_EH) $(KERA_LH)
 # rule for building library
 $(KERA_LIB):        $(KERA_EO) $(KERA_DO) $(KERA_LIBDEP) 
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
+	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KERA_LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KERA_LIB)" $@  "$(KERA_EO) $(KERA_DO) $(KERA_XTRALIBS)"\
 	   "$(ROOTLIBS)  $(KERA_FLAGS)"  -I/opt/include -Iinclude 
 

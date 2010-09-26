@@ -45,6 +45,7 @@ public:
 
 
 	Int_t GetEventFlag(void) const {return fEventFlag;}
+  string GetEventCategory(void) const;
 	Int_t GetChi2Flag(void) const {return fChi2Flag;}
 	const TBits* GetIonFlags(void) const {return &fIonFlags;}
 	Bool_t TestIonFlag(Int_t index) const;

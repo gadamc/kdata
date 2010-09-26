@@ -31,6 +31,7 @@ class EdwEventHeader : public TObject {
   /**< Delay (in seconds) with respect to the previous event, as recorded by Samba */
   UInt_t TriggerBit(Int_t num) const ;
   /**< Returns the trigger bit 1 or 2 */
+  Int_t SambaNum() const { return Run()[4] - 'a' + 1; }
 
   void SetNum(unsigned long num) { fNum=num; }
   /**< Set Samba event number */

@@ -487,6 +487,38 @@ Bool_t KHLABolometerRecord::TestIonFlag(Int_t i) const
 
 }
 
+string KHLABolometerRecord::GetEventCategory(void) const
+{
+  string category;
+  
+  switch (GetEventFlag()) {
+    case 0:
+      category = "noise";
+      break;
+    case 1:
+      category = "heat only";
+      break;
+    case 2:
+      category = "fiducial";
+      break;
+    case 3:
+      category = "surface";
+      break;
+    case 4:
+      category = "pure guard";
+      break;
+    case 5:
+      category = "other";
+      break;
+    default:
+      category = "";
+      break;
+  }
+  
+  return category;
+}
+
+
 void KHLABolometerRecord::AddPulseRecord(KHLABoloPulseRecord* aPulseRecord)
 {
 	//fPulseRecords.Add((TObject *)aPulseRecord);

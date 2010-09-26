@@ -766,6 +766,7 @@
 			isa = PBXProject;
 			buildConfigurationList = 6610DD4B121ECAAA0047036E /* Build configuration list for PBXProject "kData" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

@@ -30,6 +30,9 @@ public:
   virtual ~KEventDisplay(void);
   
   void DisplayEvent(void);
+  void DisplayEvent(EdwEvent *e, KHLABolometerRecord *b);
+  void DisplayEvent(EdwEvent *e, const char* boloName);
+
   
   //getters
   TH1D GetPulseHistogram(UInt_t i) const;
@@ -54,6 +57,7 @@ private:
   string fBoloName;
   
   Bool_t fApplyBasicPulseProcessing;
+  Bool_t fResizeStatWindow;
   
   //private methods
   void InitializeMembers(void);
