@@ -112,7 +112,7 @@ void KEraEventFinder::Initialize(void)
   if(fSystem != gSystem)
 		delete fSystem;
   
-  fApplyBasicPulseProcessing = true;
+  fApplyPulseProcessing = true;
 }
 
 string KEraEventFinder::GetNextFileName(const char* name)
@@ -598,7 +598,7 @@ void KEraEventFinder::DisplayEvent(void)
     if(fDisplay == 0)
       fDisplay = new KEventDisplay;
     
-    fDisplay->SetApplyBasicPulseProcessing(fApplyBasicPulseProcessing);
+    fDisplay->SetApplyPulseProcessing(fApplyPulseProcessing);
     fDisplay->SetEvent(GetEvent(), bolo);
     fDisplay->DisplayEvent();
   }
@@ -607,6 +607,40 @@ void KEraEventFinder::DisplayEvent(void)
   }
   
 }
+
+void KEraEventFinder::DisplayPower(KBolometerRecord *aRec)
+{
+  if(SetBolo(aRec))
+    DisplayPower();
+}
+
+void KEraEventFinder::DisplayPower(void)
+{
+  if(fBoloRecord == 0){
+    cout << "KEraEventFinder::DisplayPower. No Event to Display. You must first SetBolo." << endl;
+  }
+  try {
+    if(!fEventHasBeenTransfered)
+      if(TransferEvent() == 0){
+        cout << "KEraEventFinder::DisplayPower. Unable to Transfer Event." << endl;
+        return;
+      }
+    
+    KHLABolometerRecord *bolo = dynamic_cast<KHLABolometerRecord*>(fBoloRecord);
+    
+    if(fDisplay == 0)
+      fDisplay = new KEventDisplay;
+    
+    fDisplay->SetApplyPulseProcessing(true);
+    fDisplay->SetEvent(GetEvent(), bolo);
+    fDisplay->DisplayPower();
+  }
+  catch(bad_cast) {
+    cout << "Your Bolometer Record is not a HLABolometerRecord. I do not yet know how to display this kind of event! Please program me." << endl;
+  }
+  
+}
+
 
 void KEraEventFinder::SetUser(const Char_t* aUser)
 {

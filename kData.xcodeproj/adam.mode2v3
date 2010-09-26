@@ -235,7 +235,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E60433124F6571004E438B</string>
+						<string>66E604D5124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>66E6034C124F590A004E438B</string>
@@ -276,7 +276,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E60434124F6571004E438B</string>
+						<string>66E604D6124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>664A3F88124E0D7F005F37D1</string>
@@ -316,7 +316,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E60435124F6571004E438B</string>
+						<string>66E604D7124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>664A3F84124E0D7F005F37D1</string>
@@ -356,7 +356,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E60436124F6571004E438B</string>
+						<string>66E604D8124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>664A3F83124E0D7F005F37D1</string>
@@ -396,7 +396,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E60437124F6571004E438B</string>
+						<string>66E604D9124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>664A3F82124E0D7F005F37D1</string>
@@ -436,7 +436,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E60438124F6571004E438B</string>
+						<string>66E604DA124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>664A3F81124E0D7F005F37D1</string>
@@ -476,7 +476,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E60439124F6571004E438B</string>
+						<string>66E604DB124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>664A3F80124E0D7F005F37D1</string>
@@ -504,42 +504,27 @@
 				<key>PBXProjectModuleGUID</key>
 				<string>66E60332124F5519004E438B</string>
 				<key>PBXProjectModuleLabel</key>
-				<string>KEventDisplay.cxx</string>
+				<string>KEventDisplay.h</string>
 				<key>PBXSplitModuleInNavigatorKey</key>
 				<dict>
 					<key>Split0</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
-						<string>66E60333124F5519004E438B</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>KEventDisplay.cxx</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>66E6043A124F6571004E438B</string>
-						<key>history</key>
-						<array>
-							<string>66E603D2124F5EDB004E438B</string>
-							<string>66E603D3124F5EDB004E438B</string>
-						</array>
-					</dict>
-					<key>Split1</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
 						<string>66E60355124F590A004E438B</string>
 						<key>PBXProjectModuleLabel</key>
-						<string>KEventDisplay.cxx</string>
+						<string>KEventDisplay.h</string>
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E6043B124F6571004E438B</string>
+						<string>66E604DC124F7260004E438B</string>
 						<key>history</key>
 						<array>
-							<string>66E60356124F590A004E438B</string>
+							<string>66E60491124F7057004E438B</string>
+							<string>66E60492124F7057004E438B</string>
 						</array>
 					</dict>
 					<key>SplitCount</key>
-					<string>2</string>
+					<string>1</string>
 				</dict>
 				<key>StatusBarVisibility</key>
 				<true/>
@@ -572,7 +557,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E6043C124F6571004E438B</string>
+						<string>66E604DD124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>66E6035A124F590A004E438B</string>
@@ -613,7 +598,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E6043D124F6571004E438B</string>
+						<string>66E604DE124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>66E60392124F5C85004E438B</string>
@@ -654,7 +639,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E6043E124F6571004E438B</string>
+						<string>66E604DF124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>66E603FF124F6145004E438B</string>
@@ -694,7 +679,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>66E6043F124F6571004E438B</string>
+						<string>66E604E0124F7260004E438B</string>
 						<key>history</key>
 						<array>
 							<string>66E60401124F615F004E438B</string>
@@ -713,7 +698,89 @@
 				<key>PBXModuleWindowStatusBarHidden2</key>
 				<false/>
 				<key>RubberWindowFrame</key>
-				<string>116 84 555 794 0 0 1440 878 </string>
+				<string>270 51 555 794 0 0 1440 878 </string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>66E60498124F7057004E438B</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>KEraEventFinder.cxx</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>66E60499124F7057004E438B</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>KEraEventFinder.cxx</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>66E604E3124F7260004E438B</string>
+						<key>history</key>
+						<array>
+							<string>66E604E1124F7260004E438B</string>
+							<string>66E604E2124F7260004E438B</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {875, 678}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>19 154 875 719 0 0 1440 878 </string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Content</key>
+			<dict>
+				<key>PBXProjectModuleGUID</key>
+				<string>66E6049E124F7057004E438B</string>
+				<key>PBXProjectModuleLabel</key>
+				<string>KEventDisplay.cxx</string>
+				<key>PBXSplitModuleInNavigatorKey</key>
+				<dict>
+					<key>Split0</key>
+					<dict>
+						<key>PBXProjectModuleGUID</key>
+						<string>66E6049F124F7057004E438B</string>
+						<key>PBXProjectModuleLabel</key>
+						<string>KEventDisplay.cxx</string>
+						<key>_historyCapacity</key>
+						<integer>0</integer>
+						<key>bookmark</key>
+						<string>66E604E4124F7260004E438B</string>
+						<key>history</key>
+						<array>
+							<string>66E604A3124F713D004E438B</string>
+							<string>66E604A4124F713D004E438B</string>
+						</array>
+					</dict>
+					<key>SplitCount</key>
+					<string>1</string>
+				</dict>
+				<key>StatusBarVisibility</key>
+				<true/>
+			</dict>
+			<key>Geometry</key>
+			<dict>
+				<key>Frame</key>
+				<string>{{0, 20}, {875, 678}}</string>
+				<key>PBXModuleWindowStatusBarHidden2</key>
+				<false/>
+				<key>RubberWindowFrame</key>
+				<string>42 133 875 719 0 0 1440 878 </string>
 			</dict>
 		</dict>
 	</array>
@@ -990,7 +1057,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>307193201.01618099</real>
+	<real>307196512.89052099</real>
 	<key>ToolbarConfigUserDefaultsMinorVersion</key>
 	<string>2</string>
 	<key>ToolbarDisplayMode</key>
@@ -1007,6 +1074,8 @@
 	<integer>0</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>66E6049E124F7057004E438B</string>
+		<string>66E60498124F7057004E438B</string>
 		<string>66E60407124F64CF004E438B</string>
 		<string>66E60404124F64CF004E438B</string>
 		<string>66E60390124F5C85004E438B</string>
@@ -1209,7 +1278,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {704, 247}}</string>
 								<key>RubberWindowFrame</key>
-								<string>569 95 704 679 0 0 1440 878 </string>
+								<string>410 65 704 679 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -1235,7 +1304,7 @@
 								<key>Frame</key>
 								<string>{{0, 252}, {704, 386}}</string>
 								<key>RubberWindowFrame</key>
-								<string>569 95 704 679 0 0 1440 878 </string>
+								<string>410 65 704 679 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -1267,7 +1336,7 @@
 			<key>WindowContentMinSize</key>
 			<string>486 300</string>
 			<key>WindowString</key>
-			<string>569 95 704 679 0 0 1440 878 </string>
+			<string>410 65 704 679 0 0 1440 878 </string>
 			<key>WindowToolGUID</key>
 			<string>1C530D52069F1CE1000CFCEE</string>
 			<key>WindowToolIsVisible</key>

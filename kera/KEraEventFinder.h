@@ -48,6 +48,9 @@ public:
   void DisplayEvent(void);
   void DisplayEvent(KBolometerRecord *aRec);
   
+  void DisplayPower(void);
+  void DisplayPower(KBolometerRecord *aRec);
+  
   //getters
   KSambaRecord* GetSamba(void) const { return fSambaRecord; }
   KBolometerRecord* GetBolo(void) const { return fBoloRecord; }
@@ -62,7 +65,7 @@ public:
   void SetForceRemoteSearch(Bool_t aChoice = true);
   void SetTargetPath(const char* aPath){fTargetPath = aPath;}
   void SetUser(const char* aUser);
-  void SetApplyBasicPulseProcessing(Bool_t anOpt = true) { fApplyBasicPulseProcessing = anOpt; }
+  void SetApplyPulseProcessing(Bool_t anOpt = true) { fApplyPulseProcessing = anOpt; }
   void SetAlwaysKeepSearching(Bool_t anOpt = true) { fAlwaysKeepSearching = anOpt; }
   string GetNextFileName(const char* name = 0);
   
@@ -78,7 +81,7 @@ private:
   list<string> fDirNames;
   string fTargetPath;
   KEventDisplay *fDisplay;
-  Bool_t fApplyBasicPulseProcessing;
+  Bool_t fApplyPulseProcessing;
   Bool_t fAlwaysKeepSearching;  //if this is set to true, they it won't ask you if you want to download the next file
   
   Bool_t GetEventFile(const char* aPath, const char* aFileName, Bool_t searchLocal);

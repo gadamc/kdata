@@ -15,6 +15,7 @@
 #include "EdwEvent.h"
 #include <vector>
 #include "KHLABolometerRecord.h"
+#include "KPulseAnalysisChain.h"
 
 class TCanvas;
 class TH1D;
@@ -32,7 +33,10 @@ public:
   void DisplayEvent(void);
   void DisplayEvent(EdwEvent *e, KHLABolometerRecord *b);
   void DisplayEvent(EdwEvent *e, const char* boloName);
-
+ 
+  void DisplayPower(void);
+  void DisplayPower(EdwEvent *e, KHLABolometerRecord *b);
+  void DisplayPower(EdwEvent *e, const char* boloName);
   
   //getters
   TH1D GetPulseHistogram(UInt_t i) const;
@@ -42,7 +46,7 @@ public:
   void SetEvent(EdwEvent *e, KHLABolometerRecord *b);
   void SetEvent(EdwEvent *e, const char* boloName);
   
-  void SetApplyBasicPulseProcessing(Bool_t anOpt = true){ fApplyBasicPulseProcessing = anOpt;  }
+  void SetApplyPulseProcessing(Bool_t anOpt = true){ fApplyPulseProcessing = anOpt;  }
   
   
 private:
@@ -56,15 +60,21 @@ private:
   UInt_t fNumPulseHists; //number of fPulseHists.
   string fBoloName;
   
-  Bool_t fApplyBasicPulseProcessing;
+  Bool_t fApplyPulseProcessing;
   Bool_t fResizeStatWindow;
+  Bool_t fDisplayPower;
+  
+  KPulseAnalysisChain fIonPulseAnalysisChain;
+  KPulseAnalysisChain fHeatPulseAnalysisChain;
+  KPulseAnalysisChain fPowerSpectrumChain;
   
   //private methods
   void InitializeMembers(void);
-  Bool_t SetUpPulses(void);
+  Bool_t SetUpPulses(Bool_t displayPower = false);
   void SetUpCanvas(void);
   void DrawStatsCanvas(void);
-  
+  void SetUpPulseAnalysisChains(void);
+
   ClassDef(KEventDisplay,1);
 };
 

@@ -69,6 +69,7 @@ bool KPatternRemoval::CalculatePattern(void)
 {
 	if(GetPatternLength() < 1) return false;
 	
+  fPattern.clear();
 	fPattern.resize(GetPatternLength(), 0);
 	
 	// count the number of full patterns that can fit in the range fBaselineStart:fBaselineStop

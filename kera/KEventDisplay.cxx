@@ -19,8 +19,10 @@
 #include "TPad.h"
 
 #include "KBaselineRemoval.h"
-#include "KPulseAnalysisChain.h"
 #include "KPatternRemoval.h"
+#include "KRealToHalfComplexDFT.h"
+#include "KHalfComplexPower.h"
+
 using namespace std;
 ClassImp(KEventDisplay);
 
@@ -33,7 +35,7 @@ KEventDisplay::KEventDisplay(void)
   fPulseHists = 0;
   fEdwEvent = 0;
   fBolo = 0;
-  fApplyBasicPulseProcessing = true;
+  fApplyPulseProcessing = true;
   InitializeMembers();
 }
 
@@ -71,6 +73,37 @@ void KEventDisplay::InitializeMembers(void)
   fPulseIndex.clear();
   fNumPulseHists = 0;
   fResizeStatWindow = true;
+  
+  SetUpPulseAnalysisChains();
+}
+
+void KEventDisplay::SetUpPulseAnalysisChains(void)
+{
+    
+  KPatternRemoval *remove1 = 0;
+  KPatternRemoval *remove2 = 0;
+  KBaselineRemoval *baseline = 0;
+  
+  fIonPulseAnalysisChain.SetIsOwner(true);  //the chain will delete all of the processors for me.
+  baseline = new KBaselineRemoval;
+  fIonPulseAnalysisChain.AddProcessor(baseline);
+  remove1 = new KPatternRemoval;
+  remove1->SetPatternLength(100);
+  fIonPulseAnalysisChain.AddProcessor(remove1);
+  remove2 = new KPatternRemoval;
+  remove2->SetPatternLength(200);
+  fIonPulseAnalysisChain.AddProcessor(remove2);
+  
+  fHeatPulseAnalysisChain.SetIsOwner(true);
+  baseline = new KBaselineRemoval;
+  fHeatPulseAnalysisChain.AddProcessor(baseline);
+  
+  fPowerSpectrumChain.SetIsOwner(true);
+  KRealToHalfComplexDFT *fft1 = new KRealToHalfComplexDFT;
+  KHalfComplexPower *power = new KHalfComplexPower;
+  fPowerSpectrumChain.AddProcessor(fft1);
+  fPowerSpectrumChain.AddProcessor(power);
+  
 }
 
 void KEventDisplay::DisplayEvent(EdwEvent *e, KHLABolometerRecord *b)
@@ -107,6 +140,15 @@ void KEventDisplay::DisplayEvent()
   //Draw the Pulse Canvas
   for(UInt_t i = 1; i <= __k_NumDisplayHists; i++){ //9 is the number of pads in the Canvas
     fPulseCanvas->cd(i);
+    if(fDisplayPower){
+      gPad->SetLogy(true);
+      gPad->SetLogx(true);
+    }
+    else{
+      gPad->SetLogy(false);
+      gPad->SetLogx(false);
+    }
+      
     if(i <= fNumPulseHists)
       fPulseHists[i-1].Draw();
     else 
@@ -117,6 +159,55 @@ void KEventDisplay::DisplayEvent()
   DrawStatsCanvas();
 
 }
+
+void KEventDisplay::DisplayPower(EdwEvent *e, KHLABolometerRecord *b)
+{
+  fEdwEvent = e;
+  fBoloName = b->GetDetectorName();
+  
+  if(fBolo == 0)
+    fResizeStatWindow = true;
+  fBolo = b;
+  
+  
+  //need to find the appropriate pulses
+  if(!SetUpPulses(true)){
+    cout << "KEventDisplay - Unable to SetUpPulses(true)" << endl;
+    return;
+  }
+  
+  DisplayEvent();
+  
+}
+
+void KEventDisplay::DisplayPower(EdwEvent *e, const char* boloName)
+{
+  fEdwEvent = e;
+  fBoloName = boloName;
+  if(fBolo != 0)
+    fResizeStatWindow = true;
+  
+  fBolo = 0;
+  //need to find the appropriate pulses
+  if(!SetUpPulses()){
+    cout << "KEventDisplay - Unable to SetUpPulses()" << endl;
+    return;
+  }
+  
+  DisplayEvent();    
+}
+
+void KEventDisplay::DisplayPower(void)
+{
+  if(!SetUpPulses(true)){
+    cout << "KEventDisplay - Unable to SetUpPulses(true)" << endl;
+    return;
+  }
+  
+  DisplayEvent();
+  
+}
+
 
 void KEventDisplay::SetEvent(EdwEvent *e, KHLABolometerRecord *b)
 {
@@ -963,10 +1054,10 @@ void KEventDisplay::DrawStatsCanvas(void)
   
 }
 
-Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static function?
+Bool_t KEventDisplay::SetUpPulses(Bool_t calculatePower) //should I make this some sort of static function?
 {
   
-
+  
   if(fBoloName.size() == 0)
     return false;
 
@@ -985,7 +1076,9 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
       //return false;
     }
   }
-
+  
+  fDisplayPower = calculatePower;
+  
   try {
 
     string pulseName;
@@ -1046,43 +1139,38 @@ Bool_t KEventDisplay::SetUpPulses(void) //should I make this some sort of static
       //cout << "Loading " << i << "th Pulse at Index " << fPulseIndex.at(i) << endl;
       pulse = fEdwEvent->Pulse(fPulseIndex.at(i));
       fPulseHists[i].Reset();
-      fPulseHists[i].SetBins(pulse->TraceSize(), 0, pulse->TraceSize());
       fPulseHists[i].SetTitle(pulse->Channel().c_str());
       fPulseHists[i].SetName(pulse->Channel().c_str());
       
-      
-      if(fApplyBasicPulseProcessing) {
-        //cout << "Processing pulse: " << pulse->Channel() << endl;
-        KPulseAnalysisChain chain;
-        chain.SetInputPulse(pulse->Trace());
-        chain.SetIsOwner(true);  //the chain will delete all of the processors for me.
+      if(fApplyPulseProcessing) {
+        vector<double> outPulse;
         
-        KPatternRemoval *remove1 = 0;
-        KPatternRemoval *remove2 = 0;
-        KBaselineRemoval *baseline = 0;
-        
-        baseline = new KBaselineRemoval;
-        chain.AddProcessor(baseline);
-        
-        if(!pulse->IsHeat()){
-          remove1 = new KPatternRemoval;
-          remove1->SetPatternLength(100);
-          chain.AddProcessor(remove1);
-          remove2 = new KPatternRemoval;
-          remove2->SetPatternLength(200);
-          chain.AddProcessor(remove2);
+        if(pulse->IsHeat()){
+          fHeatPulseAnalysisChain.SetInputPulse(pulse->Trace());
+          fHeatPulseAnalysisChain.RunProcess();
+          outPulse = fHeatPulseAnalysisChain.GetOutputPulse();
+        }
+        else {
+          fIonPulseAnalysisChain.SetInputPulse(pulse->Trace());
+          fIonPulseAnalysisChain.RunProcess();
+          outPulse = fIonPulseAnalysisChain.GetOutputPulse();
         }
         
-        chain.RunProcess();
-        
-        vector<double> outPulse = chain.GetOutputPulse();
-        
+        if(calculatePower){
+          fPowerSpectrumChain.SetInputPulse(outPulse);
+          fPowerSpectrumChain.RunProcess();
+          outPulse.clear();
+          outPulse = fPowerSpectrumChain.GetOutputPulse();
+        }
+          
+        fPulseHists[i].SetBins(outPulse.size(), 0, outPulse.size());
         for(UInt_t bin = 1; bin <= outPulse.size(); bin++)
           fPulseHists[i].SetBinContent(bin, outPulse.at(bin-1)); 
         
       }
       
       else{
+        fPulseHists[i].SetBins(pulse->TraceSize(), 0, pulse->TraceSize());
         for(Short_t bin = 1; bin <= pulse->TraceSize(); bin++)
           fPulseHists[i].SetBinContent(bin, pulse->Trace(bin-1));  //need the bin-1 because the data is stored in vector with first index 0
         //cout << "Done Loading into hist." << endl;
