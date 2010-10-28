@@ -74,10 +74,7 @@ void KDataFileIO::CreateTree(void)
 	
 	if(fTree->IsZombie())
 		cout << "KDataFileIO::CreateTree TTree is Zombie" << endl; 	
-	else {
-		fTree->SetCacheSize(10000000);
-		fTree->AddBranchToCache("*");
-	}
+	
 }
 
 void KDataFileIO::GetTreePointerInFile(void)
@@ -96,7 +93,12 @@ void KDataFileIO::GetTreePointerInFile(void)
 		return;
 	}
 	if(fTree->IsZombie())
-		cout << "TTree is Zombie" << endl; 
+		cout << "KDataFileIO::GetTreePointerInFile. TTree is Zombie" << endl; 
+  else {
+		fTree->SetCacheSize(10000000);
+		fTree->AddBranchToCache("*");
+	}
+  
 }
 
 
