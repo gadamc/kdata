@@ -1,14 +1,11 @@
-# Module.mk for KTMP module
-#
-# This is a generic template module that will build all
-# files named K*.cxx into libktmp, and all other .cxx
-# files into individual executables. 
+# Module.mk for KSAMBA module
+# 
 #
 # To build this module in the KDATA distribution, add
-# 'ktmp' to Modules.mk in the $KDATA_ROOT directory,
+# 'ksamba' to Modules.mk in the $KDATA_ROOT directory,
 # then type "make" (or gmake) in $KDATA_ROOT.
 #
-# To use this template as the base for developing a standalone
+# To use this samba as the base for developing a standalone
 # module, follow these steps:
 #
 #   1) Create a new directory for your development project.
@@ -21,96 +18,96 @@
 #      name specific to your module.  You may also have to make changes to the
 #      compile and link commands depending on the structure of your module.
 #   5) If your executables depend on the library produced by this module, then
-#      add $(KTMP_LIB) to the dependencies and -lktmp to the link line for
+#      add $(KSAMBA_LIB) to the dependencies and -lktmp to the link line for
 #      building the executables.
 #   6) Type "make" (or gmake) in the $KDATA_ROOT directory to build your new
 #      modules.
 #
 # Author: Adam Cox 08/19/10
 
-MODNAME      := ktemplate
-MODDIR       := ktemplate
+MODNAME      := ksamba
+MODDIR       := ksamba
 
-KTMP_FLAGS  := $(CXXFLAGS)
+KSAMBA_FLAGS  := $(CXXFLAGS)
 
-KTMP_DIR    := $(MODDIR)
-KTMP_DIRS   := $(MODDIR)
-KTMP_DIRI   := $(MODDIR)
+KSAMBA_DIR    := $(MODDIR)
+KSAMBA_DIRS   := $(MODDIR)
+KSAMBA_DIRI   := $(MODDIR)
 
 # Uncomment this to use the LinkDef file when generating the dictionary
-#KTMP_LH     := $(KTMP_DIRI)/$(MODNAME)_LinkDef.h
-KTMP_DC     := $(KTMP_DIRS)/$(MODNAME)_Dict.C
-KTMP_DO     := $(KTMP_DC:.C=.o)
-KTMP_DH     := $(KTMP_DC:.C=.h)
+#KSAMBA_LH     := $(KSAMBA_DIRI)/$(MODNAME)_LinkDef.h
+KSAMBA_DC     := $(KSAMBA_DIRS)/$(MODNAME)_Dict.C
+KSAMBA_DO     := $(KSAMBA_DC:.C=.o)
+KSAMBA_DH     := $(KSAMBA_DC:.C=.h)
 
-KTMP_H      := $(filter-out $(KTMP_LH) $(KTMP_DH),$(wildcard $(KTMP_DIRI)/*.h))
-KTMP_ECXX   := $(wildcard $(KTMP_DIRS)/K*.cxx)
-KTMP_CXX    := $(filter-out $(KTMP_ECXX),$(wildcard $(KTMP_DIRS)/*.cxx))
-KTMP_O      := $(KTMP_CXX:.cxx=.o)
-KTMP_EO     := $(KTMP_ECXX:.cxx=.o)
-KTMP_EH     := $(KTMP_ECXX:.cxx=.h)
+KSAMBA_H      := $(filter-out $(KSAMBA_LH) $(KSAMBA_DH),$(wildcard $(KSAMBA_DIRI)/*.h))
+KSAMBA_ECXX   := $(wildcard $(KSAMBA_DIRS)/K*.cxx)
+KSAMBA_CXX    := $(filter-out $(KSAMBA_ECXX),$(wildcard $(KSAMBA_DIRS)/*.cxx))
+KSAMBA_O      := $(KSAMBA_CXX:.cxx=.o)
+KSAMBA_EO     := $(KSAMBA_ECXX:.cxx=.o)
+KSAMBA_EH     := $(KSAMBA_ECXX:.cxx=.h)
 
-KTMP_EXE    := $(patsubst $(KTMP_DIRS)/%.cxx,bin/%,$(KTMP_CXX))
+KSAMBA_EXE    := $(patsubst $(KSAMBA_DIRS)/%.cxx,bin/%,$(KSAMBA_CXX))
 
-KTMPLIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KTMP_LIB))
+KSAMBALIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KSAMBA_LIB))
 
-KTMP_DEP    := $(KTMP_O:.o=.d) $(KTMP_EO:.o=.d)
+KSAMBA_DEP    := $(KSAMBA_O:.o=.d) $(KSAMBA_EO:.o=.d)
 
 # only depend on our dictionary if we are building a library
-ifneq ($(KTMP_LIB),)
-KTMP_DEP    += $(KTMP_DO:.o=.d)
+ifneq ($(KSAMBA_LIB),)
+KSAMBA_DEP    += $(KSAMBA_DO:.o=.d)
 endif
 
 # used in the main Makefile
-ALLHDRS      += $(patsubst $(KTMP_DIRI)/%.h,include/%.h,$(KTMP_H))
-ifneq ($(KTMP_EO),)
-ALLLIBS      += $(KTMP_LIB)
+ALLHDRS      += $(patsubst $(KSAMBA_DIRI)/%.h,include/%.h,$(KSAMBA_H))
+ifneq ($(KSAMBA_EO),)
+ALLLIBS      += $(KSAMBA_LIB)
 endif
-ALLEXECS     += $(KTMP_EXE)
+ALLEXECS     += $(KSAMBA_EXE)
 
 # include all dependency files
-INCLUDEFILES += $(KTMP_DEP)
+INCLUDEFILES += $(KSAMBA_DEP)
 
 # include local MyConfig.mk file if required
--include $(KTMP_DIR)/MyConfig.mk
+-include $(KSAMBA_DIR)/MyConfig.mk
 
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KTMP_DIRI)/%.h
+include/%.h:    $(KSAMBA_DIRI)/%.h
 		$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
-$(KTMP_DIRS)/%.o:    $(KTMP_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KTMP_FLAGS) $(ROOTINCS)  -o $@ -c $< 
+$(KSAMBA_DIRS)/%.o:    $(KSAMBA_DIRS)/%.cxx
+	$(CXX) $(OPT) $(KSAMBA_FLAGS) $(ROOTINCS)  -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KTMP_DIRS)/%.o $(KDATAED_LIB) 
+bin/%: $(KSAMBA_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KTMPLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KSAMBALIBS)
                 
 # rules for building dictionary
-$(KTMP_DO):         $(KTMP_DC)
-	$(CXX) $(NOOPT) $(KTMP_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
+$(KSAMBA_DO):         $(KSAMBA_DC)
+	$(CXX) $(NOOPT) $(KSAMBA_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
 
-$(KTMP_DC):         $(KTMP_EH) $(KTMP_LH)
+$(KSAMBA_DC):         $(KSAMBA_EH) $(KSAMBA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KTMP_EH) $(KTMP_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KSAMBA_EH) $(KSAMBA_LH) 
 
 # rule for building library
-$(KTMP_LIB):        $(KTMP_EO) $(KTMP_DO) $(KTMP_LIBDEP)
+$(KSAMBA_LIB):        $(KSAMBA_EO) $(KSAMBA_DO) $(KSAMBA_LIBDEP)
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KTMP_LIB)" $@  "$(KTMP_EO) $(KTMP_DO)" \
-	   "$(ROOTLIBS) $(KTMP_FLAGS)"  -I/opt/include -Iinclude 
+	   "$(SOFLAGS)" "$(KSAMBA_LIB)" $@  "$(KSAMBA_EO) $(KSAMBA_DO)" \
+	   "$(ROOTLIBS) $(KSAMBA_FLAGS)"  -I/opt/include -Iinclude 
 
-all-ktemplate:       $(KTMP_LIB)
+all-ksamba:       $(KSAMBA_LIB)
 
-clean-ktemplate:
-		@rm -f $(KTMP_DIRS)/*~ $(KTMP_DIRS)/*.o
-		@rm -f $(KTMP_DC) $(KTMP_DH) $(KTMP_DEP) $(KTMP_LIB)
+clean-ksamba:
+		@rm -f $(KSAMBA_DIRS)/*~ $(KSAMBA_DIRS)/*.o
+		@rm -f $(KSAMBA_DC) $(KSAMBA_DH) $(KSAMBA_DEP) $(KSAMBA_LIB)
 
-clean::         clean-ktemplate
+clean::         clean-ksamba
 
 #end
 

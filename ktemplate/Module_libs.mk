@@ -1,5 +1,5 @@
-# Libraries built by the ktemplate module
+# Libraries built by the ksamba module
 
-KTMP_LIB    := $(LPATH)/libktmp.$(SOEXT)  
+KSAMBA_LIB    := $(LPATH)/libksamba.$(SOEXT)  
 
 
