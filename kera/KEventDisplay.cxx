@@ -248,7 +248,7 @@ void KEventDisplay::SetEvent(EdwEvent *e, const char* boloName)
 void KEventDisplay::SetUpCanvas(void)
 {
   Int_t width = 250;
-  Int_t height = 300;
+  Int_t height = 700;
   
   
   if(fStatCanvas == 0){
@@ -526,7 +526,7 @@ void KEventDisplay::SetUpCanvas(void)
   }
   else {
     width = 250;
-    height = 300;
+    height = 700;
   }
   if(fResizeStatWindow) fStatCanvas->SetWindowSize(width, height);
   fResizeStatWindow = false;  //if the user manipulates the size of the stat window
