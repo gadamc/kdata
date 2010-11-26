@@ -30,7 +30,8 @@ public:
 	virtual void Compact(void);
 	
 	Bool_t IsTimeReconstructed(void) const;
-	
+	Bool_t IsGoodMuonVetoData(void) const;
+
 	//getters
 	Bool_t GetIsMuonSystemOn(void) const {return IsSystemOn();}
 	Int_t GetMultiADC(void) const {return fMultiADC;}	
@@ -45,9 +46,14 @@ public:
 	Int_t GetRunNumber(void) const {return fRunNumber;}
 	Int_t GetCommonStopTime(void) const {return fCommonStopTime;}
 	
+  Bool_t IsReliableStamp(void) const {return TestEventQualityBit(0);}
+  Bool_t IsLEDFired(void) const {return TestEventQualityBit(10);}
+  
 	Double_t GetRunStartTime(void) const {return fRunStartTime;}
 	Double_t GetRunEndTime(void) const {return fRunEndTime;}
-	
+	Double_t GetFileStartTime(void) const {return fFileStartTime;}
+	Double_t GetFileEndTime(void) const {return fFileEndTime;}
+
 	//setters
 	void SetIsMuonSystemOn(Bool_t a) {SetIsSystemOn(a);}
 	void SetMultiADC(Int_t a) {fMultiADC = a;}
@@ -65,7 +71,9 @@ public:
 	
 	void SetRunStartTime(Double_t aNum) {fRunStartTime = aNum;}
 	void SetRunEndTime(Double_t aNum) {fRunEndTime = aNum;}
-	
+	void SetFileStartTime(Double_t aNum) {fFileStartTime = aNum;}
+	void SetFileEndTime(Double_t aNum) {fFileEndTime = aNum;}
+  
 private:
 	Int_t fRunNumber; //run number of the Muon Veto system
 	Int_t fMultiADC;  //the number of PMTs in the MuVeto system with an ADC value  
@@ -79,20 +87,22 @@ private:
 	Int_t fCommonStopTime; //the TDC value of the common stop signal for Muon Veto Events. 
 	
 	Double_t fRunStartTime; //start time, in unix time, for the beginning of the current system run
-	Double_t fRunEndTime; //start time, in unix time, for the beginning of the current system run
-	
+	Double_t fRunEndTime; //end time, in unix time, for the beginning of the current system run
+	Double_t fFileStartTime; //start time, in unix time, for the beginning of the current "file"
+  Double_t fFileEndTime; //end time, in unix time, for the beginning of the current "file"
+  
 	//Int_t fAdcA[kSizeOfChannelArrays]; //****MOVE TO RAW*****// 
 	//Int_t fTdcA[kSizeOfChannelArrays]; //****MOVE TO RAW*****//
 	
-	TBits fEventQuality;  //the Event Quality bits set by Holger Nieder. 
-	
+	TBits fEventQuality;  //|| //the Event Quality bits. But don't split them! Otherwise, they won't be accessible from TTree::Draw
+
 	static const Int_t kReconstructedTimeRunBoundary; //make it static so that it is not written to the tree
 	
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KMuonVetoSystemRecord &aRec);
 
-  ClassDef(KMuonVetoSystemRecord,1);
+  ClassDef(KMuonVetoSystemRecord,3);
 };
 
 

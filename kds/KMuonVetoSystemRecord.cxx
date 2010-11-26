@@ -42,7 +42,8 @@ KMuonVetoSystemRecord& KMuonVetoSystemRecord::operator=(const KMuonVetoSystemRec
 
 void KMuonVetoSystemRecord::CopyLocalMembers(const KMuonVetoSystemRecord &aRec)
 {
-	
+	//copies only the local members. used in the overloaded assignment operator. 
+  
 	fRunNumber = aRec.fRunNumber;
 	fMultiADC = aRec.fMultiADC;  
 	fDistanceEst = aRec.fDistanceEst; 
@@ -58,6 +59,8 @@ void KMuonVetoSystemRecord::CopyLocalMembers(const KMuonVetoSystemRecord &aRec)
 	
 	fRunStartTime = aRec.fRunStartTime;
 	fRunEndTime = aRec.fRunEndTime;
+  fFileStartTime = aRec.fFileStartTime;
+	fFileEndTime = aRec.fFileEndTime;
 	
 }
 
@@ -105,20 +108,27 @@ void KMuonVetoSystemRecord::InitializeMembers(void)
 	fEventQuality.Clear();
 	fRunStartTime = -99.;
 	fRunEndTime = -99.;
+  fFileStartTime = -99.;
+	fFileEndTime = -99.;
 }
 
 Bool_t KMuonVetoSystemRecord::IsTimeReconstructed(void) const
 {
 	//This checks a hard-coded run number, kReconstructedTimeRunBoundary = 60
-	//and compares it to the GetRunNumber. If the Muon Veto System run is less
+	//and compares it to the value returned by GetRunNumber. If the Muon Veto System run is less
 	//than 60, then it returns true, meaning that the stamp time of the Muon
-	//veto system events were reconstructed. Otherwise it returns false. 
+	//veto system events were reconstructed. Otherwise it returns false,
+  //meaning that for this data, the stamp values were obtained from hardware
+  //during data acquisition. 
 	
 	return (GetRunNumber() > kReconstructedTimeRunBoundary) ? true : false;
 }
 
 void KMuonVetoSystemRecord::SetEventQualityBits(TBits *aBits)
 {
+  //Copies the values in aBits to the local fEventQuality. It then calls
+  //fEventQuality.Compact() in order to minimize space. 
+  
 	fEventQuality = *aBits;
 	fEventQuality.Compact();
 }
@@ -257,6 +267,23 @@ Bool_t KMuonVetoSystemRecord::IsSame(const KMuonVetoSystemRecord &aRec, Bool_t b
 			return false;  
 	}
 
+  if(fFileStartTime != aRec.fFileStartTime){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KMuonVetoSystemRecord fFileStartTime Not Equal. lhs: " 
+			<< fFileStartTime << " != rhs " << aRec.fFileStartTime << endl;		
+		else
+			return false;  
+	}
+  
+  if(fFileEndTime != aRec.fFileEndTime){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KMuonVetoSystemRecord fFileEndTime Not Equal. lhs: " 
+			<< fFileEndTime << " != rhs " << aRec.fFileEndTime << endl;		
+		else
+			return false;  
+	}
 	
 	return bIsEqual;
 }
@@ -286,7 +313,7 @@ Bool_t KMuonVetoSystemRecord::TestEventQualityBit(Int_t i) const
 	 
 	 would draw the zeroth ADC value for only events where there was a 'reliable stamp'. 
 	 
-	 0: reliable stamp
+	 0: reliable stamp (mrs)
 	 1: corrected stamp (jump)
 	 2: stamp available
 	 3: stamp is pctime
@@ -296,10 +323,24 @@ Bool_t KMuonVetoSystemRecord::TestEventQualityBit(Int_t i) const
 	 7: TDC afterpulse
 	 8: ADC afterpulse (should never happen)
 	 9: no TDC Data available
-	 
-	 
+	 10: LED fired bit. If this bit has been set, then this event is due to the 
+       firing of an LED installed in the new modules.
 	 12: adc header found after noTDCEOB
-	*/
+   13: is GOOD muon data. --> determined offline by B. Schmidt (for Run12). 
+        the muon veto system was determined to be in a good data taking period during this event. 
+        good muon data taking periods are periods in time when the veto system was taking
+        data, the measured position of the shield indicated that it was closed, and there is a 
+        reliable stamp recorded by the Muon Veto DAQ.
+
+   */
 	return fEventQuality.TestBitNumber(i);
 
 }	
+
+Bool_t KMuonVetoSystemRecord::IsGoodMuonVetoData(void) const
+{
+  //return TestEventQualityBit(13);
+  
+  return TestEventQualityBit(13);
+}
+
