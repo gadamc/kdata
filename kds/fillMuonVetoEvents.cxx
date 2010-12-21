@@ -16,14 +16,23 @@
 #include "TTree.h"
 #include "TString.h"
 #include "TBits.h"
+#include "TApplication.h"
+#include "TH1F.h"
+#include "TCanvas.h"
+#include "TSystem.h"
+#include "TDirectory.h"
+#include "TQObject.h"
+#include "TButton.h"
 
-//dMEAT includes
+//Kdata includes
 #include "KHLAEvent.h"
 #include "KHLAMuonModuleRecord.h"
 #include "KHLAMuonVetoSysRecord.h"
 #include "KHLABolometerRecord.h"
 #include "KHLASambaRecord.h"
 #include "KDataWriter.h"
+#include "KDataReader.h"
+
 
 TFile *mMuonVetoRootFile = 0;
 KDataWriter *mKEDSOutFile = 0;
@@ -336,7 +345,7 @@ Bool_t setMuonVetoFileBranches(void)
 	
 	mMuonTree->SetBranchAddress("10usStamp",&mMuonVetoData.f10muSecStamp);
 	mMuonTree->SetBranchAddress("ADC",mMuonVetoData.fADC);
-	mMuonTree->SetBranchAddress("ADC#",mMuonVetoData.fADCPound);
+	//mMuonTree->SetBranchAddress("ADC#",mMuonVetoData.fADCPound);
 	mMuonTree->SetBranchAddress("Multi_ADC",&mMuonVetoData.fMultiADC);
 	mMuonTree->SetBranchAddress("Dist_Est",&mMuonVetoData.fDistEst);
 	mMuonTree->SetBranchAddress("Dist_Nemo",&mMuonVetoData.fDistNemo);
@@ -528,7 +537,37 @@ Bool_t fillEvents(void)
 		
 		if (numberOfModsHit == 0 && !bIsNCHit){
 			cout << "Found Event with No Muon Module ADC/TDC values and no event on the Neutron Counter ADC/TDC. " << endl;
-			cout << "Event Number " << mMuonVetoData.fEventNo << " Entry Number " << entry << endl;
+      cout << "RunNumber: " << mMuonVetoData.fRun << endl;
+      cout << "DistanceEst: " << mMuonVetoData.fDistEst << endl;
+      cout << "DistanceNemo: " << mMuonVetoData.fDistNemo << endl;
+      cout << "EventNumber: " << mMuonVetoData.fEventNo << " Entry Number " << entry << endl;
+      cout << "FileNumber: " << mMuonVetoData.fFile << endl;
+      cout << "MultiAdc: " << mMuonVetoData.fMultiADC << endl;
+      cout << "MultiTdc: " << (Int_t)mMuonVetoData.fMultiTDC << endl;
+      cout << "PcTimeSec: " << mMuonVetoData.fPcTimeSec << endl;
+      cout << "PcTimeMuSec: " << mMuonVetoData.fPcTimeMicroSec << endl;
+      cout << "TDC Common Stop: " << mMuonVetoData.fTDC[96] << endl;
+      cout << "Event Quality Bits: ";
+      for(UInt_t bit = mMuonVetoData.fEventQualityBits->GetNbits()-1; bit <= 0; bit++)
+        cout << mMuonVetoData.fEventQualityBits->TestBitNumber(bit);
+      cout << endl;      
+      cout << "TDC Array: "; 
+      for(Int_t bin = 0; bin < fSizeOfArray; bin++)
+        cout << mMuonVetoData.fTDC[bin] << " ";
+      cout << endl;
+      cout << "ADC Array: "; 
+      for(Int_t bin = 0; bin < fSizeOfArray; bin++)
+        cout << mMuonVetoData.fADC[bin] << " ";
+      cout << endl;
+      cout << "TDC Pound: "; 
+      for(Int_t bin = 0; bin < fSizeOfArray; bin++)
+        cout << mMuonVetoData.fTDCPound[bin] << " ";
+      cout << endl;
+      cout << "ADC Pound: "; 
+      for(Int_t bin = 0; bin < fSizeOfArray; bin++)
+        cout << mMuonVetoData.fADCPound[bin] << " ";
+      cout << endl;
+      
 			//mMuonTree->Scan("10usStamp:EventNo.:Multi:ADC:ADC#:TDC:TDC#","","",1,entry);
 			numEmptyEvents++;
 		}
@@ -623,6 +662,175 @@ Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outKEDSFile)
 	
 }
 
+Bool_t testDataIntegrity(const char* muonVetoFile, const char* kdsFile, const char* testResults)
+{
+  
+  
+  TFile fMuonRaw(muonVetoFile);
+  TTree *tMuonRaw = (TTree *)fMuonRaw.Get("tree");
+	if(tMuonRaw == NULL)
+		return false;
+  
+  KDataReader f(kdsFile);
+  TTree *tKds = f.GetTTree();
+  
+  MuonChannelMap fMuonChanMap;
+  MuonVetoData fMuonVetoData;
+  
+  fMuonVetoData.fEventQualityBits = NULL;
+	fMuonVetoData.fEventQualityBits = new TBits;
+	
+	if(fMuonVetoData.fEventQualityBits == NULL) return false;
+	
+	tMuonRaw->SetBranchAddress("10usStamp",&fMuonVetoData.f10muSecStamp);
+	tMuonRaw->SetBranchAddress("ADC",fMuonVetoData.fADC);
+	//tMuonRaw->SetBranchAddress("ADC#",fMuonVetoData.fADCPound);
+	tMuonRaw->SetBranchAddress("Multi_ADC",&fMuonVetoData.fMultiADC);
+	tMuonRaw->SetBranchAddress("Dist_Est",&fMuonVetoData.fDistEst);
+	tMuonRaw->SetBranchAddress("Dist_Nemo",&fMuonVetoData.fDistNemo);
+	tMuonRaw->SetBranchAddress("EventNo.",&fMuonVetoData.fEventNo);
+	tMuonRaw->SetBranchAddress("File",&fMuonVetoData.fFile);
+	tMuonRaw->SetBranchAddress("Geometry",&fMuonVetoData.fGeometry);
+	tMuonRaw->SetBranchAddress("Multi",&fMuonVetoData.fMultiTDC);
+	tMuonRaw->SetBranchAddress("Run",&fMuonVetoData.fRun);
+	tMuonRaw->SetBranchAddress("Event_Binary_Quality",&fMuonVetoData.fEventQualityBits);
+	tMuonRaw->SetBranchAddress("TDC",fMuonVetoData.fTDC);
+	tMuonRaw->SetBranchAddress("TDC#",fMuonVetoData.fTDCPound);
+	tMuonRaw->SetBranchAddress("deltaT",&fMuonVetoData.fDeltaT);
+	tMuonRaw->SetBranchAddress("pcTimeSec",&fMuonVetoData.fPcTimeSec);
+	tMuonRaw->SetBranchAddress("pcTimeUSec",&fMuonVetoData.fPcTimeMicroSec);
+  
+  
+	tMuonRaw->GetEntry(0);
+	initializeMuonChannelMap(fMuonChanMap, fMuonVetoData.fRun);
+	if(!testMuonChannelMapForUniqueness(fMuonChanMap)) {
+		cout << "The Muon Module ADC/TDC map is not unique!" << endl;
+		cout << "  ***** This program will now terminate without filling the KDS file!" << endl;
+		return -1;
+	}
+  
+  
+  
+  //TH1::AddDirectory(0);
+  
+  TFile fout(testResults,"recreate");
+  TString theMuonRawCondition;
+  TString theKdsCondition;
+  TString histName;
+  TCanvas c1;
+  c1.Draw();
+  TCanvas c2;
+  c2.Draw();
+  TCanvas c3;
+  c3.Draw();
+  
+  gSystem->ProcessEvents();
+
+  
+  for(Int_t i = 1; i < sizeOfIndex; i++){
+    for(Int_t p = 0; p < kNumPmtsPerMod; p++){
+      
+      //Check the TDC channels
+      theKdsCondition.Form("fModuleNumber == %d && fTdc[][%d] >= 0",i,p);
+      theMuonRawCondition.Form("TDC[%d] > -1",fMuonChanMap.tdc_index[i][p]);
+      c1.cd();
+      tKds->Draw("fMuonSystem.fPcTimeSec>>histKds(5833,1234e6,1276e6)",theKdsCondition.Data());
+      
+      c2.cd();
+      tMuonRaw->Draw("pcTimeSec>>histMuonRaw(5833,1234e6,1276e6)",theMuonRawCondition.Data());
+      
+
+      TH1F *hKds = (TH1F*)gDirectory->Get("histKds");
+      TH1F *hMuonRaw = (TH1F*)gDirectory->Get("histMuonRaw");
+      
+      if(hKds == 0) exit(-1);
+      if(hMuonRaw == 0) exit(-1);
+      TH1F histDiff(*hKds);
+      histName.Form("Diff_Module%d_Tdc%d",i,p);
+      histDiff.SetName(histName.Data());
+      
+      histName.Form("Kds_Module%d_Tdc%d",i,p);
+      hKds->SetName(histName.Data());
+      histName.Form("MuonVeto_Module%d_Tdc%d_channel%d",i,p,fMuonChanMap.tdc_index[i][p]);
+      hMuonRaw->SetName(histName.Data());
+      histDiff.Reset();
+      histDiff.Add(hKds);
+      histDiff.Add(hMuonRaw,-1);
+      histName.Form("Diff_Module%d_Tdc%d",i,p);
+      histDiff.SetName(histName.Data());
+      c3.cd();
+      histDiff.Draw();
+      
+      if(histDiff.Integral() > 0 || histDiff.Integral() < 0){
+        cout << endl;
+        cout << theKdsCondition.Data() << endl;
+        cout << theMuonRawCondition.Data() << endl;
+        fout.cd();
+        hKds->Write();
+        hMuonRaw->Write();
+        histDiff.Write();
+        cout << "Module " << i << " TDC " << p << " Diff " << hKds->Integral() << " - " <<
+        hMuonRaw->Integral() << " = " << histDiff.Integral() << endl;
+      }
+      
+      gSystem->ProcessEvents();
+      c2.Update();
+      c1.Update();
+      c3.Update();
+      gSystem->ProcessEvents();
+
+      //Check the ADC channels
+      theKdsCondition.Form("fModuleNumber == %d && fAdc[][%d] >= 0",i,p);
+      theMuonRawCondition.Form("ADC[%d] > -1",fMuonChanMap.adc_index[i][p]);
+      c1.cd();
+      tKds->Draw("fMuonSystem.fPcTimeSec>>histKds(5833,1234e6,1276e6)",theKdsCondition.Data());
+
+      c2.cd();
+      tMuonRaw->Draw("pcTimeSec>>histMuonRaw(5833,1234e6,1276e6)",theMuonRawCondition.Data());
+
+      hKds = (TH1F *)gDirectory->Get("histKds");
+      hMuonRaw = (TH1F *)gDirectory->Get("histMuonRaw");
+
+      histName.Form("Kds_Module%d_Adc%d",i,p);
+      hKds->SetName(histName.Data());
+      histName.Form("MuonVeto_Module%d_Adc%d_channel%d",i,p,fMuonChanMap.adc_index[i][p]);
+      hMuonRaw->SetName(histName.Data());
+      histDiff.Reset();
+      histDiff.Add(hKds);
+      histDiff.Add(hMuonRaw,-1);
+      histName.Form("Diff_Module%d_Adc%d",i,p);
+      histDiff.SetName(histName.Data());
+      c3.cd();
+      histDiff.Draw();
+      
+      if(histDiff.Integral() > 0 || histDiff.Integral() < 0){  //only write an output when there's a difference.
+        cout << endl;
+        cout << theKdsCondition.Data() << endl;
+        cout << theMuonRawCondition.Data() << endl;
+        fout.cd();
+        hKds->Write();
+        hMuonRaw->Write();
+        histDiff.Write();
+        cout << "Module " << i << " ADC " << p << " Diff " << hKds->Integral() << " - " <<
+        hMuonRaw->Integral() << " = " << histDiff.Integral() << endl;
+      }
+     
+      
+      
+      gSystem->ProcessEvents();
+      c2.Update();
+      c1.Update();
+      c3.Update();
+      gSystem->ProcessEvents();
+
+    }
+  }
+  
+  fout.Close();
+  
+  
+  return true;
+}
 
 
 #ifndef __CINT__
@@ -631,8 +839,37 @@ Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outKEDSFile)
 //should call MuonVetoToDS directly since a function titled 'main' cannot be used in this case. 
 int main(int argc, char* argv[])
 {
-	if(argc != 3) return -1;
-	return MuonVetoToDS(argv[1], argv[2]);
+  if(argc < 3) return -1;
+  
+  //TButton *myButton = new TButton("Die",".q",0.5, 0.75, 0.5, 0.75);
+  
+  //TApplication *myApp = new TApplication("fillMuonVetoEvents", &argc, argv);
+  //myApp->SetReturnFromRun(true);
+	
+  /*if(MuonVetoToDS(myApp->Argv()[1], myApp->Argv()[2])){
+    
+    if(argc == 4)
+      cout << "Running Data Integrity Test. Output to " << myApp->Argv()[3] << endl;
+      testDataIntegrity(myApp->Argv()[1], myApp->Argv()[2], myApp->Argv()[3]);
+  }*/
+  
+  if(MuonVetoToDS(argv[1], argv[2])){
+    
+    if(argc == 4)
+      
+    {
+      cout << "Running Data Integrity Test. Output to " << argv[3] << endl;
+      testDataIntegrity(argv[1], argv[2], argv[3]);
+    }
+    
+  }
+                    
+  //myApp->Run();
+  
+  //myButton->ExecuteEvent();
+  //gSystem->Exec(".q");
+  //myApp->Terminate();
+  return 0;
 }
 #endif
 
