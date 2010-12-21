@@ -97,16 +97,19 @@ void rootScript_mergeKdsTree(){
   bool bSkimBoloNoiseEvents = true;
 
   TString myKdataPath = "$KDATA_ROOT";
-  string kInputPath1="/kalinka/home/gadamc/Eds/Merge/Bckgd/";
+  string kWimpDirectoryName = "Bckgd";
+  string kInputPath1="/kalinka/home/gadamc/Eds/Merge/" + kWimpDirectoryName + "/";
   //string kInputPath1="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/";
-  string kOutputPath="/kalinka/home/gadamc/Eds/Merge/Bckgd/";
+  string kOutputPath="/kalinka/home/gadamc/Eds/Merge/" + kWimpDirectoryName + "/";
+  string kGammaDirectoryName = "Gamma";
+  string kNeutronDirectoryName = "Neutron";
   //string kOutputPath="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/Merge/";
   string kLogFile="/kalinka/home/gadamc/Eds/Merge/Bckgd/Merge.log";
   //string kLogFile="/Users/adam/analysis/edelweiss/data/boloEds/boloEdsNeutron/Merge/Merge.log";
   string muonVetoPath = "/kalinka/home/gadamc/Eds/Input/uVeto/";
-  string kFinalPath = "/kalinka/home/gadamc/Eds/Final/Bckgd/";
+  string kFinalPath = "/kalinka/home/gadamc/Eds/Final/" + kWimpDirectoryName + "/";
   string kVersionNumber = "v3.0";
-  string kFillEraInputPath = "/kalinka/home/gadamc/Eds/Input/Bckgd/";
+  string kFillEraInputPath = "/kalinka/home/gadamc/Eds/Input/" + kWimpDirectoryName + "/";
   string kFillEraOutputPath = kInputPath1;
   string tstNewPath = "/kalinka/home/edelweiss/Bolo/Run12/tstnew/";
   string fMuonVetoDataInPath = "/kalinka/home/edelweiss/Runs/";
@@ -196,9 +199,9 @@ void rootScript_mergeKdsTree(){
     
     listOfFillEraToKdsJobsBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs));
   
-    in1.replace(in1.find("Bckgd"), 5, "Neutron");
-    out.replace(out.find("Bckgd"), 5, "Neutron");
-    log.replace(log.find("Bckgd"), 5, "Neutron");
+    in1.replace(in1.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(), kNeutronDirectoryName.c_str());
+    out.replace(out.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(), kNeutronDirectoryName.c_str());
+    log.replace(log.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(), kNeutronDirectoryName.c_str());
     myFileName = "fillEraToKds_Neutron";
     
     myArgs[0] = in1;
@@ -208,9 +211,9 @@ void rootScript_mergeKdsTree(){
     myArgs[4] = tstNewPath;
     
     listOfFillEraToKdsJobsNeutron.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs));
-    in1.replace(in1.find("Neutron"), 7, "Gamma");
-    out.replace(out.find("Neutron"), 7, "Gamma");
-    log.replace(log.find("Neutron"), 7, "Gamma");
+    in1.replace(in1.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(), kGammaDirectoryName.c_str());
+    out.replace(out.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(), kGammaDirectoryName.c_str());
+    log.replace(log.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(), kGammaDirectoryName.c_str());
     myFileName = "fillEraToKds_Gamma";
     
     myArgs[0] = in1;
@@ -288,10 +291,10 @@ void rootScript_mergeKdsTree(){
       
       listOfJobsMergeLoopOneBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs, listOfFillEraToKdsJobsBckgd.size(), holdListBckgd));
       
-      in1.replace(in1.find("Bckgd"), 5,"Neutron" );
-      in2.replace(in2.find("Bckgd"), 5,"Neutron" );
-      out.replace(out.find("Bckgd"), 5,"Neutron" );
-      log.replace(log.find("Bckgd"), 5,"Neutron" );
+      in1.replace(in1.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+      in2.replace(in2.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+      out.replace(out.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+      log.replace(log.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
       
       myFileName = "mergeKdsTree_Neutron_step1";
       myArgs[0] = in1;
@@ -301,10 +304,10 @@ void rootScript_mergeKdsTree(){
       
       listOfJobsMergeLoopOneNeutron.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs, listOfFillEraToKdsJobsNeutron.size(), holdListNeutron));
       
-      in1.replace(in1.find("Neutron"), 7,"Gamma" );
-      in2.replace(in2.find("Neutron"), 7,"Gamma" );
-      out.replace(out.find("Neutron"), 7,"Gamma" );
-      log.replace(log.find("Neutron"), 7,"Gamma" );
+      in1.replace(in1.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+      in2.replace(in2.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+      out.replace(out.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+      log.replace(log.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
       
       myFileName = "mergeKdsTree_Gamma_step1";
       myArgs[0] = in1;
@@ -390,10 +393,10 @@ void rootScript_mergeKdsTree(){
       
       listOfJobsMergeLoopTwoBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs, listOfJobsMergeLoopOneBckgd.size(), holdListBckgd));
       
-      in1.replace(in1.find("Bckgd"), 5,"Neutron" );
-      in2.replace(in2.find("Bckgd"), 5,"Neutron" );
-      out.replace(out.find("Bckgd"), 5,"Neutron" );
-      log.replace(log.find("Bckgd"), 5,"Neutron" );
+      in1.replace(in1.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+      in2.replace(in2.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+      out.replace(out.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+      log.replace(log.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
       
       myFileName = "mergeKdsTree_Neutron_step2";
       myArgs[0] = in1;
@@ -403,10 +406,10 @@ void rootScript_mergeKdsTree(){
       
       listOfJobsMergeLoopTwoNeutron.push_back(submitCommand(myFileName.Data(), command.Data(),  myNumArgs, myArgs, listOfJobsMergeLoopOneNeutron.size(), holdListNeutron));
       
-      in1.replace(in1.find("Neutron"), 7,"Gamma" );
-      in2.replace(in2.find("Neutron"), 7,"Gamma" );
-      out.replace(out.find("Neutron"), 7,"Gamma" );
-      log.replace(log.find("Neutron"), 7,"Gamma" );
+      in1.replace(in1.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+      in2.replace(in2.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+      out.replace(out.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+      log.replace(log.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
       
       myFileName = "mergeKdsTree_Gamma_step2";
       myArgs[0] = in1;
@@ -470,10 +473,10 @@ void rootScript_mergeKdsTree(){
     
     listOfJobsMergeLoopThreeBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs,  listOfJobsMergeLoopTwoBckgd.size(), holdListBckgd));
     
-    in1.replace(in1.find("Bckgd"), 5,"Neutron" );
-    in2.replace(in2.find("Bckgd"), 5,"Neutron" );
-    out.replace(out.find("Bckgd"), 5,"Neutron" );
-    log.replace(log.find("Bckgd"), 5,"Neutron" );
+    in1.replace(in1.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    in2.replace(in2.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    out.replace(out.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    log.replace(log.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
     
     myFileName = "mergeKdsTree_Neutron_step3";
     myArgs[0] = in1;
@@ -483,10 +486,10 @@ void rootScript_mergeKdsTree(){
     
     listOfJobsMergeLoopThreeNeutron.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs,  listOfJobsMergeLoopTwoNeutron.size(), holdListNeutron));
     
-    in1.replace(in1.find("Neutron"), 7,"Gamma" );
-    in2.replace(in2.find("Neutron"), 7,"Gamma" );
-    out.replace(out.find("Neutron"), 7,"Gamma" );
-    log.replace(log.find("Neutron"), 7,"Gamma" );
+    in1.replace(in1.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    in2.replace(in2.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    out.replace(out.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    log.replace(log.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
     
     myFileName = "mergeKdsTree_Gamma_step3";
     myArgs[0] = in1;
@@ -514,10 +517,10 @@ void rootScript_mergeKdsTree(){
     
     listOfJobsMergeLoopThreeBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs, listOfJobsMergeLoopTwoBckgd.size(), holdListBckgd));
     
-    in1.replace(in1.find("Bckgd"), 5,"Neutron" );
-    in2.replace(in2.find("Bckgd"), 5,"Neutron" );
-    out.replace(out.find("Bckgd"), 5,"Neutron" );
-    log.replace(log.find("Bckgd"), 5,"Neutron" );
+    in1.replace(in1.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    in2.replace(in2.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    out.replace(out.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    log.replace(log.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
     
     myFileName = "mergeKdsTree_Neutron_step3b";
     myArgs[0] = in1;
@@ -527,10 +530,10 @@ void rootScript_mergeKdsTree(){
     
     listOfJobsMergeLoopThreeNeutron.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs, listOfJobsMergeLoopTwoNeutron.size(), holdListNeutron));
     
-    in1.replace(in1.find("Neutron"), 7,"Gamma" );
-    in2.replace(in2.find("Neutron"), 7,"Gamma" );
-    out.replace(out.find("Neutron"), 7,"Gamma" );
-    log.replace(log.find("Neutron"), 7,"Gamma" );
+    in1.replace(in1.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    in2.replace(in2.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    out.replace(out.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    log.replace(log.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
     
     myFileName = "mergeKdsTree_Gamma_step3b";
     myArgs[0] = in1;
@@ -589,10 +592,10 @@ void rootScript_mergeKdsTree(){
     
     listOfJobsMergeLoopFourBckgd.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs, listOfJobsMergeLoopThreeBckgd.size(), holdListBckgd));
     
-    in1.replace(in1.find("Bckgd"), 5,"Neutron" );
-    in2.replace(in2.find("Bckgd"), 5,"Neutron" );
-    out.replace(out.find("Bckgd"), 5,"Neutron" );
-    log.replace(log.find("Bckgd"), 5,"Neutron" );
+    in1.replace(in1.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    in2.replace(in2.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    out.replace(out.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
+    log.replace(log.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(),kNeutronDirectoryName.c_str() );
     
     myFileName = "mergeKdsTree_Neutron_step4";
     myArgs[0] = in1;
@@ -602,10 +605,10 @@ void rootScript_mergeKdsTree(){
     
     listOfJobsMergeLoopFourNeutron.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs,  listOfJobsMergeLoopThreeNeutron.size(), holdListNeutron));
     
-    in1.replace(in1.find("Neutron"), 7,"Gamma" );
-    in2.replace(in2.find("Neutron"), 7,"Gamma" );
-    out.replace(out.find("Neutron"), 7,"Gamma" );
-    log.replace(log.find("Neutron"), 7,"Gamma" );
+    in1.replace(in1.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    in2.replace(in2.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    out.replace(out.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
+    log.replace(log.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(),kGammaDirectoryName.c_str() );
     
     myFileName = "mergeKdsTree_Gamma_step4";
     myArgs[0] = in1;
@@ -783,8 +786,8 @@ void rootScript_mergeKdsTree(){
     in1 = kOutputPath;
     in1.append("Kds_AllBolos.root");
     
-    in1.replace(in1.find("Bckgd"), 5, "Neutron");
-    out.replace(out.find("Bckgd"), 5, "Neutron");
+    in1.replace(in1.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(), kNeutronDirectoryName.c_str());
+    out.replace(out.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(), kNeutronDirectoryName.c_str());
     
     myFileName = "allPassOne_GSEventNumberNeutron";
     myArgs[0] = in1;
@@ -792,8 +795,8 @@ void rootScript_mergeKdsTree(){
     allPassOneJobNameNeutron.push_back(submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs,  listOfJobsMergeLoopFourNeutron.size(), holdListNeutron));
     
     
-    in1.replace(in1.find("Neutron"), 7, "Gamma");
-    out.replace(out.find("Neutron"), 7, "Gamma");
+    in1.replace(in1.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(), kGammaDirectoryName.c_str());
+    out.replace(out.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(), kGammaDirectoryName.c_str());
     
     myFileName = "allPassOne_GSEventNumberGamma";
     myArgs[0] = in1;
@@ -851,8 +854,8 @@ void rootScript_mergeKdsTree(){
     
     submitCommand(myFileName.Data(), command.Data(), myNumArgs, myArgs, allPassOneJobNameBckgd.size(), holdListBckgd);
     
-    in1.replace(in1.find("Bckgd"), 5, "Neutron");
-    out.replace(out.find("Bckgd"), 5, "Neutron");
+    in1.replace(in1.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(), kNeutronDirectoryName.c_str());
+    out.replace(out.find(kWimpDirectoryName.c_str()), kWimpDirectoryName.size(), kNeutronDirectoryName.c_str());
     
     myFileName = "skimNoNoiseBolos_Neutron";
     myArgs[0] = in1;
@@ -860,8 +863,8 @@ void rootScript_mergeKdsTree(){
     
     submitCommand(myFileName.Data(), command.Data(),  myNumArgs, myArgs, allPassOneJobNameNeutron.size(), holdListNeutron);
     
-    in1.replace(in1.find("Neutron"), 7, "Gamma");
-    out.replace(out.find("Neutron"), 7, "Gamma");
+    in1.replace(in1.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(), kGammaDirectoryName.c_str());
+    out.replace(out.find(kNeutronDirectoryName.c_str()), kNeutronDirectoryName.size(), kGammaDirectoryName.c_str());
     
     myFileName = "skimNoNoiseBolos_Gamma";
     myArgs[0] = in1;
