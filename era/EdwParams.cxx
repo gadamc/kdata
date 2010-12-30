@@ -1,6 +1,7 @@
 
 
 #include "EdwUtils.h"
+#include <climits>
 
 string gProcessingStep, gBaseDir;
 string gRawDBFile, gAnaDBFile;

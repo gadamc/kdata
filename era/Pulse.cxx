@@ -5,6 +5,7 @@
 */
 
 #include "Pulse.h"
+#include <climits>
 
 ClassImp(Pulse); /**< Root dictionnary */
 
