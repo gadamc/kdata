@@ -5,6 +5,7 @@
 # Two input parameters
 basedir=$1
 datadir=$2
+byteorder=$3 # must be "little" or "big"
 
 # ROOT configuration
 if [ "${ROOT_ENV_SET}" != "yes" ] ; then
@@ -21,6 +22,9 @@ echo "gBaseDir = "${basedir} >> ${paramfile}
 echo "gSambaDir = "${datadir}"/events" >> ${paramfile}
 echo "gRunListFile = "${basedir}"/runlist.txt" >> ${paramfile}
 echo "gRawDBFile = "${datadir}"/rootdbs/rawdb.root" >> ${paramfile}
+if [ ${byteorder} ] ; then
+  echo "gByteOrder = "${byteorder} >> ${paramfile}
+fi
 
 # Run EdwRootAna
 ${HOME}/EdwRootAna/bin/edwrootana.exe ${paramfile}

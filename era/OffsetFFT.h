@@ -27,7 +27,10 @@ class OffsetFFT : public TObject {
   time_t TEndKernel() const { return fTEndKernel; } /**< Kernel validity period */
   void SetTStartKernel(time_t aTime) { fTStartKernel = aTime; } /**< Kernel validity period */
   void SetTEndKernel(time_t aTime) { fTEndKernel = aTime; } /**< Kernel validity period */
-  void ComputeKernels(const FloatVect& aNoise) ; /**< Compute kernels from the list of ffts and a given noise, for optimal filtering purpose */
+  //  void ComputeKernels(const FloatVect& aNoise) ; /**< Compute kernels from the list of ffts and a given noise, for optimal filtering purpose */
+  // Oblige de faire comme ca pour passer la rustine.. :
+  void ComputeKernels(FloatVect aNoise) ; /**< Compute kernels from the list of ffts and a given noise, for optimal filtering purpose */
+
   vector<Float_t> GetKernel(Int_t aOffset) const ; /**< Return a kernel for optimal filtering */
   Float_t GetDenom(Int_t aOffset) const ; /**< Kernel denominator */
   Int_t MinOffset() const { return vectmin(fBinsOffsetFFT); } /**< Time range of the ffts saved in the object */
@@ -39,7 +42,7 @@ class OffsetFFT : public TObject {
   Short_t PulseSign() const { return fPulseSign; } /**< sign */
 
  protected:
-  vector<Float_t> fExtrapolatedTrace; /**< here now ! */
+  //  vector<Float_t> fExtrapolatedTrace; /**< NOT here now ! */
   vector<Int_t> fBinsOffsetFFT; /**< List of bins for which the ffts are saved */
   /**< Values of time offsets (in bins) for which the FFTs are saved in fTracesOffsetFFT */
   vector< vector<Float_t> > fTracesOffsetFFT;
@@ -57,7 +60,7 @@ class OffsetFFT : public TObject {
   vector<Float_t> fDenoms; /**< kernel denominators */
   vector< vector<Float_t> > fKernels; /**< kernels */
 
-  ClassDef(OffsetFFT,2)
+  ClassDef(OffsetFFT,1)
 
 };
 

@@ -192,7 +192,7 @@ void transTableSetup(int sofar[], int actual[], int remain[],
     if (actual[1] > maxPrimeFactor)
     {
         printf("\nPrime factor of FFT length too large : %6d",actual[1]);
-        printf("\nPlease modify the value of maxPrimeFactor in mixfft.cxx");
+        printf("\nPlease modify the value of maxPrimeFactor in mixfft.c");
         exit(1);
     }
     remain[0]=*nPoints;

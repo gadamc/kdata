@@ -3,7 +3,7 @@
 // Valable pour les differents macs
 // Update Feb2010
 
-string bolo="ID404";
+string bolo="ID401";
 
 .x params_id_run12.C
 .x start_idrun12bis_bckgd.C

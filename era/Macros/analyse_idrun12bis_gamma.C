@@ -2,7 +2,7 @@
 // Analyse Gamma run 12bis - Jan 2010
 // New features, global variables, DSTs...
 
-string bolo="FID402";
+string bolo="ID403";
 
 .x params_id_run12.C
 .x start_idrun12bis_gamma.C
@@ -185,6 +185,9 @@ gLdbCut_Evet=1.5; // 1.5...va avec Ecol
 string qplotfile=basedir+"/qplot_"+bolo+".txt";
 
 Qplot(bolo,qualdir,DSTRed,voltflag,evtclassflag,cut_badevts,0,print_wimps,0,qplotfile);
+
+// bonus sept 2010
+SynchroFidCut(bolo,DSTRed);
 
 //**********************
 // Qplot

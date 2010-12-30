@@ -18,16 +18,18 @@
 #include <cstdlib>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "Byteswap.h"
+#include <byteswap.h>
 using namespace std;
 
 // Root includes
+#include "TStyle.h"
 #include "TObject.h"
 #include "TObjArray.h"
 #include "TTimeStamp.h"
 #include "TTree.h"
 #include "TChain.h"
 #include "TH1F.h"
+#include "TH2F.h"
 #include "TF1.h"
 #include "TMath.h"
 #include "TCanvas.h"
@@ -38,12 +40,16 @@ using namespace std;
 #include "TGraph.h"
 #include "TProfile.h"
 #include "TNtuple.h"
+#include "TLegend.h"
 
 #define KVERBOSE 1 /**< may be used in routines to do some printout. */
+#define OVERWRITE_ROOTEVTFILE 0 /**< if 0, "ReadSamba_Step" will not read a samba file if the corresponding root file already exists */
 
 #define ArraySize(x) (sizeof(x)/sizeof((x)[0])) /**< Size of array[] */
 
 int checkequal(string s); /**< checks if s is "=" (for parameter file reading) */
+
+bool fileexists(string aFileName); /**< check if a file exists */
 
 string int2str(Int_t aNum,Int_t aWidth = 3) ; /**< Convert an integer to a string with a given length */
 string int2str(UInt_t aNum,Int_t aWidth = 3) ; /**< Convert an integer to string with a given length */
@@ -63,6 +69,8 @@ Bool_t isheat(const string& aChannel); /**< Returns 1 if the string is of the fo
 Int_t stringnum(const vector<string> & aStrings, string myString); /**< Returns the index of a given string in an array of strings. If this string does not exist in the array, return -1 */
 Int_t uintnum(const vector<UInt_t> & aUInts, UInt_t myUInt); /**< Returns the index of a given uint in an array of uints. If this string does not exist in the array, return -1 */
 // TODO : faire un truc plus generic avec template!
+
+string associate_heatname(const string& aChannel); 
 
 Float_t vectmean(const vector<Float_t> & aVect); /**< Average */
 Float_t vectmedian(const vector<Float_t> & aVect); /**< Median */
@@ -169,6 +177,9 @@ vector<Float_t> EdwInvFFT(vector<Float_t> aFFT); /**< Inverse FFT */
 FloatVect EdwInvFFT(FloatVect aVect); /**< Inverse FFT */
 
 vector<Float_t> EdwFilter(vector<Float_t> aData, vector<Float_t> aDirect, vector<Float_t> aInverse);
+vector<Float_t> WindowFunction(UInt_t aNbPts, UInt_t aWidth);
+
+
 /**< Filtering:
    With aData=x; aDirect=(a_p)p=0...j ; aInverse=(b_p)p=0...k-1:
    y_n = sum_1^k b_(p-1) y_(n-p) + sum_0^j a_p x_(n-p)   for n>=sup(j,k)

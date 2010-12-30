@@ -2,7 +2,7 @@
 // Analyse Gamma run 10
 // ID201, ID401, ID3
 
-string bolo="ID401";
+string bolo="ID3";
 
 .x params_id_run10.C
 .x start_idrun10_gamma.C
@@ -151,6 +151,11 @@ TTree* Coinc = NULL; // run 10...
 TTree* Tst = NULL;
 
 BuildDSTRed(chain,bolo,Eion,Echal,Cuts,DST,Coinc,Tst,dstredfile);
+
+// bonus sept 2010
+SynchroFidCut(bolo,DSTRed);
+
+
 
 //**********************
 // Qplot : new version!

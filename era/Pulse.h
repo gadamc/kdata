@@ -34,8 +34,6 @@ class Pulse : public TObject {
   void SetTrace(UShort_t n, const Short_t* aData) ; /**< Trace */
   void ClearTrace() { fTrace.clear(); } /**< Clear trace */
   void PlotRawTrace(string aPlotName) ; /**< Plot trace (root) */
-	
-	TH1F* CreateHistFromPulse() const;
   
  protected:
   string fChannel; /**< Channel */

@@ -37,17 +37,19 @@ class EdwRunData : public TObject {
 
   vector<string> fChannelNames ; /**< Channels recorded */
   vector<Float_t> fIonizationVoltages ; /**< Taken from the log. Set to 0 for heat channels */
+  vector<Float_t> fRelativeVoltages; /**< For ID : ionization voltage - average potential of the detector */
   vector<Float_t> fHeatModulations ; /**< Taken from the log. Set to 0 for ionization channels */
+  vector<Int_t> fHeatModulationPoints;
 
   vector<time_t> fThresholdsTimes ; /**< Case of adaptative trigger */
   vector< vector<Float_t> > fThresholdsPos ; /**< Case of adaptative trigger */
   vector< vector<Float_t> > fThresholdsNeg ; /**< Case of adaptative trigger */
 
   Float_t GetVoltage(string aChannel) const ; /**< Voltages */
-
+  Int_t GetPatternLength(string aChannel) const;
  private:
 
-  ClassDef(EdwRunData,2)
+  ClassDef(EdwRunData,1)
 };
 
 #endif

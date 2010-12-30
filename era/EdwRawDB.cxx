@@ -38,36 +38,37 @@ EdwRawDB::EdwRawDB(string aFile, string aRead) : EdwDB(aFile,aRead) {
 
   if (fFile->Get("AutomateTree")) {
     fAutomateTree = (TTree*)fFile->Get("AutomateTree");
+    fAutomateBranch = fAutomateTree->GetBranch("AutomateBranch");
+    fAutomateBranch->SetAddress(&fAutomateData);
   } else {
     fAutomateTree = new TTree("AutomateTree","AutomateTree");
     fAutomateTree->SetDirectory(fFile);
     fAutomateTree->Branch("AutomateBranch","EdwAutomateData",&fAutomateData);
+    fAutomateBranch = fAutomateTree->GetBranch("AutomateBranch");
   }
   if (fFile->Get("RunTree")) {
     fRunTree = (TTree*)fFile->Get("RunTree");
+    fRunBranch = fRunTree->GetBranch("RunBranch");
+    fRunBranch->SetAddress(&fRunData);
   } else {
     fRunTree = new TTree("RunTree","RunTree");
     fRunTree->SetDirectory(fFile);
     fRunTree->Branch("RunBranch","EdwRunData",&fRunData);
+    fRunBranch = fRunTree->GetBranch("RunBranch");
   }
   if (fFile->Get("SetupTree")) {
     fSetupTree = (TTree*)fFile->Get("SetupTree");
+    fSetupBranch = fSetupTree->GetBranch("SetupBranch");
+    fSetupBranch->SetAddress(&fSetupData);
   } else {
     fSetupTree = new TTree("SetupTree","SetupTree");
     fSetupTree->SetDirectory(fFile);
     fSetupTree->Branch("SetupBranch","EdwSetupData",&fSetupData);
+    fSetupBranch = fSetupTree->GetBranch("SetupBranch");
   }
 
-  fAutomateBranch = fAutomateTree->GetBranch("AutomateBranch");
-  fRunBranch = fRunTree->GetBranch("RunBranch");
-  fSetupBranch = fSetupTree->GetBranch("SetupBranch");
   if (!fAutomateBranch || !fRunBranch || !fSetupBranch) {
     cerr << "EdwRawDB: at least one missing branch in file. Exiting."<< endl; exit(-1);
-  }
-  if (aRead == "READ") {
-    fAutomateBranch->SetAddress(&fAutomateData);
-    fRunBranch->SetAddress(&fRunData);
-    fSetupBranch->SetAddress(&fSetupData);
   }
 
 }
@@ -79,6 +80,7 @@ EdwRawDB::~EdwRawDB() {
 void EdwRawDB::FillAutomateData(string aFile) {
 
   // Read the automate file and fill the branch.
+  fAutomateData->Clear();
 
   // Constants needed to convert the Excel time of automate data to Unix time
   Double_t kShiftTime_Day = 24107 ; // between 1904 and 1970, for automate file reading
@@ -144,6 +146,7 @@ void EdwRawDB::FillRunData(string aRunDir, string aRunName, ByteOrderType aByteO
   int lVersion = 0; // a single int to have an unambiguous version flag
 
   // may do some tests with this before...
+  fRunData->Clear(); // Major point! (case of a rawdb completion)
 
   // First filling the "basic" fields
   fRunData->fByteOrdering = aByteOrder;
@@ -164,7 +167,7 @@ void EdwRawDB::FillRunData(string aRunDir, string aRunName, ByteOrderType aByteO
   if (lLogFile.bad()) cerr << "Warning, Run Log file not correctly open" << endl;
   while (!lLogFile.eof()) {
     getline(lLogFile,field);
-    if (field.find("version") != string::npos) {
+    if (field.find("avec la version") != string::npos) {
       pos1 = field.find("version") ;
       pos2 = field.find(")");
       fRunData->fSambaVersion = field.substr(pos1+8,pos2-pos1-8);
@@ -194,30 +197,58 @@ void EdwRawDB::FillRunData(string aRunDir, string aRunName, ByteOrderType aByteO
 
   // Parsing the list of identified channels
   lLogFile.open((aRunDir+"/"+aRunName+"/"+aRunName+"_log").c_str(),ios::in);
-  if (lVersion >= 723) {
-    while (field.find("Identification des voies") == string::npos) getline(lLogFile,field);
-  } else {
-    while (field.find("Identification des numeriseurs") == string::npos) 
-      getline(lLogFile,field);
-  }
-  for (unsigned int i=0; i<4; i++) getline(lLogFile,field);
-  while (field.find("____") == string::npos) {
-    if (lVersion >= 808 && field.find("SuperCluzel") != string::npos) {
-      getline(lLogFile,field); getline(lLogFile,field);
+  if (lVersion < 900) {
+    if (lVersion >= 723) {
+      while (field.find("Identification des voies") == string::npos)
+	getline(lLogFile,field);
+    } else {
+      while (field.find("Identification des numeriseurs") == string::npos) 
+	getline(lLogFile,field);
     }
-    if (lVersion >= 802) thechannel = field.substr(50,25);
-    else thechannel = field.substr(46,25);
-    if (thechannel.find("invalidee") == string::npos &&
-	thechannel.find("inutilisee") == string::npos ) {
+    for (unsigned int i=0; i<4; i++) getline(lLogFile,field);
+    while (field.find("____") == string::npos) {
+      if (lVersion >= 808 && field.find("SuperCluzel") != string::npos) {
+	getline(lLogFile,field); getline(lLogFile,field);
+      }
+      if (lVersion >= 808 && field.find("OPERA") != string::npos) {
+	for (unsigned int i=0; i<3; i++) getline(lLogFile,field);
+      }
+      if (lVersion >= 808 && field.find("SuperCluzel") != string::npos) {
+	getline(lLogFile,field); getline(lLogFile,field);
+      }
+      if (lVersion >= 802) thechannel = field.substr(50,25);
+      else thechannel = field.substr(46,25);
+      if (thechannel.find("invalidee") == string::npos &&
+	  thechannel.find("inutilisee") == string::npos ) {
+	if (thechannel.find("chaleur") == string::npos && 
+	    thechannel.find("centre") == string::npos && 
+	    thechannel.find("garde") == string::npos) {
+	  cerr << "Warning: channel "<<thechannel<<" is not conventionnal." << endl;
+	  cerr << "Run "<<aRunName<<endl; exit(-1);
+	}
+	pos1 = thechannel.find_first_not_of(" ");
+	pos2 = thechannel.find_last_not_of(" ");
+	(fRunData->fChannelNames).push_back(thechannel.substr(pos1,pos2-pos1+1));
+      }
+      getline(lLogFile,field);
+    }
+  } else { // We look for the list of channels in another place
+    while (field.find("Recherche d'evenements") == string::npos) getline(lLogFile,field);
+    while (field.find("  voie  ") == string::npos) getline(lLogFile,field);
+    for (unsigned int i=0; i<2; i++) getline(lLogFile,field);
+    while (field.find("____") == string::npos) {
+      thechannel = field.substr(1,18);
       if (thechannel.find("chaleur") == string::npos && 
 	  thechannel.find("centre") == string::npos && 
-	  thechannel.find("garde") == string::npos) 
+	  thechannel.find("garde") == string::npos) {
 	cerr << "Warning: channel "<<thechannel<<" is not conventionnal." << endl;
+	cerr << "Run "<<aRunName<<endl; exit(-1);
+      }
       pos1 = thechannel.find_first_not_of(" ");
       pos2 = thechannel.find_last_not_of(" ");
       (fRunData->fChannelNames).push_back(thechannel.substr(pos1,pos2-pos1+1));
+      getline(lLogFile,field);
     }
-    getline(lLogFile,field);
   }
   lLogFile.close();
   lLogFile.clear();
@@ -234,39 +265,112 @@ void EdwRawDB::FillRunData(string aRunDir, string aRunName, ByteOrderType aByteO
     while (field.find("(detecteur: "+thebolo) == string::npos) 
       getline(lLogFile,field);
     // "Deblocage des dacs"..
+    pos2 = lLogFile.tellg();
     getline(lLogFile,field);
     if (field.find("Deblocage") != string::npos) {
-      while (field.find("Fin de la sequence") == string::npos) getline(lLogFile,field);
+      while (field.find("Fin de la sequence") == string::npos) {
+	pos2 = lLogFile.tellg();
+	getline(lLogFile,field);
+      }
     }
     // here there should be some "case" for Nbsi, ID, GeNtd
     if (thechannel == "chaleur") {
       while (field.find("ampl-modul") == string::npos) getline(lLogFile,field);
       pos1 = field.find("=");
       (fRunData->fHeatModulations).push_back(atof((field.substr(pos1+1)).c_str()));
+      lLogFile.seekg(pos2);
+      while (field.find(" d2 =") == string::npos) getline(lLogFile,field);
+      pos1 = field.find("=");
+      (fRunData->fHeatModulationPoints).push_back(atoi((field.substr(pos1+1)).c_str()));
       (fRunData->fIonizationVoltages).push_back(0);
+      (fRunData->fRelativeVoltages).push_back(0);
     } else { // ionisation
       // CASE OF InterDigit IS TAKEN INTO ACCOUNT.
-      if (thebolo.substr(0,2) == "ID" && thechannel == "centre") {
-	// Change in polar consigne starting run 11.
-	// Before run 11: centre = polar-voie3, garde = polar-ionis
-	// After run 11: centre = polar-ionis, garde = polar-voie3
-	char lYear = (fRunData->fRunName)[0];
-	if (lYear <= 'i') {
-	  while (field.find("polar-voie3") == string::npos) getline(lLogFile,field);
+      if (thebolo.substr(0,2) == "ID" || thebolo.substr(0,3) == "FID") {
+	if (thechannel == "centre") {
+	  if (lVersion < 900) {
+	    // Change in polar consigne starting run 11.
+	    // Before run 11: centre = polar-voie3, garde = polar-ionis
+	    // After run 11: centre = polar-ionis, garde = polar-voie3
+	    char lYear = (fRunData->fRunName)[0];
+	    if (lYear <= 'i') {
+	      while (field.find("polar-voie3") == string::npos) getline(lLogFile,field);
+	    } else {
+	      while (field.find("polar-ionis") == string::npos) getline(lLogFile,field);
+	    }
+	  } else {
+	    while (field.find("polar-centre") == string::npos) getline(lLogFile,field);
+	  }
 	} else {
-	  while (field.find("polar-ionis") == string::npos) getline(lLogFile,field);
+	  if (lVersion < 900) {
+	    char lYear = (fRunData->fRunName)[0];
+	    if (lYear <= 'i') {
+	      while (field.find("polar-ionis") == string::npos) getline(lLogFile,field);
+	    } else {
+	      while (field.find("polar-voie3") == string::npos) getline(lLogFile,field);
+	    }
+	  } else {
+	    while (field.find("polar-garde") == string::npos) getline(lLogFile,field);
+	  }
 	}
-      } else {
-	char lYear = (fRunData->fRunName)[0];
-	if (lYear <= 'i') {
+      } else { // GeNTD old generation : same voltage for centre and garde
+	if (lVersion < 900) {
 	  while (field.find("polar-ionis") == string::npos) getline(lLogFile,field);
 	} else {
-	  while (field.find("polar-voie3") == string::npos) getline(lLogFile,field);
+	  while (field.find("polar-centre") == string::npos) getline(lLogFile,field);
 	}
       }
+
       pos1 = field.find("=");
       (fRunData->fIonizationVoltages).push_back(atof((field.substr(pos1+1)).c_str()));
+      (fRunData->fRelativeVoltages).push_back(atof((field.substr(pos1+1)).c_str()));
       (fRunData->fHeatModulations).push_back(0);
+      (fRunData->fHeatModulationPoints).push_back(0);
+    }
+  }
+  // Compute the relative voltages for ID detectors !!
+  vector<string> listidbolos; // first have the list of IDs
+  for (unsigned int i=0;i<(fRunData->fChannelNames).size();i++) {
+    thechannel = (fRunData->fChannelNames).at(i);
+    pos1 = thechannel.find(" ");
+    thebolo = thechannel.substr(pos1+1);
+    thebolo = thebolo.substr(0,thebolo.length()-2); // remove "AB/CD/GH"
+    if (thebolo.substr(0,2) == "ID" || thebolo.substr(0,3) == "FID") {
+      bool flag=1;
+      for (UInt_t p=0; p<listidbolos.size(); p++) {
+	if (thebolo == listidbolos[p]) flag = 0;
+      }
+      if (flag) listidbolos.push_back(thebolo);
+    }
+  }
+  vector<Float_t> listidvmean(listidbolos.size(),0); // Get mean voltage for each ID bolo
+  for (UInt_t p=0; p<listidbolos.size(); p++) {
+    Int_t nbelectrodes=0;
+    for (unsigned int i=0;i<(fRunData->fChannelNames).size();i++) {
+      thechannel = (fRunData->fChannelNames).at(i);
+      if (thechannel.find("chaleur") == string::npos) {
+	pos1 = thechannel.find(" ");
+	thechannel = thechannel.substr(pos1+1);
+	thechannel = thechannel.substr(0,thechannel.length()-2);
+	if (thechannel == listidbolos[p]) {
+	  (listidvmean[p])+=(fRunData->fIonizationVoltages[i]);
+	  nbelectrodes++;
+	}
+      }
+    }
+    (listidvmean[p]) /= nbelectrodes;
+  }
+
+  for (unsigned int i=0;i<(fRunData->fChannelNames).size();i++) {
+    thechannel = (fRunData->fChannelNames).at(i);
+    for (UInt_t p=0; p<listidbolos.size(); p++) {
+      if (thechannel.find("chaleur") == string::npos) {
+	pos1 = thechannel.find(" ");
+	string lbolo = thechannel.substr(pos1+1);
+	lbolo = lbolo.substr(0,lbolo.length()-2);
+	if (lbolo == listidbolos[p])
+	  (fRunData->fRelativeVoltages[i]) -= listidvmean[p];
+      }
     }
   }
   lLogFile.close();
@@ -293,7 +397,15 @@ void EdwRawDB::FillRunData(string aRunDir, string aRunName, ByteOrderType aByteO
 	if ( lThreshList[i].find(s1) != string::npos && lThreshList[i].find(s2) != string::npos ) lChannelList.push_back(j);
       }
     }
-    if (lChannelList.size() != lThreshList.size()) cerr << "aieaieaie"<<endl;
+    if (lChannelList.size() != lThreshList.size()) {
+      cerr << "Pbl threshold file, run "<<aRunName << endl;
+      for (UInt_t i=0;i<lThreshList.size();i++) cerr<<lThreshList[i]<<" ";
+      cerr << endl;
+      for (UInt_t j=0;j<nbchannels;j++) cerr<<(fRunData->fChannelNames)[j]<<" ";
+      cerr << endl;
+      for (UInt_t i=0;i<lChannelList.size();i++) cerr<<lChannelList[i]<<" ";
+      cerr << endl;
+    }
     getline(lThreshFile,field);
     int jj=0;
     while (! lThreshFile.eof()) {
@@ -374,8 +486,15 @@ void EdwRawDB::FillRunData(string aRunDir, ByteOrderType aByteOrder) {
 }
 
 void EdwRawDB::FillRunData(string aRunDir, vector<string> aRunList, ByteOrderType aByteOrder) {
-  for (UInt_t i=0; i<aRunList.size(); i++)
-    this->FillRunData(aRunDir,aRunList[i],aByteOrder);
+
+  vector<string> lExistingRuns = this->GetRunList();
+  for (UInt_t i=0; i<aRunList.size(); i++) {
+    Bool_t run_exists=0;
+    for (UInt_t j=0; j<lExistingRuns.size(); j++) {
+      if (aRunList[i] == lExistingRuns[j]) run_exists=1;
+    }
+    if (!run_exists) this->FillRunData(aRunDir,aRunList[i],aByteOrder);
+  }
 }
 
 void EdwRawDB::FillAllData(string aAutomateDir, string aRunDir) {
@@ -480,6 +599,14 @@ Short_t EdwRawDB::GetVoltageSign(string aRun, string aChannel) {
   return (Short_t)lVolt;
 }
 
+Int_t EdwRawDB::GetPatternLength(string aRun, string aChannel) {
+  for (UInt_t irun=0; irun<fRunBranch->GetEntries(); irun++) {
+    fRunBranch->GetEntry(irun);
+    if (fRunData->fRunName == aRun) return fRunData->GetPatternLength(aChannel);
+  }
+  return 0;
+}
+
 TChain* EdwRawDB::GetEventChain(vector<string> aRunNames, string aDir) {
   TChain* lChain = new TChain("EdwTree");
 
@@ -504,6 +631,74 @@ TChain* EdwRawDB::GetEventChain(vector<string> aRunNames, string aDir) {
   return lChain;
 }
 
+TChain* EdwRawDB::GetEventSubChain(vector<string>& aRunNames, string aDir, ULong_t istart, ULong_t istop, ULong_t& i_offset, vector<string>& runnames_restrict, string aLocalDir) {
+
+  // First loop to get the "restricted list" of runnames.
+  TChain* lFullChain = new TChain("EdwTree");
+  runnames_restrict.clear();
+  ULong_t nb_local=0;
+  i_offset=0;
+  for (UInt_t irun=0; irun<fRunBranch->GetEntries(); irun++) {
+    fRunBranch->GetEntry(irun);
+    string lRunName = fRunData->fRunName;
+    // Check if the run fits to the list
+    bool ok=0;
+    for (UInt_t i=0;i<aRunNames.size();i++) {
+      if (lRunName == aRunNames.at(i)) ok=1;
+    }
+    if (ok) { // Add the different partition ROOT files to the chain
+      vector<string> lPartitions = fRunData->fRunFiles;
+      for (UInt_t ipart=0; ipart<lPartitions.size(); ipart++) {
+	string lFile = aDir+"/"+lPartitions[ipart]+".root";
+	lFullChain->Add(lFile.c_str());
+      }
+      nb_local=lFullChain->GetEntries();
+      if (nb_local >= istart)  runnames_restrict.push_back(lRunName);
+      else i_offset=nb_local;
+    }
+    if (nb_local > istop) break;
+  }
+  lFullChain->Reset();// on sait jamais...
+  //  lFullChain->Delete(); // on sait jamais tjs..
+  delete lFullChain;
+  if (runnames_restrict.size() == 0) {
+    cout <<"* No run for this istart "<<istart<<endl;
+    exit(0);
+  }
+
+  // Fill the subchain from runnames_restrict
+  TChain* lSubChain = new TChain("EdwTree");
+  for (UInt_t irun=0; irun<fRunBranch->GetEntries(); irun++) {
+    fRunBranch->GetEntry(irun);
+    string lRunName = fRunData->fRunName;
+    // Check if the run fits to the list
+    bool ok=0;
+    for (UInt_t i=0;i<runnames_restrict.size();i++) {
+      if (lRunName == runnames_restrict.at(i)) ok=1;
+    }
+    if (ok) { // Add the different partition ROOT files to the chain
+      vector<string> lPartitions = fRunData->fRunFiles;
+      for (UInt_t ipart=0; ipart<lPartitions.size(); ipart++) {
+	string lFile = aDir+"/"+lPartitions[ipart]+".root";
+	if (aLocalDir != "") { // copy the partition on another local space
+	  // (useful in batch to limit the access to sps)
+	  system(("cp "+lFile+" "+aLocalDir+"/"+lPartitions[ipart]+".root").c_str());
+	  lFile=aLocalDir+"/"+lPartitions[ipart]+".root";
+	}
+	lSubChain->Add(lFile.c_str());
+      }
+    }
+  }
+  
+  cout << "* List of runs involved:"<<endl;
+  for (UInt_t p=0;p<runnames_restrict.size();p++) cout <<runnames_restrict[p]<<endl;
+  cout <<"* Subchain size: "<<lSubChain->GetEntries()<<endl;
+  cout <<"* Subchain offset: "<<i_offset<<endl;
+  //  aRunNames=runnames_restrict; // astuce..
+
+  return lSubChain;  
+}
+
 void EdwRawDB::DumpRunData() {
 
   cout << "------ Dump of Run Data from the raw DB "<<this->FileName()<<" ------"<<endl;
@@ -516,20 +711,31 @@ void EdwRawDB::DumpRunData() {
 
 }
 
-void EdwRawDB::DumpEvent(string aRun, UInt_t aSambaNum, string aRootDir, string aFile) {
+void EdwRawDB::DumpEvent(string aRun, UInt_t aSambaNum, string aRootDir, string aFile, string aChannel) {
 
   vector<string> lRun;
   lRun.push_back(aRun);
   TChain* lChain = this->GetEventChain(lRun, aRootDir);
   EdwEvent* lEvent = new EdwEvent();
   lChain->SetBranchAddress("Event",&lEvent);
-  for (Long64_t i=0; i<lChain->GetEntries(); i++) {
-    lChain->GetEntry(i);
-    if (lEvent->Header()->Num() == aSambaNum) {
-      lEvent->Dump(aFile);
-      break;
+  Bool_t evt_found=0;
+  lChain->GetEntry(aSambaNum-1);
+  if (lEvent->Header()->Num() == aSambaNum) {
+    lEvent->Dump(aFile,aChannel);
+  } else {
+    for (Long64_t i=0; i<lChain->GetEntries(); i++) {
+      lChain->GetEntry(i);
+      if (lEvent->Header()->Num() == aSambaNum) {
+	evt_found = 1;
+	cerr << aSambaNum << " found." << endl;
+	lEvent->Dump(aFile,aChannel);
+	break;
+      }
     }
+    if (!evt_found) cerr << "*** DumpEvent: not found (" << aRun <<"," << aSambaNum <<")"<<endl;
   }
+
+
   delete lChain;
   // delete lEvent; (?)
 }

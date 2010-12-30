@@ -69,24 +69,24 @@ class EdwNtuple : public TObject {
   void FillEvtFromBuffer(UInt_t ievt, EdwNtpBuffer& aBuffer) ; 
   /**< Fill the TTree from a buffer which has been computed */
 
-  PulseVariables ComputeSinglePulse(EdwPulse* aEdwPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, Short_t aSign=0, Int_t aCenterScanBin=NOCENTER, const vector<Float_t> *aFixTimes = NULL);
+  PulseVariables ComputeSinglePulse(EdwPulse* aEdwPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, Short_t aSign=0, Int_t aPattern=0, Int_t aOffsetScanMin=NOCENTER, Int_t aOffsetScanMax=NOCENTER, const vector<Float_t> *aFixTimes = NULL);
   /**< Basic step : computation of amplitudes and pulse shape parameters associated to a single pulse. 
      The relative timing parameters of the pulse wrt another pulse may be fixed or constrained by making use of the aCenterScanBin and aFixTimes arguments. A PulseVariables structure is returned. */
-  PulseVariables ComputeSinglePulse(FitPulse* lPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, Short_t aSign = 0, Int_t aCenterScanBin = NOCENTER, const vector<Float_t> *aFixTimes = NULL);
-	/**<Same as ComputSinglePulse(EdwPulse* ), but you must pass in a FitPulse pointer. The advantage of this is that you get to see the resulting processed waveform via the FitPulse object.*/
+  PulseVariables ComputeSinglePulse(FitPulse& lPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, Short_t aSign = 0, Int_t aCenterScanBin = NOCENTER, const vector<Float_t> *aFixTimes = NULL);
+	/**<Same as ComputSinglePulse(EdwPulse* ), but you must pass in a FitPulse reference. The advantage of this is that you get to see the resulting processed waveform via the FitPulse object.*/
 	
 	void SingleChannelEventLoop(UInt_t jchannel, TChain* aChain, EdwNtpBuffer& aBuffer, EdwAnaDB* aDB, EdwRawDB* aRawDB, EdwEvent* aEvt, EdwPulse* aPulse, UInt_t aOffset=0, Int_t aSynchroFlag=0);
   /**< Fundamental loop over the events for a single channel. 
      The aBuffer object is filled. The possible synchronization of the channel wrt other channels is taken into account with the aSynchroFlag argument: 0 = no sync; 1 = heat->ion (constrain the time search window); 2 = ion->heat (fix the time completely). */
 
-  void FillDataFromChain(TChain* aChain, vector<string> aChannels, EdwAnaDB* aDB = NULL, UInt_t iStart=0, UInt_t iStop=0, EdwRawDB* aRawDB = NULL) ;
+  void FillDataFromChain(TChain* aChain, vector<string> aChannels, EdwAnaDB* aDB = NULL, ULong_t iStart=0, ULong_t iStop=0, EdwRawDB* aRawDB = NULL) ;
   /**< Performs complete processings,  */
   // Todo: aussi le istart/istop pour cette fct.
-  void FillDataByChannelOrder(TChain* aChain, vector<string> aChannels, EdwAnaDB* aDB = NULL, UInt_t iStart=0, UInt_t iStop=0, EdwRawDB* aRawDB = NULL) ;
+  void FillDataByChannelOrder(TChain* aChain, vector<string> aChannels, EdwAnaDB* aDB = NULL, ULong_t iStart=0, ULong_t iStop=0, EdwRawDB* aRawDB = NULL) ;
   /**< Same as FillDataFromChain but the loop is on channels and not events, which is more optimal for CPU in wiener. */
   //Go from n_evt=istart to istop-1. (eg. 0-->9999 then 10000->19999...) 
  
-  void FillDataWithChannelSynchro(TChain* aChain, vector<string> aChannels, EdwAnaDB* aDB = NULL, UInt_t iStart=0, UInt_t iStop=0, EdwRawDB* aRawDB = NULL) ;
+  void FillDataWithChannelSynchro(TChain* aChain, vector<string> aChannels, EdwAnaDB* aDB = NULL, ULong_t iStart=0, ULong_t iStop=0, EdwRawDB* aRawDB = NULL) ;
   /**< Driver to compute the ntuple using channel time synchronization */
   void PlotSelectEvents(TChain* aChain, vector<string> aChannels, string aEvtListFile, string aPlotDir, EdwAnaDB* aDB = NULL, EdwRawDB* aRawDB = NULL) ;
   /**< Plot a list of events */

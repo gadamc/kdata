@@ -31,7 +31,7 @@ int EventClass(float* energies, float* ldbs, int* bins, float* esync, int* ionfl
   int deltabin_col=3;
   int deltabin_vet=5;
   float sigmacut_efid=2; // ATTENTION DOIT ETRE = gSigmaCut_IonFid
-  float vetopercentcut=5;
+  float vetopercentcut=5; // au lieu de 5 pour le fond..!
   float sigmacut_delta=2;
   float sigmacut_vet=2;
   float atten=2; // cf CutVetos... a modifier surement;

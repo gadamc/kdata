@@ -1,15 +1,15 @@
 /**
- @file    EdwTemplate.cc
- @author  Eric Armengaud, armengau@in2p3.fr
- @brief   Implementation of the EdwTemplate class. See the .h file
- */
+   @file    EdwTemplate.cc
+   @author  Eric Armengaud, armengau@in2p3.fr
+   @brief   Implementation of the EdwTemplate class. See the .h file
+*/
 
 #include "EdwTemplate.h"
 
 ClassImp(EdwTemplate); /**< Root dictionnary */
 
 EdwTemplate::EdwTemplate() : OffsetFFT() {
-	
+
 }
 
 EdwTemplate::EdwTemplate(time_t aStart, time_t aEnd, vector<string> aRuns, string aChannel) : OffsetFFT() {
@@ -41,10 +41,10 @@ EdwTemplate::~EdwTemplate() {
 }
 
 void EdwTemplate::SetValidity(time_t aTStart, time_t aTEnd) {
-	
+
   fStartValidity = aTStart;
   fEndValidity = aTEnd;
-	
+
 }
 
 void EdwTemplate::Clear() {
@@ -93,13 +93,18 @@ void EdwTemplate::PlotExtraTrace(string aPlotName) {
   plotvector(fExtrapolatedTrace,aPlotName,lLog,"Extrapolated template");
 }
 
-void EdwTemplate::ComputeFFT() {
-  //  TH1F* lHisto = vect2hist(fTrace,"Template FFT");
-  //  fTraceFFT = (TH1F*)(lHisto->FFT(NULL,"RE R2HC ES")) ; // special fft format
-  //  fTraceFFT->SetName("Template FFT");
-  //  delete lHisto;
+void EdwTemplate::ComputeFFT(Bool_t aWindowFlag) {
   fTraceFFT.clear();
-  fTraceFFT = EdwRealFFT(fTrace);
+  if (aWindowFlag) {
+    UInt_t n=fTrace.size();
+    Int_t lWidth = PLATEAU_WINDOW_HEAT;
+    if (!this->IsHeat()) lWidth = (Int_t)n - 2*RISE_WINDOW_ION;
+    vector<Float_t> lWindow=WindowFunction(n,lWidth);
+    vector<Float_t> lWTrace(n);
+    for (UInt_t k=0; k<n; k++) lWTrace[k]=lWindow[k]*fTrace[k];
+    fTraceFFT = EdwRealFFT(lWTrace);
+  }
+  else fTraceFFT = EdwRealFFT(fTrace);
 }
 
 FloatVect EdwTemplate::TraceFFT() const {
@@ -108,14 +113,14 @@ FloatVect EdwTemplate::TraceFFT() const {
 }
 
 void EdwTemplate::ExtrapolateTrace(const Float_t aExpoFitFraction, Bool_t aFitBaseline) {
-	
+
   if (aExpoFitFraction <= 0 || aExpoFitFraction >= 1) cerr << "fit fraction not appropriate" << endl;
   UInt_t N = fTrace.size();
   UInt_t lStartBin = (UInt_t)(aExpoFitFraction*(Float_t)N);
   vector<Float_t> lCutTrace;
   for (UInt_t i=lStartBin; i<N; i++) lCutTrace.push_back(fTrace[i]);
   TH1F* lCutHist = vect2hist(lCutTrace);
-	
+
   // Fit a fraction of the trace
   TF1* lFunc = new TF1("myfit","[0]*exp(-[1]*x)+[2]",0,N);
   if (!aFitBaseline) {
@@ -129,18 +134,18 @@ void EdwTemplate::ExtrapolateTrace(const Float_t aExpoFitFraction, Bool_t aFitBa
   Float_t K = lFunc->GetParameter(0);
   Float_t p1 = lFunc->GetParameter(1);
   Float_t offset = lFunc->GetParameter(2);
-	
+
   // Compute the full "extrapolated" trace
   fExtrapolatedTrace.clear();
   fExtrapolatedTrace = fTrace;
   for (UInt_t i=N; i<2*N; i++) fExtrapolatedTrace.push_back(offset+K*exp(-p1*(i-lStartBin)));
-	
+
   delete lFunc;
   delete lCutHist;
 }
 
-void EdwTemplate::BuildOffsetFFTs(Int_t aMinOffset, Int_t aMaxOffset, Int_t aBin) {
-	
+void EdwTemplate::BuildOffsetFFTs(Int_t aMinOffset, Int_t aMaxOffset, Int_t aBin, Bool_t aWindowFlag) {
+
   Int_t N = (Int_t)fTrace.size();
   fTraceSize = (UInt_t)N;
   if (aMinOffset >= aMaxOffset) cerr << "BuildOffsetFFTs: Offsets in wrong order." <<endl;
@@ -149,24 +154,31 @@ void EdwTemplate::BuildOffsetFFTs(Int_t aMinOffset, Int_t aMaxOffset, Int_t aBin
   fBinsOffsetFFT.clear();
   fTracesOffsetFFT.clear();
   if (fExtrapolatedTrace.size() == 0) this->ExtrapolateTrace(); // size 2N automatically
-	
+
   vector<Float_t> lLongTrace = fExtrapolatedTrace; // Add zeros to the pretrigger
   lLongTrace.insert(lLongTrace.begin(),N,0); // Size 3N
-	
+
   for (Int_t shift=aMinOffset; shift<=aMaxOffset; shift+= aBin) {
     vector<Float_t> lOffsetTrace;
     for (Int_t i=0; i<N; i++) lOffsetTrace.push_back(lLongTrace[-shift+N+i]);
     fBinsOffsetFFT.push_back(shift);
-    fTracesOffsetFFT.push_back(EdwRealFFT(lOffsetTrace));
+    if (aWindowFlag) {
+      Int_t lWidth = PLATEAU_WINDOW_HEAT;
+      if (!this->IsHeat()) lWidth = (Int_t)N - 2*RISE_WINDOW_ION;
+      vector<Float_t> lWindow=WindowFunction(N,lWidth);
+      vector<Float_t> lWTrace(N);
+      for (Int_t k=0; k<N; k++) lWTrace[k]=lWindow[k]*lOffsetTrace[k];
+      fTracesOffsetFFT.push_back(EdwRealFFT(lWTrace));
+    } else fTracesOffsetFFT.push_back(EdwRealFFT(lOffsetTrace));
   }
-	
+
 }
 
 void EdwTemplate::BuildOffsetFFTs() {
-	
+
   if (this->IsHeat()) this->BuildOffsetFFTs(FFTMINOFFSET_HEAT,FFTMAXOFFSET_HEAT,FFTBINOFFSET);
   else this->BuildOffsetFFTs(FFTMINOFFSET_ION,FFTMAXOFFSET_ION,FFTBINOFFSET);
-	
+
 }
 
 void EdwTemplate::SetFilterParams(vector<Float_t> aDirect, vector<Float_t> aInverse) {
@@ -194,14 +206,14 @@ void EdwTemplate::SetFilterParams() {
       fInverseFilterCoefs.push_back(b[i]);
   }
   fFilteredTrace = EdwFilter(fTrace,fDirectFilterCoefs,fInverseFilterCoefs);
-	
+
 }
 
 void EdwTemplate::BuildBasicTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, Float_t aDeltaBin) {
   // For all events, compute simple amplitudes and the corresponding bin of maximum/minimum.
   // Select a single event with amplitude near aAmpl and max/min bin not far from the center of the
   // trace (of order aDeltaBin). This will be the basic template.
-	
+
   fPulseSign = (aAmpl > 0) ? 1 : -1;
   fTrace.clear();
   fEventsUsed.clear();
@@ -211,25 +223,25 @@ void EdwTemplate::BuildBasicTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, 
   EdwPulse* lEdwPulse = new EdwPulse();
   vector<Float_t> lAmpls, lPulseBins;
   vector<Long64_t> lEvtNums;
-	
+
   // First amplitude estimate
   for (Long64_t i=0; i<aChain->GetEntries(); i++) {
-		//  for (ULong_t i=0; i<5000; i++) {
+  //  for (ULong_t i=0; i<5000; i++) {
     aChain->GetEntry(i) ;
     lEdwPulse = lEvent->Pulse(fChannel);
     if (lEdwPulse != NULL) {
       FitPulse lPulse(lEdwPulse);
       lPulse.SetSign(fPulseSign);
       if (lPulse.DetectSinglePulse() && !(lPulse.RemoveExpoBaseline(0))) {
-				lEvtNums.push_back(i);
-				lAmpls.push_back(lPulse.GetSimpleAmpl());
-				lPulseBins.push_back(lPulse.GetSimpleAmplBin());
+	lEvtNums.push_back(i);
+	lAmpls.push_back(lPulse.GetSimpleAmpl());
+	lPulseBins.push_back(lPulse.GetSimpleAmplBin());
       }
     }
     lEvent->Clear();
   }
   if (!lAmpls.size()) cerr << "Template build: no good trace found for "<<fChannel<<endl;
-	
+
   Float_t lShiftAmpl, lShiftBin, lBestDiscrim;
   vector<Float_t> lParam;
   ULong_t i_best = 0;
@@ -245,7 +257,7 @@ void EdwTemplate::BuildBasicTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, 
       lBestDiscrim = lShiftAmpl+lShiftBin;
     }
   }
-	
+
   aChain->GetEntry(lEvtNums.at(i_best));
   fEventsUsed.push_back(lEvent->Header()->Num());
   fRunsOfEventsUsed.push_back(lEvent->Header()->Run());
@@ -256,15 +268,15 @@ void EdwTemplate::BuildBasicTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, 
   fTrace = lPulse.ProcessedTrace().Vect();
   this->ComputeFFT();
   if (KVERBOSE) cout << "Basic template built." << endl;
-	
+
 }
 
 void EdwTemplate::BuildFitTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, Float_t aDeltaBin, Float_t aChi2PerDofCut, string aPlotPulses) {
-	
+
   // First basic template if no other exists
   fPulseSign = (aAmpl > 0) ? 1 : -1;
   if (!fTrace.size()) this->BuildBasicTemplate(aChain,aAmpl,aBin,aDeltaBin);
-	
+
   vector<Float_t> lBasicTmplt = fTrace;
   fTrace.clear();
   fEventsUsed.clear();
@@ -274,7 +286,7 @@ void EdwTemplate::BuildFitTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, Fl
   EdwPulse* lEdwPulse = new EdwPulse();
   vector<Float_t> lShiftBins;
   vector<Long64_t> lEvtNums;
-	
+
   // Cut events with "correct" raw amplitude / time shift / nb of pulses
   // Time fit of these events to basic template and get Chi2, ampl, t0.
   for (Long64_t i=0; i<aChain->GetEntries(); i++) {
@@ -285,29 +297,29 @@ void EdwTemplate::BuildFitTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, Fl
       FitPulse lPulse(lEdwPulse);
       lPulse.SetSign(fPulseSign);
       if (lPulse.DetectSinglePulse() && !(lPulse.RemoveExpoBaseline(0))) {
-				Float_t theAmpl = lPulse.GetSimpleAmpl();
-				Float_t theBin = lPulse.GetSimpleAmplBin();
-				Float_t lShiftAmpl = TMath::Abs((theAmpl-aAmpl)/aAmpl) ;
-				Float_t lShiftBin = TMath::Abs((theBin-aBin)/aDeltaBin);
-				if (lShiftAmpl < 0.2 && lShiftBin < 0.2) { // 20% tolerance
-					// The pulse is selected to be fit.
-					vector<Float_t> params = lPulse.GetFitAmpl(lBasicTmplt,1,1);	  
-					Float_t lChi2PerDof = (aChi2PerDofCut == 0) ? -1 : params[2]/(lPulse.TraceSize());
-					if (lChi2PerDof <= aChi2PerDofCut && TMath::Abs(params[0]-1) <= 0.2 &&
-							TMath::Abs((params[1]-aBin)/aDeltaBin) <= 0.5) { 
-						// 10% tolerance on the amplitude
-						// and ask |time-t0|<0.5*delta_t
-						//	    if (KVERBOSE) cout << "BuildFitTemplate: event "<<i<<" selected."<<endl;
-						lEvtNums.push_back(i);
-						lShiftBins.push_back(params[1]);
-					}
-				}
+	Float_t theAmpl = lPulse.GetSimpleAmpl();
+	Float_t theBin = lPulse.GetSimpleAmplBin();
+	Float_t lShiftAmpl = TMath::Abs((theAmpl-aAmpl)/aAmpl) ;
+	Float_t lShiftBin = TMath::Abs((theBin-aBin)/aDeltaBin);
+	if (lShiftAmpl < 0.2 && lShiftBin < 0.2) { // 20% tolerance
+	  // The pulse is selected to be fit.
+	  vector<Float_t> params = lPulse.GetFitAmpl(lBasicTmplt,1,1);	  
+	  Float_t lChi2PerDof = (aChi2PerDofCut == 0) ? -1 : params[2]/(lPulse.TraceSize());
+	  if (lChi2PerDof <= aChi2PerDofCut && TMath::Abs(params[0]-1) <= 0.2 &&
+	      TMath::Abs((params[1]-aBin)/aDeltaBin) <= 0.5) { 
+	    // 10% tolerance on the amplitude
+	    // and ask |time-t0|<0.5*delta_t
+	    //	    if (KVERBOSE) cout << "BuildFitTemplate: event "<<i<<" selected."<<endl;
+	    lEvtNums.push_back(i);
+	    lShiftBins.push_back(params[1]);
+	  }
+	}
       }
     }
     lEvent->Clear();
     if (KVERBOSE && i%10000 == 0) cout << "BuildFitTemplate: event "<< i << endl;
   }
-	
+
   // Time shift = use median delay as the reference, not the delay from the basic template!!!
   UInt_t NbEvts = lEvtNums.size();
   cout << NbEvts << " events used to build the template." << endl;
@@ -316,11 +328,11 @@ void EdwTemplate::BuildFitTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, Fl
   }
   Float_t lMed = vectmedian(lShiftBins);
   for (UInt_t i=0; i<NbEvts; i++) lShiftBins[i]-=lMed;
-	
+
   // Now use selected events to build the template.
   //  TH1F* lTmplt = new TH1F();
   FloatVect lTmplt(0);
-	
+
   for (UInt_t i=0; i<NbEvts; i++) {
     aChain->GetEntry(lEvtNums[i]);
     fEventsUsed.push_back(lEvent->Header()->Num());
@@ -338,19 +350,19 @@ void EdwTemplate::BuildFitTemplate(TChain* aChain, Float_t aAmpl, Int_t aBin, Fl
     lEvent->Clear();
   }
   lTmplt.Scale(1/(Float_t)NbEvts);  
-	
+
   //  fTrace = hist2vect(lTmplt);
   //  delete lTmplt;
   fTrace = lTmplt.Vect();
   this->ComputeFFT();
   this->ExtrapolateTrace(); // expofitfraction a customizer..
   this->ComputePulseBin();
-	
+
   // todo =  cut on baseline noise too!
 }
 
 void EdwTemplate::BuildTemplateFromASCIITrace(string aFile) {
-	
+
   // Load the trace
   vector<Float_t> lLoadTrace; string line;
   ifstream lFile(aFile.c_str(),ios::in);
@@ -362,7 +374,7 @@ void EdwTemplate::BuildTemplateFromASCIITrace(string aFile) {
     Float_t f; ss >> f; lLoadTrace.push_back(f);
   }
   lFile.close();
-	
+
   // Build the template from that trace
   Float_t lMin = vectmin(lLoadTrace);
   Float_t lMax = vectmax(lLoadTrace);
@@ -373,7 +385,7 @@ void EdwTemplate::BuildTemplateFromASCIITrace(string aFile) {
   this->ComputeFFT();
   this->ExtrapolateTrace();
   this->ComputePulseBin();
-	
+
 }
 
 

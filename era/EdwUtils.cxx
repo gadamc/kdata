@@ -6,13 +6,21 @@
 
 
 #include "EdwUtils.h"
-#include "Mixfft.cxx" // Required for EdwRealFFT (library from Jens Joergen Nielsen)
+#include "Mixfft.c" // Required for EdwRealFFT (library from Jens Joergen Nielsen)
 
 int checkequal(string s) {
   if (s != "=") {
     cout << "Syntax error in parameter file. Syntax: variable = value" << endl; 
     exit(-1);
   }
+  return 0;
+}
+
+bool fileexists(string aFileName) {
+
+  struct stat fileinfo;
+  int etat = stat(aFileName.c_str(),&fileinfo);
+  if (etat == 0) return 1;
   return 0;
 }
 
@@ -102,6 +110,18 @@ Int_t uintnum(const vector<UInt_t> & aUInts, UInt_t myUInt) {
   return lNum;
 }
 
+string associate_heatname(const string& aChannel) {
+  string lChannel = aChannel;
+  if ( aChannel.find("chaleur") == string::npos) {
+    lChannel.replace(0,aChannel.find(" "),"chaleur");
+    if (aChannel.find("ID") != string::npos) {
+      Int_t ll = lChannel.length();
+      lChannel.replace(ll-2,ll,"AB");
+    }
+  }
+  return lChannel;
+}
+
 Float_t vectmean(const vector<Float_t> & aVect) {
   UInt_t n = aVect.size();
   if (!n) cerr << "vectmean: vector contains nothing." << endl;
@@ -171,11 +191,7 @@ Int_t vectmax(const vector<Int_t> & aVect) {
 }
 
 Int_t vectnum(const vector<Float_t> & aVect, const Float_t aFloat) {
-  
-	//WHAT!!! This can't work. You can't compare two floats!!! Maybe Doubles will work... 
-	//but there must be a range or something!!!
-	
-	Int_t i=-1;
+  Int_t i=-1;
   for (UInt_t j=0; j< aVect.size(); j++) {
     if (aFloat == aVect[j]) i=(Int_t)j;
   }
@@ -193,7 +209,8 @@ Int_t vectnum(const vector<string> & aVect, const string aString) {
 
 Float_t FloatVect::Integral(Int_t xmin, Int_t xmax) const {
   if (xmin < 0 || xmax < 0 || xmin >= (Int_t)fVect.size() || xmax >= (Int_t)fVect.size()) {
-    cerr << "integral: out of bounds! - exiting" << endl; exit(-1);
+    cerr << "integral: out of bounds! - exiting" << endl; 
+    cerr << xmin<<" "<<xmax<<" size: "<<fVect.size()<<endl; exit(-1);
   }
   Float_t lInt = 0;
   for (Int_t i=xmin; i<=xmax; i++) lInt+=fVect[i];
@@ -241,14 +258,14 @@ UInt_t FloatVect::MaxBin() const {
 void FloatVect::Multiply(const FloatVect& aVect) {
   // Attention!!! il faut pas que aVect = this sinon bobo!!
   if (this->size() != aVect.size()) {
-    cerr << "Multiply with vectors of different sizes!!. Exit"<< endl; exit(-1);
+    cerr << "Multiply with vectors of different sizes. "<< this->size()<<" "<<aVect.size()<<" Exit"<< endl; exit(-1);
   }
   for (UInt_t i=0; i<this->size(); i++) (fVect[i])*=(aVect[i]);
 }
 
 void FloatVect::Divide(const FloatVect& aVect) {
   if (this->size() != aVect.size()) {
-    cerr << "Multiply with vectors of different sizes!!. Exit"<< endl; exit(-1);
+    cerr << "Divide with vectors of different sizes!! "<< this->size()<<" "<<aVect.size()<<". Exit"<< endl; exit(-1);
   }
   for (UInt_t i=0; i<this->size(); i++)
     fVect[i]/=aVect[i]; // no test on aVect != 0 pour l'instant...
@@ -257,7 +274,7 @@ void FloatVect::Divide(const FloatVect& aVect) {
 
 void FloatVect::Add(const FloatVect& aVect, const Float_t c) {
   if (this->size() != aVect.size()) {
-    cerr << "Multiply with vectors of different sizes!!. Exit"<< endl; exit(-1);
+    cerr << "Add with vectors of different sizes!!. "<< this->size()<<" "<<aVect.size()<<" Exit"<< endl; exit(-1);
   }
   for (UInt_t i=0; i<this->size(); i++) fVect[i]+=(c*aVect[i]);
 }
@@ -413,4 +430,15 @@ vector<Float_t> EdwFilter(vector<Float_t> aData, vector<Float_t> aDirect, vector
   }
 
   return y;
+}
+
+vector<Float_t> WindowFunction(UInt_t aNbPts, UInt_t aWidth) {
+
+  vector<Float_t> lWindow(aNbPts,1);
+  Float_t lOmega = 2*TMath::Pi()/(Float_t)(aNbPts-aWidth);
+  for (UInt_t k=0; k<(aNbPts-aWidth)/2; k++)
+    lWindow[k] = 0.5-0.5*cos(lOmega*k);
+  for (UInt_t k=(aNbPts+aWidth)/2; k<aNbPts; k++)
+    lWindow[k] = 0.5-0.5*cos(lOmega*(k-aWidth));  
+  return lWindow;
 }

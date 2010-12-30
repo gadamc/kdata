@@ -4,19 +4,20 @@
 
 string gProcessingStep, gBaseDir;
 string gRawDBFile, gAnaDBFile;
-string gSambaDir, gRootEventDir;
+string gSambaDir, gRootEventDir, gScratchDir;
 string gRootNtpFile, gRootNtpName;
-string gASCIIOutputFile;
+string gASCIIOutputDir;
 string gRunListFile, gChannelListFile;
 string gHeatIonSynchroFile;
 string gAnaDBListFile;
 string gASCIITemplateDir;
 string gPlotDir, gEvtListFile;
-UInt_t gIStart, gIStop;
-UInt_t gWienerWindowStart, gWienerWindowStop;
+ULong_t gIStart, gIStop;
+//UInt_t gWienerWindowStart, gWienerWindowStop;
 Int_t gTimeStepMinutes;
 Bool_t gTemplateFromSinglePulse;
 Bool_t gWienerOnly;
+string gByteOrder;
 
 void ReadParamFile(const char* aParamFile) ;
 vector<string> GlobalRunList();
@@ -25,8 +26,10 @@ vector<string> GlobalChannelList();
 vector<Float_t> GlobalChannelAmpls();
 vector<Int_t> GlobalChannelBins();
 vector<Float_t> GlobalChannelDeltaBins();
+vector<Int_t> GlobalChannelPatterns();
 vector<string> GlobalEvtList_Runs();
 vector<UInt_t> GlobalEvtList_EventNums();
+vector<string> GlobalEvtList_Channels();
 
 // Special routines used in the main for parameter file reading to get global variables.
 
@@ -39,8 +42,8 @@ runname_b
 ...
 
 *** gChannelListFile:
-"channel a" [ ref_ampl ref_bin delta_bin ]
-"channel_b" [ ref_ampl ref_bin delta_bin ]
+"channel a" [ ref_ampl ref_bin delta_bin pattern_length ]
+"channel_b" [ ref_ampl ref_bin delta_bin pattern_length ]
 ...
 
 *** gHeatIonSynchroFile:
@@ -102,9 +105,10 @@ void ReadParamFile(const char* aParamFile) {
   gAnaDBFile=gBaseDir+"/dbfiles/edwanadb.root";
   gSambaDir=gBaseDir+"/events";
   gRootEventDir=gBaseDir+"/rootevts";
+  gScratchDir="";
   gRootNtpFile=gBaseDir+"/ntps/evtntuple.root";
   gRootNtpName="EdwRootNtp";
-  gASCIIOutputFile="None";
+  gASCIIOutputDir="None";
   gRunListFile="None";
   gChannelListFile="None";
   gHeatIonSynchroFile="None";
@@ -113,10 +117,11 @@ void ReadParamFile(const char* aParamFile) {
   gPlotDir="None";
   gEvtListFile="None";
   gIStart = 0; gIStop = 0;
-  gWienerWindowStart = 0; gWienerWindowStop = 0;
+  //  gWienerWindowStart = 0; gWienerWindowStop = 0;
   gTimeStepMinutes = 60;
   gTemplateFromSinglePulse = 0;
   gWienerOnly = 0;
+  gByteOrder="big";
 
   // Parse the file and identify parameters
   lFile.seekg(0);
@@ -129,12 +134,14 @@ void ReadParamFile(const char* aParamFile) {
       lFile >> s; checkequal(s); lFile >> gSambaDir;
     } else if (s == "gRootEventDir") {
       lFile >> s; checkequal(s); lFile >> gRootEventDir;
+    } else if (s == "gScratchDir") {
+      lFile >> s; checkequal(s); lFile >> gScratchDir;
     } else if (s == "gRootNtpFile") {
       lFile >> s; checkequal(s); lFile >> gRootNtpFile;
     } else if (s == "gRootNtpName") {
       lFile >> s; checkequal(s); lFile >> gRootNtpName;
-    } else if (s == "gASCIIOutputFile") {
-      lFile >> s; checkequal(s); lFile >> gASCIIOutputFile;
+    } else if (s == "gASCIIOutputDir") {
+      lFile >> s; checkequal(s); lFile >> gASCIIOutputDir;
     } else if (s == "gRunListFile") {
       lFile >> s; checkequal(s); lFile >> gRunListFile;
     } else if (s == "gChannelListFile") {
@@ -153,23 +160,25 @@ void ReadParamFile(const char* aParamFile) {
       lFile >> s; checkequal(s); lFile >> gIStart;
     } else if (s == "gIStop") {
       lFile >> s; checkequal(s); lFile >> gIStop;
-    } else if (s == "gWienerWindowStart") {
-      lFile >> s; checkequal(s); lFile >> gWienerWindowStart;
-    } else if (s == "gWienerWindowStop") {
-      lFile >> s; checkequal(s); lFile >> gWienerWindowStop;
+      //    } else if (s == "gWienerWindowStart") {
+      //      lFile >> s; checkequal(s); lFile >> gWienerWindowStart;
+      //    } else if (s == "gWienerWindowStop") {
+      //      lFile >> s; checkequal(s); lFile >> gWienerWindowStop;
     } else if (s == "gTimeStepMinutes") {
       lFile >> s; checkequal(s); lFile >> gTimeStepMinutes;
     } else if (s == "gTemplateFromSinglePulse") {
       lFile >> s; checkequal(s); lFile >> gTemplateFromSinglePulse;
     } else if (s == "gWienerOnly") {
       lFile >> s; checkequal(s); lFile >> gWienerOnly;
+    } else if (s == "gByteOrder") {
+      lFile >> s; checkequal(s); lFile >> gByteOrder;
+      if (gByteOrder != "little" && gByteOrder != "big") cout << "Error in parameter gByteOrder" << endl;
     }
-
   }
   lFile.close();
 
-  string names[14] = {gBaseDir,gRawDBFile,gAnaDBFile,gSambaDir,gRootEventDir,gRootNtpFile,gASCIIOutputFile,gRunListFile,gChannelListFile,gHeatIonSynchroFile,gAnaDBListFile,gASCIITemplateDir,gPlotDir,gEvtListFile};
-  for (int i=0; i<14; i++) {
+  string names[15] = {gBaseDir,gRawDBFile,gAnaDBFile,gSambaDir,gRootEventDir,gRootNtpFile,gASCIIOutputDir,gRunListFile,gChannelListFile,gHeatIonSynchroFile,gAnaDBListFile,gASCIITemplateDir,gPlotDir,gEvtListFile,gScratchDir};
+  for (int i=0; i<15; i++) {
     if ((names[i]).find('$',0) != string::npos) {
       if ((names[i]).find('$',0) != 0) cerr <<"ah ben zut.."<<endl;
       string::size_type bra = (names[i]).find('{',0);
@@ -186,7 +195,7 @@ void ReadParamFile(const char* aParamFile) {
       if (i == 3) gSambaDir = newstr;
       if (i == 4) gRootEventDir = newstr;
       if (i == 5) gRootNtpFile = newstr;
-      if (i == 6) gASCIIOutputFile = newstr;
+      if (i == 6) gASCIIOutputDir = newstr;
       if (i == 7) gRunListFile = newstr;
       if (i == 8) gChannelListFile = newstr;
       if (i == 9) gHeatIonSynchroFile = newstr;
@@ -194,6 +203,7 @@ void ReadParamFile(const char* aParamFile) {
       if (i == 11) gASCIITemplateDir = newstr;
       if (i == 12) gPlotDir = newstr;
       if (i == 13) gEvtListFile = newstr;
+      if (i == 14) gScratchDir = newstr;
     }
   }
 
@@ -204,7 +214,7 @@ void ReadParamFile(const char* aParamFile) {
     cout << "gRawDBFile = "<<gRawDBFile<<" - gAnaDBFile = "<<gAnaDBFile<<endl ;
     cout << "gSambaDir = "<<gSambaDir<<" - gRootEventDir = "<<gRootEventDir<<endl ;
     cout << "gRootNtpFile = "<<gRootNtpFile<<" - gRootNtpName = "<<gRootNtpName<<endl;
-    cout << "gASCIIOutputFile = "<<gASCIIOutputFile << endl;
+    cout << "gASCIIOutputDir = "<<gASCIIOutputDir << " - gScratchDir = "<<gScratchDir<<endl;
     cout << "gRunListFile = "<<gRunListFile<<endl ;
     cout << "gChannelListFile = "<<gChannelListFile<<endl;
     cout << "gHeatIonSynchroFile = "<<gHeatIonSynchroFile<<endl;
@@ -213,9 +223,9 @@ void ReadParamFile(const char* aParamFile) {
     cout << "gPlotDir = "<<gPlotDir<<endl;
     if (gEvtListFile != "None") cout << "gEvtListFile = "<<gEvtListFile<<endl;
     cout << "gIStart = "<<gIStart<<" - gIStop = "<<gIStop<<endl;
-    cout << "gWienerWindowStart = "<<gWienerWindowStart<<" - gWienerWindowStop = "<<gWienerWindowStop<<endl;
+    //    cout << "gWienerWindowStart = "<<gWienerWindowStart<<" - gWienerWindowStop = "<<gWienerWindowStop<<endl;
     cout << "gTimeStepMinutes = "<<gTimeStepMinutes<<" - gTemplateFromSinglePulse = "<<gTemplateFromSinglePulse<<endl;
-    cout << "gWienerOnly = "<<gWienerOnly<<endl;
+    cout << "gWienerOnly = "<<gWienerOnly<<" - gByteOrder = "<<gByteOrder<<endl;
   }
 
 }
@@ -327,6 +337,32 @@ vector<Float_t> GlobalChannelDeltaBins() {
   return lList;
 }
 
+vector<Int_t> GlobalChannelPatterns() {
+  ifstream lFile(gChannelListFile.c_str(),ios::in);
+  if (!lFile) {
+    cout << "Error opening channel list file " << gChannelListFile << endl; exit(-1);
+  }
+  string line;
+  vector<Int_t> lList;
+  while (getline(lFile,line)) {
+    int quotea_pos = line.find('"',0);
+    int quoteb_pos = line.find('"',quotea_pos+1);
+    line = line.substr(quoteb_pos+1);
+    istringstream ss(line);
+    Float_t f; ss >> f; 
+    Int_t i; ss >> i; ss >> f;
+    i=0;
+    // The pattern may not be specified in the line: in this case take zero
+    if (!ss.eof()) {
+      ss >> i;
+      if (i >= SHRT_MAX || i < 0) i=0;
+    }
+    lList.push_back(i);
+  }
+  lFile.close();
+  return lList;
+}
+
 vector<string> GlobalEvtList_Runs() {
   vector<string> lRunList;
   vector<UInt_t> lEvtList;
@@ -341,6 +377,7 @@ vector<string> GlobalEvtList_Runs() {
   lFile.close();
   return lRunList;
 }
+
 vector<UInt_t> GlobalEvtList_EventNums() {
   vector<string> lRunList;
   vector<UInt_t> lEvtList;
@@ -354,4 +391,22 @@ vector<UInt_t> GlobalEvtList_EventNums() {
   }
   lFile.close();
   return lEvtList;
+}
+
+vector<string> GlobalEvtList_Channels() {
+  vector<string> lChannels;
+  string line;
+  ifstream lFile(gEvtListFile.c_str(),ios::in);
+  if (!lFile) cerr << "Error no evtlistfile!" <<endl;
+  while (getline(lFile,line)) {
+    string::size_type quotea_pos = line.find('"',0);
+    string::size_type quoteb_pos = line.find('"',quotea_pos+1);
+    if (quotea_pos == string::npos || quoteb_pos == string::npos) {
+      cerr << "Channels not correctly quoted in "<<gEvtListFile<<" - Exiting."<<endl;
+      exit(-1);
+    }
+    lChannels.push_back(line.substr(quotea_pos+1,quoteb_pos-quotea_pos-1));
+  }
+  lFile.close();
+  return lChannels;
 }

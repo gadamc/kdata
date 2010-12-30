@@ -26,7 +26,10 @@ EdwPulse* EdwEvent::Pulse(string aChannel) {
 
   EdwPulse* lPulse = NULL;
   for (unsigned int i=0; i<this->NbPulses(); i++) {
-    if ( this->Pulse(i)->Channel() == aChannel) lPulse = this->Pulse(i);
+    if ( this->Pulse(i)->Channel() == aChannel) {
+      if (this->Pulse(i)->TraceSize() != 0) // pulse de longueur nulle donne rien
+	lPulse = this->Pulse(i);
+    }
   }
   // (we don't check that there could be several pulses with same channel..)
   // When using this function must check if it gives NULL!
@@ -43,15 +46,11 @@ void EdwEvent::PlotTraces(string aPlotName, Bool_t aPerBolo) {
     Int_t ny = (Int_t)((Float_t)lNb/(Float_t)nx) ;
     if (nx*ny != lNb) ny+=1;
     TCanvas* c = new TCanvas("c","canvas",350*nx,250*ny);
-		TH1F* lTrace = new TH1F("toto","test",5000,0-0.5,5000-0.5);
     c->Divide(nx,ny);
     for (Int_t i=0; i<lNb; i++) {
       EdwPulse* lPulse = this->Pulse(i);
-      vector<Short_t> toto = lPulse->Trace();
-			
-			lTrace->SetTitle(lPulse->Channel().c_str());
-			lTrace->SetBins(lPulse->TraceSize(),-0.5,lPulse->TraceSize()-0.5) ;
-
+      vector<Short_t> toto = lPulse->Trace() ;
+      TH1F* lTrace = new TH1F("toto",(lPulse->Channel()).c_str(),lPulse->TraceSize(),-0.5,lPulse->TraceSize()-0.5) ;
       for (Int_t j=0;j<lTrace->GetNbinsX();j++) lTrace->SetBinContent(j+1,(Float_t)toto.at(j)); // Root binning convention
       c->cd(i+1);
       lTrace->Draw();
@@ -62,7 +61,7 @@ void EdwEvent::PlotTraces(string aPlotName, Bool_t aPerBolo) {
 
 }
 
-void EdwEvent::Dump(string aFile) {
+void EdwEvent::Dump(string aFile, string aChannel) {
 
   if (aFile == "None") {
     cout << "----------------------------------------" << endl;
@@ -71,9 +70,11 @@ void EdwEvent::Dump(string aFile) {
     cout << "Date(s): " << fHeader->DateSec() << " - Date(mus): " << fHeader->DateMuSec() << endl;
     for (UInt_t i=0; i<this->NbPulses(); i++) {
       EdwPulse* lPulse = this->Pulse((Int_t)i);
-      cout << "------ Channel " << lPulse->Channel()<<" ("<<lPulse->TraceSize()<<" points) ------"<<endl;
-      for (UInt_t j=0; j<(UInt_t)(lPulse->TraceSize()); j++) cout << lPulse->Trace(j) << " ";
-      cout << endl;
+      if (aChannel == "all" || aChannel == lPulse->Channel()) {
+	cout << "------ Channel " << lPulse->Channel()<<" ("<<lPulse->TraceSize()<<" points) ------"<<endl;
+	for (UInt_t j=0; j<(UInt_t)(lPulse->TraceSize()); j++) cout << lPulse->Trace(j) << " ";
+	cout << endl;
+      }
     }
     cout << "----------------------------------------" << endl;
 
@@ -84,9 +85,11 @@ void EdwEvent::Dump(string aFile) {
     lFile << "Date(s): " << fHeader->DateSec() << " - Date(mus): " << fHeader->DateMuSec() << endl;
     for (UInt_t i=0; i<this->NbPulses(); i++) {
       EdwPulse* lPulse = this->Pulse((Int_t)i);
-      lFile << "------ Channel " << lPulse->Channel()<<endl;
-      for (UInt_t j=0; j<(UInt_t)(lPulse->TraceSize()); j++) 
-	lFile << lPulse->Trace(j) << endl;
+      if (aChannel == "all" || aChannel == lPulse->Channel()) {
+	lFile << "------ Channel " << lPulse->Channel()<<endl;
+	for (UInt_t j=0; j<(UInt_t)(lPulse->TraceSize()); j++) 
+	  lFile << lPulse->Trace(j) << endl;
+      }
     }
     lFile << "----------------------------------------" << endl;
     lFile.close();

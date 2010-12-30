@@ -68,6 +68,8 @@ class EdwNtpBuffer {
   /**< Reset to 0 the pulse variables associated to a given event and channel in the buffer */
   void FillFromPulseVar(PulseVariables aData, UInt_t ievt, UInt_t jchannel);
   /**< Fill the pulse variables associated to a given event and channel in the buffer */
+  void UpdateFromPulseVar(PulseVariables aData, UInt_t ievt, UInt_t jchannel);
+  /**< Fill only the "sync" pulse variables */
 
   UInt_t BufferSize; /**< Buffer depth (number of events) */
   UInt_t NbChannels; /**< Nb of channels in the buffer */

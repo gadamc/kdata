@@ -47,10 +47,15 @@ Float_t gCalib_Heat0[MAX_NBVOLTAGES];
 Float_t gCalib_Heat1[MAX_NBVOLTAGES];
 Float_t gCalib_Heat2[MAX_NBVOLTAGES];
 Float_t gCalib_Heat3[MAX_NBVOLTAGES];
+Float_t gCalib_HeatB0[MAX_NBVOLTAGES];
+Float_t gCalib_HeatB1[MAX_NBVOLTAGES];
+Float_t gCalib_HeatB2[MAX_NBVOLTAGES];
+Float_t gCalib_HeatB3[MAX_NBVOLTAGES];
 
 Float_t gKappaIon=0, gKappaHeat=0;
 
 Float_t gChi2Cut0_Heat=0; Float_t gChi2Cut1_Heat=0;
+Float_t gChi2Cut0_HeatB=0; Float_t gChi2Cut1_HeatB=0;
 Float_t gChi2Cut0_Col1=0; Float_t gChi2Cut1_Col1=0;
 Float_t gChi2Cut0_Col2=0; Float_t gChi2Cut1_Col2=0;
 Float_t gChi2Cut0_Vet1=0; Float_t gChi2Cut1_Vet1=0;

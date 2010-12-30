@@ -1,7 +1,7 @@
 
 // Analyse neutrons run 12bis
 
-string bolo="FID402";
+string bolo="ID3";
 
 .x params_id_run12.C
 .x start_idrun12bis_neutrons.C

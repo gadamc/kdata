@@ -25,8 +25,8 @@
 #define DEFAUT_FILTER_ION_INVERSE {2.3350824021,-1.9509646898,0.8192636853,-0.2066719852} /**< Ionization filter inverse coefs */
 
 // for consistency these should be the same as "FIT_TIMEMIN.." in fitpulse :
-#define FFTMINOFFSET_HEAT -10 /**< Minimum of the range in offsets computed in the fft array for heat channels */ 
-#define FFTMAXOFFSET_HEAT 10 /**< Maximum of the range in offsets computed in the fft array for heat channels */ 
+#define FFTMINOFFSET_HEAT -20 /**< Minimum of the range in offsets computed in the fft array for heat channels */ 
+#define FFTMAXOFFSET_HEAT 20 /**< Maximum of the range in offsets computed in the fft array for heat channels */ 
 #define FFTMINOFFSET_ION -2000 /**< Minimum of the range in offsets computed in the fft array for ionization channels */ 
 //#define FFTMAXOFFSET_ION 1000 // Pas assez en synchro heat! --> modif to 2000
 #define FFTMAXOFFSET_ION 2000 /**< Maximum of the range in offsets computed in the fft array for ionization channels */ 
@@ -78,11 +78,11 @@ class EdwTemplate : public OffsetFFT {
   void BuildTemplateFromASCIITrace(string aFile) ; 
   /**< Instead of building the template from a chain of events, just use an ascii file containing a list of points representing the template. */
 
-  void ComputeFFT() ; 
+  void ComputeFFT(Bool_t aWindowFlag=1) ; 
   /**< Computes the FFT of the template trace */
   void ExtrapolateTrace(Float_t aExpoFitFraction=0.75, Bool_t aFitBaseline=1);
   /**< Build an extrapolated trace from the basis trace, with double size, and exponential extrapolation of the pulse, starting from aExpoFitFraction of the basic trace. A non-zero post-pulse baseline may be fitted (case of an overshoot) */
-  void BuildOffsetFFTs(Int_t aMinOffset, Int_t aMaxOffset, Int_t aBin=1) ; 
+  void BuildOffsetFFTs(Int_t aMinOffset, Int_t aMaxOffset, Int_t aBin=1, Bool_t aWindowFlag=1) ; 
   /**< Build an array of FFTs of the trace, translated by offsets ranging from MinOffset to MaxOffset */
   void BuildOffsetFFTs() ;
   /**< Build an array of FFTs of the trace, translated by offsets ranging from MinOffset to MaxOffset */
@@ -110,7 +110,7 @@ class EdwTemplate : public OffsetFFT {
   vector<Float_t> fFilteredTrace; /**< Filtered trace from the 'basic' filter */
   vector<string> fBuildRuns;   /**< Runs used to build the template */
   vector<Float_t> fTrace; /**< Template trace*/
-  //  vector<Float_t> fExtrapolatedTrace;  --> now in OffsetFFT!!!
+  vector<Float_t> fExtrapolatedTrace;  // --> not anymore now in OffsetFFT!!!
   //  Longer trace, with exponential extrapolation, for time translation in Fourier fit
   Float_t fExpoFitFraction ;   /**< Used in extrapolated trace computation */
   string fChannel; /**< Template channel */
@@ -123,7 +123,7 @@ class EdwTemplate : public OffsetFFT {
   vector<Float_t> fTraceFFT ;
   /**< FFT of fTrace, in the format used by Root (N/2 first points = real part; N/2 last point = imaginary part) */
 
-  ClassDef(EdwTemplate,2)
+  ClassDef(EdwTemplate,1)
 
 };
 

@@ -75,6 +75,7 @@
   gROOT->LoadMacro("BuildDST.C");
   gROOT->LoadMacro("UpdateDST.C");
   gROOT->LoadMacro("BuildDSTRed.C");
+  gROOT->LoadMacro("SynchroFidCut.C");
 
   string ERAPATH="/afs/in2p3.fr/home/a/armengau/EdwRootAna/";
   string DATAPATH="/sps/edelweis/EdwRootAna/";

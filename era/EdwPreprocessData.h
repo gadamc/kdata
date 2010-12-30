@@ -35,6 +35,11 @@ class EdwPreprocessData : public TObject {
   void SetStartTime(time_t aTime) { fStartTime = aTime; } /**< Period of validity of these data */
   void SetEndTime(time_t aTime) { fEndTime = aTime; } /**< Period of validity of these data */
   Bool_t IsTimeOk(time_t aTime) ; /**< Returns 1 if aTime is in the period of validity of the data */
+  string Run() const { return fRun; }
+  void SetRun(string aRun) { fRun = aRun; }
+
+  void SetNbPtsPatterns(vector<Int_t> aPatterns) { fNbPtsPatterns=aPatterns; }
+  vector<Int_t> NbPtsPatterns() const { return fNbPtsPatterns; }
 
   string Channel() const { return fChannel; } /**< Channel concerned by the data */
   void SetChannel(string aChannel) { fChannel = aChannel; } /**< Channel */
@@ -57,10 +62,13 @@ class EdwPreprocessData : public TObject {
   /*  void BasicChainPreprocess(TChain* aChain) ;
       void ComputeBasicCorrelation(TChain* aChain) ;*/
   
+  vector<Float_t> NoiseSpectrumVector() {return fNoiseSpectrum; }
+
  private:
   time_t fStartTime ; /**< Period of validity */
   time_t fEndTime ; /**< Period of validity */
   string fChannel ; /**< Channel */
+  string fRun ; /**< Samba run, at least in the beginning of the period of validity */
   vector<Int_t> fNbPtsPatterns ; /**< Not used yet.. */
   vector<Float_t> fNoiseSpectrum ; /**< Noise spectrum */
   //  vector<Float_t> fFrequencyWeights; // relative to a template since it is A^2(f)/N(f)
@@ -70,7 +78,7 @@ class EdwPreprocessData : public TObject {
   vector<string> fCorrelChannels; /**< Not used yet.. */
   Int_t fPulseBin; /**< Must be used to estimate the power spectrum from raw traces */
 
-  ClassDef(EdwPreprocessData,2)
+  ClassDef(EdwPreprocessData,1)
     
 };
 

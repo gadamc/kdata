@@ -153,3 +153,17 @@ void EdwNtpBuffer::FillFromPulseVar(PulseVariables aData, UInt_t ievt, UInt_t jc
     (WienerSyncChi2[i])[ievt][jchannel]=(aData.WienerSyncChi2)[i];
   }
 }
+
+void EdwNtpBuffer::UpdateFromPulseVar(PulseVariables aData, UInt_t ievt, UInt_t jchannel) {
+  // Update the "sync" variables only.
+
+  if (ievt >= BufferSize || jchannel >= NbChannels) {
+    cerr <<"NtpBuffer::UpdateFromPulseVar error. Exiting." <<endl; exit(-1);
+  }
+
+  for (Int_t i=0; i<NBMAX_AMPL; i++) {
+    (WienerSyncAmpl[i])[ievt][jchannel]=(aData.WienerSyncAmpl)[i];
+    (WienerSyncChi2[i])[ievt][jchannel]=(aData.WienerSyncChi2)[i];
+  }
+
+}

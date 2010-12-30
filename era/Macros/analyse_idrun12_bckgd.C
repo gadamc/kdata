@@ -3,7 +3,7 @@
 // Valable pour les differents macs
 // Update Feb 10
 
-string bolo="ID2";
+string bolo="ID3";
 
 .x params_id_run12.C
 .x start_idrun12_bckgd.C

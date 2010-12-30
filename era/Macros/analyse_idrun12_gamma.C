@@ -3,7 +3,7 @@
 // Valable pour les differents macs
 // Update oct09 - Update Feb 2010
 
-string bolo="FID402";
+string bolo="ID4";
 
 .x params_id_run12.C
 .x start_idrun12_gamma.C
@@ -185,6 +185,10 @@ gLdbCut_Evet=1.5; // 1.5...va avec Ecol
 string qplotfile=basedir+"/qplot_"+bolo+".txt";
 
 Qplot(bolo,qualdir,DSTRed,voltflag,evtclassflag,cut_badevts,0,print_wimps,0,qplotfile);
+
+// bonus sept 2010
+SynchroFidCut(bolo,DSTRed);
+
 
 //**********************
 // Qplot

@@ -28,6 +28,8 @@ class EdwAnaDB : public EdwDB {
   /**< Standard constructor available either in "READ" mode (default) or "RECREATE" */
 
   void FillFromDBs(vector<string> aDBs); /**< Build a single anadb object from a list of DB files. Useful to concatenate a list of DBs created independently into a single "big" DB that will be used for data processing. */
+  void FillFromDBsAndRuns(vector<string> aDBs, vector<string> aRunList); /**< In addition to FillFromDBs, fills only the preprocessdata of aDBs whose run is in aRunList (if the run is defined). */
+
   void FillFromASCIITemplates(vector<string> aChannels, string aASCIIDir, string aPlotDir="None"); /**< Add templates built from ascii files */
   void FillTemplate(EdwTemplate aTemplate) ; /**< Add a template object to the DB */
   void FillTemplates(vector<EdwTemplate> aTemplates); /**< Add a list of template objects to the DB */
@@ -45,7 +47,7 @@ class EdwAnaDB : public EdwDB {
 
   EdwQualityFlags* GetQuality(time_t aTime, string aChannel);
   /**< Returns the quality "flags" associated to a given channel and time. */
-  void BasicFillPreprocessData(TChain* aChain, vector<string> aChannels, vector<Int_t> aBins, time_t aStart, time_t aStop, string aPlotSpectrum = "");
+  void BasicFillPreprocessData(TChain* aChain, vector<string> aChannels, vector<Int_t> aBins, vector<Int_t> aPatterns, time_t aStart, time_t aStop, string aPlotSpectrum = "");
   /**< Basic preprocessing of data related to a list of channels in a given time range, using a chain of EdwEvent objects. FFT computation, basic decorrelation... The preprocessing data is then filled to the fPreprocessBranch. */
   //  void BuildPreprocessCorrels(TChain* aChain, time_t aStart, time_t aStop, string aPlotProfiles="");
   //  Subroutine to compute correlations between channels. Used after BasicFillPreprocessData... (to specify)
@@ -63,6 +65,11 @@ class EdwAnaDB : public EdwDB {
   /**< Dump basic info on all templates of the DB. If an ASCII template dir is given, templates are saved to ascii format in this directory */
   void DumpPreprocessInfo() const;
   /**< Dump basic info on all preprocessing data of the DB. */
+
+  void PlotWienerSpectra(string aChannel, string aPlotName) const;
+  /**< Plot spectra of template, noise, and opt filter for a given channel */
+  void PlotNoiseSpectra(string aChannel, string aPlotName) const;
+
 
   // A mettre en protected...
   TTree* fTemplateTree; /**< Template tree */

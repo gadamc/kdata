@@ -5,7 +5,6 @@
 */
 
 #include "Pulse.h"
-#include <climits>
 
 ClassImp(Pulse); /**< Root dictionnary */
 
@@ -39,9 +38,4 @@ Bool_t Pulse::IsSaturated() {
 
 void Pulse::PlotRawTrace(string aPlotName) {
   plotvector(fTrace,aPlotName,0,"Raw trace");
-}
-
-TH1F* Pulse::CreateHistFromPulse() const
-{
-	return vect2hist(this->Trace());
 }

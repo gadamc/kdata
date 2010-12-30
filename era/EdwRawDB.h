@@ -33,7 +33,7 @@ class EdwRawDB : public EdwDB {
   void FillAllData(string aAutomateDir, string aRunDir);
   /**< Adds all automate data and all runs from both directories */
   void DumpRunData() ; /**< Dumps all run data from the DB to standard output */
-  void DumpEvent(string aRun, UInt_t aSambaNum, string aRootDir, string aFile="None") ;
+  void DumpEvent(string aRun, UInt_t aSambaNum, string aRootDir, string aFile="None", string aChannel="all") ;
   /**< Dumps the raw traces of a given event from the corresponding Root file */
   void PlotEvent(string aRun, UInt_t aSambaNum, string aRootDir, string aPlotName) ;
   /**< Plots the raw traces of a given event from the corresponding Root file */
@@ -41,11 +41,13 @@ class EdwRawDB : public EdwDB {
   Float_t GetTBolo(time_t) ; /**< Temperature from automate data */
   Float_t GetVoltage(string aRun, string aChannel) ; /**< Voltage */
   Short_t GetVoltageSign(string aRun, string aChannel) ; /**< Voltage sign: useful to know the sign of the pulse we are looking for */
+  Int_t GetPatternLength(string aRun, string aChannel);
   vector<string> GetRunList(); /**< List of runs in the fRunBranch */
   vector<string> GetRunChannels(vector<string> aRunNames) ;
   /**< Returns the list of channels used in given runs */
   TChain* GetEventChain(vector<string> aRunNames, string aDir) ;
   /**< Returns a chain of EdwEvents from root files located in aDir, for a list of given runs. [Uses the operator NEW] */
+  TChain* GetEventSubChain(vector<string>& aRunNames, string aDir, ULong_t istart, ULong_t istop, ULong_t& i_offset, vector<string>& runnames_restrict, string aLocalDir="");
 
   TTree* fAutomateTree; /**< Automate data: eg. Tbolo sources etc.. vs time */
   TTree* fRunTree; /**< Run data : eg. run name, channels, voltages, thresholds.. */
@@ -60,7 +62,7 @@ class EdwRawDB : public EdwDB {
  private:
 
 
-  ClassDef(EdwRawDB,2)
+  ClassDef(EdwRawDB,1)
 };
 
 #endif

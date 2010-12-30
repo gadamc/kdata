@@ -58,7 +58,7 @@ Int_t BuildIonEnergy(TChain* chain, string bolo, string* runs=NULL, int* sgn_ion
   Float_t Avet1=0, Avet2=0, A0vet1=0, A0vet2=0;
   Float_t Agar1=0, Agar2=0, A0gar1=0, A0gar2=0;
   Float_t Av1syn=0, Av2syn=0, Ag1syn=0, Ag2syn=0;
-  Float_t Aheat=0;
+  Float_t Aheat=0, Aheat_nonan=0;
   chain->SetBranchAddress("RunName",&therun);
   if (special_flag_id3) chain->SetBranchAddress("DateSec",&date);
   
@@ -100,6 +100,7 @@ Int_t BuildIonEnergy(TChain* chain, string bolo, string* runs=NULL, int* sgn_ion
   }
   
   int nbnan=0;
+  Float_t 
   for (Int_t i=0; i<nb; i++) {
     chain->GetEntry(i);
     Int_t runflag=0;
@@ -122,35 +123,33 @@ Int_t BuildIonEnergy(TChain* chain, string bolo, string* runs=NULL, int* sgn_ion
       E0col1=0; E0col2=0; E0vet1=0; E0vet2=0; E0gar1=0; E0gar2=0;
     } else {
       
-      // Plus de distingo selon le signe du run
-      // Crosstalk chaleur: Achal reste tjs positive donc le signe du coefficient
-      // de cross talk doit logiquement changer en fct du signe polar (doit
-      // etre pris en compte dans le fichier params...)
-      
+      if (TMath::Finite(Aheat) == 0) Aheat_nonan=0;
+      else  Aheat_nonan=Aheat;
+
       if (isntd) { // definition differente des ceofs de crosstalk..
-        Ecol1 = (Acol1-gCT_V1C1[runflag]*Agar1)*gCalib_Col1[runflag];
-        E0col1 = (A0col1-gCT_V1C1[runflag]*Agar1)*gCalib_Col1[runflag];
-        Egar1 = (Agar1-gCT_C1V1[runflag]*Acol1-gCTlin_HG1[runflag]*Aheat-
-                 gCTquad_HG1[runflag]*Aheat*Aheat)*gCalib_Gar1[runflag];
-        E0gar1 = (A0gar1-gCT_C1V1[runflag]*Acol1-gCTlin_HG1[runflag]*Aheat-
-                  gCTquad_HG1[runflag]*Aheat*Aheat)*gCalib_Gar1[runflag];
+	Ecol1 = (Acol1-gCT_V1C1[runflag]*Agar1)*gCalib_Col1[runflag];
+	E0col1 = (A0col1-gCT_V1C1[runflag]*Agar1)*gCalib_Col1[runflag];
+	Egar1 = (Agar1-gCT_C1V1[runflag]*Acol1-gCTlin_HG1[runflag]*Aheat_nonan-
+		 gCTquad_HG1[runflag]*Aheat_nonan*Aheat_nonan)*gCalib_Gar1[runflag];
+	E0gar1 = (A0gar1-gCT_C1V1[runflag]*Acol1-gCTlin_HG1[runflag]*Aheat_nonan-
+		  gCTquad_HG1[runflag]*Aheat_nonan*Aheat_nonan)*gCalib_Gar1[runflag];
       } else {
-        Ecol1 = (Acol1-gCT_V1C1[runflag]*Avet1)*gCalib_Col1[runflag];
-        Ecol2 = (Acol2-gCT_V2C2[runflag]*Avet2)*gCalib_Col2[runflag];
-        E0col1 = (A0col1-gCT_V1C1[runflag]*Avet1)*gCalib_Col1[runflag]; // Choix correction CT pour les a0
-        E0col2 = (A0col2-gCT_V2C2[runflag]*Avet2)*gCalib_Col2[runflag];
-        Evet1 = (Avet1-gCT_C1V1[runflag]*Acol1)*gCalib_Vet1[runflag]; 
-        Evet2 = (Avet2-gCT_C2V2[runflag]*Acol2)*gCalib_Vet2[runflag];
-        E0vet1 = (A0vet1-gCT_C1V1[runflag]*Acol1)*gCalib_Vet1[runflag];
-        E0vet2 = (A0vet2-gCT_C2V2[runflag]*Acol2)*gCalib_Vet2[runflag];
-        Egar1 = (Agar1-gCT_G2G1[runflag]*Agar2-gCTlin_HG1[runflag]*Aheat-
-                 gCTquad_HG1[runflag]*Aheat*Aheat)*gCalib_Gar1[runflag];
-        Egar2 = (Agar2-gCT_G1G2[runflag]*Agar1-gCTlin_HG2[runflag]*Aheat-
-                 gCTquad_HG2[runflag]*Aheat*Aheat)*gCalib_Gar2[runflag];
-        E0gar1 = (A0gar1-gCT_G2G1[runflag]*Agar2-gCTlin_HG1[runflag]*Aheat-
-                  gCTquad_HG1[runflag]*Aheat*Aheat)*gCalib_Gar1[runflag]; 
-        E0gar2 = (A0gar2-gCT_G1G2[runflag]*Agar1-gCTlin_HG2[runflag]*Aheat-
-                  gCTquad_HG2[runflag]*Aheat*Aheat)*gCalib_Gar2[runflag];
+	Ecol1 = (Acol1-gCT_V1C1[runflag]*Avet1)*gCalib_Col1[runflag];
+	Ecol2 = (Acol2-gCT_V2C2[runflag]*Avet2)*gCalib_Col2[runflag];
+	E0col1 = (A0col1-gCT_V1C1[runflag]*Avet1)*gCalib_Col1[runflag]; // Choix correction CT pour les a0
+	E0col2 = (A0col2-gCT_V2C2[runflag]*Avet2)*gCalib_Col2[runflag];
+	Evet1 = (Avet1-gCT_C1V1[runflag]*Acol1)*gCalib_Vet1[runflag]; 
+	Evet2 = (Avet2-gCT_C2V2[runflag]*Acol2)*gCalib_Vet2[runflag];
+	E0vet1 = (A0vet1-gCT_C1V1[runflag]*Acol1)*gCalib_Vet1[runflag];
+	E0vet2 = (A0vet2-gCT_C2V2[runflag]*Acol2)*gCalib_Vet2[runflag];
+	Egar1 = (Agar1-gCT_G2G1[runflag]*Agar2-gCTlin_HG1[runflag]*Aheat_nonan-
+		 gCTquad_HG1[runflag]*Aheat_nonan*Aheat_nonan)*gCalib_Gar1[runflag];
+	Egar2 = (Agar2-gCT_G1G2[runflag]*Agar1-gCTlin_HG2[runflag]*Aheat_nonan-
+		 gCTquad_HG2[runflag]*Aheat_nonan*Aheat_nonan)*gCalib_Gar2[runflag];
+	E0gar1 = (A0gar1-gCT_G2G1[runflag]*Agar2-gCTlin_HG1[runflag]*Aheat_nonan-
+		  gCTquad_HG1[runflag]*Aheat_nonan*Aheat_nonan)*gCalib_Gar1[runflag]; 
+	E0gar2 = (A0gar2-gCT_G1G2[runflag]*Agar1-gCTlin_HG2[runflag]*Aheat_nonan-
+		  gCTquad_HG2[runflag]*Aheat_nonan*Aheat_nonan)*gCalib_Gar2[runflag];
       }
       
       if (special_flag_id3) {

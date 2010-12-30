@@ -1,22 +1,22 @@
 
 int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts, string dstfile, string asciifile="",int modulation=200) {
-	
+
   // Format DST au niveau zero (avant de passer a l'etude des coincidences)
   // run - nevt(samba) - flag_evttype - echal - eion - toffset - chi2flag
-	
+
   // NB: chi2flag: pour l'instant c'est juste le chi2 de la chaleur!!
   // A ameliorer pour gerer le chi2 des ions en fct du type d'evt...
-	
+
   if (!IsID(bolo)) { // Cas des GG..
     BuildDST_GeNTD(chain, bolo, Eion, Eheat, Cuts, dstfile, asciifile, modulation);
     return 0;
   }
-	
-	
+
+
   string datadir=DATAPATH;
   string macrodir=MACROPATH;
   Float_t sigmacut_heat=3; // variable differente de gSigmaCut_Heat! (moins strict que pr qplot)
-	
+
   TFile* f = new TFile(dstfile.c_str(),"RECREATE");
   TTree* dst = new TTree("dsttree","EdwDST");
   char runname[9];
@@ -34,7 +34,7 @@ int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts,
   dst->Branch("Toffset",&toffset,"Toffset/I");
   dst->Branch("Chi2Flag",&chi2flag,"Chi2Flag/I");
   dst->Branch("IonFlags",ionflags,"IonFlags[6]/I");
-	
+
   Int_t nbevts = chain->GetEntries();
   char therun[9]; UInt_t theevtnum=0; ULong64_t thedate=0;
   chain->SetBranchStatus("*",0);
@@ -88,9 +88,9 @@ int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts,
   chain->SetBranchStatus(("WienerBin_"+ChannelName(bolo,"heat")).c_str(),1);
   Eheat->SetBranchAddress("Eheat",&theEheat);
   Eheat->SetBranchAddress("LdbHeat",&Ldbheat); 
-	
+
   Bool_t cutchi2heat=1, cutchi2col1=1, cutchi2col2=1, cutchi2vet1=1, cutchi2vet2=1,
-	cutchi2gar1=1, cutchi2gar2=1, cutchi2ion=1;
+    cutchi2gar1=1, cutchi2gar2=1, cutchi2ion=1;
   if (Cuts->GetEntries() != nbevts) cout << "Error nb evts cuts" << endl;
   Cuts->SetBranchAddress("CutChi2Heat",&cutchi2heat);
   Cuts->SetBranchAddress("CutChi2Col1",&cutchi2col1);
@@ -101,7 +101,7 @@ int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts,
     Cuts->SetBranchAddress("CutChi2Gar1",&cutchi2gar1);
     Cuts->SetBranchAddress("CutChi2Gar2",&cutchi2gar2);
   }
-	
+
   // 1er passage : on remplit un (gros) fichier ascii pour l'envoyer au code compile.
   string compile_entree=datadir+bolo+"_tmptoto.txt";
   string compile_sortie=datadir+bolo+"_tmptiti.txt";
@@ -114,29 +114,29 @@ int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts,
     Eheat->GetEntry(i);
     if (theEheat >= sigmacut_heat*Ldbheat && theEheat > 0.05) {
       if (nbchannels == 6) {
-				entree <<i<<" "<<Ecol1<<" "<<Ecol2<<" "<<Evet1<<" " <<Evet2<<" "<<Egar1<<" "<<Egar2<<" "<<
-				Ldbcol1<<" "<<Ldbcol2<<" "<<Ldbvet1<<" " <<Ldbvet2<<" "<<Ldbgar1<<" "<<Ldbgar2<<" "<<
-				(int)BinCol1<<" "<<(int)BinCol2<<" "<<(int)BinVet1<<" " <<(int)BinVet2<<" "<<
-				(int)BinGar1<<" "<<(int)BinGar2<<" "<<
-				EsyncVet1<<" "<<EsyncVet2<<" "<<EsyncGar1<<" "<<EsyncGar2<<endl;
+	entree <<i<<" "<<Ecol1<<" "<<Ecol2<<" "<<Evet1<<" " <<Evet2<<" "<<Egar1<<" "<<Egar2<<" "<<
+	  Ldbcol1<<" "<<Ldbcol2<<" "<<Ldbvet1<<" " <<Ldbvet2<<" "<<Ldbgar1<<" "<<Ldbgar2<<" "<<
+	  (int)BinCol1<<" "<<(int)BinCol2<<" "<<(int)BinVet1<<" " <<(int)BinVet2<<" "<<
+	  (int)BinGar1<<" "<<(int)BinGar2<<" "<<
+	  EsyncVet1<<" "<<EsyncVet2<<" "<<EsyncGar1<<" "<<EsyncGar2<<endl;
       } else {
-				entree<<i<<" "<<Ecol1<<" "<<Ecol2<<" "<<Evet1<<" " <<Evet2<<" "<<
-				Ldbcol1<<" "<<Ldbcol2<<" "<<Ldbvet1<<" " <<Ldbvet2<<" "<<
-				(int)BinCol1<<" "<<(int)BinCol2<<" "<<(int)BinVet1<<" " <<(int)BinVet2<<" "<<
-				EsyncGar1<<" "<<EsyncGar2<<endl;
+	entree<<i<<" "<<Ecol1<<" "<<Ecol2<<" "<<Evet1<<" " <<Evet2<<" "<<
+	  Ldbcol1<<" "<<Ldbcol2<<" "<<Ldbvet1<<" " <<Ldbvet2<<" "<<
+	  (int)BinCol1<<" "<<(int)BinCol2<<" "<<(int)BinVet1<<" " <<(int)BinVet2<<" "<<
+	  EsyncGar1<<" "<<EsyncGar2<<endl;
       }
     }
   }
   entree.close();
   system(("wc -l "+compile_entree).c_str());
-	
+
   // Code compile
   //  system(("g++ -o "+macrodir+"run_evtclass.exe "+macrodir+"run_evtclass.C").c_str());
   system((macrodir+"run_evtclass.exe "+int2str(nbchannels)+" "+
-					compile_entree+" "+compile_sortie).c_str());
+	  compile_entree+" "+compile_sortie).c_str());
   system(("wc -l "+compile_sortie).c_str());
   //  system(("rm -f "+macrodir+"run_evtclass.exe").c_str());
-	
+
   // 2e passage : on lit l'output du code compile et on remplit le ntuple.
   ofstream asciiout;
   if (asciifile != "") {
@@ -149,11 +149,11 @@ int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts,
   sortie.close(); sortie.open(compile_sortie.c_str(),ios::in);
   int i_sortie,flag_sortie,toffset_sortie; float eion_sortie; int ionflags_sortie[6];
   sortie >> i_sortie >> flag_sortie >> toffset_sortie >> eion_sortie 
-	>>ionflags_sortie[0]>>ionflags_sortie[1]>>ionflags_sortie[2]>>ionflags_sortie[3]>>ionflags_sortie[4]>>ionflags_sortie[5];
+	 >>ionflags_sortie[0]>>ionflags_sortie[1]>>ionflags_sortie[2]>>ionflags_sortie[3]>>ionflags_sortie[4]>>ionflags_sortie[5];
   for (int i=0; i<nbevts; i++) { // nbevts
     if (i > i_sortie && j < nbsortie) { // A verifier!!!!
       sortie >> i_sortie >> flag_sortie >> toffset_sortie >> eion_sortie
-			>>ionflags_sortie[0]>>ionflags_sortie[1]>>ionflags_sortie[2]>>ionflags_sortie[3]>>ionflags_sortie[4]>>ionflags_sortie[5];
+	     >>ionflags_sortie[0]>>ionflags_sortie[1]>>ionflags_sortie[2]>>ionflags_sortie[3]>>ionflags_sortie[4]>>ionflags_sortie[5];
       j++;
       if (i > i_sortie) cout << "error isortie...?" << j<<" "<<i<<" "<<i_sortie<<endl;
     }
@@ -173,14 +173,14 @@ int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts,
       eion=0;
     } else {
       if (i == i_sortie) {
-				evtflag = flag_sortie;
-				toffset = toffset_sortie;
-				eion = eion_sortie;
-				for (int k=0; k<6; k++) ionflags[k]=ionflags_sortie[k];
+	evtflag = flag_sortie;
+	toffset = toffset_sortie;
+	eion = eion_sortie;
+	for (int k=0; k<6; k++) ionflags[k]=ionflags_sortie[k];
       } else {
-				evtflag = 1;
-				eion=0;
-				for (int k=0; k<6; k++) ionflags[k]=0;
+	evtflag = 1;
+	eion=0;
+	for (int k=0; k<6; k++) ionflags[k]=0;
       }
     }
     if (evtflag <= 1) cutchi2ion=1;
@@ -188,14 +188,14 @@ int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts,
     else if (evtflag == 3) cutchi2ion=(cutchi2col1 && cutchi2col2 && cutchi2vet1 && cutchi2vet2);
     else if (evtflag == 4) cutchi2ion=(cutchi2col1 && cutchi2col2 && cutchi2gar1 && cutchi2gar2);
     else if (evtflag == 5) cutchi2ion=(cutchi2col1 && cutchi2col2 && cutchi2vet1 && cutchi2vet2 && 
-																			 cutchi2gar1 && cutchi2gar2);
+				       cutchi2gar1 && cutchi2gar2);
     chi2flag=(Int_t)(cutchi2heat && cutchi2ion);
     dst->Fill();
     if (asciifile != "" && evtflag >= 2) asciiout<<runname<<" "<<evtnum<<" "<<bolo<<" "<<toffset<<" "
-			<<chi2flag<<" "<<evtflag<<" "<<eheat<<" "<<eion<<endl;
+						 <<chi2flag<<" "<<evtflag<<" "<<eheat<<" "<<eion<<endl;
     if (fmod((double)i,(double)100000) == 0) {cout << i << endl;}
   }
-	
+
   if (asciifile!= "") asciiout.close();
   f->cd(); dst->Write(0,TObject::kOverwrite);
   f->Close();
@@ -205,15 +205,15 @@ int BuildDST(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts,
   // create a "simple" file for later purpose
   string simplentp=(dstfile.substr(0,dstfile.length()-5))+"_simple.root";
   system(("cp "+dstfile+" "+simplentp).c_str());
-	
+
   return 0;
 }
 
 int BuildDST_GeNTD(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree* Cuts, string dstfile, string asciifile="",int modulation=200) {
-	
+
   Float_t sigmacut_heat=3;
   Float_t sigmacut_ion=2;
-	
+
   TFile* f = new TFile(dstfile.c_str(),"RECREATE");
   TTree* dst = new TTree("dsttree","EdwDST");
   char runname[9];
@@ -230,7 +230,7 @@ int BuildDST_GeNTD(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree*
   dst->Branch("Toffset",&toffset,"Toffset/I");
   dst->Branch("Chi2Flag",&chi2flag,"Chi2Flag/I");
   dst->Branch("IonFlags",ionflags,"IonFlags[6]/I");
-	
+
   Int_t nbevts = chain->GetEntries();
   char therun[9]; UInt_t theevtnum=0; ULong64_t thedate=0;
   chain->SetBranchStatus("*",0);
@@ -240,7 +240,7 @@ int BuildDST_GeNTD(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree*
   chain->SetBranchStatus("EventNum",1);
   chain->SetBranchAddress("DateSec",&thedate);
   chain->SetBranchStatus("DateSec",1);
-	
+ 
   Float_t Ecol1=0, Egar1=0, BinCol1=0, BinGar1=0, LdbCol1=0, LdbGar1=0;
   if (Eion->GetEntries() != nbevts) cout << "Error nb evts eion" << endl;
   chain->SetBranchAddress(("WienerBin_"+ChannelName(bolo,"col1")).c_str(),&BinCol1);
@@ -251,14 +251,14 @@ int BuildDST_GeNTD(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree*
   Eion->SetBranchAddress("LdbCol1",&LdbCol1);
   Eion->SetBranchAddress("Egar1",&Egar1);
   Eion->SetBranchAddress("LdbGar1",&LdbGar1);
-	
+
   Float_t theEheat=0, Ldbheat=0, BinHeat=0;
   if (Eheat->GetEntries() != nbevts) cout << "Error nb evts eheat" << endl;
   chain->SetBranchAddress(("WienerBin_"+ChannelName(bolo,"heat")).c_str(),&BinHeat);
   chain->SetBranchStatus(("WienerBin_"+ChannelName(bolo,"heat")).c_str(),1);
   Eheat->SetBranchAddress("Eheat",&theEheat);
   Eheat->SetBranchAddress("LdbHeat",&Ldbheat); 
-	
+
   Bool_t cutchi2heat=1,cutchi2col1=1,cutchi2gar1=1,cutchi2ion=1;
   if (Cuts->GetEntries() != nbevts) cout << "Error nb evts cuts" << endl;
   Cuts->SetBranchAddress("CutChi2Heat",&cutchi2heat);
@@ -270,7 +270,7 @@ int BuildDST_GeNTD(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree*
     asciiout.open(asciifile.c_str(),ios::out);
     asciiout << "# Run Event Bolometer TimeOffset Chi2Flag EventClass Eheat Eion" << endl;
   }
-	
+
   for (int i=0; i<nbevts; i++) { // nbevts
     chain->GetEntry(i);
     Eion->GetEntry(i);
@@ -289,40 +289,40 @@ int BuildDST_GeNTD(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree*
       toffset=0;
     } else {
       if (Ecol1 < sigmacut_ion*LdbCol1 && Egar1 < sigmacut_ion*LdbGar1) {
-				evtflag=1;
-				eion=0;
-				chi2flag=cutchi2heat;
-				for (int k=0; k<6; k++) ionflags[k]=0;
+	evtflag=1;
+	eion=0;
+	chi2flag=cutchi2heat;
+	for (int k=0; k<6; k++) ionflags[k]=0;
       } else if ( Egar1 < sigmacut_ion*LdbGar1 ) {
-				evtflag=2;
-				eion=Ecol1;
-				ionflags[0]=1;
-				chi2flag=(cutchi2heat && cutchi2col1);
-				toffset = BinCol1-4000;
-				for (int k=1; k<6; k++) ionflags[k]=0;
+	evtflag=2;
+	eion=Ecol1;
+	ionflags[0]=1;
+	chi2flag=(cutchi2heat && cutchi2col1);
+	toffset = BinCol1-4000;
+	for (int k=1; k<6; k++) ionflags[k]=0;
       } else if ( Ecol1 < sigmacut_ion*LdbCol1 ){
-				evtflag=4;
-				eion=Egar1;
-				for (int k=0; k<6; k++) ionflags[k]=0;
-				ionflags[4]=1;
-				chi2flag=(cutchi2heat && cutchi2gar1);
-				toffset = BinGar1-4000;
+	evtflag=4;
+	eion=Egar1;
+	for (int k=0; k<6; k++) ionflags[k]=0;
+	ionflags[4]=1;
+	chi2flag=(cutchi2heat && cutchi2gar1);
+	toffset = BinGar1-4000;
       } else {
-				evtflag=5;
-				eion=Egar1+Ecol1;
-				ionflags[0]=1;
-				for (int k=1; k<6; k++) ionflags[k]=0;
-				ionflags[4]=1;
-				chi2flag=(cutchi2heat && cutchi2gar1 && cutchi2col1);
-				toffset=BinCol1-4000; // on fait simple...
+	evtflag=5;
+	eion=Egar1+Ecol1;
+	ionflags[0]=1;
+	for (int k=1; k<6; k++) ionflags[k]=0;
+	ionflags[4]=1;
+	chi2flag=(cutchi2heat && cutchi2gar1 && cutchi2col1);
+	toffset=BinCol1-4000; // on fait simple...
       }
     }
     dst->Fill();
     if (asciifile != "" && evtflag >= 2) asciiout<<runname<<" "<<evtnum<<" "<<bolo<<" "<<toffset<<" "
-			<<chi2flag<<" "<<evtflag<<" "<<eheat<<" "<<eion<<endl;
+						 <<chi2flag<<" "<<evtflag<<" "<<eheat<<" "<<eion<<endl;
     if (fmod((double)i,(double)100000) == 0) cout << i << endl;
   }
-	
+
   if (asciifile!= "") asciiout.close();
   f->cd(); dst->Write(0,TObject::kOverwrite);
   f->Close();
@@ -330,6 +330,6 @@ int BuildDST_GeNTD(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, TTree*
   // create a "simple" file for later purpose
   string simplentp=(dstfile.substr(0,dstfile.length()-5))+"_simple.root";
   system(("cp "+dstfile+" "+simplentp).c_str());
-	
+
   return 0;
 }
