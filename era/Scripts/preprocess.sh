@@ -27,7 +27,7 @@ mkdir ${TMPBATCH}/rootevts
 therun=`awk -v a=${runnum} 'NR == a {print}' ${basedir}/runlist.txt`
 echo "Run: "${therun}
 cp -v ${datadir}/rootevts/${therun}_* ${TMPBATCH}/rootevts/.
-cp ${HOME}/EdwRootAna/bin/edwrootana.exe ${TMPBATCH}/.
+cp ${KDATA_ROOT}/bin/edwrootana ${TMPBATCH}/.
 
 # generate parameter file
 paramfile=${basedir}/Paramfiles/params_preprocess_${runnum}.txt
@@ -44,7 +44,7 @@ echo "gAnaDBFile = ${TMPBATCH}/anadb_"${runnum}".root" >> ${paramfile}
 echo "gTimeStepMinutes = 60" >> ${paramfile} # passage de 200 a 60 min a partir des runs d'oct09
 
 # Run EdwRootAna
-${TMPBATCH}/edwrootana.exe ${paramfile}
+${TMPBATCH}/edwrootana ${paramfile}
 
 cp -f ${TMPBATCH}/anadb_${runnum}.root ${datadir}/rootdbs/.
 rm -f ${runfile}

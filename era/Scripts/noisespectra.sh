@@ -32,5 +32,6 @@ echo "gAnaDBListFile = ${TMPBATCH}/anadblist.txt" >> ${paramfile}
 echo "gPlotDir = "${basedir}"/Plots" >> ${paramfile}
 
 # Run EdwRootAna
-${HOME}/EdwRootAna/bin/edwrootana.exe ${paramfile}
+${KDATA_ROOT}/bin/edwrootana ${paramfile}
+
 

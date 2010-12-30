@@ -35,4 +35,4 @@ echo "gIStart = "${start_evt} >> ${paramfile}
 echo "gIStop = "${stop_evt} >> ${paramfile}
 
 # Run EdwRootAna
-${HOME}/EdwRootAna/bin/edwrootana.exe ${paramfile}
+${KDATA_ROOT}/bin/edwrootana ${paramfile}

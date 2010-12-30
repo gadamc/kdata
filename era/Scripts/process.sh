@@ -25,7 +25,8 @@ num_ntp=`echo " ${i} + 1 " | bc`
 
 # Copy of files to $TMPBATCH
 cp ${datadir}/rootdbs/rawdb.root ${TMPBATCH}/.
-cp ${HOME}/EdwRootAna/bin/edwrootana.exe ${TMPBATCH}/.
+
+cp ${KDATA_ROOT}/bin/edwrootana ${TMPBATCH}/.
 cp ${basedir}/heationsync.txt ${TMPBATCH}/.
 mkdir ${TMPBATCH}/rootevts
 
@@ -54,7 +55,7 @@ echo "gWienerOnly = 1" >> ${paramfile}
 echo "gHeatIonSynchroFile = ${TMPBATCH}/heationsync.txt" >> ${paramfile}
 
 # Run EdwRootAna
-${TMPBATCH}/edwrootana.exe ${paramfile}
+${TMPBATCH}/edwrootana ${paramfile}
 
 # Copy of files from $TMPBATCH
 cp ${TMPBATCH}/ntp_${num_ntp}.root ${datadir}/ntps/.

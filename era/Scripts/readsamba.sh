@@ -23,4 +23,4 @@ echo "gRawDBFile = "${datadir}"/rootdbs/rawdb.root" >> ${paramfile}
 echo "gRootEventDir = "${datadir}"/rootevts" >> ${paramfile}
 
 # Run EdwRootAna
-${KDATA_ROOT}/bin/edwrootana.exe ${paramfile}
+${KDATA_ROOT}/bin/edwrootana ${paramfile}

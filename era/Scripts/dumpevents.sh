@@ -25,4 +25,5 @@ echo "gEvtListFile = "${basedir}"/evtlist.txt" >> ${paramfile}
 echo "gASCIIOutputDir = "${datadir}"/traces" >> ${paramfile}
 
 # Run EdwRootAna
-${HOME}/EdwRootAna/bin/edwrootana.exe ${paramfile}
+${KDATA_ROOT}/bin/edwrootana ${paramfile}
+

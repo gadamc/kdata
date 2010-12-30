@@ -27,5 +27,5 @@ if [ ${byteorder} ] ; then
 fi
 
 # Run EdwRootAna
-${HOME}/EdwRootAna/bin/edwrootana.exe ${paramfile}
+${KDATA_ROOT}/bin/edwrootana ${paramfile}
 

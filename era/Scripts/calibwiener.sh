@@ -31,5 +31,6 @@ echo "gWienerWindowStart = "${fmin} >> ${paramfile}
 echo "gWienerWindowStop = "${fmax} >> ${paramfile}
 
 # Run EdwRootAna
-${HOME}/EdwRootAna/bin/edwrootana.exe ${paramfile}
+${KDATA_ROOT}/bin/edwrootana ${paramfile}
+
 

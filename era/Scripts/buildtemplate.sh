@@ -32,6 +32,6 @@ echo "gTemplateFromSinglePulse = 1" >> ${paramfile}
 echo "gASCIITemplateDir = "${datadir}"/templates" >> ${paramfile}
 
 # Run EdwRootAna
-${HOME}/EdwRootAna/bin/edwrootana.exe ${paramfile}
+${KDATA_ROOT}/bin/edwrootana ${paramfile}
 rm -f ${channelfile}
 rm -f ${datadir}/rootdbs/tmplts_dum_${channelnum}.root

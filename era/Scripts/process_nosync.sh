@@ -50,7 +50,7 @@ echo "gWienerOnly = 1" >> ${paramfile}
 #echo "gHeatIonSynchroFile = None" >> ${paramfile}
 
 # Run EdwRootAna
-${HOME}/EdwRootAna/bin/edwrootana.exe ${paramfile}
+${KDATA_ROOT}/bin/edwrootana ${paramfile}
 
 # Copy of files from $TMPBATCH
 cp ${TMPBATCH}/nosyncntp_${num_ntp}.root ${datadir}/ntps/.
