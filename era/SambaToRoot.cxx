@@ -5,7 +5,7 @@
 */
 
 #include "SambaToRoot.h"
-#include "byteswap.h"
+#include "Byteswap.h"
 
 ClassImp(SambaToRoot); /**< Root dictionnary */
 
