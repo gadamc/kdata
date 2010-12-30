@@ -6,7 +6,7 @@
 
 
 #include "EdwUtils.h"
-#include "Mixfft.c" // Required for EdwRealFFT (library from Jens Joergen Nielsen)
+#include "Mixfft.cxx" // Required for EdwRealFFT (library from Jens Joergen Nielsen)
 
 int checkequal(string s) {
   if (s != "=") {

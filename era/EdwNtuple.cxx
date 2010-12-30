@@ -285,12 +285,12 @@ PulseVariables EdwNtuple::ComputeSinglePulse(EdwPulse* aEdwPulse, EdwTemplate& a
 {
   FitPulse lPulse(aEdwPulse);
   PulseVariables lData = {0};
-	lData = ComputeSinglePulse(lPulse, aTmplt, aPreprocess, aSign, aCenterScanBin, aFixTimes);
-	delete lPulse;
+	lData = ComputeSinglePulse(lPulse, aTmplt, aPreprocess, aSign, aPattern, aOffsetScanMin, aOffsetScanMax, aFixTimes);
+
 	return lData;
 }
 
-PulseVariables ComputeSinglePulse(FitPulse& lPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, Short_t aSign = 0, Int_t aCenterScanBin = NOCENTER, const vector<Float_t> *aFixTimes = NULL)
+PulseVariables EdwNtuple::ComputeSinglePulse(FitPulse& lPulse, EdwTemplate& aTmplt, EdwPreprocessData& aPreprocess, Short_t aSign, Int_t aPattern, Int_t aOffsetScanMin, Int_t aOffsetScanMax, const vector<Float_t> *aFixTimes)
 {
   
   PulseVariables lData = {0};

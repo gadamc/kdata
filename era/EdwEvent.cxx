@@ -17,7 +17,7 @@ void EdwEvent::Clear() {
   fPulses->Delete();
   fHeader->Clear() ;
 }
-
+ 
 EdwEvent::~EdwEvent() {
 
 }

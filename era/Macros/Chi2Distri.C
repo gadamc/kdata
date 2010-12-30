@@ -3,7 +3,7 @@
 #include "ChannelName.C"
 
 int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile="", string ntp2="") {
-
+  
   // First get correct channel on the ntp!
   Float_t chi2, energy;
   string channeltype=ChannelType(channel);
@@ -16,7 +16,7 @@ int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile=
   }
   chain->SetBranchAddress(thebranch.c_str(),&chi2);
   chain->SetBranchStatus(thebranch.c_str(),1);
-
+  
   float param0=gChi2Cut0_Heat, param1=gChi2Cut1_Heat;
   if (channeltype=="col1") {
     param0=gChi2Cut0_Col1; param1=gChi2Cut1_Col1;
@@ -31,7 +31,7 @@ int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile=
   } else if (channeltype=="gar2") {
     param0=gChi2Cut0_Gar2; param1=gChi2Cut1_Gar2;
   }
-
+  
   TFile f1(ntpfile.c_str(),"READ");
   TTree* etree = (TTree*)f1.Get("energytree");
   etree->SetBranchAddress(("E"+channeltype).c_str(),&energy);
@@ -45,10 +45,10 @@ int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile=
     cuttree->SetBranchAddress("CutRun",&cutrun);
     cuttree->SetBranchAddress("CutBases",&cutbases);
   }
-
+  
   Int_t nb = chain->GetEntries();
   if (etree->GetEntries() != nb) cout << "error tree size" << endl;
-
+  
   Float_t energy_other1=0, energy_other2=0;
   Float_t base_other1=0, base_other2=0;
   Float_t cut_otherbase=5;
@@ -65,17 +65,17 @@ int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile=
       e2tree->SetBranchAddress("Eheat",&energy_other1);
       e2tree->SetBranchAddress("LdbHeat",&base_other1);
       if (channeltype == "col1") {
-	etree->SetBranchAddress("Ecol2",&energy_other2);
-	etree->SetBranchAddress("LdbCol2",&base_other2);
+        etree->SetBranchAddress("Ecol2",&energy_other2);
+        etree->SetBranchAddress("LdbCol2",&base_other2);
       } else {
-	etree->SetBranchAddress("Ecol1",&energy_other2);
-	etree->SetBranchAddress("LdbCol1",&base_other2);
+        etree->SetBranchAddress("Ecol1",&energy_other2);
+        etree->SetBranchAddress("LdbCol1",&base_other2);
       }
     }
     if (e2tree->GetEntries() != nb) cout << "error tree size" << endl;
   }
-
-
+  
+  
   Float_t* Ene = new Float_t[nb];
   Float_t* Chi = new Float_t[nb];
   Float_t* ChiCut = new Float_t[nb];
@@ -83,22 +83,22 @@ int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile=
     chain->GetEntry(i); etree->GetEntry(i);
     if (cutntpfile != "") cuttree->GetEntry(i);
     if (energy > 1.e5 || cutrun==0 || cutbases == 0 ||
-	chi2 < -100 || chi2 > 1.e10 || energy < -1.e4 ||
-	TMath::IsNaN(chi2) || TMath::IsNaN(energy) ) { Ene[i]=0; Chi[i]=0; ChiCut[i]=0;}
+        chi2 < -100 || chi2 > 1.e10 || energy < -1.e4 ||
+        TMath::IsNaN(chi2) || TMath::IsNaN(energy) ) { Ene[i]=0; Chi[i]=0; ChiCut[i]=0;}
     else {
       Ene[i] = energy;
       Chi[i] = chi2;
       ChiCut[i]=chi2;
       if (ntp2 != "") {
-	e2tree->GetEntry(i);
-	if (energy_other1 < cut_otherbase*base_other1 || energy_other2 < cut_otherbase*base_other2) ChiCut[i]=0;
+        e2tree->GetEntry(i);
+        if (energy_other1 < cut_otherbase*base_other1 || energy_other2 < cut_otherbase*base_other2) ChiCut[i]=0;
       }
     }
     if (fmod((double)i,(double)100000) == 0) cout << i << endl;
   }
   
   chain->SetBranchStatus("*",1);
-
+  
   TCanvas* c = new TCanvas("chi2","chi2");
   TGraph* gr = new TGraph(nb,Ene,Chi);
   gr->SetTitle(("Chi2 vs E - "+channel).c_str());
@@ -107,7 +107,7 @@ int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile=
   gr->GetYaxis()->SetRangeUser(-1,10);
   gr->GetYaxis()->SetTitle("Chi2");
   gr->SetMarkerStyle(6);
-
+  
   TF1* fitfunc = new TF1("fitfunc","[0]+[1]*x*x",0,10000);
   fitfunc->FixParameter(0,param0);
   fitfunc->FixParameter(1,param1);
@@ -146,12 +146,12 @@ int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile=
     int count2_tot=0, count2_cut=0;
     for (int i=0; i<nb; i++) {
       if (Ene[i] > 8 && Ene[i] < 12 && ChiCut[i] > 0.1){
-	count_tot++;
-	if (ChiCut[i] <= fitfunc->Eval(Ene[i])) count_cut++;
+        count_tot++;
+        if (ChiCut[i] <= fitfunc->Eval(Ene[i])) count_cut++;
       }
       if (Ene[i] > 8 && Ene[i] < 200 && ChiCut[i] > 0.1){
-	count2_tot++;
-	if (ChiCut[i] <= fitfunc->Eval(Ene[i])) count2_cut++;
+        count2_tot++;
+        if (ChiCut[i] <= fitfunc->Eval(Ene[i])) count2_cut++;
       }
     }
     float ratio = 100; 
@@ -161,7 +161,7 @@ int Chi2Distri(TChain* chain, string channel, string ntpfile, string cutntpfile=
     if (count2_tot != 0) ratio=100.*(float)(count2_cut)/(float)(count2_tot);
     cout << "** Efficiency for 8<E<200 keV : "<<count2_cut<<"/"<<count2_tot<<"="<<ratio<<"%"<<endl;
   }
-
+  
   delete[] Ene; delete[] Chi; delete[] ChiCut;
   return 0;
 }

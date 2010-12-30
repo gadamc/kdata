@@ -1,15 +1,15 @@
 
 int UpdateDST(string bolo, string dstfile, string eionntpfile) {
-
+  
   Float_t epsilon=3;
-
+  
   string simplentp=(dstfile.substr(0,dstfile.length()-5))+"_simple.root";
   system(("cp "+simplentp+" "+dstfile).c_str());
   
   TFile f(dstfile.c_str(),"UPDATE");
   TTree* dst = (TTree*)f.Get("dsttree");
   Int_t nbevts=dst->GetEntries();  
-
+  
   Float_t Erec=0, Eheat=0, Q=0, Eion=0, Eluke=0;
   Int_t ionflags[6];
   Int_t EventFlag=0, Vflag_dst=0;
@@ -20,7 +20,7 @@ int UpdateDST(string bolo, string dstfile, string eionntpfile) {
   dst->SetBranchAddress("Eheat",&Eheat);
   dst->SetBranchAddress("Eion",&Eion);
   dst->SetBranchAddress("EventFlag",&EventFlag);
-
+  
   TFile f1(eionntpfile.c_str(),"READ");
   TTree* EionTree = (TTree*)f1.Get("energytree");
   Float_t Ecol1=0, Ecol2=0, Evet1=0, Evet2=0, Egar1=0, Egar2=0;
@@ -39,7 +39,7 @@ int UpdateDST(string bolo, string dstfile, string eionntpfile) {
       EionTree->SetBranchAddress("Egar2",&Egar2);
     }
   }
-
+  
   for (Int_t i=0; i<nbevts; i++) {
     dst->GetEntry(i);
     EionTree->GetEntry(i);
@@ -49,11 +49,11 @@ int UpdateDST(string bolo, string dstfile, string eionntpfile) {
       Eluke = gVolts[Vflag]*Eion/epsilon;
     } else { // pour l'instant c'est comme ca: pas optimise!
       Eluke = fabs(gVref_Col1[Vflag]*Ecol1)*ionflags[0]+
-	fabs(gVref_Col2[Vflag]*Ecol2)*ionflags[1]+
-	fabs(gVref_Vet1[Vflag]*Evet1)*ionflags[2]+
-	fabs(gVref_Vet2[Vflag]*Evet2)*ionflags[3]+
-	fabs(gVref_Gar1[Vflag]*Egar1)*ionflags[4]+
-	fabs(gVref_Gar2[Vflag]*Egar2)*ionflags[5];
+      fabs(gVref_Col2[Vflag]*Ecol2)*ionflags[1]+
+      fabs(gVref_Vet1[Vflag]*Evet1)*ionflags[2]+
+      fabs(gVref_Vet2[Vflag]*Evet2)*ionflags[3]+
+      fabs(gVref_Gar1[Vflag]*Egar1)*ionflags[4]+
+      fabs(gVref_Gar2[Vflag]*Egar2)*ionflags[5];
       Eluke /= epsilon;
     }
     if (EventFlag == 0 || Vflag < 0) {
@@ -63,7 +63,7 @@ int UpdateDST(string bolo, string dstfile, string eionntpfile) {
       if (Erec != 0) Q = Eion/Erec;
       else Q=0;
     }
-
+    
     dst->GetBranch("Erec")->Fill();
     dst->GetBranch("Q")->Fill();
     dst->GetBranch("Vflag")->Fill();

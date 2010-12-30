@@ -5,7 +5,7 @@
 #include "SambaToRoot.h"
 #include "EdwNtuple.h"
 
-#include "EdwParams.cc"
+#include "EdwParams.cxx"
 
 void BuildRawDB_Step() ;
 void ReadSamba_Step();

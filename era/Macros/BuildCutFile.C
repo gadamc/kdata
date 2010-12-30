@@ -5,12 +5,12 @@
 #include "ChannelName.C"
 
 int BuildCutFile(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, string cutntpfile, string qualdir, Float_t* baselinelimit) {
-
+  
   // Arbre cuts:
   // - mauvais runs
   // - periodes a mauvaises lignes de base
   // - evts a mauvais chi2
-
+  
   // Initialisation de l'arbre
   TFile* f = new TFile(cutntpfile.c_str(),"RECREATE");
   TTree* cuts = new TTree("cuttree","EdwCuts");
@@ -30,7 +30,7 @@ int BuildCutFile(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, string c
     cuts->Branch("CutCol2Base",&cutcol2base,"CutCol2Base/O");
     cuts->Branch("CutVet1Base",&cutvet1base,"CutVet1Base/O");
     cuts->Branch("CutVet2Base",&cutvet2base,"CutVet2Base/O");
-
+    
     cuts->Branch("CutChi2Col2",&cutchi2col2,"CutChi2Col2/O");
     cuts->Branch("CutChi2Vet1",&cutchi2vet1,"CutChi2Vet1/O");
     cuts->Branch("CutChi2Vet2",&cutchi2vet2,"CutChi2Vet2/O");
@@ -43,7 +43,7 @@ int BuildCutFile(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, string c
   }
   cuts->Branch("CutChi2",&cutchi2,"CutChi2/O");
   cuts->Branch("CutBases",&cutbases,"CutBases/O");
-
+  
   // Recupere chi2, energies, et ldbs des voies
   ULong64_t date=0; char therun[9];
   chain->SetBranchStatus("*",0);
@@ -77,7 +77,7 @@ int BuildCutFile(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, string c
       chain->SetBranchStatus(("WienerChi2_"+ChannelName(bolo,"gar2")).c_str(),1);
     }
   }
-
+  
   Float_t eheat=0, ldbheat=0;
   Float_t ldbcol1=0, ldbcol2=0, ldbvet1=0, ldbvet2=0, ldbgar1=0, ldbgar2=0;
   Float_t ecol1=0, ecol2=0, evet1=0, evet2=0, egar1=0, egar2=0;
@@ -105,7 +105,7 @@ int BuildCutFile(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, string c
   Int_t boloflag=0;
   if (!IsID(bolo)) boloflag=2;
   if (IsFID(bolo)) boloflag=1;
-
+  
   // Recupere mauvais runs
   vector<string> badruns;
   string run; int polar, flag;
@@ -115,11 +115,11 @@ int BuildCutFile(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, string c
     if (!flag) badruns.push_back(run);
   }
   int nbbadruns=badruns.size();
-
+  
   for (Int_t i=0; i<nbevts; i++) {
     chain->GetEntry(i); Eion->GetEntry(i);
     Eheat->GetEntry(i);
-
+    
     // CutRun
     cutrun=1;
     for (int p=0; p<nbbadruns; p++) {
@@ -142,13 +142,13 @@ int BuildCutFile(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, string c
       if (chi2vet1 > gChi2Cut0_Vet1+gChi2Cut1_Vet1*evet1*evet1) cutchi2vet1=0;
       if (chi2vet2 > gChi2Cut0_Vet2+gChi2Cut1_Vet2*evet2*evet2) cutchi2vet2=0;
       if (boloflag == 0) {
-	if (chi2gar1 > gChi2Cut0_Gar1+gChi2Cut1_Gar1*egar1*egar1) cutchi2gar1=0;
-	if (chi2gar2 > gChi2Cut0_Gar2+gChi2Cut1_Gar2*egar2*egar2) cutchi2gar2=0;
+        if (chi2gar1 > gChi2Cut0_Gar1+gChi2Cut1_Gar1*egar1*egar1) cutchi2gar1=0;
+        if (chi2gar2 > gChi2Cut0_Gar2+gChi2Cut1_Gar2*egar2*egar2) cutchi2gar2=0;
       }
     }
     cutchi2=0;
     if (cutchi2heat && cutchi2col1 && cutchi2col2) cutchi2=1;
-
+    
     // Ldb (ldb=0 : ldb pas calculee car periode trop courte ==> on rejete)
     // CONVENTION : Si baselinelimit=0 pour une veto ou garde on cherche pas a rejeter de periode
     //   (sert pour les voies mortes)
@@ -163,18 +163,18 @@ int BuildCutFile(TChain* chain, string bolo, TTree* Eion, TTree* Eheat, string c
       if (baselinelimit[3] != 0 && (ldbvet1 > baselinelimit[3] || ldbvet1 == 0)) cutvet1base=0;
       if (baselinelimit[4] != 0 && (ldbvet2 > baselinelimit[4] || ldbvet2 == 0)) cutvet2base=0;
       if (boloflag == 0) {
-	if (baselinelimit[5] != 0 && (ldbgar1 > baselinelimit[5] || ldbgar1 == 0)) cutgar1base=0;
-	if (baselinelimit[6] != 0 && (ldbgar2 > baselinelimit[6] || ldbgar2 == 0)) cutgar2base=0;
+        if (baselinelimit[5] != 0 && (ldbgar1 > baselinelimit[5] || ldbgar1 == 0)) cutgar1base=0;
+        if (baselinelimit[6] != 0 && (ldbgar2 > baselinelimit[6] || ldbgar2 == 0)) cutgar2base=0;
       }
     }
     cutbases=0;
     if (cutheatbase && cutcol1base && cutcol2base && cutvet1base &&
-	cutvet2base && cutgar1base && cutgar2base) cutbases=1;
-
+        cutvet2base && cutgar1base && cutgar2base) cutbases=1;
+    
     cuts->Fill();
     if (fmod((double)i,(double)100000) == 0) {cout << i << endl;}
   }
-
+  
   f->cd(); cuts->Write();
   f->Close();
   chain->SetBranchStatus("*",1);

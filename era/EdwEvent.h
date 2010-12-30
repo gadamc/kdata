@@ -38,8 +38,8 @@ class EdwEvent : public TObject {
   void Clear() ; /**< Resets the event */
 
  private:
-  EdwEventHeader* fHeader ; /**< Event header */
-  TObjArray* fPulses ; /**< Array of pulses (each event may have an arbitrary number of pulses) */
+  EdwEventHeader* fHeader; //-> 
+  TObjArray* fPulses;  //->
 
   ClassDef(EdwEvent,1)
 };

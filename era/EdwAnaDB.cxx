@@ -200,7 +200,7 @@ EdwTemplate* EdwAnaDB::GetTemplate(time_t aTime, string aChannel) {
     fTemplateBranch->GetEntry(i);
     if (fTemplate->StartValidity() <= aTime &&
 	fTemplate->EndValidity() >= aTime &&
-	fTemplate->fChannel == aChannel) indices.push_back(i);
+	fTemplate->Channel() == aChannel) indices.push_back(i);
     fTemplate->Clear();
   }
   if (indices.size() == 0) {
@@ -227,7 +227,7 @@ EdwTemplate EdwAnaDB::GetTemplate(string aChannel) const {
   fTemplateTree->SetBranchStatus("fChannel",1);
   for (UInt_t i=0; i<fTemplateBranch->GetEntries(); i++) {
     fTemplateBranch->GetEntry(i);
-    if (fTemplate->fChannel == aChannel) indices.push_back(i);
+    if (fTemplate->Channel() == aChannel) indices.push_back(i);
     fTemplate->Clear();
   }
   fTemplateTree->SetBranchStatus("*",1);

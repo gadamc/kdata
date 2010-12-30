@@ -5,6 +5,7 @@
 */
 
 #include "SambaToRoot.h"
+#include "byteswap.h"
 
 ClassImp(SambaToRoot); /**< Root dictionnary */
 
@@ -139,7 +140,7 @@ Int_t SambaToRoot::FillRootFile(Int_t aBufSize) {
 #ifdef DARWIN
 	  for (Short_t i=0;i<lPulseSize;i++) lArray[i]=ntohs(lArray[i]);
 #else
-	  for (Short_t i=0;i<lPulseSize;i++) lArray[i]=bswap_16(lArray[i]);
+	  for (Short_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
 #endif
 	}
 	lPulse->SetTrace(lPulseSize,lArray);
