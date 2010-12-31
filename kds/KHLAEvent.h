@@ -15,7 +15,6 @@
 #include "KHLABoloSysRecord.h"
 #include "KHLAMuonVetoSysRecord.h"
 #include "TRef.h"
-#include "TClonesArray.h"
 
 //sub record forward declarrations
 class KHLASambaRecord;
@@ -23,6 +22,8 @@ class KHLABolometerRecord;
 class KHLABoloPulseRecord;
 class KHLAMuonModuleRecord;
 class KRawEvent;
+class TClonesArray;
+
 //class TBits;
 
 const Char_t kHLAEventName[] = "HLA";
@@ -54,9 +55,10 @@ public:
 	//Easy Access Methods
 	//These methods access commonly requested quantities without
 	//having to dig down into the branch structure.
-	Double_t GetSumBoloEnergyRecoil(void);
+	Double_t GetSumBoloEnergyRecoil(void) const;
 	//Double_t GetSumBoloEnergyHeat(void);
-	Double_t GetSumBoloEnergyIon(void);
+	Double_t GetSumBoloEnergyIon(void) const;
+  Bool_t IsGoodMuonVetoData(void) const;
 	
 	//Getters and Setters to member variables
 	
@@ -159,15 +161,17 @@ private:
 	 */
 	
 	//private methods
-	template<class T> T* AddSubRecord(TClonesArray *mArray, Int_t &mCount);
-	void ClearArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);
-	void DeleteArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);
 	void CreateArrays(void);
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLAEvent &anEvent);
 	void CopyClonesArrays(const KHLAEvent &anEvent);
 	void CopyFromRawEvent(const KRawEvent &anEvent);
 	
+  template<class T> T* AddSubRecord(TClonesArray *mArray, Int_t &mCount);
+  void DeleteArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);
+  void ClearArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);
+
+  
 	UInt_t GetLargestUniqueIDNumber(void);
 
 	

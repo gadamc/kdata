@@ -5,7 +5,15 @@
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
+// This is a test-pulse class that generates a few standard pulse
+// shapes that one can use to pass through Pulse Trace Analysis processors
+// to test the processors. For example, creating a sine wave with this class
+// and then pass this through a power spectrum processor, should result
+// in a peak at a particular frequency (plus some spread due to the finite
+// length of the pulse).
 //
+// Note: I don't think the square wave code is working. All are welcome
+// to fix it, of course!
 
 
 #include "KPtaTestPulse.h"

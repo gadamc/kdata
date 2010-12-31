@@ -51,12 +51,12 @@ public:
   
 private:
 
-  TCanvas* fStatCanvas; 
-  TCanvas* fPulseCanvas;
+  TCanvas* fStatCanvas; //canvas that holds the 'statistics' for an event
+  TCanvas* fPulseCanvas; //canvas that shows the raw pulses (and power spectra)
   TH1D *fPulseHists; //an array of histograms holding pulses
-  EdwEvent *fEdwEvent;
-  KHLABolometerRecord *fBolo;
-  vector<Int_t> fPulseIndex;
+  EdwEvent *fEdwEvent; //pointer to the current event
+  KHLABolometerRecord *fBolo; //the HLA bolometer record
+  vector<Int_t> fPulseIndex; //holds the index values that correspond to the waveforms stored in EdwEvent
   UInt_t fNumPulseHists; //number of fPulseHists.
   string fBoloName;
   

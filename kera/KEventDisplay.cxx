@@ -5,6 +5,18 @@
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
+// This class is used to display the raw pulses (and power spectra)
+// found in EdwEvents. The data that are displayed come from the EdwEvent
+// information and additionally from a KHLABolometer record, which
+// will contain the final calibrated observables for that event. However
+// its not necessary to have the KHLABolometer information to display
+// events. One can just pass in the name of the bolometer ('FID803' for
+// example) to the DisplayEvent or DisplayPower methods. 
+// Some pulse trace processing is done in order to better visualize the event
+// The baseline values are subtracted for each pulse and a pattern is removed 
+// from all of the ion pulses. Since the pattern length is not known a priori,
+// patterns of size 100, 200 and 400 points are computing and subtracted.
+// You can turn the pulse trace processing off by calling SetApplyPulseProcessing(0)
 //
 
 
@@ -49,6 +61,7 @@ KEventDisplay::KEventDisplay(EdwEvent *e, KHLABolometerRecord *b)
   fBolo = 0;
   InitializeMembers();
   SetEvent(e,b);
+  DisplayEvent();
 }
 
 
@@ -1054,7 +1067,7 @@ void KEventDisplay::DrawStatsCanvas(void)
   
 }
 
-Bool_t KEventDisplay::SetUpPulses(Bool_t calculatePower) //should I make this some sort of static function?
+Bool_t KEventDisplay::SetUpPulses(Bool_t calculatePower) 
 {
   
   
@@ -1192,6 +1205,10 @@ Bool_t KEventDisplay::SetUpPulses(Bool_t calculatePower) //should I make this so
 
 TH1D KEventDisplay::GetPulseHistogram(UInt_t i) const
 {
+  //There are fNumPulseHists in each event. Calling this method
+  //will make a copy of a particular histogram (that holds the waveform)
+  //and return it. 
+  
   TH1D theHist;
 
   if(i < fNumPulseHists)

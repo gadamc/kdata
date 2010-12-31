@@ -5,7 +5,11 @@
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
-//
+// This is the abstract base class for all Pulse Trace Analysis Processors
+// When you write a new class that derives from KPtaProcesser, you 
+// must define a RunProcess method. 
+// This class provides a number of input/output methods to set the input
+// pulse and get the output result. You can also give each process a name
 
 
 #include "KPtaProcessor.h"

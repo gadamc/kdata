@@ -7,7 +7,35 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// This class returns a pointer to an EdwEvent object corresponding to a KBoloMeterRecord's event number
+// The basic purpose of this class is to find the ERA EdwEvent record
+// that corresponds to a particular KBolometerRecord.
+// This class will search in local directories, which you can specify,
+// and will rsync to a remote server (default is ccali.in2p3.fr, which 
+// is defined in the KFileTransfer class), also searching in directory 
+// locations you can specify (default is /sps/edelweis/kdata/data/rootevts/, 
+// as specified by KFileTransfer). 
+// The user can also specify a list of local and remote directories
+// to search for events. Use the AddPathToSearch method. 
+//
+// Because the ERA outputs do not specifiy exactly which file an event
+// can be found, this class searches the ERA raw events for the file. Soon
+// this should be fixed and it will provide the exact file to find the event
+//
+// In addition, this class contains some rudimentary display capabilities
+// via the DisplayEvent and DisplayPower methods. 
+//
+// This class's behavior initializes differently depending upon which 
+// constructor you use. If you use the default constructor with no
+// user name, it will assume that you are using this program on ccali
+// and will just look in the directories that you tell it. If you provide
+// a username, it will assume this is your ccali username and then proceed
+// to search the ccali default location for an event if it doesn't find 
+// the event in you local directories. 
+// 
+// A pointer to the EdwEvent object can be obtained via the TransferEvent method
+// or the GetEvent method (which gives the pointer to most recently transferred event).
+// So, if you call TransferEvent() and then call EdwEvent *e = GetEvent(), the same event will be
+// returned as if you just called EdwEvent *e = TransferEvent().
 //
 
 
@@ -24,6 +52,12 @@ ClassImp(KEraEventFinder);
 
 KEraEventFinder::KEraEventFinder(void)
 {
+  //constructor with no user defined. 
+  //Using this constructor, it is assumed
+  //that you are searching for ERA events on the local computer, such as ccali.
+  //Use the other contructor if you want this object automatically set up
+  //to search for files on ccali.
+  
   fTrans = new KFileTransfer;
   fReader =new KEraRawEventReader;
   fDisplay = 0;
@@ -39,6 +73,9 @@ KEraEventFinder::KEraEventFinder(void)
 
 KEraEventFinder::KEraEventFinder(string aUser)
 {
+  //constructor with aUser. aUser should be your username to an account
+  //on ccali where the raw data files are found.
+  
   fTrans = new KFileTransfer(aUser);
   fReader =new KEraRawEventReader();
   fDisplay = 0;
@@ -81,6 +118,8 @@ KEraEventFinder::~KEraEventFinder()
 
 void KEraEventFinder::Initialize(void)
 {
+  //init all data members
+  
   fDirNames.clear();
   fForceRemoteSearch = false;  //don't force remote search by default.
   AddPathToSearch(fTrans->GetSourcePath().c_str()); //the default path on ccali
@@ -151,6 +190,9 @@ string KEraEventFinder::GetNextFileName(const char* name)
 
 EdwEvent* KEraEventFinder::TransferEvent(void)
 {
+  //This searches for the next event and then returns a pointer
+  //when/if it finds the corresponding event.
+  
   if(fBoloRecord == 0 || fSambaRecord == 0 
      || fTrans == 0 || fReader == 0){
     cout <<"KEraEventFinder::TransferEvent. Not Ready to transfer Event" << endl;
@@ -179,6 +221,7 @@ EdwEvent* KEraEventFinder::TransferEvent(void)
 Bool_t KEraEventFinder::SearchTargetDirectory(string &sambaName)
 {
   //this SHOULD ONLY get called if fSearchLocally == false && ForceRemoteSearch == false
+  //this searches the target transfer directory for the era raw event file
   
    if( fSearchLocally || fForceRemoteSearch )
      return false;
@@ -222,7 +265,9 @@ Bool_t KEraEventFinder::SearchTargetDirectory(string &sambaName)
 
 Bool_t KEraEventFinder::SearchDirectoryList(string &sambaName)
 {
-  //search through the list of directories for the file
+  //search through the list of directories for the file. returns true
+  //if the event is found.
+  
   list<string>::iterator it = fDirNames.begin();
   if(it == fDirNames.end())
   {
@@ -375,132 +420,11 @@ Bool_t KEraEventFinder::DoesCurrentFileHaveEvent(void)
   return false;
 }
 
-EdwEvent* KEraEventFinder::TransferEventOld(void)
-{
-  //Returns a pointer to an EdwEvent object with fSambaRecord's event number
-  
-  if(fBoloRecord == 0 || fSambaRecord == 0 
-     || fTrans == 0 || fReader == 0){
-    cout <<"KEraEventFinder::TransferEvent. Not Ready to transfer Event" << endl;
-    return 0;
-  }
-  
-  //Get fSambaRecord attributes
-  UInt_t kEventNumber = fSambaRecord->GetSambaEventNumber();
-  //cout << "kEventNumber: " << kEventNumber << endl;  
-  
-  //char subPath[40];
-  list<string>::iterator it = fDirNames.begin();
-  if(it == fDirNames.end())
-  {
-    cout << "KEraEventFinder::TransferEvent. No search directories have been specified." << endl;
-    return 0;
-  }
-  
-  //if we are not forced to do a remote search and we 
-  //aren't already set to search locally, we insert a quick
-  //search to the local target directory to see if the file
-  //already exists. 
-  list<string> tempDirNames = fDirNames;
-  Bool_t bSaveSearchLocalOption = fSearchLocally;
-  if(!fSearchLocally && !fForceRemoteSearch) {
-    tempDirNames.push_front(fTargetPath.c_str());
-    fSearchLocally = true;
-  } 
-  it = tempDirNames.begin();
-  
-  for(it = tempDirNames.begin(); it!= tempDirNames.end(); ++it) {
-    //cout << "Searching for file in " << it->c_str() << endl;
-    string sambaName = GetNextFileName();
-    
-    string theFilePath;
-    if(fSearchLocally) theFilePath = it->c_str();
-    else theFilePath = fTargetPath.c_str();
-    
-    if(GetEventFile(it->c_str(), sambaName.c_str(), fSearchLocally)){
-      if(!OpenEventFile(theFilePath.c_str(), sambaName.c_str())){
-        cout  << "KEraEventFinder::TransferEvent. Failed Opening the File! Not an ERA Event File?" << endl;
-        return 0;
-      }
-    }
-    else {
-      fSearchLocally = bSaveSearchLocalOption; //reset the search local option to its original value.
-      continue; //search all of the directories in the list.
-    }
-    
-    //cout << "Found File" << endl;
-    
-    //read last EdwEvent entry in first file
-    Int_t numEntries = fReader->GetEntries();
-    //cout << "with " << numEntries << " entries" << endl;
-    EdwEvent* e = fReader->GetEvent();
-    fReader->GetEntry(numEntries-1);
-    UInt_t edwEventNumber = e->Header()->Num();
-    
-    while(kEventNumber > edwEventNumber) {
-      
-      //open next file
-#ifdef _K_DEBUG_ERAEVENTFINDER
-      cout << "KEraEventFinder::TransferEvent. Entry not found in " << sambaName << endl;
-      cout << "                                will try next file." << endl;
-#endif
-      sambaName = GetNextFileName(sambaName.c_str());
-      
-      if(fSearchLocally) theFilePath = it->c_str();
-      else theFilePath = fTargetPath.c_str();
-      
-      if(GetEventFile(it->c_str(), sambaName.c_str(), fSearchLocally)) {
-        if(!OpenEventFile(theFilePath.c_str(), sambaName.c_str())){
-          cout  << "KEraEventFinder::TransferEvent. Failed Opening the File! Not an ERA Event File?" << endl;
-          return 0;
-        }
-      }
-      else 
-        break;
-      
-      //read last EdwEvent entry
-      numEntries = fReader->GetEntries();
-      //cout << "with " << numEntries << " entries" << endl;
-      fReader->GetEntry(numEntries-1);
-      e = fReader->GetEvent();
-      edwEventNumber = e->Header()->Num();
-    }
-    
-    if(kEventNumber == edwEventNumber) //EdwEvent found
-      return e;
-    else {
-      //cout << "Jumping back to event" << endl;
-      Int_t dist = edwEventNumber-kEventNumber; //go back dist entries
-      fReader->GetEntry(numEntries-1-dist);
-      edwEventNumber = e->Header()->Num();
-      
-      if(kEventNumber != edwEventNumber){
-#ifdef _K_DEBUG_ERAEVENTFINDER
-        cout << "The file doesn't seem to be continuous in Event Numbers... searching " << endl;
-#endif
-        //perform a search!???
-        for(Int_t i = 0; i < fReader->GetEntries(); i++){
-          fReader->GetEntry(i);
-          if(kEventNumber == e->Header()->Num()){
-#ifdef _K_DEBUG_ERAEVENTFINDER
-            cout << "Event Found." <<endl;
-#endif
-            break;
-          }
-        }
-      }
-      
-      fEventHasBeenTransfered = true;
-      return e;
-    }
-  }
-  
-  cout << "KEraEventFinder::TransferEvent. Entry not found" << endl;
-  return 0;
-}
-
 Bool_t KEraEventFinder::GetEventFile(const char* filePath, const char* fileName, Bool_t searchLocal) 
 {
+  //gets a particular file from the local directory or from the remote directory
+  //and returns true if it finds the file or successfully transfer it.
+  
   if(!searchLocal){
     
     fTrans->SetSourcePath(filePath);
@@ -531,6 +455,8 @@ Bool_t KEraEventFinder::GetEventFile(const char* filePath, const char* fileName,
 
 Bool_t KEraEventFinder::OpenEventFile(const char* filePath, const char* fileName)
 {
+  //opens the fileName that is located in filePath. returns true if sucesseful
+  
   string file = filePath;
   file += fileName;
 #ifdef _K_DEBUG_ERAEVENTFINDER
@@ -543,6 +469,10 @@ Bool_t KEraEventFinder::OpenEventFile(const char* filePath, const char* fileName
 
 EdwEvent* KEraEventFinder::GetEvent(void)
 {
+  //returns a pointer to the event found in the local KEraRawEventReader object,
+  //fReader. If fReader is zero, then this returns zero.
+  //you do not own the memory pointed to by this pointer.
+  
   if(fReader != 0) 
     return fReader->GetEvent();
   
@@ -553,6 +483,9 @@ EdwEvent* KEraEventFinder::GetEvent(void)
 
 Bool_t KEraEventFinder::SetBolo(KBolometerRecord* aRec) 
 { 
+  //Set the bolometer record that defines which raw EdwEvent 
+  //the class will search for.
+  
   if(aRec == 0) {
     cout << "KEraEventFinder::SetBolo. BolometerRecord is NULL." << endl;
     return false; 
@@ -577,12 +510,18 @@ Bool_t KEraEventFinder::SetBolo(KBolometerRecord* aRec)
 
 void KEraEventFinder::DisplayEvent(KBolometerRecord *aRec)
 {
+  //Displays the event in two TCanvas objects. First, it will search for 
+  //the EdwEvent that corresponds to aRec and then if it finds it, 
+  //will display the event.
+  
   if(SetBolo(aRec))
     DisplayEvent();
 }
 
 void KEraEventFinder::DisplayEvent(void)
 {
+  //displays the most recently found event 
+  
   if(fBoloRecord == 0){
     cout << "KEraEventFinder::DisplayEvent. No Event to Display. You must first SetBolo." << endl;
   }
@@ -610,12 +549,20 @@ void KEraEventFinder::DisplayEvent(void)
 
 void KEraEventFinder::DisplayPower(KBolometerRecord *aRec)
 {
+  //same as DisplayEvent(KBolometerRecord *aRec) except that it performs a FFT on the waveform
+  //and shows the power spectrum on a log-log plot for each waveform in 
+  //the event. 
+  
   if(SetBolo(aRec))
     DisplayPower();
 }
 
 void KEraEventFinder::DisplayPower(void)
 {
+  //same as DisplayEvent(void) except that it performs a FFT on the waveform
+  //and shows the power spectrum on a log-log plot for each waveform in 
+  //the most recently found event. 
+  
   if(fBoloRecord == 0){
     cout << "KEraEventFinder::DisplayPower. No Event to Display. You must first SetBolo." << endl;
   }
@@ -644,6 +591,8 @@ void KEraEventFinder::DisplayPower(void)
 
 void KEraEventFinder::SetUser(const Char_t* aUser)
 {
+  //sets the username
+  
   if(fTrans != 0)
     fTrans->SetUser(aUser);
 }

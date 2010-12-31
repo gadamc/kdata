@@ -7,10 +7,22 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// The HLA class for all Pulse Sub Records. Currently, however, this data
-// is not stored in the Event classes because we don't read directly from the Samba files
-// at the moment. This will possibly change one day in the future. 
+// The HLA class for all Pulse Sub Records. The 'high-level' class
+// contains variables that are derived from analysis of raw-level data.
+// The data stored here are the results of a particular pulse-trace analysis
+// and energy calibration. (At this time, only the calcualted pulse energies
+// from the ERA analysis process are stored here. More values could be added,
+// or perhaps we could think of a better storage solution in the future.) 
+// 
+// Stored here are the energy (fEnergy), the energy of the pulse in the baseline region
+// (fEnergyBaseline), and the standard deviation of the distribution of energies measured in the 
+// baseline region for this particular analysis period (fBaselineNoise). 
 //
+// The type of the pulse (heat, collectrode, veto, guard), and the channel number (1 or 2),
+// are stored in data members of the baseclass KBoloPulseRecord. 
+//
+// In addition, there is a TRef object that will point you back to the 
+// KHLABolometerRecord that this pulse record is associated with.
 
 #include "KHLABoloPulseRecord.h"
 #include <iostream>
@@ -20,13 +32,16 @@ ClassImp(KHLABoloPulseRecord);
 
 KHLABoloPulseRecord::KHLABoloPulseRecord(void)
 {
-
+  //standard constructor
+  
   InitializeMembers();
 }
 
 KHLABoloPulseRecord::KHLABoloPulseRecord(const KHLABoloPulseRecord &aRec)
 : KBoloPulseRecord(aRec)
 {
+  //copy constructor 
+  
 	CopyLocalMembers(aRec);
 	
 }
@@ -44,8 +59,9 @@ KHLABoloPulseRecord& KHLABoloPulseRecord::operator=(const KHLABoloPulseRecord &a
 
 void KHLABoloPulseRecord::CopyLocalMembers(const KHLABoloPulseRecord &aRec)
 {
-	//nothing to do
-	
+	//used in the assignment operator method, this copies over the local 
+  //data members. It also set sets fBolometerRecord (the TRef pointer) to zero.
+  
 	//fBolometerRecordNum = aRec.fBolometerRecordNum;  have to set this value manually
 	fBolometerRecord = 0;
 	
@@ -56,6 +72,8 @@ void KHLABoloPulseRecord::CopyLocalMembers(const KHLABoloPulseRecord &aRec)
 
 KHLABoloPulseRecord::~KHLABoloPulseRecord(void)
 {
+  //destructor 
+  
   //Does calling clear at destruction take too much computing time?
   Clear("C");
 

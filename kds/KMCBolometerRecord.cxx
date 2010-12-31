@@ -7,9 +7,8 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// The base class for all Pulse Sub Records. Currently, however, this data
-// is not stored in the Event classes because we don't read directly from the Samba files
-// at the moment. This will possibly change one day in the future. 
+// The Monte Carlo Bolometer Record. Holds the monte carlo generated data files.
+// This class is used in the KHLaMCEvent class. 
 //
 
 #include "KMCBolometerRecord.h"
@@ -81,6 +80,8 @@ void KMCBolometerRecord::CopyLocalMembers(const KMCBolometerRecord &aRec)
 
 KMCBolometerRecord::~KMCBolometerRecord(void)
 {
+  //
+  
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
 	

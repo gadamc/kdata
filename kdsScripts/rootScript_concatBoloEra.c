@@ -12,11 +12,9 @@
 
 {
 	string myKdataPath = "$KDATA_ROOT"; //locating of the directory where bin/concatDst lives.
-	string kInputPath1="/kalinka/storage/edelweiss/Bolo/Run12/Eds/Input/";
-	string kInputPath2="/kalinka/storage/edelweiss/Bolo/Run12/Eds/Input/";
-	string kOutputPath="/kalinka/storage/edelweiss/Bolo/Run12/Eds/Input/";
-	string kQSubScriptFileDir = "/kalinka/storage/edelweiss/Bolo/Run12/Eds/scripts/concatDst/";
-	TString qsubWorkingDir = "/kalinka/storage/edelweiss/qsubOutputs/concatDst";
+  string kInputDirectory = "/kalinka/storage/edelweiss/Bolo/Run12/Eds/Input/";
+  string kQSubScriptFileDir = "/kalinka/storage/edelweiss/Bolo/Run12/Eds/scripts/concatDst/";
+	TString qsubWorkingDir = "/kalinka/home/gadamc/qsubOutputs/concatDst";
 
 	Int_t kNumberBolos=13;
 	string kDetectorNames[kNumberBolos]=
@@ -25,7 +23,14 @@
 		"ID6", "ID401", "ID402",
 		"ID403", "ID404", "ID405", "GGA4"};
 	
-	
+	//************************************************************
+  //
+  //
+  //
+  
+  string kInputPath1= kInputDirectory;
+	string kInputPath2= kInputDirectory;
+	string kOutputPath= kInputDirectory;
 
 	kInputPath1.append("Bckgd/EricRun12FirstPart/");
 	kInputPath2.append("Bckgd/EricRun12SecondPart/");

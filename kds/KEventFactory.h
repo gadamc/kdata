@@ -32,12 +32,13 @@ class KEventFactory  {
 	//when that client wants to delete the event they
 	//will call KEventFactory::DeleteEvent(KEvent*);
 	//or just let it go out of scope
+  //However, c++ will soon be updated to include smart pointers
+  //which could be implemented here without the need for boost.
 	
 public:
 	//Constructors
   KEventFactory(void);
   virtual ~KEventFactory(void);
-	virtual void Clear(Option_t* opt);
 	
 	static KEvent* NewEvent(const Char_t* type); //support polymorphism
 	static KEvent* NewEvent(const KEvent* event);  //support polymorphism -- this is like a copy constructor
@@ -57,7 +58,6 @@ private:
 	//TList mListOfEvents;
 	
   //private methods
-  void InitializeMembers(void);
 	static void BuildEvent(KEvent *event);
 	
   ClassDef(KEventFactory,1);

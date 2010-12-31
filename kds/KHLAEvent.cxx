@@ -9,17 +9,26 @@
 //
 // This is the main Event class for High Level Analysis. One typically
 // begins all analysis by getting a pointer to this object from 
-// the KDataReader object. By calling KDataReader::GetEntry(Int_t i)
+// the KDataReader object. 
+// 
+// root[0]: KDataReader f("Kds_Run12_v3.0.root");
+// root[1]: KHLAEvent *e = f.GetEvent();
+// 
+// By calling KDataReader::GetEntry(Int_t i) within a for-loop
 // or KDataReader::GetNextEntry, one can loop through the KDS data
-// file and examine each event separately. From this HLAEvent object
+// file and examine each event separately. Whenever GetEntry or GetNextEntry
+// are called, the values stored in the KHLAEvent object are updated with
+// the values for that entry. From this KHLAEvent object
 // one can obtain pointers to they Muon and Bolometer System Records
 // GetBoloSystemRecord(void), GetMuonVetoSystemRecord()
-// and to each of the event's Sub Records. 
+// and to each of the event's Sub Records. (GetBolo(Int_t i), GetMuonModule(Int_t i)) 
+//
 
 #include "KHLAEvent.h"
 #include "KRawEvent.h"
 
 #include "TProcessID.h"
+#include "TClonesArray.h"
 
 //sub record includes
 #include "KHLASambaRecord.h"
@@ -115,6 +124,8 @@ KHLAEvent::~KHLAEvent(void)
 
 KHLAEvent& KHLAEvent::operator=(const KEvent &anEvent)
 {
+  //assignment operator
+  
 #ifdef _K_DEBUG_EVENT_ASSIGNOP
 	cout << "hla = base" << endl;
 #endif
@@ -187,6 +198,15 @@ KHLAEvent& KHLAEvent::operator=(const KHLAEvent &anEvent)
 
 UInt_t KHLAEvent::GetLargestUniqueIDNumber(void)
 {
+  //returns the largest unique ID number for TRefs in this
+  //event. This is used for adding new subrecords to events, which
+  //is needed in order to "merge" the data. 
+  //
+  // Note to developers: the structure of KData should be rethought
+  // and this method, along with the AddSubRecord method, should probably
+  // be put into a separate EventBuilder class, which could be used
+  // by the KEventFactory. Or, perhaps just add it to the factory. 
+  //
 	
 	UInt_t aUniqueIDNumber = 0;
 	
@@ -234,8 +254,15 @@ UInt_t KHLAEvent::GetLargestUniqueIDNumber(void)
 
 Int_t KHLAEvent::AddSubRecords(const KHLAEvent &anEvent, Bool_t skimNoise)
 {
-	//returns the number of records added.
-	Int_t numRecord = 0;
+  //Adds the sub records of 'anEvent' to *this. If skimNoise == true,
+  //then the bolometer records (and their associated samba and bolopulse records) 
+  //for bolometer records that have an EventFlag == 0 will not be added to *this.
+  //returns the number of sub records added to *this.
+  //
+  //hmmm... should this method be in the KEventFactory?  Or somewhere other
+  //than the KHLAEvent object?
+	
+  Int_t numRecord = 0;
 	
 	
 	Int_t ObjectNumber = TProcessID::GetObjectCount(); //save this number for later.
@@ -349,6 +376,13 @@ Int_t KHLAEvent::AddSubRecords(const KHLAEvent &anEvent, Bool_t skimNoise)
 	return numRecord;
 }
 
+/*
+Bool_t KHLAEvent::AddThisBoloSubRecord(const KHLAEvent &anEvent, Int_t boloRecordNum, TBits *aMask)
+{
+  
+}
+*/
+
 void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 {
 	//
@@ -453,12 +487,11 @@ void KHLAEvent::CreateArrays(void)
 	//require that much memory, so I don't notice the leak.
 }
 
-void KHLAEvent::ClearArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
+template<class T> T* KHLAEvent::AddSubRecord(TClonesArray *mArray, Int_t &mCount)
 {
-	if(mArray) {
-		mArray->Clear( (anOption && *anOption) ? anOption : "C" );
-		mCount = 0;
-	}
+	TClonesArray &mArrayRef = *mArray;
+	T* mNewSubRecord = new(mArrayRef[mCount++]) T;
+	return mNewSubRecord;
 }
 
 void KHLAEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
@@ -470,12 +503,15 @@ void KHLAEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCo
 	}
 }
 
-template<class T> T* KHLAEvent::AddSubRecord(TClonesArray *mArray, Int_t &mCount)
+
+void KHLAEvent::ClearArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
 {
-	TClonesArray &mArrayRef = *mArray;
-	T* mNewSubRecord = new(mArrayRef[mCount++]) T;
-	return mNewSubRecord;
+	if(mArray) {
+		mArray->Clear( (anOption && *anOption) ? anOption : "C" );
+		mCount = 0;
+	}
 }
+
 
 KHLASambaRecord* KHLAEvent::AddSamba(void)
 {
@@ -738,7 +774,7 @@ void KHLAEvent::Compact(void)
 
 //Easy Access / Event-Level Calculation Methods 
 
-Double_t KHLAEvent::GetSumBoloEnergyRecoil(void)
+Double_t KHLAEvent::GetSumBoloEnergyRecoil(void) const
 {
 	//Returns the sum of the recoil energies for all
 	//bolometer sub-records in the event.
@@ -762,7 +798,7 @@ Double_t KHLAEvent::GetSumBoloEnergyRecoil(void)
 	return energy;
 }*/
 
-Double_t KHLAEvent::GetSumBoloEnergyIon(void)
+Double_t KHLAEvent::GetSumBoloEnergyIon(void) const
 {
 	//Returns the sum of the fEnergyIon for all
 	//bolometer sub-records in the event. Note that in the ERA
@@ -775,4 +811,14 @@ Double_t KHLAEvent::GetSumBoloEnergyIon(void)
 	
 	return energy;
 }
+
+Bool_t KHLAEvent::IsGoodMuonVetoData(void) const
+{
+  //returns true if the muon veto data during this event was in a "good" state
+  //This state has been determined by an offline analysis for Run 12 by B. Schmidt.
+  //Calling this method is equivalent to calling KMuonVetoSystemRecord::IsGoodMuonVetoData();
+  
+  return fMuonSystem.IsGoodMuonVetoData();
+}
+
 

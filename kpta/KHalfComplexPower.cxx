@@ -30,6 +30,8 @@ KHalfComplexPower::~KHalfComplexPower(void)
 
 void KHalfComplexPower::InitializeMembers(void)
 {
+  //no local members to initialize
+  
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 }

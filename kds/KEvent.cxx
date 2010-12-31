@@ -13,10 +13,17 @@
 // this type (instead of a pointer to KHLAEvent or KRawEvent) and then
 // handling the event pointer appropriately using dynamic casting. 
 // 
-// 
+// It makes sense for this class to become an abstract class in order to avoid confusion, forcing 
+// the user to realize that data is stored in KRawEvent objects or KHLAEvent objects.
+//
+// If you are here to learn how to analyze Kdata, start with the KHLAEvent or KRawEvent
+// classes, depending upon whether you're looking at "High Level" or Raw data.
+//
+//
 
 #include "KEvent.h"
 #include <iostream>
+//#include "TClonesArray.h"
 
 using namespace std;
 
@@ -24,7 +31,7 @@ ClassImp(KEvent);
 
 KEvent::KEvent(void) 
 {
-	//
+	//constructor
 	
 	//note from the ROOT documentation
 /*	The Default Constructor
@@ -45,12 +52,18 @@ KEvent::KEvent(void)
 KEvent::KEvent(const KEvent &anEvent)
 :TObject()
 {
+  //Copy Constructor. This only copies the KEvent variables and has no knowledge of 
+  //HLA or Raw dara. However, when you're using the KRawEvent and KHLAEvent, those
+  //classes have their own copy constructors.
+  
 	CopyLocalMembers(anEvent);
 	
 }
 
 KEvent& KEvent::operator=(const KEvent &anEvent)
 {
+  //Assignment operator - copyies local KEvent variables only
+  
 #ifdef _K_DEBUG_EVENT_ASSIGNOP
 	cout << "base = base" << endl;
 #endif
@@ -94,6 +107,8 @@ void KEvent::Clear(Option_t * /*anOption*/)
 
 void KEvent::InitializeMembers(void)	
 {
+  //initializes local data members
+  
 	//WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
 	//ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	
@@ -208,11 +223,15 @@ Bool_t KEvent::IsSame(const KEvent &anEvent, Bool_t bPrint) const
 	return bIsEqual;
 }
 
+
 Bool_t KEvent::IsBlind(void) const 
 {
 	//returns true if you are officially Blind by this event. 
 	//If this returns true, then you should not analyze this event.
-	
+	//
+  //currently, we do not have a blindness scheme for Edelweiss
+  //so this method will always return false.
+  
 	//check the fBlindnessWord for a particular bit pattern
 	return false;
 
@@ -236,7 +255,8 @@ Double_t KEvent::GetStampTime(void) const
 void KEvent::myPrintB() const
 {
 	//prints out a number of data member variables to std out. 
-	//this method needs some work. 
+	//this method needs some work and should be renamed! It was hacked out
+  //by Benjamin Schmidt some time ago during the dark ages. 
 	
 	//cout << "fNumSambas : fNumSingleBolos : fNumBoloPulses : fNumMuonModules"<<endl;
 	//cout << fNumSambas  <<" : " << fNumSingleBolos <<" : " << fNumBoloPulses <<" : " << fNumMuonModules << endl;

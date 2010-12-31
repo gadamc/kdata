@@ -11,6 +11,13 @@
 // In addition, this class is also derived from KPtaProcessor, which means
 // that one can create a nested chain of chains. 
 //
+// By default, it does not own the memory of the objects in its list
+// but that can be set via the SetIsOwner method.
+//
+// When KPulseAnalysisChain::RunProcess is called, for each 
+// KPtaProcessor-derived object in the list it calls SetInputPulse(), 
+// RunProcess() and then copies the result from GetOutputPulse() into 
+// the SetInputPulse for the next KPtaProcessor in the list. 
 //
 
 #include "KPulseAnalysisChain.h"
@@ -43,6 +50,9 @@ KPulseAnalysisChain::~KPulseAnalysisChain(void)
 //}
 void KPulseAnalysisChain::DeleteProcessors(void)
 {
+  //deletes all of the KPtaProcessors in the list if its
+  //the owner. If fIsOwner is false, this method does nothing. 
+  
   if(fIsOwner){
 
     for(unsigned int i = 0; i < fProcessorList.size(); i++){
@@ -83,17 +93,26 @@ void KPulseAnalysisChain::SetIsOwner(bool anOpt)
 
 void KPulseAnalysisChain::InitializeMembers(void)
 {
+  //clears the list of processors and initilizes any local data members
+  //to their default values.
   
+  DeleteProcessors();
 	fProcessorList.resize(0);
+  fIsOwner = false;
 }
 
 bool KPulseAnalysisChain::RunProcess(void)
 {
 	//call RunProcess for each KPtaProcessor in the list.
+  //returns true if all processors run and no errors are reported.
+  //Otherwise it returns false
+  //
+  //future feature request:
 	//returns the number of processors that return "true".
 	//if a processor fails (returns "false"), will return a -X, 
 	//where X is the Xth processor in the list. 
 	//
+  
 	int theReturn = 0;
 	
 	for(unsigned int i = 0; i < fProcessorList.size(); i++){
@@ -149,11 +168,14 @@ bool KPulseAnalysisChain::RunProcess(void)
 
 void KPulseAnalysisChain::AddProcessor(KPtaProcessor *p)
 {
+  //Add a processor to the end of the list.
 	fProcessorList.push_back(p);	
 }
 
 void KPulseAnalysisChain::AddProcessorAt(KPtaProcessor *p, unsigned int index)
 {
+  //Add a processor at a particular position in the list.
+  
 	if(index >= fProcessorList.size())
 		AddProcessor(p);
 	

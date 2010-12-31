@@ -7,10 +7,10 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// The HLA class for Muon Module Sub Records. It only stores two values
-// for the calibrated energy deposited in the Module. However, no such calibration
-// exists and these values are always initialized to -99, taking up space in the data
-// file, no doubt. 
+// The HLA class for Muon Module Sub Records. It would hold any calibrated
+// data in the muon module data that we do not with to store at the raw data level.
+// However, at this point, there is no such data available. All Muon Module Sub Record
+// data is found in the base class, KMuonModuleRecord.
 //
 
 #include "KHLAMuonModuleRecord.h"
@@ -21,19 +21,24 @@ ClassImp(KHLAMuonModuleRecord);
 
 KHLAMuonModuleRecord::KHLAMuonModuleRecord(void)
 {
-
+  //standard constructor 
+  
   InitializeMembers();
 }
 
 KHLAMuonModuleRecord::KHLAMuonModuleRecord(const KHLAMuonModuleRecord &aRec)
 : KMuonModuleRecord(aRec)
 {
+  //copy constructor 
+  
 	CopyLocalMembers(aRec);
 	
 }
 
 KHLAMuonModuleRecord& KHLAMuonModuleRecord::operator=(const KHLAMuonModuleRecord &aRec)
 {
+  //assingment operator
+  
 	if(&aRec == this) return *this;
 	
 	this->KMuonModuleRecord::operator=(aRec);
@@ -45,12 +50,14 @@ KHLAMuonModuleRecord& KHLAMuonModuleRecord::operator=(const KHLAMuonModuleRecord
 
 void KHLAMuonModuleRecord::CopyLocalMembers(const KHLAMuonModuleRecord &/*aRec*/)
 {
-	
+	//copies nothing
 	
 }
 
 KHLAMuonModuleRecord::~KHLAMuonModuleRecord(void)
 {
+  //destructor
+  
   //Does calling clear at destruction take too much computing time?
   Clear("C");
 
@@ -75,7 +82,7 @@ void KHLAMuonModuleRecord::Clear(Option_t *opt)
 
 void KHLAMuonModuleRecord::InitializeMembers(void)
 {
-	//init local members
+	//init local members -- none
 	
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES

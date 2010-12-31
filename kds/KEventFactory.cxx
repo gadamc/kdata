@@ -7,6 +7,10 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
+// This is an 'low-level' class and probably won't be useful to standard
+// users and those doing data analysis. This factory class is used mostly 
+// by KEvent developers. 
+//
 // Ideally, one would use this class whenever they want to create
 // some type of Event class that derives from KEvent. When 
 // an event class is created that derives from KEvent, the author
@@ -19,10 +23,16 @@
 // a new event are static methods, which means an instance of a KEventFactory
 // is not needed to use the method. 
 //
+// For example, 
+//
+// KHLAEvent *myEvent == KEventFactory::NewHLAEvent();
+//
 // KDS Developer's Note: If you want the KDataReader and KDataWriter classes
-// to recognize your Event class, you must derive from KEvent and 
+// to recognize your KEvent-based class, after you derive from KEvent, 
 // you must implement your class here. The KHLaMCEvent class (along with 
 // KHLAEvent and KRawEvent) is an example of this. 
+// The KDataReader and KDataWriter use this class to generate 
+// instances of objects needed for reading and writing the data. 
 
 #include "KEventFactory.h"
 #include "KHLAEvent.h"
@@ -38,41 +48,30 @@ ClassImp(KEventFactory);
 
 KEventFactory::KEventFactory(void)
 {
+  //Standard Constructor
 
-  InitializeMembers();
 }
 
 KEventFactory::~KEventFactory(void)
 {
   //Does calling clear at destruction take too much computing time?
-  Clear("C");
+  //Clear("C");
 
 }
 
-void KEventFactory::Clear(Option_t* /* opt */)
-{
-  //Clear the base classes and then clear/delete any local
-  //members. Its necessary for this Clear method to exist
-  //in the case that instances of this object are stored
-  //inside of a TClonesArray
-  //Also, if this class holds any TClonesArrays, it must call
-  //TClonesArray::Clear("C")
-
-  //Clear and delete local objects here. 
-	
-  //Re initialize local members here and prepare for the next use of this class.
-  InitializeMembers();
-
-}
-
-void KEventFactory::InitializeMembers(void)
-{
-  //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
-  //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-}
 
 KEvent* KEventFactory::NewEvent(const Char_t* type) 
 {
+  //Allocates memory for a new KEvent of a particular 'type'.
+  //The 'type' is specified in the header file of the KEvent-based class.
+  //(Note to developers: if you create a new KEvent-based class, follow
+  //an example, and remember to add your class in this list if you want
+  //the Factory to know about it.)
+  //Most users will want to use the NewHLAEvent and NewRawEvent method, if
+  //they are even using this class. 
+  
+  //you own the memory pointed to by this pointer, so you must delete it.
+  
 	KEvent *event = 0;
 	string sType = type;
 	if(sType.compare(kHLAEventName)==0 || sType.compare(kHLAClassName)==0){
@@ -146,8 +145,8 @@ KEvent* KEventFactory::NewEvent(const KEvent* event)
 	//make a new Event object, but copy it from an already existing event.
 	//This method checks which type of KEvent you passed in,
 	//then creates a new Event of that type and returns a pointer. The return
-	//here is KEvent, but you should cast that pointer to whatever
-	//event type you really have. 
+	//here is KEvent, but you can cast that pointer to whatever
+	//KEvent-derived object type you really have (KRawEvent, or KHLAEvent). 
 	
 	//have to check the type, then call that type's copy constructur and 
 	//return the pointer. 

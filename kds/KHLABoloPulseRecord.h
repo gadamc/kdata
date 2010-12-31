@@ -18,7 +18,8 @@ class KHLABoloPulseRecord : public KBoloPulseRecord
 {
 	
 public:
-  //Constructors
+  //Constructors 
+  
   KHLABoloPulseRecord(void);
 	KHLABoloPulseRecord(const KHLABoloPulseRecord &aRec);
 	KHLABoloPulseRecord& operator=(const KHLABoloPulseRecord &aRec);
@@ -42,11 +43,11 @@ public:
 	
 private:
 
-	TRef fBolometerRecord;  //the value of this is the entry number of the TClonesArray that holds the KHLABolometerRecord object that this pulse belongs to.
+	TRef fBolometerRecord;  //the value of this is the pointer to KHLABolometerRecord object that this pulse belongs to.
 
 	Double32_t fEnergy;  //the energy of the pulse in keV.
 	Double32_t fEnergyBaseline; //the energy of the pulse in keV in the baseline region. 
-	Double32_t fBaselineNoise; //the rms of the baseline in keV.
+	Double32_t fBaselineNoise; //the deviation of the distribution of baseline energy values in this data period in keV.
 	
 	
 	//private methods

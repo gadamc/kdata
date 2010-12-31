@@ -8,8 +8,10 @@
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
 // This is base class for all Bolo System Records.
-// It contains the run name, given as the first four alpha-numeric values
-// of the run name from Samba. For example, kc21, is 2010, March 21st. 
+// It is currently empty since, given the Samba DAQ setup for Edewelss II and III
+// all of the system information has to be packed into the bolometer data records.
+// A change in DAQ will probably change this structure, and thus this class is kept
+// in the data structure as a placeholder. 
 // 
 
 
@@ -20,13 +22,15 @@ ClassImp(KBoloSystemRecord);
 
 KBoloSystemRecord::KBoloSystemRecord(void)
 {
+  //standard constructor
 	
 	InitializeMembers();
 }
 
 KBoloSystemRecord::~KBoloSystemRecord(void)
 {
-	
+	//destructor
+  
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
 }
@@ -34,11 +38,15 @@ KBoloSystemRecord::~KBoloSystemRecord(void)
 KBoloSystemRecord::KBoloSystemRecord(const KBoloSystemRecord &aRec)
 :KSystemRecord(aRec)
 {
+  //copy constructor 
+  
 	CopyLocalMembers(aRec);
 }
 
 KBoloSystemRecord& KBoloSystemRecord::operator=(const KBoloSystemRecord &aRec)
 {
+  //assignment operator
+  
 	if(&aRec == this) return *this;
 	
 	this->KSystemRecord::operator=(aRec);

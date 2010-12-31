@@ -29,7 +29,7 @@ public:
 	virtual void Compact(void);
 	
 	Bool_t IsNeutronCounter();
-	Bool_t IsHardTrigger();  //both TDCs have values greater than -1. 
+	Bool_t IsHardTrigger();  //both TDCs and ADCs have values greater than -1. 
 													//this doesn't check the common stop. 
 	
 	//getters

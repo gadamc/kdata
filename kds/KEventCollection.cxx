@@ -7,10 +7,12 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// Based on TObjArray, this is a simple collection class to hold a list
+// This class inherits from a TObjArray. It holds a list
 // of KEvent objects. It can hold any type of event that inherits 
-// from KEvent. 
+// from KEvent. This collection makes a copy of the KEvent that
+// you give it and adds it to its collection. 
 //
+
 #include "KEventCollection.h"
 #include "KEvent.h"
 #include "KEventFactory.h"
@@ -20,6 +22,9 @@ ClassImp(KEventCollection);
 KEventCollection::KEventCollection(Int_t s, Int_t lowerBound)
 : TObjArray(s, lowerBound)
 {
+  //Int_t s is the initial capacity of the TObjArray. see the 
+  //TObjArray documentaiton for s and lowerBound
+  
 	SetOwner();  
 	InitializeMembers();
 }

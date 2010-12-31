@@ -109,8 +109,6 @@
 		6610DE20121ECC440047036E /* KSubRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSubRecord.h; sourceTree = "<group>"; };
 		6610DE21121ECC440047036E /* KSystemRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSystemRecord.cxx; sourceTree = "<group>"; };
 		6610DE22121ECC440047036E /* KSystemRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSystemRecord.h; sourceTree = "<group>"; };
-		6610DE23121ECC440047036E /* KTimeStamp.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KTimeStamp.cxx; sourceTree = "<group>"; };
-		6610DE24121ECC440047036E /* KTimeStamp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTimeStamp.h; sourceTree = "<group>"; };
 		6610DE25121ECC440047036E /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
 		6610DE26121ECC440047036E /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		6610DE27121ECC440047036E /* skimNoNoiseBolos.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = skimNoNoiseBolos.cxx; path = kds/skimNoNoiseBolos.cxx; sourceTree = "<group>"; };
@@ -121,7 +119,7 @@
 		6610DE9D121F2D100047036E /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		6610DE9F121F2D210047036E /* WishList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = WishList.rtf; sourceTree = "<group>"; };
 		6610DEA0121F2D2A0047036E /* Modules.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Modules.mk; sourceTree = "<group>"; };
-		6610DEA2121F2D390047036E /* checkenv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = checkenv; sourceTree = "<group>"; };
+		6610DEA2121F2D390047036E /* checkenv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = checkenv; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.perl; };
 		6610DEA3121F2D390047036E /* configure */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = configure; sourceTree = "<group>"; };
 		6610DEA4121F2D3A0047036E /* Makefile.linux */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.linux; sourceTree = "<group>"; };
 		6610DEA5121F2D3A0047036E /* Makefile.linuxx8664gcc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.linuxx8664gcc; sourceTree = "<group>"; };
@@ -282,6 +280,20 @@
 		662EC1B712343BD3007E432B /* scriptStartMerge.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scriptStartMerge.sh; sourceTree = "<group>"; };
 		662EC1B812343BD3007E432B /* testMem.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testMem.C; sourceTree = "<group>"; };
 		6641B4B8123831BF0002C5A1 /* testAllEventsForUniqueIDs.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testAllEventsForUniqueIDs.cxx; path = ../kData/kds/testAllEventsForUniqueIDs.cxx; sourceTree = "<group>"; };
+		6650BB561271DC3F002B9B5B /* KSambaEvent.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaEvent.cxx; sourceTree = "<group>"; };
+		6650BB571271DC3F002B9B5B /* KSambaEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaEvent.h; sourceTree = "<group>"; };
+		6650BB581271DC3F002B9B5B /* KSambaHeader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaHeader.cxx; sourceTree = "<group>"; };
+		6650BB591271DC3F002B9B5B /* KSambaHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaHeader.h; sourceTree = "<group>"; };
+		6650BB5A1271DC3F002B9B5B /* KSambaPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaPulse.cxx; sourceTree = "<group>"; };
+		6650BB5B1271DC3F002B9B5B /* KSambaPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaPulse.h; sourceTree = "<group>"; };
+		6650BB5C1271DC3F002B9B5B /* KSambaReader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaReader.cxx; sourceTree = "<group>"; };
+		6650BB5D1271DC3F002B9B5B /* KSambaReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaReader.h; sourceTree = "<group>"; };
+		6650BB5E1271DC3F002B9B5B /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
+		6650BB5F1271DC3F002B9B5B /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
+		6650BB601271DC59002B9B5B /* KSambaDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaDetector.h; sourceTree = "<group>"; };
+		6650BB611271DC59002B9B5B /* KSambaDetector.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaDetector.cxx; sourceTree = "<group>"; };
+		6650BB661271DCDF002B9B5B /* KSambaDataObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaDataObject.h; sourceTree = "<group>"; };
+		6650BB671271DCDF002B9B5B /* KSambaDataObject.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaDataObject.cxx; sourceTree = "<group>"; };
 		66696F77123F5ACD005B9DB7 /* KEventDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KEventDisplay.h; sourceTree = "<group>"; };
 		66696F78123F5ACD005B9DB7 /* KEventDisplay.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KEventDisplay.cxx; sourceTree = "<group>"; };
 		66834214122D710300A73231 /* allPassOne_GSEventNumbers */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = allPassOne_GSEventNumbers; path = ../kData/bin/allPassOne_GSEventNumbers; sourceTree = SOURCE_ROOT; };
@@ -292,6 +304,18 @@
 		6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEventTest.cxx; path = ../kData/kds/fillEventTest.cxx; sourceTree = SOURCE_ROOT; };
 		6687D1C3122F863B005AD0F9 /* KMergeKds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMergeKds.h; sourceTree = "<group>"; };
 		6687D1C4122F863B005AD0F9 /* KMergeKds.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeKds.cxx; sourceTree = "<group>"; };
+		66AF7F89129456CF0075B1C5 /* KSambaDetectorChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaDetectorChannel.h; sourceTree = "<group>"; };
+		66AF7F8A129456CF0075B1C5 /* KSambaDetectorChannel.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaDetectorChannel.cxx; sourceTree = "<group>"; };
+		66AF7F91129458AF0075B1C5 /* KSamba2KData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSamba2KData.h; sourceTree = "<group>"; };
+		66AF7F92129458AF0075B1C5 /* KSamba2KData.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSamba2KData.cxx; sourceTree = "<group>"; };
+		66AF8021129461B70075B1C5 /* KSambaRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaRun.h; sourceTree = "<group>"; };
+		66AF8022129461B70075B1C5 /* KSambaRun.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaRun.cxx; sourceTree = "<group>"; };
+		66AF808D129474F50075B1C5 /* KSambaHeaderReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaHeaderReader.h; sourceTree = "<group>"; };
+		66AF808E129474F50075B1C5 /* KSambaHeaderReader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaHeaderReader.cxx; sourceTree = "<group>"; };
+		66AF8096129476E80075B1C5 /* KSambaEventReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaEventReader.h; sourceTree = "<group>"; };
+		66AF8097129476E80075B1C5 /* KSambaEventReader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaEventReader.cxx; sourceTree = "<group>"; };
+		66CDBA051265F3F50004CA5C /* countRatesMuonVetoSystemRun12.root */ = {isa = PBXFileReference; lastKnownFileType = file; path = countRatesMuonVetoSystemRun12.root; sourceTree = "<group>"; };
+		66CDBA061265F4330004CA5C /* findMuonAndBoloRates.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = findMuonAndBoloRates.c; sourceTree = "<group>"; };
 		66DCA1831248D8B000FDE323 /* KBaselineRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KBaselineRemoval.cxx; sourceTree = "<group>"; };
 		66DCA1841248D8B000FDE323 /* KBaselineRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBaselineRemoval.h; sourceTree = "<group>"; };
 		66DCA1851248D8B000FDE323 /* KHalfComplexPower.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexPower.cxx; sourceTree = "<group>"; };
@@ -311,12 +335,14 @@
 		66DCA1931248D8B000FDE323 /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
 		66DCA1941248D8B000FDE323 /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		66DE296A12475D4200A2644D /* rootScript_mergeKdsTree.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rootScript_mergeKdsTree.C; sourceTree = "<group>"; };
-		66E03A511237CBFD00415B79 /* calitransfer.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = calitransfer.cxx; path = ../kData/kera/calitransfer.cxx; sourceTree = SOURCE_ROOT; };
 		66E03A521237CBFD00415B79 /* eventFinderTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eventFinderTest.cxx; path = ../kData/kera/eventFinderTest.cxx; sourceTree = SOURCE_ROOT; };
 		66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KEraEventFinder.cxx; path = ../kData/kera/KEraEventFinder.cxx; sourceTree = SOURCE_ROOT; };
 		66E03A541237CBFD00415B79 /* KEraEventFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KEraEventFinder.h; path = ../kData/kera/KEraEventFinder.h; sourceTree = SOURCE_ROOT; };
 		66E03A551237CBFD00415B79 /* KFileTransfer.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KFileTransfer.cxx; path = ../kData/kera/KFileTransfer.cxx; sourceTree = SOURCE_ROOT; };
 		66E03A561237CBFD00415B79 /* KFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KFileTransfer.h; path = ../kData/kera/KFileTransfer.h; sourceTree = SOURCE_ROOT; };
+		66F075ED1251193300D7E79C /* fillMuonVetoSystemRecords.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillMuonVetoSystemRecords.cxx; path = kds/fillMuonVetoSystemRecords.cxx; sourceTree = "<group>"; };
+		66F2436E12809DF2006647E1 /* KRawBoloPulseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRawBoloPulseRecord.h; sourceTree = "<group>"; };
+		66F2436F12809DF2006647E1 /* KRawBoloPulseRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KRawBoloPulseRecord.cxx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -327,10 +353,12 @@
 				6610DE9F121F2D210047036E /* WishList.rtf */,
 				6610DEA0121F2D2A0047036E /* Modules.mk */,
 				6610DF47122096630047036E /* install_kdata */,
+				66CDBA041265F3F50004CA5C /* kdsRun12Files */,
 				662EC1A912343BD3007E432B /* kdsScripts */,
 				6610DEA1121F2D390047036E /* config */,
 				6610DDEA121ECC290047036E /* scripts */,
 				6610DE3A121EDA680047036E /* ktemplate */,
+				6650BB551271DC3F002B9B5B /* ksamba */,
 				66DCA1821248D8B000FDE323 /* kpta */,
 				6610DDED121ECC440047036E /* kds */,
 				6610DF4D122149780047036E /* era */,
@@ -374,6 +402,7 @@
 				6610DDEF121ECC440047036E /* breakupKDataFile.cxx */,
 				6610DDF0121ECC440047036E /* fillEvents.cxx */,
 				6610DE27121ECC440047036E /* skimNoNoiseBolos.cxx */,
+				66F075ED1251193300D7E79C /* fillMuonVetoSystemRecords.cxx */,
 			);
 			name = executables;
 			path = ..;
@@ -397,8 +426,6 @@
 		6610DE2C121ED8260047036E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				6610DE23121ECC440047036E /* KTimeStamp.cxx */,
-				6610DE24121ECC440047036E /* KTimeStamp.h */,
 				6610DE01121ECC440047036E /* KEventCollection.cxx */,
 				6610DE02121ECC440047036E /* KEventCollection.h */,
 				6610DE03121ECC440047036E /* KEventFactory.cxx */,
@@ -439,6 +466,8 @@
 				6610DE06121ECC440047036E /* KHLABolometerRecord.h */,
 				6610DE07121ECC440047036E /* KHLABoloPulseRecord.cxx */,
 				6610DE08121ECC440047036E /* KHLABoloPulseRecord.h */,
+				66F2436F12809DF2006647E1 /* KRawBoloPulseRecord.cxx */,
+				66F2436E12809DF2006647E1 /* KRawBoloPulseRecord.h */,
 				6610DE31121ED8470047036E /* Bases */,
 			);
 			name = "Sub Records";
@@ -654,7 +683,6 @@
 		6610E7CA122703DA0047036E /* kera */ = {
 			isa = PBXGroup;
 			children = (
-				66E03A511237CBFD00415B79 /* calitransfer.cxx */,
 				66E03A521237CBFD00415B79 /* eventFinderTest.cxx */,
 				66E03A531237CBFD00415B79 /* KEraEventFinder.cxx */,
 				66E03A541237CBFD00415B79 /* KEraEventFinder.h */,
@@ -692,6 +720,37 @@
 			path = ../kData/kdsScripts;
 			sourceTree = SOURCE_ROOT;
 		};
+		6650BB551271DC3F002B9B5B /* ksamba */ = {
+			isa = PBXGroup;
+			children = (
+				6650BB561271DC3F002B9B5B /* KSambaEvent.cxx */,
+				6650BB571271DC3F002B9B5B /* KSambaEvent.h */,
+				66AF8022129461B70075B1C5 /* KSambaRun.cxx */,
+				66AF8021129461B70075B1C5 /* KSambaRun.h */,
+				6650BB581271DC3F002B9B5B /* KSambaHeader.cxx */,
+				6650BB591271DC3F002B9B5B /* KSambaHeader.h */,
+				6650BB5A1271DC3F002B9B5B /* KSambaPulse.cxx */,
+				6650BB5B1271DC3F002B9B5B /* KSambaPulse.h */,
+				6650BB5C1271DC3F002B9B5B /* KSambaReader.cxx */,
+				6650BB5D1271DC3F002B9B5B /* KSambaReader.h */,
+				6650BB5E1271DC3F002B9B5B /* Module.mk */,
+				6650BB5F1271DC3F002B9B5B /* Module_libs.mk */,
+				66AF7F89129456CF0075B1C5 /* KSambaDetectorChannel.h */,
+				66AF7F8A129456CF0075B1C5 /* KSambaDetectorChannel.cxx */,
+				6650BB601271DC59002B9B5B /* KSambaDetector.h */,
+				6650BB611271DC59002B9B5B /* KSambaDetector.cxx */,
+				6650BB661271DCDF002B9B5B /* KSambaDataObject.h */,
+				6650BB671271DCDF002B9B5B /* KSambaDataObject.cxx */,
+				66AF7F91129458AF0075B1C5 /* KSamba2KData.h */,
+				66AF7F92129458AF0075B1C5 /* KSamba2KData.cxx */,
+				66AF808D129474F50075B1C5 /* KSambaHeaderReader.h */,
+				66AF808E129474F50075B1C5 /* KSambaHeaderReader.cxx */,
+				66AF8096129476E80075B1C5 /* KSambaEventReader.h */,
+				66AF8097129476E80075B1C5 /* KSambaEventReader.cxx */,
+			);
+			path = ksamba;
+			sourceTree = "<group>";
+		};
 		6674AD0A12215BD100630388 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
@@ -722,9 +781,23 @@
 			name = Event;
 			sourceTree = "<group>";
 		};
+		66CDBA041265F3F50004CA5C /* kdsRun12Files */ = {
+			isa = PBXGroup;
+			children = (
+				66CDBA061265F4330004CA5C /* findMuonAndBoloRates.c */,
+				66CDBA051265F3F50004CA5C /* countRatesMuonVetoSystemRun12.root */,
+			);
+			name = kdsRun12Files;
+			path = ../kData/kdsRun12Files;
+			sourceTree = SOURCE_ROOT;
+		};
 		66DCA1821248D8B000FDE323 /* kpta */ = {
 			isa = PBXGroup;
 			children = (
+				66DCA18B1248D8B000FDE323 /* KPtaProcessor.cxx */,
+				66DCA18C1248D8B000FDE323 /* KPtaProcessor.h */,
+				66DCA18D1248D8B000FDE323 /* KPtaTestPulse.cxx */,
+				66DCA18E1248D8B000FDE323 /* KPtaTestPulse.h */,
 				66DCA1831248D8B000FDE323 /* KBaselineRemoval.cxx */,
 				66DCA1841248D8B000FDE323 /* KBaselineRemoval.h */,
 				66DCA1851248D8B000FDE323 /* KHalfComplexPower.cxx */,
@@ -733,10 +806,6 @@
 				66DCA1881248D8B000FDE323 /* KHalfComplexToRealDFT.h */,
 				66DCA1891248D8B000FDE323 /* KPatternRemoval.cxx */,
 				66DCA18A1248D8B000FDE323 /* KPatternRemoval.h */,
-				66DCA18B1248D8B000FDE323 /* KPtaProcessor.cxx */,
-				66DCA18C1248D8B000FDE323 /* KPtaProcessor.h */,
-				66DCA18D1248D8B000FDE323 /* KPtaTestPulse.cxx */,
-				66DCA18E1248D8B000FDE323 /* KPtaTestPulse.h */,
 				66DCA18F1248D8B000FDE323 /* KPulseAnalysisChain.cxx */,
 				66DCA1901248D8B000FDE323 /* KPulseAnalysisChain.h */,
 				66DCA1911248D8B000FDE323 /* KRealToHalfComplexDFT.cxx */,
@@ -796,7 +865,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/tcsh;
-			shellScript = "# shell script goes here\ncd $SRCROOT\nmake\nexit 0";
+			shellScript = "# shell script goes here\ncd $KDATA_ROOT\nmake\nexit 0";
 		};
 		6610DE33121ED9740047036E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -809,7 +878,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/tcsh;
-			shellScript = "# shell script goes here\ncd $SRCROOT\nmake clean\nexit 0";
+			shellScript = "# shell script goes here\ncd $KDATA_ROOT\nmake clean\nexit 0";
 		};
 		6610E0101221AD040047036E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -822,7 +891,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/tcsh;
-			shellScript = "# shell script goes here\ncd $SRCROOT\nmake all-era\nexit 0";
+			shellScript = "# shell script goes here\ncd $KDATA_ROOT\nmake all-era\nexit 0";
 		};
 		6610E0161221AD270047036E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -7,7 +7,8 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// This is the base class for all System Records
+// This is the base class for all System Records. It only contains
+// one variable at the moment, indicating if the system is on. 
 //
 
 
@@ -19,17 +20,22 @@ ClassImp(KSystemRecord);
 
 KSystemRecord::KSystemRecord(void)
 {
-
+  //standard constructor 
+  
   InitializeMembers();
 }
 
 KSystemRecord::KSystemRecord(const KSystemRecord &aRec)
 {
+  //copy constructor
+  
 	CopyLocalMembers(aRec);
 }
 
 KSystemRecord& KSystemRecord::operator=(const KSystemRecord &aRec)
 {
+  //assignement operator
+  
 	if(&aRec == this) return *this;
 	
 	CopyLocalMembers(aRec);
@@ -43,7 +49,7 @@ void KSystemRecord::CopyLocalMembers(const KSystemRecord &aRec)
 }
 KSystemRecord::~KSystemRecord(void)
 {
-	//
+	//destructor
 	
   //Does calling clear at destruction take too much computing time?
   Clear("C");

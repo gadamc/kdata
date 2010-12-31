@@ -39,7 +39,6 @@ public:
   virtual ~KEraEventFinder();
   
   EdwEvent* TransferEvent(void);
-  EdwEvent* TransferEventOld(void);
   EdwEvent* GetEvent(void);  //returns the event pointer from the KEraRawEventReader class
   
   void AddPathToSearch(const char* aPath){fDirNames.push_back(aPath);}
@@ -52,6 +51,7 @@ public:
   void DisplayPower(KBolometerRecord *aRec);
   
   //getters
+  
   KSambaRecord* GetSamba(void) const { return fSambaRecord; }
   KBolometerRecord* GetBolo(void) const { return fBoloRecord; }
   Bool_t IsSearchLocally(void){return fSearchLocally;  }
@@ -59,6 +59,7 @@ public:
   KEventDisplay* GetDisplay(void) {return fDisplay;  }
   
   //setters
+  
   void SetSamba(KSambaRecord* aRec) { fSambaRecord = aRec; }
   Bool_t SetBolo(KBolometerRecord *aRec);
   void SetSearchLocally(Bool_t aChoice = true);

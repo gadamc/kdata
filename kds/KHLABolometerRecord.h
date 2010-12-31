@@ -57,7 +57,11 @@ public:
 	//Int_t GetSambaRecordNum() const {return fSambaRecordNum;}
 	KHLASambaRecord* GetSambaRecord(void) const {return (KHLASambaRecord*)fSambaRecord.GetObject();}
 	KHLABoloPulseRecord* GetPulseRecord(Int_t i) const;
-
+  KHLABoloPulseRecord* GetHeatPulse(Int_t aChannel) const;
+  KHLABoloPulseRecord* GetCollectrodePulse(Int_t aChannel) const;
+  KHLABoloPulseRecord* GetVetoPulse(Int_t aChannel) const;
+  KHLABoloPulseRecord* GetGuardPulse(Int_t aChannel) const;
+  
 	Int_t GetNumPulseRecords(void) const {return (fPulseRecords.GetEntriesFast());}
 
 
@@ -119,10 +123,10 @@ private:
 
 	Int_t fEventFlag;  //0 = noise, 1 = heat only, 2 = fiducial, 3 = surface, 4 = pure guard, 5 = other.. calculated by ERA
 	Int_t fChi2Flag; //set to 1 if the chi2 of all relevant channesl is okay (different from cuts.CutChi2)
-	TBits fIonFlags;
+	TBits fIonFlags; //||  //don't split
 	//Int_t fTriggerBit1; //Samba's Liste1 event trigger bit map
 	//Int_t fTriggerBit2; //Samba's Liste2 event trigger bit map
-	Int_t fVoltageFlag; //Set to one if the polarity on this bolometer is reveresed.
+	Int_t fVoltageFlag; //Set to the voltage configuration value, as found in era/Scripts/params_id_run12.C .
 	Int_t fIonPulseTimeOffset; //the time offset of the peak of the ion pulse relative to the peak of the heat pulse, in units of stamp (10 microseonds)
 
 	TRef fSambaRecord;  //holds a pointer to the associated Samba record
@@ -133,7 +137,7 @@ private:
 	Double32_t fBaselineNoiseIonFiducial; //baseline noise amplitude of the fiducial signal (the weighted average of the fEnergyCollectrode)
 
 	//cuts
-	TBits fCuts;  //set the TestCutsBitNumber method for a list of which bit corresponds to which cut.
+	TBits fCuts;  //|| //set the TestCutsBitNumber method for a list of which bit corresponds to which cut.
 
 	//TRefArray fRawPulseSubRecords; //an array of the Raw PulseSub Records associated with this bolo record
 

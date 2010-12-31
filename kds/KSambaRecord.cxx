@@ -9,7 +9,10 @@
 //
 // The base class for all Samba Sub Records. This contains event information
 // that is from the particular samba machine that the data was acquired on.
-// 
+// While Raw/HLA level record classes that derive from this class exist,
+// they do not, at the moment, contain any information that is not stored
+// in this class. However, your analysis routine should continue to use
+// the Raw/HLA pointers 
 //
 
 #include "KSambaRecord.h"
@@ -21,6 +24,8 @@ ClassImp(KSambaRecord);
 
 KSambaRecord::KSambaRecord(void)
 {
+  //constructor
+  
 	InitializeMembers();
 	
 	//We must deal with members on the heap separately 
@@ -34,6 +39,8 @@ KSambaRecord::KSambaRecord(void)
 KSambaRecord::KSambaRecord(const KSambaRecord &aRec)
 : KSubRecord(aRec)
 {
+  //copy constructor
+  
 	//fRunName=0;
 	//fRunName = new TString;
 	CopyLocalMembers(aRec);
@@ -42,6 +49,8 @@ KSambaRecord::KSambaRecord(const KSambaRecord &aRec)
 
 KSambaRecord& KSambaRecord::operator=(const KSambaRecord &aRec)
 {
+  //assignment operator
+  
 	if(&aRec == this) return *this;
 	
 	this->KSubRecord::operator=(aRec);
@@ -63,6 +72,8 @@ void KSambaRecord::CopyLocalMembers(const KSambaRecord &aRec)
 
 KSambaRecord::~KSambaRecord(void)
 {
+  //destructor
+  
 	Clear("C");
 
 	//if(fRunName!=0){
@@ -230,8 +241,10 @@ void KSambaRecord::Compact(void)
 
 void KSambaRecord::print(void)
 {
-		
-	cout << "Me 0x" << this << endl;
+  //should probably change this to be the operator<< instead of
+  //print. 
+  
+	cout << "KSambaRecord. this = 0x" << this << endl;
 	//cout << "Me* " << *this << endl;
 	cout << "fSambaEventNumber " << fSambaEventNumber << endl;
 	cout << "fNtpDataSec " << fNtpDateSec << endl;

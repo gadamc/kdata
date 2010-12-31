@@ -43,9 +43,9 @@ public:
 	
 private:
 		
-	Int_t fCurrentEntry;
-	Int_t fEntries;
-	Bool_t fGSEventIndex;
+	Int_t fCurrentEntry; //current entry number in the tree
+	Int_t fEntries; //number of entries in teh tree
+	Bool_t fGSEventIndex; //the global software event number index
 	
 	KEvent *fLocalEvent;
   //private methods

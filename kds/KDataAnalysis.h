@@ -35,7 +35,7 @@ public:
 	KDataAnalysis(const Char_t* fileName = 0);
   virtual ~KDataAnalysis(void);
 	
-	Int_t OpenEdsFile(const Char_t* fileName);
+	Int_t OpenKDataFile(const Char_t* fileName);
 	//static Bool_t IsNorthernMuonModule(KEdwEventBase* e); 
 	
 	Bool_t OpenOutputKDataFile(const Char_t* fileName);
@@ -79,7 +79,7 @@ private:
 	KDataWriter *fFileWriter;
 	
   //private methods
-  void InitializeMembers(void);
+  //void InitializeMembers(void);
 
   ClassDef(KDataAnalysis,1);
 };

@@ -12,8 +12,8 @@
 // The user should not interact directly with this class, except for the public
 // methods that KDataReader/Writer inherit. However, using the methods in this 
 // class shouldn't be necessary to perform an analysis of the data stored in an
-// KDS file. 
-//
+// KData file. 
+// This is an abstract class. 
 
 #include "KDataFileIO.h"
 #include <exception>
@@ -41,6 +41,9 @@ KDataFileIO::~KDataFileIO(void)
 
 void KDataFileIO::InitializeMembers(void)
 {
+  //
+  //
+  
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	
@@ -104,6 +107,8 @@ void KDataFileIO::GetTreePointerInFile(void)
 
 Bool_t KDataFileIO::Close(Option_t *opt)
 {
+  //
+  
 	//every time we close the file, we delete the Event pointer. 
 	
 	if(fFile == 0){

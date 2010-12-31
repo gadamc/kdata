@@ -46,7 +46,7 @@ unless ($errors) {
 my $setup_file = 'config/setup_kdata.csh';
 
 if (open(FILE, $setup_file)) {
-
+  
 	while (<FILE>) {
 		/^setenv\s+(\S+)\s+(\S*)\s*/ or next;
 		my $var = $1;
@@ -54,6 +54,17 @@ if (open(FILE, $setup_file)) {
 		$checked{$var} and next;  # don't consider the same thing twice
 		$checked{$var} = 1;
 		# expand shell variables in $val using our $ENV values
+    
+    my @config_vars = split /:/, $val;
+    my $numVarToCheck = @config_vars - 1; # assume that each variable is written
+    #in the setup_kdata file as
+    #if($VARIABLE) then
+    # setenv(export) $VARIABLE = $NEWVALUE1:$NEWVALUE2:$NEWVALUE3:$VARIABLE
+    #else
+    # setenv(export) $VARIABLE = $NEWVALUE1:$NEWVALUE2:$NEWVALUE3
+    #endif.  
+    #numVarToCheck should then be the number of new values.
+    
 		while ($val =~ /\{\$([^}]+)}/) {
 			if ($ENV{$1}) {
 				$val = "$`$ENV{$1}$'";
@@ -61,25 +72,36 @@ if (open(FILE, $setup_file)) {
 				$val = "$`$'";
 			}
 		}
-		if (defined($ENV{$var})) {
-			if ($var =~ /PATH$/) {
-				my @val_list = split /:/, $val;
-				my @env_list = split /:/, $ENV{$var};
-				next if @val_list>1 and @env_list>1 and
-						$val_list[0] eq $env_list[0] and
-						$val_list[1] eq $env_list[1];
-			} else {
-				next if $ENV{$var} eq $val;
-			}
-			print STDERR "Warning: $var may not be set properly\n";
-			++$warnings;
-		} else {
-			print STDERR "Error: $var is not defined\n";
-			++$errors;
-		}
-	}
-	close(FILE);
-	
+  if (defined($ENV{$var})) {
+    if ($var =~ /PATH$/) {
+      my @val_list = split /:/, $val;
+      my @env_list = split /:/, $ENV{$var};
+      my $foundVariables = 0;
+      my $numVariablesFound = 0;
+      
+      foreach(@env_list){
+        my $i = 0;
+        while($i < $numVarToCheck){
+          if($val_list[$i] eq $_){
+            $numVariablesFound += 1;
+          }
+          $i += 1;
+        }
+      }
+      next if $numVariablesFound eq $numVarToCheck;
+      
+    } else {
+      next if $ENV{$var} eq $val;
+    }
+    print STDERR "\nWarning: $var may not be set properly. \n\n $val\n";
+    
+  } else {
+    print STDERR "Error: $var is not defined\n";
+    ++$errors;
+  }
+}
+close(FILE);
+
 } else {
 	print STDERR "Error: $setup_file not found\n";
 	++$errors;

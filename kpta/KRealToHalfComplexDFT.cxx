@@ -8,6 +8,7 @@
 //
 // This processor finds the discrete fourier transform of a real 
 // one-dimensionsal input pulse and returns a half-complex array. 
+// The output pulse is in half-complex array format:
 // real and imaginary parts for a transform of size n stored as 
 //   (r0, r1, r2, ..., rn/2, i(n+1)/2-1, ..., i2, i1)
 // It uses the fftw3 libraries to calculate the transformation, useing
@@ -29,7 +30,8 @@
 // To maximize the speed for DFT calculations, one should reuse 
 // an instance of this processor as much as possible rather than 
 // creating a new processor every time you want to make a single 
-// calculation. 
+// calculation. The fftw3 libraries run faster when a 'plan' is reused.
+//
 
 
 #include "KRealToHalfComplexDFT.h"

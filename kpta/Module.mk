@@ -12,7 +12,7 @@
 # For now, the only ROOT parts that are used are to create a dictionary
 # and link it to the rest of the objects in order to be able to access
 # these classes from within ROOT CINT. The idea is that this module
-# could be a pulse shape analysis library that is completely indepenent
+# could be a pulse trace analysis library that is completely indepenent
 # of ROOT. 
 #
 # However, if this restriction is debilitating for development of 

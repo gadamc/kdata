@@ -8,7 +8,10 @@
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
 // The base class of all Muon Module Sub Record classes. This base class
-// contains a number of the data values for the Muon Module sub records.
+// contains a all of the data values for the Muon Module sub records.
+// The HLA and Raw level records, at the moment, do not add any information
+// beyond this class. However, you should continue to access the Raw/HLA data
+// pointers for your analysis in case more data is added. 
 
 #include "KMuonModuleRecord.h"
 #include <iostream>
@@ -18,23 +21,31 @@ ClassImp(KMuonModuleRecord);
 
 KMuonModuleRecord::KMuonModuleRecord(void)
 {
+  //default constructor
+  
 	InitializeMembers();
 }
 
 KMuonModuleRecord::~KMuonModuleRecord(void)
 {
+  //destructor
+  
 	Clear("C");
 }
 
 KMuonModuleRecord::KMuonModuleRecord(const KMuonModuleRecord &aRec)
 : KSubRecord(aRec)
 {
+  //copy constructor
+  
 	CopyLocalMembers(aRec);
 	
 }
 
 KMuonModuleRecord& KMuonModuleRecord::operator=(const KMuonModuleRecord &aRec)
 {
+  //assignment operator
+  
 	if(&aRec == this) return *this;
 	
 	this->KSubRecord::operator=(aRec);
@@ -88,7 +99,14 @@ void KMuonModuleRecord::InitializeMembers(void)
 
 Int_t KMuonModuleRecord::GetTdc(Int_t i) const
 {
-	if(i < kNumPmtsPerMuonModule)
+  //returns the TDC value for this muon module for channel i. 
+  //i can be either 0 or 1. 0 corresponds to the channel end 
+  //that is listed first in the database (currently an Excel file)
+  //and 1 corresponds to the second channel listed.
+  //If a -1 is returned, this is because the value was not set in the 
+  //data stream, or i was invalid (not equal to 0 or 1).
+  
+	if(i < kNumPmtsPerMuonModule && i >= 0)
 		return fTdc[i];
 	else
 		return -1;
@@ -96,6 +114,13 @@ Int_t KMuonModuleRecord::GetTdc(Int_t i) const
 
 Int_t KMuonModuleRecord::GetAdc(Int_t i) const
 {
+  //returns the ADC value for this muon module for channel i. 
+  //i can be either 0 or 1. 0 corresponds to the channel end 
+  //that is listed first in the database (currently an Excel file)
+  //and 1 corresponds to the second channel listed.
+  //If a -1 is returned, this is because the value was not set in the 
+  //data stream, or i was invalid (not equal to 0 or 1).
+  
 	if(i < kNumPmtsPerMuonModule && i >= 0)
 		return fAdc[i];
 	else
@@ -104,6 +129,14 @@ Int_t KMuonModuleRecord::GetAdc(Int_t i) const
 
 Int_t KMuonModuleRecord::SetTdc(Int_t i, Int_t val)
 {
+  //sets the TDC value for this muon module for channel i. 
+  //i can be either 0 or 1. 0 corresponds to the channel end 
+  //that is listed first in the database (currently an Excel file)
+  //and 1 corresponds to the second channel listed.
+  //the val is returns if successfule
+  //If a -1 is returned, this is i was invalid (not equal to 0 or 1).
+
+  
 	if(i < kNumPmtsPerMuonModule && i >= 0){
 		fTdc[i] = val;
 		return val;
@@ -114,6 +147,14 @@ Int_t KMuonModuleRecord::SetTdc(Int_t i, Int_t val)
 
 Int_t KMuonModuleRecord::SetAdc(Int_t i, Int_t val)
 {
+  //sets the ADC value for this muon module for channel i. 
+  //i can be either 0 or 1. 0 corresponds to the channel end 
+  //that is listed first in the database (currently an Excel file)
+  //and 1 corresponds to the second channel listed.
+  //the val is returns if successfule
+  //If a -1 is returned, this is i was invalid (not equal to 0 or 1).
+
+  
 	if(i < kNumPmtsPerMuonModule && i >= 0){
 		fAdc[i] = val;
 		return val;
@@ -124,6 +165,10 @@ Int_t KMuonModuleRecord::SetAdc(Int_t i, Int_t val)
 
 Bool_t KMuonModuleRecord::IsSame(const KMuonModuleRecord &aRec, Bool_t bPrint) const
 {
+  //same as the comparison operator, but gives you the opportunity
+  //for it to be verbose and list to standard out the differences.
+  //Use bPrint = true for verbosity. 
+  
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
 	//call the base class's IsSame methods
@@ -196,9 +241,9 @@ void KMuonModuleRecord::Compact(void)
 
 Bool_t KMuonModuleRecord::IsHardTrigger()
 {
-	//returns true if both TDC values have a value > -1.
+	//returns true if both TDC and ADC values have a value > -1.
 	//Note, this means that a TDC value of 0 indicates a
 	//trigger. 
 	
-	return (  (fTdc[0] > -1) && (fTdc[1] > -1)  );
+	return (  (fTdc[0] > -1) && (fTdc[1] > -1) && (fAdc[0] > -1) && (fAdc[1] > -1) );
 }

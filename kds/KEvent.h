@@ -10,7 +10,7 @@
 #define __KEVENT_H__
 
 #include "TObject.h"
-
+#include "TClonesArray.h"
 
 //this is a fantastically horrible place to put these... 
 //maybe I should put them in a namespace
@@ -41,6 +41,7 @@ public:
 	//Double_t GetTimeStamp(void);
 	
 	//Getters
+  
 	Int_t GetRunNumber(void) const {return fRunNumber;}
 	Double_t GetEventTriggerTime(void) const {return fEventTriggerTime;}
 	Long64_t GetStamp(void) const {return fStamp;}
@@ -58,6 +59,7 @@ public:
 	Double_t GetStampTime(void) const; 
 
 	//Setters
+  
 	void SetRunNumber(Int_t aNum) {fRunNumber = aNum;}
 	void SetEventTriggerTime(Double_t aNum) {fEventTriggerTime = aNum;}
 	void SetStamp(Long64_t aStamp) {fStamp = aStamp;}
@@ -70,8 +72,9 @@ public:
 	//void SetBlindnessWord(Int_t aNum) {fBlindnessWord = aNum;}
 	void SetGSEventNumber(UInt_t aNum) {fGSEventNumber = aNum;}
 	
+  //Abstract Classes:
 	
-	void myPrintB() const;
+	void myPrintB() const; //this should be removed!
 	 
 	void AddTriggerType(Int_t aNum) {fTriggerType |= aNum;}  
 	

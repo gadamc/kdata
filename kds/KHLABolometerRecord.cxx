@@ -25,6 +25,8 @@ ClassImp(KHLABolometerRecord);
 
 KHLABolometerRecord::KHLABolometerRecord(void)
 {
+  //standard constructor
+  
 	InitializeMembers();
 
 }
@@ -32,6 +34,8 @@ KHLABolometerRecord::KHLABolometerRecord(void)
 KHLABolometerRecord::KHLABolometerRecord(const KHLABolometerRecord &aRec)
 : KBolometerRecord(aRec)
 {
+  //copy constructor 
+  
 	CopyLocalMembers(aRec);
 
 }
@@ -49,6 +53,8 @@ KHLABolometerRecord& KHLABolometerRecord::operator=(const KHLABolometerRecord &a
 
 void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
 {
+  //copies local data members
+  
 	SetQvalue(aRec.GetQvalue());
 	SetEnergyRecoil(aRec.GetEnergyRecoil());
 	SetEnergyIon(aRec.GetEnergyIon());
@@ -77,6 +83,8 @@ void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
 
 KHLABolometerRecord::~KHLABolometerRecord(void)
 {
+  //destructor 
+  
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
 
@@ -101,6 +109,8 @@ void KHLABolometerRecord::Clear(Option_t *opt)
 
 void KHLABolometerRecord::InitializeMembers(void)
 {
+  //init local data members
+  
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	SetQvalue(-99.0);
@@ -128,8 +138,15 @@ void KHLABolometerRecord::InitializeMembers(void)
 
 Bool_t KHLABolometerRecord::SetIonFlags(Int_t *anArray, Int_t aSize)
 {
+  //Set the TBits ion flags using an array of integers. If the integer
+  //is greater than 1, the bit flag is set to true. 
+  //If anArray is zero, it returns false and the local ion flags are
+  //not changed.
+  
 	if(anArray == 0) return false;
-
+  
+  fIonFlags.Clear();
+  
 	for(Int_t i = 0; i < aSize; i++){
 		if(anArray[i] > 0)
 			fIonFlags.SetBitNumber(i, true);
@@ -141,6 +158,11 @@ Bool_t KHLABolometerRecord::SetIonFlags(Int_t *anArray, Int_t aSize)
 
 Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrint) const
 {
+  //Compares two objects and their member variables to test for equality.
+	//If bPrint is set to true, then a message for each member variable that is different
+	//will print to standard out. Otherwise, this method will return false and quit
+	//checking member variables as soon as it finds a unequal data member.
+  
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 
 	if(bPrint) cout.precision(16);
@@ -252,6 +274,19 @@ Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord &aRec, Bool_t bPrin
 
 KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t channel, Int_t aType) const
 {
+  //this is a private method
+  //
+  //returns a pointer to a KHLABoloPulseRecord. channel is the channel number (1, 2, ...) and
+  //a type is either heat, collectrode, veto or guard. The integers associated 
+  //with those types do not need to be known. Instead call the static functions
+  //KBoloPulseRecord::GetHeatType()
+  //KBoloPulseRecord::GetVetoType()
+  //KBoloPulseRecord::GetCollectrodeType()
+  //KBoloPulseRecord::GetGuardType()
+  //
+  //However, its much easier to use the methods GetHeatPulse, GetCollectrodePulse, etc...
+  //that are found in this class
+  //
   KHLABoloPulseRecord* pulse = 0;
   for(Int_t k = 0; k < GetNumPulseRecords(); k++){
     pulse = GetPulseRecord(k);
@@ -261,8 +296,71 @@ KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t channel, Int_t aT
   return 0;  //if we get here, then we didn't find the proper pulse
 }
 
+KHLABoloPulseRecord* KHLABolometerRecord::GetHeatPulse(Int_t channel) const
+{
+  //returns a pointer to a Heat pulse record that is associated with this bolometer record.
+  //
+  //Note that aChannel should be 1 or 2.
+  //
+  
+  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KBoloPulseRecord::GetHeatType());
+  
+  return (pulse != 0) ? pulse : 0;  
+}
+
+KHLABoloPulseRecord* KHLABolometerRecord::GetCollectrodePulse(Int_t channel) const
+{
+  //returns a pointer to a Collectrode pulse record that is associated with this bolometer record.
+  //
+  //Note that aChannel should be 1 or 2.
+  //
+  
+  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KBoloPulseRecord::GetCollectrodeType());
+  
+  return (pulse != 0) ? pulse : 0;  
+}
+
+KHLABoloPulseRecord* KHLABolometerRecord::GetVetoPulse(Int_t channel) const
+{
+  //returns a pointer to a Veto pulse record that is associated with this bolometer record.
+  //
+  //Note that aChannel should be 1 or 2.
+  //
+  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KBoloPulseRecord::GetVetoType());
+  
+  return (pulse != 0) ? pulse : 0; 
+}
+
+KHLABoloPulseRecord* KHLABolometerRecord::GetGuardPulse(Int_t channel) const
+{
+  //returns a pointer to a Guard pulse record that is associated with this bolometer record.
+  //
+  //Note that aChannel should be 1 or 2.
+  //
+  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KBoloPulseRecord::GetGuardType());
+  
+  return (pulse != 0) ? pulse : 0; 
+}
+
+
 Double32_t KHLABolometerRecord::GetEnergy(Int_t aChannel, Int_t aType) const
 {
+  //returns the calibrated pulse energy (in keV) on aChannel of pulse type aType, as
+  //calculated by the ERA processor.
+  //
+  //Note that aChannel should be 1 or 2. To determine the correct
+  //value for aType, use the static fuctions
+  //
+  //KBoloPulseRecord::GetHeatType()
+  //KBoloPulseRecord::GetCollectrodeType()
+  //KBoloPulseRecord::GetVetoType()
+  //KBoloPulseRecord::GetGuardType()
+  //
+  //Or, you can just use the methods GetEnergyHeat(aChannel), GetEnergyCollectrode(aChannel),
+  //GetEnergyVeto(aChannel) and GetEnergyGuard(aChannel)
+  //
+  
+  
   KHLABoloPulseRecord* pulse = GetPulseRecord(aChannel,aType);
   if(pulse)
     return pulse->GetEnergy();
@@ -445,6 +543,10 @@ Bool_t KHLABolometerRecord::TestCutsBit(Int_t i) const
 {
 	//The ERA cuts file for each bolometer has been read and each cut has been packed into this
 	//TBits object. The cuts correspond to the various cuts listed below.
+  //A value of '1' indicates that this bolometer record was NOT CUT due to 
+  //that particular cut. If the value is '0', then the event didn't pass
+  //the cut and should be excluded from WIMP analysis.
+  
 	//cuts.CutChi2Col1 -- bit 0
 	//cuts.CutChi2Col2 -- bit 1
 	//cuts.CutChi2Vet1 -- bit 2
@@ -489,6 +591,11 @@ Bool_t KHLABolometerRecord::TestIonFlag(Int_t i) const
 
 string KHLABolometerRecord::GetEventCategory(void) const
 {
+  //returns a string corresponding the the name of the event category 
+  //as stored in the return value of GetEventFlag()
+  //event categories are noise (0), heat only (1), fiducial (2),
+  //surface (3), pure guard (4), and other (5)
+  //
   string category;
   
   switch (GetEventFlag()) {
@@ -521,12 +628,17 @@ string KHLABolometerRecord::GetEventCategory(void) const
 
 void KHLABolometerRecord::AddPulseRecord(KHLABoloPulseRecord* aPulseRecord)
 {
+  //add a pulse record to this object
+  
 	//fPulseRecords.Add((TObject *)aPulseRecord);
 	fPulseRecords.Add((TObject *)aPulseRecord);
 }
 
 KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t i) const
 {
+  //this returns the i^th pulse record for this particular bolometer record.
+  //regardless of channel number, or pulse record type (collectrode, veto, guard, heat)
+  //
 	return (KHLABoloPulseRecord*) fPulseRecords.At(i);
 }
 

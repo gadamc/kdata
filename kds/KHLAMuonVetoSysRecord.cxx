@@ -7,9 +7,14 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// There are not any member variables in this System Record. All Muon
-// Veto System record values are stored in the base class KMuonVetoSystemRecord.
+// This is the High Level Muon Veto System Record. It contains information
+// about the Bolometer System that we store ONLY in the High Level Files.
+// Most likely, at this point, this class is empty and you should
+// refer to the base-class, KBoloSystemRecord, for more information
+// about what is stored in this class. 
 //
+//
+
 
 #include "KHLAMuonVetoSysRecord.h"
 #include <iostream>
@@ -49,7 +54,7 @@ KHLAMuonVetoSysRecord& KHLAMuonVetoSysRecord::operator=(const KHLAMuonVetoSysRec
 
 void KHLAMuonVetoSysRecord::CopyLocalMembers(const KHLAMuonVetoSysRecord &/*aRec*/)
 {
-	//nothing to do! :)
+	//nothing to do! No local members yet - see the base class. :)
 }
 
 
@@ -72,7 +77,7 @@ void KHLAMuonVetoSysRecord::Clear(Option_t *opt)
 
 void KHLAMuonVetoSysRecord::InitializeMembers(void)
 {
-	//Init local members.
+	//
 	
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES

@@ -7,11 +7,11 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// This class writes out an KDS file. The basic use is, after creating
+// This class writes out a KData file. The basic use is, after creating
 // an instance of this class, get a pointer to an event object, set the 
-// various data parameters in the KDS file and then call KDataWriter::Fill
-// to add the event to an output tree. This file creates an KDS file with
-// trees filled with KHLAEvents, but you can also select Raw and HLaMC events.
+// various data parameters in the KEvent and then call KDataWriter::Fill
+// to add the event to an output tree. This file creates an KData file with
+// trees filled with KHLAEvents, KRawEvents and KHLaMCEvents.
 //
 // This class automatically assume that we're going to use TRefs, by calling
 // TTree::BranchRef when opening the file. 
@@ -39,7 +39,10 @@ ClassImp(KDataWriter);
 KDataWriter::KDataWriter(const Char_t* name, const Char_t* eventType, 
 												 const Char_t* mode)
 {	
-	//TClass::GetClass("TBits")->IgnoreTObjectStreamer();
+  //standard constructor
+	//name = file name 
+  //eventType = HLA, Raw, or HLaMC, plus any other objects based on KEvent
+  //mode = recreate, update
 	
 	fEventBranch = 0;
 	fLocalEvent = 0;
@@ -50,7 +53,10 @@ KDataWriter::KDataWriter(const Char_t* name, const Char_t* eventType,
 KDataWriter::KDataWriter(const Char_t* name, KEvent** event, 
 												 const Char_t* mode)
 {
-	//TClass::GetClass("TBits")->IgnoreTObjectStreamer();
+	//standard constructor
+	//name = file name 
+  //KEvent** = the address of a pointer to an event object that inherits from KEvent
+  //mode = recreate (default), update
 	
 	fEventBranch = 0;
 	fLocalEvent = 0;
@@ -61,16 +67,12 @@ KDataWriter::KDataWriter(const Char_t* name, KEvent** event,
 KDataWriter::KDataWriter(const KDataWriter &/*aWriter*/)
 : KDataFileIO()
 {
-	//cout << "May Not Copy - Do not want to cause confusion by writing to the same file with different objects." << endl;
-	//cout << "Create a new instance of KDataWriter. " << endl;
-	//cout << "And, you shouldn't have two writers to the same file anyways. " << endl;
+
 }
 
 KDataWriter& KDataWriter::operator=(const KDataWriter &/*aWriter*/)
 {
-	//cout << "May Not Copy - Do not want to cause confusion by writing to the same file with different objects." << endl;
-	//cout << "Create a new instance of KDataWriter. " << endl;
-	//cout << "And, you shouldn't have two writers to the same file anyways. " << endl;
+  
 	return *this;
 }
 
@@ -82,7 +84,9 @@ KDataWriter::~KDataWriter(void)
 Bool_t KDataWriter::OpenFile(const Char_t* fileName, const Char_t* eventType,
 															 const Char_t* mode)
 {
-	
+	//Open fileName for writing. eventType = HLA, Raw, HLaMC, etc..
+  //mode = recreate (default), or update
+  
 	if(fLocalEvent == 0)
 		fLocalEvent = KEventFactory::NewEvent(eventType);
 	
@@ -94,6 +98,10 @@ Bool_t KDataWriter::OpenFile(const Char_t* fileName, const Char_t* eventType,
 Bool_t KDataWriter::OpenFile(const Char_t* fileName, KEvent **anEvent,
 															 const Char_t* mode)
 {
+  //Open fileName for writing. KEvent** = address of the pointer
+  //to an object that inherits from KEvent
+  //mode = recreate (default), or update
+  
 	if(bIsReady)
 	{
 		cout << "KDataWriter::OpenFile. You already have a file opened. Close it first." << endl;
@@ -184,6 +192,16 @@ Bool_t KDataWriter::SetTreeBranch(KEvent **anEvent)
 
 KEvent* KDataWriter::GetEvent(void)
 {
+  //Once you've opened your KDataFile, use this method to get a 
+  //pointer to the event object. This method returns a KEvent*, but
+  //you will probably want to cast that pointer into the appropriate type
+  //either a KRawEvent or KHLAEvent. For example, let's say you're 
+  //doing analysis with a KHLAEvent, you would do the following
+  //
+  //KDataWriter myFile("/path/to/myKHLADataFile.root");
+  //KHLAEvent *e = (KHLAEvent *)myFile.GetEvent();
+  //
+  
 	if(!bIsReady) return 0;
 	
 	KEvent *event = 0;
@@ -206,11 +224,16 @@ KEvent* KDataWriter::GetEvent(void)
 
 Bool_t KDataWriter::IsReady(void) const
 {
+  //returns true if the file is open and ready to start writing data.
+  
 	return bIsReady;
 }
 
 Int_t KDataWriter::Fill(void)
 {
+  //Fills the data in the current KEvent pointer to the file. 
+  //This essentially calls TTree::Fill. 
+  
 	if(IsReady()) {			
 		fFile = fTree->GetCurrentFile(); //new files will automatically be created
 		//if the file exceeds fgMaxTreeSize, which is 100 Gigabytes by default
@@ -228,6 +251,7 @@ Int_t KDataWriter::Fill(void)
 
 Int_t KDataWriter::Write(const Char_t *name, Int_t option, Int_t bufsize)
 {
+  //Final write of the TTree to the output file name
 	//The options are the same as those options in TObject::Write
 	
 	if(fFile == 0) return -1;
@@ -252,7 +276,7 @@ void KDataWriter::WriteTCuts(void)
 	
 	if(fFile->IsOpen()){
 		fFile->cd();
-		
+		/*
 		TCut mCut0("fid401","fid401");
 		mCut0 = "fDetectorName.fData == \"FID401\"";
 		mCut0.Write("", TObject::kWriteDelete);  //kWriteDelete prevents multiple keys
@@ -341,13 +365,15 @@ void KDataWriter::WriteTCuts(void)
 		TCut mCut21("id403rel","id403rel");
 		mCut21 = "fDetectorName.fData == \"ID403.Rel\"";
 		mCut21.Write("", TObject::kWriteDelete);
-		
+		*/
 	}
 	
 }
 
 Bool_t KDataWriter::Close(Option_t *opt)
 {
+  //closes the file.
+  
 	//cout << "KDataWriter Close"<< endl;
 	if(bIsReady == false)
 		return true; //we've already closed the file. 
@@ -365,6 +391,9 @@ Bool_t KDataWriter::Close(Option_t *opt)
 
 TTree* KDataWriter::CloneTree(TTree *treeIn, Long64_t nEnt, Option_t* anOpt)
 {
+  //Clones the treeIn and sets the resulting pointer from treeIn->CloneTree
+  //to the local TTree pointer, fTree.
+  
 	if(fTree != 0)
 		delete fTree; fTree = 0;
 	
@@ -381,6 +410,9 @@ TTree* KDataWriter::CloneTree(TTree *treeIn, Long64_t nEnt, Option_t* anOpt)
 
 TTree *KDataWriter::ConcatenateTrees(TList* li, Option_t *anOpt)
 {
+  //Calls the static function TTree::MergeTree(TList*). The returned
+  //pointer to TTree is set to the local fTree and returned by this method.
+  
 	if(fTree != 0)
 		delete fTree; fTree = 0;
 	

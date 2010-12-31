@@ -11,6 +11,12 @@
 #define __KRAWEVENT_H__
 
 #include "KEvent.h"
+#include <string>
+#include "TClonesArray.h"
+
+//#include <time>
+
+using namespace std;
 
 //class TObject;
 //class KEventFactory;
@@ -19,6 +25,7 @@ const Char_t kRawEventName[] = "Raw";
 const Char_t kRawClassName[] = "KRawEvent";
 
 class KHLAEvent;
+class KRawBoloPulseRecord;
 
 class KRawEvent : public KEvent {         
 	
@@ -35,15 +42,43 @@ public:
 	KRawEvent& operator=(const KHLAEvent &anEvent);
 	KRawEvent& operator=(const KRawEvent &anEvent);
 	virtual void Clear(Option_t *opt = "C");
+  void ClearArrays(Option_t *opt = "C");
 	Bool_t IsSame(const KRawEvent &anEvent, Bool_t bPrint = false) const;
 	Bool_t operator==(const KRawEvent &anEvent) const { return IsSame(anEvent,false); }
 	Bool_t operator!=(const KRawEvent &anEvent) const { return !(*this==anEvent); }
+  Int_t AddSubRecords(const KRawEvent &anEvent);
+
 	virtual void Compact(void);
+  
+  KRawBoloPulseRecord* GetBoloPulse(Int_t i) const;
+  KRawBoloPulseRecord* AddBoloPulse(void);
+
+  
+  string fRunName;
+  Int_t fSambaEventNumber;
+  Int_t fDateSec;
+  Int_t fDateMuSec;
+  Double32_t fSambaDelay;
+  UInt_t fTriggerBit1;
+  UInt_t fTriggerBit2;
+  
+  Int_t fNumBoloPulse;
+  TClonesArray* fBoloPulse; //->
+  TClonesArray* GetBoloPulseRecords(void) const {return fBoloPulse;}
+  
 private: 
 	
+  
+  
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KRawEvent &anEvent);
+  void CopyClonesArrays(const KRawEvent &anEvent);
+  void CreateArrays(void);
 
+  template<class T> T* AddSubRecord(TClonesArray *mArray, Int_t &mCount);
+  void DeleteArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);
+  void ClearArray(Option_t *anOpt, TClonesArray *mArray, Int_t &mCount);
+  
 	ClassDef(KRawEvent ,1);
 };
 

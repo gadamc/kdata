@@ -15,7 +15,7 @@
 // the r2r transformation 'plans'. 
 // http://www.fftw.org/fftw3_doc/More-DFTs-of-Real-Data.html#More-DFTs-of-Real-Data
 //
-// However, there is a difference in this class. The output array is "normalized" by 1/N
+// However, there is a difference in this class compared to r2r: The output array is "normalized" by 1/N
 //
 // BEGIN_LATEX
 // #scale[1.5]{Y_{k} = #frac{1}{N} \sum_{j=0}^{n-1} X_{j} e^{2 #pi j k #sqrt{-1}/n}}
@@ -35,7 +35,8 @@
 // To maximize the speed for DFT calculations, one should reuse 
 // an instance of this processor as much as possible rather than 
 // creating a new processor every time you want to make a single 
-// calculation. 
+// calculation. The fftw3 libraries run faster when a 'plan' is reused.
+//
 
 
 #include "KHalfComplexToRealDFT.h"
@@ -80,6 +81,8 @@ bool KHalfComplexToRealDFT::RunProcess(void)
 
 bool KHalfComplexToRealDFT::CopyArrayToOutput(void)
 {
+  //copies the normalized real array to the fOutputPulse.
+  
 	try{
 		for(unsigned int i = 0; i < fOutputPulse.size(); i++){
 			fOutputPulse.at(i) = fOut_fft[i]/fOutputPulse.size();  // this IS NORMALIZED
@@ -116,7 +119,10 @@ void KHalfComplexToRealDFT::SetInputPulse(const vector<double> &aPulse)
 {
 	//Set the input pulse See the base class
 	//KPtaProcessor::SetInputPulse(const vector<double> &aPulse)
-	
+	//This method is overwritten here because the
+  //fIn_fft and fOut_fft arrays must be re-allocated if the size
+  //of the pulse changes.
+  
 	bool reAllocate = false;
 	if(aPulse.size() != fInputPulse.size())
 		reAllocate = true;
@@ -134,7 +140,10 @@ void KHalfComplexToRealDFT::SetInputPulse(const vector<short> &aPulse)
 {
 	//Set the input pulse. See the base class
 	//KPtaProcessor::SetInputPulse(const vector<short> &aPulse)
-	
+  //This method is overwritten here because the
+  //fIn_fft and fOut_fft arrays must be re-allocated if the size
+  //of the pulse changes.
+  
 	bool reAllocate = false;
 	if(aPulse.size() != fInputPulse.size())
 		reAllocate = true;
@@ -153,7 +162,10 @@ void KHalfComplexToRealDFT::SetInputPulse(const vector<float> &aPulse)
 { 
 	//Set the input pulse See the base class
 	//KPtaProcessor::SetInputPulse(const vector<float> &aPulse)
-	
+  //This method is overwritten here because the
+  //fIn_fft and fOut_fft arrays must be re-allocated if the size
+  //of the pulse changes.
+  
 	bool reAllocate = false;
 	if(aPulse.size() != fInputPulse.size())
 		reAllocate = true;
@@ -171,7 +183,10 @@ void KHalfComplexToRealDFT::SetInputPulse(const vector<int> &aPulse)
 {
 	//Set the input pulse See the base class
 	//KPtaProcessor::SetInputPulse(const vector<int> &aPulse)
-	
+  //This method is overwritten here because the
+  //fIn_fft and fOut_fft arrays must be re-allocated if the size
+  //of the pulse changes.
+  
 	bool reAllocate = false;
 	if(aPulse.size() != fInputPulse.size())
 		reAllocate = true;
@@ -189,7 +204,10 @@ void KHalfComplexToRealDFT::SetInputPulse(const char* aFile)
 {
 	//Set the input pulse. See the base class
 	//KPtaProcessor::SetInputPulse(const char* aFile)
-	
+  //This method is overwritten here because the
+  //fIn_fft and fOut_fft arrays must be re-allocated if the size
+  //of the pulse changes.
+  
 	//There's no way of knowing the size of the pulse, so we must
 	//reallocate the FFT arrays. 
 	bool reAllocate = true;
@@ -205,6 +223,8 @@ void KHalfComplexToRealDFT::SetInputPulse(const char* aFile)
 
 void KHalfComplexToRealDFT::AllocateFFTArrays(void)
 {
+  //allocate memory for the fIn_fft and fOut_fft arrays.
+  
 	if(fIn_fft != 0){
 		fftw_free(fIn_fft);
 		fIn_fft = 0;

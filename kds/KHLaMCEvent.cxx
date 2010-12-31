@@ -77,6 +77,8 @@ void KHLaMCEvent::CopyLocalMembers(const KHLaMCEvent &anEvent)
 
 KHLaMCEvent::~KHLaMCEvent(void) 
 {
+  //destructor 
+  
 	//Does calling Clear at destructor take up too much computing time?
 	Clear("C");
 	
@@ -86,11 +88,13 @@ KHLaMCEvent::~KHLaMCEvent(void)
 
 void KHLaMCEvent::Clear(Option_t *opt)
 {
-	ClearArray(opt, fBolo,fNumBolo);
-	//Clear the base classes and then clear/delete any local
+  //Clear the base classes and then clear/delete any local
 	//members. Its necessary for this Clear method to exist
 	//in the case that instances of this object are stored
 	//inside of a TClonesArray
+  
+	ClearArray(opt, fBolo,fNumBolo);
+	
 	KEvent::Clear(opt);
 	
 	//Clear and delete local objects here. 
@@ -99,7 +103,7 @@ void KHLaMCEvent::Clear(Option_t *opt)
 
 void KHLaMCEvent::InitializeMembers(void)
 {
-	
+	//init local members. does nothing.
 }
 
 Bool_t KHLaMCEvent::IsSame(const KHLaMCEvent &anEvent, Bool_t bPrint) const
@@ -181,10 +185,7 @@ template<class T> T* KHLaMCEvent::AddSubRecord(TClonesArray *mArray, Int_t &mCou
 void KHLaMCEvent::CopyClonesArrays(const KHLaMCEvent &anEvent)
 {
 	//ClonesArray assignment doesn't appear to work in the following way
-	//*fSamba = *anEvent.GetSambaRecords();
 	//*fBolo = *anEvent.GetBoloSubRecords();
-	//*fBoloPulse = *anEvent.GetBoloPulseRecords();
-	//*fMuonModule = *anEvent.GetMuonModuleRecords();
 	
 	//so, I just clear this object's array, and create as many objects as I need.
 	//this might be inefficient, but I don't think so. besides,

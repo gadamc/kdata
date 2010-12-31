@@ -13,13 +13,6 @@
 #include <string>
 using namespace std;
 
-enum kPulseChannelType {
-	kCollectrodeType = 1,
-	kVetoType = 2,
-	kGuardType = 3,
-	kHeatType = 4
-};
-
 class KBoloPulseRecord : public KSubRecord { 
 
 public:
@@ -35,6 +28,7 @@ public:
 	virtual void Compact(void);
 	
 	//getters
+  
 	Int_t GetPulseType(void) const {return fPulseType;}
 	Int_t GetChannelNumber(void) const {return fChannelNumber;}
 	
@@ -57,10 +51,17 @@ public:
 	void SetPulseIsGuardType(void) {fPulseType = kGuardType;}
 	void SetPulseIsHeatType(void) {fPulseType = kHeatType;}
 
+public:
+  enum kPulseChannelType {
+    kCollectrodeType = 1,
+    kVetoType = 2,
+    kGuardType = 3,
+    kHeatType = 4
+  };
 	
 private:
-	Int_t fChannelNumber; 
-	Int_t fPulseType;  
+	Int_t fChannelNumber;  //the channel number of the pulse data (1 or 2) 
+	Int_t fPulseType;   //a number indicating the pulse type (heat = 4, collectrode = 1, veto = 2, guard = 3)
 	
 	//private methods
 	void InitializeMembers(void);

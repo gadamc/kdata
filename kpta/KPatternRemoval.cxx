@@ -5,7 +5,9 @@
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
-//
+// This class subtracts an average "pattern" from a waveform. 
+// The pattern is calcuated from a particular region of waveform.
+// You can set this region via the SetPatternStart and SetPatternStop
 
 
 #include "KPatternRemoval.h"
@@ -26,6 +28,11 @@ KPatternRemoval::~KPatternRemoval(void)
 
 void KPatternRemoval::InitializeMembers(void)
 {
+  //sets the initial values
+  //default pattern length = 100 points
+  //default baseline start is point 0
+  //default baseline stop is 20*pattern length (2000 points)
+  
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	fPatternLength = 100; //default pattern length size;
@@ -67,6 +74,14 @@ template<class T> bool KPatternRemoval::SetThisToPattern(vector<T> &aPattern)
 
 bool KPatternRemoval::CalculatePattern(void)
 {
+  //This calculates the average pattern (of length fPatternLength) 
+  //as found along the baseline between the fBaselineStart and fBaselineStop values. 
+  //The average pattern is saved locally in the fPattern.
+  //If the range between fBaselineStart and fBaselineStop is smaller than the fPatternLength
+  //then this returns false. Otherwise, it calculates the number of full
+  //patterns available in the range (numPatterns) and then calculates the average pattern
+  //between fBaselineStart and fBaselineStart+numPatterns*fPatternLength. 
+  
 	if(GetPatternLength() < 1) return false;
 	
   fPattern.clear();
@@ -101,12 +116,18 @@ bool KPatternRemoval::CalculatePattern(void)
 
 bool KPatternRemoval::SubtractPattern(void)
 {
+  //This subtracts the calculated fPattern from the fInputPulse and assigns the
+  //result to the fOutputPulse
+  
 	return SubtractPattern(fPattern);
 }
 
 bool KPatternRemoval::SubtractPattern(vector<double> &aPattern)
 {
-	
+	//This subtracts aPattern from the fInputPulse and assigns the
+  //result to the fOutputPulse. This does not alter the pattern stored
+  //in fPattern, or the value of fPatternLength
+  
 	fOutputPulse.resize(fInputPulse.size(),0);  //make them the same size.
 	unsigned int patternCount = 0;
 	
@@ -132,12 +153,17 @@ bool KPatternRemoval::SubtractPattern(vector<double> &aPattern)
 bool KPatternRemoval::SetPattern(vector<double> &aPattern)
 { 
 	//Set the pattern and the pattern length;
+  //You can insert your own pattern here. 
+  
 	fPattern = aPattern; 
 	return true;
 } 
 
 void KPatternRemoval::SetBaselineStart(unsigned int aVal)
 { 
+  //set's the absolute start point for defining where the average
+  //pattern is calculated.
+  
 	if(aVal > fBaselineStop || aVal > fInputPulse.size()){
 		cerr << "KPatternRemoval::SetBaselineStart. Invalid value: " << aVal << endl;
 		cerr << "   baseline start value unchanged: " << fBaselineStart << endl;
@@ -150,6 +176,9 @@ void KPatternRemoval::SetBaselineStart(unsigned int aVal)
 
 void KPatternRemoval::SetBaselineStop(unsigned int aVal)
 { 
+  //set's the absolute stop point for defining where the average
+  //pattern is calculated.
+  
 	if(aVal < fBaselineStart  || aVal > fInputPulse.size()){
 		cerr << "KPatternRemoval::SetBaselineStop. Invalid value: " << aVal << endl;
 		cerr << "   baseline stop value unchanged: " << fBaselineStop << endl;

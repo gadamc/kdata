@@ -11,10 +11,12 @@
 // types of analysis algorithms. 
 //
 // Right now it just opens a file for you and allows you to progress through
-// the file, event-by-event, and then gives you the option to save any 
-// interesting events (SaveThisEvent) to an output file, in the same KEdwDS format. 
+// the file, event-by-event. It also gives you the option to save any 
+// interesting events (SaveThisEvent) to an output file, in the same KEvent format.
+// You could then save only a subset of the events in your original file
+// for faster analysis, or for more focused investigation.
 //
-// It also has a method that is used with an KEdwEventCollection object.
+// It also has a method that is used with an KEventCollection object.
 
 #include "KDataAnalysis.h"
 #include "KDataReader.h"
@@ -33,12 +35,14 @@ ClassImp(KDataAnalysis);
 
 KDataAnalysis::KDataAnalysis(const Char_t* fileName)
 {
+  //Open 'fileName' for analysis and event-looping.
+  
 	fFileReader = 0;
 	fFileWriter = 0;
-  InitializeMembers();
+  //InitializeMembers();
 	
 	if(fileName != 0) 
-		OpenEdsFile(fileName);
+		OpenKDataFile(fileName);
 }
 
 KDataAnalysis::~KDataAnalysis(void)
@@ -46,23 +50,30 @@ KDataAnalysis::~KDataAnalysis(void)
   Close();
 }
 
-void KDataAnalysis::InitializeMembers(void)
+/*void KDataAnalysis::InitializeMembers(void)
 {
 	//
 	
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 }
-
+*/
 
 void KDataAnalysis::Close(Option_t *anOpt)
 {
+  //close the file. anOpt is passed to TFile::Close().
+  
 	CloseOutput(anOpt);
 	CloseInput(anOpt);
 }
 
 void KDataAnalysis::CloseOutput(Option_t *anOpt)
 {
+  //close the output file. The output file is the file that holds 
+  //any events that you thought were interesting and decided 
+  //to save. anOpt is passed to TFile::Close(Option_t*).
+
+  
 	if(fFileWriter != 0){
 		fFileWriter->Close(anOpt);
 		delete fFileWriter;
@@ -72,6 +83,8 @@ void KDataAnalysis::CloseOutput(Option_t *anOpt)
 
 void KDataAnalysis::CloseInput(Option_t *anOpt)
 {
+  //close the input file. pass 'anOpt' to TFile::Close(Option_t*)
+  
 	if(fFileReader != 0){
 		fFileReader->Close(anOpt);
 		delete fFileReader;
@@ -79,8 +92,12 @@ void KDataAnalysis::CloseInput(Option_t *anOpt)
 	}
 }
 
-Int_t KDataAnalysis::OpenEdsFile(const Char_t* fileName)
+Int_t KDataAnalysis::OpenKDataFile(const Char_t* fileName)
 {
+  //open a file for reading/analyzing. this returns the number
+  //of entries found in the KDataFile, otherwise it returns -1 on 
+  //a failure
+  
 	fFileReader = new KDataReader(fileName);
 	if(fFileReader != 0){
 		return fFileReader->GetEntries();
@@ -90,6 +107,17 @@ Int_t KDataAnalysis::OpenEdsFile(const Char_t* fileName)
 
 KEvent*  KDataAnalysis::GetEvent(void)
 {
+  //Once you've opened your KDataFile, use this method to get a 
+  //pointer to the event object. This method returns a KEvent*, but
+  //you will probably want to cast that pointer into the appropriate type
+  //either a KRawEvent or KHLAEvent. For example, let's say you're 
+  //doing analysis with a KHLAEvent, you would do the following
+  //
+  //KDataAnalysis myAna("/path/to/myKHLADataFile.root");
+  //KHLAEvent *e = (KHLAEvent *)myAna.GetEvent();
+  //
+  
+  
 	if(fFileReader != 0)
 		return fFileReader->GetEvent();
 	
@@ -98,6 +126,9 @@ KEvent*  KDataAnalysis::GetEvent(void)
 
 Int_t KDataAnalysis::GetCurrentEntryNumber(void) const
 {
+  //returns the entry number of the tree that was most 
+  //recently accessed. 
+  
 	if(fFileReader != 0)
 		return fFileReader->GetCurrentEntryNumber();
 	
@@ -106,6 +137,9 @@ Int_t KDataAnalysis::GetCurrentEntryNumber(void) const
 
 Int_t KDataAnalysis::GetNextEntry(void) const
 {
+  //goes to the next entry in the tree. returns the size of the 
+  //entry in bytes (like TTree::GetEntry(Int_t i))
+  
 	if(fFileReader != 0)
 		return fFileReader->GetNextEntry();
 	
@@ -114,6 +148,9 @@ Int_t KDataAnalysis::GetNextEntry(void) const
 
 Int_t KDataAnalysis::GetPreviousEntry(void) const
 {
+  //goes to the previos entry in the tree. returns the size of the 
+  //entry in bytes (like TTree::GetEntry(Int_t i))
+  
 	if(fFileReader != 0)
 		return fFileReader->GetPreviousEntry();
 	
@@ -122,6 +159,9 @@ Int_t KDataAnalysis::GetPreviousEntry(void) const
 
 Int_t KDataAnalysis::GetEntry(Int_t anEntry) const
 {
+  //goes to entry, anEntry, in the tree. returns the size of the 
+  //entry in bytes (like TTree::GetEntry(Int_t i))
+  
 	if(fFileReader != 0)
 		return fFileReader->GetEntry(anEntry);
 	
@@ -130,6 +170,9 @@ Int_t KDataAnalysis::GetEntry(Int_t anEntry) const
 
 Int_t KDataAnalysis::GetEntries(void) const
 {
+  //returns the number of entries in the Tree in the input file that 
+  //was opened. Returns -1 if the file doesn't seem to have been opened. 
+  
 	if(fFileReader != 0)
 		return fFileReader->GetEntries();
 	
@@ -138,6 +181,15 @@ Int_t KDataAnalysis::GetEntries(void) const
 
 Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName)
 {
+  //opens an output file that will hold a list of KDatafiles
+  //of the same type as the input file. (this means, if you open
+  //a KData file holding KRawEvents, this method will open up a file
+  //that holds KRawEvents. And similarly for KHLAEvents.) 
+  //returns true if successful.
+  //you can then call SaveThisEvent to save the data found in object
+  //pointed to by GetEvent(), which is most likely the data found in the
+  //most recently accessed entry in the tree, to this output file.
+  
 	if(fFileWriter == 0){
 		fFileWriter = new KDataWriter(fileName, GetEventClassName());
 		return fFileWriter->IsReady();
@@ -149,6 +201,15 @@ Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName)
 
 Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName, const Char_t* aLevel)
 {
+  //opens an output file that will hold a list of KDatafiles
+  //of the  type 'aLevel'. if you pass aLevel = "HLA", you'll get
+  //a file with KHLAEvents in it. if aLevel = "Raw", you'll get a file
+  //with KRawEvents.
+  //returns true if successful.
+  //you can then call SaveThisEvent to save the data found in object
+  //pointed to by GetEvent(), which is most likely the data found in the
+  //most recently accessed entry in the tree, to this output file
+  
 	if(fFileWriter == 0){
 		fFileWriter = new KDataWriter(fileName, aLevel);
 		return fFileWriter->IsReady();
@@ -160,6 +221,14 @@ Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName, const Char_t* 
 
 Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName, KEvent **anEvent)
 {
+  //opens an output file that will hold a list of KDatafiles
+  //of whatever type anEvent is. If anEvent points to a KHLAEvent, then
+  //the output file will hold KHLAEvents. similarly for KRawEvents.
+  //returns true if successful.
+  //you can then call SaveThisEvent to save the data found in object
+  //pointed to by GetEvent(), which is most likely the data found in the
+  //most recently accessed entry in the tree, to this output file
+  
 	if(fFileWriter == 0){
 		fFileWriter = new KDataWriter(fileName, anEvent);
 		return fFileWriter->IsReady();
@@ -172,30 +241,34 @@ Bool_t KDataAnalysis::OpenOutputKDataFile(const Char_t* fileName, KEvent **anEve
 
 Int_t KDataAnalysis::SaveThisEvent(KEvent* e)
 {
-	//Save a particular event into the output Eds File. 
+  // For standard event saving, use SaveThisEvent(void).
+  //
+	//This method save a particular event, e,  into the output KData File. 
 	//The type of the event need not be the same type of
-	//event expected by the output Eds file (HLA, Raw, etc..)
-	//However, the output Eds file will contain a single tree
+	//event held in the input KData file (HLA, Raw, etc..)
+	//However, the output KData file will contain a single tree
 	//with a single branch of a particular event type. For example,
-	//if you call OpenOutputEdsFile("file.root","HLA"), then
-	//all of the events in file.root will be of type KEdwHLAEvent.
-	//If you call this method and pass in an event of type KEdwHLAEvent,
+	//if you call OpenOutputKDataFile("file.root","HLA"), then
+	//all of the events in file.root will be of type KHLAEvent.
+	//If you call this method and 'e' is an event of type KHLAEvent,
 	//then it will copy it normally into your output file. If you call
-	//this method and pass in an event of type KEdwRawEvent, then
-	//the KEdwHLAEvent class will copy all of the base information 
+	//this method and 'e' is an event of type KRawEvent, then
+	//the KHLAEvent class will copy all of the base information 
 	//AND compute any High Level parameters that it can based upon 
 	//the information that is available in the RawEvent class. 
-	//The other example is if you call OpenOutputEdsFile("file.root", "Raw").
-	//If you then call this method and pass in an event of type KEdwRawEvent
-	//it will copy the event normally. If you call this method
-	//and pass in an event of type KEdwHLAEvent, it will only copy the
+  //(However, at this moment, v3.0.1, no High Level Parameters are 
+  //automatically calculated yet, so only the basic information would be copied.)
+	//The other example is if you call OpenOutputKDataFile("file.root", "Raw").
+	//If you then call this method and 'e' is an event of type KRawEvent
+	//it will copy the all of the KRawEvent data normally. If you call this method
+	//and pass in an event of type KHLAEvent, it will only copy the
 	//data members that both classes share - namely, the data members
-	//that exist in the KEdwEventBase class. Any data members 
-	//specifically in the KEdwRawEvent
+	//that exist in the KEvent base class. Any data members 
+	//specifically in the KRawEvent
 	//class (and not in the base class) will not be set. 
 	//
-	//Returns -1 if it fails to save the event in your output EDS file
-	//otherwise returns from KEdwDSWriter::Fill. (TTree::Fill)
+	//Returns -1 if it fails to save the event in your output KData file
+	//otherwise returns from KDataWriter::Fill. (TTree::Fill)
 	
 	Int_t theRet = -1;
 		
@@ -209,7 +282,7 @@ Int_t KDataAnalysis::SaveThisEvent(KEvent* e)
 				cout << "KDataAnalysis::SaveThisEvent(KEvent *). KDataWriter::GetEvent() is NULL" << endl;
 				return theRet;
 			}
-			//the type of event (KEdwEventBase, KEdwHLAEvent, KEdwRawEvent, etc..) will
+			//the type of event (KEvent, KHLAEvent, KRawEvent, etc..) will
 			//be handled appropriatedly by the virtual assignment operator=
 			
 			//BUG! nope, i don't think that this works!
@@ -224,7 +297,9 @@ Int_t KDataAnalysis::SaveThisEvent(KEvent* e)
 
 Int_t KDataAnalysis::SaveThisEvent(void)
 {
-	//Saves the current event into the output Eds file.
+	//Saves the current event (the event held by the pointer returned
+  //by the method KDataAnalysis::GetEvent() )into the output KData file.
+  
 	return SaveThisEvent(GetEvent());
 }
 
@@ -241,6 +316,9 @@ Int_t KDataAnalysis::Write(const Char_t* name, Int_t option, Int_t bufsize)
 
 const char* KDataAnalysis::GetEventClassName(void) const
 {
+  //returns the name of the event class that was found in the 
+  //input KData file.
+  
 	if(fFileReader != 0) {
 		return fFileReader->GetEventClassName();
 	}
@@ -254,20 +332,14 @@ KEventCollection* KDataAnalysis::GetCoincEvent(KEventCollection *mCoincE, Double
 {
 	//This routine finds, for the current event that the file is pointing to,
 	//nearby events that match a particular criteria set by the input 
-	//arguments and packages them into an KEdwEventCollection object. 
+	//arguments and packages them into an KEventCollection object. 
 	//The current set of criteria is only a time window defined by the 
 	//two variables fForwardTime and fBackwardTime
 	//If the pointer to the KEdwEventCollection is NULL, this routine will
 	//make a new object, which you must delete when you're done with it. 
 	/*
 	 version: 0
-	 This routine only looks for coincidences within a specific time frame.
-	 
-	 In version 0, we only look for coincidences with the time stamp parameter.***
-	 The primary event must have an Energy and Q value in a specified range. 
-	 Then, once that event is found, it searches backwards and forward in time
-	 searching for any other type of event that is specified by another set of 
-	 conditions. 
+	 This routine only looks for coincidences within a specific time frame. 
 	 
 	 ***In order to be more inclusive, this routine should be modified somehow
 	 to search for physics event times by examining the ion pulse offset time.
@@ -285,8 +357,8 @@ KEventCollection* KDataAnalysis::GetCoincEvent(KEventCollection *mCoincE, Double
 	 its not clear when to stop searching for events away from the event
 	 of interest because the order of events is not guaranteed to be chronological. 
 	 The simplest thing to do would be to search for coincdences
-	 in time that is significantly large - beyond what is reasonably expected -
-	 and then analyze that subset in more detail. 
+	 in a significantly large time window - beyond what is reasonably expected -
+	 and then analyze the resulting subset in more detail. 
 	 Another possible work around is to write a new program that will break
 	 up the HLA event structure and re-organize it into an event structure
 	 that is based upon the physics event time ( = time stamp + ion pulse time),
@@ -303,81 +375,63 @@ KEventCollection* KDataAnalysis::GetCoincEvent(KEventCollection *mCoincE, Double
 	if(mCoincE == 0) mCoincE = new KEventCollection;
 	
 	Int_t fSaveEntry = GetCurrentEntryNumber();
-	
-	try {
-		
-		//NOTE - probably need to come up with an algorithm that
-		//will put these coincidence events in chronological order.
-		//Could probably just write a method the sorts for you. 
-		//could make it happen automatically inside of KEdwEventCollection::AddEvent
-		//Or, we just know that the first event in the CoincEvent is always
-		//the initial event of interest. 
-		//Or, see the WishList for the idea of making objects "Sortable"
-		
-		
-		if(KHLAEvent *mHlaEv = dynamic_cast<KHLAEvent *>(anEvent)){
-			//need a routine here to look for events near this particular event
-			//given the criteria above. 
-			Double_t deltaT = 0;
-			Double_t fCurrentTime = mHlaEv->GetStampTime();
-			Double_t fTempTime = fCurrentTime;
-			deltaT = fabs(fCurrentTime - fTempTime);
-			
-			mCoincE->AddEvent(mHlaEv);
-			
-			Bool_t keepGoing = true;
-			while(keepGoing){
-				if(GetPreviousEntry() > 0){
-					//cout << "..searching backward...." << endl;
-					mHlaEv = dynamic_cast<KHLAEvent *> (GetEvent());
-					fTempTime = mHlaEv->GetStampTime();
-					deltaT = fabs(fCurrentTime - fTempTime);
-					if(deltaT < fBackwardTime){  
-						//cout << "adding event" << endl;
-						mCoincE->AddEvent(mHlaEv);
-					}
-					else
-						keepGoing = false;
-				}
-				else {
-					keepGoing = false;
-				}
-			}
-			
-			GetEntry(fSaveEntry);
-			fCurrentTime = mHlaEv->GetStampTime();
-			fTempTime = fCurrentTime;
-			deltaT = fabs(fCurrentTime - fTempTime);
-			
-			keepGoing = true;
-			while(keepGoing){
-				if(GetNextEntry() > 0){
-					//cout << "..searching forward...." << endl;
-					mHlaEv = dynamic_cast<KHLAEvent *> (GetEvent());
-					fTempTime = mHlaEv->GetStampTime();
-					deltaT = fabs(fCurrentTime - fTempTime);
-					if(deltaT < fForwardTime) {
-						//cout << "adding event" << endl;
-						mCoincE->AddEvent(mHlaEv);
-					}
-					else
-						keepGoing = false;
-				}
-				else {
-					keepGoing = false;
-				}
-			}
-			
-		}
-		else {
-			cout << "KDataAnalysis::GetPhysicsEvent. Sorry, you can only do this with High Level Analysis Events at the moment" << endl;
-		}
-		
-	}
-	catch (bad_cast) {
-		//
-	}
-	
+  
+  //need a routine here to look for events near this particular event
+  //given the criteria above. 
+  Double_t deltaT = 0;
+  Double_t fCurrentTime = anEvent->GetStampTime();
+  Double_t fTempTime = fCurrentTime;
+  deltaT = fabs(fCurrentTime - fTempTime);
+  
+  mCoincE->AddEvent(anEvent);
+  
+  Bool_t keepGoing = true;
+  while(keepGoing){
+    if(GetPreviousEntry() > 0){
+      //cout << "..searching backward...." << endl;
+      
+      anEvent =  GetEvent();
+      fTempTime = anEvent->GetStampTime();
+      deltaT = fabs(fCurrentTime - fTempTime);
+      if(deltaT < fBackwardTime){  
+        //cout << "adding event" << endl;
+        mCoincE->AddEvent(anEvent);
+      }
+      else
+        keepGoing = false;
+    }
+    else {
+      keepGoing = false;
+    }
+  }
+
+  
+  //reset and search forward in time. 
+  GetEntry(fSaveEntry);
+  anEvent = GetEvent();
+  fCurrentTime = anEvent->GetStampTime();
+  fTempTime = fCurrentTime;
+  deltaT = fabs(fCurrentTime - fTempTime);
+  
+  keepGoing = true;
+  while(keepGoing){
+    if(GetNextEntry() > 0){
+      //cout << "..searching forward...." << endl;
+      anEvent = GetEvent();
+      fTempTime = anEvent->GetStampTime();
+      deltaT = fabs(fCurrentTime - fTempTime);
+      if(deltaT < fForwardTime) {
+        //cout << "adding event" << endl;
+        mCoincE->AddEvent(anEvent);
+      }
+      else
+        keepGoing = false;
+    }
+    else {
+      keepGoing = false;
+    }
+  }
+
 	GetEntry(fSaveEntry);
 	
 	return mCoincE;
@@ -386,6 +440,12 @@ KEventCollection* KDataAnalysis::GetCoincEvent(KEventCollection *mCoincE, Double
 
 Double_t KDataAnalysis::GetBoloPhysicsEventTime(Int_t i, KHLAEvent *ev) 
 {
+  //If the input file is a high level file (holds KHLAEvents), 
+  //it will look at the i^th bolometer record in the event
+  //and return the stamp value + the ion pulse time offset in seconds. 
+  //if the i^th record does not exist, or if its not a high level file
+  //it will return -9999
+  
 	if(ev == 0)
 		ev = dynamic_cast< KHLAEvent *>( this->GetEvent() );
 	

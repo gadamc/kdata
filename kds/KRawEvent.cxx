@@ -34,6 +34,7 @@
 
 #include "KRawEvent.h"
 #include "KHLAEvent.h"
+#include "KRawBoloPulseRecord.h"
 #include <typeinfo>
 #include <iostream>
 #include <exception>
@@ -46,31 +47,73 @@ KRawEvent::KRawEvent(void)
 {
 	//Default constructor 
 	
+  fNumBoloPulse = 0;
+  fBoloPulse = 0;
+  
 	InitializeMembers();
+  CreateArrays();
 
 }
 
 KRawEvent::KRawEvent(const KRawEvent &anEvent)
 : KEvent(anEvent)
 {
+  //copy constructor
+  
+  fNumBoloPulse = 0;
+  fBoloPulse = 0;
 	CopyLocalMembers(anEvent);
-	
+  CreateArrays();
+  CopyClonesArrays(anEvent);
+
 }
+
+
+KRawEvent::~KRawEvent(void) 
+{
+  //destructor 
+  
+	//Does calling Clear at destructor take up too much computing time?
+	Clear("C");
+  
+  if(fBoloPulse) delete fBoloPulse;
+	fBoloPulse = 0;
+}
+
+
 KRawEvent& KRawEvent::operator=(const KEvent &anEvent)
 {
+  //assignment operator
+  
 #ifdef _K_DEBUG_EVENT_ASSIGNOP
 	cout << "raw = base" << endl;
 #endif
 	if(&anEvent == this) return *this;
 
-	//copy the base class info.
-	this->KEvent::operator=(anEvent);
+  try {
+		const KRawEvent &rhs = dynamic_cast<const KRawEvent&>(anEvent);
+		this->operator=(rhs);
+		
+	}
+	catch(bad_cast) {
+		
+		try{
+			const KHLAEvent &rhs = dynamic_cast<const KHLAEvent&>(anEvent);
+			this->operator=(rhs);
+		}
+		
+		catch(bad_cast) {
+			this->KEvent::operator=(anEvent);
+		}
+	}
 	
 	return *this;
 }
 
 KRawEvent& KRawEvent::operator=(const KRawEvent &anEvent)
 {
+  //assignment operator
+  
 #ifdef _K_DEBUG_EVENT_ASSIGNOP
 	cout << "raw = raw" << endl;
 #endif
@@ -80,12 +123,16 @@ KRawEvent& KRawEvent::operator=(const KRawEvent &anEvent)
 	this->KEvent::operator=(anEvent);
 
 	CopyLocalMembers(anEvent);
-	
+	CopyClonesArrays(anEvent);
+  
 	return *this;	
 }
 
 KRawEvent& KRawEvent::operator=(const KHLAEvent &anEvent)
 {
+  //assignment operator - only assigns the common data found in the 
+  //base class.
+  
 #ifdef _K_DEBUG_EVENT_ASSIGNOP
 	cout << "raw = hla" << endl;
 #endif
@@ -94,7 +141,7 @@ KRawEvent& KRawEvent::operator=(const KHLAEvent &anEvent)
 		if(&rhs == this) return *this;
 		//copy the base class info.
 		this->KEvent::operator=(rhs);
-
+    //CopyFromHlaEvent(anEvent);
 	}
 	catch (bad_cast) {
 		cout << "THROW!" << endl;
@@ -105,15 +152,48 @@ KRawEvent& KRawEvent::operator=(const KHLAEvent &anEvent)
 	return *this;
 }
 
-void KRawEvent::CopyLocalMembers(const KRawEvent &/*anEvent*/)
+void KRawEvent::CopyLocalMembers(const KRawEvent &anEvent)
 {
-	//nothing to do
+  //copies local data members
+  
+  fRunName = anEvent.fRunName; 
+	fSambaEventNumber = anEvent.fSambaEventNumber;
+	fDateSec = anEvent.fDateSec;
+	fDateMuSec = anEvent.fDateMuSec;
+	fSambaDelay = anEvent.fSambaDelay;
+	fTriggerBit1 = anEvent.fTriggerBit1;
+	fTriggerBit2 = anEvent.fTriggerBit2;
+	fNumBoloPulse = anEvent.fNumBoloPulse;
 }
 
-KRawEvent::~KRawEvent(void) 
+Int_t KRawEvent::AddSubRecords(const KRawEvent &anEvent)
 {
-	//Does calling Clear at destructor take up too much computing time?
-	Clear("C");
+  //add all of the subrecord in anEvent to this.
+  //returns the number of records added
+  
+  Int_t numRecords = 0;
+  
+  for(Int_t i = 0; i < anEvent.fNumBoloPulse; i++){
+    KRawBoloPulseRecord *pulse0 = anEvent.GetBoloPulse(i);
+    KRawBoloPulseRecord *pulse = AddBoloPulse();
+    numRecords++;
+    if(pulse0 != 0 && pulse != 0){
+      *pulse = *pulse0;
+    }
+  }
+  
+  return numRecords;
+}
+
+void KRawEvent::CopyClonesArrays(const KRawEvent &anEvent)
+{
+  ClearArrays("C");
+  AddSubRecords(anEvent);
+}
+
+void KRawEvent::ClearArrays(Option_t *opt)
+{
+  DeleteArray(opt, fBoloPulse, fNumBoloPulse); // have to call delete because the pulse contains a string
 }
 
 void KRawEvent::Clear(Option_t *opt)
@@ -122,6 +202,8 @@ void KRawEvent::Clear(Option_t *opt)
 	//members. Its necessary for this Clear method to exist
 	//in the case that instances of this object are stored
 	//inside of a TClonesArray
+  ClearArrays(opt);
+  
 	KEvent::Clear(opt);
 	
 	//Clear and delete local objects here. 
@@ -130,8 +212,69 @@ void KRawEvent::Clear(Option_t *opt)
 
 void KRawEvent::InitializeMembers(void)
 {
-	
+	fRunName = "";
+  fSambaEventNumber = -99;
+  fDateSec = -99;
+  fDateMuSec = -99;
+  fSambaDelay = -99;
+  fTriggerBit1 = 0;
+  fTriggerBit2 = 0;
 }
+
+void KRawEvent::CreateArrays(void)
+{
+  //Allocates memory for the TClonesArrays if they haven't already
+	//been allocated.
+	
+  if(!fBoloPulse)
+		fBoloPulse = new TClonesArray("KRawBoloPulseRecord",20);
+  
+}
+
+template<class T> T* KRawEvent::AddSubRecord(TClonesArray *mArray, Int_t &mCount)
+{
+	TClonesArray &mArrayRef = *mArray;
+	T* mNewSubRecord = new(mArrayRef[mCount++]) T;
+	return mNewSubRecord;
+}
+
+void KRawEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
+{
+	if(mArray) {
+		//we have to delete because our sub-records contain TString members! :(
+		mArray->Delete( (anOption && *anOption) ? anOption : "C" );
+		mCount = 0;
+	}
+}
+
+
+void KRawEvent::ClearArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
+{
+	if(mArray) {
+		mArray->Clear( (anOption && *anOption) ? anOption : "C" );
+		mCount = 0;
+	}
+}
+
+
+KRawBoloPulseRecord* KRawEvent::AddBoloPulse(void)
+{
+  //Use this event only when creating an event and you want to add
+	//a new SubRecord.
+  
+  AddTriggerType(kBoloTriggerType);
+  return AddSubRecord<KRawBoloPulseRecord>(fBoloPulse,fNumBoloPulse);
+}
+
+KRawBoloPulseRecord *KRawEvent::GetBoloPulse(Int_t i) const
+{
+  // Return the i'th Bolometer Pulse Sub Record for this event.
+	
+  KRawBoloPulseRecord *ms = 0;
+  if (i < fNumBoloPulse && i >= 0) ms = (KRawBoloPulseRecord *)fBoloPulse->At(i);
+  return ms;
+}
+
 
 Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 {

@@ -8,7 +8,11 @@
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
 // Most of the Samba Sub Record data are in the base class KSambaRecord.
-// In fact, there's nothing in this class at the moment. 
+// In fact, there's nothing in this class at the moment. It may not make 
+// sense in the end to have a "high-level" samba record
+// since it only contains raw data. But then again, if there are 
+// any raw-data 'corrections' that need to be made, this would be 
+// the place for those corrected data to exist.
 // 
 
 

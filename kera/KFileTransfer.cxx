@@ -7,6 +7,9 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
+// A class that performs rsyncs of files between a local directory and a
+// remote server. By default, the remote server is ccali.in2p3.fr and
+// the remote directory is "/sps/edelweis/kdata/data/rootevts/". See SetDefaultValues()
 //
 
 #include "KFileTransfer.h"
@@ -22,6 +25,8 @@ ClassImp(KFileTransfer);
 
 KFileTransfer::KFileTransfer(void)
 {
+  //constructor with no username specified
+  
 	SetDefaultValues();
   try {
 		fSystem = dynamic_cast<TUnixSystem*>(gSystem);
@@ -33,6 +38,8 @@ KFileTransfer::KFileTransfer(void)
 
 KFileTransfer::KFileTransfer(string aUser): fUser(aUser)
 {
+  //constructor using default values and sets the user name
+  
 	SetDefaultValues();
   try {
 		fSystem = dynamic_cast<TUnixSystem*>(gSystem);
@@ -94,8 +101,12 @@ void KFileTransfer::SetDefaultValues(void)
 
 void KFileTransfer::Transfer(string aFilename)
 {
-  // for(int k = 0; k<20; ++k)
-	// cout << name[k] << endl;
+
+  //This function performs the rsync.
+  //
+  // "rsync -Lz " + fExtraRsyncOptions + "--rsh=ssh " + fUser + 
+  // "@" + fServer + ":" + fSourcePath +  aFilename + " " + fTargetPath  + aFilename;
+  //
   
   //We MUST ensure that fSourcePath ends with a "/"
   TString aSourcePath = fSourcePath;
@@ -131,14 +142,4 @@ bool KFileTransfer::FileExists(string aFileName)
     
   else return false;
 }
-
-/*
- int GetFileModTime(string aFilename) {
- struct stat results;
- stat(aFilename,&results);
- return results.st_mtime;
- }
- */
-
-
 

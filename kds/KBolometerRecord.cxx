@@ -8,7 +8,9 @@
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
 // A base class for all SingleBolo Sub Records. The SingleBolo Sub records
-// contain data from an individual bolometer. 
+// contain data from an individual bolometer. Currently, it only holds
+// the bolometer detector name. All other data are found in the Raw and HLA
+// bolometer record files. 
 //
 
 #include "KBolometerRecord.h"
@@ -22,6 +24,8 @@ ClassImp(KBolometerRecord);
 
 KBolometerRecord::KBolometerRecord(void)
 {
+  //constructor 
+  
 	InitializeMembers();
 	
 	//we must take care of members on the heap outside of 
@@ -32,13 +36,16 @@ KBolometerRecord::KBolometerRecord(void)
 KBolometerRecord::KBolometerRecord(const KBolometerRecord &aRec)
 : KSubRecord(aRec)
 {
-	
+	//copy constructor 
+  
 	CopyLocalMembers(aRec);
 	
 }
 
 KBolometerRecord& KBolometerRecord::operator=(const KBolometerRecord &aRec)
 {
+  //assignment operator
+  
 	if(&aRec == this) return *this;
 	
 	this->KSubRecord::operator=(aRec);
@@ -58,6 +65,8 @@ void KBolometerRecord::CopyLocalMembers(const KBolometerRecord &aRec)
 
 KBolometerRecord::~KBolometerRecord(void)
 {
+  //destructor 
+  
 	//Does calling clear at destruction take too much computing time?
   Clear("C");
 	
@@ -87,7 +96,7 @@ void KBolometerRecord::Clear(Option_t *opt)
 
 void KBolometerRecord::InitializeMembers(void)
 {
-  //
+  //init local members
   
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
@@ -96,21 +105,13 @@ void KBolometerRecord::InitializeMembers(void)
 
 void KBolometerRecord::SetDetectorName(const Char_t* aWord)
 {
-	//if(fDetectorName == 0)
-	//	fDetectorName = new TString;
+	
 	fDetectorName = aWord;
 }
 
 string KBolometerRecord::GetDetectorName(void) const 
 {
-	/*if(fDetectorName != 0){
-		string str = fDetectorName->Data();
-		return str;
-	}
-	else{
-		return "";
-	}
-	*/
+	
 	return fDetectorName;
 }
 
@@ -159,7 +160,9 @@ Bool_t KBolometerRecord::IsDetector(const char* name)
   //returns true if name is equal to the string fDetectorName.
   //This method is quite useful when using the TTree::Draw methods 
   //and accessing data via the class methods instead of the variable names
-  //
+  //this is faster because no strings are created and destroyed (no 
+  //unnecessary memory allocation).
+  
   //Use it like this:
   //
   //t->Draw("fQvalue:fEnergyRecoil","fBolo.IsDetector(\"ID3\")")

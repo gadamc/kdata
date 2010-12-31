@@ -5,7 +5,10 @@
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
-//
+// Substracts the baseline level from a pulse.
+// Use SetBaselineStart and SetBaselineStop to set the region of the pulse
+// that is used to calculate the baseline. The default values are 0% and 40%
+// 
 
 
 #include "KBaselineRemoval.h"
@@ -25,6 +28,9 @@ KBaselineRemoval::~KBaselineRemoval(void)
 
 void KBaselineRemoval::InitializeMembers(void)
 {
+  //initialize members. The baseline start and stop values are initially
+  // set to 0.0 and 0.40, respectively.
+  
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	fBaselineStart = 0.0;

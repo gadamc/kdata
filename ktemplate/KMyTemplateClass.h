@@ -1,11 +1,12 @@
-/*
- *  KMyTemplateClass.h
- *  KDataStructure
- *
- *  Created by Adam Cox on 3/8/10.
- *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
- *
- */
+//
+// KMyTemplateClass.h
+// KDataStructure
+//
+// Created by Adam Cox on 3/8/10.
+// Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+//
+//
+
 #ifndef __KMYTEMPLATECLASS_H__
 #define __KMYTEMPLATECLASS_H__
 
