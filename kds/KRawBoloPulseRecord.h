@@ -35,10 +35,10 @@ public:
   
   //setters
   
-  void SetChannelName(const char* name);
-  void SetPulseTimeWidth(ULong_t aVal);
+  void SetChannelName(const char* name) {fChannelName = name;  } 
+  void SetPulseTimeWidth(ULong_t aVal) {fPulseTimeWidth = aVal;  }
   void SetTrace(const vector<Short_t> & aTrace) { fTrace = aTrace; }
-  void SetTrace(UShort_t n, const Short_t* aData) ; 
+  //void SetTrace(UShort_t n, const Short_t* aData); 
   void SetSambaAmplitude(Double32_t aVal){fSambaAmplitude = aVal;  }
   void SetSambaBaselineAmplitude(Double32_t aVal){fSambaBaselineAmplitude = aVal;  }
   void SetSambaNoiseAmplitude(Double32_t aVal){fSambaNoiseAmplitude = aVal;  }
