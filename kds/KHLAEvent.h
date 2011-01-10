@@ -92,18 +92,26 @@ public:
 	KHLAMuonModuleRecord* AddMuonModule();
 	
 	//Setters to local members
-		
-	//Only use these if you know what you're doing. 
-	void SetNumSamba(Int_t aNum){fNumSamba = aNum;} //Only use these if you know what you're doing. 
-	void SetNumBolo(Int_t aNum){fNumBolo = aNum;} //Only use these if you know what you're doing. 
-	void SetNumBoloPulse(Int_t aNum){fNumBoloPulse = aNum;} //Only use these if you know what you're doing. 
-	void SetNumMuonModule(Int_t aNum){fNumMuonModule = aNum;} //Only use these if you know what you're doing. 
-		
-	//Print data members //Probably it would be much easier to implement it in Event and just overload it, but I don't really know how to do it and I only really nead it for testing.
-	void myPrint();
-	
-private: 
+  Int_t GetRunNumber(void) const {return fRunNumber;}
+	Double_t GetRunStartTime(void) const {return fRunStartTime;}
+	Double_t GetRunEndTime(void) const {return fRunEndTime;}
+  UInt_t GetGSEventNumber(void) const {return fGSEventNumber;}
 
+  void SetRunNumber(Int_t aNum) {fRunNumber = aNum;}
+	void SetRunStartTime(Double_t aNum) {fRunStartTime = aNum;}
+	void SetRunEndTime(Double_t aNum) {fRunEndTime = aNum;}
+  void SetGSEventNumber(UInt_t aNum) {fGSEventNumber = aNum;}
+
+  
+	//Only use these if you know what you're doing. 
+	//void SetNumSamba(Int_t aNum){fNumSamba = aNum;} //Only use these if you know what you're doing. 
+	//void SetNumBolo(Int_t aNum){fNumBolo = aNum;} //Only use these if you know what you're doing. 
+	//void SetNumBoloPulse(Int_t aNum){fNumBoloPulse = aNum;} //Only use these if you know what you're doing. 
+	//void SetNumMuonModule(Int_t aNum){fNumMuonModule = aNum;} //Only use these if you know what you're doing. 
+		
+
+private: 
+  
 	KHLABoloSysRecord fBoloSystem;  //the Bolometer System Record
 	KHLAMuonVetoSysRecord fMuonSystem; //Muon Veto System Record
 	
@@ -160,6 +168,12 @@ private:
 	 
 	 */
 	
+  
+  Int_t fRunNumber; //big Run number. the small run number is found in the Bolometer data record
+	Double_t fRunStartTime;  //begining of the Big Run 
+	Double_t fRunEndTime; //end of the Big Run
+  Int_t fGSEventNumber; //Global Software Event Number. starts from 1 with each new Run
+  
 	//private methods
 	void CreateArrays(void);
 	void InitializeMembers(void);
@@ -175,7 +189,7 @@ private:
 	UInt_t GetLargestUniqueIDNumber(void);
 
 	
-	ClassDef(KHLAEvent ,1);
+	ClassDef(KHLAEvent ,2);
 };
 
 

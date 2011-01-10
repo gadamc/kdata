@@ -87,8 +87,8 @@ void mergeEdsEvent(KHLAEvent &eout, KHLAEvent &ev1, KHLAEvent &ev2, TTree *t1, I
 
 
 void printInfo(KHLAEvent& ev){
-	ev.myPrint();
-	ev.myPrintB();
+	//ev.myPrint();
+	//ev.myPrintB();
 
 	for(Int_t i = 0; i < ev.GetNumBolos(); i++){
 	  KHLABolometerRecord* bolo= ev.GetBolo(i);
@@ -708,10 +708,10 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 									cout << "Scanned "<< i <<" events in File2 and did not find the time restart of File 1." << endl;
 									cout << "entry1 : entry2 : oldStamp1 : stamp1 : oldStamp2 : stamp2  : pcTime1 : pcTime2 : numBolos1 : numMuon1 : numBolos2 : numMuon2 \n"<< entry1 << " : "<< entry2 << " : "<< oldStamp1 << " : "<< stamp1 <<" : "<< oldStamp2 << " : "<< stamp2 << " : " << oldEv1->GetEventTriggerTime() << " : " << oldEv2->GetEventTriggerTime()   << " : " << oldEv1->GetNumBolos()  << " : " << oldEv1->GetNumMuonModules() << " : " << oldEv2->GetNumBolos()  << " : " << oldEv2->GetNumMuonModules() <<endl ;
 									cout << "Pointer 1 and Pointer 2 " << oldEv1 << " and " << oldEv2 << endl;
-									oldEv1->myPrint();
-									oldEv1->myPrintB();
-									oldEv2->myPrint();
-									oldEv2->myPrintB();
+									//oldEv1->myPrint();
+									//oldEv1->myPrintB();
+									//oldEv2->myPrint();
+									//oldEv2->myPrintB();
 									//char d; cin >> d;		
 								}
 								mEv->Clear();
@@ -743,10 +743,10 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 								if(i==10000){
 									cout << "Scanned "<< i <<" events in File1 and did not find the time restart of File 2." << endl;
 									cout << "entry1 : entry2 : oldStamp1 : stamp1 : oldStamp2 : stamp2 : pcTime1 : pcTime2  \n"<< entry1 << " : "<< entry2 << " : "<< oldStamp1 << " : "<< stamp1 <<" : "<< oldStamp2 << " : "<< stamp2 << " : " << oldEv1->GetEventTriggerTime() << " : " << oldEv2->GetEventTriggerTime() <<  endl;
-									oldEv1->myPrint();
-									oldEv1->myPrintB();
-									oldEv2->myPrint();
-									oldEv2->myPrintB();
+									//oldEv1->myPrint();
+									//oldEv1->myPrintB();
+									//oldEv2->myPrint();
+									//oldEv2->myPrintB();
 									//char d; cin >> d;		
 								}
 								mEv->Clear();

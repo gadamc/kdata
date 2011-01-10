@@ -30,9 +30,7 @@ KSambaRecord::KSambaRecord(void)
 	
 	//We must deal with members on the heap separately 
 	//from members on the stack
-	//fRunName=0;
-	//fRunName = new TString;
-		
+
 }
 
 
@@ -41,8 +39,7 @@ KSambaRecord::KSambaRecord(const KSambaRecord &aRec)
 {
   //copy constructor
   
-	//fRunName=0;
-	//fRunName = new TString;
+
 	CopyLocalMembers(aRec);
 
 }
@@ -61,13 +58,12 @@ KSambaRecord& KSambaRecord::operator=(const KSambaRecord &aRec)
 
 void KSambaRecord::CopyLocalMembers(const KSambaRecord &aRec)
 {
-	SetSambaEventNumber(aRec.GetSambaEventNumber()); 
-	SetNtpDateSec(aRec.GetNtpDateSec()); 
-	SetNtpDateMicroSec(aRec.GetNtpDateMicroSec()); 
-	SetSambaDAQNumber(aRec.GetSambaDAQNumber());
-	
-	SetRunName(aRec.fRunName.c_str());
-	
+	fSambaEventNumber = aRec.fSambaEventNumber; 
+	fNtpDateSec = aRec.fNtpDateSec;
+	fNtpDateMicroSec = aRec.fNtpDateMicroSec; 
+	fSambaDAQNumber = aRec.fSambaDAQNumber;
+	fRunName = aRec.fRunName;
+	fFileNumber = aRec.fFileNumber;
 }
 
 KSambaRecord::~KSambaRecord(void)
@@ -75,11 +71,6 @@ KSambaRecord::~KSambaRecord(void)
   //destructor
   
 	Clear("C");
-
-	//if(fRunName!=0){
-	//	delete fRunName;
-	//	fRunName=0;	
-	//}
 	
 	
 }
@@ -98,11 +89,6 @@ void KSambaRecord::Clear(Option_t *opt)
   //Clear and delete local objects here. 
 	//delete local stuff here
 
-	//if(fRunName!=0){
-	//	delete fRunName;
-	//	fRunName=0;
-	//}
-
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
 
@@ -110,8 +96,6 @@ void KSambaRecord::Clear(Option_t *opt)
 
 void KSambaRecord::SetRunName(const Char_t* aWord)
 {
-	//if(fRunName == 0)
-	//	fRunName = new TString;
 	
 	fRunName = aWord;
 
@@ -119,13 +103,7 @@ void KSambaRecord::SetRunName(const Char_t* aWord)
 
 string KSambaRecord::GetRunName(void) const 
 {
-	//if(fRunName != 0){
-	//	string str = fRunName->Data();
-	//	return str;
-	//}
-	//else{
-	//	return "";
-	//}
+	
 	return fRunName;
 }
 
@@ -140,8 +118,8 @@ void KSambaRecord::InitializeMembers(void)
 	SetNtpDateSec(-99); 
 	SetNtpDateMicroSec(-99); 
 	SetSambaDAQNumber(-99);
-	
-
+	fFileNumber = -99;
+  fRunName = "";
 }
 
 
@@ -206,25 +184,6 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
 		else
 			return false;  
 	}
-	
-	/*
-	if(fRunName != 0 && aRec.fRunName != 0){
-		if(*fRunName != *aRec.fRunName){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KSambaRecord fRunName Not Equal. lhs: " 
-				<< *fRunName << " != rhs " << *aRec.fRunName << endl;		
-			else
-				return false;  
-		}
-	}
-	else {
-		if (bPrint) 
-			cout << "KSambaRecord a fRunName pointer is zero " 
-			<< fRunName << " != rhs " << aRec.fRunName << endl;		
-		else
-			return false;
-	}*/
 	
 	return bIsEqual;
 }

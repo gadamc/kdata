@@ -76,16 +76,15 @@ KEvent& KEvent::operator=(const KEvent &anEvent)
 
 void KEvent::CopyLocalMembers(const KEvent &anEvent)
 {
-	SetRunNumber(anEvent.GetRunNumber());
+	
 	SetEventTriggerTime(anEvent.GetEventTriggerTime()); 
 	SetStamp(anEvent.GetStamp());
-	SetRunStartTime(anEvent.GetRunStartTime());
-	SetRunEndTime(anEvent.GetRunEndTime());
+	
 	SetTriggerType(anEvent.GetTriggerType()); 
 	//SetDataType(anEvent.GetDataType());
 	//SetDetectorStatusWord(anEvent.GetDetectorStatusWord());
 	//SetBlindnessWord(anEvent.GetBlindnessWord());
-	SetGSEventNumber(anEvent.GetGSEventNumber());	
+	
 	
 }
 
@@ -112,16 +111,14 @@ void KEvent::InitializeMembers(void)
 	//WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
 	//ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	
-	SetRunNumber(-99);
-	SetEventTriggerTime(-99.0); 
+  SetEventTriggerTime(-99.0); 
 	SetStamp(-99);
-	SetRunStartTime(-99.0);
-	SetRunEndTime(-99.0);
+	
 	SetTriggerType(0); //initialize this to zero, instead of -99 so that AddTriggerType works.
 	//SetDataType(-99);
 	//SetDetectorStatusWord(-99);
 	//SetBlindnessWord(-99);
-	SetGSEventNumber(-99);	
+		
 }
 
 Bool_t KEvent::operator==(const KEvent &anEvent) const
@@ -139,31 +136,7 @@ Bool_t KEvent::IsSame(const KEvent &anEvent, Bool_t bPrint) const
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 
 
-	if(fRunNumber != anEvent.fRunNumber){
-		if (bPrint) 
-			cout << "KEvent fRunNumber Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}
-	
-	if(fRunStartTime != anEvent.fRunStartTime){
-		if (bPrint) 
-			cout << "KEvent fRunStartTime Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}
-	
-	if(fRunEndTime != anEvent.fRunEndTime){
-		if (bPrint) 
-			cout << "KEvent fRunEndTime Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}
-	
+		
 	if(fEventTriggerTime != anEvent.fEventTriggerTime){
 		if (bPrint) 
 			cout << "KEvent fEventTriggerTime Not Equal" << endl;		
@@ -211,15 +184,7 @@ Bool_t KEvent::IsSame(const KEvent &anEvent, Bool_t bPrint) const
 		if(!bPrint)
 			return false;  
 	}*/
-	
-	if(fGSEventNumber != anEvent.fGSEventNumber){
-		if (bPrint) 
-			cout << "KEvent fGSEventNumber Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}
-	
+		
 	return bIsEqual;
 }
 
@@ -250,19 +215,6 @@ Double_t KEvent::GetStampTime(void) const
 	//return GetSecPerStamp() * GetStamp();
 	
 	return GetSecPerStamp() * GetStamp();
-}
-
-void KEvent::myPrintB() const
-{
-	//prints out a number of data member variables to std out. 
-	//this method needs some work and should be renamed! It was hacked out
-  //by Benjamin Schmidt some time ago during the dark ages. 
-	
-	//cout << "fNumSambas : fNumSingleBolos : fNumBoloPulses : fNumMuonModules"<<endl;
-	//cout << fNumSambas  <<" : " << fNumSingleBolos <<" : " << fNumBoloPulses <<" : " << fNumMuonModules << endl;
-	std::cout <<  "fRunNumber : fStamp : fTriggerType : fGSEventNumber" << endl;
-	cout << fRunNumber  <<" : " << fStamp <<" : " << fTriggerType <<" : " << fGSEventNumber  << endl;
-	
 }
 
 /* settled for one complete stamp

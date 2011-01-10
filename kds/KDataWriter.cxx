@@ -35,6 +35,12 @@ using namespace std;
 
 ClassImp(KDataWriter);
 
+KDataWriter::KDataWriter(void)
+{
+  fEventBranch = 0;
+	fLocalEvent = 0;
+	bIsReady = false;
+}
 
 KDataWriter::KDataWriter(const Char_t* name, const Char_t* eventType, 
 												 const Char_t* mode)

@@ -124,8 +124,7 @@ private:
 	Int_t fEventFlag;  //0 = noise, 1 = heat only, 2 = fiducial, 3 = surface, 4 = pure guard, 5 = other.. calculated by ERA
 	Int_t fChi2Flag; //set to 1 if the chi2 of all relevant channesl is okay (different from cuts.CutChi2)
 	TBits fIonFlags; //||  //don't split
-	//Int_t fTriggerBit1; //Samba's Liste1 event trigger bit map
-	//Int_t fTriggerBit2; //Samba's Liste2 event trigger bit map
+	
 	Int_t fVoltageFlag; //Set to the voltage configuration value, as found in era/Scripts/params_id_run12.C .
 	Int_t fIonPulseTimeOffset; //the time offset of the peak of the ion pulse relative to the peak of the heat pulse, in units of stamp (10 microseonds)
 

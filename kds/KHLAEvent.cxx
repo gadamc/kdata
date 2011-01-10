@@ -386,21 +386,6 @@ Bool_t KHLAEvent::AddThisBoloSubRecord(const KHLAEvent &anEvent, Int_t boloRecor
 void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 {
 	//
-	//ClonesArray assignment doesn't appear to work in the following way
-	//*fSamba = *anEvent.GetSambaRecords();
-	//*fBolo = *anEvent.GetBoloSubRecords();
-	//*fBoloPulse = *anEvent.GetBoloPulseRecords();
-	//*fMuonModule = *anEvent.GetMuonModuleRecords();
-	//
-	//so, I just clear this object's array, and create as many objects as I need.
-	//this might be inefficient, but I don't think so. besides,
-	//we likely won't be creating many many instances of the Event class.
-	//at least, we shouldn't do that. 
-	//if your code is really slow and you think it has something
-	//to do with copying HLAEvents, look here for possible fixes. 
-	//
-	//MUST copy all TRef's appropriately to the new file. Otherwise
-	//they will point to records in a different File!
 
 	ClearArrays("C");
 	
@@ -418,6 +403,11 @@ void KHLAEvent::CopyLocalMembers(const KHLAEvent &anEvent)
 	fNumBoloPulse = anEvent.fNumBoloPulse;
 	fNumMuonModule = anEvent.fNumMuonModule;
 	
+  fRunNumber = anEvent.fRunNumber;
+  fRunStartTime = anEvent.fRunStartTime;
+	fRunEndTime = anEvent.fRunEndTime;
+  fGSEventNumber = anEvent.fGSEventNumber;	
+  
 }
 
 void KHLAEvent::CopyFromRawEvent(const KRawEvent &/*anEvent*/)
@@ -460,6 +450,10 @@ void KHLAEvent::Clear(Option_t *anOption)
 void KHLAEvent::InitializeMembers(void)
 {
 
+  SetRunNumber(-99);
+  SetRunStartTime(-99.0);
+	SetRunEndTime(-99.0);
+  SetGSEventNumber(-99);
 	
 }
 
@@ -733,14 +727,41 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 			return false;
 	}
 		
-	return bIsEqual;
-}
-
-void KHLAEvent::myPrint()
-{
-	cout << "fNumSamba : fNumBolo : fNumBoloPulse : fNumMuonModule"<<endl;
-	cout << fNumSamba  <<" : " << fNumBolo <<" : " << fNumBoloPulse <<" : " << fNumMuonModule << endl;
+  if(fRunNumber != anEvent.fRunNumber){
+		if (bPrint) 
+			cout << "KHLAEvent fRunNumber Not Equal" << endl;		
+		bIsEqual = false;
+		if(!bPrint)
+			return false;  
+	}
 	
+	if(fRunStartTime != anEvent.fRunStartTime){
+		if (bPrint) 
+			cout << "KHLAEvent fRunStartTime Not Equal" << endl;		
+		bIsEqual = false;
+		if(!bPrint)
+			return false;  
+	}
+	
+	if(fRunEndTime != anEvent.fRunEndTime){
+		if (bPrint) 
+			cout << "KHLAEvent fRunEndTime Not Equal" << endl;		
+		bIsEqual = false;
+		if(!bPrint)
+			return false;  
+	}
+
+  
+	if(fGSEventNumber != anEvent.fGSEventNumber){
+		if (bPrint) 
+			cout << "KHLAEvent fGSEventNumber Not Equal" << endl;		
+		bIsEqual = false;
+		if(!bPrint)
+			return false;  
+	}
+  
+  
+	return bIsEqual;
 }
 
 void KHLAEvent::Compact(void)

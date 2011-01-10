@@ -24,6 +24,7 @@ public:
 	//to worry about cleaning up. ROOT does this for you.
 	//But you can use the GetEvent method below to get a pointer
 	//to the event class.
+  KDataWriter(void);
 	KDataWriter(const Char_t* filename, const Char_t* eventType = "HLA", 
 								const Char_t* mode = "recreate");
 	Bool_t OpenFile(const Char_t* fileName, const Char_t* eventType = "HLA",

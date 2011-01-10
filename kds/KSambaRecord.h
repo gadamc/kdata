@@ -38,14 +38,17 @@ public:
 	Int_t GetNtpDateSec(void) const {return fNtpDateSec;}
 	Int_t GetNtpDateMicroSec(void) const {return fNtpDateMicroSec;}
 	Int_t GetSambaDAQNumber(void) const {return fSambaDAQNumber;}
-		
+  Int_t GetFileNumber(void) const {return fFileNumber;}
+
+  
 	//setters
 	void SetRunName(const Char_t* aWord);
 	void SetSambaEventNumber(Int_t aWord) {fSambaEventNumber = aWord;}
 	void SetNtpDateSec(Int_t aWord) {fNtpDateSec = aWord;}
 	void SetNtpDateMicroSec(Int_t aWord) {fNtpDateMicroSec = aWord;}
 	void SetSambaDAQNumber(Int_t aWord) {fSambaDAQNumber = aWord;}
-	
+	void SetFileNumber(Short_t aVal) {fFileNumber = aVal;}
+  
 	//calculated quantities
 	Int_t GetRunYear(void) const {return GetRunName()[0] - 'a' + 2000;}
 	Int_t GetRunMonth(void) const {return GetRunName()[1] - 'a' + 1;}
@@ -59,12 +62,13 @@ private:
 	Int_t fSambaDAQNumber; //this is found in the name.. a=1, b=2, c=3, etc..
 		
 	string fRunName;  //run name, such as je25b000. 
-		
+  Short_t fFileNumber; //such as 000, 001, 002, ....
+  
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KSambaRecord &aRec);
 	
-  ClassDef(KSambaRecord,1);
+  ClassDef(KSambaRecord,2);
 };
 
 
