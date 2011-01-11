@@ -18,7 +18,8 @@
 
 using namespace std;
 
-
+class TH1;
+class TGraph;
 
 class KRawBoloPulseRecord : public KBoloPulseRecord { 
 
@@ -52,6 +53,9 @@ public:
   void SetAmplitude(Double32_t aVal){fAmplitude = aVal;  }
   void SetAmplitudeBaseline(Double32_t aVal){fAmplitudeBaseline = aVal;  }
   void SetAmplitudeBaselineNoise(Double32_t aVal){fAmplitudeBaselineNoise = aVal;  }
+
+  void FillHistogram(TH1 &hist);
+  void FillGraph(TGraph &graph);
 
   
   KRawBolometerRecord* GetBolometerRecord(void) const {return (KRawBolometerRecord*)fBolometerRecord.GetObject();	}

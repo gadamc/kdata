@@ -12,7 +12,10 @@
 
 
 #include "KRawBoloPulseRecord.h"
+#include "TH1.h"
+#include "TGraph.h"
 #include <iostream>
+#include <typeinfo>
 
 using namespace std;
 
@@ -199,6 +202,55 @@ void KRawBoloPulseRecord::SetTrace(UInt_t size, const Short_t* aData)
   fTrace.clear();
   for(Int_t i = 0; i < size; i++)
     fTrace.push_back(aData[i]);
+}
+
+void KRawBoloPulseRecord::FillHistogram(TH1 &hist)
+{
+  //Fills hist with data found from the pulse trace. Then you can more easily plot it.
+  //
+  //developers note: This method shouldn't probably be a part of this class
+  //rather, there should be some sort of data manipulation / data visualization
+  //set of classes to perform these types of tasks. Otherwise, data storage object
+  //could become flooded with data visualization tools. 
+  
+  //test to make sure hist is either a TH1I, TH1S, TH1F, or TH1D. 
+  try {
+    TH1I testHist = dynamic_cast<TH1I &>(hist);
+  }
+  catch (bad_cast& a) {
+    try {
+      TH1S testHist = dynamic_cast<TH1S &>(hist);
+    }
+    catch (bad_cast& b) {
+      try {
+        TH1F testHist = dynamic_cast<TH1F &>(hist);
+      }
+      catch (bad_cast& c) {
+        try {
+          TH1D testHist = dynamic_cast<TH1D &>(hist);
+        }
+        catch (bad_cast& e) {
+          cout << "KRawBoloPulseRecord::FillHistogram. Only supports TH1I, TH1S, TH1F or TH1D" << endl;
+          return;
+        }
+      }
+    }
+  }
+ 
+  hist.SetBins((Int_t)fTrace.size(), 0.0, (Double_t)fTrace.size());
+  for(UInt_t i = 0; i < fTrace.size(); i++)
+    hist.SetBinContent(i+1, fTrace[i]);
+  
+}
+
+void KRawBoloPulseRecord::FillGraph(TGraph &graph)
+{
+  //Fills hist with data found from the pulse trace. Then you can more easily plot it.
+  graph.Set((Int_t)fTrace.size());
+  
+  for(UInt_t i = 0; i < fTrace.size(); i++)
+    graph.SetPoint(i, i, fTrace[i]);
+
 }
 
 
