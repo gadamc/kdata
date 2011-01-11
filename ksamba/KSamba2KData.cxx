@@ -175,7 +175,7 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
   cout << "Reading Detector Configurations." << endl;
   
   string endOfDetectorConfig = "* ----------" ; // 
-  size_t endOfDetectorConfig = endOfDetectorConfig.size();
+  size_t endOfDetectorConfigSize = endOfDetectorConfig.size();
   
   
   return true;
