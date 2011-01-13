@@ -3,9 +3,9 @@
 // KQDistribution.cxx
 // KDataStructure
 //
-// Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 9/1/10.
+// Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 1/13/11.
 //
-// * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+// * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 
 #include "KQDistribution.h"
 
@@ -13,6 +13,7 @@
 #define __KQFUNCTIONS__
 
 Double_t GammaFit(Double_t* x,Double_t* par) {
+	// this function is used to fit gaussian shapes in two seperate intervals with variable boundaries
 	if(x[0]>par[6]) {
 		TF1::RejectPoint();
 		return 0;
@@ -35,6 +36,7 @@ Double_t GammaFit(Double_t* x,Double_t* par) {
 }
 
 bool operator<(const KQDistribution::DataRecord& aFirstDataRecord,const KQDistribution::DataRecord& aSecondDataRecord) {
+	//implemented to order DataRecords according ascending fERecoil values
   return(aFirstDataRecord.fERecoil<aSecondDataRecord.fERecoil);
 }
 
@@ -44,12 +46,14 @@ ClassImp(KQDistribution);
 
 KQDistribution::KQDistribution() : fAlpha(0.165), fBeta(0.185)
 {
+	// default constructor
 	InitializeMembers();
 	
 }
 
 void KQDistribution::InitializeMembers() 
 {
+	// sets initial members
 	fSourceFile = "Kds_Run12_v3.0_skim";	//user-specific
 	fSourceDir = "/kalinka/storage/edelweiss/Bolo/Run12/kdata/Final/Neutron/"; //user-specific
 	fTargetDir = "QDistributionFit-Plots/"; //user-specific
@@ -62,6 +66,8 @@ void KQDistribution::InitializeMembers()
 }
 
 const Char_t* KQDistribution::GetCategoryName(Int_t anEventCategory = -1) {
+	// gets a C string for the category of current fEventCategory if anEventCategory=-1,
+	// otherwise for anEventCategory itself
 	if(anEventCategory==-1)
 		anEventCategory = fEventCategory;
 	
@@ -77,6 +83,7 @@ const Char_t* KQDistribution::GetCategoryName(Int_t anEventCategory = -1) {
 }
 
 Double_t* KQDistribution::GetData(DataType aType) {
+	// returns a Double_t array containing all Q data (KQDistribution::Q) or all ERecoil data (KQDistribution::ERecoil)
   Double_t* aDataArray = new Double_t[fDataSize];
   switch(aType) {
     case ERECOIL: for(int k = 0; k<fDataSize; ++k)
@@ -88,15 +95,22 @@ Double_t* KQDistribution::GetData(DataType aType) {
 }
 
 void KQDistribution::SortData() {
+	// sorts fData with respect to ERecoil in ascending order
   sort(fData.begin(),fData.end());
 }
 
 void KQDistribution::DrawHistogram(bool aDirection) {
+	// draws a TH1D Q-ERecoil histogram, which is a projection on Q-axis of a previously created TH2D Q-ERecoil histogram 
+	// this histogram is in the fHistogramCounter'th element of type HistogramRecord in fHistogramRecords
+	// aDirection=true: fHistogramCounter is incremented, next histogram is drawn
+	// aDirection=false: fHistogramCounter is decremented, previous histogram is drawn
+	//
+	// two gaussian fits are applied for gamma and neutron bands within fixed intervals and the corresponding chi2 values are drawn on a TPaveText
 	if(aDirection)
 		fHistogramCounter = (fHistogramCounter + 1) % fNumProjections;
 	else
 		fHistogramCounter = (fHistogramCounter - 1 + fNumProjections) % fNumProjections;
-	//TH2D* hist = (TH2D*)gDirectory->FindObject(TString::Format("hist_%s_%i",GetCategoryName(),fHistogramCounter).Data());
+	// TH2D* hist = (TH2D*)gDirectory->FindObject(TString::Format("hist_%s_%i",GetCategoryName(),fHistogramCounter).Data());
 	if(fHistogramRecords[fHistogramCounter].fHistogram) {
 		fRightSubPad->cd();
 		fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY()->Draw();
@@ -141,7 +155,11 @@ void KQDistribution::DrawHistogram(bool aDirection) {
 	}	
 }
 
-void KQDistribution::SetBoundaries(TH1D* aHistogram, TF1* aFunction,Double_t aNumSigmas,Double_t aFirstValue, Double_t aSecondValue, Double_t aFirstError, Double_t aSecondError) {
+void KQDistribution::SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas,Double_t aFirstValue, Double_t aSecondValue, Double_t aFirstError, Double_t aSecondError) {
+	// searches and sets the boundaries for the two gaussian fits in the fitting function fDoubleGaus
+	// the central Q values of the fit intervals, QNeutronMaxX and QGammaMaxX, are the Q values corresponding to the bins with maximal entries in aHistogram in the Q intervals [0.2,0.6] (neutron) and [0.8,1.2] (gamma)
+	// the intervals are then [QNeutronMaxX - aNumSigmas*aFirstError, QNeutronMaxX + aNumSigmas*aFirstError] (neutron)
+	// [QGammaMaxX - aNumSigmas*aSecondError, QGammaMaxX + aNumSigmas*aSecondError] (gamma)
   Double_t QNeutronMaxY = 0;
   Double_t QGammaMaxY = 0;
   Double_t QNeutronMaxX = 0.2;
@@ -172,34 +190,36 @@ void KQDistribution::SetBoundaries(TH1D* aHistogram, TF1* aFunction,Double_t aNu
   cout << "QGammaHigh: " << QGammaMaxX + aNumSigmas*aSecondError << endl;
   cout << "QGammaIntegral: " << QGammaIntegral << endl;
   
-  aFunction->SetParameter(0,QGammaMaxY); // C_{#gamma}
-  aFunction->SetParameter(1,QGammaMaxX); // Q_{#gamma}
-  aFunction->SetParameter(2,aSecondError); // #sigma_{Q_{#gamma}}
-  aFunction->SetParameter(3,QNeutronMaxY); // C_{neutron}
-  aFunction->SetParameter(4,QNeutronMaxX); // Q_{neutron}
-  aFunction->SetParameter(5,aFirstError); // #sigma_{Q_{neutron}}
-  aFunction->SetParameter(6,QGammaMaxX + aNumSigmas*aSecondError); // Q_{#gamma,high}
-  aFunction->SetParameter(7,QGammaMaxX - aNumSigmas*aSecondError); // Q_{#gamma,low}
-  aFunction->SetParameter(8,QNeutronMaxX + aNumSigmas*aFirstError); // Q_{neutron,high}
-  aFunction->SetParameter(9,QNeutronMaxX - aNumSigmas*aFirstError); // Q_{neutron,low}
+  fDoubleGaus->SetParameter(0,QGammaMaxY); // C_{#gamma}
+  fDoubleGaus->SetParameter(1,QGammaMaxX); // Q_{#gamma}
+  fDoubleGaus->SetParameter(2,aSecondError); // #sigma_{Q_{#gamma}}
+  fDoubleGaus->SetParameter(3,QNeutronMaxY); // C_{neutron}
+  fDoubleGaus->SetParameter(4,QNeutronMaxX); // Q_{neutron}
+  fDoubleGaus->SetParameter(5,aFirstError); // #sigma_{Q_{neutron}}
+  fDoubleGaus->SetParameter(6,QGammaMaxX + aNumSigmas*aSecondError); // Q_{#gamma,high}
+  fDoubleGaus->SetParameter(7,QGammaMaxX - aNumSigmas*aSecondError); // Q_{#gamma,low}
+  fDoubleGaus->SetParameter(8,QNeutronMaxX + aNumSigmas*aFirstError); // Q_{neutron,high}
+  fDoubleGaus->SetParameter(9,QNeutronMaxX - aNumSigmas*aFirstError); // Q_{neutron,low}
 }
 
-void KQDistribution::StoreImage(Int_t anIndex) {
+void KQDistribution::SaveImage(Int_t anIndex) {
+	// saves the image drawn on fDrawCanvas in a pdf file in path "fTargetDir/fTargetSubDir/CategoryName_fDectorName_anIndex.pdf"
 	if(fDrawCanvas)
 		fDrawCanvas->Print(TString::Format("%s/%s/%s_%s_%i.pdf",fTargetDir.c_str(),fTargetSubDir.c_str(),GetCategoryName(),fDetectorName.c_str(),anIndex).Data());
 }
 
 Int_t KQDistribution::QtoBin(Double_t aQ) {
+	// converts a Q value in the corresponding bin number
 	return Int_t((aQ-fQMin)/(fQMax-fQMin)*fNumBinsQ);
 }
 
 Double_t KQDistribution::BintoQ(Int_t aBin) {
+	// converts a bin number in the corresponding Q value
 	return fQMin + aBin * (fQMax-fQMin)/fNumBinsQ;
 }
 
-
-
 Double_t KQDistribution::GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh) {
+	// calculates the chi2 value for aHistogram in [Qlow,Qhigh]
 	Double_t chi2sum = 0;
 	Double_t x,y;
 	for(int k = QtoBin(aQlow); k<QtoBin(aQhigh); ++k)
@@ -212,12 +232,15 @@ Double_t KQDistribution::GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh
 }
 
 Int_t KQDistribution::GetNDF(Double_t aQlow,Double_t aQhigh,Int_t aNumParameters) {
+	// gets the number of degrees of freedom with aNumParameters and the number of bins in [Qlow,Qhigh]
 	Int_t k;
 	for(k = QtoBin(aQlow); k<QtoBin(aQhigh); ++k);
 	return k-1-aNumParameters;
 }
 
 void KQDistribution::CorrectBoundaries(BoundaryType aBType,Double_t aStep) {
+	// changes one of the boundaries aBType = KQDistribution::GAMMAHIGH , KQDistribution::GAMMALOW, KQDistribution::NEUTRONHIGH , KQDistribution::NEUTRONLOW by aStep in fDoubleGaus
+	// the current TH1D histogram in fHistogramRecords is then refitted and redrawn on fDrawCanvas
 	Int_t parameterIndex;
 	switch(aBType) {
 		case GAMMAHIGH: parameterIndex = 9; break;
@@ -234,17 +257,23 @@ void KQDistribution::CorrectBoundaries(BoundaryType aBType,Double_t aStep) {
 }
 
 void KQDistribution::SetPaths(char* aSourceDir,char* aSourceFile,char* aTargetDir) {
+	// sets the specified paths
 	fSourceDir = aSourceDir;
 	fSourceFile = aSourceFile;
 	fTargetDir = aTargetDir;
 }
 
 Double_t KQDistribution::GetGammaMax(TH1D* aHistogram) {
+	// returns the Q value corresponding to the bin with maximal entries in aHistogram
 	return(fQMin + aHistogram->GetMaximumBin()*(fQMax-fQMin)/fNumBinsQ);
-	//return(Qmin+hist->GetMaximumBin(Int_t((1-Qmin)/(Qmax-Qmin)*numbinsQ))*(Qmax-Qmin)/numbinsQ);
+	// return(Qmin+hist->GetMaximumBin(Int_t((1-Qmin)/(Qmax-Qmin)*numbinsQ))*(Qmax-Qmin)/numbinsQ);
 }
 
 void KQDistribution::GetFitParameters(Int_t anIndex) {
+	// changes the current values, fQGamma, fQGammaError, fQNeutron, fQNeutronError, in the anIndex'th element of fHistogramRecords to the fit parameter values and errors in fDoubleGaus
+	// these values are also changed in the graphs, fQGammaErrorGraph and fQNeutronErrorGraph,
+	// as well as in the ASCII files, "fTargetDir/fTargetSubDir/QNeutronValues.dat" and "fTargetDir/fTargetSubDir/QGammaValues.dat" containing the data of the graphs
+	// fTotalMultiGraph containing fQGammaErrorGraph and fQNeutronErrorGraph is redrawn
 	fHistogramRecords[anIndex].fQGamma = fDoubleGaus->GetParameter(1);
 	fHistogramRecords[anIndex].fQGammaError = fConfidenceInSigmas*abs(fDoubleGaus->GetParameter(2));
 	fHistogramRecords[anIndex].fQNeutron = fDoubleGaus->GetParameter(4);
@@ -274,6 +303,7 @@ void KQDistribution::GetFitParameters(Int_t anIndex) {
 }
 
 void KQDistribution::RedrawPeaks() {
+		// redraws the single gaussian shapes of the current TH1D Q-ERecoil histogram and the TPaveText showing the chi2 of the fits
 		fDrawCanvas->cd();
 		
 		fChi2PaveText->Clear();
@@ -306,6 +336,7 @@ void KQDistribution::RedrawPeaks() {
 }
 
 void KQDistribution::SetStyle() {
+	// sets styles for histogram and fit result drawing
   gStyle->SetOptFit(12); 
   gStyle->SetHistFillColor(2);
   gStyle->SetHistTopMargin(1);
@@ -317,6 +348,7 @@ void KQDistribution::SetStyle() {
 }
 
 void KQDistribution::ResetVars() {
+	// disposes all dynamically allocated class members
   if(fAdjustPanel) {
     delete fAdjustPanel;
     fAdjustPanel = 0;
@@ -449,8 +481,9 @@ void KQDistribution::ResetVars() {
 }
 
 void KQDistribution::MakeDirectories() {
+	// directory "fTargetDir/fTargetSubDir/" is created with fTargetSubDir="fSourceFile/fDetectorName/GetCategoryName()"
   gSystem->Exec(TString::Format("mkdir -p %s/%s/%s/%s",fTargetDir.c_str(),fSourceFile.c_str(),fDetectorName.c_str(),GetCategoryName()).Data());
-  fTargetSubDir = "";
+	fTargetSubDir = "";
   fTargetSubDir += fSourceFile;
   fTargetSubDir += "/";
   fTargetSubDir += fDetectorName;
@@ -460,6 +493,7 @@ void KQDistribution::MakeDirectories() {
 }
 
 bool KQDistribution::ReadEvents() {
+	//reads the KBolometerEvents in "fSourceDir/fSourcefile.ROOT"
   fOutputFile = new TFile(TString::Format("%s/%s_%s_%s.ROOT",fTargetDir.c_str(),fSourceFile.c_str(),GetCategoryName(),fDetectorName.c_str()).Data(),"RECREATE");
   fKDataReader = new KDataReader(TString::Format("%s/%s.ROOT",fSourceDir.c_str(),fSourceFile.c_str()).Data());
   fKHLAEvent = (KHLAEvent*)fKDataReader->GetEvent();
@@ -527,6 +561,7 @@ bool KQDistribution::ReadEvents() {
 }
 
 void KQDistribution::FillHistograms() {
+	// fills fNumProjections TH2D Q-ERecoil histograms with equal numbers of entries from fData
   gDirectory= fOutputFile;
   
   Int_t entriesPerHistogram = fDataSize/fNumProjections;
@@ -574,6 +609,8 @@ void KQDistribution::FillHistograms() {
 }
 
 void KQDistribution::MakeCanvases() {
+	// creates fMainCanvas showing two pads, the left pad shows fTotalMultiGraph and the right pad shows the current TH1D Q-ERecoil histrom with gaussian fits and two buttons to navigate to previous or next histrogram
+	// creates also fDrawCanvas which is used to store the images of histrograms in pdf files
   fMainCanvas = new TCanvas("fMainCanvas","Q plots",10,10,800,400);
   fMainCanvas->Divide(2,1);
   fMainCanvas->cd(1);
@@ -599,7 +636,9 @@ void KQDistribution::MakeCanvases() {
   fDrawCanvas->cd(); 
 }
 
-void KQDistribution::MakeGraphsWithEIntervalData() {
+void KQDistribution::SaveGraphData() {
+	//creates ASCII files containing the Q values from the gaussian fits and ERecoil mean values of the TH1D Q-ERecoil histograms
+	//these are the sourcefiles for subsequent graph creation
   fDoubleGaus = new TF1("fDoubleGaus",GammaFit,0.1,2,10);
   fDoubleGaus->SetParNames("C_{#gamma}","Q_{#gamma}","#sigma_{Q_{#gamma}}","C_{n}","Q_{n}","#sigma_{Q_{n}}","Q_{#gamma,high}","Q_{#gamma,low}","Q_{n,high}","Q_{n,low}");
   fGammaGaus = new TF1("fGammaGaus","gaus",fQMin,fQMax);
@@ -670,7 +709,13 @@ void KQDistribution::MakeGraphsWithEIntervalData() {
  
 }
 
-void KQDistribution::MakeGraphsWithAllData() {
+void KQDistribution::MakeGraphs() {
+	// creates the graphs shown on the left pad of fMainCanvas, which contain single points for each TH1D histogram,
+	// fQGammaErrorGraph with fQGamma +/- fQGammaError
+	// fQGammaTheoGraph with fQGammaTheo +/- fQGammaTheoError
+	// fQNeutronErrorGraph with fQNeutron +/ fQNeutronError
+	// fQNeutronTheoGraph with fQNeutronTheo +/- fQNeutronTheoError
+
   fTotalGraph = new TGraph(fDataSize,GetData(ERECOIL),GetData(Q));
   cout << "Graph with all data created ... " << endl;
   fTotalGraph->SetName("fTotalGraph");
@@ -754,6 +799,7 @@ void KQDistribution::MakeGraphsWithAllData() {
 
 
 void KQDistribution::MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,Int_t aNumProjections) {
+	// main routine, which reads and evaluates fSourcefile.ROOT by calling the other routines
   fEventCategory = anEventCategory;
   fDetectorName = aDetectorName;
   fNumProjections = aNumProjections;
@@ -766,8 +812,8 @@ void KQDistribution::MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,I
     return;
   MakeCanvases();
   FillHistograms();
-  MakeGraphsWithEIntervalData();
-  MakeGraphsWithAllData();
+  SaveGraphData();
+  MakeGraphs();
   //if(fIsBatch)
     //fAdjustPanel = new KQAdjustPanel(gClient->GetRoot(),200,200,CorrectBoundaries,StoreImage);
 }

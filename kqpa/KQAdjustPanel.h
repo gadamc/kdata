@@ -3,9 +3,9 @@
 // KQAdjustPanel.h
 // KDataStructure
 //
-// Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 9/1/10.
+// Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 1/13/11.
 //
-// * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+// * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
 // This is a simple frame class which offers some buttons and edit fields to adjust the boundaries for the gaussian fits
 // which give the estimations for mean and error values of the Q gamma and neutron band widths

@@ -3,9 +3,9 @@
 // KQAdjustPanel.cxx
 // KDataStructure
 //
-// Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 9/1/10.
+// Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 1/13/11.
 //
-// * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+// * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 
 #include "KQAdjustPanel.h"
 

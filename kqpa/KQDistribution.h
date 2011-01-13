@@ -3,9 +3,9 @@
 // KQDistribution.h
 // KDataStructure
 //
-// Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 9/1/10.
+// Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 1/13/11.
 //
-// * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+// * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
 // The basic purpose of this class is to show Q gamma and neutron band widths for a number of KBolometerEvents,
 // read from a specified KDATA tree file which stores KEvents
@@ -108,7 +108,7 @@ class KQDistribution {
 		Double_t* fERecoilError; // RMS estimations for the single ERecoil intervals
 
 
-		TF1* fDoubleGaus; // sum of two gaussians TODO
+		TF1* fDoubleGaus; // sum of two gaussians functions
 		TF1* fGammaGaus; // function fitting gamma peak for a single element of fHistograms
 		TF1* fNeutronGaus; // function fitting neutron peak for a single element of fHistograms
 		TF1* fLinhardFunction; // fuction fitting neutron peaks for all elements of fHistograms in fTotalGraph 
@@ -116,15 +116,15 @@ class KQDistribution {
 		KQAdjustPanel* fAdjustPanel; // panel to adjust boundaries for the fit intervals
 
 		struct DataRecord {
+			//contains all required information for one KBolometerEvent
 			Double_t fERecoil;
 			Double_t fQ;
 			DataRecord(Double_t anERecoil,Double_t aQ) : fERecoil(anERecoil), fQ(aQ) { }
 			//bool operator<(DataRecord& anotherDataRecord) { return(this->fERecoil<anotherDataRecord.fERecoil); }
 		};
 		
-
-		
 		struct HistogramRecord {
+			//contains all information concerning one histogram
 		  TH2D* fHistogram;
 		  Double_t fERecoilMean;
 		  Double_t fERecoilError;
@@ -159,12 +159,6 @@ class KQDistribution {
 		TMultiGraph* fTotalMultiGraph;
 		TPaveText* fChi2PaveText;
 		
-		
-
-		
-		
-		
-		
 		const Double_t fAlpha;
 		const Double_t fBeta; // <Q_neutron> = fAlpha * E_Recoil ** fBeta
 		
@@ -174,7 +168,7 @@ class KQDistribution {
 
 	public:
 
-		KQDistribution(); // standard constructor
+		KQDistribution();
 		
 		//getters
 		const Char_t* GetSourceFile() const { return fSourceFile.c_str(); }
@@ -214,9 +208,9 @@ class KQDistribution {
 		
 		void SetPaths(char* aSourceDir,char* aSourceFile,char* aTargetDir);
 		
-		void StoreImage(Int_t anIndex);
+		void SaveImage(Int_t anIndex);
 		void DrawHistogram(bool aDirection);
-		void SetBoundaries(TH1D* aHistogram,TF1* aFunction,Double_t aNumSigmas = 2.5,Double_t aFirstValue = 0.01,Double_t aSecondValue = 0.01,Double_t aFirstError = 0.01, Double_t aSecondError = 0.01);
+		void SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas = 2.5,Double_t aFirstValue = 0.01,Double_t aSecondValue = 0.01,Double_t aFirstError = 0.01, Double_t aSecondError = 0.01);
 		Int_t QtoBin(Double_t aQ);
 		Double_t BintoQ(Int_t aBin);
 		Double_t GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh);
@@ -235,8 +229,8 @@ class KQDistribution {
 		bool ReadEvents();
 		void MakeCanvases();
 		void FillHistograms();
-		void MakeGraphsWithEIntervalData();
-		void MakeGraphsWithAllData();
+		void SaveGraphData();
+		void MakeGraphs();
 		void MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,Int_t aNumProjections);
 		friend bool operator<(const KQDistribution::DataRecord& aFirstDataRecord,const KQDistribution::DataRecord& aSecondDataRecord);
 		
