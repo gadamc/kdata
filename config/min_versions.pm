@@ -8,6 +8,6 @@
 #use vars qw($min_kwman_ver $min_root_ver);
 use vars qw($min_root_ver);
 
-$min_root_ver   = "5.26_00";
+$min_root_ver   = "5.2600";
 
 1; #end

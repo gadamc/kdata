@@ -92,7 +92,7 @@ KEraEventFinder::KEraEventFinder(const KEraEventFinder& aFinder)
   fReader = new KEraRawEventReader(*aFinder.fReader);
   fDisplay = 0;
   Initialize();
-  
+
 }
 
 KEraEventFinder::KEraEventFinder(KSambaRecord* aSambaRecord, KBolometerRecord* aBoloRecord,
@@ -100,7 +100,7 @@ KEraEventFinder::KEraEventFinder(KSambaRecord* aSambaRecord, KBolometerRecord* a
 : fSambaRecord(aSambaRecord), fBoloRecord(aBoloRecord)
 {
   //constructor to fill all attributes
-  
+
   fTrans = new KFileTransfer(aUser,aServer,aSourceDir,aTargetDir);
   fReader =new KEraRawEventReader();
   fDisplay = 0;
@@ -110,7 +110,7 @@ KEraEventFinder::KEraEventFinder(KSambaRecord* aSambaRecord, KBolometerRecord* a
 KEraEventFinder::~KEraEventFinder()
 {
   //Default destructor
-  
+
   if(fTrans != 0) delete fTrans;
   if(fReader != 0) delete fReader;
   if(fDisplay != 0) delete fDisplay;
@@ -159,29 +159,30 @@ string KEraEventFinder::GetNextFileName(const char* name)
   //returns the next root filename corresponding to fSambaRecords's event number
   //If you pass in a null pointer (or zero), the method will return the
   //first filename.
-  
+
   TString subRunName = "";
   string fileName = "";
   Int_t theIndex = -1;
-  
+
   if(name == 0) {
     subRunName = "000";
   }
   else{
     TString theName = name;
     if(theName.EndsWith(".root")){
-      
+
       sscanf(name, "%*[a-z-A-Z-0-9]_%03d.root", &theIndex);
       subRunName.Form("%03d",++theIndex);
-    } 
-    
+    }
+
     else {
       cout << "KEraEventFinder::GetNextFileName. file does not end in .root" << endl;
-    }		
+    }
   }
   if(fSambaRecord != 0){
     string runname = fSambaRecord->GetRunName().c_str();
     fileName =  runname + "_" + subRunName.Data() + ".root";
+    cout << "KEraEventFinder::GetNextFileName. filename: " << fileName << endl;
   }
   else
     cout << "KEraEventFinder::GetNextFileName. You must first set the Samba Record (or the Bolo Record with a KHLABolometerRecord*)" << endl;
@@ -426,7 +427,7 @@ Bool_t KEraEventFinder::GetEventFile(const char* filePath, const char* fileName,
   //and returns true if it finds the file or successfully transfer it.
   
   if(!searchLocal){
-    
+
     fTrans->SetSourcePath(filePath);
     fTrans->SetTargetPath(fTargetPath);
     //download and open file with fSambaRecords->RunName
@@ -434,12 +435,12 @@ Bool_t KEraEventFinder::GetEventFile(const char* filePath, const char* fileName,
     cout << "Transfer " << fileName << endl;
 #endif
     fTrans->Transfer(fileName);
-    
+
     //cout << "Opening " << fTrans->GetTargetPath() + sambaName << endl;
     return fTrans->FileExists(fTrans->GetTargetPath() + fileName);
   }
   else {
-    
+
     string fullPath = filePath;
     fullPath += fileName;
     ifstream checkFile(fullPath.c_str(), ifstream::binary | ifstream::in);
@@ -448,9 +449,9 @@ Bool_t KEraEventFinder::GetEventFile(const char* filePath, const char* fileName,
       return true;
     }
     else return false;
-    
+
   }
-  
+
 }
 
 Bool_t KEraEventFinder::OpenEventFile(const char* filePath, const char* fileName)
@@ -475,22 +476,22 @@ EdwEvent* KEraEventFinder::GetEvent(void)
   
   if(fReader != 0) 
     return fReader->GetEvent();
-  
+
   else return 0;
 }
 
 
 
-Bool_t KEraEventFinder::SetBolo(KBolometerRecord* aRec) 
-{ 
+Bool_t KEraEventFinder::SetBolo(KBolometerRecord* aRec)
+{
   //Set the bolometer record that defines which raw EdwEvent 
   //the class will search for.
   
   if(aRec == 0) {
     cout << "KEraEventFinder::SetBolo. BolometerRecord is NULL." << endl;
-    return false; 
+    return false;
   }
-  
+
   fBoloRecord = aRec;
   fEventHasBeenTransfered  = false;
   //check to see if this pointer is really a KHLABolometerRecord
@@ -505,7 +506,7 @@ Bool_t KEraEventFinder::SetBolo(KBolometerRecord* aRec)
     //do nothing.
     return false;
   }
-  
+
 }
 
 void KEraEventFinder::DisplayEvent(KBolometerRecord *aRec)
@@ -531,12 +532,12 @@ void KEraEventFinder::DisplayEvent(void)
         cout << "KEraEventFinder::DisplayEvent. Unable to Transfer Event." << endl;
         return;
       }
-    
+
     KHLABolometerRecord *bolo = dynamic_cast<KHLABolometerRecord*>(fBoloRecord);
-    
+
     if(fDisplay == 0)
       fDisplay = new KEventDisplay;
-    
+
     fDisplay->SetApplyPulseProcessing(fApplyPulseProcessing);
     fDisplay->SetEvent(GetEvent(), bolo);
     fDisplay->DisplayEvent();
@@ -544,7 +545,7 @@ void KEraEventFinder::DisplayEvent(void)
   catch(bad_cast) {
     cout << "Your Bolometer Record is not a HLABolometerRecord. I do not yet know how to display this kind of event! Please program me." << endl;
   }
-  
+
 }
 
 void KEraEventFinder::DisplayPower(KBolometerRecord *aRec)

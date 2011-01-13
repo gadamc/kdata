@@ -99,14 +99,14 @@ print "Checking environment variables...\n";
 # get and verify ROOTSYS environment
 for (;;) {
     GetEnv('ROOTSYS','bin/root');
-	print "$KDATA_env{KDATA_ROOT}";
-    unless ($KDATA_env{ROOTSYS} =~ /.*(\d+)\.(\d+)[._](\d+)/) {
+	print "$KDATA_env{KDATA_ROOT}\n";
+    unless ($KDATA_env{ROOTSYS} =~ /.[^0-9]*(\d{1})\.?(\d{1,2})[._]?(\d*)/) {
         print "Warning: Unknown ROOT version (must be $min_root_ver or higher)\n";
        last;
     }
-    my $root_ver = sprintf("%d.%.2d%.2d",$1,$2,$3);
+    my $root_ver = sprintf("%d.%2d%.2d",$1,$2,$3);
     my $min_root = $min_root_ver;
-	print "$root_ver";
+	print "$root_ver $min_root\n";
     $min_root =~ s/_//; # remove '_' to compare as floating point
     last if $root_ver >= $min_root;
     print "ERROR: ROOT version must be $min_root_ver or higher\n";
