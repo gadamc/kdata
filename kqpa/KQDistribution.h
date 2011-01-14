@@ -29,6 +29,8 @@
 #include <fstream>
 #include <cmath>
 #include "Rtypes.h"
+#include "TClonesArray.h"
+#include "TBranch.h"
 #include "TDirectory.h"
 #include "TRandom.h"
 #include "TH2D.h"
@@ -102,6 +104,7 @@ class KQDistribution {
 		TButton* fPreviousButton; // switch to previous Q-projection histogram
 		TButton* fNextButton; // switch to next Q-projection histogram
 		TFile* fOutputFile; // stores all fHistograms and fTotalGraph
+		TFile* fInputFile; // source file with KHLABolometerRecord events
 		//TH2D** fHistograms; // Q-ERecoil pairs each for adjacent ERecoil intervals
 		Int_t fHistogramCounter; // index for current histogram
 		Double_t* fERecoilMean; // mean estimations for the single ERecoil intervals
