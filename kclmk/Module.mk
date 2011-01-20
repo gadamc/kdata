@@ -28,8 +28,8 @@
 #
 # Author: Adam Cox 08/19/10
 
-MODNAME      := kqpa
-MODDIR       := kqpa
+MODNAME      := kclmk
+MODDIR       := kclmk
 
 KCLMK_FLAGS  := $(CXXFLAGS)
 KCLMK_LDFLAGS := $(LDFLAGS)
@@ -127,13 +127,13 @@ $(KCLMK_LIB):        $(KCLMK_EO) $(KCLMK_DO) $(KCLMK_LIBDEP)
 	   "$(SOFLAGS)" "$(KCLMK_LIB)" $@  "$(KCLMK_EO) $(KCLMK_DO) $(KCLMK_XTRALIBS)"\
 	   "$(ROOTLIBS)  $(KCLMK_FLAGS)"  -I/opt/include -Iinclude 
 
-all-kqpa:       $(KCLMK_LIB)
+all-kclmk:       $(KCLMK_LIB)
 
-clean-kqpa:
+clean-kclmk:
 		@rm -f $(KCLMK_DIRS)/*~ $(KCLMK_DIRS)/*.o
 		@rm -f $(KCLMK_DC) $(KCLMK_DH) $(KCLMK_DEP) $(KCLMK_LIB)
 
-clean::         clean-kqpa
+clean::         clean-kclmk
 
 #end
 

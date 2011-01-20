@@ -20,6 +20,8 @@ class KClassMemberRecord {
 		string fDataType;
 		string fMemberName;
 	public:
+		//constructors
+		KClassMemberRecord(const char* aDataType,const char* aMemberName) : fDataType(aDataType), fMemberName(aMemberName) { }
 		//Getters
 		const Char_t* GetDataType() const { return fDataType.c_str(); }
 		const Char_t* GetMemberName() const { return fMemberName.c_str(); }
