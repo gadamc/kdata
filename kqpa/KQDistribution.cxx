@@ -270,7 +270,7 @@ void KQDistribution::SetPaths(char* aSourceDir,char* aSourceFile,char* aTargetDi
 	fSourceFile = aSourceFile;
 	fTargetDir = aTargetDir;
 }
-12000
+
 Double_t KQDistribution::GetGammaMax(TH1D* aHistogram) {
 	// returns the Q value corresponding to the bin with maximal entries in aHistogram
 	return(fQMin + aHistogram->GetMaximumBin()*(fQMax-fQMin)/fNumBinsQ);
