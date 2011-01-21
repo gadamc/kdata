@@ -169,6 +169,8 @@ void KClassMaker::MakeClass(string aClassName)
 	aHeaderStream << "#include \"Rtypes.h\"" << endl;
 	aHeaderStream << endl;
 	
+
+	
 	//class declaration
 	aHeaderStream << TString::Format("class %s",fClassName.c_str()).Data();
 	if(fBaseClasses.size())
@@ -215,7 +217,6 @@ void KClassMaker::MakeClass(string aClassName)
 	}
 	aHeaderStream << TString::Format("\tClassDef(%s,%i)",fClassName.c_str(),fClassVersion).Data() << endl;
 	aHeaderStream << "};" << endl;
-	
 	aHeaderStream << endl;
 	aHeaderStream << "#endif" << endl;
 	aHeaderStream << endl;
