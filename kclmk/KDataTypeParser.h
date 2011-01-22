@@ -16,6 +16,7 @@
 #include <string>
 #include <set>
 #include <vector>
+#include <iostream>
 using namespace std;
 
 class KDataTypeParser {
@@ -24,8 +25,12 @@ class KDataTypeParser {
 		set<string> fUserClasses;
 		
 	public:
-	
+		bool IsInStandardClasses(string aClass) { return(fStandardClasses.find(aClass)!=fStandardClasses.end()); }
+		bool IsInUserClasses(string aClass) { return(fUserClasses.find(aClass)!=fUserClasses.end()); }
+		
 		void Parse(string anExpression);
+		void ShowUserClasses();
+		void ShowStandardClasses();
 	ClassDef(KDataTypeParser,0);
 };
 

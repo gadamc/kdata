@@ -3,7 +3,7 @@
  *
  *  Created by Daniel Wegner on 1/20/11.
  *  Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
- *
+ * 
  *
  * This class produces the header and source file for a class with specified classname and list of members
  *
@@ -146,7 +146,6 @@ void KClassMaker::MakeClass(string aClassName)
 	//TODO class description
 	aHeaderStream << " */" << endl;
 	aHeaderStream << endl;
-	
 
 	
 	//defining clauses

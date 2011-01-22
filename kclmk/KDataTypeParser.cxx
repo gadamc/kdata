@@ -31,66 +31,96 @@ void KDataTypeParser::Parse(string anExpression)
 	}
 	if(theCommaPositions.size()) {
 		Parse(anExpression.substr(0,theCommaPositions[0]));
-		for(int k = 1; k<theCommaPositions.size()-1; ++k)
+		for(unsigned int k = 1; k<theCommaPositions.size()-1; ++k)
 			Parse(anExpression.substr(theCommaPositions[k]+1,theCommaPositions[k+1]-theCommaPositions[k]-1));
 		Parse(anExpression.substr(theCommaPositions[theCommaPositions.size()-1]+1,anExpression.size()-theCommaPositions.size()-1));
+		return;
 	}
 	
 	//standard C++ templates
 	if(anExpression.substr(0,6)=="bitset") {
 		fStandardClasses.insert("bitset");
 		Parse(anExpression.substr(7,anExpression.size()-8));
+		return;
 	}
 	else
 		if(anExpression.substr(0,5)=="deque") {
 			fStandardClasses.insert("deque");
 			Parse(anExpression.substr(6,anExpression.size()-7));
+			return;
 		}
 		else
 			if(anExpression.substr(0,4)=="list") {
 				fStandardClasses.insert("list");
 				Parse(anExpression.substr(5,anExpression.size()-6));
+				return;
 			}
 			else
 				if(anExpression.substr(0,3)=="map") {
 					fStandardClasses.insert("map");
 					Parse(anExpression.substr(4,anExpression.size()-5));
+					return;
 				}
 				else
 					if(anExpression.substr(0,8)=="multimap") {
 						fStandardClasses.insert("multimap");
 						Parse(anExpression.substr(9,anExpression.size()-10));
+						return;
 					}
 					else
 						if(anExpression.substr(0,8)=="multiset") {
 							fStandardClasses.insert("multiset");
 							Parse(anExpression.substr(9,anExpression.size()-10));
+							return;
 						}
 						else
 							if(anExpression.substr(0,14)=="priority_queue") {
 								fStandardClasses.insert("priority_queue");
 								Parse(anExpression.substr(15,anExpression.size()-16));
+								return;
 							}
 							else
 								if(anExpression.substr(0,5)=="queue") {
 									fStandardClasses.insert("queue");
 									Parse(anExpression.substr(6,anExpression.size()-7));
+									return;
 								}
 								else
 									if(anExpression.substr(0,3)=="set") {
 										fStandardClasses.insert("set");
 										Parse(anExpression.substr(4,anExpression.size()-5));
+										return;
 									}
 									else
 										if(anExpression.substr(0,5)=="stack") {
 											fStandardClasses.insert("stack");
 											Parse(anExpression.substr(6,anExpression.size()-7));
+											return;
 										}
 										else
 											if(anExpression.substr(0,6)=="vector") {
 												fStandardClasses.insert("vector");
 												Parse(anExpression.substr(7,anExpression.size()-8));
+												return;
 											}
+	
+	fUserClasses.insert(anExpression);
+	
+}
+
+void KDataTypeParser::ShowUserClasses() 
+{
+	//showing all user classes
+	for(set<string>::iterator it = fUserClasses.begin(); it!= fUserClasses.end(); ++it)
+		cout << *it << endl;
+	
+}
+
+void KDataTypeParser::ShowStandardClasses()
+{
+	//showing standard classes
+	for(set<string>::iterator it = fStandardClasses.begin(); it!= fStandardClasses.end(); ++it)
+		cout << *it << endl;
 }
 
 
