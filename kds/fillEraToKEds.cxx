@@ -579,7 +579,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			isNan(eventNum,"eventNum"); sam-> SetSambaEventNumber(eventNum);
 			sam-> SetRunName(runName); //je25b000
 			isNan(dateSec,"dateSec"); sam-> SetNtpDateSec(dateSec);
-			sam-> SetSambaDAQNumber(sRunName.compare(4,1,"a") + 1); 
+			sam-> SetSambaDAQNumber(sRunName[4] -'a' + 1); 
 
 			
 			bolo->SetSambaRecord(sam);

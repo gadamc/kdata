@@ -140,13 +140,13 @@ Bool_t KSamba2KData::ReadSambaHeaderGeneral(void)
   //given in fSambaFile. Then we look in the file directly
   //to get the run name based on the value given by
   //Fichier.
-  size_t posOfFileName = fSambaFile.find_last_of("/\\");
+  size_t posOfFileName = fSambaFile.find_last_of("/\\"); //the \\ should support windows file system as well as unix
   fSambaRunName = fSambaFile.substr(posOfFileName == string::npos ? 0 : posOfFileName,
                     fSambaFile.find_last_of("_"));
   fSambaFileNum = atoi(fSambaFile.substr(fSambaFile.find_last_of("_")+1).c_str());
   
   //loop through the general header section. we finish when we find
-  //the * Detecteur keyword. 
+  //the endOfGeneralHeader keyword. 
   while ( fSambaFileLine.compare(0,endOfGeneralHeaderSize,endOfGeneralHeader) ) {
     
     if(fSambaFileLine.compare(0,10,"Byte-order") == 0){
@@ -174,8 +174,8 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
 {
   cout << "Reading Detector Configurations." << endl;
   
-  string endOfDetectorConfig = "* ----------" ; // 
-  size_t endOfDetectorConfigSize = endOfDetectorConfig.size();
+  string endOfDetectorConfig = "* ----------" ;  
+  //size_t endOfDetectorConfigSize = endOfDetectorConfig.size();
   
   
   return true;
@@ -310,6 +310,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
       }
       
       pulse->SetBolometerRecord(bolo);
+      //need to set channel number and pulse type here.
       bolo->AddPulseRecord(pulse);
       pulseCount++;
       

@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KDataAnalysis.cc
+// KDataAnalysis.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de> on 3/25/10.

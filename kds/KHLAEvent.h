@@ -52,6 +52,9 @@ public:
 	KHLAEvent& operator=(const KHLAEvent &anEvent);
 	Int_t AddSubRecords(const KHLAEvent &ev, Bool_t skimNoise = false);
 		
+  Bool_t AddMuonModuleSubRecord(const KHLAMuonModuleRecord &inMuonModule);
+  Bool_t AddBoloSubRecord(const KHLABolometerRecord &inBolo);
+  
 	//Easy Access Methods
 	//These methods access commonly requested quantities without
 	//having to dig down into the branch structure.
