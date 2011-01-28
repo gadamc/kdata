@@ -17,8 +17,6 @@
 #include "TTree.h"
 #include <math.h>
 
-using namespace std;
-
 class KRun12Temp {
   private:
     TTree* fTree; //tree storing bolo data
