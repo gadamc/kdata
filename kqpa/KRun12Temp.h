@@ -17,26 +17,27 @@
 #include "TTree.h"
 #include <math.h>
 #include <string>
+using namespace std;
 
 class KRun12Temp {
   private:
     TTree* fTree; //tree storing bolo data
 
   public:
-    KRun12Temp();
+    KRun12Temp(string aFileName);
     
-    void ReadCalibrationFile(const char* aFileName)
-    Int_t GetCalibrationEntry(const char* aBoloName)
-    Int_t GetDetectorNumber(Int_t anEntry)
-    Double_t GetUncerIonZero(Int_t anEntry)
-    Double_t GetUncerIonCalib(Int_t anEntry)
-    Double_t GetUncerHeatZero(Int_t anEntry)
-    Double_t GetUncerHeatCalib(Int_t anEntry)
-    Double_t GetVoltageBias(Int_t anEntry)
-    Double_t GetRadius(Int_t anEntry)
+    void ReadCalibrationFile(string aFileName);
+    Int_t GetCalibrationEntry(string aBoloName);
+    Int_t GetDetectorNumber(Int_t anEntry);
+    Double_t GetUncerIonZero(Int_t anEntry);
+    Double_t GetUncerIonCalib(Int_t anEntry);
+    Double_t GetUncerHeatZero(Int_t anEntry);
+    Double_t GetUncerHeatCalib(Int_t anEntry);
+    Double_t GetVoltageBias(Int_t anEntry);
+    Double_t GetRadius(Int_t anEntry);
 
 
-  ClassDef(KRun12Temp,0)
+  ClassDef(KRun12Temp,0);
 };
 
 #endif

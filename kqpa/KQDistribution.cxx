@@ -55,6 +55,7 @@ void KQDistribution::InitializeMembers()
 {
 	// sets initial members
 	cout << "Setting members ... " << endl;
+  fBoloConfigFile = "BoloConfig.txt"; //user-specific
 	fSourceFile = "Kds_Run12_v3.0_skim";	//user-specific
 	fSourceDir = "/kalinka/storage/edelweiss/Bolo/Run12/kdata/Final/Neutron/"; //user-specific
 	fTargetDir = "QDistributionFit-Plots/"; //user-specific
@@ -186,6 +187,7 @@ void KQDistribution::SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas,Double_t
       QGammaMaxX = BintoQ(k);
     }
   }
+  
   
   
   cout << "QNeutronLow: " << QNeutronMaxX - aNumSigmas*aFirstError << endl;
@@ -364,12 +366,6 @@ void KQDistribution::ResetVars() {
   if(fAdjustPanel) {
     delete fAdjustPanel;
     fAdjustPanel = 0;
-  }
-
-  
-  if(fKDataReader) {
-    delete fKDataReader;
-    fKDataReader = 0;
   }
   
   if(fKHLAEvent) {
@@ -753,7 +749,7 @@ void KQDistribution::SaveGraphData() {
   Double_t aChi2Gamma, aChi2Neutron;
   for(int k = 0; k<fNumProjections; ++k) {
 		fHistogramRecords[k].fQGammaTheo = 1;
-		fHistogramRecords[k].fQNeutronTheo = fLinhardFunction->Eval(fHistogramRecords[k].fERecoilMean);
+		fHistogramRecords[k].fQNeutronTheo = KQUncertainty::GetQValue(fHistogramRecords[k].fERecoilMean);
 		fHistogramRecords[k].fQGammaTheoError = 0.1;
 		fHistogramRecords[k].fQNeutronTheoError = 0.1;
     fDrawCanvas->cd();

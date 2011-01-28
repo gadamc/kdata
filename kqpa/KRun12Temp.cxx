@@ -13,25 +13,30 @@
 
 ClassImp(KRun12Temp);
 
-KRun12Temp::KRun12Temp()
+KRun12Temp::KRun12Temp(string aFileName = "")
 {
-
+  if(aFileName!="")
+    ReadCalibrationFile(aFileName);
 }
 
-void KRun12Temp::ReadCalibrationFile(const char* aFileName)
+void KRun12Temp::ReadCalibrationFile(string aFileName)
 {
-  fTree = new TTree("ConfigTree","values from file");
-  fTree->ReadFile(file,"name/C:detector_no/I:fwhm_ion/D:fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
+  //reads a bolometer configuration ASCII file of form "$name $detector_number $fwhm_ion $fwhm_ion356 $fwhm_heat $fwhm_heat356 $voltagebias $radius_fiducial"
+  if(aFileName!="") {
+    fTree = new TTree("ConfigTree","values from file");
+    fTree->ReadFile(aFileName.c_str(),"name/C:detector_no/I:fwhm_ion/D:fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
+  }
 }
 
-Int_t KRun12Temp::GetCalibrationEntry(const char* aBoloMeterName)
+Int_t KRun12Temp::GetCalibrationEntry(string aBoloName)
 {
+  //
   fTree->ResetBranchAddresses();
   char name[100];
   fTree->SetBranchAddress("name",name);
-  for(Int_t i = 0; i < t->GetEntries(); i++){
+  for(Int_t i = 0; i < fTree->GetEntries(); i++){
     fTree->GetEntry(i);
-    if(strcmp(name,aBoloMeterName) == 0)
+    if(name==aBoloName)
       return i;
       
   }
@@ -53,21 +58,21 @@ Int_t KRun12Temp::GetDetectorNumber(Int_t anEntry)
 Double_t KRun12Temp::GetUncerIonZero(Int_t anEntry)
 {
   if(anEntry < 0) return -1;
-  if(anEntry > t->GetEntries()-1) return -1;
-  t->ResetBranchAddresses();
+  if(anEntry > fTree->GetEntries()-1) return -1;
+  fTree->ResetBranchAddresses();
   Double_t anFWHMIon;
-  fTree->SetBranchAddress("fwhm_ion",&anFWDMIon);
+  fTree->SetBranchAddress("fwhm_ion",&anFWHMIon);
   fTree->GetEntry(anEntry);
-  return anFWHMIonValue/(2 *sqrt(2 *log(2)));
+  return anFWHMIon/(2 *sqrt(2 *log(2)));
 }
 
 Double_t KRun12Temp::GetUncerIonCalib(Int_t anEntry)
 {
   if(anEntry < 0) return -1;
-  if(anEntry > t->GetEntries()-1) return -1;
+  if(anEntry > fTree->GetEntries()-1) return -1;
   fTree->ResetBranchAddresses();
   Double_t anFWHMIon356;
-  fTree->SetBranchAddress("fwhm_ion356",&anFWHMIon);
+  fTree->SetBranchAddress("fwhm_ion356",&anFWHMIon356);
   fTree->GetEntry(anEntry);
   return anFWHMIon356/(2 *sqrt(2 *log(2)));
 }
@@ -98,10 +103,10 @@ Double_t KRun12Temp::GetVoltageBias(Int_t anEntry)
 {
   if(anEntry < 0) return -1;
   if(anEntry > fTree->GetEntries()-1) return -1;
-  t->ResetBranchAddresses();
+  fTree->ResetBranchAddresses();
   Double_t aBias;
-  t->SetBranchAddress("bias",&vBias);
-  t->GetEntry(anEntry);
+  fTree->SetBranchAddress("bias",&aBias);
+  fTree->GetEntry(anEntry);
   return aBias;
 }
 
@@ -112,6 +117,6 @@ Double_t KRun12Temp::GetRadius(Int_t anEntry)
   fTree->ResetBranchAddresses();
   Double_t aRadiusFiducial;
   fTree->SetBranchAddress("r_fiducial",&aRadiusFiducial);
-  t->GetEntry(entry);
-  return val;
+  fTree->GetEntry(anEntry);
+  return aRadiusFiducial;
 }

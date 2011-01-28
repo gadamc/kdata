@@ -64,6 +64,9 @@
 #include "KDataReader.h"
 #include "KHLAEvent.h"
 #include "KQAdjustPanel.h"
+#include "KLindhard.h"
+#include "KQUncertainty.h"
+#include "KBoloConfig.h"
 using namespace std;
 
 #ifndef __KQDISTRIBUTION__
@@ -73,6 +76,7 @@ Double_t GammaFit(Double_t* x,Double_t* par);
 
 class KQDistribution {
 	private:
+    string fBoloConfigFile; //source ASCII file for heat and ion channel uncertainties for all bolometers
 		string fSourceFile; // source KDATA tree file
 		string fSourceDir; // directory for source KDATA tree file
 		string fTargetDir; // target directory for created files
@@ -90,10 +94,8 @@ class KQDistribution {
 		Int_t fNumProjections; // number of TH2D histograms
 		bool fIsBatch; // batch-mode
 		
-		KDataReader* fKDataReader;
-		KHLAEvent* fKHLAEvent; 
-		//used to read KHLABolometerRecord events
-		//maybe direct TBranch access better solution ?!
+		KHLAEvent* fKHLAEvent;  //used to read KHLABolometerRecord events
+		KBoloConfig* fBoloConfig; //bolometer configuration
 		
 		TGraph* fTotalGraph; // showing Q-ERecoil plot for all KHLABolometerRecord events
 		TCanvas* fMainCanvas; // showing fLeftSubPad and fRightSubPad 
@@ -121,8 +123,14 @@ class KQDistribution {
 		struct DataRecord {
 			//contains all required information for one KBolometerEvent
 			Double_t fERecoil;
+      Double_t fEIon;
+      Double_t fEHeat;
 			Double_t fQ;
-			DataRecord(Double_t anERecoil,Double_t aQ) : fERecoil(anERecoil), fQ(aQ) { }
+      Double_t fSigmaIonZero;
+      Double_t fSigmaHeatZero;
+			DataRecord(Double_t anERecoil,Double_t aQ,Double_t anEIon = 0, Double_t anEHeat = 0,
+                 Double_t aSigmaIonZero = 0,Double_t aSigmaHeatZero = 0)
+                 : fERecoil(anERecoil),fEIon(anEIon),fEHeat(anEHeat), fQ(aQ),fSigmaIonZero(aSigmaIonZero),fSigmaHeatZero(aSigmaHeatZero) { }
 			//bool operator<(DataRecord& anotherDataRecord) { return(this->fERecoil<anotherDataRecord.fERecoil); }
 		};
 		
@@ -174,6 +182,7 @@ class KQDistribution {
 		KQDistribution();
 		
 		//getters
+    const Char_t* GetBoloConfigFile() const  { return fBoloConfigFile.c_str(); }
 		const Char_t* GetSourceFile() const { return fSourceFile.c_str(); }
 		const Char_t* GetSourceDir() const { return fSourceDir.c_str(); }
 		const Char_t* GetTargetDir() const { return fTargetDir.c_str(); }
@@ -195,6 +204,7 @@ class KQDistribution {
 		void SortData();
 		
 		//setters
+    void SetBoloConfigFile(const Char_t* aBoloConfigFile) { fBoloConfigFile = aBoloConfigFile; }
 		void SetSourceFile(const Char_t* aSourceFile) { fSourceFile = aSourceFile; }
 		void SetSourceDir(const Char_t* aSourceDir) { fSourceDir = aSourceDir; }
 		void SetTargetDir(const Char_t* aTargetDir) { fTargetDir = aTargetDir; }
