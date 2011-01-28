@@ -10,25 +10,26 @@
 
 #include "Rtypes.h"
 #include "KRun12Temp.h"
+#include <cstring>
 
 ClassImp(KRun12Temp);
 
-KRun12Temp::KRun12Temp(string aFileName = "")
+KRun12Temp::KRun12Temp(const char* aFileName)
 {
-  if(aFileName!="")
+  if(aFileName != 0)
     ReadCalibrationFile(aFileName);
 }
 
-void KRun12Temp::ReadCalibrationFile(string aFileName)
+void KRun12Temp::ReadCalibrationFile(const char* aFileName)
 {
   //reads a bolometer configuration ASCII file of form "$name $detector_number $fwhm_ion $fwhm_ion356 $fwhm_heat $fwhm_heat356 $voltagebias $radius_fiducial"
-  if(aFileName!="") {
+  if(aFileName != 0) {
     fTree = new TTree("ConfigTree","values from file");
-    fTree->ReadFile(aFileName.c_str(),"name/C:detector_no/I:fwhm_ion/D:fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
+    fTree->ReadFile(aFileName,"name/C:detector_no/I:fwhm_ion/D:fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
   }
 }
 
-Int_t KRun12Temp::GetCalibrationEntry(string aBoloName)
+Int_t KRun12Temp::GetCalibrationEntry(const char* aBoloName)
 {
   //
   fTree->ResetBranchAddresses();
@@ -36,7 +37,7 @@ Int_t KRun12Temp::GetCalibrationEntry(string aBoloName)
   fTree->SetBranchAddress("name",name);
   for(Int_t i = 0; i < fTree->GetEntries(); i++){
     fTree->GetEntry(i);
-    if(name==aBoloName)
+    if(strcmp(name,aBoloName) == 0)
       return i;
       
   }

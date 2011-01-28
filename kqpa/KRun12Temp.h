@@ -16,7 +16,7 @@
 #include "Rtypes.h"
 #include "TTree.h"
 #include <math.h>
-#include <string>
+
 using namespace std;
 
 class KRun12Temp {
@@ -24,10 +24,10 @@ class KRun12Temp {
     TTree* fTree; //tree storing bolo data
 
   public:
-    KRun12Temp(string aFileName);
+    KRun12Temp(const char* aFileName);
     
-    void ReadCalibrationFile(string aFileName);
-    Int_t GetCalibrationEntry(string aBoloName);
+    void ReadCalibrationFile(const char* aFileName);
+    Int_t GetCalibrationEntry(const char* aBoloName);
     Int_t GetDetectorNumber(Int_t anEntry);
     Double_t GetUncerIonZero(Int_t anEntry);
     Double_t GetUncerIonCalib(Int_t anEntry);

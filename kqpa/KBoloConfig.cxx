@@ -27,8 +27,8 @@ void KBoloConfig::Load(string aBoloName,string aFileName)
   fBoloName = aBoloName;
   fEnergyCalibration=356.0;
   if(aFileName!="") {
-  KRun12Temp aConfigFile(aFileName);
-    Int_t anIndex = aConfigFile.GetCalibrationEntry(aBoloName);
+  KRun12Temp aConfigFile(aFileName.c_str());
+    Int_t anIndex = aConfigFile.GetCalibrationEntry(aBoloName.c_str());
     fSigmaIonCalibration=aConfigFile.GetUncerIonCalib(anIndex);
     fSigmaHeatCalibration=aConfigFile.GetUncerHeatCalib(anIndex);
     fSigmaIonZero=aConfigFile.GetUncerIonZero(anIndex);
