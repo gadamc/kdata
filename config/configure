@@ -13,6 +13,7 @@
 #                default - doesn't prompt for variables if a default exists
 #
 
+
 require 5.002;
 use strict;
 use Cwd;
@@ -66,7 +67,8 @@ my @env_list = ( 'KDATA_ROOT',
 
 if ($opt_all) {
     push(@env_list, 
-                    'FFTW_DIR',
+                    'FFTW_DIR', 
+  #'LIBCURL',
                     #'HISTO_DIR',
                     #'CERNDIR'
 				);
@@ -74,7 +76,8 @@ if ($opt_all) {
 
 # set FFTW_DIR to '/usr/local/lib' by default
 $ENV{FFTW_DIR} or $ENV{FFTW_DIR} = '/usr/local/lib';
-       
+#$ENV{LIBCURL} or $ENV{LIBCURL} = '/usr/lib';
+
 # initialize our environment from current settings
 $KDATA_env{$_} = $ENV{$_} foreach @env_list;
 
@@ -98,22 +101,28 @@ print "Checking environment variables...\n";
 #GetEnv('KDATA_DATA','KDATA_data.txt','This is the base directory for the KDATA data files');
 # get and verify ROOTSYS environment
 for (;;) {
-    GetEnv('ROOTSYS','bin/root');
-	print "$KDATA_env{KDATA_ROOT}\n";
-    unless ($KDATA_env{ROOTSYS} =~ /.[^0-9]*(\d{1})\.?(\d{1,2})[._]?(\d*)/) {
-        print "Warning: Unknown ROOT version (must be $min_root_ver or higher)\n";
-       last;
-    }
-    my $root_ver = sprintf("%d.%2d%.2d",$1,$2,$3);
-    my $min_root = $min_root_ver;
-	print "$root_ver $min_root\n";
-    $min_root =~ s/_//; # remove '_' to compare as floating point
-    last if $root_ver >= $min_root;
-    print "ERROR: ROOT version must be $min_root_ver or higher\n";
+  GetEnv('ROOTSYS','bin/root');
+
+  #require that ROOTSYS/bin/root-config exists..
+  my $prog = "$KDATA_env{ROOTSYS}/bin/root-config";
+  -e $prog or Exit("ERROR: Can't find $prog");
+
+  #use root-config to get the version of ROOT that was selected by the user
+  my $cmd = "$KDATA_env{ROOTSYS}/bin/root-config --version";
+  my $root_ver = `$cmd`;
+  #print "$root_ver\n";
+  chomp($root_ver);
+  #$root_ver =~ s/.//gi;
+  $root_ver =~ s/\///gi; # remove '/' to compare as integer
+  my $min_root = $min_root_ver;
+  $min_root =~ s/_//gi; # remove '_' to compare as integer
+  
+  last if $root_ver >= $min_root;
+  print "ERROR: ROOT version must be $min_root_ver or higher\n";
+  print "Your Version of ROOT: $root_ver  Minimum Version Required: $min_root\n";
 }
 
-my $prog = "$KDATA_env{ROOTSYS}/bin/root-config";
--e $prog or Exit("ERROR: Can't find $prog");
+
 
 # get and verify KW_ROOT and KW_KWMAN_VER
 #for (;;) {
@@ -137,6 +146,7 @@ my $prog = "$KDATA_env{ROOTSYS}/bin/root-config";
 if ($opt_all) {
     #GetEnv('CERNDIR','liblepto.a');
     GetEnv('FFTW_DIR','libfftw3.a');
+  #GetEnv('LIBCURL',"libcurl","This is optional");
     #GetEnv('HISTO_DIR','libFHistoHB.a','This only needs to be set if KWMAN was extracted with HISTOSCOPE_PRESENT.');
 }
 
