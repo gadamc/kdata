@@ -123,7 +123,7 @@ Double_t KQUncertainty::GetNuclRecWidth(Double_t energy, Double_t ionUncer,
   Double_t heatUncer2 = heatUncer*heatUncer;
   Double_t q = lind.GetQValue(energy);
   
-  return sqrt(inherentWidth*inherentWidth + pow(1 + voltageBias * q / epsilon, 2)*ionUncer2 + pow(1 + voltageBias/epsilon, 2)*q*q*heatUncer2 ) / (energy*energy);
+  return sqrt(inherentWidth*inherentWidth + (pow(1 + voltageBias * q / epsilon, 2)*ionUncer2 + pow(1 + voltageBias/epsilon, 2)*q*q*heatUncer2 ) / (energy*energy) );
               
   
 }

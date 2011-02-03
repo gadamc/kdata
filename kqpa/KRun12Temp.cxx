@@ -65,6 +65,8 @@ Double_t KRun12Temp::GetUncerIonZero(Int_t anEntry)
   fTree->SetBranchAddress("fwhm_ion",&anFWHMIon);
   fTree->GetEntry(anEntry);
   return anFWHMIon/(2 *sqrt(2 *log(2)));
+  
+  //return anFWHMIon;
 }
 
 Double_t KRun12Temp::GetUncerIonCalib(Int_t anEntry)
@@ -76,6 +78,8 @@ Double_t KRun12Temp::GetUncerIonCalib(Int_t anEntry)
   fTree->SetBranchAddress("fwhm_ion356",&anFWHMIon356);
   fTree->GetEntry(anEntry);
   return anFWHMIon356/(2 *sqrt(2 *log(2)));
+
+  //return anFWHMIon356;
 }
 
 Double_t KRun12Temp::GetUncerHeatZero(Int_t anEntry)
@@ -87,6 +91,8 @@ Double_t KRun12Temp::GetUncerHeatZero(Int_t anEntry)
   fTree->SetBranchAddress("fwhm_heat",&anFWHMHeat);
   fTree->GetEntry(anEntry);
   return anFWHMHeat/(2 *sqrt(2 *log(2)));
+
+  //return anFWHMHeat;
 }
 
 Double_t KRun12Temp::GetUncerHeatCalib(Int_t anEntry)
@@ -98,6 +104,8 @@ Double_t KRun12Temp::GetUncerHeatCalib(Int_t anEntry)
   fTree->SetBranchAddress("fwhm_heat356",&anFWHMHeat356);
   fTree->GetEntry(anEntry);
   return anFWHMHeat356/(2 *sqrt(2 *log(2)));
+
+  //return anFWHMHeat356;
 }
 
 Double_t KRun12Temp::GetVoltageBias(Int_t anEntry)
