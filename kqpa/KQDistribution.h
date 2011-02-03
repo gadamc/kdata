@@ -7,15 +7,7 @@
 //
 // * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
-// The basic purpose of this class is to show Q gamma and neutron band widths for a number of KBolometerEvents,
-// read from a specified KDATA tree file which stores KEvents
-// For this purpose the Q and ERecoil values are read from all KBolometerEvents within the tree file and stored in a vector of struct "DataRecord"
-// This vector is sorted according to the ERecoil values in ascending order
-// and then equal numbers of adjacent data pairs are filled in a specified number "fNumProjections" of TH2D Q-ERecoil histograms
-// These histograms are projected on the Q-axis resulting in ERecoilvalues resulting in TH1D histograms
-// Mean and error values for the Q gamma and neutron band are estimated by applying Gaussian fits in certain ERecoil intervals
-// determined by theoretically calculated values: mean value  +/- a specified number of error value
-// 
+
 
 
 #include <list>
@@ -78,7 +70,6 @@ class KQDistribution {
 	private:
     string fBoloConfigFile; //source ASCII file for heat and ion channel uncertainties for all bolometers
 		string fSourceFile; // source KDATA tree file
-		string fSourceDir; // directory for source KDATA tree file
 		string fTargetDir; // target directory for created files
 		string fTargetSubDir; // target subdirectory in fTargetDir corresponding to detector, event type and source file name
 		string fDetectorName; // temporary detector
@@ -94,6 +85,8 @@ class KQDistribution {
 		Int_t fNumProjections; // number of TH2D histograms
 		bool fIsBatch; // batch-mode
 		
+		
+		KDataReader* fKDataReader; // kdata reader
 		KHLAEvent* fKHLAEvent;  //used to read KHLABolometerRecord events
 		KBoloConfig* fBoloConfig; //bolometer configuration
 		
@@ -173,18 +166,23 @@ class KQDistribution {
     const Double_t fAlpha;
     const Double_t fBeta; // <Q_neutron> = fAlpha * E_Recoil ** fBeta
     
-    void InitializeMembers();
-    
+    void SetStyle();
+    void ResetVars();
+    void MakeTargetDir();
+    bool ReadEvents();
+    void MakeCanvases();
+    void FillHistograms();
+    void SaveGraphData();
+    void MakeGraphs();
 
 
   public:
 
-    KQDistribution();
+    KQDistribution(const Char_t* aSourceFile,const Char_t* aTargetDir,Int_t aNumProjections);
     
     //getters
     const Char_t* GetBoloConfigFile() const  { return fBoloConfigFile.c_str(); }
     const Char_t* GetSourceFile() const { return fSourceFile.c_str(); }
-    const Char_t* GetSourceDir() const { return fSourceDir.c_str(); }
     const Char_t* GetTargetDir() const { return fTargetDir.c_str(); }
     const Char_t* GetDetectorName() const { return fDetectorName.c_str();  }
     Double_t GetConfidenceInSigmas() const  { return fConfidenceInSigmas; }
@@ -206,7 +204,6 @@ class KQDistribution {
     //setters
     void SetBoloConfigFile(const Char_t* aBoloConfigFile) { fBoloConfigFile = aBoloConfigFile; }
     void SetSourceFile(const Char_t* aSourceFile) { fSourceFile = aSourceFile; }
-    void SetSourceDir(const Char_t* aSourceDir) { fSourceDir = aSourceDir; }
     void SetTargetDir(const Char_t* aTargetDir) { fTargetDir = aTargetDir; }
     void SetDetectorName(const Char_t* aDetectorName) { fDetectorName = aDetectorName; }
     void SetConfidenceInSigmas(Double_t aConfidenceInSigmas) { fConfidenceInSigmas = aConfidenceInSigmas; }
@@ -219,11 +216,15 @@ class KQDistribution {
     void SetNumProjections(Int_t aNumProjections) { fNumProjections = aNumProjections; }
     void SetIsBatch(bool anIsBatch) { fIsBatch = anIsBatch; }
     
-    void SetPaths(char* aSourceDir,char* aSourceFile,char* aTargetDir);
+    void SetPaths(const Char_t* aSourceFile,const Char_t* aTargetDir);
     
     void SaveImage(Int_t anIndex);
     void DrawHistogram(bool aDirection);
-    void SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas = 2.5,Double_t aFirstValue = 0.01,Double_t aSecondValue = 0.01,Double_t aFirstError = 0.01, Double_t aSecondError = 0.01);
+    void SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas = 2.5,
+                       Double_t aFirstValue = 0.01,
+                       Double_t aSecondValue = 0.01,
+                       Double_t aFirstError = 0.01,
+                       Double_t aSecondError = 0.01);
     Int_t QtoBin(Double_t aQ);
     Double_t BintoQ(Int_t aBin);
     Double_t GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh);
@@ -236,14 +237,7 @@ class KQDistribution {
     Double_t GetGammaMax(TH1D* aHistogram);
     //Double_t GammaFit(Double_t* x,Double_t* par);
     
-    void SetStyle();
-    void ResetVars();
-    void MakeDirectories();
-    bool ReadEvents();
-    void MakeCanvases();
-    void FillHistograms();
-    void SaveGraphData();
-    void MakeGraphs();
+
     void MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,Int_t aNumProjections);
     friend bool operator<(const KQDistribution::DataRecord& aFirstDataRecord,const KQDistribution::DataRecord& aSecondDataRecord);
     
