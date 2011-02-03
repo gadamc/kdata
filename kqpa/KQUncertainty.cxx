@@ -39,6 +39,23 @@
 // Bool_t isInEmBand = KQUncertainty::IsInElecRecoilBand(Q, E_r, E_i, E_h, sigma_ion_zero, sigma_ion_calib,
 //                                                          sigma_heat_zero, sigma_heat_calib, voltBias)
 // 
+// The calculations of the uncertainties in this class are based on the formula presented 
+// in the Edelweiss Calibrations Paper
+//
+//       Martineau O, Benoit a, Berge L, et al. 
+//       Calibration of the EDELWEISS cryogenic heat-and-ionization germanium detectors for dark matter search. 
+//       Nuclear Instruments and Methods in Physics Research Section A. 
+//       2004;530(3):426-439. 
+//       Available at: http://linkinghub.elsevier.com/retrieve/pii/S0168900204010162
+//
+// except for equation 11 in that paper. I believe this equation is wrong and should
+// be written as
+//
+// BEGIN_LATEX
+//
+// #sigma_{total} = #sqrt{#sigma_{o}^{2} + C^{2}}
+//
+// END_LATEX
 
 #include "KQUncertainty.h"
 #include "KLindhard.h"
@@ -88,7 +105,7 @@ Double_t KQUncertainty::GetChannelUncertainty(Double_t energy, Double_t uncerZer
 
 Double_t KQUncertainty::GetNuclRecWidth(Double_t energy, Double_t ionUncer,
                                         Double_t heatUncer, Double_t voltageBias, 
-                                        Double_t epsilon)
+                                        Double_t epsilon, Double_t inherentWidth)
 {
   //This method returns the width of the Nuclear Recoil Q-plot band at a particular recoil energy (energy), given
   //the ion and heat channel measured uncertainty for this particular energy, and the voltage bias of the bolometer.
@@ -106,7 +123,7 @@ Double_t KQUncertainty::GetNuclRecWidth(Double_t energy, Double_t ionUncer,
   Double_t heatUncer2 = heatUncer*heatUncer;
   Double_t q = lind.GetQValue(energy);
   
-  return sqrt( pow(1 + voltageBias * q / epsilon, 2)*ionUncer2 + pow(1 + voltageBias/epsilon, 2)*q*q*heatUncer2 ) / energy;
+  return sqrt(inherentWidth*inherentWidth + pow(1 + voltageBias * q / epsilon, 2)*ionUncer2 + pow(1 + voltageBias/epsilon, 2)*q*q*heatUncer2 ) / (energy*energy);
               
   
 }
@@ -201,19 +218,20 @@ Bool_t KQUncertainty::IsInNuclearRecoilBand(Double_t myQvalue, Double_t Erecoil,
                                             Double_t Eheat, Double_t uncerIonZero, Double_t uncerIonCalib,
                                             Double_t uncerHeatZero, Double_t uncerHeatCalib,
                                             Double_t voltBias, Double_t confidenceLevel, Double_t epsilon,
-                                            Double_t ionCalibEnergy, Double_t heatCalibEnergy)
+                                            Double_t ionCalibEnergy, Double_t heatCalibEnergy,
+                                            Double_t inherentWidth)
 {                                     
   //Does everything for you.
   //Double_t uncerIon = GetChannelUncertainty(Eion, uncerIonZero, uncerIonCalib, ionCalibEnergy);
   //Double_t uncerHeat = GetChannelUncertainty(Eheat, uncerHeatZero, uncerHeatCalib, heatCalibEnergy);
-  //Double_t nuclRecWidth =  GetNuclRecWidth(Erecoil, uncerIon, uncerHeat, voltBias, epsilon);
+  //Double_t nuclRecWidth =  GetNuclRecWidth(Erecoil, uncerIon, uncerHeat, voltBias, epsilon, inherentWidth);
   //
   //return IsInNuclearRecoilBand(myQvalue, Erecoil, nuclRecWidth, confidenceLevel);
   //
   
   Double_t uncerIon = GetChannelUncertainty(Eion, uncerIonZero, uncerIonCalib, ionCalibEnergy);
   Double_t uncerHeat = GetChannelUncertainty(Eheat, uncerHeatZero, uncerHeatCalib, heatCalibEnergy);
-  Double_t nuclRecWidth =  GetNuclRecWidth(Erecoil, uncerIon, uncerHeat, voltBias, epsilon);
+  Double_t nuclRecWidth =  GetNuclRecWidth(Erecoil, uncerIon, uncerHeat, voltBias, epsilon, inherentWidth);
   
   return IsInNuclearRecoilBand(myQvalue, Erecoil, nuclRecWidth, confidenceLevel);
 }
@@ -251,13 +269,13 @@ Bool_t KQUncertainty::IsInElecRecoilBand(Double_t myQvalue, Double_t Erecoil, Do
   //
   //Double_t uncerIon = GetChannelUncertainty(Eion, uncerIonZero, uncerIonCalib, ionCalibEnergy);
   //Double_t uncerHeat = GetChannelUncertainty(Eheat, uncerHeatZero, uncerHeatCalib, heatCalibEnergy);
-  //Double_t emWidth =  GetNuclRecWidth(Erecoil, uncerIon, uncerHeat, voltBias, epsilon);
+  //Double_t emWidth =  GetElecRecoilWidth(Erecoil, uncerIon, uncerHeat, voltBias, epsilon);
   //
   //return IsInElecRecoilBand(myQvalue, Erecoil, emWidth, confidenceLevel);
   // 
   Double_t uncerIon = GetChannelUncertainty(Eion, uncerIonZero, uncerIonCalib, ionCalibEnergy);
   Double_t uncerHeat = GetChannelUncertainty(Eheat, uncerHeatZero, uncerHeatCalib, heatCalibEnergy);
-  Double_t emWidth =  GetNuclRecWidth(Erecoil, uncerIon, uncerHeat, voltBias, epsilon);
+  Double_t emWidth =  GetElecRecoilWidth(Erecoil, uncerIon, uncerHeat, voltBias, epsilon);
   
   return IsInElecRecoilBand(myQvalue, emWidth, confidenceLevel);
   

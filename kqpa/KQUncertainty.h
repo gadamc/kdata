@@ -27,7 +27,7 @@ public:
                                                                                                   //the peak of the 133Ba source
   static Double_t GetNuclRecWidth(Double_t energy, Double_t ionUncer,
                                   Double_t heatUncer, Double_t voltageBias, 
-                                  Double_t epsilon = 3.0);
+                                  Double_t epsilon = 3.0, Double_t inherentWidth = 0.04);
   
   static Double_t GetElecRecoilWidth(Double_t energy, Double_t ionUncer,
                                      Double_t heatUncer, Double_t voltageBias, 
@@ -43,7 +43,8 @@ public:
                                       Double_t Eheat, Double_t uncerIonZero, Double_t uncerIonCalib,
                                       Double_t uncerHeatZero, Double_t uncerHeatCalib,
                                       Double_t voltBias, Double_t confidenceLevel = 0.90, Double_t epsilon = 3.0,
-                                      Double_t ionCalibEnergy = 356.0, Double_t heatCalibEnergy = 356.0);
+                                      Double_t ionCalibEnergy = 356.0, Double_t heatCalibEnergy = 356.0,
+                                      Double_t inherentWidth = 0.04);
   
   
   static Bool_t IsInElecRecoilBand(Double_t myQvalue, Double_t emWidth,
