@@ -97,10 +97,6 @@ void KDataFileIO::GetTreePointerInFile(void)
 	}
 	if(fTree->IsZombie())
 		cout << "KDataFileIO::GetTreePointerInFile. TTree is Zombie" << endl; 
-  else {
-		fTree->SetCacheSize(10000000);
-		fTree->AddBranchToCache("*");
-	}
   
 }
 

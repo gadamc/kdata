@@ -21,7 +21,7 @@ class KDataReader : public KDataFileIO {
 public:
   //Constructors
 	//KDataReader(const Char_t* fileName);
-	KDataReader(const Char_t* fileName, KEvent **anEvent = 0);
+	KDataReader(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
   virtual ~KDataReader(void);
 
 	Bool_t Close(Option_t *opt = "");
@@ -41,6 +41,8 @@ public:
 	Int_t GetNextBoloEntry(Int_t anEntry=-1) ;
 	Int_t GetPreviousBoloEntry(Int_t anEntry=-1) ;
 	
+  void SetUseInternalCache(Bool_t bOption = true);
+  
 private:
 		
 	Int_t fCurrentEntry; //current entry number in the tree
@@ -52,7 +54,7 @@ private:
   void InitializeMembers(void);
 	Bool_t SetBranchAddress(KEvent **anEvent = 0);
 	//Bool_t OpenFile(const Char_t* fileName);
-	Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent = 0);
+	Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
 
 	//discourage / do not allow copy and assignment
 	KDataReader(const KDataReader &aReader);

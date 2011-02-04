@@ -25,7 +25,7 @@ using namespace std;
 
 ClassImp(KDataReader);
 
-KDataReader::KDataReader(const Char_t* fileName, KEvent **anEvent)
+KDataReader::KDataReader(const Char_t* fileName, KEvent **anEvent, Bool_t useCache)
 {
   //standard constructor. You must at least provide a fileName. If you
   //have a particular object in memory where you want the data to be
@@ -40,7 +40,7 @@ KDataReader::KDataReader(const Char_t* fileName, KEvent **anEvent)
 	
 	fLocalEvent = 0;
 	InitializeMembers();
-  if(!OpenFile(fileName, anEvent)){
+  if(!OpenFile(fileName, anEvent, useCache)){
 		cout << "KDataReader - Could not open " << fileName << endl;
 	}
 }
@@ -74,7 +74,7 @@ void KDataReader::InitializeMembers(void)
 }
 
 
-Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent)
+Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t useCache)
 {
   //closes any file that is already open and then opens fileName.
   //returns true if successful. 
@@ -82,17 +82,18 @@ Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent)
 	Close();  //close the file, if one is already open. 
 	fFile = OpenFileForReading(fileName);
 	Bool_t theRet = false;
-	
+  
 	if(fFile != 0){
 		if(fTree != 0){
 			if(SetBranchAddress(anEvent)){
+        SetUseInternalCache(useCache);
 				if(GetEntry(0) > 0)
 					fEntries = fTree->GetEntries();
 					theRet = true;
 			}
 		}
 	}
-
+  
 	return theRet;
 }
 
@@ -105,6 +106,19 @@ Bool_t KDataReader::Close(Option_t *opt)
 		fLocalEvent = 0;
 	}
 		
+}
+
+void KDataReader::SetUseInternalCache(Bool_t option)
+{
+  if(option && fTree != 0){
+    fTree->SetCacheSize(20000000);
+    fTree->AddBranchToCache("*", true);
+  }
+  else {
+    cout << "KDataReader::SetUseInternalCache. There's no way of undoing this." << endl;
+    cout << "  If you've previously called this method with option = true, then" << endl;
+    cout << "  all branches in the tree are added to the cache." << endl; 
+  }
 }
 
 Bool_t KDataReader::SetBranchAddress(KEvent **anEvent)
