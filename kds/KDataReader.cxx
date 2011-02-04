@@ -110,15 +110,26 @@ Bool_t KDataReader::Close(Option_t *opt)
 
 void KDataReader::SetUseInternalCache(Bool_t option)
 {
+  //This method calls the new TTree::AddBranchToCache method
+  //which speeds up reading of the data. However, it does add to the 
+  //memory overhead by around 30 Mb. If you do not want to use cacheing,
+  //you must declare so in the KDataReader constructor, or when using
+  //the KDataReader::OpenFile method. 
+  //
+  //Currenly, there's no way of telling ROOT to undo this.
+  //If you've previously called this method with option = true, then
+  //all branches in the tree are added to the cache.
+  //
+  
   if(option && fTree != 0){
     fTree->SetCacheSize(20000000);
     fTree->AddBranchToCache("*", true);
   }
-  else {
-    cout << "KDataReader::SetUseInternalCache. There's no way of undoing this." << endl;
-    cout << "  If you've previously called this method with option = true, then" << endl;
-    cout << "  all branches in the tree are added to the cache." << endl; 
-  }
+  /*else {
+    cerr << "KDataReader::SetUseInternalCache. There's no way of undoing this." << endl;
+    cerr << "  If you've previously called this method with option = true, then" << endl;
+    cerr << "  all branches in the tree are added to the cache." << endl; 
+  }*/
 }
 
 Bool_t KDataReader::SetBranchAddress(KEvent **anEvent)
