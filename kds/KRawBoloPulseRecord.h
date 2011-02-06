@@ -12,7 +12,7 @@
 #define __KRAWBOLOPULSERECORD_H__
 
 #include "KBoloPulseRecord.h"
-#include "KRawBolometerRecord.h";
+#include "KRawBolometerRecord.h"
 #include "TRef.h"
 #include <string>
 

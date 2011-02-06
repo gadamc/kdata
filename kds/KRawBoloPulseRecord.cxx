@@ -200,7 +200,7 @@ void KRawBoloPulseRecord::Compact(void)
 void KRawBoloPulseRecord::SetTrace(UInt_t size, const Short_t* aData)
 {
   fTrace.clear();
-  for(Int_t i = 0; i < size; i++)
+  for(UInt_t i = 0; i < size; i++)
     fTrace.push_back(aData[i]);
 }
 
@@ -209,7 +209,7 @@ void KRawBoloPulseRecord::FillHistogram(TH1 &hist)
   //Fills hist with data found from the pulse trace. Then you can more easily plot it.
   //
   //developers note: This method shouldn't probably be a part of this class
-  //rather, there should be some sort of data manipulation / data visualization
+  //Rather, there should be some sort of data manipulation / data visualization
   //set of classes to perform these types of tasks. Otherwise, data storage object
   //could become flooded with data visualization tools. 
   
