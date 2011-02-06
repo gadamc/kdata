@@ -1,6 +1,6 @@
 ##### List of KDATA modules to build #####
 
-MODULES      := kds era ksamba kdatabase
+MODULES      := kds era ksamba 
 
 #kmuon
 
