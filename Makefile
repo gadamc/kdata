@@ -97,8 +97,7 @@ ROOTINCS       := -I$(ROOTSYS)/include
 FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../fftw -I$(FFTW_DIR)/../rfftw
 
 XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
-ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyRoot
-
+ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyROOT
 
 CERNLIBS       :=  -L$(CERNDIR) -llepto -lpythia -lpythiad -ljetset74\
                    -lpdflib804 -lpawlib -lgraflib -lgrafX11 -lmathlib -lpacklib
@@ -131,6 +130,7 @@ endif
 
 MAKEDEP         = $(KDATA_ROOT)/scripts/depend.sh
 MAKELIB         = $(ROOTSYS)/build/unix/makelib.sh $(MKLIBOPTIONS)
+#MAKELIB         = $(ROOTSYS)/build/unix/makelib.sh 
 
 # warn when overwriting headers if this is our first pass
 # (enabling us to quickly spot duplicate header names)
@@ -143,6 +143,8 @@ endif
 ##### additional KDATA architecture-specific definitions #####
 
 include config/Makefile.$(ARCH)
+
+EXTRALIBS += -lutil
 
 EXTRA_CFLAGS   += $(KDATA_FLAGS)
 EXTRA_CXXFLAGS += $(KDATA_FLAGS)
