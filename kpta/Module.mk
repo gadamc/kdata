@@ -38,6 +38,7 @@ KPTA_DO     := $(KPTA_DC:.C=.o)
 KPTA_DH     := $(KPTA_DC:.C=.h)
 
 KPTA_H      := $(filter-out $(KPTA_LH) $(KPTA_DH),$(wildcard $(KPTA_DIRI)/*.h))
+KPTA_PY     := $(filter-out $(KPTA_LH) $(KPTA_DH),$(wildcard $(KPTA_DIRI)/*.py))
 KPTA_ECXX   := $(wildcard $(KPTA_DIRS)/K*.cxx)
 KPTA_CXX    := $(filter-out $(KPTA_ECXX),$(wildcard $(KPTA_DIRS)/*.cxx))
 KPTA_O      := $(KPTA_CXX:.cxx=.o)
@@ -61,6 +62,7 @@ ifneq ($(KPTA_EO),)
 ALLLIBS      += $(KPTA_LIB)
 endif
 ALLEXECS     += $(KPTA_EXE)
+ALLPYTHON    += $(patsubst $(KPTA_DIRI)/%.py,lib/%.py,$(KPTA_PY))
 
 # include all dependency files
 INCLUDEFILES += $(KPTA_DEP)
@@ -74,6 +76,9 @@ INCLUDEFILES += $(KPTA_DEP)
 include/%.h:    $(KPTA_DIRI)/%.h
 		$(COPY_HEADER) $< $@
 
+lib/%.py:    $(KPTA_DIRI)/%.py 
+		$(COPY_HEADER) $< $@
+    
 # rule for compiling our source files
 $(KPTA_DIRS)/%.o:    $(KPTA_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KPTA_FLAGS) $(FFTWINCS) -o $@ -c $< 

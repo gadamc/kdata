@@ -97,7 +97,7 @@ ROOTINCS       := -I$(ROOTSYS)/include
 FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../fftw -I$(FFTW_DIR)/../rfftw
 
 XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
-ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit
+ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyRoot
 
 
 CERNLIBS       :=  -L$(CERNDIR) -llepto -lpythia -lpythiad -ljetset74\
@@ -162,7 +162,7 @@ endif
 RMKDEP          = bin/rmkdepend
 
 .SUFFIXES: .cxx .d .C
-.PRECIOUS: include/%.h
+.PRECIOUS: include/%.h include/%.py
 
 ##### TARGETS #####
 
@@ -173,7 +173,7 @@ RMKDEP          = bin/rmkdepend
                 $(patsubst %,reallyclean-%,$(MODULES)) \
                 $(patsubst %,distclean-%,$(MODULES)) 
 
-all:            kdataexecs
+all:            kdataexecs 
 	@echo Done making all
 
 ##### Module Makefiles #####
@@ -197,10 +197,13 @@ endif
 libs:           kdatalibs
 	@echo Done making libs
 
+kdatapython:     $(ALLPYTHON)
+
+
 kdatalibs:       $(ALLLIBS)
 
 # the executables depend on the libraries being built first
-kdataexecs:      kdatalibs $(ALLEXECS)
+kdataexecs:      kdatapython kdatalibs $(ALLEXECS)
 
 # define generic rules last to allow modules to override them
 # (the first matching rule is the one that is used)
@@ -258,6 +261,7 @@ showbuild:
 	@echo ""
 	@echo "MODULES            = $(MODULES)"
 	@echo "ALLLIBS            = $(ALLLIBS)"
+	@echo "ALLPYTHON          = $(ALLPYTHON)"
 	@echo "ALLEXECS           = $(ALLEXECS)"
 	@echo ""
 	@echo "ARCH               = $(ARCH)"

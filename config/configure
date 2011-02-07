@@ -282,9 +282,9 @@ else
 setenv $library_path {\$KDATA_ROOT}/lib:{\$ROOTSYS}/lib
 endif
 if ({\$?$pythonlibpath}) then
-setenv $pythonlibpath {\$ROOTSYS}/lib:{\$$pythonlibpath}
+setenv $pythonlibpath {\$ROOTSYS}/lib:{\$KDATA_ROOT}/lib:{\$$pythonlibpath}
 else
-setenv $pythonlibpath {\$ROOTSYS}/lib
+setenv $pythonlibpath {\$ROOTSYS}/lib:{\$KDATA_ROOT}/lib
 endif
 __END__
         print KDATA_SH "setenv MACOSX_DEPLOYMENT_TARGET 10.6\n" if $ENV{'OSTYPE'} eq 'darwin';
@@ -308,9 +308,9 @@ else
 export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib
 fi
 if (test "\$$pythonlibpath") then
-export $pythonlibpath=\$ROOTSYS/lib:\$$pythonlibpath
+  export $pythonlibpath=\$ROOTSYS/lib:\$KDATA_ROOT/lib:\$$pythonlibpath
 else
-export $pythonlibpath=\$ROOTSYS/lib
+export $pythonlibpath=\$ROOTSYS/lib:\$KDATA_ROOT/lib
 fi
 __END__
         print KDATA_SH "export MACOSX_DEPLOYMENT_TARGET=10.6\n" if $ENV{'OSTYPE'} eq 'darwin';

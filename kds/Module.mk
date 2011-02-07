@@ -55,6 +55,7 @@ KDS_DO     := $(KDS_DC:.C=.o)
 KDS_DH     := $(KDS_DC:.C=.h)
 
 KDS_H      := $(filter-out $(KDS_LH) $(KDS_DH),$(wildcard $(KDS_DIRI)/*.h))
+KDS_PY     := $(filter-out $(KDS_LH) $(KDS_DH),$(wildcard $(KDS_DIRI)/*.py))
 KDS_ECXX   := $(wildcard $(KDS_DIRS)/K*.cxx)
 KDS_CXX    := $(filter-out $(KDS_ECXX),$(wildcard $(KDS_DIRS)/*.cxx))
 
@@ -81,6 +82,7 @@ ifneq ($(KDS_EO),)
 ALLLIBS      += $(KDS_LIB)
 endif
 ALLEXECS     += $(KDS_EXE)
+ALLPYTHON    += $(patsubst $(KDS_DIRI)/%.py,lib/%.py,$(KDS_PY))
 
 # include all dependency files
 INCLUDEFILES += $(KDS_DEP)
@@ -92,6 +94,9 @@ INCLUDEFILES += $(KDS_DEP)
 
 # we depend on all of our header files being up to date in the include directory
 include/%.h:    $(KDS_DIRI)/%.h
+		$(COPY_HEADER) $< $@
+
+lib/%.py:    $(KDS_DIRI)/%.py 
 		$(COPY_HEADER) $< $@
 
 # rule for compiling our source files

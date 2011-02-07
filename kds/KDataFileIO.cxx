@@ -112,7 +112,8 @@ Bool_t KDataFileIO::Close(Option_t *opt)
 		return true;
 	}
 	
-	fFile->Close(opt);
+	if(fFile->IsOpen())
+    fFile->Close(opt);
 	
 	if (fFile->IsOpen()) {
 		return false;

@@ -67,6 +67,7 @@ KQPA_DO     := $(KQPA_DC:.C=.o)
 KQPA_DH     := $(KQPA_DC:.C=.h)
 
 KQPA_H      := $(filter-out $(KQPA_LH) $(KQPA_DH),$(wildcard $(KQPA_DIRI)/*.h))
+KQPA_PY     := $(filter-out $(KQPA_LH) $(KQPA_DH),$(wildcard $(KQPA_DIRI)/*.py))
 KQPA_ECXX   := $(wildcard $(KQPA_DIRS)/K*.cxx)
 KQPA_CXX    := $(filter-out $(KQPA_ECXX),$(wildcard $(KQPA_DIRS)/*.cxx))
 KQPA_O      := $(KQPA_CXX:.cxx=.o)
@@ -90,6 +91,8 @@ ifneq ($(KQPA_EO),)
 ALLLIBS      += $(KQPA_LIB)
 endif
 ALLEXECS     += $(KQPA_EXE)
+ALLPYTHON    += $(patsubst $(KQPA_DIRI)/%.py,lib/%.py,$(KQPA_PY))
+
 
 # include all dependency files
 INCLUDEFILES += $(KQPA_DEP)
@@ -101,6 +104,9 @@ INCLUDEFILES += $(KQPA_DEP)
 
 # we depend on all of our header files being up to date in the include directory
 include/%.h:    $(KQPA_DIRI)/%.h
+		$(COPY_HEADER) $< $@
+    
+lib/%.py:    $(KQPA_DIRI)/%.py 
 		$(COPY_HEADER) $< $@
 
 # rule for compiling our source files

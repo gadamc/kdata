@@ -44,6 +44,7 @@ KTMP_DO     := $(KTMP_DC:.C=.o)
 KTMP_DH     := $(KTMP_DC:.C=.h)
 
 KTMP_H      := $(filter-out $(KTMP_LH) $(KTMP_DH),$(wildcard $(KTMP_DIRI)/*.h))
+KTMP_PY     := $(filter-out $(KTMP_LH) $(KTMP_DH),$(wildcard $(KTMP_DIRI)/*.py))
 KTMP_ECXX   := $(wildcard $(KTMP_DIRS)/K*.cxx)
 KTMP_CXX    := $(filter-out $(KTMP_ECXX),$(wildcard $(KTMP_DIRS)/*.cxx))
 KTMP_O      := $(KTMP_CXX:.cxx=.o)
@@ -67,6 +68,8 @@ ifneq ($(KTMP_EO),)
 ALLLIBS      += $(KTMP_LIB)
 endif
 ALLEXECS     += $(KTMP_EXE)
+ALLPYTHON    += $(patsubst $(KTMP_DIRI)/%.py,lib/%.py,$(KTMP_PY))
+
 
 # include all dependency files
 INCLUDEFILES += $(KTMP_DEP)
@@ -80,6 +83,9 @@ INCLUDEFILES += $(KTMP_DEP)
 include/%.h:    $(KTMP_DIRI)/%.h
 		$(COPY_HEADER) $< $@
 
+lib/%.py:    $(KTMP_DIRI)/%.py 
+		$(COPY_HEADER) $< $@
+    
 # rule for compiling our source files
 $(KTMP_DIRS)/%.o:    $(KTMP_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KTMP_FLAGS) $(ROOTINCS)  -o $@ -c $< 

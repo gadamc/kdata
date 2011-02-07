@@ -67,6 +67,7 @@ KERA_DO     := $(KERA_DC:.C=.o)
 KERA_DH     := $(KERA_DC:.C=.h)
 
 KERA_H      := $(filter-out $(KERA_LH) $(KERA_DH),$(wildcard $(KERA_DIRI)/*.h))
+KERA_PY     := $(filter-out $(KERA_LH) $(KERA_DH),$(wildcard $(KERA_DIRI)/*.py))
 KERA_ECXX   := $(wildcard $(KERA_DIRS)/K*.cxx)
 KERA_CXX    := $(filter-out $(KERA_ECXX),$(wildcard $(KERA_DIRS)/*.cxx))
 KERA_O      := $(KERA_CXX:.cxx=.o)
@@ -90,6 +91,7 @@ ifneq ($(KERA_EO),)
 ALLLIBS      += $(KERA_LIB)
 endif
 ALLEXECS     += $(KERA_EXE)
+ALLPYTHON    += $(patsubst $(KERA_DIRI)/%.py,lib/%.py,$(KERA_PY))
 
 # include all dependency files
 INCLUDEFILES += $(KERA_DEP)
@@ -101,6 +103,9 @@ INCLUDEFILES += $(KERA_DEP)
 
 # we depend on all of our header files being up to date in the include directory
 include/%.h:    $(KERA_DIRI)/%.h
+		$(COPY_HEADER) $< $@
+
+lib/%.py:    $(KERA_DIRI)/%.py 
 		$(COPY_HEADER) $< $@
 
 # rule for compiling our source files

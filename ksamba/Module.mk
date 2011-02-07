@@ -41,6 +41,7 @@ KSAMBA_DO     := $(KSAMBA_DC:.C=.o)
 KSAMBA_DH     := $(KSAMBA_DC:.C=.h)
 
 KSAMBA_H      := $(filter-out $(KSAMBA_LH) $(KSAMBA_DH),$(wildcard $(KSAMBA_DIRI)/*.h))
+KSAMBA_PY     := $(filter-out $(KSAMBA_LH) $(KSAMBA_DH),$(wildcard $(KSAMBA_DIRI)/*.py))
 KSAMBA_ECXX   := $(wildcard $(KSAMBA_DIRS)/K*.cxx)
 KSAMBA_CXX    := $(filter-out $(KSAMBA_ECXX),$(wildcard $(KSAMBA_DIRS)/*.cxx))
 KSAMBA_O      := $(KSAMBA_CXX:.cxx=.o)
@@ -64,6 +65,7 @@ ifneq ($(KSAMBA_EO),)
 ALLLIBS      += $(KSAMBA_LIB)
 endif
 ALLEXECS     += $(KSAMBA_EXE)
+ALLPYTHON    += $(patsubst $(KSAMBA_DIRI)/%.py,lib/%.py,$(KSAMBA_PY))
 
 # include all dependency files
 INCLUDEFILES += $(KSAMBA_DEP)
@@ -74,9 +76,12 @@ INCLUDEFILES += $(KSAMBA_DEP)
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KSAMBA_DIRI)/%.h
+include/%.h:    $(KSAMBA_DIRI)/%.h 
 		$(COPY_HEADER) $< $@
 
+lib/%.py:    $(KSAMBA_DIRI)/%.py 
+		$(COPY_HEADER) $< $@
+    
 # rule for compiling our source files
 $(KSAMBA_DIRS)/%.o:    $(KSAMBA_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KSAMBA_FLAGS) $(ROOTINCS)  -o $@ -c $< 
