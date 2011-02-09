@@ -6,6 +6,7 @@
 // Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 1/13/11.
 //
 // * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+//
 // The basic purpose of this class is to show Q gamma and neutron band widths for a number of KBolometerEvents,
 // read from a specified KDATA tree file which stores KEvents
 // For this purpose the Q and ERecoil values are read from all KBolometerEvents within the tree file and stored in a vector of struct "DataRecord"
@@ -21,6 +22,7 @@
 #ifndef __KQFUNCTIONS__
 #define __KQFUNCTIONS__
 
+/*
 Double_t GammaFit(Double_t* x,Double_t* par) {
   // this function is used to fit gaussian shapes in two seperate intervals with variable boundaries
   if(x[0]>par[6]) {
@@ -43,6 +45,15 @@ Double_t GammaFit(Double_t* x,Double_t* par) {
     return 0;
   }
 }
+*/
+
+Double_t GausFit(Double_t* x,Double_t* par) {
+  if(x[0]>par[3] && x[0]<par[4])
+    return(par[0]*exp(-(x[0]-par[1])*(x[0]-par[1])/par[2]/par[2]/2));
+  else
+    TF1::RejectPoint();
+  return 0;
+}
 
 bool operator<(const KQDistribution::DataRecord& aFirstDataRecord,const KQDistribution::DataRecord& aSecondDataRecord) {
   //implemented to order DataRecords according ascending fERecoil values
@@ -57,9 +68,10 @@ KQDistribution::KQDistribution(const Char_t* aSourceFile, const Char_t* aTargetD
 {
   // default constructor
   cout << "Setting members ... " << endl;
-  fBoloConfigFile = "BoloConfig.txt"; //user-specific
+  fBoloConfigFile = "BoloConfigFile.txt"; //user-specific
   fSourceFile = aSourceFile; //user-specific
   fTargetDir = aTargetDir; //user-specific
+  fImageFormat = "pdf";
   fNumProjections = aNumProjections;
   fNumBinsERecoil = 100;
   fNumBinsQ = 100;
@@ -68,7 +80,17 @@ KQDistribution::KQDistribution(const Char_t* aSourceFile, const Char_t* aTargetD
   fQMin = 0;
   fQMax = 2;
   fHistogramCounter = 0;
-  fConfidenceInSigmas = 2;
+  fConfidenceInSigmas = sqrt(2)*TMath::ErfInverse(0.9);
+
+  
+}
+
+TH1D* KQDistribution::GetHistogram(Int_t anIndex) {
+  if(anIndex>=fNumProjections || anIndex<=0) {
+    cout << "KQDistribution::GetHistogram(Int_t): invalid index " << anIndex << ", must be in [0," << fNumProjections-1 << endl;
+    return 0;
+  }
+  return fHistogramRecords[anIndex].fHistogram->ProjectionY();
   
 }
 
@@ -107,7 +129,7 @@ void KQDistribution::SortData() {
   sort(fData.begin(),fData.end());
 }
 
-void KQDistribution::DrawHistogram(bool aDirection) {
+void KQDistribution::DrawHistogram(TPad* aPad,Int_t aHistogramCounter) {
   // draws a TH1D Q-ERecoil histogram, which is a projection on Q-axis of a previously created TH2D Q-ERecoil histogram 
   // this histogram is in the fHistogramCounter'th element of type HistogramRecord in fHistogramRecords
   // aDirection=true: fHistogramCounter is incremented, next histogram is drawn
@@ -115,45 +137,48 @@ void KQDistribution::DrawHistogram(bool aDirection) {
   //
   // two gaussian fits are applied for gamma and neutron bands within fixed intervals and the corresponding chi2 values are drawn on a TPaveText
   cout << "Drawing Histogram ... " << endl;
-  if(aDirection)
-    fHistogramCounter = (fHistogramCounter + 1) % fNumProjections;
-  else
-    fHistogramCounter = (fHistogramCounter - 1 + fNumProjections) % fNumProjections;
+
+
   // TH2D* hist = (TH2D*)gDirectory->FindObject(TString::Format("hist_%s_%i",GetCategoryName(),fHistogramCounter).Data());
-  if(fHistogramRecords[fHistogramCounter].fHistogram) {
-    fRightSubPad->cd();
-    fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY()->Draw();
-    SetBoundaries(fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY(),0.6,fHistogramRecords[fHistogramCounter].fQNeutronTheo,fHistogramRecords[fHistogramCounter].fQGammaTheo,fHistogramRecords[fHistogramCounter].fQNeutronTheoError/fConfidenceInSigmas,fHistogramRecords[fHistogramCounter].fQGammaTheoError/fConfidenceInSigmas);
-    fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY()->Fit(fDoubleGaus,"LM");
+  if(fHistogramRecords[aHistogramCounter].fHistogram) {
+    aPad->cd();
+    fHistogramRecords[aHistogramCounter].fHistogram->ProjectionY()->Draw();
+    SetBoundaries(fHistogramRecords[aHistogramCounter].fHistogram->ProjectionY(),
+                  3,
+                  fHistogramRecords[aHistogramCounter].fQNeutronTheo,
+                  fHistogramRecords[aHistogramCounter].fQGammaTheo,
+                  fHistogramRecords[aHistogramCounter].fQNeutronTheoError/fConfidenceInSigmas,
+                  fHistogramRecords[aHistogramCounter].fQGammaTheoError/fConfidenceInSigmas
+                  );
+    fHistogramRecords[aHistogramCounter].fHistogram->ProjectionY()->Fit(fGammaGaus,"LM");
+    aPad->Update();
 
-    fChi2PaveText->Clear();
-    fChi2PaveText->SetX1NDC(0.6);
-    fChi2PaveText->SetX2NDC(1);
-    fChi2PaveText->SetY1NDC(0.2);
-    fChi2PaveText->SetY2NDC(0.35);
-    
-    Double_t aChi2Gamma = GetChi2(fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY(),fDoubleGaus->GetParameter(7),fDoubleGaus->GetParameter(6));
-    Int_t anNDFGamma = GetNDF(fDoubleGaus->GetParameter(7),fDoubleGaus->GetParameter(6),3);
-    Double_t aChi2Neutron = GetChi2(fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY(),fDoubleGaus->GetParameter(9),fDoubleGaus->GetParameter(8));
-    Int_t anNDFNeutron = GetNDF(fDoubleGaus->GetParameter(9),fDoubleGaus->GetParameter(8),3);
-    
-    fChi2PaveText->AddText(TString::Format("#chi_{g}^{2}/ndf_{g}     \t%f/%i",aChi2Gamma,anNDFGamma).Data());
-    fChi2PaveText->AddText(TString::Format("#chi_{n}^{2}/ndf_{n}     %f/%i",aChi2Neutron,anNDFNeutron).Data());
-    cout << "aChi2Gamma / anNDFGamma " << aChi2Gamma << "/" << anNDFGamma << " = " << aChi2Gamma/anNDFGamma << endl;
-    cout << "aChi2Neutron / anNDFNeutron " << aChi2Neutron << "/" << anNDFNeutron << " = " << aChi2Neutron/anNDFNeutron << endl;
+    TPaveStats* aTempTPaveStats = 0;
+    aTempTPaveStats = (TPaveStats*)fHistogramRecords[aHistogramCounter].fHistogram->ProjectionY()->FindObject("stats");
+    if(!aTempTPaveStats) {
+      cout << "KQDistribution::DrawHistogram(): no stats found for histogram " << fHistogramCounter << endl;
+      return;
+    }
+    fChi2PaveText = (TPaveStats*)aTempTPaveStats->Clone();
 
-    fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY()->Fit(fDoubleGaus,"LM");
-    fGammaGaus->SetParameter(0,fDoubleGaus->GetParameter(0));
-    fGammaGaus->SetParameter(1,fDoubleGaus->GetParameter(1));
-    fGammaGaus->SetParameter(2,fDoubleGaus->GetParameter(2));
-    fNeutronGaus->SetParameter(0,fDoubleGaus->GetParameter(3));
-    fNeutronGaus->SetParameter(1,fDoubleGaus->GetParameter(4));
-    fNeutronGaus->SetParameter(2,fDoubleGaus->GetParameter(5));
-    //TFitResultPtr r = hists[k]->ProjectionY()->Fit(fGammaGaus,"LRMI","",0.1,1.2);
-    fGammaGaus->Draw("SAME");
-    fNeutronGaus->Draw("SAME");
+    
+    fHistogramRecords[aHistogramCounter].fHistogram->ProjectionY()->Fit(fNeutronGaus,"LM");
+    aPad->Update();
+    
+    aTempTPaveStats = (TPaveStats*)fHistogramRecords[aHistogramCounter].fHistogram->ProjectionY()->FindObject("stats");
+    if(!aTempTPaveStats) {
+      cout << "KQDistribution::DrawHistogram(): no stats found for histogram " << fHistogramCounter << endl;
+      return;
+    }
+    
+    
+    for(int k = 4; k<aTempTPaveStats->GetSize(); ++k)
+      fChi2PaveText->AddText(aTempTPaveStats->GetLine(k)->GetTitle()); //copying results of neutron fit in the TPaveStats of the gamma fit
 
     fChi2PaveText->Draw();
+    fGammaGaus->Draw("SAME");
+    fNeutronGaus->Draw("SAME");
+    aPad->Update();
     
 
 
@@ -163,6 +188,19 @@ void KQDistribution::DrawHistogram(bool aDirection) {
     cout << "KQDistribution::DrawHistogram(): Histogram " << fHistogramCounter << " is not available " << endl;
   }	
 }
+
+void KQDistribution::Previous() {
+  cout << "Previous()" << endl;
+  fHistogramCounter = (fHistogramCounter - 1 + fNumProjections) % fNumProjections;
+  DrawHistogram(fRightSubPad,fHistogramCounter);
+}
+
+void KQDistribution::Next() {
+  cout << "Next()" << endl;
+  fHistogramCounter = (fHistogramCounter + 1) % fNumProjections;
+  DrawHistogram(fRightSubPad,fHistogramCounter);
+}
+
 
 void KQDistribution::SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas,Double_t aFirstValue, Double_t aSecondValue, Double_t aFirstError, Double_t aSecondError) {
   // searches and sets the boundaries for the two gaussian fits in the fitting function fDoubleGaus
@@ -201,27 +239,42 @@ void KQDistribution::SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas,Double_t
   cout << "QGammaHigh: " << QGammaMaxX + aNumSigmas*aSecondError << endl;
   cout << "QGammaIntegral: " << QGammaIntegral << endl;
   
-  fDoubleGaus->SetParameter(0,QGammaMaxY); // C_{#gamma}
-  fDoubleGaus->SetParameter(1,QGammaMaxX); // Q_{#gamma}
-  fDoubleGaus->SetParameter(2,aSecondError); // #sigma_{Q_{#gamma}}
-  fDoubleGaus->SetParameter(3,QNeutronMaxY); // C_{neutron}
-  fDoubleGaus->SetParameter(4,QNeutronMaxX); // Q_{neutron}
-  fDoubleGaus->SetParameter(5,aFirstError); // #sigma_{Q_{neutron}}
-  fDoubleGaus->SetParameter(6,QGammaMaxX + aNumSigmas*aSecondError); // Q_{#gamma,high}
-  fDoubleGaus->SetParameter(7,QGammaMaxX - aNumSigmas*aSecondError); // Q_{#gamma,low}
-  fDoubleGaus->SetParameter(8,QNeutronMaxX + aNumSigmas*aFirstError); // Q_{neutron,high}
-  fDoubleGaus->SetParameter(9,QNeutronMaxX - aNumSigmas*aFirstError); // Q_{neutron,low}
+  fGammaGaus->SetParameter(0,QGammaMaxY); // C_{#gamma}
+  fGammaGaus->SetParameter(1,QGammaMaxX); // Q_{#gamma}
+  fGammaGaus->SetParameter(2,aSecondError); // #sigma_{Q_{#gamma}}
+  fGammaGaus->FixParameter(3,QGammaMaxX - aNumSigmas*aSecondError); // Q_{#gamma,high}
+  fGammaGaus->FixParameter(4,QGammaMaxX + aNumSigmas*aSecondError); // Q_{#gamma,low}
+  
+  fNeutronGaus->SetParameter(0,QNeutronMaxY); // C_{neutron}
+  fNeutronGaus->SetParameter(1,QNeutronMaxX); // Q_{neutron}
+  fNeutronGaus->SetParameter(2,aFirstError); // #sigma_{Q_{neutron}}
+  fNeutronGaus->FixParameter(3,QNeutronMaxX - aNumSigmas*aFirstError); // Q_{neutron,high}
+  fNeutronGaus->FixParameter(4,QNeutronMaxX + aNumSigmas*aFirstError); // Q_{neutron,low}
 }
 
 void KQDistribution::SaveImage(Int_t anIndex) {
-  // saves the image drawn on fDrawCanvas in a pdf file in path "fTargetDir/fTargetSubDir/CategoryName_fDectorName_anIndex.pdf"
-  cout << "Saving Image ... " << endl;
-  if(fDrawCanvas)
-    fDrawCanvas->Print(TString::Format("%s/%s_%s_%i.pdf",
+  // saves the image drawn on fDrawCanvas in an image file with format fImageFormat in path "fTargetDir/fTargetSubDir/CategoryName_fDectorName_anIndex.fImageFormat"
+  cout << TString::Format("Saving %s/%s_%s_%i.%s ...",
                                        fTargetDir.c_str(),
                                        GetCategoryName(),
                                        fDetectorName.c_str(),
-                                       anIndex).Data());
+                                       anIndex,fImageFormat.c_str()).Data() << endl;
+  if(fDrawCanvas)
+    fDrawCanvas->Print(TString::Format("%s/%s_%s_%i.%s",
+                                       fTargetDir.c_str(),
+                                       GetCategoryName(),
+                                       fDetectorName.c_str(),
+                                       anIndex,fImageFormat.c_str()).Data());
+}
+
+void KQDistribution::SaveImage(const Char_t* aFileName) {
+  cout << "Saving " << aFileName << endl;
+  if(fDrawCanvas) {
+    if(fTargetDir!="")
+      fDrawCanvas->Print(TString::Format("%s/%s",fTargetDir.c_str(),aFileName).Data());
+    else
+      fDrawCanvas->Print(TString::Format("%s/%s",gSystem->pwd(),aFileName).Data());
+  }
 }
 
 Int_t KQDistribution::QtoBin(Double_t aQ) {
@@ -254,6 +307,13 @@ Int_t KQDistribution::GetNDF(Double_t aQlow,Double_t aQhigh,Int_t aNumParameters
   return k-1-aNumParameters;
 }
 
+void KQDistribution::SetConfidenceLevel(Double_t aQuantil)
+{
+  //This method sets the confidence level according to the specified quantil
+  fConfidenceInSigmas = sqrt(2)*TMath::ErfInverse(aQuantil);
+}
+
+/*
 void KQDistribution::CorrectBoundaries(BoundaryType aBType,Double_t aStep) {
   // changes one of the boundaries aBType = KQDistribution::GAMMAHIGH , KQDistribution::GAMMALOW, KQDistribution::NEUTRONHIGH , KQDistribution::NEUTRONLOW by aStep in fDoubleGaus
   // the current TH1D histogram in fHistogramRecords is then refitted and redrawn on fDrawCanvas
@@ -266,36 +326,37 @@ void KQDistribution::CorrectBoundaries(BoundaryType aBType,Double_t aStep) {
     case NEUTRONLOW: parameterIndex = 6; break;
     default: parameterIndex = 9; break;
   }
-  fDoubleGaus->SetParameter(parameterIndex,fDoubleGaus->GetParameter(parameterIndex)+aStep);
+  fDoubleGaus->SetParameter(parameterIndex,fDoubleGaus->GetParameter()+aStep);
   fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY()->Fit(fDoubleGaus,"LM");
   GetFitParameters(fHistogramCounter);
-  RedrawPeaks();
   
 }
+*/
 
 void KQDistribution::SetPaths(const Char_t* aSourceFile,const Char_t* aTargetDir) {
-  // sets the specified paths
+  // This method sets the specified paths for the source file and the target directory where the plot images are saved
   
   fSourceFile = aSourceFile;
   fTargetDir = aTargetDir;
 }
 
 Double_t KQDistribution::GetGammaMax(TH1D* aHistogram) {
-  // returns the Q value corresponding to the bin with maximal entries in aHistogram
+  //This method returns the Q value corresponding to the bin with maximal entries in aHistogram
   return(fQMin + aHistogram->GetMaximumBin()*(fQMax-fQMin)/fNumBinsQ);
   // return(Qmin+hist->GetMaximumBin(Int_t((1-Qmin)/(Qmax-Qmin)*numbinsQ))*(Qmax-Qmin)/numbinsQ);
 }
 
 void KQDistribution::GetFitParameters(Int_t anIndex) {
-  // changes the current values, fQGamma, fQGammaError, fQNeutron, fQNeutronError, in the anIndex'th element of fHistogramRecords to the fit parameter values and errors in fDoubleGaus
-  // these values are also changed in the graphs, fQGammaErrorGraph and fQNeutronErrorGraph,
+  //This method changes the current values, fQGamma, fQGammaError, fQNeutron, fQNeutronError, 
+  //in the anIndex'th element of fHistogramRecords to the fit parameter values and errors in fDoubleGaus
+  //These values are also changed in the graphs, fQGammaErrorGraph and fQNeutronErrorGraph,
   // as well as in the ASCII files, "fTargetDir/fTargetSubDir/QNeutronValues.dat" and "fTargetDir/fTargetSubDir/QGammaValues.dat" containing the data of the graphs
   // fTotalMultiGraph containing fQGammaErrorGraph and fQNeutronErrorGraph is redrawn
   cout << "Saving new fit parameters ... " << endl;
-  fHistogramRecords[anIndex].fQGamma = fDoubleGaus->GetParameter(1);
-  fHistogramRecords[anIndex].fQGammaError = fConfidenceInSigmas*abs(fDoubleGaus->GetParameter(2));
-  fHistogramRecords[anIndex].fQNeutron = fDoubleGaus->GetParameter(4);
-  fHistogramRecords[anIndex].fQNeutronError = fConfidenceInSigmas*abs(fDoubleGaus->GetParameter(5));
+  fHistogramRecords[anIndex].fQGamma = fGammaGaus->GetParameter(1);
+  fHistogramRecords[anIndex].fQGammaError = fConfidenceInSigmas*abs(fGammaGaus->GetParameter(2));
+  fHistogramRecords[anIndex].fQNeutron = fNeutronGaus->GetParameter(1);
+  fHistogramRecords[anIndex].fQNeutronError = fConfidenceInSigmas*abs(fGammaGaus->GetParameter(2));
   fQNeutronErrorGraph->SetPoint(anIndex,fHistogramRecords[anIndex].fERecoilMean,fHistogramRecords[anIndex].fQNeutron);
   fQNeutronErrorGraph->SetPointError(anIndex,fHistogramRecords[anIndex].fERecoilError,fHistogramRecords[anIndex].fQNeutronError);
   fQGammaErrorGraph->SetPoint(anIndex,fHistogramRecords[anIndex].fERecoilMean,fHistogramRecords[anIndex].fQGamma);
@@ -319,7 +380,7 @@ void KQDistribution::GetFitParameters(Int_t anIndex) {
       QGammaRawFile << setw(5) << "" << setw(20) << fHistogramRecords[k].fERecoilMean << setw(20) << fHistogramRecords[k].fQGamma << setw(20) <<
       fHistogramRecords[k].fERecoilError << setw(20) << fHistogramRecords[k].fQGammaError << endl;
     else
-      cout << "... neglectiong Q_Gamma = " << fHistogramRecords[k].fQGamma << " in histogram " << k << ": out of boundaries [0.8,1.2]" << endl;
+      cout << "... neglecting Q_Gamma = " << fHistogramRecords[k].fQGamma << " in histogram " << k << ": out of boundaries [0.8,1.2]" << endl;
     cout << TString::Format("Qg = %f +/- %f \t Q_n = %f +/- %f",fHistogramRecords[k].fQGamma,
                             fHistogramRecords[k].fQGammaError,
                             fHistogramRecords[k].fQNeutron,
@@ -331,42 +392,9 @@ void KQDistribution::GetFitParameters(Int_t anIndex) {
   fDrawCanvas->cd();
 }
 
-void KQDistribution::RedrawPeaks() {
-    // redraws the single gaussian shapes of the current TH1D Q-ERecoil histogram and the TPaveText showing the chi2 of the fits
-    cout << "Redrawing Gaussian shapes ... " << endl;
-    fDrawCanvas->cd();
-    
-    fChi2PaveText->Clear();
-    fChi2PaveText->SetX1NDC(0.6);
-    fChi2PaveText->SetX2NDC(1);
-    fChi2PaveText->SetY1NDC(0.2);
-    fChi2PaveText->SetY2NDC(0.35);
-    Double_t aChi2Gamma = GetChi2(fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY(),fDoubleGaus->GetParameter(7),fDoubleGaus->GetParameter(6));
-    Int_t anNDFGamma = GetNDF(fDoubleGaus->GetParameter(7),fDoubleGaus->GetParameter(6),3);
-    Double_t aChi2Neutron = GetChi2(fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY(),fDoubleGaus->GetParameter(9),fDoubleGaus->GetParameter(8));
-    Int_t anNDFNeutron = GetNDF(fDoubleGaus->GetParameter(9),fDoubleGaus->GetParameter(8),3);
-
-    fChi2PaveText->AddText(TString::Format("#chi_{g}^{2}/ndf_{g}     \t%f/%i",aChi2Gamma,anNDFGamma).Data());
-    fChi2PaveText->AddText(TString::Format("#chi_{n}^{2}/ndf_{n}     %f/%i",aChi2Neutron,anNDFNeutron).Data());
-    cout << "aChi2Gamma / anNDFGamma " << aChi2Gamma << "/" << anNDFGamma << " = " << aChi2Gamma/anNDFGamma << endl;
-    cout << "aChi2Neutron / anNDFNeutron " << aChi2Neutron << "/" << anNDFNeutron << " = " << aChi2Neutron/anNDFNeutron << endl;
-
-    fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY()->Fit(fDoubleGaus,"LM");
-
-    fGammaGaus->SetParameter(0,fDoubleGaus->GetParameter(0));
-    fGammaGaus->SetParameter(1,fDoubleGaus->GetParameter(1));
-    fGammaGaus->SetParameter(2,fDoubleGaus->GetParameter(2));
-    fNeutronGaus->SetParameter(0,fDoubleGaus->GetParameter(3));
-    fNeutronGaus->SetParameter(1,fDoubleGaus->GetParameter(4));
-    fNeutronGaus->SetParameter(2,fDoubleGaus->GetParameter(5));
-    fGammaGaus->Draw("SAME");
-    fNeutronGaus->Draw("SAME");
-    fChi2PaveText->Draw();
-    fDrawCanvas->Update();
-}
 
 void KQDistribution::SetStyle() {
-  // sets styles for histogram and fit result drawing
+  //This method sets styles for histogram and fit result drawing
   cout << "Setting style ... " << endl;
   gStyle->SetOptFit(12); 
   gStyle->SetHistFillColor(2);
@@ -379,7 +407,7 @@ void KQDistribution::SetStyle() {
 }
 
 void KQDistribution::ResetVars() {
-  // disposes all dynamically allocated class members
+  //This method disposes all dynamically allocated class members
   cout << "Resetting variables ... " << endl;
   if(fAdjustPanel) {
     delete fAdjustPanel;
@@ -510,7 +538,7 @@ void KQDistribution::ResetVars() {
 }
 
 void KQDistribution::MakeTargetDir() { 
-  // directory "fTargetDir/fTargetSubDir/" is created with fTargetSubDir="fSourceFile/fDetectorName/GetCategoryName()"
+  //This method creates the target directory
   cout << "Making target directory ..." << endl;
   gSystem->Exec(TString::Format("mkdir -p %s",fTargetDir.c_str()).Data()); //if directory exists, nothing happens
 }
@@ -599,11 +627,15 @@ bool KQDistribution::ReadEvents() {
 
 
 bool KQDistribution::ReadEvents() { //deprecated
-  //reads the KBolometerEvents in "fSourceDir/fSourcefile.root"
+  //This method reads the KBolometerEvents in "fSourceDir/fSourcefile.root"
+  //For each KBolometerEvents the Q value and the recoil energy is saved in a data structure "DataRecord",
+  //which is appended to the vector "fData".
+  //Double_t arrays for the single quantities can directly be retrieved with
+  //KQDistribution::GetData(KQDistribution::ERECOIL) or KQDistribution::GetData(KQDistribution::Q).
+  
   cout << "Reading events ... " << endl;
-  fOutputFile = new TFile(TString::Format("%s/%s_%s_%s",
+  fOutputFile = new TFile(TString::Format("%s/%s_%s",
                                           fTargetDir.c_str(),
-                                          fSourceFile.c_str(),
                                           GetCategoryName(),
                                           fDetectorName.c_str()).Data(),"RECREATE");
                                           
@@ -643,7 +675,11 @@ bool KQDistribution::ReadEvents() { //deprecated
       for(int l = 0; l<fKHLAEvent->GetNumBolos(); ++l)  {
   aBoloRecord = fKHLAEvent->GetBolo(l);
   if(aBoloRecord->GetEventFlag()==fEventCategory && aBoloRecord->GetDetectorName()==fDetectorName && aBoloRecord->GetEnergyRecoil()<fERecoilMax)
-    fData.push_back(DataRecord(aBoloRecord->GetEnergyRecoil(),aBoloRecord->GetQvalue()));
+    fData.push_back(DataRecord(aBoloRecord->GetEnergyRecoil(),
+                               aBoloRecord->GetQvalue(),
+                               aBoloRecord->GetEnergyIon(),
+                               aBoloRecord->GetEnergyHeat(0)
+                              ));
       }
     }
     else
@@ -655,7 +691,11 @@ bool KQDistribution::ReadEvents() { //deprecated
       for(int l = 0; l<fKHLAEvent->GetNumBolos(); ++l) {
   aBoloRecord = fKHLAEvent->GetBolo(l);
   if(aBoloRecord->GetEventFlag()==fEventCategory)
-    fData.push_back(DataRecord(aBoloRecord->GetEnergyRecoil(),aBoloRecord->GetQvalue()));
+    fData.push_back(DataRecord(aBoloRecord->GetEnergyRecoil(),
+                               aBoloRecord->GetQvalue(),
+                              aBoloRecord->GetEnergyIon(),
+                              aBoloRecord->GetEnergyHeat(0)
+                              ));
       }
     }
 
@@ -673,7 +713,12 @@ bool KQDistribution::ReadEvents() { //deprecated
 } 
 
 void KQDistribution::FillHistograms() {
-  // fills fNumProjections TH2D Q-ERecoil histograms with equal numbers of entries from fData
+  //This method fills fNumProjections TH2D Q-ERecoil histograms with equal numbers of entries from fData
+  //Each histogram is filled with the amount of entries corresponding to
+  //the integer quotient of the total entries "fDataSize"  and the number of  histograms "fNumProjections".
+  //If this quotient is zero, the number of histograms "fNumProjections" is set to one.
+  //The last histogram contains the remaining events "fDataSize" modulo the number of entries per histogram.
+  
   cout << "Filling histograms ... " << endl;
   gDirectory= fOutputFile;
   
@@ -758,9 +803,64 @@ void KQDistribution::FillHistograms() {
   cout << "Histogram attributes set ... " << endl;  
 }
 
+void KQDistribution::CalculateTheoErrors() {
+  //This method calculates the theoretical central Q values and band widths for the gamma and neutron recoil bands for all histograms.
+  //At the moment, this is done the following way:
+  //The central Q value for gamma recoil band is always 1.
+  //The central Q value for the neutron recoil is calculated by the Lindhard formula Q(E_Recoil) = 0.165* E_Recoil^0.185.
+  //For the band uncertainties, first the heat and ion channel  uncertainties on baseline and calibration level E=365.0 keV
+  //for the specific bolometer "fDetectorName" are read from an ASCII file with tabled values via KBoloConfig.
+  //There might be a more sophisticated way in the future to handle this information
+  //Then via KQUncertainty the heat and ion channel uncertainties for all 
+  
+  ofstream QNeutronTheoRawFile(TString::Format("%s/QNeutronTheoValues.dat",fTargetDir.c_str()).Data());
+  ofstream QGammaTheoRawFile(TString::Format("%s/QGammaTheoValues.dat",fTargetDir.c_str()).Data());
+  QNeutronTheoRawFile << setw(5) << "#" << setw(20) << "ERecoilMean" <<  setw(20) << "QNeutronTheo" << setw(20) << "ERecoilError" << setw(20) << "QNeutronTheoError" << endl;
+  QGammaTheoRawFile << setw(5) << "#" << setw(20) << "ERecoilMean" << setw(20) << "QGammaTheo" << setw(20) << "ERecoilError" << setw(20) << "QGammaTheoError" << endl;
+  
+  KBoloConfig aBoloConfig(fDetectorName,fBoloConfigFile);
+  
+  
+  for(int k = 0; k<fNumProjections; ++k) {
+    fHistogramRecords[k].fQGammaTheo = 1;
+    fHistogramRecords[k].fQNeutronTheo = KQUncertainty::GetQValue(fHistogramRecords[k].fERecoilMean);
+    
+    Double_t aHeatUncertainty = KQUncertainty::GetChannelUncertainty(fHistogramRecords[k].fERecoilMean,
+                                                                     aBoloConfig.GetSigmaHeatZero(),
+                                                                     aBoloConfig.GetSigmaHeatCalibration(),
+                                                                     aBoloConfig.GetEnergyCalibration());
+    
+    Double_t anIonUncertainty =  KQUncertainty::GetChannelUncertainty(fHistogramRecords[k].fERecoilMean,
+                                                                      aBoloConfig.GetSigmaIonZero(),
+                                                                      aBoloConfig.GetSigmaIonCalibration(),
+                                                                      aBoloConfig.GetEnergyCalibration());
+    
+    Double_t aVoltageBias = aBoloConfig.GetChannelVoltage();
+    
+    fHistogramRecords[k].fQGammaTheoError =fConfidenceInSigmas* KQUncertainty::GetElecRecoilWidth(fHistogramRecords[k].fERecoilMean,
+                                                                              aHeatUncertainty,
+                                                                              anIonUncertainty,
+                                                                              aVoltageBias);
+                                                                              
+    fHistogramRecords[k].fQNeutronTheoError = fConfidenceInSigmas*KQUncertainty::GetNuclRecWidth(fHistogramRecords[k].fERecoilMean,
+                                                                              aHeatUncertainty,
+                                                                              anIonUncertainty,
+                                                                              aVoltageBias);
+    
+    
+    QNeutronTheoRawFile << setw(5) << " " << setw(20) << fHistogramRecords[k].fERecoilMean << setw(20) << 
+    fHistogramRecords[k].fQNeutronTheo << setw(20) << fHistogramRecords[k].fERecoilError << setw(20) << 
+    fHistogramRecords[k].fQNeutronTheoError << endl;
+    QGammaTheoRawFile << setw(5) << " " << setw(20) << fHistogramRecords[k].fERecoilMean << setw(20) << 
+    fHistogramRecords[k].fQGammaTheo << setw(20) << fHistogramRecords[k].fERecoilError << setw(20) << 
+    fHistogramRecords[k].fQGammaTheoError << endl;
+  }
+}
+
 void KQDistribution::MakeCanvases() {
-  // creates fMainCanvas showing two pads, the left pad shows fTotalMultiGraph and the right pad shows the current TH1D Q-ERecoil histrom with gaussian fits and two buttons to navigate to previous or next histrogram
-  // creates also fDrawCanvas which is used to store the images of histrograms in pdf files
+  //This method creates fMainCanvas showing two pads, the left pad shows fTotalMultiGraph 
+  //and the right pad shows the current TH1D Q-ERecoil histrom with gaussian fits and two buttons to navigate to previous or next histrogram.
+  //It creates also fDrawCanvas which is used to store the images of histrograms in image files with format "fFileFormat"
   cout << "Making Canvases ... " << endl;
   fMainCanvas = new TCanvas("fMainCanvas","Q plots",10,10,800,400);
   fMainCanvas->Divide(2,1);
@@ -773,25 +873,24 @@ void KQDistribution::MakeCanvases() {
   fMainCanvas->Update(); //necessary ???
   
   fMainCanvas->cd(2);
-  fPreviousButton = new TButton("previous","",0.01,0.90,0.49,0.99);
-  fPreviousButton->Connect("Clicked()","KQDistribution",this,"DrawHistogram(false)");
+  fPreviousButton = new TButton("previous","(KQDistribution*)(gROOT->FindObject(\"default\"))->Previous()",0.01,0.90,0.49,0.99);
+  fPreviousButton->Connect("TButton","Clicked()","KQDistribution",this,"Previous()");
   fPreviousButton->Draw();
-  fNextButton = new TButton("next","",0.5,0.90,0.99,0.99);
-  fNextButton->Connect("Clicked()","KQDistribution",this,"DrawHistogram(true)");
+  fNextButton = new TButton("next","(KQDistribution*)(gROOT->FindObject(\"default\"))->Next()",0.5,0.90,0.99,0.99);
+  fNextButton->Connect("TButton","Clicked()","KQDistribution",this,"Next()");
   fNextButton->Draw();
   
   fDrawCanvas = new TCanvas("fDrawCanvas","fDrawCanvas",10,10,800,400);
-  fChi2PaveText = new TPaveText(0.6,0.2,1,0.35);
-  fChi2PaveText->SetFillColor(0);
   fDrawCanvas->Draw();
   fDrawCanvas->cd(); 
 }
 
 void KQDistribution::SaveGraphData() {
-  //creates ASCII files containing the Q values from the gaussian fits and ERecoil mean values of the TH1D Q-ERecoil histograms
+  //This method creates ASCII files containing the Q values from the gaussian fits and ERecoil mean values of the TH1D Q-ERecoil histograms
   //these are the sourcefiles for subsequent graph creation
+  CalculateTheoErrors();
   cout << "Saving source data for graphs ... " << endl;
-  fDoubleGaus = new TF1("fDoubleGaus",GammaFit,0.1,2,10);
+  fDoubleGaus = new TF1("fDoubleGaus",GausFit,0.1,2,10);
   fDoubleGaus->SetParNames("C_{#gamma}",
                            "Q_{#gamma}",
                            "#sigma_{Q_{#gamma}}",
@@ -802,117 +901,57 @@ void KQDistribution::SaveGraphData() {
                            "Q_{n,high}",
                            "Q_{n,low}"
                );
-  fGammaGaus = new TF1("fGammaGaus","gaus",fQMin,fQMax);
-  fGammaGaus->SetParNames("C_{#gamma}","Q_{#gamma}","#sigma_{Q_{#gamma}}");
+  fGammaGaus = new TF1("fGammaGaus",GausFit,fQMin,fQMax,5);
+  fGammaGaus->SetParNames("C_{#gamma}","Q_{#gamma}","#sigma_{Q_{#gamma}}","Q_{#gamma,low}","Q_{#gamma,high}");
   fGammaGaus->SetLineColor(3);
-  fNeutronGaus = new TF1("fNeutronGaus","gaus",fQMin,fQMax);
-  fNeutronGaus->SetParNames("C_{n}","Q_{n}","#sigma_{Q_{n}}");
+  fGammaGaus->SetNpx(1000);
+  fNeutronGaus = new TF1("fNeutronGaus",GausFit,fQMin,fQMax,5);
+  fNeutronGaus->SetParNames("C_{n}","Q_{n}","#sigma_{Q_{n}}","Q_{n,low}","Q_{n,high}");
   fNeutronGaus->SetLineColor(4);
-  fLinhardFunction = new TF1("fLinhardFunction","[0]*x^[1]+[2]",0,300);
-  fLinhardFunction->SetParNames("#alpha","#beta","constant");
-  fLinhardFunction->SetParameters(0.165,0.185,0);
-  fConstantFunction = new TF1("constant","[0]",0,300);
-  fConstantFunction->SetParNames("constant");
-  
-  ofstream QNeutronTheoRawFile(TString::Format("%s/QNeutronTheoValues.dat",fTargetDir.c_str()).Data());
-  ofstream QGammaTheoRawFile(TString::Format("%s/QGammaTheoValues.dat",fTargetDir.c_str()).Data());
+  fNeutronGaus->SetNpx(1000);
+
   ofstream QNeutronRawFile(TString::Format("%s/QNeutronValues.dat",fTargetDir.c_str()).Data());
   ofstream QGammaRawFile(TString::Format("%s/QGammaValues.dat",fTargetDir.c_str()).Data());
-  QNeutronTheoRawFile << setw(5) << "#" << setw(20) << "ERecoilMean" <<  setw(20) << "QNeutronTheo" << setw(20) << "ERecoilError" << setw(20) << "QNeutronTheoError" << endl;
-  QGammaTheoRawFile << setw(5) << "#" << setw(20) << "ERecoilMean" << setw(20) << "QGammaTheo" << setw(20) << "ERecoilError" << setw(20) << "QGammaTheoError" << endl;
   QNeutronRawFile << setw(5) << "#" << setw(20) << "ERecoilMean" << setw(20) << "QNeutron" << setw(20) << "ERecoilError" << setw(20) << "QNeutronError" << endl;
   QGammaRawFile << setw(5) << "#" << setw(20) << "ERecoilMean" << setw(20) << "QGamma" << setw(20) << "ERecoilError" << setw(20) << "QGammaError" << endl;
   
-  //calculation of theoretical Q-bands TODO
-  Double_t aChi2Gamma, aChi2Neutron;
   for(int k = 0; k<fNumProjections; ++k) {
-    fHistogramRecords[k].fQGammaTheo = 1;
-    fHistogramRecords[k].fQNeutronTheo = KQUncertainty::GetQValue(fHistogramRecords[k].fERecoilMean);
-    fHistogramRecords[k].fQGammaTheoError = 0.1;
-    fHistogramRecords[k].fQNeutronTheoError = 0.1;
-    fDrawCanvas->cd();
-    fHistogramRecords[k].fHistogram->ProjectionY()->Draw();
-    SetBoundaries(fHistogramRecords[k].fHistogram->ProjectionY(),
-                  2.5,
-                  fHistogramRecords[k].fQNeutronTheo,
-                  fHistogramRecords[k].fQGammaTheo,
-                  fHistogramRecords[k].fQNeutronTheoError/fConfidenceInSigmas,
-                  fHistogramRecords[k].fQGammaTheoError/fConfidenceInSigmas
-    );
+
+     
+    DrawHistogram(fDrawCanvas,k);
     
-    TFitResultPtr aResultPtr = fHistogramRecords[k].fHistogram->ProjectionY()->Fit(fDoubleGaus,"LRS","",fQMin,fQMax);
-    fDrawCanvas->Update();
-    fGammaGaus->SetParameter(0,fDoubleGaus->GetParameter(0));
-    fGammaGaus->SetParameter(1,fDoubleGaus->GetParameter(1));
-    fGammaGaus->SetParameter(2,fDoubleGaus->GetParameter(2));
-    fNeutronGaus->SetParameter(0,fDoubleGaus->GetParameter(3));
-    fNeutronGaus->SetParameter(1,fDoubleGaus->GetParameter(4));
-    fNeutronGaus->SetParameter(2,fDoubleGaus->GetParameter(5));
-    fGammaGaus->Draw("SAME");
-    fNeutronGaus->Draw("SAME");
-    fDrawCanvas->Update();
-    fChi2PaveText->Clear();
-    fChi2PaveText->SetX1NDC(0.6);
-    fChi2PaveText->SetX2NDC(1);
-    fChi2PaveText->SetY1NDC(0.2);
-    fChi2PaveText->SetY2NDC(0.35); 
-    aChi2Gamma = GetChi2(fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY(),
-                         fDoubleGaus->GetParameter(7),
-                         fDoubleGaus->GetParameter(6)
-                 );
-    
-    Int_t anNDFGamma = GetNDF(fDoubleGaus->GetParameter(7),
-                              fDoubleGaus->GetParameter(6),3
-                       );
-    aChi2Neutron = GetChi2(fHistogramRecords[fHistogramCounter].fHistogram->ProjectionY(),
-                           fDoubleGaus->GetParameter(9),
-                           fDoubleGaus->GetParameter(8)
-                   );
-    Int_t anNDFNeutron = GetNDF(fDoubleGaus->GetParameter(9),
-                                fDoubleGaus->GetParameter(8),3
-                         );
-    fChi2PaveText->AddText(TString::Format("#chi_{g}^{2}/ndf_{g}     \t%f/%i",aChi2Gamma,anNDFGamma).Data());
-    fChi2PaveText->AddText(TString::Format("#chi_{n}^{2}/ndf_{n}     %f/%i",aChi2Neutron,anNDFNeutron).Data());
-    cout << "aChi2Gamma / anNDFGamma " << aChi2Gamma << "/" << anNDFGamma << " = " << aChi2Gamma/anNDFGamma << endl;
-    cout << "aChi2Neutron / anNDFNeutron " << aChi2Neutron << "/" << anNDFNeutron << " = " << aChi2Neutron/anNDFNeutron << endl;
-    fChi2PaveText->Draw("SAME");
-    fDrawCanvas->Update();
-    
-    fHistogramRecords[k].fQGamma = aResultPtr->Value(1);
-    fHistogramRecords[k].fQGammaError = fConfidenceInSigmas* abs(aResultPtr->Value(2));
-    fHistogramRecords[k].fQNeutron = aResultPtr->Value(4);
-    fHistogramRecords[k].fQNeutronError = fConfidenceInSigmas * abs(aResultPtr->Value(5));
+    fHistogramRecords[k].fQGamma = fGammaGaus->GetParameter(1);
+    fHistogramRecords[k].fQGammaError = fConfidenceInSigmas* abs(fGammaGaus->GetParameter(2));
+    fHistogramRecords[k].fQNeutron = fNeutronGaus->GetParameter(1);
+    fHistogramRecords[k].fQNeutronError = fConfidenceInSigmas * abs(fNeutronGaus->GetParameter(2));
     if(fHistogramRecords[k].fQNeutron<0.5&&fHistogramRecords[k].fQNeutron>0.1)
       QNeutronRawFile << setw(5) << "" << setw(20) << fHistogramRecords[k].fERecoilMean << setw(20) << 
       fHistogramRecords[k].fQNeutron << setw(20) << fHistogramRecords[k].fERecoilError << setw(20) << 
       fHistogramRecords[k].fQNeutronError << endl;
+    else
+      cout << "KQDistribution::SaveGraphData(): rejecting Q_Neutron = " << fHistogramRecords[k].fQNeutron << ", out of boundaries [0.1,0.5] " << endl;
     if(fHistogramRecords[k].fQGamma<1.2 && fHistogramRecords[k].fQGamma > 0.8)
       QGammaRawFile << setw(5) << "" << setw(20) << fHistogramRecords[k].fERecoilMean << setw(20) << 
       fHistogramRecords[k].fQGamma << setw(20) << fHistogramRecords[k].fERecoilError << setw(20) << 
       fHistogramRecords[k].fQGammaError << endl;
-    QNeutronTheoRawFile << setw(5) << " " << setw(20) << fHistogramRecords[k].fERecoilMean << setw(20) << 
-    fHistogramRecords[k].fQNeutronTheo << setw(20) << fHistogramRecords[k].fERecoilError << setw(20) << 
-    fHistogramRecords[k].fQNeutronTheoError << endl;
-    QGammaTheoRawFile << setw(5) << " " << setw(20) << fHistogramRecords[k].fERecoilMean << setw(20) << 
-    fHistogramRecords[k].fQGammaTheo << setw(20) << fHistogramRecords[k].fERecoilError << setw(20) << 
-    fHistogramRecords[k].fQGammaTheoError << endl;
+    else
+      cout << "KQDistribution::SaveGraphData(): rejecting Q_Gamma = " << fHistogramRecords[k].fQGamma << ", out of boundaries [0.8,1.2] " << endl;
+
     cout << TString::Format("QGamma = %f +/- %f \t QNeutron = %f +/- %f",
                             fHistogramRecords[k].fQGamma,
                             fHistogramRecords[k].fQGammaError,
                             fHistogramRecords[k].fQNeutron,
                             fHistogramRecords[k].fQNeutronError).Data() << endl;
-    fDrawCanvas->Print(TString::Format("%s%s%s_%s_%i.pdf",
+    fDrawCanvas->Print(TString::Format("%s/%s_%s_%i.%s",
                                        fTargetDir.c_str(),
-                                       fTargetSubDir.c_str(),
                                        GetCategoryName(),
                                        fDetectorName.c_str(),
-                                       k).Data());
+                                       k,fImageFormat.c_str()).Data());
   }
- 
 }
 
 void KQDistribution::MakeGraphs() {
-  // creates the graphs shown on the left pad of fMainCanvas, which contain single points for each TH1D histogram,
+  //This method  creates the graphs shown on the left pad of fMainCanvas, which contain single points for each TH1D histogram,
   // fQGammaErrorGraph with fQGamma +/- fQGammaError
   // fQGammaTheoGraph with fQGammaTheo +/- fQGammaTheoError
   // fQNeutronErrorGraph with fQNeutron +/ fQNeutronError
@@ -933,24 +972,20 @@ void KQDistribution::MakeGraphs() {
   cout << "attributes of graph with all data set" << endl;
   gDirectory = fOutputFile;
   fTotalGraph->Write();
-  fQGammaErrorGraph = new TGraphErrors(TString::Format("%s/%sQGammaValues.dat",
-                                                       fTargetDir.c_str(),
-                                                       fTargetSubDir.c_str()
+  fQGammaErrorGraph = new TGraphErrors(TString::Format("%s/QGammaValues.dat",
+                                                       fTargetDir.c_str()
                                                       ).Data(),"%lg %lg %lg %lg");
   cout << "fQGammaErrorGraph created" << endl;
-  fQNeutronErrorGraph = new TGraphErrors(TString::Format("%s/%sQNeutronValues.dat",
-                                                         fTargetDir.c_str(),
-                                                         fTargetSubDir.c_str()
+  fQNeutronErrorGraph = new TGraphErrors(TString::Format("%s/QNeutronValues.dat",
+                                                         fTargetDir.c_str()
                                                         ).Data(),"%lg %lg %lg %lg");
   cout << "fQNeutronErrorGraph created" << endl;
-  fQGammaTheoGraph = new TGraphErrors(TString::Format("%s/%sQGammaTheoValues.dat",
-                                                      fTargetDir.c_str(),
-                                                      fTargetSubDir.c_str()
+  fQGammaTheoGraph = new TGraphErrors(TString::Format("%s/QGammaTheoValues.dat",
+                                                      fTargetDir.c_str()
                                                      ).Data(),"%lg %lg %lg %lg");
   cout << "fQGammaTheoGraph created" << endl;
-  fQNeutronTheoGraph = new TGraphErrors(TString::Format("%s/%sQNeutronTheoValues.dat",
-                                                        fTargetDir.c_str(),
-                                                        fTargetSubDir.c_str()
+  fQNeutronTheoGraph = new TGraphErrors(TString::Format("%s/QNeutronTheoValues.dat",
+                                                        fTargetDir.c_str()
                                                        ).Data(),"%lg %lg %lg %lg");
   cout << "fQNeutronTheoGraph created" << endl;
   
@@ -965,7 +1000,6 @@ void KQDistribution::MakeGraphs() {
   fQGammaErrorGraph->GetXaxis()->SetRangeUser(fERecoilMin,fERecoilMax);
   fQGammaErrorGraph->SetFillStyle(3001);
   fQGammaErrorGraph->SetFillColor(0);
-  fConstantFunction->SetLineColor(fQGammaErrorGraph->GetLineColor());
   fTotalMultiGraph->Add(fQGammaErrorGraph,"P");
   cout << "fQGammaErrorGraph added" << endl;
   
@@ -973,8 +1007,6 @@ void KQDistribution::MakeGraphs() {
   fQNeutronErrorGraph->SetTitle("");
   fQNeutronErrorGraph->SetLineColor(0);
   fQNeutronErrorGraph->GetXaxis()->SetRangeUser(fERecoilMin,fERecoilMax);
-  fLinhardFunction->SetLineColor(fQNeutronErrorGraph->GetLineColor());
-  fLinhardFunction->SetParameters(0.1,0.2,0);
   fTotalMultiGraph->Add(fQNeutronErrorGraph,"P");
   cout << "fQNeutronErrorGraph added" << endl;
   
@@ -1000,6 +1032,7 @@ void KQDistribution::MakeGraphs() {
   fTotalMultiGraph->Draw("");
   fLeftSubPad->Update();
   fDrawCanvas->cd();
+  fDrawCanvas->Clear("");
   fTotalMultiGraph->Draw("");
   fDrawCanvas->BuildLegend(0.1,0.67,0.48,0.88);
   TLegend* aLegend = (TLegend*)fDrawCanvas->FindObject("TPave");
@@ -1007,22 +1040,16 @@ void KQDistribution::MakeGraphs() {
   TPaveText* aTitle = (TPaveText*)fDrawCanvas->FindObject("title");
   if(aTitle) aTitle->SetFillColor(0);
   fDrawCanvas->Update();
-  fDrawCanvas->Print(TString::Format("%s/%s/%s_%s_total.pdf",
+  fDrawCanvas->Print(TString::Format("%s/%s_%s_total.%s",
                                      fTargetDir.c_str(),
-                                     fTargetSubDir.c_str(),
                                      GetCategoryName(),
-                                     fDetectorName.c_str()
+                                     fDetectorName.c_str(),
+                                     fImageFormat.c_str()
                                     ).Data());
-  
-  
-  
-  
 }
 
-
-
 void KQDistribution::MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,Int_t aNumProjections) {
-  // main routine, which reads and evaluates fSourcefile.ROOT by calling the other routines
+  //This is the main routine, which reads and evaluates fSourcefile.ROOT by calling the other routines
   cout << "Making all ... " << endl;
   fEventCategory = anEventCategory;
   fDetectorName = aDetectorName;

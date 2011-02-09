@@ -42,7 +42,7 @@ class KBoloConfig {
     Double_t GetSigmaHeatZero() const { return fSigmaHeatZero; }
     Double_t GetEnergyCalibration() const { return fEnergyCalibration; }
     Int_t GetNumChannels() const { return fNumChannels; }
-    Double_t GetChannelVoltage(Int_t anIndex) const { return fChannelVoltages[anIndex]; }
+    Double_t GetChannelVoltage(Int_t anIndex = 0) const { return fChannelVoltages[anIndex]; }
 
     void SetBoloName(const char* aBoloName) { fBoloName=aBoloName; }
     void SetSigmaIonCalibration(Double_t aSigmaIonCalibration) { fSigmaIonCalibration=aSigmaIonCalibration; }

@@ -21,6 +21,7 @@
 #include <fstream>
 #include <cmath>
 #include "Rtypes.h"
+#include "TObject.h"
 #include "TClonesArray.h"
 #include "TBranch.h"
 #include "TDirectory.h"
@@ -42,6 +43,7 @@
 #include "TFitResult.h"
 #include "TFitResultPtr.h"
 #include "TPaveText.h"
+#include "TPaveStats.h"
 #include "TLegend.h"
 #include "TApplication.h"
 #include "TGClient.h"
@@ -66,12 +68,12 @@ using namespace std;
 
 Double_t GammaFit(Double_t* x,Double_t* par);
 
-class KQDistribution {
+class KQDistribution : public TObject {
 	private:
+    
     string fBoloConfigFile; //source ASCII file for heat and ion channel uncertainties for all bolometers
 		string fSourceFile; // source KDATA tree file
 		string fTargetDir; // target directory for created files
-		string fTargetSubDir; // target subdirectory in fTargetDir corresponding to detector, event type and source file name
 		string fDetectorName; // temporary detector
 		Int_t fEventCategory; // event category in KHLABolometerRecord
 		Double_t fConfidenceInSigmas; // confidence level in units of sigma
@@ -100,6 +102,7 @@ class KQDistribution {
 		TButton* fNextButton; // switch to next Q-projection histogram
 		TFile* fOutputFile; // stores all fHistograms and fTotalGraph
 		TFile* fInputFile; // source file with KHLABolometerRecord events
+		string fImageFormat; //format for the images to be created
 		//TH2D** fHistograms; // Q-ERecoil pairs each for adjacent ERecoil intervals
 		Int_t fHistogramCounter; // index for current histogram
 		Double_t* fERecoilMean; // mean estimations for the single ERecoil intervals
@@ -161,7 +164,7 @@ class KQDistribution {
     TGraphErrors* fQGammaTheoGraph;
     TGraphErrors* fQNeutronTheoGraph;
     TMultiGraph* fTotalMultiGraph;
-    TPaveText* fChi2PaveText;
+    TPaveStats* fChi2PaveText;
     
     const Double_t fAlpha;
     const Double_t fBeta; // <Q_neutron> = fAlpha * E_Recoil ** fBeta
@@ -174,6 +177,9 @@ class KQDistribution {
     void FillHistograms();
     void SaveGraphData();
     void MakeGraphs();
+    void CalculateTheoErrors(); //calculates theoretical gamma and nuclear recoil bands for the histograms
+    void Next(); //signal for "Next" button
+    void Previous(); //signal for "Previous" button
 
 
   public:
@@ -193,9 +199,15 @@ class KQDistribution {
     Double_t GetQMax() const { return fQMax; }
     Double_t GetQMin() const { return fQMin; }
     Int_t GetNumProjections() const { return fNumProjections; }
-    bool GetIsBatch() const { return fIsBatch; }
+    Bool_t GetIsBatch() const { return fIsBatch; }
+    const Char_t* GetImageFormat() const { return fImageFormat.c_str(); }
+    TCanvas* GetDrawCanvas() const { return fDrawCanvas; }
+    
     Int_t GetDataSize() const { return fDataSize; }
     const Char_t* GetCategoryName(Int_t anEventCategory);
+    TH1D* GetHistogram(Int_t anIndex);
+    
+    
     
     enum DataType { ERECOIL , Q };
     Double_t* GetData(DataType aType);
@@ -214,12 +226,15 @@ class KQDistribution {
     void SetQMax(Double_t aQMax) { fQMax = aQMax; }
     void SetQMin(Double_t aQMin) { fQMin = aQMin; }
     void SetNumProjections(Int_t aNumProjections) { fNumProjections = aNumProjections; }
-    void SetIsBatch(bool anIsBatch) { fIsBatch = anIsBatch; }
+    void SetIsBatch(Bool_t anIsBatch) { fIsBatch = anIsBatch; }
+    void SetImageFormat(const Char_t* anImageFormat) { fImageFormat = anImageFormat; }
     
     void SetPaths(const Char_t* aSourceFile,const Char_t* aTargetDir);
+    void SetConfidenceLevel(Double_t aQuantil = 0.9);
     
     void SaveImage(Int_t anIndex);
-    void DrawHistogram(bool aDirection);
+    void SaveImage(const Char_t* aFileName);
+    void DrawHistogram(TPad* aPad,Int_t aHistogramCounter);
     void SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas = 2.5,
                        Double_t aFirstValue = 0.01,
                        Double_t aSecondValue = 0.01,
