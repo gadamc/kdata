@@ -1144,7 +1144,7 @@ Double_t KQDistribution::CalculateMinDistanceToLindhard(Double_t anERecoil,Doubl
     
     aMinimizer->SetMaxFunctionCalls(1000000); //this sets the maximal number of function calls
     aMinimizer->SetMaxIterations(100000); //this sets the maximal number of iteration
-    aMinimizer->SetTolerance(0.01); //this sets the tollerance
+    aMinimizer->SetTolerance(0.000001); //this sets the tollerance
     
    ROOT::Math::Functor f(&DistToLindhardFunction,3); 
    
