@@ -18,6 +18,9 @@
 // 
 
 #include "KQDistribution.h"
+#include "Math/Minimizer.h"
+#include "Math/Factory.h"
+#include "Math/Functor.h"
 
 #ifndef __KQFUNCTIONS__
 #define __KQFUNCTIONS__
@@ -47,12 +50,35 @@ Double_t GammaFit(Double_t* x,Double_t* par) {
 }
 */
 
-Double_t GausFit(Double_t* x,Double_t* par) {
+Double_t GausFit(Double_t* x,Double_t* par)
+{
+  //This function is a gauss function in [par[3],par[4]], otherwise 0
   if(x[0]>par[3] && x[0]<par[4])
     return(par[0]*exp(-(x[0]-par[1])*(x[0]-par[1])/par[2]/par[2]/2));
   else
     TF1::RejectPoint();
   return 0;
+}
+
+Double_t DistToLindhardFunction(const Double_t* xx)
+{
+  //This function calculates the square of the distance of an arbitrary point (anERecoil,aQ)
+  //to a point (anERecoilLindhard, Q(anERecoilLindhard) on the LindhardFunction a*E^b
+  //with a = 0.165 and b = 0.185
+  //
+  //The function is minimized by 
+  //KQDistribution::CalculateMinDistanceToLinhard(Double_t anERecoil,Double_t aQ)
+  
+  Double_t anERecoil = xx[0];
+  Double_t aQ = xx[1];
+  Double_t anERecoilLindhard = xx[2];
+  
+  KLindhard aLind;
+  
+  Double_t anEDiff = anERecoilLindhard - anERecoil; //difference of ERecoil values
+  Double_t aQDiff = aLind.GetQValue(anERecoilLindhard) - aQ; //difference of Q values
+  
+  return anEDiff*anEDiff+aQDiff*aQDiff;
 }
 
 bool operator<(const KQDistribution::DataRecord& aFirstDataRecord,const KQDistribution::DataRecord& aSecondDataRecord) {
@@ -64,7 +90,8 @@ bool operator<(const KQDistribution::DataRecord& aFirstDataRecord,const KQDistri
 
 ClassImp(KQDistribution);
 
-KQDistribution::KQDistribution(const Char_t* aSourceFile, const Char_t* aTargetDir = gSystem->pwd(),Int_t aNumProjections = 20) : fAlpha(0.165), fBeta(0.185)
+KQDistribution::KQDistribution(const Char_t* aSourceFile, const Char_t* aTargetDir = gSystem->pwd(),
+                               Int_t aNumProjections = 20) 
 {
   // default constructor
   cout << "Setting members ... " << endl;
@@ -85,7 +112,8 @@ KQDistribution::KQDistribution(const Char_t* aSourceFile, const Char_t* aTargetD
   
 }
 
-TH1D* KQDistribution::GetHistogram(Int_t anIndex) {
+TH1D* KQDistribution::GetHistogram(Int_t anIndex)
+{
   if(anIndex>=fNumProjections || anIndex<=0) {
     cout << "KQDistribution::GetHistogram(Int_t): invalid index " << anIndex << ", must be in [0," << fNumProjections-1 << endl;
     return 0;
@@ -95,7 +123,8 @@ TH1D* KQDistribution::GetHistogram(Int_t anIndex) {
 }
 
 
-const Char_t* KQDistribution::GetCategoryName(Int_t anEventCategory = -1) {
+const Char_t* KQDistribution::GetCategoryName(Int_t anEventCategory = -1) 
+{
   // gets a C string for the category of current fEventCategory if anEventCategory=-1,
   // otherwise for anEventCategory itself
   if(anEventCategory==-1)
@@ -112,7 +141,8 @@ const Char_t* KQDistribution::GetCategoryName(Int_t anEventCategory = -1) {
   }
 }
 
-Double_t* KQDistribution::GetData(DataType aType) {
+Double_t* KQDistribution::GetData(DataType aType)
+{
   // returns a Double_t array containing all Q data (KQDistribution::Q) or all ERecoil data (KQDistribution::ERecoil)
   Double_t* aDataArray = new Double_t[fDataSize];
   switch(aType) {
@@ -124,12 +154,14 @@ Double_t* KQDistribution::GetData(DataType aType) {
   return aDataArray;
 }
 
-void KQDistribution::SortData() {
+void KQDistribution::SortData()
+{
   // sorts fData with respect to ERecoil in ascending order
   sort(fData.begin(),fData.end());
 }
 
-void KQDistribution::DrawHistogram(TPad* aPad,Int_t aHistogramCounter) {
+void KQDistribution::DrawHistogram(TPad* aPad,Int_t aHistogramCounter)
+{
   // draws a TH1D Q-ERecoil histogram, which is a projection on Q-axis of a previously created TH2D Q-ERecoil histogram 
   // this histogram is in the fHistogramCounter'th element of type HistogramRecord in fHistogramRecords
   // aDirection=true: fHistogramCounter is incremented, next histogram is drawn
@@ -202,7 +234,10 @@ void KQDistribution::Next() {
 }
 
 
-void KQDistribution::SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas,Double_t aFirstValue, Double_t aSecondValue, Double_t aFirstError, Double_t aSecondError) {
+void KQDistribution::SetBoundaries(TH1D* aHistogram,
+                                   Double_t aNumSigmas,Double_t aFirstValue, Double_t aSecondValue,
+                                   Double_t aFirstError, Double_t aSecondError)
+{
   // searches and sets the boundaries for the two gaussian fits in the fitting function fDoubleGaus
   // the central Q values of the fit intervals, QNeutronMaxX and QGammaMaxX, are the Q values corresponding to the bins with maximal entries in aHistogram in the Q intervals [0.2,0.6] (neutron) and [0.8,1.2] (gamma)
   // the intervals are then [QNeutronMaxX - aNumSigmas*aFirstError, QNeutronMaxX + aNumSigmas*aFirstError] (neutron)
@@ -252,7 +287,8 @@ void KQDistribution::SetBoundaries(TH1D* aHistogram,Double_t aNumSigmas,Double_t
   fNeutronGaus->FixParameter(4,QNeutronMaxX + aNumSigmas*aFirstError); // Q_{neutron,low}
 }
 
-void KQDistribution::SaveImage(Int_t anIndex) {
+void KQDistribution::SaveImage(Int_t anIndex)
+{
   // saves the image drawn on fDrawCanvas in an image file with format fImageFormat in path "fTargetDir/fTargetSubDir/CategoryName_fDectorName_anIndex.fImageFormat"
   cout << TString::Format("Saving %s/%s_%s_%i.%s ...",
                                        fTargetDir.c_str(),
@@ -267,7 +303,8 @@ void KQDistribution::SaveImage(Int_t anIndex) {
                                        anIndex,fImageFormat.c_str()).Data());
 }
 
-void KQDistribution::SaveImage(const Char_t* aFileName) {
+void KQDistribution::SaveImage(const Char_t* aFileName) 
+{
   cout << "Saving " << aFileName << endl;
   if(fDrawCanvas) {
     if(fTargetDir!="")
@@ -277,17 +314,20 @@ void KQDistribution::SaveImage(const Char_t* aFileName) {
   }
 }
 
-Int_t KQDistribution::QtoBin(Double_t aQ) {
+Int_t KQDistribution::QtoBin(Double_t aQ)
+{
   // converts a Q value in the corresponding bin number
   return Int_t((aQ-fQMin)/(fQMax-fQMin)*fNumBinsQ);
 }
 
-Double_t KQDistribution::BintoQ(Int_t aBin) {
+Double_t KQDistribution::BintoQ(Int_t aBin)
+{
   // converts a bin number in the corresponding Q value
   return fQMin + aBin * (fQMax-fQMin)/fNumBinsQ;
 }
 
-Double_t KQDistribution::GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh) {
+Double_t KQDistribution::GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh)
+{
   // calculates the chi2 value for aHistogram in [Qlow,Qhigh]
   Double_t chi2sum = 0;
   Double_t x,y;
@@ -300,7 +340,8 @@ Double_t KQDistribution::GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh
   return chi2sum;
 }
 
-Int_t KQDistribution::GetNDF(Double_t aQlow,Double_t aQhigh,Int_t aNumParameters) {
+Int_t KQDistribution::GetNDF(Double_t aQlow,Double_t aQhigh,Int_t aNumParameters) 
+{
   // gets the number of degrees of freedom with aNumParameters and the number of bins in [Qlow,Qhigh]
   Int_t k;
   for(k = QtoBin(aQlow); k<QtoBin(aQhigh); ++k);
@@ -333,14 +374,16 @@ void KQDistribution::CorrectBoundaries(BoundaryType aBType,Double_t aStep) {
 }
 */
 
-void KQDistribution::SetPaths(const Char_t* aSourceFile,const Char_t* aTargetDir) {
+void KQDistribution::SetPaths(const Char_t* aSourceFile,const Char_t* aTargetDir)
+{
   // This method sets the specified paths for the source file and the target directory where the plot images are saved
   
   fSourceFile = aSourceFile;
   fTargetDir = aTargetDir;
 }
 
-Double_t KQDistribution::GetGammaMax(TH1D* aHistogram) {
+Double_t KQDistribution::GetGammaMax(TH1D* aHistogram) 
+{
   //This method returns the Q value corresponding to the bin with maximal entries in aHistogram
   return(fQMin + aHistogram->GetMaximumBin()*(fQMax-fQMin)/fNumBinsQ);
   // return(Qmin+hist->GetMaximumBin(Int_t((1-Qmin)/(Qmax-Qmin)*numbinsQ))*(Qmax-Qmin)/numbinsQ);
@@ -393,7 +436,8 @@ void KQDistribution::GetFitParameters(Int_t anIndex) {
 }
 
 
-void KQDistribution::SetStyle() {
+void KQDistribution::SetStyle() 
+{
   //This method sets styles for histogram and fit result drawing
   cout << "Setting style ... " << endl;
   gStyle->SetOptFit(12); 
@@ -406,7 +450,8 @@ void KQDistribution::SetStyle() {
   gStyle->SetStatColor(0);
 }
 
-void KQDistribution::ResetVars() {
+void KQDistribution::ResetVars()
+{
   //This method disposes all dynamically allocated class members
   cout << "Resetting variables ... " << endl;
   if(fAdjustPanel) {
@@ -537,7 +582,8 @@ void KQDistribution::ResetVars() {
   }
 }
 
-void KQDistribution::MakeTargetDir() { 
+void KQDistribution::MakeTargetDir()
+{ 
   //This method creates the target directory
   cout << "Making target directory ..." << endl;
   gSystem->Exec(TString::Format("mkdir -p %s",fTargetDir.c_str()).Data()); //if directory exists, nothing happens
@@ -626,7 +672,8 @@ bool KQDistribution::ReadEvents() {
 */
 
 
-bool KQDistribution::ReadEvents() { //deprecated
+bool KQDistribution::ReadEvents() 
+{ 
   //This method reads the KBolometerEvents in "fSourceDir/fSourcefile.root"
   //For each KBolometerEvents the Q value and the recoil energy is saved in a data structure "DataRecord",
   //which is appended to the vector "fData".
@@ -712,7 +759,8 @@ bool KQDistribution::ReadEvents() { //deprecated
   return true;
 } 
 
-void KQDistribution::FillHistograms() {
+void KQDistribution::FillHistograms() 
+{
   //This method fills fNumProjections TH2D Q-ERecoil histograms with equal numbers of entries from fData
   //Each histogram is filled with the amount of entries corresponding to
   //the integer quotient of the total entries "fDataSize"  and the number of  histograms "fNumProjections".
@@ -803,7 +851,8 @@ void KQDistribution::FillHistograms() {
   cout << "Histogram attributes set ... " << endl;  
 }
 
-void KQDistribution::CalculateTheoErrors() {
+void KQDistribution::CalculateTheoErrors()
+{
   //This method calculates the theoretical central Q values and band widths for the gamma and neutron recoil bands for all histograms.
   //At the moment, this is done the following way:
   //The central Q value for gamma recoil band is always 1.
@@ -821,7 +870,8 @@ void KQDistribution::CalculateTheoErrors() {
   KBoloConfig aBoloConfig(fDetectorName,fBoloConfigFile);
   
   
-  for(int k = 0; k<fNumProjections; ++k) {
+  for(int k = 0; k<fNumProjections; ++k)
+  {
     fHistogramRecords[k].fQGammaTheo = 1;
     fHistogramRecords[k].fQNeutronTheo = KQUncertainty::GetQValue(fHistogramRecords[k].fERecoilMean);
     
@@ -857,7 +907,8 @@ void KQDistribution::CalculateTheoErrors() {
   }
 }
 
-void KQDistribution::MakeCanvases() {
+void KQDistribution::MakeCanvases()
+{
   //This method creates fMainCanvas showing two pads, the left pad shows fTotalMultiGraph 
   //and the right pad shows the current TH1D Q-ERecoil histrom with gaussian fits and two buttons to navigate to previous or next histrogram.
   //It creates also fDrawCanvas which is used to store the images of histrograms in image files with format "fFileFormat"
@@ -885,7 +936,8 @@ void KQDistribution::MakeCanvases() {
   fDrawCanvas->cd(); 
 }
 
-void KQDistribution::SaveGraphData() {
+void KQDistribution::SaveGraphData()
+{
   //This method creates ASCII files containing the Q values from the gaussian fits and ERecoil mean values of the TH1D Q-ERecoil histograms
   //these are the sourcefiles for subsequent graph creation
   CalculateTheoErrors();
@@ -950,7 +1002,8 @@ void KQDistribution::SaveGraphData() {
   }
 }
 
-void KQDistribution::MakeGraphs() {
+void KQDistribution::MakeGraphs() 
+{
   //This method  creates the graphs shown on the left pad of fMainCanvas, which contain single points for each TH1D histogram,
   // fQGammaErrorGraph with fQGamma +/- fQGammaError
   // fQGammaTheoGraph with fQGammaTheo +/- fQGammaTheoError
@@ -1048,7 +1101,8 @@ void KQDistribution::MakeGraphs() {
                                     ).Data());
 }
 
-void KQDistribution::MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,Int_t aNumProjections) {
+void KQDistribution::MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,Int_t aNumProjections)
+{
   //This is the main routine, which reads and evaluates fSourcefile.ROOT by calling the other routines
   cout << "Making all ... " << endl;
   fEventCategory = anEventCategory;
@@ -1067,6 +1121,48 @@ void KQDistribution::MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,I
   MakeGraphs();
   //if(fIsBatch)
     //fAdjustPanel = new KQAdjustPanel(gClient->GetRoot(),200,200,CorrectBoundaries,StoreImage);
+}
+
+Double_t KQDistribution::CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t aQ)
+{
+  //This method calculates the least distance between an arbitrary point (anERecoil,aQ)
+  //and a point of the LindhardFunction a*E^b with a=0.165 and b=0.185
+  
+    ROOT::Math::Minimizer *aMinimizer = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Combined");
+    //alternative minimizers
+  //  = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Simplex");
+  //  = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
+  //  = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Scan");
+  //  = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Fumili");
+  //  = ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "ConjugateFR");
+  //  = ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "ConjugatePR");
+  //  = ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "BFGS");
+  //  = ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "BFGS2");
+  //  = ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "SteepestDescent");
+  //  = ROOT::Math::Factory::CreateMinimizer("GSLMultiFit", "");
+  //  = ROOT::Math::Factory::CreateMinimizer("GSLSimAn", "");
+    
+    aMinimizer->SetMaxFunctionCalls(1000000); //this sets the maximal number of function calls
+    aMinimizer->SetMaxIterations(100000); //this sets the maximal number of iteration
+    aMinimizer->SetTolerance(0.01); //this sets the tollerance
+    
+   ROOT::Math::Functor f(&DistToLindhardFunction,3); 
+   
+ 
+   aMinimizer->SetFunction(f);
+ 
+   // Set the fixed variables
+   aMinimizer->SetFixedVariable(0,"aERecoil",anERecoil);
+   aMinimizer->SetFixedVariable(1,"aQ",aQ);
+   
+   //set the variable to be minimized
+   aMinimizer->SetVariable(2,"anERecoilLindhard",50,0.001);
+ 
+   aMinimizer->Minimize(); 
+ 
+   const double *xs = aMinimizer->X();
+   return TMath::Sqrt(DistToLindhardFunction(xs));
+  
 }
 
 

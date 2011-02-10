@@ -166,9 +166,7 @@ class KQDistribution : public TObject {
     TMultiGraph* fTotalMultiGraph;
     TPaveStats* fChi2PaveText;
     
-    const Double_t fAlpha;
-    const Double_t fBeta; // <Q_neutron> = fAlpha * E_Recoil ** fBeta
-    
+    //private methods 
     void SetStyle();
     void ResetVars();
     void MakeTargetDir();
@@ -250,11 +248,13 @@ class KQDistribution : public TObject {
     void RedrawPeaks();
     void GetFitParameters(Int_t anIndex);
     Double_t GetGammaMax(TH1D* aHistogram);
-    //Double_t GammaFit(Double_t* x,Double_t* par);
     
 
     void MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,Int_t aNumProjections);
     friend bool operator<(const KQDistribution::DataRecord& aFirstDataRecord,const KQDistribution::DataRecord& aSecondDataRecord);
+    
+    //static functions
+    static Double_t CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t aQ);
     
     
   ClassDef(KQDistribution,0);
