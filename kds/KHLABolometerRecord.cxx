@@ -546,7 +546,7 @@ Bool_t KHLABolometerRecord::TestCutsBit(Int_t i) const
   //A value of '1' indicates that this bolometer record was NOT CUT due to 
   //that particular cut. If the value is '0', then the event didn't pass
   //the cut and should be excluded from WIMP analysis.
-  
+  //
 	//cuts.CutChi2Col1 -- bit 0
 	//cuts.CutChi2Col2 -- bit 1
 	//cuts.CutChi2Vet1 -- bit 2
@@ -577,17 +577,51 @@ Bool_t KHLABolometerRecord::TestIonFlag(Int_t i) const
 	//there was a pulse seen on that channel, as defined by the ERA.
 	//Your analysis may be different, however, and you may define an event
 	//on the ion channel with a different set of conditions.
-
+  //
 	//i = 0, Collectrode 1
 	//i = 1, Collectrode 2
 	//i = 2, Veto 1
 	//i = 3, Veto 2
 	//i = 4, Guard 1
 	//i = 5, Guard 2
+  //i = 6, ??
+  //i = 7, ??
 
 	return fIonFlags.TestBitNumber(i);
 
 }
+/*
+Bool_t KHLABolometerRecord::TestIonFlags(UInt_t f) const
+{
+  //returns true if the bit-pattern of the first 6 bits in 
+  //f is the same as that found in fIonFlags. We only test 6 bits here
+  //because there are only 6 possible ion channels in an ID or FID bolometer
+  //This uses the TBits::TestBits(f) method. 
+  //For example, if you want to test for fiducial only event, then call
+  //TestIonFlags(0x03)... 0x03 = 0000 0011 in binary
+  //
+  //for guard only 
+  //
+  //TestIonFlags(0x30)
+  //
+  //For surface only
+  //
+  //TestIonFlags(0xC0)
+  //
+  //for fiducial+guard
+  //
+  //TestIonFlags(0x33)
+  
+  Bool_t theRet = true;
+  
+  for(Int_t i = 0; i < 6; i++)
+    
+  
+  return fIonFlags.TestBits(f) == f;
+  
+}
+*/
+
 
 string KHLABolometerRecord::GetEventCategory(void) const
 {
