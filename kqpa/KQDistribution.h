@@ -68,7 +68,7 @@ using namespace std;
 
 Double_t GammaFit(Double_t* x,Double_t* par);
 
-class KQDistribution : public TObject {
+class KQDistribution {
 	private:
     
     string fBoloConfigFile; //source ASCII file for heat and ion channel uncertainties for all bolometers
@@ -93,10 +93,7 @@ class KQDistribution : public TObject {
 		KBoloConfig* fBoloConfig; //bolometer configuration
 		
 		TGraph* fTotalGraph; // showing Q-ERecoil plot for all KHLABolometerRecord events
-		TCanvas* fMainCanvas; // showing fLeftSubPad and fRightSubPad 
 		TCanvas* fDrawCanvas; // seperate canvas to draw and save to files
-		TPad* fLeftSubPad; // showing fTotalGraph
-		TPad* fRightSubPad; //showing Q-projections of fHistograms
 		TPad* pad3;
 		TButton* fPreviousButton; // switch to previous Q-projection histogram
 		TButton* fNextButton; // switch to next Q-projection histogram
@@ -112,9 +109,6 @@ class KQDistribution : public TObject {
 		TF1* fDoubleGaus; // sum of two gaussians functions
 		TF1* fGammaGaus; // function fitting gamma peak for a single element of fHistograms
 		TF1* fNeutronGaus; // function fitting neutron peak for a single element of fHistograms
-		TF1* fLinhardFunction; // fuction fitting neutron peaks for all elements of fHistograms in fTotalGraph 
-		TF1* fConstantFunction; // function fitting gamma peaks for all elements of fHistograms in fTotalGraph
-		KQAdjustPanel* fAdjustPanel; // panel to adjust boundaries for the fit intervals
 
 		struct DataRecord {
 			//contains all required information for one KBolometerEvent
@@ -229,6 +223,7 @@ class KQDistribution : public TObject {
     
     void SetPaths(const Char_t* aSourceFile,const Char_t* aTargetDir);
     void SetConfidenceLevel(Double_t aQuantil = 0.9);
+    Double_t GetConfidenceLevel();
     
     void SaveImage(Int_t anIndex);
     void SaveImage(const Char_t* aFileName);
@@ -253,8 +248,6 @@ class KQDistribution : public TObject {
     void MakeAll(Int_t anEventCategory,const Char_t* aDetectorName,Int_t aNumProjections);
     friend bool operator<(const KQDistribution::DataRecord& aFirstDataRecord,const KQDistribution::DataRecord& aSecondDataRecord);
     
-    //static functions
-    static Double_t CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t aQ);
     
     
   ClassDef(KQDistribution,0);

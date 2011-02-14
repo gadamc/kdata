@@ -21,5 +21,5 @@
   const Char_t* aDetectorName = "FID401";
 
   KQDistribution aQDist(aSourceFile,aTargetDir.c_str(),aNumProjections); //
-  aQDist.MakeAll(anEventCategory,,aDetectorName,aNumProjections);
+  aQDist.MakeAll(anEventCategory,aDetectorName,aNumProjections);
 }

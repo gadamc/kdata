@@ -7,7 +7,8 @@
 // Copyright 2011 Karlsruhe Institute of Technology. All Rights reserved.
 //
 //  class implementation of "readCalibrationFile.C"
-//  this class reads the FWHMs of 
+//  
+// This class reads the uncertainties and channel
 
 #include "Rtypes.h"
 #include "KRun12Temp.h"
@@ -23,7 +24,7 @@ KRun12Temp::KRun12Temp(const char* aFileName)
 
 void KRun12Temp::ReadCalibrationFile(const char* aFileName)
 {
-  //reads a bolometer configuration ASCII file of form "$name $detector_number $fwhm_ion $fwhm_ion356 $fwhm_heat $fwhm_heat356 $voltagebias $radius_fiducial"
+  //This method reads a bolometer configuration ASCII file of form "$name $detector_number $fwhm_ion $fwhm_ion356 $fwhm_heat $fwhm_heat356 $voltagebias $radius_fiducial"
   if(aFileName != 0) {
     fTree = new TTree("ConfigTree","values from file");
     fTree->ReadFile(aFileName,"name/C:detector_no/I:fwhm_ion/D:fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
@@ -32,7 +33,7 @@ void KRun12Temp::ReadCalibrationFile(const char* aFileName)
 
 Int_t KRun12Temp::GetCalibrationEntry(const char* aBoloName)
 {
-  //gets the entry for the specified bolometer
+  //This method gets the entry for the specified bolometer
   fTree->ResetBranchAddresses();
   char name[100];
   fTree->SetBranchAddress("name",name);
@@ -48,7 +49,7 @@ Int_t KRun12Temp::GetCalibrationEntry(const char* aBoloName)
 
 Int_t KRun12Temp::GetDetectorNumber(Int_t anEntry)
 {
-  //gets the detector number for the bolometer corresponding to entry anEntry
+  //This method gets the detector number for the bolometer corresponding to entry anEntry
   if(anEntry < 0) return -1;
   if(anEntry > fTree->GetEntries()-1) return -1;
   fTree->ResetBranchAddresses();
@@ -60,7 +61,7 @@ Int_t KRun12Temp::GetDetectorNumber(Int_t anEntry)
 
 Double_t KRun12Temp::GetUncerIonZero(Int_t anEntry)
 {
-  //gets the baseline uncertainty of the ion channel  for the bolometer corresponding to entry anEntry
+  //This method gets the baseline uncertainty of the ion channel  for the bolometer corresponding to entry anEntry
   if(anEntry < 0) return -1;
   if(anEntry > fTree->GetEntries()-1) return -1;
   fTree->ResetBranchAddresses();
@@ -74,7 +75,7 @@ Double_t KRun12Temp::GetUncerIonZero(Int_t anEntry)
 
 Double_t KRun12Temp::GetUncerIonCalib(Int_t anEntry)
 {
-  //gets the uncertainty of the ion channel for calibration energy E=356 keV for the bolometer corresponding to entry anEntry
+  //This method gets the uncertainty of the ion channel for calibration energy E=356 keV for the bolometer corresponding to entry anEntry
   if(anEntry < 0) return -1;
   if(anEntry > fTree->GetEntries()-1) return -1;
   fTree->ResetBranchAddresses();
@@ -88,7 +89,7 @@ Double_t KRun12Temp::GetUncerIonCalib(Int_t anEntry)
 
 Double_t KRun12Temp::GetUncerHeatZero(Int_t anEntry)
 {
-  //gets the baseline uncertainty of the heat channel for the bolometer corresponding to entry anEntry
+  //This method gets the baseline uncertainty of the heat channel for the bolometer corresponding to entry anEntry
   if(anEntry < 0) return -1;
   if(anEntry > fTree->GetEntries()-1) return -1;
   fTree->ResetBranchAddresses();

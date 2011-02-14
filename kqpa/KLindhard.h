@@ -25,6 +25,9 @@ public:
 
   TF1* GetFormula(void) const { return fLindhardFormula;  }
   Double_t GetQValue(Double_t anEnergy) const;
+  
+  static Double_t CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t aQ,const Char_t* aMinimizer = "GSLMultiMin",const Char_t* aMethod = "SteepestDescent");
+  static Double_t CalculateEOfMinDistanceLindhard(Double_t anERecoil,Double_t aQ, const Char_t* aMinimizer = "GSLMultiMin",const Char_t* aMethod = "SteepestDescent");
 
   //getters
  
@@ -35,10 +38,12 @@ public:
   
   void SetParameterA(Double_t aVal);
   void SetParameterB(Double_t aVal);
+ 
 
 private:
 
   TF1 *fLindhardFormula;
+  
 
   ClassDef(KLindhard,1);
 };

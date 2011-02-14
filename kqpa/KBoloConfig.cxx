@@ -8,7 +8,9 @@
 //
 //
 // This class stores  information  about a specific bolometer .
-//  Heat and ion channel baseline uncertainties and uncertainties for calibration energy E=356.0 keV are stored as well as channel voltages
+// Heat and ion channel baseline uncertainties and uncertainties for calibration energy E=356.0 keV are stored as well as channel voltages
+// 
+// KRun12Temp is temporarily used to read the uncertainties and channel voltages 
 
 #include "Rtypes.h"
 #include "KBoloConfig.h"

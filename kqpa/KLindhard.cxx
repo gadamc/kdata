@@ -21,6 +21,31 @@
 
 #include "KLindhard.h"
 #include "TF1.h"
+#include "Math/Minimizer.h"
+#include "Math/Factory.h"
+#include "Math/Functor.h"
+#include "TMath.h"
+
+Double_t DistToLindhardFunction(const Double_t* xx)
+{
+  //This function calculates the square of the distance of an arbitrary point (anERecoil,aQ)
+  //to a point (anERecoilLindhard, Q(anERecoilLindhard) on the LindhardFunction a*E^b
+  //with a = 0.165 and b = 0.185
+  //
+  //The function is minimized by 
+  //KQDistribution::CalculateMinDistanceToLinhard(Double_t anERecoil,Double_t aQ)
+  
+  Double_t anERecoil = xx[0];
+  Double_t aQ = xx[1];
+  Double_t anERecoilLindhard = xx[2];
+  
+  KLindhard aLind;
+  
+  Double_t anEDiff = anERecoilLindhard - anERecoil; //difference of ERecoil values
+  Double_t aQDiff = aLind.GetQValue(anERecoilLindhard) - aQ; //difference of Q values
+  
+  return anEDiff*anEDiff+aQDiff*aQDiff;
+}
 
 ClassImp(KLindhard);
 
@@ -67,5 +92,100 @@ void KLindhard::SetParameterB(Double_t aVal)
 Double_t KLindhard::GetQValue(Double_t anEnergy) const
 {
   return fLindhardFormula->Eval(anEnergy);
+}
+
+Double_t KLindhard::CalculateEOfMinDistanceLindhard(Double_t anERecoil,Double_t aQ, const Char_t* aMinimizerName,const Char_t* aMethod)
+{
+  // This method calculates the corresponding E_Recoil for the Lindhard function
+  // for the least distance between an arbitrary point (anERecoil,aQ)
+  // and a point of the LindhardFunction
+  //
+  // possible minimizers are
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2", "Simplex");
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2","Combined");
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2", "Scan");
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2", "Fumili");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "ConjugateFR");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "ConjugatePR");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "BFGS");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "BFGS2");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "SteepestDescent");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiFit", "");
+  // ROOT::Math::Factory::CreateMinimizer("GSLSimAn", "");
+  //
+  // GSLMultiMin SteepestDescent is used by default
+  
+  ROOT::Math::Minimizer *theMinimizer = ROOT::Math::Factory::CreateMinimizer(aMinimizerName,aMethod);
+
+  theMinimizer->SetMaxFunctionCalls(1000000); //this sets the maximal number of function calls
+  theMinimizer->SetMaxIterations(100000); //this sets the maximal number of iteration
+  theMinimizer->SetTolerance(0.00001); //this sets the tolerance
+    
+  ROOT::Math::Functor f(&DistToLindhardFunction,3); 
+   
+  theMinimizer->SetFunction(f);
+ 
+  // Set the fixed variables
+  theMinimizer->SetFixedVariable(0,"aERecoil",anERecoil);
+  theMinimizer->SetFixedVariable(1,"aQ",aQ);
+   
+  //set the variable to be minimized
+  theMinimizer->SetVariable(2,"anERecoilLindhard",1,0.001);
+ 
+  theMinimizer->Minimize(); 
+ 
+  const double *xs = theMinimizer->X();
+  
+  return xs[2];
+}
+
+Double_t KLindhard::CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t aQ,const Char_t* aMinimizerName,const Char_t* aMethod)
+{
+  // This method calculates the least Euclidean distance between an arbitrary point (anERecoil,aQ)
+  // and a point of the Lindhard function in the ERecoil-Q-plane
+  //
+  // possible minimizers are
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2", "Simplex");
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2","Combined");
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2", "Scan");
+  // ROOT::Math::Factory::CreateMinimizer("Minuit2", "Fumili");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "ConjugateFR");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "ConjugatePR");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "BFGS");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "BFGS2");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "SteepestDescent");
+  // ROOT::Math::Factory::CreateMinimizer("GSLMultiFit", "");
+  // ROOT::Math::Factory::CreateMinimizer("GSLSimAn", "");
+  //
+  // GSLMultiMin SteepestDescent is used by default
+  
+  ROOT::Math::Minimizer *theMinimizer = ROOT::Math::Factory::CreateMinimizer(aMinimizerName,aMethod);
+
+    
+  theMinimizer->SetMaxFunctionCalls(1000000); //this sets the maximal number of function calls
+  theMinimizer->SetMaxIterations(100000); //this sets the maximal number of iterations
+  theMinimizer->SetTolerance(0.00001); //this sets the tolerance
+    
+  ROOT::Math::Functor f(&DistToLindhardFunction,3); 
+   
+ 
+  theMinimizer->SetFunction(f);
+ 
+  //set the fixed variables
+  theMinimizer->SetFixedVariable(0,"anERecoil",anERecoil);
+  theMinimizer->SetFixedVariable(1,"aQ",aQ);
+   
+  //set the variable to be minimized
+  theMinimizer->SetVariable(2,"anERecoilLindhard",1,0.001);
+ 
+  theMinimizer->Minimize(); 
+ 
+  const double *xs = theMinimizer->X();
+   
+  
+  return TMath::Sqrt(DistToLindhardFunction(xs));
+  
 }
 
