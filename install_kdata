@@ -53,6 +53,8 @@ default:
   breaksw
 endsw
 
+exit
+
 set pwd = `pwd`
 
 # make edw

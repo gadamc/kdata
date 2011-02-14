@@ -35,6 +35,8 @@ KDATABASE_FLAGS  := $(CXXFLAGS)
 KDATABASE_LDFLAGS := $(LDFLAGS)
 KDATABASE_OPT     := $(OPT)
 
+KDATABASE_PYMODNAME :=    kdatabase
+KDATABASE_PYDIR  := $(KPYTHONDIR)/$(KDATABASE_PYMODNAME)
 
 #KDATABASE_OPT  += -g
 KDATABASE_OPT  := $(filter-out -O2,$(KDATABASE_OPT))
@@ -67,7 +69,7 @@ KDATABASE_DO     := $(KDATABASE_DC:.C=.o)
 KDATABASE_DH     := $(KDATABASE_DC:.C=.h)
 
 KDATABASE_H      := $(filter-out $(KDATABASE_LH) $(KDATABASE_DH),$(wildcard $(KDATABASE_DIRI)/*.h))
-KDATABASE_PY     := $(filter-out $(KDATABASE_LH) $(KDATABASE_DH),$(wildcard $(KDATABASE_DIRI)/*.py))
+KDATABASE_PY     := $(wildcard $(KDATABASE_DIRI)/*.py)
 KDATABASE_ECXX   := $(wildcard $(KDATABASE_DIRS)/K*.cxx)
 KDATABASE_CXX    := $(filter-out $(KDATABASE_ECXX),$(wildcard $(KDATABASE_DIRS)/*.cxx))
 KDATABASE_O      := $(KDATABASE_CXX:.cxx=.o)
@@ -91,7 +93,11 @@ ifneq ($(KDATABASE_EO),)
 ALLLIBS      += $(KDATABASE_LIB)
 endif
 ALLEXECS     += $(KDATABASE_EXE)
-ALLPYTHON    += $(patsubst $(KDATABASE_DIRI)/%.py,lib/%.py,$(KDATABASE_PY))
+ALLPYTHON    += $(patsubst $(KDATABASE_DIRI)/%.py,$(KDATABASE_PYDIR)/%.py,$(KDATABASE_PY))
+
+ifneq ($(KDATABASE_PY),)
+ALLPYMODULES += $(KDATABASE_PYMODNAME)
+endif
 
 # include all dependency files
 INCLUDEFILES += $(KDATABASE_DEP)
@@ -102,11 +108,11 @@ INCLUDEFILES += $(KDATABASE_DEP)
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KDATABASE_DIRI)/%.h 
-		$(COPY_HEADER) $< $@
-    
-lib/%.py:    $(KDATABASE_DIRI)/%.py 
-		$(COPY_HEADER) $< $@
+include/%.h:    $(KDATABASE_DIRI)/%.h
+	$(COPY_HEADER) $< $@
+
+$(KDATABASE_PYDIR)/%.py:    $(KDATABASE_DIRI)/%.py $(KDATABASE_PYDIR)/__init__.py
+	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
 $(KDATABASE_DIRS)/%.o:    $(KDATABASE_DIRS)/%.cxx
@@ -132,14 +138,20 @@ $(KDATABASE_LIB):        $(KDATABASE_EO) $(KDATABASE_DO) $(KDATABASE_LIBDEP)
 	   "$(SOFLAGS)" "$(KDATABASE_LIB)" $@  "$(KDATABASE_EO) $(KDATABASE_DO) $(KDATABASE_XTRALIBS)"\
 	   "$(ROOTLIBS) $(KDATABASE_FLAGS)"  -I/opt/include -Iinclude 
 
-all-kdatabase:       $(KDATABASE_LIB)
+all-kdatabase:       $(KDATABASE_LIB) 
+
+$(KDATABASE_PYDIR)/__init__.py: $(KDATABASE_PY)
+	@$(INSTALLDIR) $(KDATABASE_PYDIR)
+	@echo "Making KDataPy $(KDATABASE_PYMODNAME)"
+	@$(KDATA_ROOT)/config/createInit.py $(patsubst $(KDATABASE_DIRI)/%.py,%,$(KDATABASE_PY)) $(KDATABASE_PYDIR)
 
 clean-kdatabase:
 		@rm -f $(KDATABASE_DIRS)/*~ $(KDATABASE_DIRS)/*.o
 		@rm -f $(KDATABASE_DC) $(KDATABASE_DH) $(KDATABASE_DEP) $(KDATABASE_LIB)
 
 clean::         clean-kdatabase
-
+  
+#prepare::       prepare-kdatabase
 #end
 
 

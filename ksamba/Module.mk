@@ -34,6 +34,9 @@ KSAMBA_DIR    := $(MODDIR)
 KSAMBA_DIRS   := $(MODDIR)
 KSAMBA_DIRI   := $(MODDIR)
 
+KSAMBA_PYMODNAME   := ksamba
+KSAMBA_PYDIR  := $(KPYTHONDIR)/$(KSAMBA_PYMODNAME)
+
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KSAMBA_LH     := $(KSAMBA_DIRI)/$(MODNAME)_LinkDef.h
 KSAMBA_DC     := $(KSAMBA_DIRS)/$(MODNAME)_Dict.C
@@ -41,7 +44,7 @@ KSAMBA_DO     := $(KSAMBA_DC:.C=.o)
 KSAMBA_DH     := $(KSAMBA_DC:.C=.h)
 
 KSAMBA_H      := $(filter-out $(KSAMBA_LH) $(KSAMBA_DH),$(wildcard $(KSAMBA_DIRI)/*.h))
-KSAMBA_PY     := $(filter-out $(KSAMBA_LH) $(KSAMBA_DH),$(wildcard $(KSAMBA_DIRI)/*.py))
+KSAMBA_PY     := $(wildcard $(KSAMBA_DIRI)/*.py)
 KSAMBA_ECXX   := $(wildcard $(KSAMBA_DIRS)/K*.cxx)
 KSAMBA_CXX    := $(filter-out $(KSAMBA_ECXX),$(wildcard $(KSAMBA_DIRS)/*.cxx))
 KSAMBA_O      := $(KSAMBA_CXX:.cxx=.o)
@@ -65,7 +68,11 @@ ifneq ($(KSAMBA_EO),)
 ALLLIBS      += $(KSAMBA_LIB)
 endif
 ALLEXECS     += $(KSAMBA_EXE)
-ALLPYTHON    += $(patsubst $(KSAMBA_DIRI)/%.py,lib/%.py,$(KSAMBA_PY))
+ALLPYTHON    += $(patsubst $(KSAMBA_DIRI)/%.py,$(KSAMBA_PYDIR)/%.py,$(KSAMBA_PY))
+
+ifneq ($(KSAMBA_PY),)
+ALLPYMODULES += $(KSAMBA_PYMODNAME)
+endif
 
 # include all dependency files
 INCLUDEFILES += $(KSAMBA_DEP)
@@ -79,8 +86,8 @@ INCLUDEFILES += $(KSAMBA_DEP)
 include/%.h:    $(KSAMBA_DIRI)/%.h 
 		$(COPY_HEADER) $< $@
 
-lib/%.py:    $(KSAMBA_DIRI)/%.py 
-		$(COPY_HEADER) $< $@
+$(KSAMBA_PYDIR)/%.py:   $(KSAMBA_DIRI)/%.py $(KSAMBA_PYDIR)/__init__.py
+	$(COPY_HEADER) $< $@
     
 # rule for compiling our source files
 $(KSAMBA_DIRS)/%.o:    $(KSAMBA_DIRS)/%.cxx
@@ -107,6 +114,12 @@ $(KSAMBA_LIB):        $(KSAMBA_EO) $(KSAMBA_DO) $(KSAMBA_LIBDEP)
 	   "$(ROOTLIBS) $(KSAMBA_FLAGS)"  -I/opt/include -Iinclude 
 
 all-ksamba:       $(KSAMBA_LIB)
+
+$(KSAMBA_PYDIR)/__init__.py:  $(KSAMBA_PY)
+	@$(INSTALLDIR) $(KSAMBA_PYDIR)
+	@echo "Making KDataPy $(KSAMBA_PYMODNAME)"
+	@$(KDATA_ROOT)/config/createInit.py $(patsubst $(KSAMBA_DIRI)/%.py,%,$(KSAMBA_PY)) $(KSAMBA_PYDIR)
+
 
 clean-ksamba:
 		@rm -f $(KSAMBA_DIRS)/*~ $(KSAMBA_DIRS)/*.o

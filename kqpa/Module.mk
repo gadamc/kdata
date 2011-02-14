@@ -1,6 +1,6 @@
 # Module.mk for KQPA module
 #
-# This is a generic template module that will build all
+# This is a generic qpa module that will build all
 # files named K*.cxx into libKQPA, and all other .cxx
 # files into individual executables. 
 #
@@ -8,7 +8,7 @@
 # 'KQPA' to Modules.mk in the $KDATA_ROOT directory,
 # then type "make" (or gmake) in $KDATA_ROOT.
 #
-# To use this template as the base for developing a standalone
+# To use this qpa as the base for developing a standalone
 # module, follow these steps:
 #
 #   1) Create a new directory for your development project.
@@ -35,6 +35,8 @@ KQPA_FLAGS  := $(CXXFLAGS)
 KQPA_LDFLAGS := $(LDFLAGS)
 KQPA_OPT     := $(OPT)
 
+KQPA_PYMODNAME   := kqpa
+KQPA_PYDIR  := $(KPYTHONDIR)/$(KQPA_PYMODNAME)
 
 #KQPA_OPT  += -g
 KQPA_OPT  := $(filter-out -O2,$(KQPA_OPT))
@@ -67,7 +69,7 @@ KQPA_DO     := $(KQPA_DC:.C=.o)
 KQPA_DH     := $(KQPA_DC:.C=.h)
 
 KQPA_H      := $(filter-out $(KQPA_LH) $(KQPA_DH),$(wildcard $(KQPA_DIRI)/*.h))
-KQPA_PY     := $(filter-out $(KQPA_LH) $(KQPA_DH),$(wildcard $(KQPA_DIRI)/*.py))
+KQPA_PY     := $(wildcard $(KQPA_DIRI)/*.py)
 KQPA_ECXX   := $(wildcard $(KQPA_DIRS)/K*.cxx)
 KQPA_CXX    := $(filter-out $(KQPA_ECXX),$(wildcard $(KQPA_DIRS)/*.cxx))
 KQPA_O      := $(KQPA_CXX:.cxx=.o)
@@ -91,8 +93,11 @@ ifneq ($(KQPA_EO),)
 ALLLIBS      += $(KQPA_LIB)
 endif
 ALLEXECS     += $(KQPA_EXE)
-ALLPYTHON    += $(patsubst $(KQPA_DIRI)/%.py,lib/%.py,$(KQPA_PY))
+ALLPYTHON    += $(patsubst $(KQPA_DIRI)/%.py,$(KQPA_PYDIR)/%.py,$(KQPA_PY))
 
+ifneq ($(KQPA_PY),)
+ALLPYMODULES += $(KQPA_PYMODNAME)
+endif
 
 # include all dependency files
 INCLUDEFILES += $(KQPA_DEP)
@@ -106,8 +111,8 @@ INCLUDEFILES += $(KQPA_DEP)
 include/%.h:    $(KQPA_DIRI)/%.h
 		$(COPY_HEADER) $< $@
     
-lib/%.py:    $(KQPA_DIRI)/%.py 
-		$(COPY_HEADER) $< $@
+$(KQPA_PYDIR)/%.py:    $(KQPA_DIRI)/%.py $(KQPA_PYDIR)/__init__.py
+	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
 $(KQPA_DIRS)/%.o:    $(KQPA_DIRS)/%.cxx
@@ -127,19 +132,28 @@ $(KQPA_DC):         $(KQPA_EH) $(KQPA_LH)
 	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KQPA_XTRAINCS)  $(KQPA_EH) $(KQPA_LH) 
 
 # rule for building library
-$(KQPA_LIB):        $(KQPA_EO) $(KQPA_DO) $(KQPA_LIBDEP) 
+$(KQPA_LIB):        $(KQPA_EO) $(KQPA_DO) $(KQPA_LIBDEP)
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KQPA_LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KQPA_LIB)" $@  "$(KQPA_EO) $(KQPA_DO) $(KQPA_XTRALIBS)"\
 	   "$(ROOTLIBS)  $(KQPA_FLAGS)"  -I/opt/include -Iinclude 
 
-all-kqpa:       $(KQPA_LIB)
+all-kqpa:       $(KQPA_LIB) 
 
+$(KQPA_PYDIR)/__init__.py:  $(KQPA_PY)
+	@$(INSTALLDIR) $(KQPA_PYDIR)
+	@echo "Making KDataPy module : $(KQPA_PYMODNAME)"
+	@$(KDATA_ROOT)/config/createInit.py $(patsubst $(KQPA_DIRI)/%.py,%,$(KQPA_PY)) $(KQPA_PYDIR)
+  
 clean-kqpa:
 		@rm -f $(KQPA_DIRS)/*~ $(KQPA_DIRS)/*.o
 		@rm -f $(KQPA_DC) $(KQPA_DH) $(KQPA_DEP) $(KQPA_LIB)
 
 clean::         clean-kqpa
+
+
+	
+#prepare::       prepare-kqpa
 
 #end
 

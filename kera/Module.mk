@@ -49,6 +49,9 @@ KERA_DIR    := $(MODDIR)
 KERA_DIRS   := $(MODDIR)
 KERA_DIRI   := $(MODDIR)
 
+KERA_PYMODNAME   := kera
+KERA_PYDIR  := $(KPYTHONDIR)/$(KERA_PYMODNAME)
+
 #only need to put the ERAINCS here because ERA files are NOT copied
 # to the projects include directory! This should be changed.
 KERA_XTRAINCS := $(ERAINCS)  
@@ -67,7 +70,7 @@ KERA_DO     := $(KERA_DC:.C=.o)
 KERA_DH     := $(KERA_DC:.C=.h)
 
 KERA_H      := $(filter-out $(KERA_LH) $(KERA_DH),$(wildcard $(KERA_DIRI)/*.h))
-KERA_PY     := $(filter-out $(KERA_LH) $(KERA_DH),$(wildcard $(KERA_DIRI)/*.py))
+KERA_PY     := $(wildcard $(KERA_DIRI)/*.py)
 KERA_ECXX   := $(wildcard $(KERA_DIRS)/K*.cxx)
 KERA_CXX    := $(filter-out $(KERA_ECXX),$(wildcard $(KERA_DIRS)/*.cxx))
 KERA_O      := $(KERA_CXX:.cxx=.o)
@@ -91,7 +94,11 @@ ifneq ($(KERA_EO),)
 ALLLIBS      += $(KERA_LIB)
 endif
 ALLEXECS     += $(KERA_EXE)
-ALLPYTHON    += $(patsubst $(KERA_DIRI)/%.py,lib/%.py,$(KERA_PY))
+ALLPYTHON    += $(patsubst $(KERA_DIRI)/%.py,$(KERA_PYDIR)/%.py,$(KERA_PY))
+
+ifneq ($(KERA_PY),)
+ALLPYMODULES += $(KERA_PYMODNAME)
+endif
 
 # include all dependency files
 INCLUDEFILES += $(KERA_DEP)
@@ -105,8 +112,8 @@ INCLUDEFILES += $(KERA_DEP)
 include/%.h:    $(KERA_DIRI)/%.h
 		$(COPY_HEADER) $< $@
 
-lib/%.py:    $(KERA_DIRI)/%.py 
-		$(COPY_HEADER) $< $@
+$(KERA_PYDIR)/%.py:   $(KERA_DIRI)/%.py $(KERA_PYDIR)/__init__.py
+	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
 $(KERA_DIRS)/%.o:    $(KERA_DIRS)/%.cxx
@@ -134,6 +141,11 @@ $(KERA_LIB):        $(KERA_EO) $(KERA_DO) $(KERA_LIBDEP)
 
 all-kera:       $(KERA_LIB)
 
+$(KERA_PYDIR)/__init__.py:  $(KERA_PY)
+	@$(INSTALLDIR) $(KERA_PYDIR)
+	@echo "Making KDataPy $(KERA_PYMODNAME)"
+	@$(KDATA_ROOT)/config/createInit.py $(patsubst $(KERA_DIRI)/%.py,%,$(KERA_PY)) $(KERA_PYDIR)
+  
 clean-kera:
 		@rm -f $(KERA_DIRS)/*~ $(KERA_DIRS)/*.o
 		@rm -f $(KERA_DC) $(KERA_DH) $(KERA_DEP) $(KERA_LIB)

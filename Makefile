@@ -85,6 +85,7 @@ include $(ROOTSYS)/config/Makefile.$(ARCH)
 
 
 LPATH          := $(KDATA_ROOT)/lib
+KPYTHONDIR     := $(LPATH)/KDataPy
 KDATALIBDIRS    := -L$(LPATH)
 ERADIR       := ./era
 
@@ -139,6 +140,8 @@ COPY_HEADER     = cp -i
 else
 COPY_HEADER     = cp -f
 endif
+
+MKDIR = mkdir -p
 
 ##### additional KDATA architecture-specific definitions #####
 
@@ -238,7 +241,9 @@ $(RMKDEP): $(ROOTSYS)/bin/rmkdepend
 prepare::
 	@$(INSTALLDIR) include
 	@$(INSTALLDIR) lib
+	@$(INSTALLDIR) lib/KDataPy
 	@config/checkenv
+	@config/createInit.py $(ALLPYMODULES) lib/KDataPy
 
 clean::
 	@rm -f *~ core
