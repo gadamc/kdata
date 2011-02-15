@@ -215,13 +215,16 @@ def uploadFromRunDir(dirname, uri, dbname, override=None):
   print 'Searching for ' + searchstring
   filelist = glob.glob(searchstring) #search for files of this formate
 
+  if len(filelist) == 0:
+    return False
+    
   for i in filelist:
     print 'Uploading ' + i
     uploadFile(i, uri, dbname, override)
     
   return True
   
-def uploatFromTopLevelDir(dirname, uri, dbname, override=None):
+def uploadFromTopLevelDir(dirname, uri, dbname, override=None):
   if os.path.isdir(dirname)==False:
     return False
   
@@ -251,6 +254,6 @@ if __name__ == '__main__':
   elif os.path.isdir(sys.argv[1]):
     if uploadFromRunDir(sys.argv[1], uri, dbname, override)==False:
       #try if this is a top-level samba directory rather than a single run directory
-      uploatFromTopLevelDir(dirname, uri, dbname, override)
+      uploadFromTopLevelDir(sys.argv[1], uri, dbname, override)
       
       
