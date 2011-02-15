@@ -20,6 +20,7 @@ def gunzip(ifname):
 # parseDoc
 def parseDoc(doc):
     for k,v in doc.items():
+        k = k.replace('.','_')  #remove those pesky "."
         if (isinstance(v,str)):
             #print k, v, v.isdigit()
             # #see if this string is really an int or a float
@@ -31,6 +32,7 @@ def parseDoc(doc):
                         doc[k] = float(v) 
                 except:
                     pass
+        
     return doc
 
 #_____________

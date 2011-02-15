@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+
 
 
 from couchdbkit import *
@@ -29,7 +29,7 @@ def formatvalue(value):
           return float(value)
       except:
         pass
-    
+
     return value.strip('"\'') #strip off any quotations found in the value
   else:
     return value
@@ -43,7 +43,7 @@ def readheader(file):
   )
     
   header['_id'] = os.path.basename(file.name) + '_samba_runheader'
-  
+  header['runname'] = os.path.basename(file.name)
   firstline = file.readline()
   if firstline.rstrip() == '* Archive SAMBA':
     firstline = file.readline() #skip the next line
@@ -70,7 +70,7 @@ def readheader(file):
       
         list = line.split('=') 
         if len(list) >= 2:
-          key = list[0]
+          key = list[0].replace('.', '_').replace('-', '_')
           vlist = list[1].split('#')
           value = formatvalue(vlist[0].strip())
           #print repr(key) + ' : ' + repr(value)
@@ -95,6 +95,7 @@ def readboloheader(file):
     header['_id'] = os.path.basename(file.name) + '_samba_boloconfiguration_' + detector 
   else:
     return firstline  #this doesn't appear to be a Bolometer Configuration section
+    header['runname'] = os.path.basename(file.name)
     
   while True:
   
@@ -115,7 +116,7 @@ def readboloheader(file):
         if len(list) >= 2:
         
             if list[0].strip() == 'Bolo.reglages': #handle the special case
-              rootkey = list[0].strip()
+              rootkey = list[0].strip().replace('.','_').replace('-', '_')
               #print 'root key ' + rootkey
               
               rootval = dict()
@@ -133,11 +134,10 @@ def readboloheader(file):
                   value = valuelist[1].strip(' },')
                   rootval[key] = formatvalue(value)
               
-              v = json.JSONEncoder().encode(rootval)
-              header[rootkey] = v
+              header[rootkey] = rootval
               
             else:
-              key = list[0]
+              key = list[0].replace('.','_').replace('-', '_')
               vlist = list[1].split('#')
               value = formatvalue(vlist[0].strip())
               header[key] = value
