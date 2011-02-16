@@ -75,15 +75,6 @@ def uploadFile(fname, uri, dbname, override=None):
     newdoc = parseDoc(doc)
   
     newdoc.update({"_id":os.path.basename(fname) + "_" + repr(n)})
-
-    #need to loop through all of the keys in the dictionary
-    #and replace them, removing any '.' and '-' values
-    #those are commonly found in the Samba files
-    #and should be removed befor placing them in the database
-    #this just makes using the database easier
-    for k, v in newdoc.iteritems()
-      del newdoc[k]
-      newdoc[k.replace('.','_').replace('-','_')] = v
              
     if override==True:
       docs.append(newdoc)

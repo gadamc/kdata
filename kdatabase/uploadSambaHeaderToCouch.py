@@ -1,22 +1,11 @@
 #!/usr/bin/env python
 
-
-
 from couchdbkit import *
 from couchdbkit.loaders import FileSystemDocsLoader
 from csv import DictReader
 import time, sys, subprocess, math, os, glob
 import datetime, json
 
-class Header(Document):
-  author = StringProperty()
-  content = StringProperty()
-  datefiled = StringProperty()
-  
-class BolometerConfig(Document):
-    author = StringProperty()
-    content = StringProperty()
-    datefiled = StringProperty()
 
 def formatvalue(value):
   if (isinstance(value,str)):
@@ -30,20 +19,20 @@ def formatvalue(value):
       except:
         pass
 
-    return value.strip('"\'') #strip off any quotations found in the value
+    return value.strip('"') #strip off any quotations found in the value
   else:
     return value
 
 def readheader(file):
   
-  header = Header( #json document to be updloaded to database
-    author = 'SAMBA',
-    content = 'Single SAMBA File Run Header',
-    datefiled = str(datetime.datetime.utcnow())
-  )
-    
+  header = {}
+  header['author'] = 'Samba'
+  header['content'] = 'Single Samba File Run Header'
+  header['type'] = 'samba run header'
+  header['date_filed'] = str(datetime.datetime.utcnow())
   header['_id'] = os.path.basename(file.name) + '_samba_runheader'
-  header['runname'] = os.path.basename(file.name)
+  header['run_name'] = os.path.basename(file.name)
+  
   firstline = file.readline()
   if firstline.rstrip() == '* Archive SAMBA':
     firstline = file.readline() #skip the next line
@@ -70,21 +59,22 @@ def readheader(file):
       
         list = line.split('=') 
         if len(list) >= 2:
-          key = list[0].replace('.', '_').replace('-', '_')
+          key = list[0].strip()#.lower().replace('.','_').replace('-','_')
           vlist = list[1].split('#')
           value = formatvalue(vlist[0].strip())
           #print repr(key) + ' : ' + repr(value)
-          header[key] = value
+          header[str(key)] = value
   
   return header
       
 def readboloheader(file):
 
-  header = BolometerConfig( #json document to be updloaded to database
-    author = 'SAMBA',
-    content = 'Single SAMBA File Bolometer Configuration Header',
-    datefiled = str(datetime.datetime.utcnow())
-  )
+  header = {}
+  header['author'] = 'Samba'
+  header['content'] = 'Single Samba File Run Header'
+  header['date_filed'] = str(datetime.datetime.utcnow())
+  header['type'] = 'samba bolo config header'
+  header['run_name'] = os.path.basename(file.name)
   
   firstline = file.readline()
   if firstline.strip().startswith('* Detecteur'):
@@ -95,7 +85,7 @@ def readboloheader(file):
     header['_id'] = os.path.basename(file.name) + '_samba_boloconfiguration_' + detector 
   else:
     return firstline  #this doesn't appear to be a Bolometer Configuration section
-    header['runname'] = os.path.basename(file.name)
+    
     
   while True:
   
@@ -116,7 +106,7 @@ def readboloheader(file):
         if len(list) >= 2:
         
             if list[0].strip() == 'Bolo.reglages': #handle the special case
-              rootkey = list[0].strip().replace('.','_').replace('-', '_')
+              rootkey = list[0].strip()#.lower().replace('.','_').replace('-','_')
               #print 'root key ' + rootkey
               
               rootval = dict()
@@ -130,17 +120,17 @@ def readboloheader(file):
                 if nline.lstrip().startswith('{'):
                 
                   valuelist = nline.strip().split(':=')
-                  key = valuelist[0].strip(' {')
-                  value = valuelist[1].strip(' },')
-                  rootval[key] = formatvalue(value)
+                  key = valuelist[0].strip(' {').strip()#.lower().replace('.','_').replace('-','_')
+                  value = valuelist[1].strip(' },').strip()
+                  rootval[str(key)] = formatvalue(value)
               
-              header[rootkey] = rootval
+              header[str(rootkey)] = rootval
               
             else:
-              key = list[0].replace('.','_').replace('-', '_')
+              key = list[0].strip()#lower().replace('.','_').replace('-','_')
               vlist = list[1].split('#')
               value = formatvalue(vlist[0].strip())
-              header[key] = value
+              header[str(key)] = value
   
   return header
 
@@ -172,35 +162,41 @@ def uploadFile(filename, uri, dbname, override=None):
   docs = list()
   
   sambaheader = readheader(file)
-  sambaheader.set_db(db)
-     
-  if override==True:
-    docs.append(sambaheader)
-    if db.doc_exist(sambaheader.__getattr__('_id')):
-      db.delete_doc(sambaheader.__getattr__('_id'))
-      
-  elif db.doc_exist(sambaheader.__getattr__('_id')) == False:
-    docs.append(sambaheader)
-      
-  docs = upload(db, docs)
   
+  try:
+    if isinstance(sambaheader,dict):
+      if override==True:
+        docs.append(sambaheader)
+        if db.doc_exist(sambaheader['_id']):
+          db.delete_doc(sambaheader['_id'])
+      
+      elif db.doc_exist(sambaheader['_id']) == False:
+        docs.append(sambaheader)
+      
+      docs = upload(db, docs)
+  
+  except KeyError:
+      print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the bolometer configuration header'
+      sys.exit(1)
+      
   #now, loop through and read the bolometer header files
   while True:
     boloheader = readboloheader(file)
-    try:
-      if boloheader._doc:
-        #print boloheader._doc
-        boloheader.set_db(db)
-
+    if isinstance(boloheader,dict):
+      #print boloheader._doc
+      try:
         if override==True:
           docs.append(boloheader)
-          if db.doc_exist(boloheader.__getattr__('_id')):
-            db.delete_doc(boloheader.__getattr__('_id'))
+          if db.doc_exist(boloheader['_id']):
+            db.delete_doc(boloheader['_id'])
             
-        elif db.doc_exist(boloheader.__getattr__("_id"))==False:
+        elif db.doc_exist(boloheader['_id'])==False:
           docs.append(boloheader)
-        
-    except:
+      except KeyError:
+        print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the bolometer configuration header'
+        sys.exit(1)
+    
+    else:
       #print 'Not a Document, apparently. We are done.'
       break
     
@@ -210,8 +206,12 @@ def uploadFile(filename, uri, dbname, override=None):
 def uploadFromRunDir(dirname, uri, dbname, override=None):
   if os.path.isdir(dirname)==False:
     return False
+
+  if dirname == '.':
+    searchstring = os.path.basename(os.getcwd()) + '_[0-9][0-9][0-9]'
+  else:
+    searchstring = dirname.rstrip('/') + '/' + os.path.basename(dirname.rstrip('/')) + '_[0-9][0-9][0-9]'
   
-  searchstring = dirname.rstrip('/') + '/' + os.path.basename(dirname.rstrip('/')) + '_[0-9][0-9][0-9]'
   print 'Searching for ' + searchstring
   filelist = glob.glob(searchstring) #search for files of this formate
 
@@ -228,10 +228,14 @@ def uploadFromTopLevelDir(dirname, uri, dbname, override=None):
   if os.path.isdir(dirname)==False:
     return False
   
-  filelist = glob.glob(dirname.rstrip('/') + '/[a-z][a-z][0-9][0-9][a-z][0-9][0-9][0-9]') #search for directories of the SAMBA format
+  dirlist = glob.glob(dirname.rstrip('/') + '/[a-z][a-z][0-9][0-9][a-z][0-9][0-9][0-9]') #search for directories of the SAMBA format
 
-  for i in filelist:
-    uploadFromRunDir(i, uri, dbname, override)
+  if len(dirlist) == 0:
+    return False
+    
+  for i in dirlist:
+    if os.path.isdir(i):
+      uploadFromRunDir(i, uri, dbname, override)
     
   return True
 
