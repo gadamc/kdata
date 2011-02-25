@@ -180,6 +180,7 @@ class KQDistribution {
     
     //getters
     const Char_t* GetBoloConfigFile() const  { return fBoloConfigFile.c_str(); }
+    KBoloConfig* GetBoloConfig() const { return fBoloConfig; }
     const Char_t* GetSourceFile() const { return fSourceFile.c_str(); }
     const Char_t* GetTargetDir() const { return fTargetDir.c_str(); }
     const Char_t* GetDetectorName() const { return fDetectorName.c_str();  }

@@ -12,6 +12,7 @@
 #define __KQUNCERTAINTY_H__
 
 #include "Rtypes.h"
+#include "TMatrix.h"
 
 
 class KQUncertainty  { 
@@ -22,6 +23,17 @@ public:
   virtual ~KQUncertainty(void);
 
   static Double_t GetQValue(Double_t energy); //only for a nuclear recoil event. for electromagnetic, it is 1 by default.
+  static Double_t GetQMeanValue(Double_t anEnergy,
+                                Double_t anEnergyUncertainty); // only for nuclear recoil events. for electromagnetic, it is 1 by default
+  static Double_t GetCovarianceQERecoil(Double_t anIonEnergy,
+                                              Double_t aHeatEnergy,
+                                              Double_t anIonUncertainty,
+                                              Double_t aHeatUncertainty,
+                                              Double_t aVoltageBias,
+                                              Double_t anEpsilon,
+                                              Double_t aRowIndex = 1,
+                                              Double_t aColumnIndex = 1);
+                                              
   static Double_t GetChannelUncertainty(Double_t energy, Double_t uncerZero, 
                                         Double_t uncerCalibEnergy, Double_t calibEnergy = 356.0); //356 keV is the energy of
                                                                                                   //the peak of the 133Ba source

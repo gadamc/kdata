@@ -136,7 +136,7 @@ void KQDistribution::DrawHistogram(TPad* aPad,Int_t aHistogramCounter)
     aPad->cd();
     fHistogramRecords[aHistogramCounter].fHistogram->ProjectionY()->Draw();
     SetBoundaries(fHistogramRecords[aHistogramCounter].fHistogram->ProjectionY(),
-                  3,
+                  fConfidenceInSigmas,
                   fHistogramRecords[aHistogramCounter].fQNeutronTheo,
                   fHistogramRecords[aHistogramCounter].fQGammaTheo,
                   fHistogramRecords[aHistogramCounter].fQNeutronTheoError/fConfidenceInSigmas,
@@ -375,7 +375,7 @@ void KQDistribution::SetStyle()
 {
   //This method sets styles for histogram and fit result drawing
   cout << "Setting style ... " << endl;
-  gStyle->SetOptFit(12); 
+  gStyle->SetOptFit(112); 
   gStyle->SetHistFillColor(2);
   gStyle->SetHistTopMargin(1);
   gStyle->SetFrameFillColor(42);
@@ -699,13 +699,13 @@ void KQDistribution::CalculateTheoErrors()
   QNeutronTheoRawFile << setw(5) << "#" << setw(20) << "ERecoilMean" <<  setw(20) << "QNeutronTheo" << setw(20) << "ERecoilError" << setw(20) << "QNeutronTheoError" << endl;
   QGammaTheoRawFile << setw(5) << "#" << setw(20) << "ERecoilMean" << setw(20) << "QGammaTheo" << setw(20) << "ERecoilError" << setw(20) << "QGammaTheoError" << endl;
   
-  fBoloConfig = new KBoloConfig(fDetectorName,fBoloConfigFile);
+  fBoloConfig = new KBoloConfig(fDetectorName.c_str(),fBoloConfigFile.c_str());
   
   
   for(int k = 0; k<fNumProjections; ++k)
   {
     fHistogramRecords[k].fQGammaTheo = 1;
-    fHistogramRecords[k].fQNeutronTheo = KQUncertainty::GetQValue(fHistogramRecords[k].fERecoilMean);
+    fHistogramRecords[k].fQNeutronTheo = KQUncertainty::GetQMeanValue(fHistogramRecords[k].fERecoilMean,fHistogramRecords[k].fERecoilError);
     
     Double_t aHeatUncertainty = KQUncertainty::GetChannelUncertainty(fHistogramRecords[k].fERecoilMean,
                                                                      fBoloConfig->GetSigmaHeatZero(),
@@ -720,13 +720,13 @@ void KQDistribution::CalculateTheoErrors()
     Double_t aVoltageBias = fBoloConfig->GetChannelVoltage();
     
     fHistogramRecords[k].fQGammaTheoError =fConfidenceInSigmas* KQUncertainty::GetElecRecoilWidth(fHistogramRecords[k].fERecoilMean,
-                                                                              aHeatUncertainty,
                                                                               anIonUncertainty,
+                                                                              aHeatUncertainty,
                                                                               aVoltageBias);
                                                                               
     fHistogramRecords[k].fQNeutronTheoError = fConfidenceInSigmas*KQUncertainty::GetNuclRecWidth(fHistogramRecords[k].fERecoilMean,
-                                                                              aHeatUncertainty,
                                                                               anIonUncertainty,
+                                                                              aHeatUncertainty,
                                                                               aVoltageBias);
     
     

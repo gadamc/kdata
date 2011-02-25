@@ -16,16 +16,19 @@
 #include "Rtypes.h"
 #include "TTree.h"
 #include <math.h>
+#include <iostream>
+using namespace std;
 
 class KRun12Temp {
   private:
+    string fFileName; // file name
     TTree* fTree; //tree storing bolo data
 
   public:
-    KRun12Temp(const char* aFileName);
+    KRun12Temp(const Char_t* aFileName = "");
     
-    void ReadCalibrationFile(const char* aFileName);
-    Int_t GetCalibrationEntry(const char* aBoloName);
+    Bool_t ReadCalibrationFile(const char* aFileName = "");
+    Int_t GetCalibrationEntry(const char* aBoloName = "");
     Int_t GetDetectorNumber(Int_t anEntry);
     Double_t GetUncerIonZero(Int_t anEntry);
     Double_t GetUncerIonCalib(Int_t anEntry);

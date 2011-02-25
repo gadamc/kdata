@@ -16,19 +16,31 @@
 
 ClassImp(KRun12Temp);
 
-KRun12Temp::KRun12Temp(const char* aFileName)
+KRun12Temp::KRun12Temp(const Char_t* aFileName)
 {
-  if(aFileName != 0)
-    ReadCalibrationFile(aFileName);
+  fFileName = aFileName;
 }
 
-void KRun12Temp::ReadCalibrationFile(const char* aFileName)
+Bool_t KRun12Temp::ReadCalibrationFile(const Char_t* aFileName)
 {
   //This method reads a bolometer configuration ASCII file of form "$name $detector_number $fwhm_ion $fwhm_ion356 $fwhm_heat $fwhm_heat356 $voltagebias $radius_fiducial"
-  if(aFileName != 0) {
+  if(fFileName!=aFileName)
+    fFileName = aFileName;
+  if(fFileName!="") {
     fTree = new TTree("ConfigTree","values from file");
-    fTree->ReadFile(aFileName,"name/C:detector_no/I:fwhm_ion/D:fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
+    Int_t aNumEntries = fTree->ReadFile(aFileName,"name/C:detector_no/I:fwhm_ion/D:\
+    fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
+    
+    if(!aNumEntries) {
+      cout << "KRun12Temp::ReadCalibrationFile(): file " << aFileName << 
+      " does not exist or has no entries" << endl;
+      return false;
+    }
+    return true;
   }
+  
+  cout << "KRun12Temp::ReadCalibrationFile(): no file specified " << endl;
+  return false;
 }
 
 Int_t KRun12Temp::GetCalibrationEntry(const char* aBoloName)
@@ -43,6 +55,8 @@ Int_t KRun12Temp::GetCalibrationEntry(const char* aBoloName)
       return i;
       
   }
+  cout << "KRun12Temp::GetCalibrationEntry(): entry for detector "
+  << aBoloName << "not found" << endl;
   return -1;
 }
 

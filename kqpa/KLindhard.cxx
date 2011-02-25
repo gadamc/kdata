@@ -29,7 +29,7 @@
 Double_t DistToLindhardFunction(const Double_t* xx)
 {
   //This function calculates the square of the distance of an arbitrary point (anERecoil,aQ)
-  //to a point (anERecoilLindhard, Q(anERecoilLindhard) on the LindhardFunction a*E^b
+  //to a point (anERecoilLindhard, Q(anERecoilLindhard) on the Lindhard function a*E^b
   //with a = 0.165 and b = 0.185
   //
   //The function is minimized by 
@@ -93,6 +93,19 @@ Double_t KLindhard::GetQValue(Double_t anEnergy) const
 {
   return fLindhardFormula->Eval(anEnergy);
 }
+
+Double_t KLindhard::GetQMeanValue(Double_t anEnergy,
+                              Double_t anEnergyUncertainty) const
+{
+  // This method calculates the Q mean value for binned data with mean "anEnergy"
+  // and uncertainty "anEnergyUncertainty" in 2nd order approximation
+  //
+  // BEGIN_LATEX
+  // < Q > = a < E > ^{b} + b (b-1) a < E > ^{b-2} #sigma_{E}^{2}
+  // END_LATEX
+  return fLindhardFormula->Eval(anEnergy) + fLindhardFormula->Derivative2(anEnergy)*anEnergyUncertainty;
+}
+
 
 Double_t KLindhard::CalculateEOfMinDistanceLindhard(Double_t anERecoil,Double_t aQ, const Char_t* aMinimizerName,const Char_t* aMethod)
 {

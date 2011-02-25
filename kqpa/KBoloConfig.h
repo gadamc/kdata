@@ -17,11 +17,13 @@
 #include "KRun12Temp.h"
 #include <string>
 #include <vector>
+#include <iostream>
 using namespace std;
 
 class KBoloConfig {
   private:
     string fBoloName;
+    string fFileName;
     Double_t fSigmaIonCalibration;
     Double_t fSigmaIonZero;
     Double_t fSigmaHeatCalibration;
@@ -31,9 +33,9 @@ class KBoloConfig {
     vector<Double_t> fChannelVoltages;
 
   public:
-    KBoloConfig(string aBoloName,string aFileName);
+    KBoloConfig(const Char_t* aBoloName,const Char_t* aFileName);
     
-    void Load(string aBoloName,string aFileName);
+    Bool_t Load(const Char_t* aBoloName = "",const Char_t* aFileName = "");
 
     const char* GetBoloName() const { return fBoloName.c_str(); }
     Double_t GetSigmaIonCalibration() const { return fSigmaIonCalibration; }

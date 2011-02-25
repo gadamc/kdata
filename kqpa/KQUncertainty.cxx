@@ -60,6 +60,7 @@
 #include "KQUncertainty.h"
 #include "KLindhard.h"
 #include "TMath.h"
+
 #include "math.h"
 
 ClassImp(KQUncertainty);
@@ -80,6 +81,60 @@ Double_t KQUncertainty::GetQValue(Double_t anEnergy)
   
   KLindhard lind;
   return lind.GetQValue(anEnergy);
+}
+
+Double_t KQUncertainty::GetQMeanValue(Double_t anEnergy,
+                                      Double_t anEnergyUncertainty)
+{
+  //Returns the Q mean value for binned data of nuclear recoil events with
+  //mean "anEnergy" and uncertainty "anEnergyUncertainty"
+  KLindhard lind;
+  return lind.GetQMeanValue(anEnergy,anEnergyUncertainty);
+}
+
+Double_t KQUncertainty::GetCovarianceQERecoil(Double_t anIonEnergy,
+                                              Double_t aHeatEnergy,
+                                              Double_t anIonUncertainty,
+                                              Double_t aHeatUncertainty,
+                                              Double_t aVoltageBias,
+                                              Double_t anEpsilon,
+                                              Double_t aRowIndex,
+                                              Double_t aColumnIndex)
+{
+  //This method returns the covariance matrix of q =(ERecoil,Q)
+  //of a single fiducial event
+  //
+  //If the vectors
+  // BEGIN_LATEX
+  // #vec{q} = #(){#splitline{E_{Recoil}}{Q}}
+  // END_LATEX
+  // BEGIN_LATEX
+  // #vec{r} = #(){#splitline{E_{Ion}}{E_{Heat}}
+  // END_LATEX
+  // and the Jacobian
+  // BEGIN_LATEX
+  // J = #(){#splitline{#frac{#partial E_{Recoil}}{#partial E_{Ion}}}{#frac{#partial Q}{#partial E_{Heat}}} #splitline{#frac{#partial E_{Recoil}}{#partial E_{Ion}}}{#frac{#partial Q}{#partial E_{Heat}}}}
+  // END_LATEX
+  // is given, then the covariance matrix is calculated then by error propagation
+  // BEGIN_LATEX
+  // V(#vec{q})=J * V(#vec{r}) * J^{T}
+  // END_LATEX
+  Double_t r = -aVoltageBias/anEpsilon;
+  Double_t s = 1 + aVoltageBias/anEpsilon;
+  Double_t ERecoil = r*anIonEnergy+ s*aHeatEnergy;
+  Double_t t = (ERecoil - r * anIonEnergy)/ERecoil/ERecoil;
+  Double_t u = -s * anIonEnergy/ERecoil/ERecoil;
+  if(aRowIndex==1&&aColumnIndex==1) {
+    return (r*r * anIonUncertainty*anIonUncertainty + s*s * aHeatUncertainty*aHeatUncertainty);
+  }
+  else
+    if(aRowIndex==2&&aColumnIndex==2) {
+      return( t*t * anIonUncertainty*anIonUncertainty + u*u* aHeatUncertainty*aHeatUncertainty);
+    }
+    else
+      return( r* t * anIonUncertainty*anIonUncertainty + s* u * aHeatUncertainty*aHeatUncertainty);
+  
+  
 }
 
 
