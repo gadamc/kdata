@@ -114,17 +114,14 @@ def buildDirectory(dirname, outputpath):
   
   if os.path.isdir(dirname)==False:
     sys.exit(-1)
+
+
+  globexpr = '[a-z][a-z][0-9][0-9][a-z][0-9][0-9][0-9]_ntp'
   
-  dirname.strip('/')
-  if dirname == '.':
-    globexpression = dirname + '.root'
-  else:
-    globexpression = dirname + '/' + fname +'.root'
-    
-  filelist = glob.glob(dirname + '/[a-z][a-z][0-9][0-9][a-z][0-9][0-9][0-9]/*_ntp')
-  
-  for i in filelist:
-    buildRootFile(i, outputpath)
+  for root, dirs, files in os.walk(dirname):
+    files = glob.glob(globexpr)
+      for i in files:
+        buildRootFile(root + '/' + dirs + '/' + i, outputpath)
   
   
 #______________
