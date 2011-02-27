@@ -48,13 +48,9 @@ def formatvalue(value):
 
 
 def setToCurrentTransfer(thefile, item):
-
-  if os.path.isfile(thefile):
     file = open(thefile,'w')
     file.write(item + '\n')
     file.close()
-  else:
-    print 'setToCurrentTransfer: Is not a file!'
     
     
 def appendSmallRunListFile(filename, listoffiles):
@@ -311,7 +307,8 @@ main script
 def runCopy(params):
   
   print 'Initial parameters:'
-  print params
+  for k, v in params.items():
+      print k, ' = ', v
 
   newDirs = getListOfNewSambaDirs(params)
   print ''
@@ -338,6 +335,7 @@ def runCopy(params):
   
   print 'Tarring files'
   tempDir = tempfile.mkdtemp()
+  print 'in directory', tempDir
   logfile.flush()
   try:
     tarlist = list()
