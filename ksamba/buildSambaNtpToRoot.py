@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from csv import DictReader
-import time, sys, subprocess, math, os, glob, array
+import time, sys, subprocess, math, os, array, re
 
 from ROOT import TFile, TTree
 
@@ -65,7 +65,7 @@ def buildRootFile(fname, outputdir):
             if math.isnan(float(v))==False:
               varNames.append(name) 
               arrayList.append(array.array('f',[0]))
-              descriptor.append(str(name) + '/D')
+              descriptor.append(str(name) + '/F')
           except:
             pass
         
@@ -79,28 +79,36 @@ def buildRootFile(fname, outputdir):
   file = TFile.Open(outFname, 'recreate')
   tree = TTree('ntp_tree','A Tree based on the Samba NTP files.')
   
+  #print varNames
+  #print arrayList
+  #print descriptor
+  
   for i in range(len(arrayList)): #set up the branches
     tree.Branch(varNames[i],arrayList[i],descriptor[i]) 
   
   #re-read the file so that we start at the first line
   reader = DictReader(open(fname), delimiter=' ', skipinitialspace = True)
   
-  for doc in reader:
-    doc = parseDoc(doc)
-    for k, v in doc.items():  
+  for line in reader:
+    #print 'next line'
+    line = parseDoc(line)
+    for k, v in line.items():  
       name = formatname(k)    
       try:                      
         i = varNames.index(name)  #its not guaranteed the the order of key/value pair is
                                   #maintained. So, we have to use the list.index function
                                   #to find the proper index for this particular key
         arrayList[i][0] = v       #set the value to the proper array  (arrayList[i] returns an array and arrayList[i][0] is the zero'th element of the array)
+        #print k, v
+        #print i, arrayList[i][0]
       except ValueError:
         pass  #this will throw if varNames doesn't have an index named 'name' In the code above,
               #strings are ignored. so when we come across a key that isn't in our list,
               #which is probably a string, we ignore it here.
-        
+    #print 'fill'
     tree.Fill()
-  
+    
+      
   file.cd()
   tree.Write()
   file.Close()
@@ -116,11 +124,11 @@ def buildDirectory(dirname, outputpath):
     sys.exit(-1)
 
 
-  globexpr = '[a-z][a-z][0-9][0-9][a-z][0-9][0-9][0-9]_ntp'
+  regex = '[a-z][a-z][0-9][0-9][a-z][0-9][0-9][0-9]_ntp'
   
   for root, dirs, files in os.walk(dirname):
-    files = glob.glob(globexpr)
-      for i in files:
+    for i in files:
+      if re.match(regex, i) and re.search('.root', i) == None:
         buildRootFile(root + '/' + dirs + '/' + i, outputpath)
   
   
@@ -130,8 +138,12 @@ if __name__=='__main__':
   name = sys.argv[1]
   outputdir = sys.argv[2]
  
-  
-  buildDirectory(dirname, outputdir)
+  if os.path.isfile(name):
+    print 'build root file'
+    buildRootFile(name, outputdir)
+    
+  elif os.path.isdir(name):
+    buildDirectory(dirname, outputdir)
   
 
 
