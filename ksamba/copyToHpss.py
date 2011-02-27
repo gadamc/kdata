@@ -198,7 +198,7 @@ def getSambaDirPattern():
 
 def isDirReady(dir):
   '''checks to see if this directory is ready, which is indicated by the existence of the log and seuils files
-    also, should check to make sure that they are at least ~15 minute old so that we don't copy directories
+    also, should check to make sure that they are at least ~25 minute old so that we don't copy directories
     where the log and seuils files are still being copied.
   '''
   isokay = False
@@ -216,7 +216,7 @@ def isDirReady(dir):
       #fseuilstime = os.stat(seuilsfile).st_mtime
       
       #also test if the last time modified was more than 5 minutes
-      if tnow > flogfiletime + 15.0*60.0: # and tnow > fseuilstime + 15.0*60.0:
+      if tnow > flogfiletime + 25.0*60.0: # and tnow > fseuilstime + 15.0*60.0:
         isokay = True
       
   
@@ -266,7 +266,7 @@ def readArguments(arglist):
   
   p = {'minfilesize':200,'timeout_hours':23.5, 'workingdir':'/Users/adam/Scripts/copyToHpss', \
   'srbpath':'/usr/local/SRB3.5.0_MacOS_intel/bin','mdaspath':'/Users/adam/.srb', \
-  'srbdestination':'/edw/test'}
+  'srbdestination':'/edw/edw2rawdata'}
 
   p['lastcopyfile'] = p['workingdir'] + '/lastCopyToHpss.txt'
   p['datadir'] = p['workingdir'] + '/rawdata'
