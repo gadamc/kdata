@@ -349,7 +349,7 @@ def runCopy(params):
  
     # maybe I don't want to use a random directory after all
     # if i used a local, specific directory, i could recover from 
-    # errors more easily. 
+    # errors more easily...?
     #
     
   
@@ -363,7 +363,7 @@ def runCopy(params):
   #in the small file list, and if there are, pack them into a 
   #tar file IF they are going to be larger than the MinimumFileSize (200 MB)
   #If they are not larger than 200MB, then we leave them there until the next month
-   
+
   #transferlist = getSmallFilesToTransfer(params['smallrunlist'])
   #smalltarlist = list()
   
@@ -377,7 +377,7 @@ if __name__ == '__main__':
   params = readArguments(sys.argv)
   if params == False:
     print 'Something is wrong with the parameters'
-    sys.exit(-1)
+    sys.exit(-99)
   
   logfile = open(params['logfile'], 'a')
   sys.stdout = logfile
