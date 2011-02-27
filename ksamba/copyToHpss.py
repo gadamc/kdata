@@ -6,48 +6,6 @@
   the files before sending the data to HPSS, and it must check that the files are large enough
   in size. 
   
-  Also, the data needs to be put into HPSS in a particular directory structure.
-  
-  SRB
-     /edw/edw2rawdata/year/monthYY/events/  where YY is the last two numbers of year.
-     
-     And month is the mixed abbreviations for months
-     jan, fev, mar, avr, mai, jun, jul, aou, sep, oct, nov, dec
-
-
-  What parameters need to be known to the script?
-  
-  --last file written to SRB. Could check this from reading SRB. Could limit search
-  by only looking in the current month's directory (or, if we're a few days into the current month
-  look in both the current and previous month's directory)
-  
-  -- needs to determine which files should be transferred to SRB. If a Samba folder in 'rawdata'
-  contains the file "_log" and "_seuils", then its ready to be transferred. 
-  
-  --need to set the path to SRB binaries. Should just do this manually within the Script.
-  --also need to hard code the path to the .srb directory (/Users/adam/.srb)
-  
-  --previous script set a max transfer timeout. but it only estimated the time for the file
-  transfer rather than actually doing it. (could spawn a new process and then kill that process 
-  once we pass the time).
-  
-  --minimum file size is 200 MB. Files smaller than this shouldn't be transferred to HPSS. Typically,
-  small files are not so interesting data for long term analysis. Typically they are tests that
-  are analyzed immediately by Alex or Jules. 
-  
-  ---Sput will perform a checksum on any file you wish. This can be used to verify that the tar file was properly 
-  transferred. How do you know if an error occurred using Sput? What should be done when an error
-  is returned. Should make sure that it DOESN'T exist on HPSS. Only successful transferred should
-  be stored. 
-  
-  --small run directory location, or list of small runs that will eventually be bundled into a .tar file 
-  every month, or whenever that small run list reaches 200 MB.
-  
-  --a log file will be produced, giving status output
-  
-  --a currentTransferFile.txt file will be written to hold the value of the file currently being transferred. The file name
-  in this text file only gets cleared when the file has been successfully transferred
-
 '''
  
 import sys, os, glob, tarfile, tempfile, string, time, subprocess, datetime, shlex, shutil
@@ -279,10 +237,10 @@ def readArguments(arglist):
     if arglist[i] == '-t':
       i += 1
       val = formatvalue(arglist[i])
-      if isinstance(val,str)==False:
+      if isinstance(val,int) or isinstance(val,float):
         p['timeout_hours'] = val
       else:
-        print 'Invalid value for timeout. Set to default', p['timeout_hours']
+        print 'Invalid value for timeout.', val, 'Set to default', p['timeout_hours']
     
     else:
       pass
@@ -315,33 +273,32 @@ def runSubProcess(command):
   logfile.flush()
   return subprocess.Popen(args)
   
-def uploadToHpss(theparams, tarfilelist):
+def uploadToHpss(theparams, tarfile):
 
   spath = theparams['srbpath'].rstrip('/')
 
   sinit = runSubProcess(spath +'/Sinit')
   sinit.wait()
-  for tarfile in tarfilelist:
-    hpssdir = theparams['srbdestination'] + '/' + formatSrbYearMonthDirStructure(tarfile.rstrip('.tar'))
+  
+  hpssdir = theparams['srbdestination'] + '/' + formatSrbYearMonthDirStructure(tarfile.rstrip('.tar'))
     
-    smkdir = runSubProcess(spath + '/Smkdir -p ' + hpssdir)
-    smkdir.wait()
-    scd = runSubProcess(spath +'/Scd ' + hpssdir)
-    scd.wait()
+  smkdir = runSubProcess(spath + '/Smkdir -p ' + hpssdir)
+  smkdir.wait()
+  scd = runSubProcess(spath +'/Scd ' + hpssdir)
+  scd.wait()
     
-    setToCurrentTransfer(theparams['currentTransferFile'], os.path.basename(tarfile).rstrip('.tar'))
-    sput = runSubProcess(spath + '/Sput -fMvK -r ' + tarfile)
-    sput.wait()
+  setToCurrentTransfer(theparams['currentTransferFile'], os.path.basename(tarfile).rstrip('.tar'))
+  sput = runSubProcess(spath + '/Sput -fMvK -r ' + tarfile)
+  sput.wait()
     
-    addItemToLastFiles(theparams['lastcopyfile'], tarfile.rstrip('.tar'))
-    setToCurrentTransfer(theparams['currentTransferFile'], '')
+  addItemToLastFiles(theparams['lastcopyfile'], tarfile.rstrip('.tar'))
+  setToCurrentTransfer(theparams['currentTransferFile'], '')
   #need to catch errors here
   #the setToLastCopyFile should make sure to output a last-file for each 'mac' 
   
   sexit  = runSubProcess(spath + '/Sexit')
   
    
-    
   #end by writing out last files to the output
   
 
@@ -385,20 +342,23 @@ def runCopy(params):
   try:
     tarlist = list()
     for item in transferlist:
-      tarlist.append(tarTheDir(item, tempDir))
-
-    print ''
-    print 'Tarlist created files', tarlist
-    print 'Uploading to Hpss'
-    #should spawn a new process here so that can write a time-out for this....
-    logfile.flush()
-    uploadToHpss(params, tarlist)
+      tarfile = tarTheDir(item, tempDir)
+      tarlist.append(tarfile)
+      print ''
+      print 'Uploading to Hpss', tarfile
+      logfile.flush()
+      uploadToHpss(params, tarfile)
+ 
+    # maybe I don't want to use a random directory after all
+    # if i used a local, specific directory, i could recover from 
+    # errors more easily. 
+    #
+    
   
   except:
     shutil.rmtree(tempDir)
     print sys.exc_info()[0], sys.exe_info()[1]
     raise sys.exc_info()[0]
-  
   
   #now, check the small file list.  First need to check to see
   #if there are any files not part of the current month in
