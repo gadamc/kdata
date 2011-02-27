@@ -74,15 +74,23 @@ def appendSmallRunListFile(filename, listoffiles):
 
 
 def getfoldersize(folder):
-  '''returns the folder size in MB'''
+  '''returns the folder size in bytes'''
   folder_size = 0
   for (path, dirs, files) in os.walk(folder):
     for file in files:
       filename = os.path.join(path, file)
       folder_size += os.path.getsize(filename)      
   
-  return folder_size/(1024.0*1024.0)
+  return folder_size
 
+
+def totalFolderListSize(folderList):
+  '''returns the size in bytes for all folders in the list'''
+  totalsize = 0
+  for item in folderList: 
+    totalsize += getfoldersize(item)
+  return totalsize
+  
 
 def sortListBySize(fileList, min = None, max = None):
 
@@ -94,8 +102,7 @@ def sortListBySize(fileList, min = None, max = None):
   big = list()
   
   for item in fileList:
-    size = getfoldersize(item)
-    
+    size = getfoldersize(item)/(1024.0*1024.0)  #size of folder in MB    
     if size > min:
       if max != None:
         if size > max:
@@ -196,6 +203,24 @@ def getListOfNewSambaDirs(params):
         
   return f
 
+def tarTheList(dirlist, tempDir = None):
+
+  if tempDir == None or tempDir == '.':
+    filename = os.path.basename(dirlist[len(dirlist)-1])[0:2] + 'events.tar'
+  else:
+    tempDir.rstrip('/')
+    filename = tempDir + '/' + os.path.basename(dirlist[len(dirlist)-1])[0:2] + 'events.tar'
+  
+  print 'Creating Tar File', filename
+  file = tarfile.open(filename, 'w')
+  for adir in dirlist:
+    print 'Adding to tarfile:', adir
+    logfile.flush()
+    file.add(adir, arcname = os.path.basename(adir))
+    
+  file.close()
+  
+  return filename
 
 def tarTheDir(adir, tempDir = None):
   if tempDir == None or tempDir == '.':
@@ -204,9 +229,12 @@ def tarTheDir(adir, tempDir = None):
     tempDir.rstrip('/')
     filename = tempDir + '/' + os.path.basename(adir) + '.tar'
   
+  print 'Creating Tar File', filename
   file = tarfile.open(filename, 'w')
+  print 'Adding to tarfile:', adir
   file.add(adir, arcname = os.path.basename(adir))
   file.close()
+  logfile.flush()
   
   return filename
 
@@ -249,54 +277,124 @@ def readArguments(arglist):
   else:
     return False
     
+def getmonthnamedict():
+  return {'a':'jan', 'b':'fev', 'c':'mar', 'd':'avr', 'e':'mai', 'f':'jun', 'g':'jul', 'h':'aou', 'i':'sep', 'j':'oct', 'k':'nov', 'l':'dec'}
 
-def getmonthdir(afile):
-  months = {'a':'jan', 'b':'fev', 'c':'mar', 'd':'avr', 'e':'mai', 'f':'jun', 'g':'jul', 'h':'aou', 'i':'sep', 'j':'oct', 'k':'nov', 'l':'dec'}
-  return months[afile[1]]  #assume, of course, standard samba file structure...
-
-def getyeardir(afile):
-  years = {'i':2008, 'j':2009, 'k':2010, 'l':2011, 'm':2012, 'n':2013, 'o':2014, 'p':2015, 'q':2016}
-  return years[afile[0]]  #assume, of course, standard samba file structure...
+def getmonthnumberdict():
+  return {'a':1, 'b':2, 'c':3, 'd':4, 'e':5, 'f':6, 'g':7, 'h':8, 'i':9, 'j':10, 'k':11, 'l':12}
 
 
-def formatSrbYearMonthDirStructure(file):
-  basename = os.path.basename(file)
-  return str(getyeardir(basename)) + '/' + getmonthdir(basename) + str((getyeardir(basename) - 2000)) + '/events'
+def getyeardict():
+  return {'i':2008, 'j':2009, 'k':2010, 'l':2011, 'm':2012, 'n':2013, 'o':2014, 'p':2015, 'q':2016}
+
+def getmonthdir(sambaDirName):
+  return getmonthnamedict()[sambaDirName[1]]  #assume, of course, standard samba file structure...
+
+def getyeardir(sambaDirName):
+  return getyeardict()[sambaDirName[0]]  #assume, of course, standard samba file structure...
+
+
+def formatSrbYearMonthDirStructure(sambaDirName):
+  basename = os.path.basename(sambaDirName)
+  return str(getyeardir(basename)) + '/' + getmonthdir(basename) + '{0:02d}'.format((getyeardir(basename) - 2000)) + '/events'
+
+def getSmallFilesToTransfer(smallfile):
+
+  if os.path.isfile(smallfile):
+    file = open(smallfile)
+    thedate = datetime.date.today()
+    
+    smalllist = list()
+    months = getmonthnumberdict()
+    years = getyeardict()
+    
+    for line in file:
+      smfiledate = os.path.basename(line).strip()[:2]
+      smfileyear = getyeardict()[smfiledate[0]]
+      smfilemonth = getmonthnumberdict()[smfiledate[1]]
+      
+      if smfileyear < thedate.year or smfilemonth < thedate.month:
+        smalllist.append(line.strip())
+  
+  return smalllist
+  
+
+
 
 def runSubProcess(command):
   args = shlex.split(command)
   print command
   logfile.flush()
-  return subprocess.Popen(args)
+  return subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+def fileExistsOnSrb(spath, afile):
+  sbproc = runSubProcess(spath + '/Sls ' + afile)
+  return sbproc.stdout.readline() != ''
   
-def uploadToHpss(theparams, tarfile):
+def printLinesInFile(afile):
+    for line in afile:
+      print line
+      
+def uploadToHpss(theparams, tarfile, overwrite = False): #option to overwrite a file on SRB
 
   spath = theparams['srbpath'].rstrip('/')
-
+  global logfile
+  
+  theReturn = True
+  
   sinit = runSubProcess(spath +'/Sinit')
   sinit.wait()
+  printLinesInFile(sinit.stderr)
   
   hpssdir = theparams['srbdestination'] + '/' + formatSrbYearMonthDirStructure(tarfile.rstrip('.tar'))
     
   smkdir = runSubProcess(spath + '/Smkdir -p ' + hpssdir)
   smkdir.wait()
+  printLinesInFile(smkdir.stderr)
+    
   scd = runSubProcess(spath +'/Scd ' + hpssdir)
   scd.wait()
+  printLinesInFile(scd.stderr)
     
+  putprocess = ''
   setToCurrentTransfer(theparams['currentTransferFile'], os.path.basename(tarfile).rstrip('.tar'))
-  sput = runSubProcess(spath + '/Sput -fMvK -r ' + tarfile)
-  sput.wait()
-    
-  addItemToLastFiles(theparams['lastcopyfile'], tarfile.rstrip('.tar'))
+ 
+  if overwrite==True:
+    putprocess = spath + '/Sput -fMvK -r ' + tarfile
+  else: 
+    if fileExistsOnSrb(spath, hpssdir + '/' + os.path.basename(tarfile))==False:
+      putprocess = spath + '/Sput -fMvK -r ' + tarfile
+          
+    elif overwrite == 'Update':
+        targetfile = str.replace(os.path.basename(tarfile), '.tar','_2.tar')
+        putprocess = spath + '/Sput -fMvK -r ' + tarfile + ' ' + targetfile
+        print os.path.basename(tarfile), 'already exists on HPSS. Update option uploads file to', targetfile
+    else:
+      print os.path.basename(tarfile), 'already exists on HPSS. No update'
+      putprocess = 'no transfer'
+      theReturn = False
+      
+  if putprocess != '' and putprocess != 'no transfer':
+    sput = runSubProcess(putprocess)
+    sput.wait() 
+    printLinesInFile(sput.stderr)
+    addItemToLastFiles(theparams['lastcopyfile'], tarfile.rstrip('.tar'))
+  
+  elif putprocess == '':
+    print 'No Put Process. You must have given a value to overwrite other than True, False or "Update" '
+    print 'Quitting!!!'
+    logfile.flush()
+    sys.exit(-1)
+  
+  
   setToCurrentTransfer(theparams['currentTransferFile'], '')
-  #need to catch errors here
   #the setToLastCopyFile should make sure to output a last-file for each 'mac' 
   
   sexit  = runSubProcess(spath + '/Sexit')
+  printLinesInFile(sexit.stderr)
+  logfile.flush()
   
-   
-  #end by writing out last files to the output
-  
+  return theReturn
 
 #______________________________
 
@@ -341,11 +439,11 @@ def runCopy(params):
     tarlist = list()
     for item in transferlist:
       tarfile = tarTheDir(item, tempDir)
-      tarlist.append(tarfile)
       print ''
       print 'Uploading to Hpss', tarfile
       logfile.flush()
-      uploadToHpss(params, tarfile)
+      if uploadToHpss(params, tarfile):
+        tarlist.append(tarfile)
  
     # maybe I don't want to use a random directory after all
     # if i used a local, specific directory, i could recover from 
@@ -353,20 +451,37 @@ def runCopy(params):
     #
     
   
+    #now, check the small file list.  First need to check to see
+    #if there are any files not part of the current month in
+    #in the small file list, and if there are, pack them into a 
+    #tar file IF they are going to be larger than the MinimumFileSize (200 MB)
+    #If they are not larger than 200MB, then we leave them there until the next month
+    
+    print 'Searching for small files to transfer'
+    transferlist = getSmallFilesToTransfer(params['smallrunlist'])
+    print 'Current list of small files'
+    print transferlist
+    logfile.flush()
+    #now check that all of these files combined are less than 200 MB
+    if len(transferlist) > 0:
+      if totalFolderListSize(transferlist)/(1024.0*1024.0) > params['minfilesize']:
+        tarfile = tarTheList(transferlist, tempDir)
+        print ''
+        print 'Uploading to Hpss', tarfile
+        logfile.flush()
+        if uploadToHpss(params, tarfile):
+          tarlist.append(tarfile)  #force the smallfile list to be rewritten... in case its gotten bigger somehow?
+    else:
+      print 'No Small Files'
+      logfile.flush()
+      
   except:
+    print 'Deleting temporary Directory', tempDir
     shutil.rmtree(tempDir)
-    print sys.exc_info()[0], sys.exe_info()[1]
+    print sys.exc_info()[0], sys.exc_info()[1]
     raise sys.exc_info()[0]
-  
-  #now, check the small file list.  First need to check to see
-  #if there are any files not part of the current month in
-  #in the small file list, and if there are, pack them into a 
-  #tar file IF they are going to be larger than the MinimumFileSize (200 MB)
-  #If they are not larger than 200MB, then we leave them there until the next month
-
-  #transferlist = getSmallFilesToTransfer(params['smallrunlist'])
-  #smalltarlist = list()
-  
+     
+  print 'Deleting temporary Directory', tempDir
   shutil.rmtree(tempDir)
   return len(tarlist)
 
