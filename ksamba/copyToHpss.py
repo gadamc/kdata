@@ -283,7 +283,6 @@ def getmonthnamedict():
 def getmonthnumberdict():
   return {'a':1, 'b':2, 'c':3, 'd':4, 'e':5, 'f':6, 'g':7, 'h':8, 'i':9, 'j':10, 'k':11, 'l':12}
 
-
 def getyeardict():
   return {'i':2008, 'j':2009, 'k':2010, 'l':2011, 'm':2012, 'n':2013, 'o':2014, 'p':2015, 'q':2016}
 
@@ -449,14 +448,7 @@ def runCopy(params):
     # if i used a local, specific directory, i could recover from 
     # errors more easily...?
     #
-    
-  
-    #now, check the small file list.  First need to check to see
-    #if there are any files not part of the current month in
-    #in the small file list, and if there are, pack them into a 
-    #tar file IF they are going to be larger than the MinimumFileSize (200 MB)
-    #If they are not larger than 200MB, then we leave them there until the next month
-    
+      
     print 'Searching for small files to transfer'
     transferlist = getSmallFilesToTransfer(params['smallrunlist'])
     print 'Current list of small files'

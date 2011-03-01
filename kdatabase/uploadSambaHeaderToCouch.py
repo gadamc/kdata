@@ -29,7 +29,8 @@ def readheader(file):
   header['author'] = 'Samba'
   header['content'] = 'Single Samba File Run Header'
   header['type'] = 'samba run header'
-  header['date_filed'] = str(datetime.datetime.utcnow())
+  dd = datetime.datetime.utcnow()
+  header['date_filed'] = [dd.year,dd.month,dd.day,dd.hour,dd.minute,dd.second,dd.microsecond,0]
   header['_id'] = os.path.basename(file.name) + '_samba_runheader'
   header['run_name'] = os.path.basename(file.name)
   
@@ -71,10 +72,15 @@ def readboloheader(file):
 
   header = {}
   header['author'] = 'Samba'
-  header['content'] = 'Single Samba File Run Header'
-  header['date_filed'] = str(datetime.datetime.utcnow())
+  header['content'] = 'Single Samba File Bolo Config Header'
+  dd = datetime.datetime.utcnow()
+  header['date_filed'] = [dd.year,dd.month,dd.day,dd.hour,dd.minute,dd.second,dd.microsecond,0]
   header['type'] = 'samba bolo config header'
-  header['run_name'] = os.path.basename(file.name)
+  runname = os.path.basename(file.name)
+  runsplit = runname.split('_')
+  header['run_name'] = formatvalue(runsplit[0])
+  header['file_number'] = runsplit[1]
+  header['full_run_name_number'] = runname
   
   firstline = file.readline()
   if firstline.strip().startswith('* Detecteur'):
@@ -165,18 +171,21 @@ def uploadFile(filename, uri, dbname, override=None):
   
   try:
     if isinstance(sambaheader,dict):
+    
+      docexists = False
+      if db.doc_exist(sambaheader.get('_id')):
+        sambaheader['_rev'] = db.get_rev(sambaheader.get('_id'))
+        docexists = True
+      
       if override==True:
         docs.append(sambaheader)
-        if db.doc_exist(sambaheader['_id']):
-          db.delete_doc(sambaheader['_id'])
-      
-      elif db.doc_exist(sambaheader['_id']) == False:
+      elif docexists == False:
         docs.append(sambaheader)
       
       docs = upload(db, docs)
   
   except KeyError:
-      print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the bolometer configuration header'
+      print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the samba run header'
       sys.exit(1)
       
   #now, loop through and read the bolometer header files
@@ -185,13 +194,16 @@ def uploadFile(filename, uri, dbname, override=None):
     if isinstance(boloheader,dict):
       #print boloheader._doc
       try:
+        docexists = False
+        if db.doc_exist(boloheader.get('_id')):
+          boloheader['_rev'] = db.get_rev(boloheader.get('_id'))
+          docexists = True
+      
         if override==True:
           docs.append(boloheader)
-          if db.doc_exist(boloheader['_id']):
-            db.delete_doc(boloheader['_id'])
-            
-        elif db.doc_exist(boloheader['_id'])==False:
+        elif docexists == False:
           docs.append(boloheader)
+      
       except KeyError:
         print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the bolometer configuration header'
         sys.exit(1)

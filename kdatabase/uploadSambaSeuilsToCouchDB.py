@@ -3,7 +3,7 @@
 from couchdbkit import Server, Database
 from couchdbkit.loaders import FileSystemDocsLoader
 from csv import DictReader
-import time, sys, subprocess, math, os
+import time, sys, subprocess, math, os, datetime
 
 #_____________
 # gunzip
@@ -61,6 +61,7 @@ def uploadFile(fname, uri, dbname, override=None):
   #loader.sync(db, verbose=True)
   
   #loop on file for upload
+  
   reader = DictReader(open(fname),delimiter=' ', skipinitialspace = True)
   
   #used for bulk uploading
@@ -74,11 +75,22 @@ def uploadFile(fname, uri, dbname, override=None):
     #print doc
     newdoc = parseDoc(doc)
   
-    newdoc.update({"_id":os.path.basename(fname) + "_" + repr(n)})
-             
+    newdoc.update({'_id':os.path.basename(fname) + '_' + repr(n)})
+     
+    newdoc['type'] = 'samba_seuils'
+    newdoc['author'] = 'Samba'
+    newdoc['content'] = 'Samba Threshold Data'
+    dd = datetime.datetime.utcnow()
+    newdoc['date_filed'] = [dd.year,dd.month,dd.day,dd.hour,dd.minute,dd.second,dd.microsecond, 0]
+    
+    docexists = False
+    if db.doc_exist(newdoc.get('_id')):
+      newdoc['_rev'] = db.get_rev(newdoc.get('_id'))
+      docexists = True
+      
     if override==True:
       docs.append(newdoc)
-    elif db.doc_exist(newdoc.get("_id"))==False:
+    elif docexists==False:
       docs.append(newdoc)
     
     if len(docs)%checkpoint==0:

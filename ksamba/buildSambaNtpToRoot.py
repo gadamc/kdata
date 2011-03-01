@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from csv import DictReader
-import time, sys, subprocess, math, os, array, re
+import time, sys, subprocess, math, os, array, re, numpy as np
 
 from ROOT import TFile, TTree
 
@@ -29,15 +29,17 @@ def formatname(aname):
   return aname.replace(':','').replace('(','').replace(')','').replace('-','_')
   
 #_______________
-# upload File
 def buildRootFile(fname, outputdir):
+  
   
   outputdir.strip('/')
   if outputdir == '.':
-    outFname = fname + '.root'
+    outFname = os.path.basename(fname) + '.root'
   else:
-    outFname = outputdir + '/' + fname +'.root'
+    outFname = outputdir + '/' + os.path.basename(fname) +'.root'
     
+  print 'building root file from', fname, '>> output:', outFname
+  
   #loop on file for upload
   file = open(fname)
   reader = DictReader(open(fname), delimiter=' ', skipinitialspace = True)
@@ -58,8 +60,12 @@ def buildRootFile(fname, outputdir):
     if isinstance(v,str)==False:
       if isinstance(v, int): #int
           varNames.append(name)
-          arrayList.append(array.array('i',[0]))  #we have to use arrays because of the way that Python deals with memory and the way that TTrees deal with memory
-          descriptor.append(str(name) + '/I')
+          if name == 'Stamp' or name == 'Position' or name == 'GigaStamp' or name == 'Evt' or re.match('List',name) or re.match('Date',name):
+            arrayList.append(np.arange(1, dtype=np.uint32))
+            descriptor.append(str(name) + '/i')
+          else:
+            arrayList.append(array.array('i',[0]))  #we have to use arrays because of the way that Python deals with memory and the way that TTrees deal with memory
+            descriptor.append(str(name) + '/I')
       else: #must be a float
           try:
             if math.isnan(float(v))==False:
@@ -98,8 +104,14 @@ def buildRootFile(fname, outputdir):
         i = varNames.index(name)  #its not guaranteed the the order of key/value pair is
                                   #maintained. So, we have to use the list.index function
                                   #to find the proper index for this particular key
-        arrayList[i][0] = v       #set the value to the proper array  (arrayList[i] returns an array and arrayList[i][0] is the zero'th element of the array)
-        #print k, v
+        try:
+          arrayList[i][0] = v       #set the value to the proper array  (arrayList[i] returns an array and arrayList[i][0] is the zero'th element of the array)
+        except OverflowError:
+          print i
+          print k, v
+          raise OverflowError
+
+          #print k, v
         #print i, arrayList[i][0]
       except ValueError:
         pass  #this will throw if varNames doesn't have an index named 'name' In the code above,
@@ -126,24 +138,24 @@ def buildDirectory(dirname, outputpath):
 
   regex = '[a-z][a-z][0-9][0-9][a-z][0-9][0-9][0-9]_ntp'
   
-  for root, dirs, files in os.walk(dirname):
-    for i in files:
-      if re.match(regex, i) and re.search('.root', i) == None:
-        buildRootFile(root + '/' + dirs + '/' + i, outputpath)
+  for dirpath, dirs, files in os.walk(dirname):
+    for f in files:
+      if re.match(regex, f) and re.search('.root', f) == None:
+        buildRootFile(os.path.join(dirpath, f), outputpath)
   
+def main(*argv):
+  name = argv[0]
+  outputdir = argv[1]
+ 
+  if os.path.isfile(name):
+    buildRootFile(name, outputdir)
+    
+  elif os.path.isdir(name):
+    buildDirectory(name, outputdir)
   
 #______________
 # start script here
 if __name__=='__main__':
-  name = sys.argv[1]
-  outputdir = sys.argv[2]
- 
-  if os.path.isfile(name):
-    print 'build root file'
-    buildRootFile(name, outputdir)
-    
-  elif os.path.isdir(name):
-    buildDirectory(dirname, outputdir)
-  
+  main(*sys.argv[1:])
 
 
