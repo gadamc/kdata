@@ -2,27 +2,39 @@
 
 import os, string, sys
 
-def getLastNtpDate(afile):
-  if os.path.isfile(afile):
-    file = open(afile)
-    return file.readline().strip()
-  else:
-    return 'aa01'
+def getEmptyFileDict():
+  letters = string.lowercase
+  files = dict()
+  for i in range(len(letters)):
+    files[letters[i]] = {'name':'', 'size':0}
+  return files
+  
 
-def writeLastNtpDate(afile, lastNtp, force = False):
+def getDictOfLastFiles(afile):
+  
+  files = getEmptyFileDict()
+  
   if os.path.isfile(afile):
-    file = open(afile,'rU')
-    current = file.readline()
+    file = open(afile, 'rU')
+    for line in file:
+      splitline = line.split(' ')
+      if splitline[0].strip() != '':  #skip blank lines!
+        files[line.strip()[4:5]]['name'] = splitline[0].strip()
+        files[line.strip()[4:5]]['size'] = int(splitline[1].strip())
+      
     file.close()
+  return files
+
+def writeToLastNtpFile(afile, anNtp):
+  lastfiles = getDictOfLastFiles(afile)
   
-  else:
-    current = 'aa01a000'
+  lastfiles[os.path.basename(anNtp)[4:5]]['name'] = os.path.basename(anNtp)
+  lastfiles[os.path.basename(anNtp)[4:5]]['size'] = int(os.path.getsize(anNtp))
   
-  if len(lastNtp) < 4:
-    print lastNtp, 'doesn\'t have enough characters. You\'re doing it wrong.'
+  file = open(afile,'w')
   
-  if force or current[:4] < lastNtp[:4]:
-    file = open(afile,'w')
-    file.write( lastNtp[0:2] + '{0:02d}'.format(int(lastNtp[2:4])-1) + '\n')
-    file.close()
-    
+  for k, v in lastfiles.items():
+    if v['name'] != '':
+      file.write( lastfiles[k]['name']+ ' ' + str(lastfiles[k]['size']) + '\n')
+      
+  file.close()  
