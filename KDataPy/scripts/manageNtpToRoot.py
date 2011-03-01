@@ -6,8 +6,9 @@ import makeNtpRootAmplCorrelationPlots as plots
 import datetime
 import re
 
-def main(dataDir = 'rawdata', outputDir = 'rawdata/ntp2root', lastfile = 'lastNtpToRoot.txt',
-        logFileName = 'ntpToRoot.log', startDir = ''):
+def main(dataDir = '/Users/adam/Scripts/makeNtpRoot/rawdata', outputDir = '/Users/adam/Scripts/makeNtpRoot/rawdata/ntp2root', 
+        lastfile = '/Users/adam/Scripts/makeNtpRoot/lastNtpToRoot.txt',
+        logFileName = '/Users/adam/Scripts/makeNtpRoot/ntpToRoot.log', startDir = ''):
         
   logfile = open(logFileName, 'a')
   sys.stdout = logfile
