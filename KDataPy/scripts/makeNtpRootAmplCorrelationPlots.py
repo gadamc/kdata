@@ -2,17 +2,19 @@
 
 import time, sys, subprocess, math, os, glob, array, re
 
-from ROOT import TFile, TTree, TGraph, gPad
+from ROOT import TFile, TTree, TGraph, gPad, gROOT #,SetOwnership
 
-if __name__ == '__main__':
-
+def main(*args):
+  
+  gROOT.SetBatch(True)
+    
   ''' handle the arguments'''
-  filename = sys.argv[1]
-  if len(sys.argv) >2:
-    if os.path.isfile(sys.argv[2]):
+  filename = args[0]
+  if len(args) > 1:
+    if os.path.isfile(args[1]):
       print 'second argument must be an output directory.'
       sys.exit(-1)
-    outputDir = sys.argv[2].rstrip('/')
+    outputDir = args[1].rstrip('/')
   else:
     outputDir = '.'
     
@@ -21,14 +23,16 @@ if __name__ == '__main__':
     sys.exit(-1)
 
 
-  '''process the file'''
+  '''open the file'''
   f = TFile.Open(filename)
   t = f.Get('ntp_tree')
-  
+  #SetOwnership(f, False)
+  #SetOwnership(t, False)
   
   '''determine the Ampl branches'''
   branches = t.GetListOfBranches()
   detector= dict()
+  #SetOwnership(branches, False)
   
   for i in range(branches.GetEntries()):
     branch = branches.At(i).GetName()
@@ -46,9 +50,11 @@ if __name__ == '__main__':
         detector[det].append(branch)
     
   '''create the output file, fill graphs with TTree.Draw and save them'''
-  fout = TFile.Open(outputDir + '/' + filename.strip('.root') + '_graphs.root','recreate')
-
-
+  foutname = outputDir + '/' + os.path.basename(filename).strip('.root') + '_graphs.root'
+  fout = TFile.Open(foutname,'recreate')
+  
+  #SetOwnership(fout, False)
+  
   for det, branch in detector.items():
     for i in range(len(branch)):
       for j in range(i+1, len(branch)):
@@ -110,17 +116,20 @@ if __name__ == '__main__':
         
         graphname = det + '_' + yaxisName + '_' + xaxisName
         graphtitle = filename.split('_')[0] + ' ' + det + ' ' + yaxisName + ' ' + xaxisName
-        
+        fout.cd()
         gr.GetXaxis().SetTitle(xaxisName)
         gr.GetYaxis().SetTitle(yaxisName)
         gr.SetName(graphname)
         gr.SetTitle(graphtitle)
         gr.Write()
-        
-  
+
+  print 'Creating NTP Amplitude Correlations Graphs ->', foutname
   fout.Close()
   
   
+  
+if __name__ == '__main__':
+  main(*sys.argv[1:])
   
   
   

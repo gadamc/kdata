@@ -31,12 +31,11 @@ def formatname(aname):
 #_______________
 def buildRootFile(fname, outputdir):
   
-  
-  outputdir.strip('/')
-  if outputdir == '.':
+
+  if outputdir.rstrip('/') == '.':
     outFname = os.path.basename(fname) + '.root'
   else:
-    outFname = outputdir + '/' + os.path.basename(fname) +'.root'
+    outFname = outputdir.rstrip('/') + '/' + os.path.basename(fname) +'.root'
     
   print 'building root file from', fname, '>> output:', outFname
   
@@ -125,7 +124,7 @@ def buildRootFile(fname, outputdir):
   tree.Write()
   file.Close()
   
-  
+  return outFname
   
 def buildDirectory(dirname, outputpath):
     #will now search in the directory dirname for Samba event folders
