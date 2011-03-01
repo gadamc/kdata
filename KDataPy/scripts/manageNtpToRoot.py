@@ -9,9 +9,9 @@ import re
 def main(dataDir = 'rawdata', outputDir = 'rawdata/ntp2root', lastfile = 'lastNtpToRoot.txt',
         logFileName = 'ntpToRoot.log', startDir = ''):
         
-  #logfile = open(logFileName, 'a')
-  #sys.stdout = logfile
-  #sys.stderr = logfile
+  logfile = open(logFileName, 'a')
+  sys.stdout = logfile
+  sys.stderr = logfile
   print ''
   print 'Starting NtpToRoot', datetime.datetime.now()
   print 'Initial Arguments:', dataDir, outputDir, lastfile, logFileName, startDir
@@ -46,7 +46,7 @@ def main(dataDir = 'rawdata', outputDir = 'rawdata/ntp2root', lastfile = 'lastNt
   print 'List of NTP files to Rootify' 
   print filelist
   
-  #logfile.flush()
+  logfile.flush()
   
   
   for i in filelist:
@@ -63,7 +63,7 @@ def main(dataDir = 'rawdata', outputDir = 'rawdata/ntp2root', lastfile = 'lastNt
 
     last.writeToLastNtpFile(lastfile, i)
 
-    #logfile.flush()
+    logfile.flush()
     
   
   print 'done', datetime.datetime.now()
