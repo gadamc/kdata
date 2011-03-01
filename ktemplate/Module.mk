@@ -37,8 +37,6 @@ KTMP_DIR    := $(MODDIR)
 KTMP_DIRS   := $(MODDIR)
 KTMP_DIRI   := $(MODDIR)
 
-KTMP_PYMODNAME   := ktemplate
-KTMP_PYDIR  := $(KPYTHONDIR)/$(KTMP_PYMODNAME)
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KTMP_LH     := $(KTMP_DIRI)/$(MODNAME)_LinkDef.h
@@ -47,7 +45,6 @@ KTMP_DO     := $(KTMP_DC:.C=.o)
 KTMP_DH     := $(KTMP_DC:.C=.h)
 
 KTMP_H      := $(filter-out $(KTMP_LH) $(KTMP_DH),$(wildcard $(KTMP_DIRI)/*.h))
-KTMP_PY     := $(wildcard $(KTMP_DIRI)/*.py)
 KTMP_ECXX   := $(wildcard $(KTMP_DIRS)/K*.cxx)
 KTMP_CXX    := $(filter-out $(KTMP_ECXX),$(wildcard $(KTMP_DIRS)/*.cxx))
 KTMP_O      := $(KTMP_CXX:.cxx=.o)
@@ -71,11 +68,8 @@ ifneq ($(KTMP_EO),)
 ALLLIBS      += $(KTMP_LIB)
 endif
 ALLEXECS     += $(KTMP_EXE)
-ALLPYTHON    += $(patsubst $(KTMP_DIRI)/%.py,$(KTMP_PYDIR)/%.py,$(KTMP_PY))
 
-ifneq ($(KTMP_PY),)
-ALLPYMODULES += $(KTMP_PYMODNAME)
-endif
+
 
 # include all dependency files
 INCLUDEFILES += $(KTMP_DEP)
@@ -89,8 +83,6 @@ INCLUDEFILES += $(KTMP_DEP)
 include/%.h:    $(KTMP_DIRI)/%.h
 		$(COPY_HEADER) $< $@
 
-$(KTMP_PYDIR)/%.py:   $(KTMP_DIRI)/%.py $(KTMP_PYDIR)/__init__.py
-	$(COPY_HEADER) $< $@
     
 # rule for compiling our source files
 $(KTMP_DIRS)/%.o:    $(KTMP_DIRS)/%.cxx
@@ -117,11 +109,6 @@ $(KTMP_LIB):        $(KTMP_EO) $(KTMP_DO) $(KTMP_LIBDEP)
 	   "$(ROOTLIBS) $(KTMP_FLAGS)"  -I/opt/include -Iinclude 
 
 all-ktemplate:       $(KTMP_LIB) 
-
-$(KTMP_PYDIR)/__init__.py:  $(KTMP_PY)
-	@$(INSTALLDIR) $(KTMP_PYDIR)
-	@echo "Making KDataPy $(KTMP_PYMODNAME)"
-	@$(KDATA_ROOT)/config/createInit.py $(patsubst $(KTMP_DIRI)/%.py,%,$(KTMP_PY)) $(KTMP_PYDIR)
 
 
 clean-ktemplate:

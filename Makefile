@@ -85,7 +85,6 @@ include $(ROOTSYS)/config/Makefile.$(ARCH)
 
 
 LPATH          := $(KDATA_ROOT)/lib
-KPYTHONDIR     := $(LPATH)/KDataPy
 KDATALIBDIRS    := -L$(LPATH)
 ERADIR       := ./era
 
@@ -202,13 +201,11 @@ endif
 libs:           kdatalibs
 	@echo Done making libs
 
-kdatapython:     $(ALLPYTHON)
-
 
 kdatalibs:       $(ALLLIBS)
 
 # the executables depend on the libraries being built first
-kdataexecs:      kdatapython kdatalibs $(ALLEXECS)
+kdataexecs:      kdatalibs $(ALLEXECS)
 
 # define generic rules last to allow modules to override them
 # (the first matching rule is the one that is used)
@@ -241,9 +238,8 @@ $(RMKDEP): $(ROOTSYS)/bin/rmkdepend
 prepare::
 	@$(INSTALLDIR) include
 	@$(INSTALLDIR) lib
-	@$(INSTALLDIR) lib/KDataPy
+	@cp -a KDataPy lib/.
 	@config/checkenv
-	@config/createInit.py $(ALLPYMODULES) lib/KDataPy
 
 clean::
 	@rm -f *~ core
@@ -268,7 +264,6 @@ showbuild:
 	@echo ""
 	@echo "MODULES            = $(MODULES)"
 	@echo "ALLLIBS            = $(ALLLIBS)"
-	@echo "ALLPYTHON          = $(ALLPYTHON)"
 	@echo "ALLEXECS           = $(ALLEXECS)"
 	@echo ""
 	@echo "ARCH               = $(ARCH)"

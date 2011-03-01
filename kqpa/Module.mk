@@ -35,8 +35,6 @@ KQPA_FLAGS  := $(CXXFLAGS)
 KQPA_LDFLAGS := $(LDFLAGS)
 KQPA_OPT     := $(OPT)
 
-KQPA_PYMODNAME   := kqpa
-KQPA_PYDIR  := $(KPYTHONDIR)/$(KQPA_PYMODNAME)
 
 #KQPA_OPT  += -g
 KQPA_OPT  := $(filter-out -O2,$(KQPA_OPT))
@@ -69,7 +67,6 @@ KQPA_DO     := $(KQPA_DC:.C=.o)
 KQPA_DH     := $(KQPA_DC:.C=.h)
 
 KQPA_H      := $(filter-out $(KQPA_LH) $(KQPA_DH),$(wildcard $(KQPA_DIRI)/*.h))
-KQPA_PY     := $(wildcard $(KQPA_DIRI)/*.py)
 KQPA_ECXX   := $(wildcard $(KQPA_DIRS)/K*.cxx)
 KQPA_CXX    := $(filter-out $(KQPA_ECXX),$(wildcard $(KQPA_DIRS)/*.cxx))
 KQPA_O      := $(KQPA_CXX:.cxx=.o)
@@ -93,11 +90,6 @@ ifneq ($(KQPA_EO),)
 ALLLIBS      += $(KQPA_LIB)
 endif
 ALLEXECS     += $(KQPA_EXE)
-ALLPYTHON    += $(patsubst $(KQPA_DIRI)/%.py,$(KQPA_PYDIR)/%.py,$(KQPA_PY))
-
-ifneq ($(KQPA_PY),)
-ALLPYMODULES += $(KQPA_PYMODNAME)
-endif
 
 # include all dependency files
 INCLUDEFILES += $(KQPA_DEP)
@@ -110,9 +102,6 @@ INCLUDEFILES += $(KQPA_DEP)
 # we depend on all of our header files being up to date in the include directory
 include/%.h:    $(KQPA_DIRI)/%.h
 		$(COPY_HEADER) $< $@
-    
-$(KQPA_PYDIR)/%.py:    $(KQPA_DIRI)/%.py $(KQPA_PYDIR)/__init__.py
-	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
 $(KQPA_DIRS)/%.o:    $(KQPA_DIRS)/%.cxx
@@ -139,11 +128,6 @@ $(KQPA_LIB):        $(KQPA_EO) $(KQPA_DO) $(KQPA_LIBDEP)
 	   "$(ROOTLIBS)  $(KQPA_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kqpa:       $(KQPA_LIB) 
-
-$(KQPA_PYDIR)/__init__.py:  $(KQPA_PY)
-	@$(INSTALLDIR) $(KQPA_PYDIR)
-	@echo "Making KDataPy module : $(KQPA_PYMODNAME)"
-	@$(KDATA_ROOT)/config/createInit.py $(patsubst $(KQPA_DIRI)/%.py,%,$(KQPA_PY)) $(KQPA_PYDIR)
   
 clean-kqpa:
 		@rm -f $(KQPA_DIRS)/*~ $(KQPA_DIRS)/*.o

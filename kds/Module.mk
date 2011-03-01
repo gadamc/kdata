@@ -48,8 +48,6 @@ KDS_DIR    := $(MODDIR)
 KDS_DIRS   := $(MODDIR)
 KDS_DIRI   := $(MODDIR)
 
-KDS_PYMODNAME   := kds
-KDS_PYDIR  := $(KPYTHONDIR)/$(KDS_PYMODNAME)
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KDS_LH     := $(KDS_DIRI)/$(MODNAME)_LinkDef.h
@@ -58,7 +56,6 @@ KDS_DO     := $(KDS_DC:.C=.o)
 KDS_DH     := $(KDS_DC:.C=.h)
 
 KDS_H      := $(filter-out $(KDS_LH) $(KDS_DH),$(wildcard $(KDS_DIRI)/*.h))
-KDS_PY     := $(wildcard $(KDS_DIRI)/*.py)
 KDS_ECXX   := $(wildcard $(KDS_DIRS)/K*.cxx)
 KDS_CXX    := $(filter-out $(KDS_ECXX),$(wildcard $(KDS_DIRS)/*.cxx))
 
@@ -85,11 +82,7 @@ ifneq ($(KDS_EO),)
 ALLLIBS      += $(KDS_LIB)
 endif
 ALLEXECS     += $(KDS_EXE)
-ALLPYTHON    += $(patsubst $(KDS_DIRI)/%.py,$(KDS_PYDIR)/%.py,$(KDS_PY))
 
-ifneq ($(KDS_PY),)
-ALLPYMODULES += $(KDS_PYMODNAME)
-endif
 
 # include all dependency files
 INCLUDEFILES += $(KDS_DEP)
@@ -102,9 +95,6 @@ INCLUDEFILES += $(KDS_DEP)
 # we depend on all of our header files being up to date in the include directory
 include/%.h:    $(KDS_DIRI)/%.h
 		$(COPY_HEADER) $< $@
-
-$(KDS_PYDIR)/%.py:   $(KDS_DIRI)/%.py $(KDS_PYDIR)/__init__.py
-	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
 $(KDS_DIRS)/%.o:    $(KDS_DIRS)/%.cxx 
@@ -132,11 +122,6 @@ $(KDS_LIB):        $(KDS_EO) $(KDS_DO) $(KDS_LIBDEP)
 
 all-kds:       $(KDS_LIB)
 
-$(KDS_PYDIR)/__init__.py:  $(KDS_PY)
-	@$(INSTALLDIR) $(KDS_PYDIR)
-	@echo "Making KDataPy $(KDS_PYMODNAME)"
-	@$(KDATA_ROOT)/config/createInit.py $(patsubst $(KDS_DIRI)/%.py,%,$(KDS_PY)) $(KDS_PYDIR)
-  
 clean-kds:
 		@rm -f $(KDS_DIRS)/*~ $(KDS_DIRS)/*.o
 		@rm -f $(KDS_DC) $(KDS_DH) $(KDS_DEP) $(KDS_LIB)

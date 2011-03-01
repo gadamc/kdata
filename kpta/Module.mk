@@ -31,8 +31,6 @@ KPTA_DIR    := $(MODDIR)
 KPTA_DIRS   := $(MODDIR)
 KPTA_DIRI   := $(MODDIR)
 
-KPTA_PYMODNAME   := kpta
-KPTA_PYDIR  := $(KPYTHONDIR)/$(KPTA_PYMODNAME)
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KPTA_LH     := $(KPTA_DIRI)/$(MODNAME)_LinkDef.h
@@ -41,7 +39,6 @@ KPTA_DO     := $(KPTA_DC:.C=.o)
 KPTA_DH     := $(KPTA_DC:.C=.h)
 
 KPTA_H      := $(filter-out $(KPTA_LH) $(KPTA_DH),$(wildcard $(KPTA_DIRI)/*.h))
-KPTA_PY     := $(wildcard $(KPTA_DIRI)/*.py)
 KPTA_ECXX   := $(wildcard $(KPTA_DIRS)/K*.cxx)
 KPTA_CXX    := $(filter-out $(KPTA_ECXX),$(wildcard $(KPTA_DIRS)/*.cxx))
 KPTA_O      := $(KPTA_CXX:.cxx=.o)
@@ -65,11 +62,8 @@ ifneq ($(KPTA_EO),)
 ALLLIBS      += $(KPTA_LIB)
 endif
 ALLEXECS     += $(KPTA_EXE)
-ALLPYTHON    += $(patsubst $(KPTA_DIRI)/%.py,$(KPTA_PYDIR)/%.py,$(KPTA_PY))
 
-ifneq ($(KPTA_PY),)
-ALLPYMODULES += $(KPTA_PYMODNAME)
-endif
+
 
 # include all dependency files
 INCLUDEFILES += $(KPTA_DEP)
@@ -83,8 +77,6 @@ INCLUDEFILES += $(KPTA_DEP)
 include/%.h:    $(KPTA_DIRI)/%.h
 		$(COPY_HEADER) $< $@
 
-$(KPTA_PYDIR)/%.py:   $(KPTA_DIRI)/%.py $(KPTA_PYDIR)/__init__.py
-	$(COPY_HEADER) $< $@
     
 # rule for compiling our source files
 $(KPTA_DIRS)/%.o:    $(KPTA_DIRS)/%.cxx
@@ -112,11 +104,6 @@ $(KPTA_LIB):        $(KPTA_EO) $(KPTA_DO) $(KPTA_LIBDEP)
 
 all-kpta:       $(KPTA_LIB)
 
-$(KPTA_PYDIR)/__init__.py:  $(KPTA_PY)
-	@$(INSTALLDIR) $(KPTA_PYDIR)
-	@echo "Making KDataPy $(KPTA_PYMODNAME)"
-	@$(KDATA_ROOT)/config/createInit.py $(patsubst $(KPTA_DIRI)/%.py,%,$(KPTA_PY)) $(KPTA_PYDIR)
-  
 clean-kpta:
 		@rm -f $(KPTA_DIRS)/*~ $(KPTA_DIRS)/*.o
 		@rm -f $(KPTA_DC) $(KPTA_DH) $(KPTA_DEP) $(KPTA_LIB)
