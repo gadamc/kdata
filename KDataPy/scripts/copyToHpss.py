@@ -456,13 +456,16 @@ def runCopy(params):
     logfile.flush()
     #now check that all of these files combined are less than 200 MB
     if len(transferlist) > 0:
-      if totalFolderListSize(transferlist)/(1024.0*1024.0) > params['minfilesize']:
+      totalSize = totalFolderListSize(transferlist)/(1024.0*1024.0)
+      if totalSize > params['minfilesize']:
         tarfile = tarTheList(transferlist, tempDir)
         print ''
         print 'Uploading to Hpss', tarfile
         logfile.flush()
         if uploadToHpss(params, tarfile):
           tarlist.append(tarfile)  #force the smallfile list to be rewritten... in case its gotten bigger somehow?
+      else:
+        print 'Small File Size is too small:', totalSize, ' < ', params['minfilesize']
     else:
       print 'No Small Files'
       logfile.flush()
