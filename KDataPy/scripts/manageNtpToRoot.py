@@ -11,9 +11,9 @@ def main(dataDir = '/Users/adam/Scripts/makeNtpRoot/rawdata', outputDir = '/User
         lastfile = '/Users/adam/Scripts/makeNtpRoot/lastNtpToRoot.txt',
         logFileName = '/Users/adam/Scripts/makeNtpRoot/ntpToRoot.log', startDir = ''):
         
-  #logfile = open(logFileName, 'a')
-  #sys.stdout = logfile
-  #sys.stderr = logfile
+  logfile = open(logFileName, 'a')
+  sys.stdout = logfile
+  sys.stderr = logfile
   print ''
   print 'Starting NtpToRoot', datetime.datetime.now()
   print 'Initial Arguments:', dataDir, outputDir, lastfile, logFileName, startDir
@@ -48,7 +48,7 @@ def main(dataDir = '/Users/adam/Scripts/makeNtpRoot/rawdata', outputDir = '/User
   print 'List of NTP files to Rootify' 
   print filelist
   
-  #logfile.flush()
+  logfile.flush()
   
   
   for i in filelist:
@@ -60,11 +60,11 @@ def main(dataDir = '/Users/adam/Scripts/makeNtpRoot/rawdata', outputDir = '/User
     plotsoutput = plots.main(rootFile, outputDir)
     graphs = plotsoutput[0]
     plotFile = plotsoutput[1]
-    #graphs is a dictionary if key = detectorName and value = list of TGraph
+    graphs is a dictionary if key = detectorName and value = list of TGraph
     pretty.main(plotFile, outputDir, graphs)
     
     last.writeToLastNtpFile(lastfile, i)
-    #logfile.flush()
+    logfile.flush()
     
   
   print 'done', datetime.datetime.now()
