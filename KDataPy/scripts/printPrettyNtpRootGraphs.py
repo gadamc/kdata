@@ -12,6 +12,7 @@ def main(*args):
   gROOT.SetBatch(True)
   
   f = TFile.Open(args[0])
+  runname = os.path.basename(args[0]).split('_')[0]
   #f.ls()
   graphdict = args[2]
   #print graphdict
@@ -29,7 +30,7 @@ def main(*args):
         g = f.Get(graph)
             
         if padnumber > 4:
-          c.SaveAs(os.path.join(outdir, det + '_' + str(pagenumber) + '.pdf'))
+          c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '.pdf'))
           pagenumber += 1
           padnumber = 1
           c.Clear('D')
@@ -43,7 +44,7 @@ def main(*args):
         
         if re.search('sumIon_v_Ampl_chaleur',graph) != None:
           if padnumber > 4:
-            c.SaveAs(os.path.join(outdir, det + '_' + str(pagenumber) + '.pdf'))
+            c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '.pdf'))
             pagenumber += 1
             padnumber = 1
             c.Clear('D')
@@ -61,7 +62,7 @@ def main(*args):
 
     #don't forget to save the last page
     if padnumber > 1:
-      c.SaveAs(os.path.join(outdir, det + '_' + str(pagenumber) + '.pdf'))
+      c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '.pdf'))
       
   
   
