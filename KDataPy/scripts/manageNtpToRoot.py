@@ -60,7 +60,7 @@ def main(dataDir = '/Users/adam/Scripts/makeNtpRoot/rawdata', outputDir = '/User
     plotsoutput = plots.main(rootFile, outputDir)
     graphs = plotsoutput[0]
     plotFile = plotsoutput[1]
-    graphs is a dictionary if key = detectorName and value = list of TGraph
+    #graphs is a dictionary if key = detectorName and value = list of TGraph
     pretty.main(plotFile, outputDir, graphs)
     
     last.writeToLastNtpFile(lastfile, i)
