@@ -3,6 +3,7 @@
 import os, string, sys, lastNtpRootFileDate as last, buildSambaNtpToRoot as build
 import findNtpFilesForRoot as find
 import makeNtpRootAmplCorrelationPlots as plots
+import printPrettyNtpRootGraphs as pretty
 import datetime
 import re
 
@@ -10,9 +11,9 @@ def main(dataDir = '/Users/adam/Scripts/makeNtpRoot/rawdata', outputDir = '/User
         lastfile = '/Users/adam/Scripts/makeNtpRoot/lastNtpToRoot.txt',
         logFileName = '/Users/adam/Scripts/makeNtpRoot/ntpToRoot.log', startDir = ''):
         
-  logfile = open(logFileName, 'a')
-  sys.stdout = logfile
-  sys.stderr = logfile
+  #logfile = open(logFileName, 'a')
+  #sys.stdout = logfile
+  #sys.stderr = logfile
   print ''
   print 'Starting NtpToRoot', datetime.datetime.now()
   print 'Initial Arguments:', dataDir, outputDir, lastfile, logFileName, startDir
@@ -47,24 +48,23 @@ def main(dataDir = '/Users/adam/Scripts/makeNtpRoot/rawdata', outputDir = '/User
   print 'List of NTP files to Rootify' 
   print filelist
   
-  logfile.flush()
+  #logfile.flush()
   
   
   for i in filelist:
 
     if outputDir == '':
-      rootFile = build.buildRootFile(i, os.path.dirname(i))
-    else:
-      rootFile = build.buildRootFile(i, outputDir)
-
-    if outputDir == '':
-      plots.main(rootFile, os.path.dirname(i))
-    else:
-      plots.main(rootFile, outputDir)
-
+      outputDir = os.path.dirname(i)
+      
+    rootFile = build.buildRootFile(i, outputDir)
+    plotsoutput = plots.main(rootFile, outputDir)
+    graphs = plotsoutput[0]
+    plotFile = plotsoutput[1]
+    #graphs is a dictionary if key = detectorName and value = list of TGraph
+    pretty.main(plotFile, outputDir, graphs)
+    
     last.writeToLastNtpFile(lastfile, i)
-
-    logfile.flush()
+    #logfile.flush()
     
   
   print 'done', datetime.datetime.now()

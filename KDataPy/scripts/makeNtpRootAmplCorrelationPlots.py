@@ -2,7 +2,7 @@
 
 import time, sys, subprocess, math, os, glob, array, re
 
-from ROOT import TFile, TTree, TGraph, gPad, gROOT #,SetOwnership
+from ROOT import TFile, TTree, TGraph, gPad, gROOT, TMath #,SetOwnership
 
 def main(*args):
   
@@ -52,13 +52,16 @@ def main(*args):
   '''create the output file, fill graphs with TTree.Draw and save them'''
   foutname = outputDir + '/' + os.path.basename(filename).strip('.root') + '_graphs.root'
   fout = TFile.Open(foutname,'recreate')
-  
+  graphsout = dict()
   #SetOwnership(fout, False)
   
   for det, branch in detector.items():
     for i in range(len(branch)):
       for j in range(i+1, len(branch)):
      
+        if graphsout.has_key(det) == False:
+          graphsout[det] = list()
+        
         t1 = branch[i].split('_',1)[1]  #essentially removes the Ampl part 
         t2 = branch[j].split('_',1)[1]
         
@@ -115,18 +118,50 @@ def main(*args):
        
         
         graphname = det + '_' + yaxisName + '_' + xaxisName
-        graphtitle = filename.split('_')[0] + ' ' + det + ' ' + yaxisName + ' ' + xaxisName
+        graphtitle = os.path.basename(filename).split('_')[0] + ' ' + det + ' ' + yaxisName + ' ' + xaxisName
         fout.cd()
         gr.GetXaxis().SetTitle(xaxisName)
         gr.GetYaxis().SetTitle(yaxisName)
         gr.SetName(graphname)
         gr.SetTitle(graphtitle)
         gr.Write()
-
-  print 'Creating NTP Amplitude Correlations Graphs ->', foutname
+        graphsout[det].append(graphname)
+        
+  
+  for det, branch in detector.items():
+    
+    if graphsout.has_key(det) == False:
+          graphsout[det] = list() 
+          
+    for item in branch:
+      if item.split('_')[1] == 'chaleur':
+        xaxis = 'TMath::Abs(' + item + ')'
+        #now search the other branches for the center/garde branches
+        yaxis = ''
+        for i in branch:
+          if i.split('_')[1] == 'centre' or i.split('_')[1] == 'garde':
+            yaxis += 'TMath::Abs(' + i + '/3.) + '
+          
+        yaxis = yaxis.rstrip(' + ')  #strip off the last '+'
+          
+        graphname = det + '_sumIon_v_' + item
+        graphtitle = os.path.basename(filename).split('_')[0] + ' ' + graphname
+        #print yaxis + ':' + xaxis
+        t.Draw(yaxis + ':' + xaxis)
+        gr = gPad.GetPrimitive('Graph')
+        fout.cd()
+        gr.GetXaxis().SetTitle(xaxis)
+        gr.GetYaxis().SetTitle('#Sigma Abs(Ion)')
+        gr.SetName(graphname)
+        gr.SetTitle(graphname)
+        gr.SetMarkerStyle(1)
+        gr.Write()
+        graphsout[det].append(graphname)
+  
+  print 'Created NTP Amplitude Correlations Graphs ->', foutname
   fout.Close()
   
-  
+  return (graphsout, foutname)
   
 if __name__ == '__main__':
   main(*sys.argv[1:])
