@@ -4,8 +4,9 @@ from couchdbkit import *
 from couchdbkit.loaders import FileSystemDocsLoader
 from csv import DictReader
 import time, sys, subprocess, math, os, glob
-import datetime, json
+import datetime, json, re
 
+runDict = {}
 
 def formatvalue(value):
   if (isinstance(value,str)):
@@ -23,16 +24,75 @@ def formatvalue(value):
   else:
     return value
 
-def readheader(file):
+def readrunheader(file):
+
+  line = ''
+  while True:
+  
+    line = file.readline().rstrip()
+    if line == '# ===== Entete de run =====':
+      print 'Found start of run. Creating Run Document'
+      runDict['_id'] = os.path.basename(file.name) + '_samba_runheader'
+      break
+  
+  #found the start of the run header, now read the lines
+  #until the data is found
+  runDict['author'] = 'Samba'
+  runDict['content'] = 'Single Samba Run Header'
+  runDict['type'] = 'samba run header'
+  dd = datetime.datetime.utcnow()
+  runDict['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
+                          'hour':dd.hour,'minute':dd.minute,'second':dd.second,
+                          'microsecond':dd.microsecond,'timezone':0}  
+  runname = os.path.basename(file.name)
+  runsplit = runname.split('_')
+  runDict['run_name'] = formatvalue(runsplit[0])
+  runDict['file_number'] = int(runsplit[1])
+  runDict['full_run_name'] = runname
+
+  while True:
+    line = file.readline().rstrip()
+    if line.startswith('#'):
+      pass
+    elif line == '* Donnees':
+      print 'Finished Run Header', runDict['_id']
+      return runDict
+    elif line == '':
+      print 'Prematurely found an empty line while reading the Run Header'
+      sys.exit(-1)  #we shouldn't reach the end of the file already
+    else:
+      if line.count('=') > 0:
+        list = line.split('=') 
+        if len(list) >= 2:
+          key = list[0].strip()#.lower().replace('.','_').replace('-','_')
+          vlist = list[1].split('#')
+          value = formatvalue(vlist[0].strip())
+           
+          runDict[key] = value
+    
+ #if all goes well, will return runDict.
+ #otherwise, if an error occurs, should return False
+
+
+def readsambafileheader(file):
   
   header = {}
   header['author'] = 'Samba'
-  header['content'] = 'Single Samba File Run Header'
-  header['type'] = 'samba run header'
+  header['content'] = 'Single Samba File Header'
+  header['type'] = 'samba file header'
   dd = datetime.datetime.utcnow()
-  header['date_filed'] = [dd.year,dd.month,dd.day,dd.hour,dd.minute,dd.second,dd.microsecond,0]
-  header['_id'] = os.path.basename(file.name) + '_samba_runheader'
-  header['run_name'] = os.path.basename(file.name)
+  header['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
+                          'hour':dd.hour,'minute':dd.minute,'second':dd.second,
+                          'microsecond':dd.microsecond,'timezone':0}  
+  header['_id'] = os.path.basename(file.name) + '_samba_fileheader'
+  runname = os.path.basename(file.name)
+  runsplit = runname.split('_')
+  header['run_name'] = formatvalue(runsplit[0])
+  header['file_number'] = int(runsplit[1])
+  header['full_run_name'] = runname
+  header['Run.Date.secondes'] = runDict['Date.secondes']
+  header['Run.Date.microsecs'] = runDict['Date.microsecs']
+  header['Run.Header.id'] = runDict['_id']
   
   firstline = file.readline()
   if firstline.rstrip() == '* Archive SAMBA':
@@ -48,6 +108,7 @@ def readheader(file):
     line = file.readline()
     
     if line.rstrip().endswith('* ----------'):
+      print 'Finished reading Samba File Header', header['_id']
       return header
     elif line == '':
       return False  #we shouldn't reach the end of the file already
@@ -64,8 +125,13 @@ def readheader(file):
           vlist = list[1].split('#')
           value = formatvalue(vlist[0].strip())
           #print repr(key) + ' : ' + repr(value)
-          header[str(key)] = value
-  
+          if key == 'Date':
+            date = value.split('/')
+            value = {'year':int(date[0]) + 2000, 'month':int(date[1]), 'day':int(date[2])}  
+           
+          header[key] = value
+          
+  print 'Reading Samba Partition Header. We ended in a weird state.'
   return header
       
 def readboloheader(file):
@@ -74,21 +140,26 @@ def readboloheader(file):
   header['author'] = 'Samba'
   header['content'] = 'Single Samba File Bolo Config Header'
   dd = datetime.datetime.utcnow()
-  header['date_filed'] = [dd.year,dd.month,dd.day,dd.hour,dd.minute,dd.second,dd.microsecond,0]
+  header['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
+                          'hour':dd.hour,'minute':dd.minute,'second':dd.second,
+                          'microsecond':dd.microsecond,'timezone':0}
   header['type'] = 'samba bolo config header'
   runname = os.path.basename(file.name)
   runsplit = runname.split('_')
   header['run_name'] = formatvalue(runsplit[0])
-  header['file_number'] = runsplit[1]
-  header['full_run_name_number'] = runname
+  header['file_number'] = int(runsplit[1])
+  header['full_run_name'] = runname
+  header['Run.Date.secondes'] = runDict['Date.secondes']
+  header['Run.Date.microsecs'] = runDict['Date.microsecs']
+  header['Run.Header.id'] = runDict['_id']
   
   firstline = file.readline()
   if firstline.strip().startswith('* Detecteur'):
     list = firstline.split()
-    detector = list[2]
-    #print 'detector : ' + detector
-    header['detector'] = detector
-    header['_id'] = os.path.basename(file.name) + '_samba_boloconfiguration_' + detector 
+    bolo = list[2]
+    #print 'bolo : ' + bolo
+    header['bolometer'] = bolo
+    header['_id'] = os.path.basename(file.name) + '_samba_boloconfiguration_' + bolo 
   else:
     return firstline  #this doesn't appear to be a Bolometer Configuration section
     
@@ -98,8 +169,10 @@ def readboloheader(file):
     line = file.readline()
     
     if line.rstrip().endswith('* ----------'):
+      print 'Finished Bolo Header', header['_id'] 
       return header
     elif line == '':
+      print 'Hey! Reached end of file when reading the bolometer header!'
       return False  #we shouldn't reach the end of the file already
     elif line.startswith('#'):  #skip lines that are comments
       pass #skip to the next line
@@ -137,7 +210,92 @@ def readboloheader(file):
               vlist = list[1].split('#')
               value = formatvalue(vlist[0].strip())
               header[str(key)] = value
+  print 'Reading Bolometer Header. We ended in a weird state.'
+  return header
+
+
+def readchannelheader(file, voie):
+  '''Due to the structure of the Samba Header, this function returns the a 2-tuple,
+  with the first element being the header dictionary and the second element is the
+  last line read, which should have the channel name of the next channel in the header
+  Also, the channel must be provided by reading the lines in the file
+  If the call to this function occurs after the readboloheader function, 
+  then the line should be ready to be parse to determine the voie
+  '''
   
+  header = {}
+  header['author'] = 'Samba'
+  header['content'] = 'Single Samba File Voie Config Header'
+  dd = datetime.datetime.utcnow()
+  header['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
+                          'hour':dd.hour,'minute':dd.minute,'second':dd.second,
+                          'microsecond':dd.microsecond,'timezone':0}
+  header['type'] = 'samba voie config header'
+  runname = os.path.basename(file.name)
+  runsplit = runname.split('_')
+  header['run_name'] = formatvalue(runsplit[0])
+  header['file_number'] = int(runsplit[1])
+  header['full_run_name'] = runname
+  header['Run.Date.secondes'] = runDict['Date.secondes']
+  header['Run.Date.microsecs'] = runDict['Date.microsecs']
+  header['Run.Header.id'] = runDict['_id']
+  
+  header['Voie'] = voie
+  header['_id'] = os.path.basename(file.name) + '_samba_voieconfiguration_' + voie.split(' ')[0] + '_' + voie.split(' ')[1]
+        
+  while True:
+  
+    line = file.readline().rstrip()
+    
+    if line == '* Filtre:':
+      line = file.readline()
+      #print 'Found the Filter. This should be the end of', header['Voie'], '\'s header'
+      while True:
+        if line.find('* Voie') != -1:
+          #print 'Next channel header found', line[line.find('* Voie'):].rstrip()
+          filter = line[:line.find('* Voie')]
+          #header['Filtre'] = filter
+          print 'Finished reading Channel header (end of filter * Voie)', header['_id']
+          return (header, line, True)
+        
+        elif line.find('* Run') != -1:
+          #print 'End of header. Found Run at end of filter', line[line.find('* Run'):].rstrip()
+          filter = line[:line.find('* Run')]
+          #header['Filtre'] = filter
+          print 'Finished reading Channel header (end of filter * Run)', header['_id']
+          return (header, line, False)
+        else:  #we must have found a filter that appears to have an end-of-line byte in the filter
+          #print 'Found premature end of line in filter'
+          line = file.readline()
+        
+    if line.startswith('* Voie'):
+      #print 'End of header. Found Next Voie at start of line', line[line.find('* Voie'):].rstrip()
+      print 'Finished reading Channel header (* Voie)', header['_id']
+      return (header, line, True)
+
+    if line.startswith('* Run'):
+      #print 'End of header. Found Run at start of line', line[line.find('* Run'):].rstrip()
+      print 'Finished reading Channel header (* Run)', header['_id']
+      return (header, line, False)
+      
+    elif line == '':
+      print 'Hey! Reached end of file when reading the channel header!?!'
+      return ('notDict', line, False)  #we shouldn't reach the end of the file already
+    elif line.startswith('#'):
+      pass #skip lines that are comments
+
+    else:
+            
+      if line.count('=') > 0: #make sure its a key = value line
+      
+        list = line.split('=') 
+        if len(list) >= 2:
+          key = list[0].strip()#lower().replace('.','_').replace('-','_')
+          vlist = list[1].split('#')
+          value = formatvalue(vlist[0].strip())
+          header[str(key)] = value
+  
+  print 'I hope I never get here... a weird place to be in the Samba readChanneHeader'
   return header
 
 
@@ -162,12 +320,37 @@ def uploadFile(filename, uri, dbname, override=None):
     
   theServer = Server(uri)
   db = theServer.get_or_create_db(dbname)
-  print db.info()
+  #print db.info()
   
   file = open(filename)
   docs = list()
+  runheader = readrunheader(file)
   
-  sambaheader = readheader(file)
+  try:
+    if isinstance(runheader,dict):
+    
+      docexists = False
+      if db.doc_exist(runheader.get('_id')):
+        runheader['_rev'] = db.get_rev(runheader.get('_id'))
+        docexists = True
+      
+      if override==True:
+        docs.append(runheader)
+      elif docexists == False:
+        docs.append(runheader)
+      
+      docs = upload(db, docs)
+  
+  except KeyError:
+      print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the samba run header'
+      return False
+    
+  
+  
+  file.close()  #close and then reopen the file, just to make it easy to get to the start
+  # of the run.
+  file = open(filename)
+  sambaheader = readsambafileheader(file)
   
   try:
     if isinstance(sambaheader,dict):
@@ -183,12 +366,15 @@ def uploadFile(filename, uri, dbname, override=None):
         docs.append(sambaheader)
       
       docs = upload(db, docs)
-  
+      print 'Uploaded Samba Header', sambaheader['_id']
+    else:
+      print 'Samba Header returned is not a dictionary!', sambaheader
   except KeyError:
       print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the samba run header'
-      sys.exit(1)
+      return False
       
   #now, loop through and read the bolometer header files
+  
   while True:
     boloheader = readboloheader(file)
     if isinstance(boloheader,dict):
@@ -206,14 +392,57 @@ def uploadFile(filename, uri, dbname, override=None):
       
       except KeyError:
         print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the bolometer configuration header'
-        sys.exit(1)
+        return False
     
     else:
-      #print 'Not a Document, apparently. We are done.'
+      print 'Not a Bolo Header, apparently. We are done.'
       break
     
+  docs = upload(db,docs)
+  
+  #now read through the channel configuration values  
+  # the while loop above quits when the the readboloheader doesn't return
+  # a dictionary. Instead, it returns the next line in the header, which
+  # should be the start of the channel configurations. (assuming that Sambe
+  # doesn't change its format
+  #
+  
+  voiepart = boloheader[boloheader.find('* Voie'):]
+  channelName = voiepart[voiepart.find('"'):].strip('":\n')
+  while True:
+    chanheaderoutput = readchannelheader(file, channelName)
+    channelheader = chanheaderoutput[0]
+    voiepart = chanheaderoutput[1][chanheaderoutput[1].find('* Voie'):]
+    channelName = voiepart[voiepart.find('"'):].strip('":\n')
+    
+    if isinstance(channelheader,dict):
+      #print boloheader._doc
+      try:
+        #print channelheader
+        docexists = False
+        if db.doc_exist(channelheader.get('_id')):
+          channelheader['_rev'] = db.get_rev(channelheader.get('_id'))
+          docexists = True
+      
+        if override==True:
+          docs.append(channelheader)
+        elif docexists == False:
+          docs.append(channelheader)
+      
+      except KeyError:
+        print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the channel configuration header'
+        return False
+    else:
+      print 'Read Channel Header didn\'t return a dictionary.'
+      
+    if chanheaderoutput[2] == False:
+      print 'Channel Header output False.' # okay, this tells us that we're done
+      break
       
   docs = upload(db,docs)
+  
+  return True
+  
 
 def uploadFromRunDir(dirname, uri, dbname, override=None):
   if os.path.isdir(dirname)==False:
@@ -250,14 +479,14 @@ def uploadFromTopLevelDir(dirname, uri, dbname, override=None):
       uploadFromRunDir(i, uri, dbname, override)
     
   return True
-
-if __name__ == '__main__':
- 
-  uri = sys.argv[2]
-  dbname = sys.argv[3]
   
-  if len(sys.argv)>=5:
-    if sys.argv[4]=='True':
+  
+def main(*args):
+  uri = args[1]
+  dbname = args[2]
+  
+  if len(args)>=4:
+    if args[3]=='True':
       override = True   
     else:
       override = False
@@ -265,11 +494,15 @@ if __name__ == '__main__':
     override = False
   
   #check to see if argv[1] is a directory name or a file name
-  if os.path.isfile(sys.argv[1]):
-    uploadFile(sys.argv[1], uri, dbname, override)
-  elif os.path.isdir(sys.argv[1]):
-    if uploadFromRunDir(sys.argv[1], uri, dbname, override)==False:
+  if os.path.isfile(args[0]):
+    uploadFile(args[0], uri, dbname, override)
+  elif os.path.isdir(args[0]):
+    if uploadFromRunDir(args[0], uri, dbname, override)==False:
       #try if this is a top-level samba directory rather than a single run directory
-      uploadFromTopLevelDir(sys.argv[1], uri, dbname, override)
+      uploadFromTopLevelDir(args[0], uri, dbname, override)
       
       
+
+if __name__ == '__main__':
+  main(*sys.argv[1:])
+  
