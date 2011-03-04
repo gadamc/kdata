@@ -11,10 +11,10 @@ def main(dataDir = '/Users/adam/Scripts/uploadSambaToCouch/rawdata',
         errFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.err',
         uri = 'http://edelweiss:darkmatr@edelweiss.cloudant.com', db = 'run14', startDir = '', overwrite = True):
         
-  #logfile = open(logFileName, 'a')
-  #errfile = open(errFileName, 'a')
-  #sys.stdout = logfile
-  #sys.stderr = errfile
+  logfile = open(logFileName, 'a')
+  errfile = open(errFileName, 'a')
+  sys.stdout = logfile
+  sys.stderr = errfile
   print ''
   print 'Starting SambaToCouch', datetime.datetime.now()
   print 'Initial Arguments:', dataDir, lastfile, logFileName, uri, db, startDir, overwrite
@@ -46,7 +46,7 @@ def main(dataDir = '/Users/adam/Scripts/uploadSambaToCouch/rawdata',
   #print 'List of Samba Partition Files to Upload Header information to CouchDB' 
   #print filelist
   
-  #logfile.flush()
+  logfile.flush()
   
   
   for i in filelist:
@@ -61,7 +61,7 @@ def main(dataDir = '/Users/adam/Scripts/uploadSambaToCouch/rawdata',
     else:
       print 'Something failed when uploading the file.'
       
-    #logfile.flush()
+    logfile.flush()
     
   
   print 'done', datetime.datetime.now()

@@ -395,7 +395,7 @@ def uploadFile(filename, uri, dbname, override=None):
     for header in runheaders:
         if isinstance(header,dict):
           docs.append(header)
-          docs = upload(db, docs)
+          #docs = upload(db, docs)
   
   else:
     print 'Hey - We didn\'t find the Run Header. Returned header', runheader
@@ -411,7 +411,7 @@ def uploadFile(filename, uri, dbname, override=None):
     for header in sambaheaders:
         if isinstance(header,dict):
           docs.append(header)
-          docs = upload(db, docs)
+          #docs = upload(db, docs)
           
   else:
     print 'Hey - We didn\'t find the Samba Header. Returned header', sambaheader
@@ -427,7 +427,7 @@ def uploadFile(filename, uri, dbname, override=None):
       for header in boloheaders:
         if isinstance(header,dict):
           docs.append(header)
-          docs = upload(db, docs)
+          #docs = upload(db, docs)
           
     else:
       print 'Not a Dictionary. We are done reading the bolometer headers.'
@@ -455,7 +455,7 @@ def uploadFile(filename, uri, dbname, override=None):
       for header in channelheaders:
         if isinstance(header,dict):
           docs.append(header)
-          docs = upload(db, docs)
+          #docs = upload(db, docs)
     else:
       print 'Read Channel Header didn\'t return a dictionary.'
       
