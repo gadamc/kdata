@@ -5,11 +5,12 @@ import findSambaPartitionFiles as find
 import datetime
 import re
 
-def main(dataDir = '/Users/adam/Scripts/uploadSambaToCouch/rawdata', 
+def main(uri = 'http://edelweiss:darkmatr@edelweiss.cloudant.com',
+        dataDir = '/Users/adam/Scripts/uploadSambaToCouch/rawdata', 
         lastfile = '/Users/adam/Scripts/uploadSambaToCouch/lastSambaPartitionUploaded.txt',
         logFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.log', 
         errFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.err',
-        uri = 'http://edelweiss:darkmatr@edelweiss.cloudant.com', db = 'run14', startDir = '', overwrite = True):
+        db = 'run14', startDir = '', overwrite = True):
         
   logfile = open(logFileName, 'a')
   errfile = open(errFileName, 'a')
