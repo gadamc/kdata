@@ -24,15 +24,72 @@ def formatvalue(value):
   else:
     return value
 
+
+def onIgnoreList(key):
+  ignoreList = ['file_number',
+                'date_uploaded',
+                'addenda',
+                '_id',
+                '_rev'
+                ]
+                
+  return key in ignoreList 
+    
+  
+def appendSambaDocument(db, doc):
+
+  if isinstance(doc, dict) == False:
+    return [doc]
+
+  if db.doc_exist(doc.get('_id')):
+    olddoc = db.get(doc.get('_id'))
+  else:
+    return [doc]
+    
+  newdoc = dict()  #making a new document that just has the changed values
+  
+  docChanged = False
+  for key, value in doc.items():
+    if key in olddoc and (key == '_id' or key == '_rev')==False:
+      if onIgnoreList(key) == False:
+        if olddoc[key] != value:
+          docChanged = True
+          print 'Found change.', key, value, olddoc[key]
+          newdoc[key] = value
+                
+            
+    elif (key == '_id' or key == '_rev')==False:
+      docChanged = True
+      print 'New Key Found!!!', key
+      newdoc[key] = value  #hmmmm do i want to do this? I can't imagine this will EVER get called. Samba format will not change in the middle of a Run!
+      #unless there is a crash!
+      
+  if docChanged:
+    newdoc['_id'] = doc['_id'] + '_addendum_' + str(doc['file_number'])
+    newdoc['file_number'] = doc['file_number']
+    olddoc['addenda'][str(newdoc['file_number'])] = newdoc['_id']
+    print 'Adding addenda to run header'
+    print newdoc
+    
+    if db.doc_exist(newdoc.get('_id')):
+      newdoc['_rev'] = db.get_rev(newdoc.get('_id'))
+    
+    return [olddoc,newdoc]
+  else:
+    return []
+  
 def readrunheader(file):
 
   line = ''
+  
+  global runDict
+  
   while True:
   
     line = file.readline().rstrip()
     if line == '# ===== Entete de run =====':
       print 'Found start of run. Creating Run Document'
-      runDict['_id'] = os.path.basename(file.name) + '_samba_runheader'
+      runDict['_id'] = os.path.basename(file.name).split('_')[0] + '_samba_runheader'
       break
   
   #found the start of the run header, now read the lines
@@ -48,8 +105,8 @@ def readrunheader(file):
   runsplit = runname.split('_')
   runDict['run_name'] = formatvalue(runsplit[0])
   runDict['file_number'] = int(runsplit[1])
-  runDict['full_run_name'] = runname
-
+  runDict['addenda'] = dict()
+  
   while True:
     line = file.readline().rstrip()
     if line.startswith('#'):
@@ -84,15 +141,15 @@ def readsambafileheader(file):
   header['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
                           'hour':dd.hour,'minute':dd.minute,'second':dd.second,
                           'microsecond':dd.microsecond,'timezone':0}  
-  header['_id'] = os.path.basename(file.name) + '_samba_fileheader'
+  header['_id'] = os.path.basename(file.name).split('_')[0] + '_samba_fileheader'
   runname = os.path.basename(file.name)
   runsplit = runname.split('_')
   header['run_name'] = formatvalue(runsplit[0])
   header['file_number'] = int(runsplit[1])
-  header['full_run_name'] = runname
   header['Run.Date.secondes'] = runDict['Date.secondes']
   header['Run.Date.microsecs'] = runDict['Date.microsecs']
   header['Run.Header.id'] = runDict['_id']
+  header['addenda'] = dict()
   
   firstline = file.readline()
   if firstline.rstrip() == '* Archive SAMBA':
@@ -148,18 +205,19 @@ def readboloheader(file):
   runsplit = runname.split('_')
   header['run_name'] = formatvalue(runsplit[0])
   header['file_number'] = int(runsplit[1])
-  header['full_run_name'] = runname
   header['Run.Date.secondes'] = runDict['Date.secondes']
   header['Run.Date.microsecs'] = runDict['Date.microsecs']
   header['Run.Header.id'] = runDict['_id']
-  
+  header['addenda'] = dict()
+
+
   firstline = file.readline()
   if firstline.strip().startswith('* Detecteur'):
     list = firstline.split()
     bolo = list[2]
     #print 'bolo : ' + bolo
     header['bolometer'] = bolo
-    header['_id'] = os.path.basename(file.name) + '_samba_boloconfiguration_' + bolo 
+    header['_id'] = os.path.basename(file.name).split('_')[0] + '_samba_boloconfiguration_' + bolo 
   else:
     return firstline  #this doesn't appear to be a Bolometer Configuration section
     
@@ -184,7 +242,7 @@ def readboloheader(file):
         list = line.split('=') 
         if len(list) >= 2:
         
-            if list[0].strip() == 'Bolo.reglages': #handle the special case
+            if list[0].strip() == 'Bolo.reglages' and list[1].strip() != '()': #handle the special case
               rootkey = list[0].strip()#.lower().replace('.','_').replace('-','_')
               #print 'root key ' + rootkey
               
@@ -235,13 +293,14 @@ def readchannelheader(file, voie):
   runsplit = runname.split('_')
   header['run_name'] = formatvalue(runsplit[0])
   header['file_number'] = int(runsplit[1])
-  header['full_run_name'] = runname
   header['Run.Date.secondes'] = runDict['Date.secondes']
   header['Run.Date.microsecs'] = runDict['Date.microsecs']
   header['Run.Header.id'] = runDict['_id']
-  
+  header['addenda'] = dict()
+
   header['Voie'] = voie
-  header['_id'] = os.path.basename(file.name) + '_samba_voieconfiguration_' + voie.split(' ')[0] + '_' + voie.split(' ')[1]
+  
+  header['_id'] = os.path.basename(file.name).split('_')[0] + '_samba_voieconfiguration_' + voie.split(' ')[0] + '_' + voie.split(' ')[1]
         
   while True:
   
@@ -322,88 +381,64 @@ def uploadFile(filename, uri, dbname, override=None):
   db = theServer.get_or_create_db(dbname)
   #print db.info()
   
+  runDict.clear()
+  
+  
+  #read the run header
   file = open(filename)
   docs = list()
   runheader = readrunheader(file)
   
-  try:
-    if isinstance(runheader,dict):
+  if isinstance(runheader,dict):
+    runheaders = appendSambaDocument(db, runheader)
     
-      docexists = False
-      if db.doc_exist(runheader.get('_id')):
-        runheader['_rev'] = db.get_rev(runheader.get('_id'))
-        docexists = True
-      
-      if override==True:
-        docs.append(runheader)
-      elif docexists == False:
-        docs.append(runheader)
-      
-      docs = upload(db, docs)
+    for header in runheaders:
+        if isinstance(header,dict):
+          docs.append(header)
+          docs = upload(db, docs)
   
-  except KeyError:
-      print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the samba run header'
-      return False
+  else:
+    print 'Hey - We didn\'t find the Run Header. Returned header', runheader
     
-  
-  
   file.close()  #close and then reopen the file, just to make it easy to get to the start
   # of the run.
+  
+  #read the samba file header
   file = open(filename)
   sambaheader = readsambafileheader(file)
-  
-  try:
-    if isinstance(sambaheader,dict):
+  if isinstance(sambaheader,dict):
+    sambaheaders = appendSambaDocument(db, sambaheader)
+    for header in sambaheaders:
+        if isinstance(header,dict):
+          docs.append(header)
+          docs = upload(db, docs)
+          
+  else:
+    print 'Hey - We didn\'t find the Samba Header. Returned header', sambaheader
     
-      docexists = False
-      if db.doc_exist(sambaheader.get('_id')):
-        sambaheader['_rev'] = db.get_rev(sambaheader.get('_id'))
-        docexists = True
-      
-      if override==True:
-        docs.append(sambaheader)
-      elif docexists == False:
-        docs.append(sambaheader)
-      
-      docs = upload(db, docs)
-      print 'Uploaded Samba Header', sambaheader['_id']
-    else:
-      print 'Samba Header returned is not a dictionary!', sambaheader
-  except KeyError:
-      print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the samba run header'
-      return False
-      
+        
   #now, loop through and read the bolometer header files
   
   while True:
     boloheader = readboloheader(file)
+    
     if isinstance(boloheader,dict):
-      #print boloheader._doc
-      try:
-        docexists = False
-        if db.doc_exist(boloheader.get('_id')):
-          boloheader['_rev'] = db.get_rev(boloheader.get('_id'))
-          docexists = True
-      
-        if override==True:
-          docs.append(boloheader)
-        elif docexists == False:
-          docs.append(boloheader)
-      
-      except KeyError:
-        print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the bolometer configuration header'
-        return False
-    
+      boloheaders = appendSambaDocument(db, boloheader)
+      for header in boloheaders:
+        if isinstance(header,dict):
+          docs.append(header)
+          docs = upload(db, docs)
+          
     else:
-      print 'Not a Bolo Header, apparently. We are done.'
-      break
-    
-  docs = upload(db,docs)
+      print 'Not a Dictionary. We are done reading the bolometer headers.'
+      break    
+  
+  #docs = upload(db,docs)
   
   #now read through the channel configuration values  
   # the while loop above quits when the the readboloheader doesn't return
   # a dictionary. Instead, it returns the next line in the header, which
-  # should be the start of the channel configurations. (assuming that Sambe
+  # should be the start of the channel configurations. (assuming that Samba
   # doesn't change its format
   #
   
@@ -416,27 +451,16 @@ def uploadFile(filename, uri, dbname, override=None):
     channelName = voiepart[voiepart.find('"'):].strip('":\n')
     
     if isinstance(channelheader,dict):
-      #print boloheader._doc
-      try:
-        #print channelheader
-        docexists = False
-        if db.doc_exist(channelheader.get('_id')):
-          channelheader['_rev'] = db.get_rev(channelheader.get('_id'))
-          docexists = True
-      
-        if override==True:
-          docs.append(channelheader)
-        elif docexists == False:
-          docs.append(channelheader)
-      
-      except KeyError:
-        print 'Hey, something is wrong with the code. A KeyError was thrown looking for the _id in the channel configuration header'
-        return False
+      channelheaders = appendSambaDocument(db, channelheader)
+      for header in channelheaders:
+        if isinstance(header,dict):
+          docs.append(header)
+          docs = upload(db, docs)
     else:
       print 'Read Channel Header didn\'t return a dictionary.'
       
     if chanheaderoutput[2] == False:
-      print 'Channel Header output False.' # okay, this tells us that we're done
+      print 'Channel Header output False - Done reading Channel Headers.' # okay, this tells us that we're done
       break
       
   docs = upload(db,docs)
