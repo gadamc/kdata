@@ -44,7 +44,7 @@ def main(*args):
         
         if re.search('sumIon_v_Ampl_chaleur',graph) != None:
           if padnumber > 4:
-            c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '.pdf'))
+            c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + 'sambaNtp.pdf'))
             pagenumber += 1
             padnumber = 1
             c.Clear('D')
