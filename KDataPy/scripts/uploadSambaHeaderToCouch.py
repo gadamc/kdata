@@ -25,6 +25,32 @@ def formatvalue(value):
     return value
 
 
+def getBolometerName(astring):
+  '''this will search for ID or FID detector names in astring and return 
+  that string if it is found. otherwise if it doesn't find an ID/FID 
+  name, it will attempt to strip off any 'centre', 'garde', or 'chaleur'
+  parts of astring and return what it thinks is the detector name. if either
+  of those attempts fail, it will simply return astring'''
+
+  
+  match = re.search('[F]{0,1}ID[0-9]{1,3}', astring)
+  if match != None:
+    return re.findall('[F]{0,1}ID[0-9]{1,3}', astring)[0]
+
+  match = re.search('centre',astring)
+  if match != None:
+    return astring[match.end():].strip('_ ')
+    
+  match = re.search('garde',astring)
+  if match != None:
+    return astring[match.end():].strip('_ ')
+    
+  match = re.search('chaleur',astring)
+  if match != None:
+    return astring[match.end():].strip('_ ')
+    
+    
+  return astring
 def onIgnoreList(key):
   ignoreList = ['file_number',
                 'date_uploaded',
@@ -67,8 +93,14 @@ def appendSambaDocument(db, doc):
   if docChanged:
     newdoc['_id'] = doc['_id'] + '_addendum_' + str(doc['file_number'])
     newdoc['file_number'] = doc['file_number']
-    olddoc['addenda'][str(newdoc['file_number'])] = newdoc['_id']
-    print 'Adding addenda to run header'
+    newdoc['type'] ='addendum'
+    newdoc['parent_id'] = doc['_id']
+    
+    newdocinfo = dict()
+    newdocinfo['id'] = newdoc['_id']
+    newdocinfo['file_number'] = newdoc['file_number']
+    olddoc['addenda'].append(newdocinfo)
+    print 'Adding addenda'
     print newdoc
     
     if db.doc_exist(newdoc.get('_id')):
@@ -95,7 +127,7 @@ def readrunheader(file):
   #found the start of the run header, now read the lines
   #until the data is found
   runDict['author'] = 'Samba'
-  runDict['content'] = 'Single Samba Run Header'
+  runDict['content'] = 'Samba Run Header'
   runDict['type'] = 'samba run header'
   dd = datetime.datetime.utcnow()
   runDict['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
@@ -105,7 +137,7 @@ def readrunheader(file):
   runsplit = runname.split('_')
   runDict['run_name'] = formatvalue(runsplit[0])
   runDict['file_number'] = int(runsplit[1])
-  runDict['addenda'] = dict()
+  runDict['addenda'] = list()
   
   while True:
     line = file.readline().rstrip()
@@ -119,10 +151,10 @@ def readrunheader(file):
       sys.exit(-1)  #we shouldn't reach the end of the file already
     else:
       if line.count('=') > 0:
-        list = line.split('=') 
-        if len(list) >= 2:
-          key = list[0].strip()#.lower().replace('.','_').replace('-','_')
-          vlist = list[1].split('#')
+        alist = line.split('=') 
+        if len(alist) >= 2:
+          key = alist[0].strip()#.lower().replace('.','_').replace('-','_')
+          vlist = alist[1].split('#')
           value = formatvalue(vlist[0].strip())
            
           runDict[key] = value
@@ -135,7 +167,7 @@ def readsambafileheader(file):
   
   header = {}
   header['author'] = 'Samba'
-  header['content'] = 'Single Samba File Header'
+  header['content'] = 'Samba Single Partition File Header'
   header['type'] = 'samba file header'
   dd = datetime.datetime.utcnow()
   header['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
@@ -149,7 +181,7 @@ def readsambafileheader(file):
   header['Run.Date.secondes'] = runDict['Date.secondes']
   header['Run.Date.microsecs'] = runDict['Date.microsecs']
   header['Run.Header.id'] = runDict['_id']
-  header['addenda'] = dict()
+  header['addenda'] = list()
   
   firstline = file.readline()
   if firstline.rstrip() == '* Archive SAMBA':
@@ -176,10 +208,10 @@ def readsambafileheader(file):
       
       if line.count('=') > 0: #make sure its a key = value line
       
-        list = line.split('=') 
-        if len(list) >= 2:
-          key = list[0].strip()#.lower().replace('.','_').replace('-','_')
-          vlist = list[1].split('#')
+        alist = line.split('=') 
+        if len(alist) >= 2:
+          key = alist[0].strip()#.lower().replace('.','_').replace('-','_')
+          vlist = alist[1].split('#')
           value = formatvalue(vlist[0].strip())
           #print repr(key) + ' : ' + repr(value)
           if key == 'Date':
@@ -195,12 +227,12 @@ def readboloheader(file):
 
   header = {}
   header['author'] = 'Samba'
-  header['content'] = 'Single Samba File Bolo Config Header'
+  header['content'] = 'Single Samba File Detector Header'
   dd = datetime.datetime.utcnow()
   header['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
                           'hour':dd.hour,'minute':dd.minute,'second':dd.second,
                           'microsecond':dd.microsecond,'timezone':0}
-  header['type'] = 'samba bolo config header'
+  header['type'] = 'samba detector header'
   runname = os.path.basename(file.name)
   runsplit = runname.split('_')
   header['run_name'] = formatvalue(runsplit[0])
@@ -208,16 +240,17 @@ def readboloheader(file):
   header['Run.Date.secondes'] = runDict['Date.secondes']
   header['Run.Date.microsecs'] = runDict['Date.microsecs']
   header['Run.Header.id'] = runDict['_id']
-  header['addenda'] = dict()
+  header['addenda'] = list()
 
 
   firstline = file.readline()
   if firstline.strip().startswith('* Detecteur'):
-    list = firstline.split()
-    bolo = list[2]
-    #print 'bolo : ' + bolo
-    header['bolometer'] = bolo
-    header['_id'] = os.path.basename(file.name).split('_')[0] + '_samba_boloconfiguration_' + bolo 
+    alist = firstline.split()
+    detector = alist[2]
+
+    header['detector'] = detector
+    header['bolometer'] = getBolometerName(detector)
+    header['_id'] = os.path.basename(file.name).split('_')[0] + '_samba_detectorconfiguration_' + detector 
   else:
     return firstline  #this doesn't appear to be a Bolometer Configuration section
     
@@ -230,7 +263,7 @@ def readboloheader(file):
       print 'Finished Bolo Header', header['_id'] 
       return header
     elif line == '':
-      print 'Hey! Reached end of file when reading the bolometer header!'
+      print 'Hey! Reached end of file when reading the samba detector header!'
       return False  #we shouldn't reach the end of the file already
     elif line.startswith('#'):  #skip lines that are comments
       pass #skip to the next line
@@ -239,11 +272,11 @@ def readboloheader(file):
       
       if line.count('=') > 0: #make sure its a key = value line
       
-        list = line.split('=') 
-        if len(list) >= 2:
+        alist = line.split('=') 
+        if len(alist) >= 2:
         
-            if list[0].strip() == 'Bolo.reglages' and list[1].strip() != '()': #handle the special case
-              rootkey = list[0].strip()#.lower().replace('.','_').replace('-','_')
+            if alist[0].strip() == 'Bolo.reglages' and alist[1].strip() != '()': #handle the special case
+              rootkey = alist[0].strip()#.lower().replace('.','_').replace('-','_')
               #print 'root key ' + rootkey
               
               rootval = dict()
@@ -264,8 +297,8 @@ def readboloheader(file):
               header[str(rootkey)] = rootval
               
             else:
-              key = list[0].strip()#lower().replace('.','_').replace('-','_')
-              vlist = list[1].split('#')
+              key = alist[0].strip()#lower().replace('.','_').replace('-','_')
+              vlist = alist[1].split('#')
               value = formatvalue(vlist[0].strip())
               header[str(key)] = value
   print 'Reading Bolometer Header. We ended in a weird state.'
@@ -288,7 +321,7 @@ def readchannelheader(file, voie):
   header['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
                           'hour':dd.hour,'minute':dd.minute,'second':dd.second,
                           'microsecond':dd.microsecond,'timezone':0}
-  header['type'] = 'samba voie config header'
+  header['type'] = 'samba voie header'
   runname = os.path.basename(file.name)
   runsplit = runname.split('_')
   header['run_name'] = formatvalue(runsplit[0])
@@ -296,10 +329,10 @@ def readchannelheader(file, voie):
   header['Run.Date.secondes'] = runDict['Date.secondes']
   header['Run.Date.microsecs'] = runDict['Date.microsecs']
   header['Run.Header.id'] = runDict['_id']
-  header['addenda'] = dict()
+  header['addenda'] = list()
 
   header['Voie'] = voie
-  
+  header['bolometer'] = getBolometerName(voie)
   header['_id'] = os.path.basename(file.name).split('_')[0] + '_samba_voieconfiguration_' + voie.split(' ')[0] + '_' + voie.split(' ')[1]
         
   while True:
@@ -347,10 +380,10 @@ def readchannelheader(file, voie):
             
       if line.count('=') > 0: #make sure its a key = value line
       
-        list = line.split('=') 
-        if len(list) >= 2:
-          key = list[0].strip()#lower().replace('.','_').replace('-','_')
-          vlist = list[1].split('#')
+        alist = line.split('=') 
+        if len(alist) >= 2:
+          key = alist[0].strip()#lower().replace('.','_').replace('-','_')
+          vlist = alist[1].split('#')
           value = formatvalue(vlist[0].strip())
           header[str(key)] = value
   
