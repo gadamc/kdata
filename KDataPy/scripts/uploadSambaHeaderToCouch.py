@@ -38,7 +38,7 @@ def getBolometerName(astring):
     #some strings appear to have a Ch at the end instead of the 
     #expected AB, CD or GH ending. Must first check for this possibility
     
-    if (astring[match.end():] == 'AB','CD','GH')[0] == True:
+    if re.search('AB|CD|GH', astring[match.end():]) != None:
       return re.findall('[F]{0,1}ID[0-9]{1,3}', astring)[0]
     else:
       return astring[match.start():]
