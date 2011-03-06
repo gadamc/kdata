@@ -111,7 +111,7 @@ def appendSambaDocument(db, doc):
     newdocinfo['id'] = newdoc['_id']
     newdocinfo['file_number'] = newdoc['file_number']
     olddoc['addenda'].append(newdocinfo)
-        print 'Adding addenda'
+    print 'Adding addenda'
     print newdoc
     
     if db.doc_exist(newdoc.get('_id')):
