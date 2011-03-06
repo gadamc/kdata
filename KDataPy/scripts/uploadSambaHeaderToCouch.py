@@ -101,12 +101,17 @@ def appendSambaDocument(db, doc):
     newdoc['file_number'] = doc['file_number']
     newdoc['type'] ='addendum'
     newdoc['parent_id'] = doc['_id']
-    
+    dd = datetime.datetime.utcnow()
+    newdoc['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
+                          'hour':dd.hour,'minute':dd.minute,'second':dd.second,
+                          'microsecond':dd.microsecond,'timezone':0}  
+
+
     newdocinfo = dict()
     newdocinfo['id'] = newdoc['_id']
     newdocinfo['file_number'] = newdoc['file_number']
     olddoc['addenda'].append(newdocinfo)
-    print 'Adding addenda'
+        print 'Adding addenda'
     print newdoc
     
     if db.doc_exist(newdoc.get('_id')):

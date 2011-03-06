@@ -10,7 +10,7 @@ def main(uri = 'http://edelweiss:darkmatr@edelweiss.cloudant.com',
         lastfile = '/Users/adam/Scripts/uploadSambaToCouch/lastSambaPartitionUploaded.txt',
         logFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.log', 
         errFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.err',
-        db = 'run14', startDir = '', overwrite = True):
+        db = 'run14', startDir = ''):
         
   logfile = open(logFileName, 'a')
   errfile = open(errFileName, 'a')
@@ -18,7 +18,7 @@ def main(uri = 'http://edelweiss:darkmatr@edelweiss.cloudant.com',
   sys.stderr = errfile
   print ''
   print 'Starting SambaToCouch', datetime.datetime.now()
-  print 'Initial Arguments:', dataDir, lastfile, logFileName, uri, db, startDir, overwrite
+  print 'Initial Arguments:', dataDir, lastfile, logFileName, uri, db, startDir
   
   lastFiles = last.getDictOfLastFiles(lastfile)    
   
@@ -53,7 +53,7 @@ def main(uri = 'http://edelweiss:darkmatr@edelweiss.cloudant.com',
   for i in filelist:
 
     print 'Uploading ', i , 'to Couch'
-    result = upload.uploadFile(i, uri, db, overwrite)
+    result = upload.uploadFile(i, uri, db)
     #graphs is a dictionary if key = detectorName and value = list of TGraph
     #result = True
     
