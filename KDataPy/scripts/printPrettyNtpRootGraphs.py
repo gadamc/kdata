@@ -30,7 +30,7 @@ def main(*args):
         g = f.Get(graph)
             
         if padnumber > 4:
-          c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '_sambaNtp.pdf'))
+          c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '_sambaNtp.png'))
           pagenumber += 1
           padnumber = 1
           c.Clear('D')
@@ -44,7 +44,7 @@ def main(*args):
         
         if re.search('sumIon_v_Ampl_chaleur',graph) != None:
           if padnumber > 4:
-            c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '_sambaNtp.pdf'))
+            c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '_sambaNtp.png'))
             pagenumber += 1
             padnumber = 1
             c.Clear('D')
@@ -62,7 +62,7 @@ def main(*args):
 
     #don't forget to save the last page
     if padnumber > 1:
-      c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '_sambaNtp.pdf'))
+      c.SaveAs(os.path.join(outdir, runname + '_' + det + '_' + str(pagenumber) + '_sambaNtp.png'))
       
   
   
