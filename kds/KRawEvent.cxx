@@ -17,19 +17,6 @@
 // and to each of the event's Sub Records. The raw level data file
 // should contain the bolometer pulse traces for each event.
 //
-// To allocate memory and get a pointer to an object of this type from the KEventFactory, 
-// use the global varaibles
-// const Char_t kRawEventName[] = "Raw";
-// const Char_t kRawClassName[] = "KRawEvent";
-//
-// to call
-//
-// KRawEvent *rawEvent = KEventFactory::NewEvent("Raw");
-// KRawEvent *rawEvent = KEventFactory::NewEvent("KRawEvent");
-//  
-// or, simply use
-//
-// KRawEvent *rawEvent = KEventFactory::NewRawEvent();
 //
 
 #include "KRawEvent.h"
