@@ -49,12 +49,12 @@ public:
 	Int_t GetChi2Flag(void) const {return fChi2Flag;}
 	const TBits* GetIonFlags(void) const {return &fIonFlags;}
 	Bool_t TestIonFlag(Int_t index) const;
-
+  //Bool_t TestIonFlags(UInt_t mask) const;
+  
 	Int_t GetVoltageFlag(void) const {return fVoltageFlag;}
 	Int_t GetIonPulseTimeOffset(void) const {return fIonPulseTimeOffset;}
 
 
-	//Int_t GetSambaRecordNum() const {return fSambaRecordNum;}
 	KHLASambaRecord* GetSambaRecord(void) const {return (KHLASambaRecord*)fSambaRecord.GetObject();}
 	KHLABoloPulseRecord* GetPulseRecord(Int_t i) const;
   KHLABoloPulseRecord* GetHeatPulse(Int_t aChannel) const;

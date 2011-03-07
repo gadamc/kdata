@@ -28,7 +28,6 @@
 #include "KRawEvent.h"
 
 #include "TProcessID.h"
-#include "TClonesArray.h"
 
 //sub record includes
 #include "KHLASambaRecord.h"
@@ -43,7 +42,7 @@ ClassImp(KHLAEvent);
 
 KHLAEvent::KHLAEvent(void)
 {
-	//Default Constructor. This allocates memory for the TClonesArrays
+	//Default Constructor. This allocates memory for the KClonesArrays
 	//and this might be a bug/memory leak. According to the ROOT documentation
 	//no memory should be allocated by the default constructor. This needs
 	//to be checked.
@@ -58,12 +57,8 @@ KHLAEvent::KHLAEvent(void)
 	//HLAEvent members that are on the STACK
 	InitializeMembers();
 	
-	//TClonesArray Initializations must be done separately.
+	//KClonesArray Initializations must be done separately.
 	//as well as any other members that are created on the heap/free store
-	fNumSamba = 0;
-	fNumBolo = 0;
-	fNumBoloPulse = 0;
-	fNumMuonModule = 0;
 	
 	fSamba = 0;
 	fBolo = 0;
@@ -84,11 +79,7 @@ KHLAEvent::KHLAEvent(const KHLAEvent &anEvent)
 	//MUST copy all TRef's appropriately to the new file. Otherwise
 	//they will point to records in a different File! This is 
 	//why I use the copyClonesArray method here instead of
-	//using TClonesArray's copy constructors. 
-	fNumSamba = 0;
-	fNumBolo = 0;
-	fNumBoloPulse = 0;
-	fNumMuonModule = 0;
+	//using KClonesArray's copy constructors. 
 	
 	fSamba = 0;
 	fBolo = 0;
@@ -104,7 +95,7 @@ KHLAEvent::~KHLAEvent(void)
 	
 	Clear("C");
 	
-	//Delete TClonesArrays
+	//Delete KClonesArrays
 	if(fSamba) delete fSamba;
 	fSamba = 0;
 	
@@ -121,6 +112,7 @@ KHLAEvent::~KHLAEvent(void)
 	
 	
 }
+
 
 KHLAEvent& KHLAEvent::operator=(const KEvent &anEvent)
 {
@@ -259,40 +251,23 @@ Int_t KHLAEvent::AddSubRecords(const KHLAEvent &anEvent, Bool_t skimNoise)
   //for bolometer records that have an EventFlag == 0 will not be added to *this.
   //returns the number of sub records added to *this.
   //
-  //hmmm... should this method be in the KEventFactory?  Or somewhere other
-  //than the KHLAEvent object?
 	
   Int_t numRecord = 0;
 	
-	  
   for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
     KHLABolometerRecord *bolo0 = anEvent.GetBolo(i);
-    
     if(  (skimNoise==true) ? (bolo0->GetEventFlag() > 0) : true ) { //if skimNoise is true
                                                                     //then only include this bolometer if its not noise
-      
-      if(AddBoloSubRecord(*bolo0))
-        numRecord++;
-      
-      else
-        return -1;
-      
+      if(AddBoloSubRecord(*bolo0)) numRecord++;
+      else return -1;
     }
-    
   }
- 
 	
-  for(Int_t i = 0; i < anEvent.GetNumMuonModules(); i++){
-    KHLAMuonModuleRecord *module = anEvent.GetMuonModule(i);
-    
-    if(AddMuonModuleSubRecord(*module))
-      numRecord++;
-    else
-      return -1;
-    
+  for(Int_t i = 0; i < anEvent.GetNumMuonModules(); i++){    
+    if(AddMuonModuleSubRecord(*anEvent.GetMuonModule(i)))  numRecord++;
+    else return -1;
 	}
 	
-  
 	return numRecord;
 }
 
@@ -435,11 +410,7 @@ void KHLAEvent::CopyLocalMembers(const KHLAEvent &anEvent)
 	//fDataCleaningWord = anEvent.fDataCleaningWord;
 	fBoloSystem = anEvent.fBoloSystem; 
 	fMuonSystem = anEvent.fMuonSystem;
-	fNumSamba = anEvent.fNumSamba;
-	fNumBolo = anEvent.fNumBolo;
-	fNumBoloPulse = anEvent.fNumBoloPulse;
-	fNumMuonModule = anEvent.fNumMuonModule;
-	
+		
   fRunNumber = anEvent.fRunNumber;
   fRunStartTime = anEvent.fRunStartTime;
 	fRunEndTime = anEvent.fRunEndTime;
@@ -459,10 +430,10 @@ void KHLAEvent::CopyFromRawEvent(const KRawEvent &/*anEvent*/)
 
 void KHLAEvent::ClearArrays(Option_t *anOption)
 {
-	DeleteArray(anOption, fSamba,fNumSamba);  //have to call delete on Samba array because the KSambaRecord class contains a string
-	DeleteArray(anOption, fBolo,fNumBolo); // also contains a string, like KSambaRecord
-	ClearArray(anOption, fBoloPulse,fNumBoloPulse);
-	ClearArray(anOption, fMuonModule,fNumMuonModule);
+	ClearArray(anOption, fSamba);  
+	ClearArray(anOption, fBolo); 
+	ClearArray(anOption, fBoloPulse);
+	ClearArray(anOption, fMuonModule);
 }
 
 void KHLAEvent::Clear(Option_t *anOption)
@@ -470,8 +441,8 @@ void KHLAEvent::Clear(Option_t *anOption)
 	
 	ClearArrays(anOption);
 	//delete any memory allocated by the KEvent class here that
-	//needs to be deleted for each event -- but not the TClonesArrays. Clear should be called 
-	//after every event so that the TClonesArrays are cleared. 
+	//needs to be deleted for each event -- but not the KClonesArrays. Clear should be called 
+	//after every event so that the KClonesArrays are cleared. 
 	KEvent::Clear(anOption);
 	
 	//Call the System Record clears in case they need to clean up
@@ -496,50 +467,46 @@ void KHLAEvent::InitializeMembers(void)
 
 void KHLAEvent::CreateArrays(void)
 {
-	//Allocates memory for the TClonesArrays if they haven't already
+	//Allocates memory for the KClonesArrays if they haven't already
 	//been allocated.
 	
 	if(!fSamba)
-		fSamba = new TClonesArray("KHLASambaRecord",2);
+		fSamba = new KClonesArray(KHLASambaRecord::Class(),2);
 	
 	if(!fBolo)
-		fBolo = new TClonesArray("KHLABolometerRecord",5);
+		fBolo = new KClonesArray(KHLABolometerRecord::Class(),5);
 	
 	if(!fBoloPulse)
-		fBoloPulse = new TClonesArray("KHLABoloPulseRecord",20);
+		fBoloPulse = new KClonesArray(KHLABoloPulseRecord::Class(),20);
 	
 	if(!fMuonModule)
-		fMuonModule = new TClonesArray("KHLAMuonModuleRecord",5);
+		fMuonModule = new KClonesArray(KHLAMuonModuleRecord::Class(),5);
 
 	
 	//why doesn't this create a memory leak? CreateArrays is called
 	//by the default constructor. Does ROOT realize that I already 
-	//have these TClonesArrays. Or maybe a TClonesArray object doesn't
+	//have these KClonesArrays. Or maybe a KClonesArray object doesn't
 	//require that much memory, so I don't notice the leak.
 }
 
-template<class T> T* KHLAEvent::AddSubRecord(TClonesArray *mArray, Int_t &mCount)
+template<class T> T* KHLAEvent::AddSubRecord(TClonesArray *mArray)
 {
-	TClonesArray &mArrayRef = *mArray;
-	T* mNewSubRecord = new(mArrayRef[mCount++]) T;
-	return mNewSubRecord;
+	return static_cast<T* >(static_cast<KClonesArray *>(mArray)->GetNewOrCleanedObject(mArray->GetEntriesFast() ) );
 }
 
-void KHLAEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
+void KHLAEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
 {
 	if(mArray) {
 		//we have to delete because our sub-records contain TString members! :(
 		mArray->Delete( (anOption && *anOption) ? anOption : "C" );
-		mCount = 0;
 	}
 }
 
 
-void KHLAEvent::ClearArray(Option_t *anOption, TClonesArray *mArray, Int_t &mCount)
+void KHLAEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)
 {
 	if(mArray) {
-		mArray->Clear( (anOption && *anOption) ? anOption : "C" );
-		mCount = 0;
+		static_cast<KClonesArray *>(mArray)->Clear( (anOption && *anOption) ? anOption : "C" );
 	}
 }
 
@@ -548,8 +515,7 @@ KHLASambaRecord* KHLAEvent::AddSamba(void)
 {
 	//Use this event only when creating an event and you want to add
 	//a new SubRecord.
-	
-	return AddSubRecord<KHLASambaRecord>(fSamba,fNumSamba);
+	return AddSubRecord<KHLASambaRecord>(fSamba);
 }
 
 KHLABolometerRecord* KHLAEvent::AddBolo(void)
@@ -558,7 +524,7 @@ KHLABolometerRecord* KHLAEvent::AddBolo(void)
 	//a new SubRecord.
 	
 	AddTriggerType(kBoloTriggerType);
-	return AddSubRecord<KHLABolometerRecord>(fBolo,fNumBolo);
+	return AddSubRecord<KHLABolometerRecord>(fBolo);
 }
 
 KHLABoloPulseRecord* KHLAEvent::AddBoloPulse()
@@ -566,7 +532,7 @@ KHLABoloPulseRecord* KHLAEvent::AddBoloPulse()
 	//Use this event only when creating an event and you want to add
 	//a new SubRecord.
 	
-	return AddSubRecord<KHLABoloPulseRecord>(fBoloPulse,fNumBoloPulse);
+	return AddSubRecord<KHLABoloPulseRecord>(fBoloPulse);
 }
 
 KHLAMuonModuleRecord* KHLAEvent::AddMuonModule()
@@ -575,43 +541,35 @@ KHLAMuonModuleRecord* KHLAEvent::AddMuonModule()
 	//a new SubRecord.
 	
 	AddTriggerType(kMuonVetoTriggerType);
-	return AddSubRecord<KHLAMuonModuleRecord>(fMuonModule,fNumMuonModule);
+	return AddSubRecord<KHLAMuonModuleRecord>(fMuonModule);
 }
 
 KHLASambaRecord *KHLAEvent::GetSamba(Int_t i) const
 {
   // Return the i'th Samba Sub Record for this event.
 	
-  KHLASambaRecord *ms = 0;
-  if (i < fNumSamba && i >= 0) ms = (KHLASambaRecord *)fSamba->At(i);
-  return ms;
+  return static_cast<KHLASambaRecord *>(fSamba->At(i));
 }
 
 KHLABolometerRecord *KHLAEvent::GetBolo(Int_t i) const
 {
   // Return the i'th Bolometer Sub Record for this event.
 	
-  KHLABolometerRecord *ms = 0;
-  if (i < fNumBolo && i >= 0) ms = (KHLABolometerRecord *)fBolo->At(i);
-  return ms;
+  return static_cast<KHLABolometerRecord *>(fBolo->At(i));
 }
 
 KHLABoloPulseRecord *KHLAEvent::GetBoloPulse(Int_t i) const
 {
   // Return the i'th Bolometer Pulse Sub Record for this event.
 	
-  KHLABoloPulseRecord *ms = 0;
-  if (i < fNumBoloPulse && i >= 0) ms = (KHLABoloPulseRecord *)fBoloPulse->At(i);
-  return ms;
+  return static_cast<KHLABoloPulseRecord *>(fBoloPulse->At(i));
 }
 
 KHLAMuonModuleRecord *KHLAEvent::GetMuonModule(Int_t i) const
 {
   // Return the i'th Muon Module Sub Record for this event.
 	
-  KHLAMuonModuleRecord *ms = 0;
-  if (i < fNumMuonModule && i >= 0) ms = (KHLAMuonModuleRecord *)fMuonModule->At(i);
-  return ms;
+  return static_cast<KHLAMuonModuleRecord *>(fMuonModule->At(i));
 }
 
 Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
@@ -650,9 +608,9 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	}
 	
 	
-	if(fNumBolo == anEvent.fNumBolo){
+	if(GetNumBolos() == anEvent.GetNumBolos()){
 		
-		for(Int_t i = 0; i < fNumBolo; i++){
+		for(Int_t i = 0; i < GetNumBolos(); i++){
 			KHLABolometerRecord *bolo = GetBolo(i);
 			KHLABolometerRecord *boloOther = anEvent.GetBolo(i);
 			if(bolo != 0 && boloOther != 0){
@@ -733,7 +691,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	}
 	else {
 		if (bPrint) 
-			cout << "KHLAEvent fNumBolo Not Equal" << endl;		
+			cout << "KHLAEvent number of bolometer records Not Equal" << endl;		
 		bIsEqual = false;
 		if(!bPrint)
 			return false;
@@ -741,8 +699,8 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	
 	
 	
-	if(fNumMuonModule == anEvent.fNumMuonModule){
-		for(Int_t i = 0; i < fNumMuonModule; i++){
+	if(GetNumMuonModules() == anEvent.GetNumMuonModules()){
+		for(Int_t i = 0; i < GetNumMuonModules(); i++){
 			KHLAMuonModuleRecord *s = GetMuonModule(i);
 			KHLAMuonModuleRecord *sOther = anEvent.GetMuonModule(i);
 			if(s != 0 && sOther != 0){
@@ -758,7 +716,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	}
 	else {
 		if (bPrint) 
-			cout << "KHLAEvent fNumMuonModule Not Equal" << endl;		
+			cout << "KHLAEvent number of MuonModule Not Equal" << endl;		
 		bIsEqual = false;
 		if(!bPrint)
 			return false;
@@ -812,6 +770,12 @@ void KHLAEvent::Compact(void)
 	fBoloSystem.Compact();
 	fMuonSystem.Compact();
 	
+  
+  fSamba->Compress();
+  fBolo->Compress();
+  fBoloPulse->Compress();
+  fMuonModule->Compress();
+  
 	for(Int_t i = 0; i < GetNumSambas(); i++){
 		KHLASambaRecord* samba = GetSamba(i);
 		samba->Compact();
@@ -844,17 +808,6 @@ Double_t KHLAEvent::GetSumBoloEnergyRecoil(void) const
 	return energy;
 }
 
-/*Double_t KHLAEvent::GetSumBoloEnergyHeat(void)
-{
-	//Returns the sum of the energy on the heat channel for all
-	//bolometer sub-records in the event.
-	
-	Double_t energy = 0;
-	for(Int_t i = 0; i < GetNumBolos(); i++)
-		energy += GetBolo(i)->GetEnergyHeat();
-	
-	return energy;
-}*/
 
 Double_t KHLAEvent::GetSumBoloEnergyIon(void) const
 {
@@ -868,15 +821,6 @@ Double_t KHLAEvent::GetSumBoloEnergyIon(void) const
 		energy += GetBolo(i)->GetEnergyIon();
 	
 	return energy;
-}
-
-Bool_t KHLAEvent::IsGoodMuonVetoData(void) const
-{
-  //returns true if the muon veto data during this event was in a "good" state
-  //This state has been determined by an offline analysis for Run 12 by B. Schmidt.
-  //Calling this method is equivalent to calling KMuonVetoSystemRecord::IsGoodMuonVetoData();
-  
-  return fMuonSystem.IsGoodMuonVetoData();
 }
 
 

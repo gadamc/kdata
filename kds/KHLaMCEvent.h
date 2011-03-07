@@ -17,9 +17,6 @@
 class TClonesArray; 
 class KMCBolometerRecord;
 
-const Char_t kHLaMCEventName[] = "HLaMC";
-const Char_t kHLaMCClassName[] = "KHLaMCEvent";
-
 
 class KHLaMCEvent : public KEvent {         
 	
@@ -38,7 +35,8 @@ public:
 	Bool_t IsSame(const KHLaMCEvent &anEvent, Bool_t bPrint = false) const;
 	Bool_t operator==(const KHLaMCEvent &anEvent) const { return IsSame(anEvent,false); }
 	Bool_t operator!=(const KHLaMCEvent &anEvent) const { return !(*this==anEvent); }
-	
+  static const char* GetClassName() {return "KHLaMCEvent";}
+
 	Int_t GetNumBolos(void) const {return fNumBolo;}
 
 	void SetNumBolo(Int_t aNum){fNumBolo = aNum;}

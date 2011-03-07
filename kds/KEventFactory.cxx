@@ -14,7 +14,7 @@
 // Ideally, one would use this class whenever they want to create
 // some type of Event class that derives from KEvent. When 
 // an event class is created that derives from KEvent, the author
-// must make sure to declare the kEventName and the kClassName for 
+// must make sure to declare GetClassName method 
 // their class. See the KHLAEvent and KRawEvent source files for 
 // an example. 
 //
@@ -38,6 +38,7 @@
 #include "KHLAEvent.h"
 #include "KRawEvent.h"
 #include "KHLaMCEvent.h"
+#include "TClass.h"
 //#include "KMCEvent.h"
 
 #include <iostream>
@@ -48,14 +49,11 @@ ClassImp(KEventFactory);
 
 KEventFactory::KEventFactory(void)
 {
-  //Standard Constructor
 
 }
 
 KEventFactory::~KEventFactory(void)
 {
-  //Does calling clear at destruction take too much computing time?
-  //Clear("C");
 
 }
 
@@ -63,26 +61,27 @@ KEventFactory::~KEventFactory(void)
 KEvent* KEventFactory::NewEvent(const Char_t* type) 
 {
   //Allocates memory for a new KEvent of a particular 'type'.
-  //The 'type' is specified in the header file of the KEvent-based class.
-  //(Note to developers: if you create a new KEvent-based class, follow
-  //an example, and remember to add your class in this list if you want
-  //the Factory to know about it.)
+  //Use KEvent::Class()
+  // For example, 
+  // KHLAEvent *e = KEventFactory::NewEvent( KHLAEvent::GetClassName() );
+  //
   //Most users will want to use the NewHLAEvent and NewRawEvent method, if
   //they are even using this class. 
-  
+  //
   //you own the memory pointed to by this pointer, so you must delete it.
+  //
   
 	KEvent *event = 0;
 	string sType = type;
-	if(sType.compare(kHLAEventName)==0 || sType.compare(kHLAClassName)==0){
+	if(sType.compare(KHLAEvent::GetClassName())==0){
 		event = new KHLAEvent;
 		if(event != 0) BuildEvent(event);
 	}
-	else if(sType.compare(kRawEventName)==0 || sType.compare(kRawClassName)==0){
+	else if(sType.compare(KRawEvent::GetClassName())==0){
 		event = new KRawEvent;
 		if(event != 0) BuildEvent(event);
 	}
-	else if(sType.compare(kHLaMCEventName)==0 || sType.compare(kHLaMCClassName)==0){
+	else if(sType.compare(KHLaMCEvent::GetClassName())==0){
 		event = new KHLaMCEvent;
 		if(event != 0) BuildEvent(event);
 	}
@@ -104,7 +103,7 @@ KHLAEvent* KEventFactory::NewHLAEvent(void)
 	//returns a pointer to an KHLAEvent object. You own the memory, so
 	//you must delete it.
 	
-	return dynamic_cast<KHLAEvent*>(NewEvent(kHLAEventName));
+	return dynamic_cast<KHLAEvent*>(NewEvent(KHLAEvent::GetClassName()));
 }
 
 KRawEvent* KEventFactory::NewRawEvent(void)
@@ -112,7 +111,7 @@ KRawEvent* KEventFactory::NewRawEvent(void)
 	//returns a pointer to an KRawEvent object. You own the memory, so
 	//you must delete it.
 	
-	return dynamic_cast<KRawEvent*>(NewEvent(kRawEventName));
+	return dynamic_cast<KRawEvent*>(NewEvent(KRawEvent::GetClassName()));
 }
 
 KHLaMCEvent* KEventFactory::NewHLaMCEvent(void)
@@ -120,7 +119,7 @@ KHLaMCEvent* KEventFactory::NewHLaMCEvent(void)
 	//returns a pointer to an KHLaMCEvent object. You own the memory, so
 	//you must delete it.
 	
-	return dynamic_cast<KHLaMCEvent*>(NewEvent(kHLaMCEventName));
+	return dynamic_cast<KHLaMCEvent*>(NewEvent(KHLaMCEvent::GetClassName()));
 }
 
 Bool_t KEventFactory::DeleteEvent(KEvent *event)
@@ -155,6 +154,7 @@ KEvent* KEventFactory::NewEvent(const KEvent* event)
 	
 	if(event == 0) return mNewEvent; 
 	
+  /*
 	if(const KHLAEvent *mHLAEvent = dynamic_cast<const KHLAEvent*>(event)){
 		mNewEvent = NewEvent(mHLAEvent);
 	}
@@ -167,12 +167,13 @@ KEvent* KEventFactory::NewEvent(const KEvent* event)
 	else {
 		cout << "KEventFactory::NewEvent: Cannot create a new Event of this type" << endl;
 	}
-	
+	*/
+  mNewEvent = NewEvent(event->GetClassName());
 	return mNewEvent;
 	
 }
 
-
+/*
 KHLAEvent* KEventFactory::NewEvent(const KHLAEvent* event)
 {
 	//make a new Event object, but copy it from event.
@@ -202,7 +203,7 @@ KHLaMCEvent* KEventFactory::NewEvent(const KHLaMCEvent* event)
 	
 	return mNewEvent;
 }
-
+*/
 
 void KEventFactory::BuildEvent(KEvent *event)
 {
@@ -229,10 +230,3 @@ void KEventFactory::BuildEvent(KEvent *event)
 		//cout << "KEventFactory::NewEvent: Cannot create a new Event of this type" << endl;
 	}
 }
-
-/*
-shared_ptr<KHLAEvent> KEventFactory::NewHLAEventTest(void)
-{
-	shared_ptr<KHLAEvent> mEvent(new KHLAEvent);
-	return mEvent;
-}*/

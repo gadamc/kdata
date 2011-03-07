@@ -114,7 +114,7 @@ Bool_t KDataWriter::OpenFile(const Char_t* fileName, KEvent **anEvent,
 		return false;
 	}
 	
-	Close(); 
+	Close();   //hmmm... shouldn't this just go up there and close the old file if a new file is asked to be open?
 	
 	TFile *mFile = OpenFileForWriting(fileName, mode);
 	
@@ -155,25 +155,26 @@ Bool_t KDataWriter::SetTreeBranch(KEvent **anEvent)
 		if( dynamic_cast<KHLAEvent*>(*anEvent) != 0) {
 			//cout << typeid(*hlaEv).name() << endl;
 			//cout << &hlaEv << " " << &anEvent << endl;
-			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), kHLAClassName, anEvent, 512000, 99));
+			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KHLAEvent::GetClassName(), anEvent, 512000, 99));
 			
 		}
 		else if( dynamic_cast<KRawEvent*>(*anEvent) !=0 ) {
 			//cout << typeid(*hlaEv).name() << endl;
 			//cout << hlaEv << " " << anEvent << endl;
-			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), kRawClassName, anEvent, 512000, 99));
+			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KRawEvent::GetClassName(), anEvent, 512000, 99));
 			
 		}
 		else if( dynamic_cast<KHLaMCEvent*>(*anEvent) !=0 ) {
 			//cout << typeid(*hlaEv).name() << endl;
 			//cout << hlaEv << " " << anEvent << endl;
-			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), kHLaMCClassName, anEvent, 512000, 99));
+			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KHLaMCEvent::GetClassName(), anEvent, 512000, 99));
 			
 		}
 		else{
 			cout << "KDataWriter::SetTreeBranch(KHLAEvent* ) Unsupported Event Class " << endl;
 		}
 
+    //fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), **anEvent.ClassName(), anEvent, 512000, 99));
 	}
 	catch (exception& e) {
 
@@ -266,7 +267,6 @@ Int_t KDataWriter::Write(const Char_t *name, Int_t option, Int_t bufsize)
 	if(fFile->IsOpen()){
 		fFile->cd();
 		
-		WriteTCuts(); //add the TCuts. 
 				
 		return fTree->Write(name, option, bufsize);  //add the tree
 	}
@@ -274,106 +274,6 @@ Int_t KDataWriter::Write(const Char_t *name, Int_t option, Int_t bufsize)
 		return -1;
 	}
 
-}
-
-void KDataWriter::WriteTCuts(void)
-{
-	if(fFile == 0) return;
-	
-	if(fFile->IsOpen()){
-		fFile->cd();
-		/*
-		TCut mCut0("fid401","fid401");
-		mCut0 = "fDetectorName.fData == \"FID401\"";
-		mCut0.Write("", TObject::kWriteDelete);  //kWriteDelete prevents multiple keys
-		//being written to the file in case somebody calls Write multiple times
-		
-		TCut mCut1("fid402","fid402");
-		mCut1 = "fDetectorName.fData == \"FID402\"";
-		mCut1.Write("", TObject::kWriteDelete);
-		
-		TCut mCut2("id2","id2");
-		mCut2 = "fDetectorName.fData == \"ID2\"";
-		mCut2.Write("", TObject::kWriteDelete);
-		
-		TCut mCut3("id3","id3");
-		mCut3 = "fDetectorName.fData == \"ID3\"";
-		mCut3.Write("", TObject::kWriteDelete);
-		
-		TCut mCut4("id4","id4");
-		mCut4 = "fDetectorName.fData == \"ID4\"";
-		mCut4.Write("", TObject::kWriteDelete);
-
-		TCut mCut5("id5","id5");
-		mCut5 = "fDetectorName.fData == \"ID5\"";
-		mCut5.Write("", TObject::kWriteDelete);
-		
-		TCut mCut6("id6","id6");
-		mCut6 = "fDetectorName.fData == \"ID6\"";
-		mCut6.Write("", TObject::kWriteDelete);
-		
-		TCut mCut7("id401","id401");
-		mCut7 = "fDetectorName.fData == \"ID401\"";
-		mCut7.Write("", TObject::kWriteDelete);
-
-		TCut mCut8("id402","id402");
-		mCut8 = "fDetectorName.fData == \"ID402\"";
-		mCut8.Write("", TObject::kWriteDelete);
-		
-		TCut mCut9("id403","id403");
-		mCut9 = "fDetectorName.fData == \"ID403\"";
-		mCut9.Write("", TObject::kWriteDelete);
-		
-		TCut mCut10("id404","id404");
-		mCut10 = "fDetectorName.fData == \"ID404\"";
-		mCut10.Write("", TObject::kWriteDelete);
-		
-		TCut mCut11("id405","id405");
-		mCut11 = "fDetectorName.fData == \"ID405\"";
-		mCut11.Write("", TObject::kWriteDelete);
-		
-		TCut mCut12("fid801","fid801");
-		mCut12 = "fDetectorName.fData == \"FID801\"";
-		mCut12.Write("", TObject::kWriteDelete);
-
-		TCut mCut13("fid802s","fid802s");
-		mCut13 = "fDetectorName.fData == \"FID802s\"";
-		mCut13.Write("", TObject::kWriteDelete);
-
-		TCut mCut14("fid803","fid803");
-		mCut14 = "fDetectorName.fData == \"FID803\"";
-		mCut14.Write("", TObject::kWriteDelete);
-
-		TCut mCut15("fid804","fid804");
-		mCut15 = "fDetectorName.fData == \"FID804\"";
-		mCut15.Write("", TObject::kWriteDelete);
-		
-		TCut mCut16("fid403","fid403");
-		mCut16 = "fDetectorName.fData == \"FID403\"";
-		mCut16.Write("", TObject::kWriteDelete);
-
-		TCut mCut17("fid404","fid404");
-		mCut17 = "fDetectorName.fData == \"FID404\"";
-		mCut17.Write("", TObject::kWriteDelete);
-		
-		TCut mCut18("id4v2","id4v2");
-		mCut18 = "fDetectorName.fData == \"ID4.v2\"";
-		mCut18.Write("", TObject::kWriteDelete);
-		
-		TCut mCut19("id5v2","id5v2");
-		mCut19 = "fDetectorName.fData == \"ID5.v2\"";
-		mCut19.Write("", TObject::kWriteDelete);
-		
-		TCut mCut20("id402rel","id402rel");
-		mCut20 = "fDetectorName.fData == \"ID402.Rel\"";
-		mCut20.Write("", TObject::kWriteDelete);
-		
-		TCut mCut21("id403rel","id403rel");
-		mCut21 = "fDetectorName.fData == \"ID403.Rel\"";
-		mCut21.Write("", TObject::kWriteDelete);
-		*/
-	}
-	
 }
 
 Bool_t KDataWriter::Close(Option_t *opt)
@@ -388,6 +288,7 @@ Bool_t KDataWriter::Close(Option_t *opt)
 	if(fLocalEvent != 0){
 		if(KEventFactory::DeleteEvent(fLocalEvent))
 			fLocalEvent = 0;
+
 	}
 	bIsReady = !KDataFileIO::Close(opt);
 	

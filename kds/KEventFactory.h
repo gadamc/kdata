@@ -42,9 +42,9 @@ public:
 	
 	static KEvent* NewEvent(const Char_t* type); //support polymorphism
 	static KEvent* NewEvent(const KEvent* event);  //support polymorphism -- this is like a copy constructor
-	static KHLAEvent* NewEvent(const KHLAEvent* event);  //support polymorphism -- this is like a copy constructor
-	static KHLaMCEvent* NewEvent(const KHLaMCEvent* event);
-	static KRawEvent* NewEvent(const KRawEvent* event);  //support polymorphism -- this is like a copy constructor
+                                                 //static KHLAEvent* NewEvent(const KHLAEvent* event);  //support polymorphism -- this is like a copy constructor
+                                                 //static KHLaMCEvent* NewEvent(const KHLaMCEvent* event);
+                                                 //static KRawEvent* NewEvent(const KRawEvent* event);  //support polymorphism -- this is like a copy constructor
 	static KHLAEvent* NewHLAEvent(void);
 	static KHLaMCEvent* NewHLaMCEvent(void);
 	static KRawEvent* NewRawEvent(void);
@@ -53,9 +53,6 @@ public:
 	
 private:
 	
-	//void AddToList(KEvent *event);
-	
-	//TList mListOfEvents;
 	
   //private methods
 	static void BuildEvent(KEvent *event);

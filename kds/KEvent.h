@@ -10,14 +10,8 @@
 #define __KEVENT_H__
 
 #include "TObject.h"
-#include "TClonesArray.h"
+//#include "TClonesArray.h"
 
-//this is a fantastically horrible place to put these... 
-//maybe I should put them in a namespace
-//KEvent namespace...?
-const Int_t kBoloTriggerType = 0x1;
-const Int_t kMuonVetoTriggerType = 0x2;
-const Int_t kNCTriggerType = 0x4;  //whenever (if?) we add the Neutron Counter data
 
 class KEvent : public TObject {
 	
@@ -35,7 +29,8 @@ public:
 	Bool_t operator==(const KEvent &anEvent) const;
 	Bool_t operator!=(const KEvent &anEvent) const { return !(*this==anEvent); }	
 	virtual void Clear(Option_t *option = "C");
-	virtual void Compact(void) {/*nothing to compact */};
+	virtual void Compact(void) {/*nothing to compact */}
+  static const char* GetClassName() {return "KEvent"; }
 	
 	//Calculated Quantities
 	//Double_t GetTimeStamp(void);
@@ -67,6 +62,12 @@ public:
 			 
 	void AddTriggerType(Int_t aNum) {fTriggerType |= aNum;}  
 	
+  enum kTriggerTypes {
+    kBoloTriggerType = 0x1,
+    kMuonVetoTriggerType = 0x2,
+    kNCTriggerType = 0x4
+  };
+    
 private:
 	void SetTriggerType(Int_t aNum) {fTriggerType = aNum;}
 	

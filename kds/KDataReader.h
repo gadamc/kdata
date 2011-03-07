@@ -12,7 +12,6 @@
 
 #include "KDataFileIO.h"
 #include "TBranchElement.h"
-#include "KHLAEvent.h" // I guess I need this for the GetNextMuonEntry()/ GetNextBoloEntry() methods
 
 class KEvent;
 
@@ -55,7 +54,10 @@ private:
 	Bool_t SetBranchAddress(KEvent **anEvent = 0);
 	//Bool_t OpenFile(const Char_t* fileName);
 	Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
+  
+  Bool_t fIsOpen; //true if open, false if not.
 
+  
 	//discourage / do not allow copy and assignment
 	KDataReader(const KDataReader &aReader);
 	KDataReader& operator=( const KDataReader &aReader );

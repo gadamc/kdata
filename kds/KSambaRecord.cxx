@@ -119,7 +119,7 @@ void KSambaRecord::InitializeMembers(void)
 	SetNtpDateMicroSec(-99); 
 	SetSambaDAQNumber(-99);
 	fFileNumber = -99;
-  fRunName = "";
+  fRunName.resize(0);
 }
 
 

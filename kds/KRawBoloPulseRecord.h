@@ -66,7 +66,7 @@ private:
   TRef fBolometerRecord;  //the value of this is the pointer to KRawBolometerRecord object that this pulse belongs to.
 
   string fChannelName;  //the name of the channel. for example: "chaleur ID4"
-  ULong_t fPulseTimeWidth; //returns number of ns for each point.  = 1 / f
+  ULong_t fPulseTimeWidth; //holds the number of ns for each point.  = 1 / f. Default is 10 ns
   vector<Short_t> fTrace; //the raw trace.
   Double32_t fAmplitude; //the pulse amplitude calcuated by the DAQ
   Double32_t fAmplitudeBaseline; //the baseline amplitude calculated by DAQ

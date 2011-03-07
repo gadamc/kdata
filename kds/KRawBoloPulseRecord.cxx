@@ -96,9 +96,9 @@ void KRawBoloPulseRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
   
-  fChannelName = "";  //the name of the channel. for example: "chaleur ID4"
+  fChannelName.resize(0);  //the name of the channel. for example: "chaleur ID4"
   fPulseTimeWidth = 10; //returns number of ns for each point.  = 1 / f
-  fTrace.clear(); //the raw trace.
+  fTrace.resize(0); //the raw trace.
   fAmplitude = -1; //the pulse amplitude calcuated by the DAQ
   fAmplitudeBaseline = -1; //the baseline amplitude calculated by DAQ
   fAmplitudeBaselineNoise = -1; //the width of the distribution of the baseline amplitude for this run period, calculated by DAQ

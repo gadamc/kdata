@@ -64,7 +64,6 @@ private:
 	//void SetRunConstants(Int_t aBigRunNumber = 0);
 	Bool_t SetTreeBranch(KEvent** event);
 	Bool_t SetTreeBranch(const Char_t* eventType);
-	void WriteTCuts(void);
 
 	//forbid copy constructor and assignment operator for this class.
 	//maybe one day implement a reasonable copy constructor and assignment operator

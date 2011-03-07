@@ -14,7 +14,7 @@
 #include "TBits.h"
 #include "TTree.h"
 #include "TRandom.h"
-#include "TClonesArray.h"
+#include "KClonesArray.h"
 #include "TCanvas.h"
 #include "TH1F.h"
 #include "TTree.h"
@@ -133,8 +133,8 @@ void printInfo(KHLAEvent& ev){
 
 bool checkSpecialCase(string in, KHLAEvent* ev ){
 	if((ev->GetNumSambas())!=0){ //GetNumSambaRecs  GetSambaRecords
-		TClonesArray* sambaArray = ev->GetSambaRecords();
-		KHLASambaRecord* sam=(KHLASambaRecord*)sambaArray->At(0);
+		
+		KHLASambaRecord* sam=ev->GetSamba(0);
 		if((sam->GetRunName())==in) return true;
 		else return false;
 	}

@@ -83,12 +83,7 @@ void KBolometerRecord::Clear(Option_t *opt)
   //TClonesArray::Clear("C")
 	KSubRecord::Clear(opt);
 	
-  //Clear and delete local objects here. 
-	//if(fDetectorName!=0){
-	//	delete fDetectorName;
-	//	fDetectorName=0;
-	//}
-	
+  
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
 	
@@ -100,6 +95,7 @@ void KBolometerRecord::InitializeMembers(void)
   
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+  fDetectorName.resize(0);
 	
 }
 
@@ -171,7 +167,7 @@ Bool_t KBolometerRecord::IsDetector(const char* name)
   
   if(name == 0) return false;
   
-  if(strcmp(fDetectorName.c_str(), name) == 0)
+  if(fDetectorName.compare(name) == 0)
     return true;
   
   else return false;

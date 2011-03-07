@@ -20,6 +20,7 @@
 #include <typeinfo>
 #include <iostream>
 #include <string>
+#include "KHLAEvent.h" 
 
 using namespace std;
 
@@ -71,6 +72,7 @@ void KDataReader::InitializeMembers(void)
 	fCurrentEntry = 0;
 	fEntries = 0;
 	fGSEventIndex=0;
+  fIsOpen = false;
 }
 
 
@@ -79,7 +81,8 @@ Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t u
   //closes any file that is already open and then opens fileName.
   //returns true if successful. 
   
-	Close();  //close the file, if one is already open. 
+	if(fIsOpen == true)
+    Close();  //close the file, if one is already open. 
 	fFile = OpenFileForReading(fileName);
 	Bool_t theRet = false;
   
@@ -89,7 +92,8 @@ Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t u
         SetUseInternalCache(useCache);
 				if(GetEntry(0) > 0)
 					fEntries = fTree->GetEntries();
-					theRet = true;
+        theRet = true;
+        fIsOpen = true;
 			}
 		}
 	}
@@ -100,12 +104,19 @@ Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t u
 Bool_t KDataReader::Close(Option_t *opt)
 {
   //close the file with option opt. See TFile::Close(Option_t*)
-	return this->KDataFileIO::Close(opt);
+  if(fIsOpen == false)
+    return true;  // you've already closed it.
+
 	if(fLocalEvent!=0) {
 		KEventFactory::DeleteEvent(fLocalEvent);
 		fLocalEvent = 0;
 	}
-		
+
+  
+  fIsOpen = !KDataFileIO::Close(opt);
+  
+  return !fIsOpen;
+  
 }
 
 void KDataReader::SetUseInternalCache(Bool_t option)
@@ -143,9 +154,10 @@ Bool_t KDataReader::SetBranchAddress(KEvent **anEvent)
 		if(fBranch == 0) return false;
 		
 		fLocalEvent = KEventFactory::NewEvent(fBranch->GetClassName());
-		if(fLocalEvent != 0)
+		if(fLocalEvent != 0) {
 			fTree->SetBranchAddress(GetBranchName().c_str(), &fLocalEvent);
-		else 
+    }
+    else 
 			return false; 
 	}
 	else 

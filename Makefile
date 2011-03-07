@@ -1,7 +1,7 @@
 ###############################################################################
 # Makefile for KDATA System
 #
-# Author: Adam Cox, 08/19/10
+# Author: Adam Cox, 08/19/10 (borrowed from ROOT and QSNO, then modified)
 #
 # This Makefile relies on a successful install and build of the ROOT system,
 # and the correct definition of the following environment variables:
