@@ -60,7 +60,7 @@ KDataReader& KDataReader::operator=( const KDataReader &/*aWriter*/)
 
 KDataReader::~KDataReader(void)
 {
-  Close();
+  //Close();
 }
 
 void KDataReader::InitializeMembers(void)
@@ -83,7 +83,7 @@ Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t u
   
 	if(fIsOpen == true)
     Close();  //close the file, if one is already open. 
-	fFile = OpenFileForReading(fileName);
+	OpenFileForReading(fileName);
 	Bool_t theRet = false;
   
 	if(fFile != 0){

@@ -36,7 +36,7 @@ KDataFileIO::KDataFileIO(void)
 
 KDataFileIO::~KDataFileIO(void)
 {
-  Delete();
+  //Delete();
 }
 
 void KDataFileIO::InitializeMembers(void)
@@ -59,7 +59,8 @@ void KDataFileIO::Delete(void)
 	
 	Close();
 	if(fFile != 0) {
-		delete fFile; fFile = 0;
+		delete fFile; 
+    fFile = 0;
 	}
 	 
 }
@@ -85,9 +86,9 @@ void KDataFileIO::GetTreePointerInFile(void)
 	
 	fFile->cd();
 	
-	if(fTree != 0) {
-		delete fTree; fTree = 0;
-	}
+	//if(fTree != 0) {
+	//	delete fTree; fTree = 0;
+	//}
 	
 	fTree = (TTree *)fFile->Get(fTreeName.c_str());
 
@@ -120,7 +121,8 @@ Bool_t KDataFileIO::Close(Option_t *opt)
 		//return false if we couldn't close the file.
 	}
 	else {
-		delete fFile; fFile = 0;
+		delete fFile; 
+    fFile = 0;
 		fTree = 0; //the tree is deleted by the TFile
 		return true;
 	}
@@ -132,7 +134,7 @@ TFile* KDataFileIO::OpenFileForWriting(const Char_t* name, const Char_t* option,
 													const Char_t* title)
 {
 	 
-	fFile = new TFile(name, option, title); 
+	fFile =  TFile::Open(name, option, title); 
 	//MUST do this after initializing the TFile
 	CreateTree();
 	
@@ -142,7 +144,7 @@ TFile* KDataFileIO::OpenFileForWriting(const Char_t* name, const Char_t* option,
 TFile* KDataFileIO::OpenFileForReading(const Char_t* name)
 {
 	
-	fFile = new TFile(name, "read");
+	fFile = TFile::Open(name, "read");
 	
 	GetTreePointerInFile();
 
