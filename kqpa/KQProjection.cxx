@@ -31,11 +31,47 @@
 
 ClassImp(KQProjection);
 
+KQProjection::KQProjection()
+{
+  fEnergyRecoilMin = 0;
+  fEnergyRecoilMax = 1000;
+  fNumBinsEnergyRecoil = 1000;
+  fQMin = 0;
+  fQMax = 2;
+  fNumBinsQ = 1000;
+  
+  fHistogram = new TH2D("hist", //name
+                        "hist", //title
+                        fNumBinsEnergyRecoil, //recoil energy bins
+                        fEnergyRecoilMin, // minimal recoil energy
+                        fEnergyRecoilMax, //maximal recoil energy
+                        fNumBinsQ, // Q bins
+                        fQMin, // minimal Q
+                        fQMax); // maximal Q
+}
+
+KQProjection::KQProjection(const KQProjection& anotherKQProjection)
+{
+  fHistogram = new TH2D(*(anotherKQProjection.fHistogram));
+  fEnergyRecoilMin = anotherKQProjection.fEnergyRecoilMin;
+  fEnergyRecoilMax = anotherKQProjection.fEnergyRecoilMax;
+  fNumBinsEnergyRecoil = anotherKQProjection.fNumBinsEnergyRecoil;
+  fEventCategory = anotherKQProjection.fEventCategory;
+  fQMin = anotherKQProjection.fQMin;
+  fQMax = anotherKQProjection.fQMax;
+  fNumBinsQ = anotherKQProjection.fNumBinsQ;
+  fSourceFile = anotherKQProjection.fSourceFile;
+  fBoloName = anotherKQProjection.fBoloName;
+}
+
+
+
 KQProjection::KQProjection(const Char_t* aSourceFile,
                            const Char_t* aBoloName,
                            Double_t anEnergyRecoilMin,
                            Double_t anEnergyRecoilMax,
-                           const Char_t* aCategoryName)
+                           const Char_t* aCategoryName,
+                           const Char_t* aHistogramName)
 {
   fSourceFile = aSourceFile;
   fBoloName = aBoloName;
@@ -46,7 +82,7 @@ KQProjection::KQProjection(const Char_t* aSourceFile,
   fQMin = 0;
   fQMax = 2;
   
-  fHistogram = new TH2D("hist","hist",fNumBinsEnergyRecoil,fEnergyRecoilMin,
+  fHistogram = new TH2D(aHistogramName,aHistogramName,fNumBinsEnergyRecoil,fEnergyRecoilMin,
                         fEnergyRecoilMax, fNumBinsQ,fQMin,fQMax);
   ReadData(fSourceFile.c_str(),fBoloName.c_str(),fEnergyRecoilMin,fEnergyRecoilMax,aCategoryName);
 }
@@ -57,13 +93,18 @@ Bool_t KQProjection::ReadData(const Char_t* aSourceFile,
                               Double_t anEnergyRecoilMax,
                               const Char_t* aCategoryName)
 {
+
   fHistogram->Reset();
+  fHistogram->GetXaxis()->SetRangeUser(anEnergyRecoilMin,
+                                       anEnergyRecoilMax);
   
-    if(fSourceFile!=aSourceFile && strcmp(aSourceFile,""))
+  if(fSourceFile!=aSourceFile && strcmp(aSourceFile,""))
     fSourceFile = aSourceFile;
   if(fBoloName!=aBoloName && strcmp(aBoloName,""))
     fBoloName = aBoloName;
   SetEventCategory(aCategoryName); //setting the event category
+  fEnergyRecoilMin = anEnergyRecoilMin;
+  fEnergyRecoilMax = anEnergyRecoilMax;
     
   cout << "Reading events ... " << endl;
   

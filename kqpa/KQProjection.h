@@ -37,11 +37,14 @@ class KQProjection {
     string fSourceFile;
     string fBoloName;
   public:
+    KQProjection();
+    KQProjection(const KQProjection& anotherKQProjection);
     KQProjection(const Char_t* aSourceFile,
                  const Char_t* aBoloName,
                  Double_t anEnergyRecoilMin = 0,
                  Double_t anEnergyRecoilMax = 1000,
-                 const Char_t* aCategoryName = "fiducial");
+                 const Char_t* aCategoryName = "fiducial",
+                 const Char_t* aHistogramName = "hist");
     //getters
     TH2D* GetHistogram() { return fHistogram; }
     TH1D* GetProjection() { return fHistogram->ProjectionY(); }
@@ -72,6 +75,7 @@ class KQProjection {
                     const Char_t* aCategoryName);
                     
     void Fit(TF1* aFunction);
+    ClassDef(KQProjection,0);
                     
     
 };
