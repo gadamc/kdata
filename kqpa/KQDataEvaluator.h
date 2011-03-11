@@ -10,10 +10,12 @@
 
 #include "Rtypes.h"
 #include "KQDataReader.h"
+#include "KQHistogramManager.h"
 
 class KQDataEvaluator {
   private:
-    KQDataReader* fKQDataReader;
+    KQDataReader* fQDataReader;
+    KQHistogramManager* fQHistogramManager;
   public:
     KQDataEvaluator();
     ~KQDataEvaluator();
@@ -22,6 +24,8 @@ class KQDataEvaluator {
                       const Char_t* aBoloConfigFile = "",
                       const Char_t* aBoloName = "ALL",
                       const Char_t* aCategoryName = "fiducial");
+                      
+    Bool_t FillHistograms(Int_t aNumHistograms = 10);
     
     
   ClassDef(KQDataEvaluator,1);

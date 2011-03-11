@@ -49,6 +49,7 @@ class KQDataRecord {
     friend Bool_t operator<(const KQDataRecord& aFirstDataRecord,
                             const KQDataRecord& aSecondDataRecord);
     friend class KQDataReader;
+    
   ClassDef(KQDataRecord,1);
 };
 

@@ -19,9 +19,13 @@ KQDataEvaluator::KQDataEvaluator()
 
 KQDataEvaluator::~KQDataEvaluator() 
 {
-  if(fKQDataReader) {
-    delete fKQDataReader;
-    fKQDataReader = 0;
+  if(fQHistogramManager) {
+    delete(fQHistogramManager);
+    fQHistogramManager = 0;
+  }
+  if(fQDataReader) {
+    delete fQDataReader;
+    fQDataReader = 0;
   }
 }
 
@@ -30,8 +34,23 @@ Bool_t KQDataEvaluator::ReadEvents(const Char_t* aSourceFile,
                                    const Char_t* aBoloName,
                                    const Char_t* aCategoryName)
 {
-  if(!fKQDataReader)
-    fKQDataReader = new KQDataReader(aSourceFile,aBoloConfigFile,
+  if(!fQDataReader)
+    fQDataReader = new KQDataReader(aSourceFile,aBoloConfigFile,
                                      aBoloName,aCategoryName);
-  return(fKQDataReader->ReadEvents(aSourceFile,aBoloConfigFile,aBoloName,aCategoryName));
+  return(fQDataReader->ReadEvents(aSourceFile,aBoloConfigFile,aBoloName,aCategoryName));
+}
+
+Bool_t KQDataEvaluator::FillHistograms(Int_t aNumHistograms)
+{
+  if(!fQDataReader) {
+    cout << "KQDataEvaluator::FillHistograms(): first data has to be read!!" << endl;
+    cout << "  call KQDataEvaluator::ReadEvents() " << endl;
+    return false;
+  }
+  if(!fQHistogramManager)
+    fQHistogramManager = new KQHistogramManager(fQDataReader);
+    else
+    fQHistogramManager->SetQDataReader(fQDataReader);
+  fQHistogramManager->Fill(aNumHistograms);
+  
 }

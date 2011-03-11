@@ -28,6 +28,8 @@ class KQDataReader {
     string fBoloConfigFile; //ASCII file containing bolometer configuration data
     string fBoloName; //bolometer name
     Int_t fEventCategory; //event category 1
+    Double_t fEnergyRecoilMin; //minimal recoil energy
+    Double_t fEnergyRecoilMax; //maximal recoil energy;
     vector<KQDataRecord> fData;
   public:
     KQDataReader(const Char_t* aSourceFile = "",
@@ -45,6 +47,8 @@ class KQDataReader {
     void SetBoloConfigFile(const Char_t* aBoloConfigFile) { fBoloConfigFile = aBoloConfigFile; }
     void SetBoloName(const Char_t* aBoloName) { fBoloName = aBoloName; }
     void SetEventCategory(const Char_t* aCategoryName);
+    void SetEnergyRecoilMin(Double_t anEnergyRecoilMin) { fEnergyRecoilMin = anEnergyRecoilMin; }
+    void SetEnergyRecoilMax(Double_t anEnergyRecoilMax) { fEnergyRecoilMax = anEnergyRecoilMax; }
     
     //getters
 
@@ -52,6 +56,8 @@ class KQDataReader {
     const Char_t* GetBoloConfigFile() const { return(fBoloConfigFile.c_str()); }
     const Char_t* GetBoloName() const { return(fBoloName.c_str()); }
     const Char_t* GetEventCategory() const;
+    Double_t GetEnergyRecoilMin() const { return fEnergyRecoilMin; }
+    Double_t GetEnergyRecoilMax() const { return fEnergyRecoilMax; }
     KQDataRecord GetDataRecord(UInt_t anIndex) const;
     Double_t GetEnergyRecoil(UInt_t anIndex) const;
     Double_t GetEnergyIon(UInt_t anIndex) const;
@@ -61,6 +67,7 @@ class KQDataReader {
     Double_t GetSigmaHeat(UInt_t anIndex) const;
     Int_t GetSize() const;
     
+    friend class KQHistogramManager;
 };
 
 #endif //__KQDATAREADER_H__

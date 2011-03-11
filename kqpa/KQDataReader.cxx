@@ -27,6 +27,8 @@ KQDataReader::KQDataReader(const Char_t* aSourceFile,
   fBoloConfigFile = aBoloConfigFile;
   fBoloName = aBoloName;
   SetEventCategory(aCategoryName);
+  fEnergyRecoilMin = 0;
+  fEnergyRecoilMax = 1000;
 }
 
 Bool_t KQDataReader::ReadEvents(const Char_t* aSourceFile,
@@ -83,7 +85,9 @@ Bool_t KQDataReader::ReadEvents(const Char_t* aSourceFile,
       for(int l = 0; l<aKHLAEvent->GetNumBolos(); ++l)  {
         aBoloRecord = aKHLAEvent->GetBolo(l);
         if(aBoloRecord->GetEventFlag()==fEventCategory &&
-          aBoloRecord->GetDetectorName()==fBoloName) {
+          aBoloRecord->GetDetectorName()==fBoloName &&
+          aBoloRecord->GetEnergyRecoil()>= fEnergyRecoilMin &&
+          aBoloRecord->GetEnergyRecoil()<= fEnergyRecoilMax) {
           Double_t aHeatUncertainty = KQUncertainty::GetChannelUncertainty(aBoloRecord->GetEnergyRecoil(),
                                                                      aBoloConfig.GetSigmaHeatZero(),
                                                                      aBoloConfig.GetSigmaHeatCalibration(),
@@ -110,7 +114,9 @@ Bool_t KQDataReader::ReadEvents(const Char_t* aSourceFile,
       aNumBoloEvents += aKHLAEvent->GetNumBolos();
       for(int l = 0; l<aKHLAEvent->GetNumBolos(); ++l) {
         aBoloRecord = aKHLAEvent->GetBolo(l);
-        if(aBoloRecord->GetEventFlag()==fEventCategory) {
+        if(aBoloRecord->GetEventFlag()==fEventCategory &&
+          aBoloRecord->GetEnergyRecoil()>= fEnergyRecoilMin &&
+          aBoloRecord->GetEnergyRecoil()<= fEnergyRecoilMax) {
           Double_t aHeatUncertainty = KQUncertainty::GetChannelUncertainty(aBoloRecord->GetEnergyRecoil(),
                                                                      aBoloConfig.GetSigmaHeatZero(),
                                                                      aBoloConfig.GetSigmaHeatCalibration(),
