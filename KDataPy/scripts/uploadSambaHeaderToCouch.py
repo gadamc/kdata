@@ -101,10 +101,6 @@ def appendSambaDocument(db, doc):
     newdoc['file_number'] = doc['file_number']
     newdoc['type'] ='addendum'
     newdoc['parent_id'] = doc['_id']
-    if(doc['bolometer']) newdoc['bolometer'] = doc['bolometer']
-    if(doc['run_name']) newdoc['run_name'] = doc['run_name']
-    if(doc['author']) newdoc['author'] =  doc['author']
-    if(doc['type']) newdoc['parent.type'] = doc['type']
     dd = datetime.datetime.utcnow()
     newdoc['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
                           'hour':dd.hour,'minute':dd.minute,'second':dd.second,

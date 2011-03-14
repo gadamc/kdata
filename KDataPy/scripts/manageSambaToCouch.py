@@ -10,7 +10,7 @@ def main(uri = 'http://edelweiss:darkmatr@edelweiss.cloudant.com',
         lastfile = '/Users/adam/Scripts/uploadSambaToCouch/lastSambaPartitionUploaded.txt',
         logFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.log', 
         errFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.err',
-        db = 'run14', startDir = ''):
+        db = 'edwdb', startDir = ''):
         
   logfile = open(logFileName, 'a')
   errfile = open(errFileName, 'a')
