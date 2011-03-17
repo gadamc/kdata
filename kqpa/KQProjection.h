@@ -26,6 +26,7 @@ using namespace std;
 
 class KQProjection {
   private:
+    Double_t fVerbose;
     TH2D* fHistogram;
     Double_t fEnergyRecoilMin;
     Double_t fEnergyRecoilMax;
@@ -36,18 +37,38 @@ class KQProjection {
     Double_t fNumBinsQ;
     string fSourceFile;
     string fBoloName;
+    
+
+    void ResetHistogram()
+    {
+      if(fHistogram)
+        fHistogram->SetBins(fNumBinsEnergyRecoil,
+                            fEnergyRecoilMin,
+                            fEnergyRecoilMax,
+                            fNumBinsQ,
+                            fQMin,
+                            fQMax);
+    }
+    
   public:
     KQProjection();
     KQProjection(const KQProjection& anotherKQProjection);
     KQProjection(const Char_t* aSourceFile,
                  const Char_t* aBoloName,
+                 const Char_t* aCategoryName = "fiducial",
+                 Double_t aNumBinsEnergyRecoil = 1000,
                  Double_t anEnergyRecoilMin = 0,
                  Double_t anEnergyRecoilMax = 1000,
-                 const Char_t* aCategoryName = "fiducial",
+                 Double_t aNumBinsQ = 1000,
+                 Double_t aQMin = 0,
+                 Double_t aQMax = 2,
                  const Char_t* aHistogramName = "hist");
+    ~KQProjection();
     //getters
-    TH2D* GetHistogram() { return fHistogram; }
-    TH1D* GetProjection() { return fHistogram->ProjectionY(); }
+    Bool_t GetVerbose() const { return fVerbose; }
+    TH2D* GetHistogram() { return (TH2D*)fHistogram->Clone(); }
+    TH1D* GetProjection() { return (TH1D*)fHistogram->ProjectionY()->Clone(); }
+    Int_t GetEntries() { return fHistogram->GetEntries(); }
     Double_t GetEnergyRecoilMin() const { return fEnergyRecoilMin; }
     Double_t GetEnergyRecoilMax() const { return fEnergyRecoilMax; }
     Double_t GetNumBinsEnergyRecoil() const { return fNumBinsEnergyRecoil; }
@@ -56,25 +77,53 @@ class KQProjection {
     Double_t GetQMax() const { return fQMax; }
     
     const Char_t* GetBoloName() const { return fBoloName.c_str(); }
-    const Char_t* GetEventCategory() const;
+    Int_t GetEventCategory() const { return fEventCategory; }
+    const Char_t* GetEventCategoryName() const;
     
     //setters
-    void SetEnergyRecoilMin(Double_t anEnergyRecoilMin) { fEnergyRecoilMin = anEnergyRecoilMin; }
-    void SetEnergyRecoilMax(Double_t anEnergyRecoilMax) { fEnergyRecoilMax = anEnergyRecoilMax; }
-    void SetNumBinsEnergyRecoil(Double_t aNumBinsEnergyRecoil) { fNumBinsEnergyRecoil = aNumBinsEnergyRecoil; }
-    void SetNumBinsQ(Double_t aNumBinsQ) { fNumBinsQ = aNumBinsQ; }
-    void SetQMin(Double_t aQMin) { fQMin = aQMin; }
-    void SetQMax(Double_t aQMax) { fQMax = aQMax; }
+    void SetVerbose(Double_t aVerbose) { fVerbose = aVerbose; }
+    void SetHistogram(TH2D* aHistogram) { fHistogram = aHistogram; }
+    void SetEnergyRecoilMin(Double_t anEnergyRecoilMin)
+    { 
+      fEnergyRecoilMin = anEnergyRecoilMin;
+      ResetHistogram();
+    }
+    void SetEnergyRecoilMax(Double_t anEnergyRecoilMax)
+    {
+      fEnergyRecoilMax = anEnergyRecoilMax; 
+      ResetHistogram();
+    }
+    void SetNumBinsEnergyRecoil(Double_t aNumBinsEnergyRecoil) 
+    {
+      fNumBinsEnergyRecoil = aNumBinsEnergyRecoil;
+      ResetHistogram();
+    }
+    void SetNumBinsQ(Double_t aNumBinsQ) 
+    { 
+      fNumBinsQ = aNumBinsQ;
+      ResetHistogram();
+    }
+    void SetQMin(Double_t aQMin)
+    { 
+      fQMin = aQMin;
+      ResetHistogram();
+    }
+    void SetQMax(Double_t aQMax) 
+    { 
+      fQMax = aQMax; 
+      ResetHistogram();
+    }
     void SetBoloName(const Char_t* aBoloName) { fBoloName = aBoloName; }
+    void SetEventCategory(Int_t anEventCategory) { fEventCategory = anEventCategory; }
     void SetEventCategory(const Char_t* anEventCategory);
     
-    Bool_t ReadData(const Char_t* aSourceFile,
-                    const Char_t* aBoloName,
-                    Double_t anEnergyRecoilMin,
-                    Double_t anEnergyRecoilMax,
-                    const Char_t* aCategoryName);
+    Int_t Fill(Double_t x,Double_t y,Double_t w = 1);
+    
+    Bool_t ReadData(Double_t anEnergyRecoilMin,
+                    Double_t anEnergyRecoilMax);
                     
     void Fit(TF1* aFunction);
+    friend class KMultiQProjection;
     ClassDef(KQProjection,0);
                     
     

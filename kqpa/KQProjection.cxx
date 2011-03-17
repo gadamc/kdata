@@ -11,7 +11,7 @@
 // The events are read from a ROOT file with KEvents, and only those filled in
 // the histogram which are in the range of the histogram [Emin,Emax]
 // 
-// By calling the constructor or the ReadData() method the user can fill
+// By calling the ReadData() method the user can fill
 // respectively refill the  histogram
 // Then with the methods GetHistogram(), GetProjection() the TH2D or its
 // projection on the Q axis can be retrieved
@@ -20,9 +20,11 @@
 //
 // KQProjection aQProjection("/kalinka/storage/edelweiss/Bolo/Run12/Eds/Final/Gamma/Kds_Run12_v3.0_skim.root",
 //                           "FID401",
-//                           0,
-//                           1000,
 //                           "fiducial");
+//
+// Double_t anEnergyRecoilMin = 0;
+// Double_t anEnergyRecoilMax = 1000;
+// aQProjection->ReadData(anEnergyRecoilMin,anEnergyRecoilMax);
 // TH1D* aHistogram = aQProjection.GetProjection();
 // aHistogram->Draw();
 
@@ -30,6 +32,11 @@
 #include "KQProjection.h"
 
 ClassImp(KQProjection);
+
+Int_t KQProjection::Fill(Double_t x,Double_t y,Double_t w) 
+{
+  return fHistogram->Fill(x,y,w);
+}
 
 KQProjection::KQProjection()
 {
@@ -68,45 +75,52 @@ KQProjection::KQProjection(const KQProjection& anotherKQProjection)
 
 KQProjection::KQProjection(const Char_t* aSourceFile,
                            const Char_t* aBoloName,
+                           const Char_t* aCategoryName,
+                           Double_t aNumBinsEnergyRecoil,
                            Double_t anEnergyRecoilMin,
                            Double_t anEnergyRecoilMax,
-                           const Char_t* aCategoryName,
+                           Double_t aNumBinsQ,
+                           Double_t aQMin,
+                           Double_t aQMax,
                            const Char_t* aHistogramName)
 {
   fSourceFile = aSourceFile;
   fBoloName = aBoloName;
+  SetEventCategory(aCategoryName);
   fEnergyRecoilMin = anEnergyRecoilMin;
   fEnergyRecoilMax = anEnergyRecoilMax;
-  fNumBinsEnergyRecoil = 1000;
-  fNumBinsQ = 1000;
-  fQMin = 0;
-  fQMax = 2;
+  fNumBinsEnergyRecoil = aNumBinsEnergyRecoil;
+  fNumBinsQ = aNumBinsQ;
+  fQMin = aQMin;
+  fQMax = aQMax;
   
-  fHistogram = new TH2D(aHistogramName,aHistogramName,fNumBinsEnergyRecoil,fEnergyRecoilMin,
+  fHistogram = new TH2D(aHistogramName,
+                        TString::Format("E_{Recoil}: %lf .. %lf",fEnergyRecoilMin,
+                                fEnergyRecoilMax).Data(),
+                        fNumBinsEnergyRecoil,fEnergyRecoilMin,
                         fEnergyRecoilMax, fNumBinsQ,fQMin,fQMax);
-  ReadData(fSourceFile.c_str(),fBoloName.c_str(),fEnergyRecoilMin,fEnergyRecoilMax,aCategoryName);
 }
 
-Bool_t KQProjection::ReadData(const Char_t* aSourceFile,
-                              const Char_t* aBoloName,
-                              Double_t anEnergyRecoilMin,
-                              Double_t anEnergyRecoilMax,
-                              const Char_t* aCategoryName)
+KQProjection::~KQProjection() 
+{
+  if(fHistogram)
+    delete fHistogram;
+}
+
+
+Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,
+                              Double_t anEnergyRecoilMax)
 {
 
   fHistogram->Reset();
   fHistogram->GetXaxis()->SetRangeUser(anEnergyRecoilMin,
                                        anEnergyRecoilMax);
   
-  if(fSourceFile!=aSourceFile && strcmp(aSourceFile,""))
-    fSourceFile = aSourceFile;
-  if(fBoloName!=aBoloName && strcmp(aBoloName,""))
-    fBoloName = aBoloName;
-  SetEventCategory(aCategoryName); //setting the event category
   fEnergyRecoilMin = anEnergyRecoilMin;
   fEnergyRecoilMax = anEnergyRecoilMax;
-    
-  cout << "Reading events ... " << endl;
+  
+  if(fVerbose)
+    cout << "Reading events ... " << endl;
   
 
   KDataReader aKDataReader(fSourceFile.c_str()); // source file
@@ -124,20 +138,22 @@ Bool_t KQProjection::ReadData(const Char_t* aSourceFile,
     cout << "KQDataReader::ReadEvents(): " <<  fSourceFile << ".root has no entries! " << endl;
     return false;
   }
-  cout << "minimal recoil energy: " << fEnergyRecoilMin << endl;
-  cout << "maximal recoil energy: " << fEnergyRecoilMax << endl;
-  cout << "recoil energy bins: " << fNumBinsEnergyRecoil << endl;
-  cout << "Q bins: " << fNumBinsQ << endl;
-  cout << "event category: " << GetEventCategory() << endl;
-  cout << "Open " << fSourceFile << endl;
-  cout << "with " << aNumEntries << " entries " << endl;
+  if(fVerbose) {
+    cout << "minimal recoil energy: " << fEnergyRecoilMin << endl;
+    cout << "maximal recoil energy: " << fEnergyRecoilMax << endl;
+    cout << "recoil energy bins: " << fNumBinsEnergyRecoil << endl;
+    cout << "Q bins: " << fNumBinsQ << endl;
+    cout << "event category: " << GetEventCategoryName() << endl;
+    cout << "Open " << fSourceFile << endl;
+    cout << "with " << aNumEntries << " entries " << endl;
+  }
   
   
   KHLABolometerRecord* aBoloRecord;
   if(fBoloName!="ALL")
     for(int k = 0; k<aNumEntries; ++k) {
       aKDataReader.GetEntry(k);
-      if(!(k%100000))
+      if(!(k%100000)&&fVerbose)
         cout << "Entry " << k << endl;
       aNumBoloEvents += aKHLAEvent->GetNumBolos(); 
       for(int l = 0; l<aKHLAEvent->GetNumBolos(); ++l)  {
@@ -154,7 +170,7 @@ Bool_t KQProjection::ReadData(const Char_t* aSourceFile,
     else
     for(int k = 0; k<aNumEntries; ++k) {
       aKDataReader.GetEntry(k);
-      if(!(k%100000))
+      if(!(k%100000)&&fVerbose)
   cout << "Entry " << k << endl;
       aNumBoloEvents += aKHLAEvent->GetNumBolos();
       for(int l = 0; l<aKHLAEvent->GetNumBolos(); ++l) {
@@ -169,9 +185,11 @@ Bool_t KQProjection::ReadData(const Char_t* aSourceFile,
       }
     }
 
-  cout << "All bolometer events: " << aNumBoloEvents << endl;
-  cout << GetEventCategory() << " events in detector " << fBoloName << " in specified range: "
-  << fHistogram->GetEntries() << endl;
+  if(fVerbose) {
+    cout << "All bolometer events: " << aNumBoloEvents << endl;
+    cout << GetEventCategoryName() << " events in detector " << fBoloName << " in specified range: "
+    << fHistogram->GetEntries() << endl;
+  }
   
   return true;
 } 
@@ -213,7 +231,7 @@ void KQProjection::SetEventCategory(const Char_t* anEventCategory)
 
 
 
-const Char_t* KQProjection::GetEventCategory() const
+const Char_t* KQProjection::GetEventCategoryName() const
 {
   // gets a C string for current event category
   

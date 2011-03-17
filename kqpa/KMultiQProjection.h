@@ -12,6 +12,7 @@
 #include "KDataReader.h"
 #include "KHLABolometerRecord.h"
 #include "KHLAEvent.h"
+#include "KQProjection.h"
 
 #include "TH1D.h"
 #include "TH2D.h"
@@ -26,6 +27,7 @@ using namespace std;
 
 class KMultiQProjection {
   private:
+    Bool_t fVerbose;
     string fSourceFile;
     string fBoloName;
     Int_t fEventCategory;
@@ -34,23 +36,25 @@ class KMultiQProjection {
     Int_t fNumBinsQ;
     Double_t fQMin;
     Double_t fQMax;
-    vector<TH2D*> fHistograms;
+    vector<KQProjection*> fHistograms;
   public:
     KMultiQProjection(const Char_t* aSourceFile,
                       const Char_t* aBoloName,
-                      Int_t aNumProjections,
-                      Double_t* theEnergyRecoilMins,
-                      Double_t* theEnergyRecoilMaxs,
-                      const Char_t* anEventCategory);
+                      const Char_t* anEventCategory = "fiducial",
+                      Double_t aNumBinsEnergyRecoil = 1000,
+                      Double_t aNumBinsQ = 1000,
+                      Double_t aQMin = 0,
+                      Double_t aQMax = 2);
     ~KMultiQProjection();
                       
     //getters
+    Bool_t GetVerbose() const { return fVerbose; }
     Double_t GetNumProjections() const { return fNumProjections; }
     Double_t GetNumBinsEnergyRecoil() const { return fNumBinsEnergyRecoil; }
     Double_t GetNumBinsQ() const { return fNumBinsQ; }
     Double_t GetQMin() const { return fQMin; }
     Double_t GetQMax() const { return fQMax; }
-    const Char_t* GetEventCategory() const;
+    const Char_t* GetEventCategoryName() const;
     
     TH2D* GetHistogram(UInt_t anIndex) { 
       if(anIndex>=fHistograms.size()) {
@@ -59,7 +63,7 @@ class KMultiQProjection {
         return 0;
       }
       else
-        return (TH2D*)fHistograms[anIndex]->Clone();
+        return(fHistograms[anIndex]->GetHistogram());
     }
     
     TH1D* GetProjection(UInt_t anIndex) {
@@ -69,10 +73,11 @@ class KMultiQProjection {
         return 0;
       }
       else
-        return ((TH2D*)fHistograms[anIndex]->Clone())->ProjectionY();
+        return fHistograms[anIndex]->GetProjection();
     }
     
     //setters
+    void SetVerbose(Bool_t aVerbose) { fVerbose = aVerbose; }
     void SetNumBinsEnergyRecoil(Int_t aNumBinsEnergyRecoil)
     { fNumBinsEnergyRecoil = aNumBinsEnergyRecoil; }
     void SetNumBinsQ(Int_t aNumBinsQ)
@@ -81,14 +86,11 @@ class KMultiQProjection {
     void SetQMax(Double_t aQMax) { fQMax = aQMax; } 
     void SetEventCategory(const Char_t* anEventCategory);
     
-    Bool_t ReadData(const Char_t* aSourceFile,
-             const Char_t* aBoloName,
-             Int_t aNumProjections,
+    Bool_t ReadData(Int_t aNumProjections,
              Double_t* theEnergyRecoilMins,
-             Double_t* theEnergyRecoilMaxs,
-             const Char_t* anEventCategory);
+             Double_t* theEnergyRecoilMaxs);
              
-    ClassDef(KMultiQProjection,1);
+    ClassDef(KMultiQProjection,0);
 };
 
 #endif

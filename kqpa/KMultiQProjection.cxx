@@ -20,10 +20,11 @@
 // KMultiQProjection aMultiQProjection(
 //    "/kalinka/storage/edelweiss/Bolo/Run12/Eds/Final/Gamma/Kds_Run12_v.3.0_skim.root"
 //    "FID401",
-//    aNumProjections,
-//    theEnergyRecoilMins,
-//    theEnergyRecoilMaxs,
 //    "fiducial");
+// 
+// aMultiQProjection.ReadData(aNumProjections,
+//                            theEnergyRecoilMins,
+//                            theEnergyRecoilMaxs);
 //
 // TH1D* hist = aMultiQProjection.GetProjection(5);
 // hist->Draw();
@@ -33,29 +34,22 @@
 ClassImp(KMultiQProjection);
 
 KMultiQProjection::KMultiQProjection(const Char_t* aSourceFile,
-                      const Char_t* aBoloName,
-                      Int_t aNumProjections,
-                      Double_t* theEnergyRecoilMins,
-                      Double_t* theEnergyRecoilMaxs,
-                      const Char_t* anEventCategory)
+                                     const Char_t* aBoloName,
+                                     const Char_t* anEventCategory,
+                                     Double_t aNumBinsEnergyRecoil,
+                                     Double_t aNumBinsQ,
+                                     Double_t aQMin,
+                                     Double_t aQMax)
 {
-  fNumBinsEnergyRecoil = 1000;
-  fNumBinsQ = 1000;
-  fQMin = 0;
-  fQMax = 2;
-  
-  ReadData(aSourceFile,aBoloName,aNumProjections,theEnergyRecoilMins,
-           theEnergyRecoilMaxs,anEventCategory);
-  /*
-  for(Int_t k = 0; k<aNumProjections; ++k) {
-    fProjections.push_back(KQProjection(aSourceFile,
-                                        aBoloName,
-                                        theEnergyRecoilMins[k],
-                                        theEnergyRecoilMaxs[k],
-                                        anEventCategory,
-                                        TString::Format("hist %i",k).Data()));
-  }
-  */
+  fVerbose = false;
+  fSourceFile = aSourceFile;
+  fBoloName = aBoloName;
+  SetEventCategory(anEventCategory);
+  fNumBinsEnergyRecoil = aNumBinsEnergyRecoil;
+  fNumBinsQ = aNumBinsQ;
+  fQMin = aQMin;
+  fQMax = aQMax;
+
 }
 
 KMultiQProjection::~KMultiQProjection() 
@@ -66,12 +60,9 @@ KMultiQProjection::~KMultiQProjection()
   fHistograms.clear();
 }
 
-Bool_t KMultiQProjection::ReadData(const Char_t* aSourceFile,
-                                   const Char_t* aBoloName,
-                                   Int_t aNumProjections,
+Bool_t KMultiQProjection::ReadData(Int_t aNumProjections,
                                    Double_t* theEnergyRecoilMins,
-                                   Double_t* theEnergyRecoilMaxs,
-                                   const Char_t* anEventCategory)
+                                   Double_t* theEnergyRecoilMaxs)
 {
   for(UInt_t k = 0; k<fHistograms.size(); ++k)
     if(fHistograms[k])
@@ -81,23 +72,21 @@ Bool_t KMultiQProjection::ReadData(const Char_t* aSourceFile,
   fNumProjections = aNumProjections;
 
   for(Int_t k = 0; k<fNumProjections; ++k) {
-    fHistograms.push_back(new TH2D(TString::Format("hist %i",k).Data(),
-                                    TString::Format("Hist %i",k).Data(),
-                                    fNumBinsEnergyRecoil,
-                                    theEnergyRecoilMins[k],
-                                    theEnergyRecoilMaxs[k],
-                                    fNumBinsQ,
-                                    fQMin,
-                                    fQMax));
+    fHistograms.push_back(new KQProjection(fSourceFile.c_str(),
+                                           fBoloName.c_str(),
+                                           GetEventCategoryName(),
+                                           theEnergyRecoilMins[k],
+                                           theEnergyRecoilMaxs[k],
+                                           fNumBinsEnergyRecoil,
+                                           fNumBinsQ,
+                                           fQMin,
+                                           fQMax,
+                                           TString::Format("hist %i",k).Data()));
   }
 
-  if(fSourceFile!=aSourceFile && strcmp(aSourceFile,""))
-    fSourceFile = aSourceFile;
-  if(fBoloName!=aBoloName && strcmp(aBoloName,""))
-    fBoloName = aBoloName;
-  SetEventCategory(anEventCategory); //setting the event category
-    
-  cout << "Reading events ... " << endl;
+  
+  if(fVerbose)
+    cout << "Reading events ... " << endl;
   
 
   KDataReader aKDataReader(fSourceFile.c_str()); // source file
@@ -115,27 +104,27 @@ Bool_t KMultiQProjection::ReadData(const Char_t* aSourceFile,
     cout << "KQDataReader::ReadEvents(): " <<  fSourceFile << ".root has no entries! " << endl;
     return false;
   }
-  cout << "recoil energy bins: " << fNumBinsEnergyRecoil << endl;
-  cout << "Q bins: " << fNumBinsQ << endl;
-  cout << "event category: " << GetEventCategory() << endl;
-  cout << "Open " << fSourceFile << endl;
-  cout << "with " << aNumEntries << " entries " << endl;
+
+  if(fVerbose) {
+    cout << "Open " << fSourceFile << endl;
+    cout << "with " << aNumEntries << " entries " << endl;
+  }
   
   
   KHLABolometerRecord* aBoloRecord;
   if(fBoloName!="ALL")
     for(int k = 0; k<aNumEntries; ++k) {
       aKDataReader.GetEntry(k);
-      if(!(k%100000))
+      if(!(k%100000)&&fVerbose)
         cout << "Entry " << k << endl;
       aNumBoloEvents += aKHLAEvent->GetNumBolos(); 
       for(int l = 0; l<aKHLAEvent->GetNumBolos(); ++l)  {
         aBoloRecord = aKHLAEvent->GetBolo(l);
-        if(aBoloRecord->GetEventFlag()==fEventCategory &&
-          aBoloRecord->GetDetectorName()==fBoloName)
-            for(UInt_t m = 0; m<fHistograms.size(); ++m)
-              if(aBoloRecord->GetEnergyRecoil()>= theEnergyRecoilMins[m] &&
-                 aBoloRecord->GetEnergyRecoil()<= theEnergyRecoilMaxs[m]) {                                                            
+        for(UInt_t m = 0; m<fHistograms.size(); ++m)
+          if(aBoloRecord->GetEventFlag()==fHistograms[m]->GetEventCategory() &&
+            aBoloRecord->GetDetectorName()==fHistograms[m]->GetBoloName())
+              if(aBoloRecord->GetEnergyRecoil()>= fHistograms[m]->GetEnergyRecoilMin() &&
+                 aBoloRecord->GetEnergyRecoil()<= fHistograms[m]->GetEnergyRecoilMax()) {                                                            
                   fHistograms[m]->Fill(aBoloRecord->GetEnergyRecoil(),
                                        aBoloRecord->GetQvalue());
         }
@@ -144,15 +133,15 @@ Bool_t KMultiQProjection::ReadData(const Char_t* aSourceFile,
     else
     for(int k = 0; k<aNumEntries; ++k) {
       aKDataReader.GetEntry(k);
-      if(!(k%100000))
+      if(!(k%100000)&&fVerbose)
   cout << "Entry " << k << endl;
       aNumBoloEvents += aKHLAEvent->GetNumBolos();
       for(int l = 0; l<aKHLAEvent->GetNumBolos(); ++l) {
         aBoloRecord = aKHLAEvent->GetBolo(l);
-        if(aBoloRecord->GetEventFlag()==fEventCategory)
-            for(UInt_t m = 0; m<fHistograms.size(); ++m)
-              if(aBoloRecord->GetEnergyRecoil()>= theEnergyRecoilMins[m] &&
-                 aBoloRecord->GetEnergyRecoil()<= theEnergyRecoilMaxs[m]) {                                                            
+        for(UInt_t m = 0; m<fHistograms.size(); ++m)
+          if(aBoloRecord->GetEventFlag()==fHistograms[m]->GetEventCategory())
+            if(aBoloRecord->GetEnergyRecoil()>= fHistograms[m]->GetEnergyRecoilMin() &&
+               aBoloRecord->GetEnergyRecoil()<= fHistograms[m]->GetEnergyRecoilMax()) {                                                            
                   fHistograms[m]->Fill(aBoloRecord->GetEnergyRecoil(),
                                        aBoloRecord->GetQvalue());
                                                                      
@@ -160,14 +149,20 @@ Bool_t KMultiQProjection::ReadData(const Char_t* aSourceFile,
       }
     }
 
-  cout << "All bolometer events: " << aNumBoloEvents << endl;
-  for(UInt_t k = 0; k<fHistograms.size(); ++k)
-    cout << GetEventCategory() << " events in detector " << fBoloName << " in range [" << theEnergyRecoilMins[k] << "," << theEnergyRecoilMaxs[k] << "] : "
-    << fHistograms[k]->GetEntries() << endl;
+  if(fVerbose) {
+    cout << "All bolometer events: " << aNumBoloEvents << endl;
+    for(UInt_t k = 0; k<fHistograms.size(); ++k)
+      cout << fHistograms[k]->GetEntries() << " " << 
+      fHistograms[k]->GetEventCategoryName() << " events in detector " <<
+      fHistograms[k]->GetBoloName() <<  " in range [" << 
+      fHistograms[k]->GetEnergyRecoilMin() << "," << 
+      fHistograms[k]->GetEnergyRecoilMax() <<
+      "] " << endl;
+  }
   return true;
 } 
 
-const Char_t* KMultiQProjection::GetEventCategory() const
+const Char_t* KMultiQProjection::GetEventCategoryName() const
 {
   // gets a C string for current event category
   
