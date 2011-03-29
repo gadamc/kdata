@@ -175,6 +175,7 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
   cout << "Reading Detector Configurations." << endl;
   
   string endOfDetectorConfig = "* ----------" ;  
+  string endOfDetectorHeader = "* Voie "; 
   //size_t endOfDetectorConfigSize = endOfDetectorConfig.size();
   
   
@@ -367,7 +368,7 @@ Bool_t KSamba2KData::CloseSambaFileStream(void)
 Bool_t KSamba2KData::OpenKdataFile(void)
 {
   fKdataOutput.Close(); //make sure we've closed the file.
-  return fKdataOutput.OpenFile(fKdataFile.c_str(), "Raw");
+  return fKdataOutput.OpenFile(fKdataFile.c_str(), KRawEvent::GetClassName());
 }
 
 
