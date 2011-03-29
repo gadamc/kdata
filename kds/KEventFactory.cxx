@@ -154,56 +154,10 @@ KEvent* KEventFactory::NewEvent(const KEvent* event)
 	
 	if(event == 0) return mNewEvent; 
 	
-  /*
-	if(const KHLAEvent *mHLAEvent = dynamic_cast<const KHLAEvent*>(event)){
-		mNewEvent = NewEvent(mHLAEvent);
-	}
-	else if(const KRawEvent *mRawEvent = dynamic_cast<const KRawEvent*>(event)){
-		mNewEvent = NewEvent(mRawEvent);
-	}
-	else if(const KHLaMCEvent *mHLaMCEvent = dynamic_cast<const KHLaMCEvent*>(event)){
-		mNewEvent = NewEvent(mHLaMCEvent);
-	}
-	else {
-		cout << "KEventFactory::NewEvent: Cannot create a new Event of this type" << endl;
-	}
-	*/
   mNewEvent = NewEvent(event->GetClassName());
 	return mNewEvent;
 	
 }
-
-/*
-KHLAEvent* KEventFactory::NewEvent(const KHLAEvent* event)
-{
-	//make a new Event object, but copy it from event.
-	
-	KHLAEvent *mNewEvent = new KHLAEvent(*event);
-	
-	return mNewEvent;
-	
-}
-
-
-KRawEvent* KEventFactory::NewEvent(const KRawEvent* event)
-{
-	//make a new Event object, but copy it from event.
-		
-	KRawEvent *mNewEvent = new KRawEvent(*event);
-	
-	return mNewEvent;	
-	
-}
-
-KHLaMCEvent* KEventFactory::NewEvent(const KHLaMCEvent* event)
-{
-	//make a new Event opject, but copy it from event
-	
-	KHLaMCEvent *mNewEvent = new KHLaMCEvent(*event);
-	
-	return mNewEvent;
-}
-*/
 
 void KEventFactory::BuildEvent(KEvent *event)
 {
