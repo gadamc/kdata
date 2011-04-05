@@ -5,16 +5,6 @@ from couchdbkit.loaders import FileSystemDocsLoader
 from csv import DictReader
 import time, sys, subprocess, math, os, datetime
 
-#_____________
-# gunzip
-def gunzip(ifname):
-    cmd = 'gunzip %s' % ifname
-    print cmd
-    proc = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,)
-    stdout_value = proc.communicate()[0]
-    stdout_value = stdout_value.strip()
-    print stdout_value
-    return ifname.replace('.gz','')
     
 #______________
 # parseDoc
@@ -81,22 +71,13 @@ def upload(db, docs):
 
 #______________
 # uploadFile
-def uploadFile(fname, uri, dbname, override=None):
-  if override is None:
-    override = False
-    
+def uploadFile(fname, uri, dbname):
+     
   print 'Upload contents of %s to %s/%s' % (fname, uri, dbname)
-  if (fname.endswith('.gz')):
-    fname = gunzip(fname)
   
   # #connect to the db
   theServer = Server(uri)
   db = theServer.get_or_create_db(dbname)
-  #print db.info()
-  
-  #sync the views for prebuilt indices
-  #loader = FileSystemDocsLoader('_design/')
-  #loader.sync(db, verbose=True)
   
   #loop on file for upload
   reader = DictReader(open(fname, 'rU'), dialect = 'excel')
@@ -112,18 +93,20 @@ def uploadFile(fname, uri, dbname, override=None):
     #print doc
     newdoc = parseDoc(doc)
   
-    if newdoc.has_key('module')==False or newdoc.has_key('end')==False:
+    if newdoc.has_key('module')==False or newdoc.has_key('end')==False
+    or newdoc.has_key('year') == False or newdoc.has_key('month') == False
+    or newdoc.has_key('day') == False:
       print 'Quitting! Your CVS Muon Veto DAQ map MUST have a column called'
-      print '"module" and a column called "end". These are used to generate'
+      print '"module", "end", "year", "month" and "day". These are used to generate'
       print 'the unique document identifier "_id" in the database.'
       sys.exit(1)
     
-    newdoc.update({'_id':'muon_veto_daq_map_module_' + str(newdoc['module']) + '_end_' + str(newdoc['end'])})	
+    newdoc['_id'] = 'muon_veto_daq_map_module_' + str(newdoc['module']) + str(newdoc['end']) + '_' + str(newdoc['year']) +'_'+ str(newdoc['month']) +'_'+ str(newdoc['day'])
     newdoc['type'] = 'muon_veto_daq_map'
     newdoc['author'] = 'KIT'
     newdoc['content'] = 'Muon Veto DAQ Mapping'
-    dd = datetime.datetime.utcnow()
-    newdoc['date_filed'] = [dd.year,dd.month,dd.day,dd.hour,dd.minute,dd.second,dd.microsecond,0] # the 0 indicates the time zone relative to UTC
+    #dd = datetime.datetime.utcnow()
+    #newdoc['date_filed'] = [dd.year,dd.month,dd.day,dd.hour,dd.minute,dd.second,dd.microsecond,0] # the 0 indicates the time zone relative to UTC
     parsecomments(newdoc)
     
     docexists = False
@@ -131,10 +114,7 @@ def uploadFile(fname, uri, dbname, override=None):
       newdoc['_rev'] = db.get_rev(newdoc.get('_id'))
       docexists = True
       
-    if override==True:
-      docs.append(newdoc)
-    elif docexists==False:
-      docs.append(newdoc)
+    docs.append(newdoc)
     
     if len(docs)%checkpoint==0:
       docs = upload(db,docs)
@@ -152,22 +132,11 @@ def uploadFile(fname, uri, dbname, override=None):
 #______________
 # start script here
 if __name__=='__main__':
-  dirname = sys.argv[1]
+  csvfile = sys.argv[1]
   uri = sys.argv[2]
   dbname = sys.argv[3]
   
-  if len(sys.argv)>=5:
-    if sys.argv[4]=='True':
-      override = True   
-    else:
-      override = False
-  else:
-    override = False
-  
-  if override==True:
-    print 'Will force add new documents, causing a new revision for duplicate documents'
-
-  uploadFile(dirname, uri, dbname, override)
+  uploadFile(csvfile, uri, dbname)
   
 
 
