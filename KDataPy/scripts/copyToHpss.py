@@ -52,6 +52,25 @@ def setToCurrentTransfer(thefile, item):
     file.write(item + '\n')
     file.close()
     
+def removeFilesFromSmallList(filename, listoffiles):
+
+  currentlist = list()
+  
+  '''first open the file to get the current list of small files in the file'''
+  if os.path.isfile(filename):
+    file = open(filename,'rU')
+    for line in file:
+      currentlist.append(line.rstrip('\n'))
+    file.close()
+  
+  '''open the file to append new files to the list'''
+  file = open(filename, 'w')
+  for item in currentlist:
+    if item not in listoffiles:  #only write out the files that are not in the listoffiles
+    #effectively removing them from the small files list.
+      file.write(str(item) + '\n')
+      
+  file.close()
     
 def appendSmallRunListFile(filename, listoffiles):
   
@@ -132,8 +151,10 @@ def getDictOfLastFiles(filename):
   if os.path.isfile(filename):
     file = open(filename, 'rU')
     for line in file:
-      lastfiles[ str(os.path.basename(line)[4:5]) ] = os.path.basename(line).strip()
-
+      if line.find('events') != -1:
+        lastfiles[ str(os.path.basename(line)[4:5]) ] = os.path.basename(line).strip()
+      else:
+        lastfiles['events'] = os.path.basename(line).strip()
     file.close()
   
   return lastfiles
@@ -142,8 +163,11 @@ def getDictOfLastFiles(filename):
 def addItemToLastFiles(lastfilename, item):
     
     lastFiles = getDictOfLastFiles(lastfilename)
-    lastFiles[os.path.basename(item)[4:5]] = os.path.basename(item).strip()
-          
+    ifitem.find('events') != -1:
+      lastFiles[os.path.basename(item)[4:5]] = os.path.basename(item).strip()
+    else:
+      lastFiles['events'] = os.path.basename(item).strip()
+      
     file = open(lastfilename,'w') 
     for key, value in lastFiles.items():
       if value != '':
@@ -463,7 +487,8 @@ def runCopy(params):
         print 'Uploading to Hpss', tarfile
         logfile.flush()
         if uploadToHpss(params, tarfile):
-          tarlist.append(tarfile)  #force the smallfile list to be rewritten... in case its gotten bigger somehow?
+          removeFilesFromSmallList(params['smallrunlist'], transferlist)
+          tarlist.append(tarfile)  
       else:
         print 'Small File Size is too small:', totalSize, ' < ', params['minfilesize']
     else:
