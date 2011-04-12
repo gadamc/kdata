@@ -1,0 +1,89 @@
+#!/bin/csh
+#
+# File:         install_kdata
+#
+# Description:  Installation script to install kw C++ analysis code package
+#               (temporary version for test edw release)
+#
+# Author:       Adam Cox
+#
+# Syntax:       install_kdata [libs] [default]
+#
+#                libs    - installs kdata libraries only
+#                default - doesn't prompt for variables if a default exists
+#
+#
+
+# build libraries only if "libs" is the first argument
+
+if ($1 == "libs") then
+    set make_opt = $1
+    echo "Building kdata libraries"
+else
+    set make_opt = ""
+    echo "Full kdata installation"
+endif
+
+# first, source setup_kdata.csh if it exists
+if (-e config/setup_kdata.csh) then
+  source config/setup_kdata.csh
+endif
+
+
+
+# then run our configure script
+eval config/configure $1 $2
+
+# get the result from our configure script
+set result = "$status"
+
+echo "Configure done."
+
+# exit on any error
+switch ("$result")
+case 0:
+  breaksw
+case 1:
+  echo "Sourcing config/setup_kdata.csh..."
+  source config/setup_kdata.csh
+  breaksw
+default:
+  echo "Abort with code $result"
+  exit
+  breaksw
+endsw
+
+set pwd = `pwd`
+
+# make edw
+echo "Building kdata..."
+
+eval "$MAKE $make_opt"
+
+if ("$status" != 0) then
+echo ""
+echo "There were errors building kdata."
+echo "Be sure you have correctly defined all of the required variables".
+echo ""
+echo "Notes:"
+echo "1) You can type 'make showbuild' to show the build parameters."
+echo "2) If you need to add libraries or options to the build, create"
+echo "   a file called MyConfig.mk in this directory with the necessary"
+echo "   changes.  This file is included by the main Makefile."
+echo ""
+echo "Please contact one of the following with details about the problems:"
+echo ""
+echo "   Adam Cox (adam.cox@kit.edu)"
+echo ""
+exit
+endif
+
+echo ""
+echo "Success!"
+if ($result == 1) then
+  echo ""
+  echo "Now set your environment variables using one of the following:"
+  echo "  csh family:  'source $pwd/config/setup_kdata.csh'"
+  echo "  sh family:   'source $pwd/config/setup_kdata.sh'"
+  echo "And add this command to your login script (.cshrc)"
+endif

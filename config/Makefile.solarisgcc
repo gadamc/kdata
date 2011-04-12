@@ -1,0 +1,32 @@
+# Definitions specific to KDATA and this architecture
+#
+# AC 08/19/10
+
+##### Include directory for Motif header files #####
+
+# XMINCS         := -I/usr/openwin/include/X11
+
+##### Changes to C++ compiler flags #####
+
+# change compiler options (ROOT default for linux is -O)
+OPT            := -g -O2
+
+LDFLAGS        := -t
+
+# add KDATA-specific compiler switches for this platform
+KDATA_FLAGS     :=
+
+# CERNLIBS       := $(HISTOLIBS) -L$(CERNDIR) -llepto -ljetset74 -lgraflib\
+                    -lgrafX11 -lmathlib -lpawlib -lpacklib
+
+EXTRALIBS      := -lposix4
+
+F77LIBS        += -lC -lCrun -lF77 -lM77 -lsunmath -lsocket -lnsl -lstdc++ -lgcc_s
+
+# XMLIBS         += -lXt
+
+##### Extra fortran flags #####
+
+#F77FLAGS       += 
+
+#####
