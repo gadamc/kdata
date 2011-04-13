@@ -93,8 +93,8 @@ def uploadFile(fname, uri, dbname):
     #print doc
     newdoc = parseDoc(doc)
   
-    if newdoc.has_key('module')==False or newdoc.has_key('end')==False
-    or newdoc.has_key('year') == False or newdoc.has_key('month') == False
+    if newdoc.has_key('module')==False or newdoc.has_key('end')==False \
+    or newdoc.has_key('year') == False or newdoc.has_key('month') == False \
     or newdoc.has_key('day') == False:
       print 'Quitting! Your CVS Muon Veto DAQ map MUST have a column called'
       print '"module", "end", "year", "month" and "day". These are used to generate'
@@ -105,8 +105,8 @@ def uploadFile(fname, uri, dbname):
     newdoc['type'] = 'muon_veto_daq_map'
     newdoc['author'] = 'KIT'
     newdoc['content'] = 'Muon Veto DAQ Mapping'
-    #dd = datetime.datetime.utcnow()
-    #newdoc['date_filed'] = [dd.year,dd.month,dd.day,dd.hour,dd.minute,dd.second,dd.microsecond,0] # the 0 indicates the time zone relative to UTC
+    dd = datetime.datetime.utcnow()
+    newdoc['date_filed'] = {'year':dd.year, 'month':dd.month, 'day':dd.day, 'hour':dd.hour, 'minute':dd.minute, 'second':dd.second, 'microsecond':dd.microsecond} 
     parsecomments(newdoc)
     
     docexists = False
