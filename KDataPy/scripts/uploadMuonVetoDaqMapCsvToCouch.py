@@ -93,7 +93,7 @@ def uploadFile(fname, uri, dbname):
     #print doc
     newdoc = parseDoc(doc)
   
-    if newdoc.has_key('module')==False or newdoc.has_key('end')==False \
+    if newdoc.has_key('muonmodule')==False or newdoc.has_key('end')==False \
     or newdoc.has_key('year') == False or newdoc.has_key('month') == False \
     or newdoc.has_key('day') == False:
       print 'Quitting! Your CVS Muon Veto DAQ map MUST have a column called'
@@ -101,7 +101,17 @@ def uploadFile(fname, uri, dbname):
       print 'the unique document identifier "_id" in the database.'
       sys.exit(1)
     
-    newdoc['_id'] = 'muon_veto_daq_map_module_' + str(newdoc['module']) + str(newdoc['end']) + '_' + str(newdoc['year']) +'_'+ str(newdoc['month']) +'_'+ str(newdoc['day'])
+    #reformat the date
+    newdoc['date_valid'] = {} #change it to a dictionary
+    newdoc['date_valid']['year'] = newdoc['year']
+    newdoc['date_valid']['month'] = newdoc['month']
+    newdoc['date_valid']['day'] = newdoc['day']
+    del newdoc['year'] #remove the old fields
+    del newdoc['month']
+    del newdoc['day']
+    
+    
+    newdoc['_id'] = 'muon_veto_daq_map_module_' + str(newdoc['muonmodule']) + str(newdoc['end']) + '_' + str(newdoc['date_valid']['year']) +'_'+ str(newdoc['date_valid']['month']) +'_'+ str(newdoc['date_valid']['day'])
     newdoc['type'] = 'muon_veto_daq_map'
     newdoc['author'] = 'KIT'
     newdoc['content'] = 'Muon Veto DAQ Mapping'

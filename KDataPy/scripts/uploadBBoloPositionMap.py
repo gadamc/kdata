@@ -128,13 +128,24 @@ def uploadFile(fname, uri, dbname):
     if newdoc['bbv2_type'] == '' or newdoc['bbv2_type'] == 0:  
       del newdoc['bbv2_type']
     
+    
+    #reformat the date
+    del newdoc['date']
+    newdoc['date_valid'] = {} #change it to a dictionary
+    newdoc['date_valid']['year'] = newdoc['year']
+    newdoc['date_valid']['month'] = newdoc['month']
+    newdoc['date_valid']['day'] = newdoc['day']
+    del newdoc['year'] #remove the old fields
+    del newdoc['month']
+    del newdoc['day']
+    
     #get a nicely formated string holding the channels for this bolometer and use
     #it for the unique
-    #chans = str.replace(str.replace(str(newdoc['channels']),' ', ''), '+', '') #remove the spaces and the "+" sign from the channels field
+    chans = str.replace(str.replace(str(newdoc['channels']),' ', ''), '+', '') #remove the spaces and the "+" sign from the channels field
     
-    newdoc['_id'] = 'bbolo_position_map_' + str(newdoc['bolometer']) +  \
-    '_slot' + str(newdoc['slot']) + '_' + str(newdoc['year']) + '_'+ str(newdoc['month']) \
-    +'_'+ str(newdoc['day'])
+    newdoc['_id'] = 'bbolo_position_map_' + str(newdoc['bolometer']) + '_' + chans  \
+    +'_' + str(newdoc['date_valid']['year']) + '_'+ str(newdoc['date_valid']['month']) \
+    +'_'+ str(newdoc['date_valid']['day'])
     
     #add the type, author, content, and date_filed fields. 
     newdoc['type'] = 'bbolo_position_map'
@@ -156,12 +167,12 @@ def uploadFile(fname, uri, dbname):
     #in 'bulk' mode, which is faster than uploading individual documents
     docs.append(newdoc)
     
-    print newdoc['_id'], newdoc['bolometer'], newdoc['channels']
-    #if len(docs)%checkpoint==0:
-      #docs = upload(db,docs)
+    print newdoc['_id'], newdoc['bolometer'], newdoc['channels'], newdoc['date_valid']
+    if len(docs)%checkpoint==0:
+      docs = upload(db,docs)
         
   #don't forget the last batch        
-  #docs = upload(db,docs)
+  docs = upload(db,docs)
   
   #print summary statistics  
   delta = time.time() - start
