@@ -62,13 +62,23 @@ def removeFilesFromSmallList(filename, listoffiles):
     for line in file:
       currentlist.append(line.rstrip('\n'))
     file.close()
-  
+    
+  print 'current of small files list'
+  print currentlist
+  print 'list of files to remove'
+  print listoffiles
+
   '''open the file to append new files to the list'''
   file = open(filename, 'w')
   for item in currentlist:
     if item not in listoffiles:  #only write out the files that are not in the listoffiles
     #effectively removing them from the small files list.
+      print item
       file.write(str(item) + '\n')
+      print 'keepting file', item
+    else:
+      print 'removing', item
+
       
   file.close()
     
@@ -147,14 +157,14 @@ def getDictOfLastFiles(filename):
   lastfiles = {}
   for i in range(len(letters)):
     lastfiles[letters[i]] = ''  #initialize the keys of the dictionary
-
+  
   if os.path.isfile(filename):
     file = open(filename, 'rU')
     for line in file:
-      if line.find('events') != -1:
+      if line.find('events') == -1:
         lastfiles[ str(os.path.basename(line)[4:5]) ] = os.path.basename(line).strip()
       else:
-        lastfiles['events'] = os.path.basename(line).strip()
+        lastfiles['events'] = os.path.basename(line).strip()    
     file.close()
   
   return lastfiles
@@ -163,7 +173,7 @@ def getDictOfLastFiles(filename):
 def addItemToLastFiles(lastfilename, item):
     
     lastFiles = getDictOfLastFiles(lastfilename)
-    if item.find('events') != -1:
+    if item.find('events') == -1:
       lastFiles[os.path.basename(item)[4:5]] = os.path.basename(item).strip()
     else:
       lastFiles['events'] = os.path.basename(item).strip()
@@ -211,7 +221,7 @@ def isDirReady(dir):
 def getListOfNewSambaDirs(params):
   
   dictOfLastFiles = getDictOfLastFiles( params['lastcopyfile'] )
-    
+  
   if params['datadir'] == '.' or params['datadir'] == '':
     globsearch = getSambaDirPattern()
   else:
@@ -395,7 +405,7 @@ def uploadToHpss(theparams, tarfile, overwrite = False): #option to overwrite a 
     else:
       print os.path.basename(tarfile), 'already exists on HPSS. No update'
       putprocess = 'no transfer'
-      theReturn = False
+      theReturn = True  #return true to indicate a successful transfer
       
   if putprocess != '' and putprocess != 'no transfer':
     sput = runSubProcess(putprocess)
