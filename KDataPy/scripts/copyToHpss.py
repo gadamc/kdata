@@ -163,7 +163,7 @@ def getDictOfLastFiles(filename):
 def addItemToLastFiles(lastfilename, item):
     
     lastFiles = getDictOfLastFiles(lastfilename)
-    ifitem.find('events') != -1:
+    if item.find('events') != -1:
       lastFiles[os.path.basename(item)[4:5]] = os.path.basename(item).strip()
     else:
       lastFiles['events'] = os.path.basename(item).strip()
