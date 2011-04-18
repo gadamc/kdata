@@ -77,11 +77,9 @@ KEvent& KEvent::operator=(const KEvent &anEvent)
 void KEvent::CopyLocalMembers(const KEvent &anEvent)
 {
 	
-	SetEventTriggerTime(anEvent.GetEventTriggerTime()); 
-	SetStamp(anEvent.GetStamp());
+	SetEventTriggerStamp(anEvent.GetEventTriggerStamp());
 	
 	SetTriggerType(anEvent.GetTriggerType()); 
-	//SetDataType(anEvent.GetDataType());
 	//SetDetectorStatusWord(anEvent.GetDetectorStatusWord());
 	//SetBlindnessWord(anEvent.GetBlindnessWord());
 	
@@ -95,7 +93,8 @@ KEvent::~KEvent(void)
 
 void KEvent::Clear(Option_t * /*anOption*/)
 {
-	
+	//
+  
 	//delete any memory allocated by the KEvent class here that
 	//needs to be deleted for each event -- but not the TClonesArrays. Clear should be called 
 	//after every event so that the TClonesArrays are cleared. 
@@ -111,11 +110,9 @@ void KEvent::InitializeMembers(void)
 	//WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
 	//ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	
-  SetEventTriggerTime(-99.0); 
-	SetStamp(-99);
+	SetEventTriggerStamp(-99);
 	
 	SetTriggerType(0); //initialize this to zero, instead of -99 so that AddTriggerType works.
-	//SetDataType(-99);
 	//SetDetectorStatusWord(-99);
 	//SetBlindnessWord(-99);
 		
@@ -134,20 +131,10 @@ Bool_t KEvent::IsSame(const KEvent &anEvent, Bool_t bPrint) const
 	//a difference.
 	
 	Bool_t bIsEqual = true; //assume its true, then test for differences
-
-
-		
-	if(fEventTriggerTime != anEvent.fEventTriggerTime){
-		if (bPrint) 
-			cout << "KEvent fEventTriggerTime Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}
 	
-	if(fStamp != anEvent.fStamp){
+	if(fEventTriggerStamp != anEvent.fEventTriggerStamp){
 		if (bPrint) 
-			cout << "KEvent fStamp Not Equal" << endl;		
+			cout << "KEvent fEventTriggerStamp Not Equal" << endl;		
 		bIsEqual = false;
 		if(!bPrint)
 			return false;  
@@ -161,13 +148,6 @@ Bool_t KEvent::IsSame(const KEvent &anEvent, Bool_t bPrint) const
 			return false;  
 	}
 	
-	/*if(fDataType != anEvent.fDataType){
-		if (bPrint) 
-			cout << "KEvent fDataType Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}*/
 	
 	/*if(fDetectorStatusWord != anEvent.fDetectorStatusWord){
 		if (bPrint) 
@@ -212,13 +192,7 @@ Double_t KEvent::GetSecPerStamp(void) const
 Double_t KEvent::GetStampTime(void) const
 {
 	//returns the stamp time in seconds.  
-	//return GetSecPerStamp() * GetStamp();
+	//return GetSecPerStamp() * GetEventTriggerStamp();
 	
-	return GetSecPerStamp() * GetStamp();
+	return GetSecPerStamp() * GetEventTriggerStamp();
 }
-
-/* settled for one complete stamp
- Double_t KEvent::GetTimeStamp(void)
- {
- return fGigaStamp*1.0e9 + fStamp;
- }*/

@@ -12,7 +12,6 @@
 #include "TObject.h"
 //#include "TClonesArray.h"
 
-
 class KEvent : public TObject {
 	
 public:
@@ -32,17 +31,15 @@ public:
 	virtual void Compact(void) {/*nothing to compact */}
   static const char* GetClassName() {return "KEvent"; }
 	
-	//Calculated Quantities
-	//Double_t GetTimeStamp(void);
-	
-	//Getters
+	  
+	Long64_t GetEventTriggerStamp(void) const {return fEventTriggerStamp;}
+  Long64_t GetStamp(void) const {  
+    //this calls GetEventTriggerStamp
+    //deprecated kdata version > 4.1
+    return GetEventTriggerStamp();  
+  }
   
-	Double_t GetEventTriggerTime(void) const {return fEventTriggerTime;}
-	Long64_t GetStamp(void) const {return fStamp;}
-
-	//Double_t GetTimeSinceLastEvent(void) {return fTimeSinceLastEvent;}
 	Int_t GetTriggerType(void) const {return fTriggerType;}
-	//Int_t GetDataType(void) const {return fDataType;}
 	
 	//Int_t GetDetectorStatusWord(void) const {return fDetectorStatusWord;}
 	//Int_t GetBlindnessWord(void) const {return fBlindnessWord;}
@@ -52,11 +49,10 @@ public:
 
 	//Setters
   
-	void SetEventTriggerTime(Double_t aNum) {fEventTriggerTime = aNum;}
-	void SetStamp(Long64_t aStamp) {fStamp = aStamp;}
-	//void SetTimeSinceLastEvent(Double_t aNum) {fTimeSinceLastEvent = aNum;}
-	//void SetDataType(Int_t aNum) {fDataType = aNum;}
-	
+	void SetEventTriggerStamp(Long64_t aStamp) {fEventTriggerStamp = aStamp;}
+  void SetStamp(Long64_t aStamp) {SetEventTriggerStamp(aStamp);}
+
+  
 	//void SetDetectorStatusWord(Int_t aNum) {fDetectorStatusWord = aNum;}
 	//void SetBlindnessWord(Int_t aNum) {fBlindnessWord = aNum;}
 			 
@@ -68,24 +64,17 @@ public:
     kNCTriggerType = 0x4
   };
     
+  
 private:
 	void SetTriggerType(Int_t aNum) {fTriggerType = aNum;}
 	
 		
 	//these will change for every new event in the run. 
-	Double_t fEventTriggerTime;  //trigger time of the event according to the PC time. This value is ambiguous and redundant! However, the ambiguity/redundancy will go away if/when the data comes from the IPE DAQ.
-	Long64_t fStamp;  //the Opera clock value for this event.
+	Long64_t fEventTriggerStamp;  //the Opera clock value for this event.
 	
-	//Double_t fTimeSinceLastEvent;
 	Int_t fTriggerType; //0x1 for Bolo event, 0x2 for Muon System, 0x4 if NC counter, 0x8 for next system, etc... 
-	//Int_t fDataType; //0x1 for raw K data, 0x2 for HLA Event, 0x4 for MC "raw", 0x8 for MC HLA type ?? is this a good or bad thing? what if somebody sets it to 0x5!
-	  //this might be extremely useful for opening up an K ROOT file and determining its event type..
 	//Int_t fDetectorStatusWord;  //each bit represents a detector status condition. Currently, this is unfilled.
 	//Int_t fBlindnessWord;  //each bit represents a blindness flag. Currently, this is unfilled.
-	
-	//start and top times of runs are not common to all records since
-	//records can come from different systems. 
-	
 	
 	
 	//private methods
@@ -93,7 +82,7 @@ private:
 	void CopyLocalMembers(const KEvent &anEvent);
 	
 	
-	ClassDef(KEvent, 2);
+	ClassDef(KEvent, 3);
 };
 
 #endif // __KEVENT_H__

@@ -98,7 +98,7 @@ KRawEvent::~KRawEvent(void)
 }
 
 
-KRawEvent& KRawEvent::operator=(const KEvent &anEvent)
+KEvent& KRawEvent::operator=(const KEvent &anEvent)
 {
   //assignment operator
   
@@ -113,15 +113,8 @@ KRawEvent& KRawEvent::operator=(const KEvent &anEvent)
 		
 	}
 	catch(bad_cast) {
-		
-		try{
-			const KHLAEvent &rhs = dynamic_cast<const KHLAEvent&>(anEvent);
-			this->operator=(rhs);
-		}
-		
-		catch(bad_cast) {
-			this->KEvent::operator=(anEvent);
-		}
+		//just copy the base class information
+		this->KEvent::operator=(anEvent);
 	}
 	
 	return *this;
@@ -143,30 +136,6 @@ KRawEvent& KRawEvent::operator=(const KRawEvent &anEvent)
 	CopyClonesArrays(anEvent);
   
 	return *this;	
-}
-
-KRawEvent& KRawEvent::operator=(const KHLAEvent &anEvent)
-{
-  //assignment operator - only assigns the common data found in the 
-  //base class.
-  
-#ifdef _K_DEBUG_EVENT_ASSIGNOP
-	cout << "raw = hla" << endl;
-#endif
-	try {
-		const KEvent &rhs = dynamic_cast<const KEvent&>(anEvent);
-		if(&rhs == this) return *this;
-		//copy the base class info.
-		this->KEvent::operator=(rhs);
-    //CopyFromHlaEvent(anEvent);
-	}
-	catch (bad_cast) {
-		cout << "THROW!" << endl;
-		//what should i do? this should never throw!
-		throw;  
-	}
-	
-	return *this;
 }
 
 

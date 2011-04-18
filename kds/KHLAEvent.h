@@ -10,7 +10,6 @@
 #define __KHLAEVENT_H__
 
 #include "KEvent.h"
-
 //system record forward declarations
 #include "KHLABoloSysRecord.h"
 #include "KHLAMuonVetoSysRecord.h"
@@ -45,11 +44,10 @@ public:
 	Bool_t operator!=(const KHLAEvent &anEvent) const { return !(*this==anEvent); }
 	virtual void Compact(void);
   static const char* GetClassName() {return "KHLAEvent";}
-
-
-	KHLAEvent& operator=(const KEvent &anEvent);
-	KHLAEvent& operator=(const KRawEvent &anEvent);
-	KHLAEvent& operator=(const KHLAEvent &anEvent);
+  
+  
+	virtual KEvent& operator=(const KEvent &anEvent);
+	virtual KHLAEvent& operator=(const KHLAEvent &anEvent);
   
 	Int_t AddSubRecords(const KHLAEvent &ev, Bool_t skimNoise = false);
   Bool_t AddMuonModuleSubRecord(const KHLAMuonModuleRecord &inMuonModule);
@@ -98,24 +96,30 @@ public:
 	Double_t GetRunStartTime(void) const {return fRunStartTime;}
 	Double_t GetRunEndTime(void) const {return fRunEndTime;}
   UInt_t GetGSEventNumber(void) const {return fGSEventNumber;}
-
+  
   void SetRunNumber(Int_t aNum) {fRunNumber = aNum;}
 	void SetRunStartTime(Double_t aNum) {fRunStartTime = aNum;}
 	void SetRunEndTime(Double_t aNum) {fRunEndTime = aNum;}
   void SetGSEventNumber(UInt_t aNum) {fGSEventNumber = aNum;}
-		
-
+  
+  void CopyLocalMembers(const KHLAEvent &anEvent);
+	void CopyClonesArrays(const KHLAEvent &anEvent);
+  
+  
+  //soon to be deprecated methods
+  Double_t GetEventTriggerTime(void) const;
+  
 private: 
   
-	KHLABoloSysRecord fBoloSystem;  //the Bolometer System Record
+	KHLABoloSysRecord fBoloSystem;  //the Bolometer System Record..??
 	KHLAMuonVetoSysRecord fMuonSystem; //Muon Veto System Record
-
+  
   
 	TClonesArray *fSamba; //->  pointer to the array of Samba Sub Records
 	TClonesArray *fBolo; //->  pointer to the array of Single Bolo Sub Records
 	TClonesArray *fBoloPulse;  //-> pointer to the array of Bolo Pulse Sub Records
 	TClonesArray *fMuonModule; //-> pointer to the array of Muon Module Sub Records
-		
+  
 	/*NOTE - I am using short names here in order to improve the readability
 	 of the TTree when looking at the file from the TBrowser or from
 	 the TTree::Show TTree::Scan methods. 
@@ -165,17 +169,15 @@ private:
 	//private methods
 	void CreateArrays(void);
 	void InitializeMembers(void);
-	void CopyLocalMembers(const KHLAEvent &anEvent);
-	void CopyClonesArrays(const KHLAEvent &anEvent);
-	void CopyFromRawEvent(const KRawEvent &anEvent);
+	
 	
   template<class T> T* AddSubRecord(TClonesArray *mArray);
   void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
   void ClearArray(Option_t *anOpt, TClonesArray *mArray);
-
+  
   
 	UInt_t GetLargestUniqueIDNumber(void);
-
+  
 	
 	ClassDef(KHLAEvent ,3);
 };

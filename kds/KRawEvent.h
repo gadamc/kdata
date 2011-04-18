@@ -48,9 +48,8 @@ public:
 	virtual void Compact(void);
   static const char* GetClassName() {return "KRawEvent";}
   
-	KRawEvent& operator=(const KEvent &anEvent);
-	KRawEvent& operator=(const KHLAEvent &anEvent);
-	KRawEvent& operator=(const KRawEvent &anEvent);
+	virtual KEvent& operator=(const KEvent &anEvent);
+	virtual KRawEvent& operator=(const KRawEvent &anEvent);
 	
   Int_t AddSubRecords(const KRawEvent &anEvent);
   Bool_t AddMuonModuleSubRecord(const KRawMuonModuleRecord &inMuonModule);
@@ -79,15 +78,17 @@ public:
 	KRawBoloPulseRecord* AddBoloPulse();
 	KRawMuonModuleRecord* AddMuonModule();
   
-   
+  
 private: 
 	
   KRawMuonVetoSysRecord fMuonSystem; //Muon Veto System Record
 
-  TClonesArray *fSamba; //->
-  TClonesArray *fBolo; //->
-  TClonesArray *fBoloPulse; //->
-  TClonesArray *fMuonModule; //->
+  //the '//->' comment tells ROOT that this pointer will never be NULL
+  
+  TClonesArray *fSamba; //->  an array of samba records
+  TClonesArray *fBolo; //-> an array of bolometer records
+  TClonesArray *fBoloPulse; //-> an array of pulse record
+  TClonesArray *fMuonModule; //-> an array of muon module records
   
   void CreateArrays(void);
 	void InitializeMembers(void);

@@ -114,7 +114,7 @@ KHLAEvent::~KHLAEvent(void)
 }
 
 
-KHLAEvent& KHLAEvent::operator=(const KEvent &anEvent)
+KEvent& KHLAEvent::operator=(const KEvent &anEvent)
 {
   //assignment operator
   
@@ -124,49 +124,18 @@ KHLAEvent& KHLAEvent::operator=(const KEvent &anEvent)
 	
 	//assigns the data member values of an KEvent object into the KHLAEvent. 
 	if(&anEvent == this) return *this;
-
-	
-	try {
-		const KRawEvent &rhs = dynamic_cast<const KRawEvent&>(anEvent);
-		this->operator=(rhs);
+		
+  try{
+    const KHLAEvent &rhs = dynamic_cast<const KHLAEvent&>(anEvent);
+    this->operator=(rhs);
+  }
+  
+  catch(bad_cast) {
+    this->KEvent::operator=(anEvent);
 		
 	}
-	catch(bad_cast) {
-		
-		try{
-			const KHLAEvent &rhs = dynamic_cast<const KHLAEvent&>(anEvent);
-			this->operator=(rhs);
-		}
-		
-		catch(bad_cast) {
-			this->KEvent::operator=(anEvent);
-		}
-	}
 	
-
-	return *this;
-}
-
-KHLAEvent& KHLAEvent::operator=(const KRawEvent &anEvent)
-{
-	//assigns the data member values of an KRawEvent into this KHLAEvent.
-	//calls this->CopyFromRawEvent
-	
-#ifdef _K_DEBUG_EVENT_ASSIGNOP
-	cout << "hla = raw" << endl;
-#endif
-	try {
-		const KEvent &rhs = dynamic_cast<const KEvent&>(anEvent);
-		if(&rhs == this) return *this;
-		
-		this->KEvent::operator=(rhs);
-		CopyFromRawEvent(anEvent);
-	}
-	catch (bad_cast) {
-		//do nothing... although, maybe should do something
-		//because it should be totally strange if this doesn't throw.
-	}
-	
+  
 	return *this;
 }
 
@@ -416,16 +385,6 @@ void KHLAEvent::CopyLocalMembers(const KHLAEvent &anEvent)
 	fRunEndTime = anEvent.fRunEndTime;
   fGSEventNumber = anEvent.fGSEventNumber;	
   
-}
-
-void KHLAEvent::CopyFromRawEvent(const KRawEvent &/*anEvent*/)
-{
-	//Does nothing at the moment because the KRawEvent class is empty.
-	//This might be a good place to calculate any High Level
-	//event information based upon Raw Event information. 
-	//For example, the pulse Shapes in the Raw Events would
-	//be analyzed and the Q, Energy values would then be stored
-	//into the HLA object.
 }
 
 void KHLAEvent::ClearArrays(Option_t *anOption)
@@ -822,5 +781,42 @@ Double_t KHLAEvent::GetSumBoloEnergyIon(void) const
 	
 	return energy;
 }
+
+Double_t KHLAEvent::GetEventTriggerTime(void) const
+{
+  //This method is provided for backwards compatibility for some programs
+  //and should NOT be used when writing new programs!! 
+  //
+  //Searches the Bolometer subrecords and any Muon Veto data and returns
+  //the *earliest* PC time found in those records. 
+  //
+  //
+  //You should deal with event times in a different way since eventually
+  //this method will be removed. 
+  //
+  
+  Double_t earliestTime = -1;
+  
+  for(Int_t i = 0; i < GetNumBolos(); i++){
+    KHLABolometerRecord *bolo = GetBolo(i);
+    KHLASambaRecord *sam = bolo->GetSambaRecord();
+    Double_t thisTime = sam->GetNtpDateSec() + 1.0e-6*sam->GetNtpDateMicroSec();
+    if(earliestTime == -1)
+      earliestTime = thisTime;
+    else if( thisTime < earliestTime)
+      earliestTime = thisTime;
+  }
+  
+  if(GetNumMuonModules()){
+    Double_t thisTime = fMuonSystem.GetPcTimeSec() + 1.0e-6*fMuonSystem.GetPcTimeMuSec();
+    if(earliestTime == -1)
+      earliestTime = thisTime;
+    else if( thisTime < earliestTime)
+      earliestTime = thisTime;
+  }
+    
+  return earliestTime;
+}
+
 
 
