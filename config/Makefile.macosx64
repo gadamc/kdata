@@ -2,11 +2,6 @@
 #
 # AC 08/19/10
 
-##### Include directory for Motif header files #####
-
-# XMINCS         := -I/usr/X11R6/include -I/sw/include
-# XMLIBS         := -L/sw/lib ${XMLIBS}
-
 ##### Changes to C++ compiler flags #####
 
 # change compiler options (ROOT default for linux is -O)
@@ -14,11 +9,6 @@ OPT            := -g -O2
 
 # add KDATA-specific compiler switches for this platform
 KDATA_FLAGS     := 
-
-# KWMANFLAGS    :=
-# KWMANLDFLAGS  := -u _MAIN__
-# CERNLIBS       += -L/usr/local/disp/lib -lconthost -lstdc++
-
 EXTRALIBS      := 
 
 ##### Extra fortran flags #####

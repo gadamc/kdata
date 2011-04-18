@@ -38,35 +38,9 @@ public:
 	Bool_t operator!=(const KRawBolometerRecord &aRec) const { return !(*this==aRec); }
 	void Compact(void); //make the class as small as possible.
 
-	//getters
-
 	KRawSambaRecord* GetSambaRecord(void) const {return (KRawSambaRecord*)fSambaRecord.GetObject();}
 	KRawBoloPulseRecord* GetPulseRecord(Int_t i) const;
-  KRawBoloPulseRecord* GetHeatPulse(Int_t aChannel) const;
-  KRawBoloPulseRecord* GetCollectrodePulse(Int_t aChannel) const;
-  KRawBoloPulseRecord* GetVetoPulse(Int_t aChannel) const;
-  KRawBoloPulseRecord* GetGuardPulse(Int_t aChannel) const;
-  
-	Int_t GetNumPulseRecords(void) const {return (fPulseRecords.GetEntriesFast());}
-
-	Double32_t GetAmplitudeCollectrode(Int_t aChannel) const;
-	Double32_t GetAmplitudeVeto(Int_t aChannel) const;
-	Double32_t GetAmplitudeGuard(Int_t aChannel) const;
-  Double32_t GetAmplitudeHeat(Int_t aChannel) const;
-
-	Double32_t GetAmplitudeBaselineCollectrode(Int_t aChannel) const;
-	Double32_t GetAmplitudeBaselineVeto(Int_t aChannel) const;
-	Double32_t GetAmplitudeBaselineGuard(Int_t aChannel) const;
-  Double32_t GetAmplitudeBaselineHeat(Int_t aChannel) const;
-
-	Double32_t GetAmplitudeBaselineNoiseCollectrode(Int_t aChannel) const;
-	Double32_t GetAmplitudeBaselineNoiseVeto(Int_t aChannel) const;
-	Double32_t GetAmplitudeBaselineNoiseGuard(Int_t aChannel) const;
-  Double32_t GetAmplitudeBaselineNoiseHeat(Int_t aChannel) const;
-
-	//setters
-
-	//void SetFiducialVolume(Double_t aWord) {fFiducialVolume = aWord;}
+  Int_t GetNumPulseRecords(void) const {return (fPulseRecords.GetEntriesFast());}
 
 	void SetSambaRecord(KRawSambaRecord *aRec) {fSambaRecord = aRec;	}
 	void AddPulseRecord(KRawBoloPulseRecord* aPulseRecord);
@@ -79,11 +53,7 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KRawBolometerRecord &aRec);
-  
-	KRawBoloPulseRecord * GetPulseRecord(Int_t channel, Int_t aType) const;
-  Double32_t GetAmplitude(Int_t aChannel, Int_t aType) const;
-  Double32_t GetAmplitudeBaseline(Int_t aChannel, Int_t aType) const;
-  Double32_t GetAmplitudeBaselineNoise(Int_t aChannel, Int_t aType) const;
+
 
   ClassDef(KRawBolometerRecord,1);
 };

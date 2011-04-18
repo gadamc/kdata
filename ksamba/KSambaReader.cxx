@@ -84,9 +84,7 @@ void KSambaReader::InitializeMembers(void)
 Bool_t KSambaReader::ReadHeader(void)
 {
   if(!fSambaFile.is_open()) return false;
-  
-  KSambaHeaderReader mHeaderReader;
-  return mHeaderReader.ReadHeader(fSambaFile, fHeader);
+  return true;
 }
 
 
@@ -94,9 +92,7 @@ Bool_t KSambaReader::ReadNextEvent(void)
 {
   if(!fSambaFile.is_open()) return false;
   
-  KSambaEventReader mEventReader;
-  
-  return mEventReader.ReadEvent(fSambaFile, fEvent);
+  return true;
 }
 
 

@@ -14,35 +14,61 @@ ClassImp(KSambaHeader);
 
 KSambaHeader::KSambaHeader(void)
 {
-  SetRecordWord("* Archive SAMBA");
   InitializeMembers();
 }
 
 KSambaHeader::~KSambaHeader(void)
 {
-  //Does calling clear at destruction take too much computing time?
-  Clear("C");
-
-}
-
-void KSambaHeader::Clear(Option_t* /* opt */)
-{
-  //Clear the base classes and then clear/delete any local
-  //members. Its necessary for this Clear method to exist
-  //in the case that instances of this object are stored
-  //inside of a TClonesArray
-  //Also, if this class holds any TClonesArrays, it must call
-  //TClonesArray::Clear("C")
-
-  //Clear and delete local objects here. 
-
-  //Re initialize local members here and prepare for the next use of this class.
-  InitializeMembers();
-
+  for (vector<KSambaDetector*>::iterator it = fDetectors.begin();
+       it != fDetectors.end(); it++)
+  {
+    delete (*it);
+  }
+  fDetectors.clear();
 }
 
 void KSambaHeader::InitializeMembers(void)
 {
-  //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
-  //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+  fEndian = true; //equals true if big, false if little
+  fRunName = "";
+  fVersion = "0";
+  fRelease = "0";
+  fEchantillonage = 0;
+  fNumBolos = 0;
+  fNumChannels = 0;
+  fDate = "";
+  fIntitule = "";
 }
+
+KSambaDetector* KSambaHeader::GetDetectorFromList(const char* detname)
+{
+  for (vector<KSambaDetector*>::iterator it = fDetectors.begin();
+       it != fDetectors.end(); it++)
+  {
+    if ( strcmp((*it)->GetName(), detname) == 0) {
+      return *it;
+    };
+  }  
+  return NULL;
+}
+
+KSambaDetector* KSambaHeader::GetDetectorFromList(UInt_t i)
+{
+  if (i < fDetectors.size())
+    return fDetectors.at(i);
+  else return NULL;
+}
+
+Bool_t KSambaHeader::IsInDetectorList(const char *detname)
+{
+  
+  return (GetDetectorFromList(detname) != NULL) ? true : false;
+}
+
+KSambaDetector* KSambaHeader::AddDetector(void)
+{
+  KSambaDetector *det = new KSambaDetector;
+  fDetectors.push_back(det);
+  return det;
+};
+

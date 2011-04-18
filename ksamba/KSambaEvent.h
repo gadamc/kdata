@@ -11,9 +11,8 @@
 #ifndef __KSAMBAEVENT_H__
 #define __KSAMBAEVENT_H__
 
-#include "KSambaDataObject.h"
 
-class KSambaEvent : public KSambaDataObject { 
+class KSambaEvent  { 
 
 public:
   //Constructors
@@ -28,7 +27,6 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  ClassDef(KSambaEvent,1);
 
 };
 

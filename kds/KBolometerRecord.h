@@ -34,19 +34,22 @@ public:
 	
 	//getters
 	string GetDetectorName(void) const;
-	
+	Double32_t GetMass(void) const { return fMass;}
+
 	//setters
 	void SetDetectorName(const Char_t* aWord); 
+  void SetMass(Double32_t aVal) {fMass = aVal;}
 
 private:
 		
 	string fDetectorName; 
-	
+	Double32_t fMass;
+
 	//private methods
   void InitializeMembers(void);
 	void CopyLocalMembers(const KBolometerRecord &aRec);
 	
-  ClassDef(KBolometerRecord,1);
+  ClassDef(KBolometerRecord,2);
 };
 
 

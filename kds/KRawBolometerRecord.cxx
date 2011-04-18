@@ -56,7 +56,7 @@ void KRawBolometerRecord::CopyLocalMembers(const KRawBolometerRecord& /*aRec*/)
   //copies local data members
   
 	fSambaRecord = 0;  //will need to set these another way
-	fPulseRecords.Clear();
+	fPulseRecords.Delete();
 }
 
 
@@ -64,7 +64,6 @@ KRawBolometerRecord::~KRawBolometerRecord(void)
 {
   //destructor 
   
-	//Does calling clear at destruction take too much computing time?
   Clear("C");
 
 }
@@ -93,7 +92,7 @@ void KRawBolometerRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
   fSambaRecord = 0;
-	fPulseRecords.Clear();
+	fPulseRecords.Delete();
 
 }
 
@@ -107,9 +106,6 @@ Bool_t KRawBolometerRecord::IsSame(const KRawBolometerRecord &aRec, Bool_t bPrin
   
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 
-	if(bPrint) cout.precision(16);
-
-
 	if(!this->KBolometerRecord::IsSame(aRec,bPrint)){
 		bIsEqual = false;
 		if(!bPrint)
@@ -117,255 +113,8 @@ Bool_t KRawBolometerRecord::IsSame(const KRawBolometerRecord &aRec, Bool_t bPrin
 		//the operator== method uses this functionality.
 	}
 
-	cout.precision(8);
-
 	return bIsEqual;
 }
-
-
-
-KRawBoloPulseRecord* KRawBolometerRecord::GetPulseRecord(Int_t channel, Int_t aType) const
-{
-  //this is a private method
-  //
-  //returns a pointer to a KRawBoloPulseRecord. channel is the channel number (1, 2, ...) and
-  //a type is either heat, collectrode, veto or guard. The integers associated 
-  //with those types do not need to be known. Instead call the static functions
-  //KBoloPulseRecord::GetHeatType()
-  //KBoloPulseRecord::GetVetoType()
-  //KBoloPulseRecord::GetCollectrodeType()
-  //KBoloPulseRecord::GetGuardType()
-  //
-  //However, its much easier to use the methods GetHeatPulse, GetCollectrodePulse, etc...
-  //that are found in this class
-  //
-  KRawBoloPulseRecord* pulse = 0;
-  for(Int_t k = 0; k < GetNumPulseRecords(); k++){
-    pulse = GetPulseRecord(k);
-    if( (pulse->GetPulseType() == aType) && (pulse->GetChannelNumber() == channel))
-      return pulse;
-  }
-  return 0;  //if we get here, then we didn't find the proper pulse
-}
-
-KRawBoloPulseRecord* KRawBolometerRecord::GetHeatPulse(Int_t channel) const
-{
-  //returns a pointer to a Heat pulse record that is associated with this bolometer record.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-  
-  return GetPulseRecord(channel, KBoloPulseRecord::GetHeatType());
-  
-}
-
-KRawBoloPulseRecord* KRawBolometerRecord::GetCollectrodePulse(Int_t channel) const
-{
-  //returns a pointer to a Collectrode pulse record that is associated with this bolometer record.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-  
-  return GetPulseRecord(channel, KBoloPulseRecord::GetCollectrodeType());
-  
-    
-}
-
-KRawBoloPulseRecord* KRawBolometerRecord::GetVetoPulse(Int_t channel) const
-{
-  //returns a pointer to a Veto pulse record that is associated with this bolometer record.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-  return GetPulseRecord(channel, KBoloPulseRecord::GetVetoType());
-  
-}
-
-KRawBoloPulseRecord* KRawBolometerRecord::GetGuardPulse(Int_t channel) const
-{
-  //returns a pointer to a Guard pulse record that is associated with this bolometer record.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-  return GetPulseRecord(channel, KBoloPulseRecord::GetGuardType());
-  
-}
-
-
-Double32_t KRawBolometerRecord::GetAmplitude(Int_t aChannel, Int_t aType) const
-{
-  //returns the calibrated pulse energy (in keV) on aChannel of pulse type aType, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2. To determine the correct
-  //value for aType, use the static fuctions
-  //
-  //KBoloPulseRecord::GetHeatType()
-  //KBoloPulseRecord::GetCollectrodeType()
-  //KBoloPulseRecord::GetVetoType()
-  //KBoloPulseRecord::GetGuardType()
-  //
-  //Or, you can just use the methods GetAmplitudeHeat(aChannel), GetAmplitudeCollectrode(aChannel),
-  //GetAmplitudeVeto(aChannel) and GetAmplitudeGuard(aChannel)
-  //
-  
-  
-  KRawBoloPulseRecord* pulse = GetPulseRecord(aChannel,aType);
-  if(pulse)
-    return pulse->GetAmplitude();
-  else return -9999.;
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeCollectrode(Int_t aChannel) const
-{
-  //returns the calibrated pulse energy (in keV) on a collecltrode channel, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitude(aChannel, KBoloPulseRecord::GetCollectrodeType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeVeto(Int_t aChannel) const
-{
-  //returns the calibrated pulse energy (in keV) on a veto channel, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitude(aChannel, KBoloPulseRecord::GetVetoType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeGuard(Int_t aChannel) const
-{
-  //returns the calibrated pulse energy (in keV) on a guard channel, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitude(aChannel, KBoloPulseRecord::GetGuardType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeHeat(Int_t aChannel) const
-{
-  //returns the calibrated pulse energy (in keV) on a heat channel, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitude(aChannel, KBoloPulseRecord::GetHeatType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaseline(Int_t aChannel, Int_t aType) const
-{
-  KRawBoloPulseRecord* pulse = GetPulseRecord(aChannel,aType);
-  if(pulse)
-    return pulse->GetAmplitudeBaseline();
-  else return -9999.;
-}
-
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineCollectrode(Int_t aChannel) const
-{
-  //returns the calibrated pulse energy along the baseline (in keV) on a collecltrode channel, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitudeBaseline(aChannel, KBoloPulseRecord::GetCollectrodeType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineVeto(Int_t aChannel) const
-{
-  //returns the calibrated pulse energy along the baseline (in keV) on a veto channel, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitudeBaseline(aChannel, KBoloPulseRecord::GetVetoType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineGuard(Int_t aChannel) const
-{
-  //returns the calibrated pulse energy along the baseline (in keV) on a guard channel, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitudeBaseline(aChannel, KBoloPulseRecord::GetGuardType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineHeat(Int_t aChannel) const
-{
-  //returns the calibrated pulse energy along the baseline (in keV) on a heat channel, as
-  //calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitudeBaseline(aChannel, KBoloPulseRecord::GetHeatType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineNoise(Int_t aChannel, Int_t aType) const
-{
-  KRawBoloPulseRecord* pulse = GetPulseRecord(aChannel,aType);
-  if(pulse)
-    return pulse->GetAmplitudeBaselineNoise();
-  else return -9999.;
-}
-
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineNoiseCollectrode(Int_t aChannel) const
-{
-  //returns the calibrated pulse RMS noise (in keV) along the baseline
-  //on a collecltrode channel, as calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitudeBaselineNoise(aChannel, KBoloPulseRecord::GetCollectrodeType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineNoiseVeto(Int_t aChannel) const
-{
-  //returns the calibrated pulse RMS noise (in keV) along the baseline
-  //on a veto channel, as calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitudeBaselineNoise(aChannel, KBoloPulseRecord::GetVetoType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineNoiseGuard(Int_t aChannel) const
-{
-  //returns the calibrated pulse RMS noise (in keV) along the baseline
-  //on a guard channel, as calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitudeBaselineNoise(aChannel, KBoloPulseRecord::GetGuardType());
-}
-
-Double32_t KRawBolometerRecord::GetAmplitudeBaselineNoiseHeat(Int_t aChannel) const
-{
-  //returns the calibrated pulse RMS noise (in keV) along the baseline
-  //on a heat channel, as calculated by the ERA processor.
-  //
-  //Note that aChannel should be 1 or 2.
-  //
-
-  return GetAmplitudeBaselineNoise(aChannel, KBoloPulseRecord::GetHeatType());
-}
-
 
 void KRawBolometerRecord::Compact(void)
 {

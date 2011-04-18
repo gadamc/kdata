@@ -2,9 +2,6 @@
 #
 # AC 08/19/10
 
-##### Include directory for Motif header files #####
-
-# XMINCS         := -I/usr/openwin/include/X11
 
 ##### Changes to C++ compiler flags #####
 

@@ -5,6 +5,18 @@
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
+// This class reads the raw Samba files and converts into 
+// a KData Raw file. 
+//
+//
+// Currently, the header information of the Samba
+// file is read out. But this is problematic if the format of the Samba
+// file changes significantly. Therefore, it is planned that this 
+// class will have the option to read the header information from 
+// the database, which will be more robust since it will be indepenent
+// from the actual formatting styles of the raw data file. The raw
+// waveforms will still be read from the raw Samba files since it would
+// be prohibitively expensive to store all of the data in the couchdb. 
 //
 
 
@@ -15,16 +27,19 @@
 #include "KRawBoloPulseRecord.h"
 #include "KRawEvent.h"
 #include "Byteswap.h"
+#include "TObjString.h"
+#include "TObjArray.h"
 #include <iostream>
 #include <cstdlib>
+#include <sstream>
 
 
 ClassImp(KSamba2KData);
 
 KSamba2KData::KSamba2KData(void)
 {
-  fSambaFile = "";
-  fKdataFile = "";
+  fSambaFileName = "";
+  fKdataFileName = "";
   InitializeMembers();
 }
 
@@ -38,34 +53,35 @@ KSamba2KData::KSamba2KData(const char* inputSambaFile, const char* outputKRawEve
 
 KSamba2KData::~KSamba2KData(void)
 {
-  
+ 
 }
 
 void KSamba2KData::InitializeMembers(void)
 {
   
-#ifdef R_BYTESWAP
+#ifdef R__BYTESWAP
   fLocalBigEndian = false;
 #else
   fLocalBigEndian = true;
 #endif
   
-  fSambaBigEndian = true;  //we assume big endianness by default.
+  //fSambaBigEndian = true;  //we assume big endianness by default.
                            //but this will be read from the Samba File
  
   fSambaFileLine = "";
   fSambaRunName = "";
   fSambaFileNum = -1;
+    
 }
 
 void  KSamba2KData::SetInputSambaFile(const char* fileName)
 {
-  fSambaFile = fileName; 
+  fSambaFileName = fileName; 
 }
 
 void  KSamba2KData::SetOutputKdataFile(const char* fileName)
 {
-  fKdataFile = fileName;
+  fKdataFileName = fileName;
   
 }
 
@@ -73,38 +89,58 @@ Bool_t  KSamba2KData::ConvertFile(void)
 {
   //
   
-  
-  if(fSambaFile == "" || fKdataFile == ""){
+  if(fSambaFileName == "" || fKdataFileName == ""){
     cerr << "KSamba2KData::ConvertFile. Input and Output file names are not set." << endl;
     return false;
   }
   
   cout << "Converting File. " << endl;
-  cout << "   " << fSambaFile << " -> " << fKdataFile << endl;
+  cout << "   " << fSambaFileName << " -> " << fKdataFileName << endl;
   
   if(!OpenSambaFileStream()){
     cout << "Open Samba File Stream Fail." << endl;
     return false;
   }
     
-  
   if(!OpenKdataFile()){
     cout << "Open Kdata File Fail." << endl;
     return false;
   }
     
-  
   if(!CheckStartOfSambaFile()){
     cout << "Check Start of Samba File Fail." << endl;
     return false;
   }
     
-  
   if(ReadSambaHeaderGeneral())
     if(ReadSambaDetectorConfigurations())
-      if(ReadSambaData())
-        if(CloseSambaFileStream())
-          return CloseKdataFile();
+      if(ReadSambaChannelConfigurations()){
+        //still need to read the Run header section.
+        
+        /*
+        this->Dump();
+        fSambaHeader.Dump();
+        
+        for(UInt_t i = 0; i < fSambaHeader.GetDetectorListSize(); i++){
+          KSambaDetector* det = fSambaHeader.GetDetectorFromList(i);
+          det->Dump();
+          for(UInt_t j = 0; j < det->GetChannelListSize(); j++){
+            KSambaDetectorChannel* chan = det->GetChannelFromList(j);
+            chan->Dump();
+          }
+        }
+        
+        cout << "current line: " << fSambaFileLine.Data() <<endl;
+        
+        int a;
+        cin >> a;
+        */
+        if(ReadSambaRunHeader())
+          if(ReadSambaData())
+            if(CloseSambaFileStream())
+              return CloseKdataFile();
+      }
+        
     
   
   return false;
@@ -114,7 +150,46 @@ Bool_t  KSamba2KData::ConvertFile(const char* inputSamba, const char* outputKRaw
 {
   SetInputSambaFile(inputSamba);
   SetOutputKdataFile(outputKRawEventFile);
+  InitializeMembers();
   return ConvertFile();
+}
+
+TString KSamba2KData::GetStringFromTokenizedStringResult(TObjArray *arr, Int_t index)
+{
+  char tab = 9;
+
+  TString t ( ((TObjString *)arr->At(index))->GetString().Strip(TString::kBoth) );
+  //sometimes there is a 'tab' character found in the string after the value we want
+  //so we have to manually strip it off here because i can't figure out how to ask
+  //TString to do it for me automatically
+  //however, i assume that there is no tab at the beginning!
+  //
+  Ssiz_t tt = t.First(tab);
+  TString s = t;
+  if (tt != -1) {
+    s= t(0,  tt  );
+  }
+  TString ss( s.Strip(TString::kBoth) ); //now remove any extra trailing/preceeding spaces
+
+  return ss;
+}
+
+Int_t KSamba2KData::GetIntegerFromTokenizedStringResult(TObjArray *arr, Int_t index)
+{
+  TString s = GetStringFromTokenizedStringResult(arr, index);
+  return s.Atoi();
+}
+
+Long64_t KSamba2KData::GetLongIntFromTokenizedStringResult(TObjArray *arr, Int_t index)
+{
+  TString s = GetStringFromTokenizedStringResult(arr, index);
+  return s.Atoll();
+}
+
+Double_t KSamba2KData::GetFloatFromTokenizedStringResult(TObjArray *arr, Int_t index)
+{
+  TString s = GetStringFromTokenizedStringResult(arr, index);
+  return s.Atof();
 }
 
 Bool_t KSamba2KData::CheckStartOfSambaFile(void)
@@ -122,8 +197,8 @@ Bool_t KSamba2KData::CheckStartOfSambaFile(void)
   cout << "Check Start of Samba File" << endl;
   string startSamba = "* Archive SAMBA";
   
-  getline(fSambaFileStream,fSambaFileLine);
-  return fSambaFileLine.compare(0, startSamba.size(), startSamba) == 0 ? true: false; 
+  fSambaFileLine.ReadToDelim(fSambaFileStream);  
+  return fSambaFileLine.BeginsWith(startSamba.c_str()); 
 }
 
 Bool_t KSamba2KData::ReadSambaHeaderGeneral(void)
@@ -133,40 +208,88 @@ Bool_t KSamba2KData::ReadSambaHeaderGeneral(void)
   cout << "Reading Samba General Header." << endl;
   
   string endOfGeneralHeader = "* ----------" ; // 
-  size_t endOfGeneralHeaderSize = endOfGeneralHeader.size();
   
-
   //set the run name based on the name of the file
   //given in fSambaFile. Then we look in the file directly
   //to get the run name based on the value given by
   //Fichier.
-  size_t posOfFileName = fSambaFile.find_last_of("/\\"); //the \\ should support windows file system as well as unix
-  fSambaRunName = fSambaFile.substr(posOfFileName == string::npos ? 0 : posOfFileName,
-                    fSambaFile.find_last_of("_"));
-  fSambaFileNum = atoi(fSambaFile.substr(fSambaFile.find_last_of("_")+1).c_str());
+  size_t posOfFileName = fSambaFileName.find_last_of("/\\"); //the \\ should support windows file system as well as unix
+  fSambaRunName = fSambaFileName.substr(posOfFileName == string::npos ? 0 : posOfFileName+1,
+                    fSambaFileName.find_last_of("_"));
+  fSambaFileNum = atoi(fSambaFileName.substr(fSambaFileName.find_last_of("_")+1).c_str());
   
   //loop through the general header section. we finish when we find
   //the endOfGeneralHeader keyword. 
-  while ( fSambaFileLine.compare(0,endOfGeneralHeaderSize,endOfGeneralHeader) ) {
+  while ( !fSambaFileLine.BeginsWith(endOfGeneralHeader) 
+         && !fSambaFileStream.eof()) {
     
-    if(fSambaFileLine.compare(0,10,"Byte-order") == 0){
-      if(fSambaFileLine.substr(fSambaFileLine.find_last_of("=")+2,3) == "big")
-        fSambaBigEndian = true;
+    if(fSambaFileLine.BeginsWith("Byte-order")){
+      if(fSambaFileLine.Contains("big"))
+        fSambaHeader.SetEndian(true);
       else 
-        fSambaBigEndian = false;
+        fSambaHeader.SetEndian(false);
     }
     
-    if(fSambaFileLine.compare(0,10,"Fichier = ") == 0)
-      fSambaRunName = fSambaFileLine.substr(fSambaFileLine.find_last_of("/\\")+1); //the \\ should support windows file system as well as unix
+    else if( fSambaFileLine.BeginsWith("Fichier") ) {
+      TObjArray *path = fSambaFileLine.Tokenize("=#");
+      TString s = GetStringFromTokenizedStringResult(path, 1);
+      TObjArray *arr = s.Tokenize("/");
+      fSambaHeader.SetRunName( GetStringFromTokenizedStringResult(arr, arr->GetLast()) ); 
+      delete path;
+      delete arr;
+    }
+       
+    else if(fSambaFileLine.BeginsWith("Date") ) {
+      TObjArray *arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetDate( GetStringFromTokenizedStringResult(arr, 1) );
+      delete arr;
+    }
+  
+    else if(fSambaFileLine.BeginsWith("Version") ){
+      TObjArray *arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetVersion( GetStringFromTokenizedStringResult(arr, 1) );
+      delete arr;
+    }
+
+    else if(fSambaFileLine.BeginsWith("Release") ){
+      TObjArray *arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetRelease( GetStringFromTokenizedStringResult(arr, 1) );
+      delete arr;
+    }
+    
+    else if(fSambaFileLine.BeginsWith("Intitule") ){
+      TObjArray *arr = fSambaFileLine.Tokenize("\""); //this one is special because of the quotes
+      fSambaHeader.SetIntitule( ((TObjString *)arr->At(1))->GetString() );
+      delete arr;
+    }
+    
+    else if(fSambaFileLine.BeginsWith("Echantillonage") ){
+      TObjArray *arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetEchantillonage ( GetFloatFromTokenizedStringResult(arr, 1) );
+      delete arr;
+    }
+    
+    else if(fSambaFileLine.BeginsWith("Bolo.nb") ){
+      TObjArray *arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetNumBolos( GetFloatFromTokenizedStringResult(arr, 1) );
+      delete arr;
+    }
+    
+    else if(fSambaFileLine.BeginsWith("Voies.nb") ){
+      TObjArray *arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetNumChannels( GetIntegerFromTokenizedStringResult(arr, 1) );
+      delete arr;
+    }
+    
     
     if (!fSambaFileStream.good()) {
       cerr << "ReadSambaHeaderGeneral. Unexpcted end of General Header line \""<< endOfGeneralHeader<< "\" not found" << endl;
       return false;
     }
-    getline(fSambaFileStream,fSambaFileLine);
+                              
+    fSambaFileLine.ReadToDelim(fSambaFileStream);
   } 
-  
-  return true;
+  return !fSambaFileStream.eof();
   
 }
 
@@ -174,12 +297,475 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
 {
   cout << "Reading Detector Configurations." << endl;
   
-  string endOfDetectorConfig = "* ----------" ;  
-  string endOfDetectorHeader = "* Voie "; 
+  string startOfChannelConfig = "* Voie";
+  string startOfNewDetectorConfig = "* Detecteur";
+  
   //size_t endOfDetectorConfigSize = endOfDetectorConfig.size();
   
+  while (!fSambaFileStream.eof() && !fSambaFileLine.BeginsWith(startOfChannelConfig)){
+    
+    if(fSambaFileLine.BeginsWith(startOfNewDetectorConfig)){
+      
+      TObjArray *arr = fSambaFileLine.Tokenize(" ");
+      TString sub = GetStringFromTokenizedStringResult(arr, 2);
+      TString detector = sub(0, sub.Length()-2);  //I make assumptions about the structure of the Samba data
+      delete arr;
+      
+      if (!fSambaHeader.IsInDetectorList(detector.Data())){
+        KSambaDetector *fNewDetector =  fSambaHeader.AddDetector();
+        fNewDetector->SetName(detector.Data());
+        cout << "Adding new detector to list: " << detector.Data() << endl;
+        AddDetectorInfo(fNewDetector);
+      }
+      else {  //we have already started adding this information
+        AddDetectorInfo(detector.Data());
+      }
+    }
+          
+    fSambaFileLine.ReadToDelim(fSambaFileStream);
+  }
   
-  return true;
+  return !fSambaFileStream.eof();
+}
+
+
+
+Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
+{
+  string startOfChannelConfig = "* Voie";
+  string startOfRun = "# ===== Entete de run ====="; 
+  string endOfDetecorHeader = "* ----------" ; 
+  
+  TObjArray *arr = fSambaFileLine.Tokenize(" ");
+  TString sub = GetStringFromTokenizedStringResult(arr, 2);
+  delete arr;
+  
+  TString bolo = sub(0,sub.Length()-2);
+  if(bolo != detector->GetName()){
+    cerr << "KSamba2KData::AddDetectorInfo. Mismatch!"<< endl;
+    cerr << bolo.Data() << " != " << detector->GetName() << endl;
+    return false; //this should be impossible. 
+  }
+    
+  TString channelcentre ( sub(sub.Length()-2, 1) );
+  TString channelgarde ( sub(sub.Length()-1, 1) );
+  TString channelName = channelcentre + channelgarde;
+  
+  //need to deal with channels. AB, CD, GH are standard, but Ch also is allowed
+
+  if(channelcentre != "A" && channelcentre != "C" && channelcentre != "G"){
+    cerr << "Unknown Center Channel: " << channelcentre.Data() << " Skipping Configuration." << endl;
+    return true;  //still return true so that data is read
+  }
+  
+  if (channelcentre == "A") {
+    if(channelgarde != "B"){
+      cerr << "Unknown Channel Pattern reading Samba Header:";
+      cerr << channelcentre.Data() << channelgarde.Data() << endl;
+      cerr << "Skipping Configuration" << endl;
+      return true; //still return true so that data is read
+    }
+  }
+  
+  if (channelcentre == "G") {
+    if(channelgarde != "H"){
+      cerr << "Unknown Channel Pattern reading Samba Header:";
+      cerr << channelcentre.Data() << channelgarde.Data() << endl;
+      cerr << "Skipping Configuration" << endl;
+      return true; //still return true so that data is read
+    }
+  }
+  
+  if (channelcentre == "C") {
+    if (channelgarde != "D" && channelgarde != "h"){
+      cerr << "Unknown Channel Pattern reading Samba Header:";
+      cerr << channelcentre.Data() << channelgarde.Data() << endl;
+      cerr << "Skipping Configuration" << endl;
+      return true; //still return true so that data is read
+    }
+  }
+  
+  KSambaDetectorChannel *chan;
+  //then add the appropriate number of 
+  if(!detector->IsChannelInList(channelName.Data())){ 
+    //unless there's a bug in Samba and the same channel is printed out twice in the header
+    //this will always create a new channel.
+    chan = detector->AddChannel();
+    chan->SetName(channelName.Data());
+    cout << "    Adding channel: " << channelName.Data() << " to " << detector->GetName() << " configuration list." << endl;
+  }
+  else {
+    chan = detector->GetChannelFromList(channelName.Data());
+  }
+  
+  
+  while (!fSambaFileLine.BeginsWith(endOfDetecorHeader) && !fSambaFileStream.eof()){
+    
+    if(fSambaFileLine.BeginsWith("Bolo.etat") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      chan->SetState( GetStringFromTokenizedStringResult(larr, 1)  );
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.position") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      int x;
+      std::stringstream ss;
+      ss << std::hex << GetStringFromTokenizedStringResult(larr, 1).Data(); 
+      ss >> x;
+      chan->SetPosition( x );
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.masse") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      chan->SetMass( GetFloatFromTokenizedStringResult(larr, 1) );
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.hote") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      chan->SetMac( GetStringFromTokenizedStringResult(larr, 1) );
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.d2") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      chan->SetDiviseurD2( GetIntegerFromTokenizedStringResult(larr, 1) );
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.d3") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      chan->SetDiviseurD3( GetIntegerFromTokenizedStringResult(larr, 1) );
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.reglages")){
+      Bool_t foundGoodKey = true;
+      fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
+      
+      while (foundGoodKey){  //see below. i return when i get to the end. 
+
+        TObjArray *regarr = fSambaFileLine.Tokenize("{}");  
+        TString regSub = GetStringFromTokenizedStringResult(regarr, 1);
+        //cout << regSub.Data() << endl;
+        TObjArray *regSubArr = regSub.Tokenize(":=");
+        TString key = GetStringFromTokenizedStringResult(regSubArr, 0);
+        TString val = GetStringFromTokenizedStringResult(regSubArr, 1);
+        delete regarr;
+        delete regSubArr;
+        
+        if(key == "polar-centre") {
+          if (val == "indetermine" || val == "inconnu") chan->SetPolarCentre(-9999);
+          else chan->SetPolarCentre(val.Atof());
+        }
+        else if(key == "polar-garde" ) {
+          if (val == "indetermine" || val == "inconnu") chan->SetPolarGarde(-9999);
+          else chan->SetPolarGarde(val.Atof());
+        }
+        else if(key == "gain-centre" ) {
+          if (val == "indetermine" || val == "inconnu") chan->SetGainCentre(-9999);
+          else chan->SetGainCentre(val.Atof());
+        }
+        else if(key == "gain-chaleur" ) {
+          if (val == "indetermine" || val == "inconnu") chan->SetGainCentre(-9999);
+          else chan->SetGainChaleur(val.Atof());
+        }
+        else if(key == "gain-garde" ) {
+          if (val == "indetermine" || val == "inconnu") chan->SetGainGarde(-9999);
+          else chan->SetGainGarde(val.Atof());
+        }
+        else if(key == "polar-fet" ) {
+          chan->SetPolarFet(val.Data());
+        }
+        else if(key == "corr-pied" ) {
+          if (val == "indetermine" || val == "inconnu") chan->SetCorrPied(-9999);
+          else chan->SetCorrPied(val.Atof());
+        }
+        else if(key == "comp-modul" ) {
+          if (val == "indetermine" || val == "inconnu") chan->SetCompModul(-9999);
+          else chan->SetCompModul(val.Atof());
+        }
+        else if(key == "corr-trngl" ) {
+          if (val == "indetermine" || val == "inconnu") chan->SetCorrTrngl(-9999);
+          else chan->SetCorrTrngl(val.Atof());
+        }
+        else if(key == "ampl-modul" ) {
+          if (val == "indetermine" || val == "inconnu") chan->SetAmplModul(-9999);
+          else chan->SetAmplModul(val.Atof());
+        }
+        else if(key != "d2" && key != "d3") {
+          cerr << "Unkown key Reading Voie header: " << key << endl;
+          //foundGoodKey = false; //just keep reading... Samba is allowed to insert a new key
+        }
+
+        fSambaFileLine.ReadToDelim(fSambaFileStream);
+        
+        if(fSambaFileLine.BeginsWith(")") || fSambaFileStream.eof())
+          return true; // I know this is the last thing in the Detector Header Part. So, I quit when I get to the end.
+      }
+    }
+    
+    fSambaFileLine.ReadToDelim(fSambaFileStream);
+    
+  }
+  return !fSambaFileStream.eof();
+}
+  
+Bool_t KSamba2KData::AddDetectorInfo(const char* detname)
+{
+  KSambaDetector *det = fSambaHeader.GetDetectorFromList(detname);
+  return AddDetectorInfo(det);
+}
+
+Bool_t KSamba2KData::ReadSambaChannelConfigurations(void)
+{
+  return true; //skip this for now
+}
+
+void KSamba2KData::ReadSambaRecordLine(KRawSambaRecord *samba, TString &aLine, UInt_t &gigaStamp, UInt_t &smallStamp)
+{
+  if(aLine.BeginsWith("Numero")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetSambaEventNumber( GetIntegerFromTokenizedStringResult(arr, 1) );
+    delete arr;
+  }
+  else if(aLine.BeginsWith("Regeneration")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetRegenerationFlag( GetStringFromTokenizedStringResult(arr, 1) == "non" ? false : true );
+    delete arr;
+  }
+  else if(aLine.BeginsWith("Date.secondes")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetNtpDateSec( GetIntegerFromTokenizedStringResult(arr, 1) );
+    delete arr;
+  }
+  else if(aLine.BeginsWith("Date.microsecs")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetNtpDateMicroSec( GetIntegerFromTokenizedStringResult(arr, 1) );
+    delete arr;
+  }
+  else if(aLine.BeginsWith("GigaStamp")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    gigaStamp = GetIntegerFromTokenizedStringResult(arr, 1);
+    delete arr;
+  }
+  else if(aLine.BeginsWith("TimeStamp")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    smallStamp = GetIntegerFromTokenizedStringResult(arr, 1);
+    delete arr;
+  }
+  else if(aLine.BeginsWith("TempsMort.secondes")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetTotalDeadTimeSec( GetIntegerFromTokenizedStringResult(arr, 1) );
+    delete arr;
+  }
+  else if(aLine.BeginsWith("TempsMort.microsecs")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetTotalDeadTimeMicroSec(  GetIntegerFromTokenizedStringResult(arr, 1) );
+    delete arr;
+  }
+  else if(aLine.BeginsWith("Delai")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetSambaDelay(GetFloatFromTokenizedStringResult(arr, 1));
+    delete arr;
+  }
+  //else if(aLine.BeginsWith("Trigger")){
+  //TObjArray *arr = aLine.Tokenize("=#");
+  //Is this any different than Delai?
+  //samba->SetSambaTrigger(GetFloatFromTokenizedStringResult(arr, 1));
+  //}
+  else if(aLine.BeginsWith("Temperature")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetTemperature(GetFloatFromTokenizedStringResult(arr, 1));
+    delete arr;
+  }
+  else if(aLine.BeginsWith("Liste:31-0")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetTriggerBit1(GetIntegerFromTokenizedStringResult(arr, 1));
+    delete arr;
+  }
+  else if(aLine.BeginsWith("Liste:63-32")){
+    TObjArray *arr = aLine.Tokenize("=#");
+    samba->SetTriggerBit2(GetIntegerFromTokenizedStringResult(arr, 1));
+    delete arr;
+  }
+  
+}
+
+Bool_t KSamba2KData::ReadSambaRunHeader(void)
+{
+  cout << "Reading Run Header Data " << endl;
+  
+  string kBeginEvent = "# ===== Entete d'evenement =====" ; // empirical flags in the raw Edelweiss files
+  string kBeginEvent2 = "* Evenement";
+  string kBeginRun = "# ===== Entete de run =====" ; // empirical flags in the raw Edelweiss files
+  string kBeginRun2 = "* Run";
+  
+  //skip ahead until you find the start of the Run (or the start of the events in case
+  //the run header isn't found in the data for some reason!)
+  while(!fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginRun) &&
+        !fSambaFileLine.Contains(kBeginEvent2) && !fSambaFileLine.Contains(kBeginRun2) &&
+        !fSambaFileStream.eof())
+    fSambaFileLine.ReadToDelim(fSambaFileStream);
+  
+  if(fSambaFileLine.BeginsWith(kBeginEvent) || fSambaFileLine.Contains(kBeginEvent2))
+    return true;  //found the start of events... i guess there just isn't a run header for these data.
+  
+  TObjArray *arr = 0; //holds tokenized strings in the while loop
+  Long64_t gigaStampStartRun = 0;
+  Long64_t smallStampStartRun = 0;
+  
+  while (!fSambaFileStream.eof() && !fSambaFileLine.BeginsWith(kBeginEvent) && 
+         !fSambaFileLine.Contains(kBeginEvent2)) {
+    
+    
+    /*if(fSambaFileLine.BeginsWith("Run")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else*/
+    if(fSambaFileLine.BeginsWith("Type")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetRunType( GetStringFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Condition")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetRunCondition( GetStringFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    /*else if(fSambaFileLine.BeginsWith("Starter")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }*/
+    /*else if(fSambaFileLine.BeginsWith("Tubes-pulses")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }*/
+    else if(fSambaFileLine.BeginsWith("Date.secondes")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetRunStartPcTimeSec( GetLongIntFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Date.microsecs")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetRunStartPcTimeMicroSec( GetIntegerFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("GigaStamp0")){
+      arr = fSambaFileLine.Tokenize("=#");
+      gigaStampStartRun = GetLongIntFromTokenizedStringResult(arr, 1);
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("TimeStamp0")){
+      arr = fSambaFileLine.Tokenize("=#");
+      smallStampStartRun = GetLongIntFromTokenizedStringResult(arr, 1);
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Source.1.regen")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetSource1Regen( GetStringFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Source.2.regen")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetSource2Regen( GetStringFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Source.1.calib")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetSource1Calib( GetStringFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Source.2.calib")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetSource2Calib( GetStringFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Donnees.source")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetDataSource( GetStringFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Duree.tampon")){
+      arr = fSambaFileLine.Tokenize("=#");
+      fSambaHeader.SetDataBufferLength( GetFloatFromTokenizedStringResult(arr, 1));
+      delete arr;
+    }
+    /*else if(fSambaFileLine.BeginsWith("Duree.synchronisation")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }*/
+    /*else if(fSambaFileLine.BeginsWith("Lect.start.synchro")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Lect.taux.seuil")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Lect.delai.mini")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }*/
+    else if(fSambaFileLine.BeginsWith("Trigger.actif")){
+      arr = fSambaFileLine.Tokenize("=#");
+      if(GetStringFromTokenizedStringResult(arr, 1) == "oui")
+        fSambaHeader.SetIsStreamMode(false);
+      else fSambaHeader.SetIsStreamMode(true);
+      delete arr;
+    }
+    /*else if(fSambaFileLine.BeginsWith("Trigger.Type")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Trigger.prgm")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Trmt.calcul")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Trmt.datation")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Trmt.altivec")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Trmt.pattern")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Trmt.sans_fltr")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Trmt.saute_evt")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Trmt.evt.calage")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Sauvegarde.stream")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Sauvegarde.evt")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }
+    else if(fSambaFileLine.BeginsWith("Sauvegarde.regen")){
+      arr = fSambaFileLine.Tokenize("=#");
+      delete arr;
+    }*/
+    
+    fSambaFileLine.ReadToDelim(fSambaFileStream);
+  }
+  
+  fSambaHeader.SetRunStartTriggerStamp(gigaStampStartRun*(1e9) + smallStampStartRun);
+
+  return !fSambaFileStream.eof();
 }
 
 Bool_t KSamba2KData::ReadSambaData(void)
@@ -187,12 +773,11 @@ Bool_t KSamba2KData::ReadSambaData(void)
     
   cout << "Reading Samba Data " << endl;
   
-  string kBeginEvent = "* Evenement" ; // empirical flags in the raw Edelweiss files
-  string kBeginChannel = "* Voie" ;
+  string kBeginEvent = "# ===== Entete d'evenement =====" ; // empirical flags in the raw Edelweiss files
+  string kBeginEvent2 = "* Evenement";
+  string kBeginChannel = "* Voie \"" ;
   string kSeparator = "* ----------" ;
-  short kBeginEventSize = kBeginEvent.size() ;
-  short kBeginChannelSize = kBeginChannel.size() ;
-  short kSeparatorSize = kSeparator.size() ;
+  string kMuonVetoIgnore = "hits veto";
   
   KRawEvent *event = dynamic_cast<KRawEvent *>(fKdataOutput.GetEvent());
   
@@ -201,14 +786,13 @@ Bool_t KSamba2KData::ReadSambaData(void)
     return false;
   }
   
-  
   //skip ahead to the first event.
-  while ( fSambaFileLine.compare(0,kBeginEventSize,kBeginEvent) ) {
+  while ( !fSambaFileLine.BeginsWith(kBeginEvent) ) {
     if (!fSambaFileStream.good()) {
       cerr << "KSamba2KData::ReadSambaData: "<< kBeginEvent<< " not found" << endl;
       return false;
     }
-    getline(fSambaFileStream,fSambaFileLine);
+    fSambaFileLine.ReadToDelim(fSambaFileStream);
   } 
   
   Int_t eventCount = 0;
@@ -216,134 +800,320 @@ Bool_t KSamba2KData::ReadSambaData(void)
   // Loop on events
   while ( fSambaFileStream.good() ) {
     
-    event->Clear("C");
-    
-    KRawBolometerRecord *bolo = event->AddBolo();
-    KRawSambaRecord *samba = event->AddSamba();
-    
-    samba->SetRunName(fSambaRunName.c_str());
-    samba->SetFileNumber(fSambaFileNum);
-    samba->SetSambaDAQNumber(fSambaRunName.compare(4,1,"a") + 1); 
-    UInt_t gigaStamp = 0;
-    UInt_t smallStamp = 0;
-    
-    while ( fSambaFileLine.compare(0,kBeginChannelSize,kBeginChannel) ) {
-      getline(fSambaFileStream,fSambaFileLine);
-      size_t diese_pos = fSambaFileLine.find("#",0);
-      size_t eq_pos = fSambaFileLine.find("=",0);
-      if (eq_pos != string::npos) {
-        string lField = fSambaFileLine.substr(0,eq_pos-1);
-        string lValue = fSambaFileLine.substr(eq_pos+1);
-        if (diese_pos != string::npos) lValue = fSambaFileLine.substr(eq_pos+1,diese_pos-1-eq_pos) ;
-        //samba event number
-        if (lField == "Numero") samba->SetSambaEventNumber( atol(lValue.c_str()) );
-        if (lField == "Date.secondes") {
-          samba->SetNtpDateSec( atol(lValue.c_str()) );
-          event->SetEventTriggerTime( atol(lValue.c_str()) );
+    if(fSambaFileLine.BeginsWith(kBeginEvent)){  //(given the while loop above, this if statement check should be redundant.)
+      
+      //an event is found. the following needs to be done.
+      //read the samba record information. read every channel stored in the 
+      //event, discarding the data from the muon veto events, and pack each
+      //channels pulse trace and other information into the appropriate bolometer
+      //record. 
+      
+      event->Clear("C");
+      KRawSambaRecord *samba = event->AddSamba();
+      samba->SetRunName(fSambaHeader.GetRunName());
+      samba->SetFileNumber(fSambaFileNum);
+      samba->SetSambaDAQNumber(fSambaRunName[4] - 'a' + 1); 
+      AddSambaInformationFromHeader(samba);
+      UInt_t gigaStamp = 0;
+      UInt_t smallStamp = 0;
+      
+      fSambaFileLine.ReadToDelim(fSambaFileStream);  //read the next line. it should be a comment. #
+      
+      while(!fSambaFileLine.Contains(kBeginChannel) && !fSambaFileStream.eof()){
+        //continue reading the file to get all of the samba information, exiting the loop when the first 
+        //channel record is found (or end of file)
+        ReadSambaRecordLine(samba, fSambaFileLine, gigaStamp, smallStamp);
+        fSambaFileLine.ReadToDelim(fSambaFileStream);
+      } 
+      
+      if (fSambaFileStream.eof()) {
+        cout << "Unexpected end of file after reading event" << endl;
+        return false;
+      }
+      
+      
+      while (!fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginEvent2)
+             && !fSambaFileStream.eof() ) { //keep reading channel recordss until we reach the start of the next event. 
+                                            //we are at the start of a channel record in the samba file now. 
+                                            //if we've found a muon veto hits channel record, ignore it for now and skip ahead. 
+        if (!fSambaFileLine.Contains(kMuonVetoIgnore) && !fSambaFileStream.eof()) {
+          
+          TString subStr( fSambaFileLine(fSambaFileLine.Index(kBeginChannel), fSambaFileLine.Length() - fSambaFileLine.Index(kBeginChannel)) );
+          TObjArray *arr = subStr.Tokenize(" ");
+          TString sub = GetStringFromTokenizedStringResult(arr, 3);
+          TString detector = sub(0,sub.Length()-3);  //assuming the samba file format always give this! subtract 3 (instead of 2) because of the quotation 
+          delete arr;
+          
+          //check to see if bolo already exists in the event, or else, add a new bolometer record. 
+          KRawBolometerRecord *bolo = 0;
+          Bool_t newBolo = true;
+          for(Int_t i = 0; i < event->GetNumBolos(); i++){
+            bolo = event->GetBolo(i);
+            if(detector == bolo->GetDetectorName()){
+              newBolo = false;
+              break;
+            }
+          }
+          if (newBolo) {
+            bolo = event->AddBolo();
+            bolo->SetDetectorName(detector.Data());
+            bolo->SetSambaRecord(samba);
+            //AddBoloInformationFromHeader(bolo);
+          }
+          
+          if(bolo == 0){
+            cout << "Didn't get a proper pointer to the KRawBolometerRecord!" << endl;
+            return false;  //this should never happen!
+          }
+          
+          KRawBoloPulseRecord *pulse = event->AddBoloPulse();
+          //set the pulse name 
+          //don't worry about figuring out the exact channel, just record the pulse
+          //name as whatever is found inside the quotes after the Voie
+          arr = subStr.Tokenize("\"");
+          pulse->SetChannelName( GetStringFromTokenizedStringResult(arr, 1));
+          delete arr;
+          pulse->SetBolometerRecord(bolo);
+          bolo->AddPulseRecord(pulse);
+          AddPulseInformationFromHeader(pulse); //must do this after setting the bolometer record pointer
+          
+          pulseCount++;
+          
+          Short_t lPulseSize=0;
+          int lPtsFiltre=0;
+          
+          fSambaFileLine.ReadToDelim(fSambaFileStream); //should be at the first line still of the channel record
+                                                        //so read the next line and start reading the channel record
+          
+          while( !fSambaFileLine.Contains(kBeginChannel) && !fSambaFileStream.eof() && !fSambaFileLine.Contains(kBeginEvent)){
+            
+            //read line from the pulse channel and store them appropriately
+            if(fSambaFileLine.BeginsWith("Dimension")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetPulseLength( GetIntegerFromTokenizedStringResult(arr, 1) );
+              lPulseSize = GetIntegerFromTokenizedStringResult(arr, 1);  //to be used later to read the pulse
+              delete arr;
+            }
+            else if(fSambaFileLine.BeginsWith("Horloge")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetPulseTimeWidth( GetFloatFromTokenizedStringResult(arr, 1)*1000000.0 ); //size of a single point in ns
+              delete arr;
+            }
+            else if(fSambaFileLine.BeginsWith("Base")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetAmplitudeBaseline( GetFloatFromTokenizedStringResult(arr, 1) );
+              delete arr;
+            }
+            else if(fSambaFileLine.BeginsWith("Bruit")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetAmplitudeBaselineNoise( GetFloatFromTokenizedStringResult(arr, 1) );
+              delete arr;
+            }
+            else if(fSambaFileLine.BeginsWith("Amplitude")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetAmplitude( GetFloatFromTokenizedStringResult(arr, 1) );
+              delete arr;
+            }
+            else if(fSambaFileLine.BeginsWith("Trigger.ampl.pos")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetPositiveTriggerAmp( GetFloatFromTokenizedStringResult(arr, 1) );
+              delete arr;
+            }
+            else if(fSambaFileLine.BeginsWith("Trigger.ampl.neg")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetNegativeTriggerAmp( GetFloatFromTokenizedStringResult(arr, 1) );
+              delete arr;
+            }
+            else if(fSambaFileLine.BeginsWith("Pretrigger")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetPretriggerSize( GetFloatFromTokenizedStringResult(arr, 1) );
+              delete arr;
+            }
+            else if(fSambaFileLine.BeginsWith("Montee")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetPulseRiseTime( GetFloatFromTokenizedStringResult(arr, 1) );
+              
+            }
+            else if(fSambaFileLine.BeginsWith("Filtre.nb")){
+              arr = fSambaFileLine.Tokenize("=#");
+              pulse->SetFilterSize( GetIntegerFromTokenizedStringResult(arr, 1) );
+              lPtsFiltre = GetIntegerFromTokenizedStringResult(arr, 1);
+              delete arr;
+            }
+            
+            else if(fSambaFileLine.BeginsWith(kSeparator)){
+              //we've reached the pulse.. the next line could be the 
+              //pulse, or it could be the start of another event or channel record.
+              
+              long lPos = fSambaFileStream.tellg();
+              fSambaFileLine.ReadToDelim(fSambaFileStream); //read the line, which includes the pulse trace and possibly the next channel info
+              fSambaFileStream.seekg(lPos);  //but back up the stream pointer
+              
+              if ( !fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginEvent2) &&
+                  !fSambaFileLine.BeginsWith(kBeginChannel) ){  //make sure we're really not at the start of a next event or channel info and that the pulse is really there
+                
+                if ( lPtsFiltre )  //skip the filter information
+                  fSambaFileStream.ignore(8*lPtsFiltre); // filtered data = 8 bytes
+                
+                Short_t* lArray = new Short_t[lPulseSize];
+                fSambaFileStream.read((char*)lArray,lPulseSize*2); //read the pulse from the stream. always 2 bytes for each point. 
+                
+                if (fSambaFileStream.fail()) 
+                  cerr << "KSamba2KData::ReadSambaData. Error reading a pulse for event " << samba->GetSambaEventNumber()<< endl;
+                
+                if (fSambaHeader.GetEndian() != fLocalBigEndian)  //reverse order if necessary 
+                  for (Short_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
+                
+                pulse->SetTrace(lPulseSize,lArray);
+                delete[] lArray;
+              } 
+              
+              fSambaFileStream.seekg(lPos);  //now that we've read the pulse, back the stream up again
+                                             //so that the line is read and checked in the next
+                                             //iteration of the while loop for the start of a new channel
+                                             //or new event record.
+              
+            }
+            
+            fSambaFileLine.ReadToDelim(fSambaFileStream);
+            
+          }  
+          
+          //reached the end of this channel's record.
         }
-        if (lField == "Date.microsecs") samba->SetNtpDateMicroSec( atoi(lValue.c_str()) );
-        if (lField == "Delai") samba->SetSambaDelay( atof(lValue.c_str()) );
-        if (lField == "Liste:31-0") samba->SetTriggerBit1((UInt_t)atoi(lValue.c_str()));
-        if (lField == "Liste:63-32") samba->SetTriggerBit2((UInt_t)atoi(lValue.c_str()));
-        
-        if(lField == "GigaStamp") gigaStamp = (UInt_t)atoi(lValue.c_str());
-        if(lField == "TimeStamp") smallStamp = (UInt_t)atoi(lValue.c_str());
-        
-      } // else cerr << "Strange line for event header: " << fSambaFileLine << endl;
-    }
-    event->SetStamp(gigaStamp*10^9 + smallStamp);
-    
-    bolo->SetSambaRecord(samba);
-    
-    // Loop on pulses within a given event
-    int lNopulse=0;
-    while (lNopulse == 0) {
-      KRawBoloPulseRecord *pulse = event->AddBoloPulse();
       
-      pulse->SetChannelName(fSambaFileLine.substr(8,fSambaFileLine.size()-9).c_str());
-      Short_t lPulseSize=0;
-      int lPtsFiltre=0;
-      while ( fSambaFileLine.compare(0,kSeparatorSize,kSeparator) ) { // Pulse header
-        getline(fSambaFileStream,fSambaFileLine);
-        string::size_type diese_pos = fSambaFileLine.find("#",0);
-        string::size_type eq_pos = fSambaFileLine.find("=",0);
-        if (eq_pos != string::npos) {
-          string lField = fSambaFileLine.substr(0,eq_pos-1);
-          lField = lField.substr(lField.find_first_not_of("\t"));
-          string lValue = fSambaFileLine.substr(eq_pos+1);
-          if (diese_pos != string::npos) lValue = fSambaFileLine.substr(eq_pos+1,diese_pos-1-eq_pos) ;
-          if (lField == "Dimension") lPulseSize=atoi(lValue.c_str());
-          if (lField == "Horloge") pulse->SetPulseTimeWidth( (ULong_t)atof(lValue.c_str())*1000000 ) ; // ms to ns
-          if (lField == "Filtre.nb") lPtsFiltre=atoi((lValue).c_str());
-          if (lField == "Base") pulse->SetAmplitudeBaseline(atof(lValue.c_str()));
-          if (lField == "Bruit") pulse->SetAmplitudeBaselineNoise(atof(lValue.c_str()));
-          if (lField == "Amplitude") pulse->SetAmplitude(atof(lValue.c_str()));
-        } // else cerr << "Strange line for pulse header: " << fSambaFileLine << endl;
-        
-        if (!fSambaFileStream.good()) 
-          cerr << "Error reading pulse header" << endl;
-      }
-      
-      if ( lPtsFiltre ) 
-        fSambaFileStream.ignore(8*lPtsFiltre); // filtered data = 8 bytes
-                                               // First check if the pulse is here indeed!
-      long lPos = fSambaFileStream.tellg();
-      getline(fSambaFileStream,fSambaFileLine);
-      fSambaFileStream.seekg(lPos);
-      
-      if ( (!fSambaFileLine.compare(0,kBeginEventSize,kBeginEvent)) || 
-          (!fSambaFileLine.compare(0,kBeginChannelSize,kBeginChannel))) {
-        // No pulse, just a header.. need to record the pulse in the tree but with no trace?
-      } 
-      else { // Read the pulse
-        Short_t* lArray = new Short_t[lPulseSize];
-        fSambaFileStream.read((char*)lArray,lPulseSize*2);
-        
-        if (fSambaFileStream.fail()) 
-          cerr << "KSamba2KData::ReadSambaData. Error reading a pulse for event " << samba->GetSambaEventNumber()<< endl;
-        
-        if (fSambaBigEndian != fLocalBigEndian)  //reverse order if necessary 
-          for (Short_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
-        
-        pulse->SetTrace(lPulseSize,lArray);
-        delete[] lArray;
+        else {
+          //found a muon channel record, so must skip ahead to either the next channel
+          //or the next event. 
+          while( !fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginEvent2) &&
+                !fSambaFileLine.BeginsWith(kBeginChannel) && !fSambaFileStream.eof() )
+            fSambaFileLine.ReadToDelim(fSambaFileStream);
+        }
         
       }
       
-      pulse->SetBolometerRecord(bolo);
-      //need to set channel number and pulse type here.
-      bolo->AddPulseRecord(pulse);
-      pulseCount++;
+      //here because the while loop above found the start of the next
+      //event. so,  finally save all of the event information that's been collected
       
-      char toto; // Je comprends pas pourquoi il faut faire ca. Admettons...
-      long pos=fSambaFileStream.tellg();
-      fSambaFileStream.get(toto);
-      if ( fSambaFileStream.good() ) {
-        fSambaFileStream.seekg(pos);
-        getline(fSambaFileStream,fSambaFileLine);
-        //	cout << fSambaFileLine << endl;
-        if ( ! fSambaFileLine.compare(0,kBeginEventSize,kBeginEvent) ) 
-          lNopulse=1;
-      } 
-      else 
-        lNopulse=1;
+      event->SetEventTriggerStamp(gigaStamp*(1e9) + smallStamp);
+      fKdataOutput.Fill();
+      eventCount++;
       
-      if (fSambaFileStream.bad()) 
-        cerr << "Error reading the Samba file.." <<endl;
-    }
+      //print out Event Info for debugging. 
+      /*
+      Long64_t a = gigaStamp*(1e9) + smallStamp;
+       int stop;
+       event->Dump();
+       cout << "gigastamp: smallStamp: Sum: " << gigaStamp << " " << smallStamp << " " << a << endl;
+       cout << event->GetNumBolos() << " bolometer records" << endl;
+       for(Int_t ii = 0; ii < event->GetNumBolos(); ii++){
+        KRawBolometerRecord *b = event->GetBolo(ii);
+        cout << endl << "detector name: " << b->GetDetectorName() << endl;
+        b->Dump();
+        KRawSambaRecord *s = b->GetSambaRecord();
+        cout << "run: " << s->GetRunName() << endl;
+        s->Dump();
+        cout <<  b->GetNumPulseRecords() << " pulse records" << endl;
+        for(Int_t jj = 0; jj < b->GetNumPulseRecords(); jj++){
+          KRawBoloPulseRecord *p = b->GetPulseRecord(jj);
+          cout << "channel name: \"" << p->GetChannelName() << "\"" << endl;
+          p->Dump();
+        }
+      }
+      cin >> stop;
+      */
+    }  
+    else fSambaFileLine.ReadToDelim(fSambaFileStream); //if the line doesn't begin with a new event, read the next line
     
-    fKdataOutput.Fill();
-    eventCount++;
   }
   
-  cout << "    Found " << eventCount << " Bolometer Events" << endl;
-  cout << "           and " << pulseCount << " Pulses" << endl;
+  cout << "  Found a total of " << eventCount << " Bolometer Events" << endl;
+  cout << "    a total of and " << pulseCount << " Pulses" << endl;
   
   fKdataOutput.Write();
   
   return true;
-
 }
+void KSamba2KData::AddSambaInformationFromHeader(KRawSambaRecord* samba)
+{
+  samba->SetRunType(fSambaHeader.GetRunType());
+  samba->SetRunCondition(fSambaHeader.GetRunCondition());
+  samba->SetRunStartPcTimeSec(fSambaHeader.GetRunStartPcTimeSec());
+  samba->SetRunStartPcTimeMicroSec(fSambaHeader.GetRunStartPcTimeMicroSec());
+  samba->SetRunStartTriggerStamp(fSambaHeader.GetRunStartTriggerStamp());
+  samba->SetSource1Regen(fSambaHeader.GetSource1Regen());
+  samba->SetSource2Regen(fSambaHeader.GetSource2Regen());
+  samba->SetSource1Calib(fSambaHeader.GetSource1Calib());
+  samba->SetSource2Calib(fSambaHeader.GetSource2Calib());
+  samba->SetDataSource(fSambaHeader.GetDataSource());
+  samba->SetDataBufferLength(fSambaHeader.GetDataBufferLength());
+  samba->SetIsStreamMode(fSambaHeader.GetIsStreamMode());
+  
+}
+
+void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
+{
+  KRawBolometerRecord *b = p->GetBolometerRecord();
+  if(b != 0){
+    TString detName = b->GetDetectorName();
+    //cout << "detector name from pulse record: " << detName.Data() << endl;
+    KSambaDetector *det = fSambaHeader.GetDetectorFromList(detName.Data());
+    if(det != 0){
+      TString pulseChannelName = p->GetChannelName();
+      //cout << "pulse channel name from pulse: " << pulseChannelName.Data() << endl;
+      TString chanNameSub = pulseChannelName(pulseChannelName.Length()-2,2);  //ASSUME format, the last two letters are always AB, GH, CD or Ch
+                                                                              //cout << "sub name from pulse: " << chanNameSub.Data() << endl;
+      
+      KSambaDetectorChannel *chan = det->GetChannelFromList(chanNameSub.Data());
+      if(chan != 0){
+        p->SetState(chan->GetState());
+        p->SetCryoPosition(chan->GetPosition());
+        p->SetPolarFet(chan->GetPolarFet());
+        p->SetHeatPulseStampWidth(chan->GetDiviseurD2());
+        p->SetIsHeatPulse(0);
+        p->SetCorrPied(0); 
+        p->SetCompModul(0);
+        p->SetCorrTrngl(0);
+        p->SetAmplModul(0);
+
+        if(pulseChannelName.BeginsWith("chaleur")){
+          p->SetIsHeatPulse(1);
+          p->SetPolarity(0.0);
+          p->SetGain(chan->GetGainChaleur());
+          p->SetCorrPied(chan->GetCorrPied()); 
+          p->SetCompModul(chan->GetCompModul());
+          p->SetCorrTrngl(chan->GetCorrTrngl());
+          p->SetAmplModul(chan->GetAmplModul());
+        }
+        else if(pulseChannelName.BeginsWith("centre")){
+          p->SetPolarity(chan->GetPolarCentre());
+          p->SetGain(chan->GetGainCentre());
+        }
+        else if(pulseChannelName.BeginsWith("garde")){
+          p->SetPolarity(chan->GetPolarGarde());
+          p->SetGain(chan->GetGainGarde());
+        }
+        
+        //set properties for the bolometer associated with this pulse!  
+        //this is kind of a weird place to do it and we could have 
+        //problems if the data isn't entered into the samba configuration properly
+        //and one channel's information conflicts with a different channel's information.
+        b->SetMass(chan->GetMass());
+      }
+      else {
+        cout << "AddPulseInformationFromHeader. Couldn't find channel in list. Searched for: " << chanNameSub.Data() << endl;
+      }
+    }
+    else {
+      cout << "AddPulseInformationFromHeader. Could not find detector in list. Searched for: " << detName.Data() << endl;
+    }
+  }
+  else {
+    cout << "AddPulseInformationFromHeader. KRawBoloPulseRecord -- no bolometer record pointer set." << endl;
+  }
+  
+}
+
 
 Bool_t KSamba2KData::CloseKdataFile(void)
 {
@@ -353,7 +1123,7 @@ Bool_t KSamba2KData::CloseKdataFile(void)
 
 Bool_t KSamba2KData::OpenSambaFileStream(void)
 {
-  fSambaFileStream.open(fSambaFile.c_str(), ios::in);
+  fSambaFileStream.open(fSambaFileName.c_str(), ios::in);
   return ( fSambaFileStream.is_open() && !fSambaFileStream.fail() );
 }
 
@@ -368,7 +1138,7 @@ Bool_t KSamba2KData::CloseSambaFileStream(void)
 Bool_t KSamba2KData::OpenKdataFile(void)
 {
   fKdataOutput.Close(); //make sure we've closed the file.
-  return fKdataOutput.OpenFile(fKdataFile.c_str(), KRawEvent::GetClassName());
+  return fKdataOutput.OpenFile(fKdataFileName.c_str(), KRawEvent::GetClassName());
 }
 
 

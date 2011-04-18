@@ -10,6 +10,10 @@
 #   ROOTSYS        - root system directory
 #   CERNDIR        - cern libraries directory (if required)
 #   FFTW_DIR       - fftw libraries directory (if required)
+#   
+#   JANSSON_DIR    - jansson directory (required for kdatabase)
+#   CURL_DIR       - libcurl directory (required for kdatabase)
+#
 #
 # All of the above environment variables, as well as PATH and LD_LIBRARY_PATH
 # are set via the "source config/setup_kdata.csh" command in the KDATA root
@@ -32,7 +36,7 @@
 #
 #   ROOTSYS/config/Makefile.config - defines architecture (ARCH)
 #   ROOTSYS/config/Makefile.ARCH   - archictecture-dependent definitions
-#   config/Makefile.ARCH           - DW-specific architecture-dependent defs
+#   config/Makefile.ARCH           - KData-specific architecture-dependent defs
 #   MyConfig.mk                    - local system-specific definitions
 #   Modules.mk                     - defines modules to build
 #   MODULE/Module_libs.mk          - module library definitions
@@ -95,14 +99,20 @@ endif
 
 ROOTINCS       := -I$(ROOTSYS)/include
 FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../fftw -I$(FFTW_DIR)/../rfftw
+JANSSONINCS    := -I$(JANSSON_DIR)/../include 
+#YAJLINCS       := -I$(YAJL_DIR)/../include -I$(YAJL_DIR)/../include/yajl
+CURLINCS       := $(shell $(CURL_DIR)/curl-config --cflags)
 
 XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
-ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyROOT
+ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
 
 CERNLIBS       :=  -L$(CERNDIR) -llepto -lpythia -lpythiad -ljetset74\
                    -lpdflib804 -lpawlib -lgraflib -lgrafX11 -lmathlib -lpacklib
 
 FFTWLIBS       := -L$(FFTW_DIR) -lfftw3 -lm
+#YAJLLIBS       := -L$(YAJL_DIR) -lyajl_s
+JANSSONLIBS    := -L$(JANSSON_DIR) -ljansson
+CURLLIBS       := $(shell $(CURL_DIR)/curl-config --libs)
 
 #special paths to the local ERA libraries. Needed for modules that depend upon ERA. 
 ERA_LIB := $(LPATH)/libEra.$(SOEXT)
@@ -239,6 +249,7 @@ prepare::
 	@$(INSTALLDIR) include
 	@$(INSTALLDIR) lib
 	@rsync -aq --exclude=.svn/ --exclude=.DS_Store KDataPy lib/.
+	@chmod -R +x lib/KDataPy
 	@config/checkenv
 
 clean::
@@ -261,6 +272,9 @@ showbuild:
 	@echo "ROOTSYS            = $(ROOTSYS)"
 #	@echo "CERNDIR            = $(CERNDIR)"
 	@echo "FFTW_DIR           = $(FFTW_DIR)"
+#	@echo "YAJL_DIR           = $(YAJL_DIR)"
+	@echo "JANSSON_DIR        = $(JANSSON_DIR)"
+	@echo "CURL_DIR           = $(CURL_DIR)"
 	@echo ""
 	@echo "MODULES            = $(MODULES)"
 	@echo "ALLLIBS            = $(ALLLIBS)"
@@ -292,8 +306,11 @@ showbuild:
 	@echo "SOEXT              = $(SOEXT)"
 	@echo ""
 	@echo "FFTWINCS           = $(FFTWINCS)"
+#	@echo "YAJLINCS           = $(YAJLINCS)"
+	@echo "JANSSONINCS        = $(JANSSONINCS)"
+	@echo "CURLINCS           = $(CURLINCS)"
 	@echo ""
-	@echo "KDATALIBDIRS        = $(KDATALIBDIRS)"
+	@echo "KDATALIBDIRS       = $(KDATALIBDIRS)"
 	@echo ""
 	@echo "ROOTLIBS           = $(ROOTLIBS)"
 	@echo "SYSLIBS            = $(SYSLIBS)"
@@ -301,6 +318,9 @@ showbuild:
 	@echo "F77LIBS            = $(F77LIBS)"
 #	@echo "CERNLIBS           = $(CERNLIBS)"
 	@echo "FFTWLIBS           = $(FFTWLIBS)"
+	@echo "YAJLLIBS           = $(YAJLLIBS)"
+	@echo "JANSSONLIBS        = $(JANSSONLIBS)"
+	@echo "CURLLIBS           = $(CURLLIBS)"
 	@echo ""
 	@echo "OSTHREADLIB        = $(OSTHREADLIB)"
 	@echo ""

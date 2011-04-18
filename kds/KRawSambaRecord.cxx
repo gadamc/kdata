@@ -52,6 +52,9 @@ void KRawSambaRecord::CopyLocalMembers(const KRawSambaRecord &aRec)
 	fSambaDelay = aRec.fSambaDelay;
   fTriggerBit1 = aRec.fTriggerBit1;
   fTriggerBit2 = aRec.fTriggerBit2;
+  fDataSource = aRec.fDataSource;
+  fDataBufferLength = aRec.fDataBufferLength;
+  fStreamMode = aRec.fStreamMode;
 }
 
 KRawSambaRecord::~KRawSambaRecord(void)
@@ -87,7 +90,9 @@ void KRawSambaRecord::InitializeMembers(void)
   fSambaDelay = -1;
   fTriggerBit1 = 0;
   fTriggerBit2 = 0;
-  
+  fDataSource.resize(0);
+  fDataBufferLength = -1; 
+  fStreamMode = -1;
 }
 
 Bool_t KRawSambaRecord::IsSame(const KRawSambaRecord &aRec, Bool_t bPrint) const
@@ -130,6 +135,31 @@ Bool_t KRawSambaRecord::IsSame(const KRawSambaRecord &aRec, Bool_t bPrint) const
 		if (bPrint) 
 			cout << "KRawSambaRecord fTriggerBit2 Not Equal. lhs: " 
 			<< fTriggerBit2 << " != rhs " << aRec.fTriggerBit2 << endl;		
+		else
+			return false;  
+	}
+  
+  if(fDataSource != aRec.fDataSource){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawSambaRecord fDataSource Not Equal. lhs: " 
+			<< fDataSource << " != rhs " << aRec.fDataSource << endl;		
+		else
+			return false;  
+	}
+  if(fDataBufferLength != aRec.fDataBufferLength){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawSambaRecord fDataBufferLength Not Equal. lhs: " 
+			<< fDataBufferLength << " != rhs " << aRec.fDataBufferLength << endl;		
+		else
+			return false;  
+	}
+  if(fStreamMode != aRec.fStreamMode){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawSambaRecord fStreamMode Not Equal. lhs: " 
+			<< fStreamMode << " != rhs " << aRec.fStreamMode << endl;		
 		else
 			return false;  
 	}

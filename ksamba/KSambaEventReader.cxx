@@ -30,8 +30,3 @@ void KSambaEventReader::InitializeMembers(void)
   
 }
 
-
-Bool_t KSambaEventReader::ReadEvent(ifstream& aSambaFile, KSambaEvent* aheader)
-{
-  return true;
-}

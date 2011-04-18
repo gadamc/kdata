@@ -403,7 +403,7 @@ int eraToKEds(string inputPath, string kDetectorName, string outputFile, string 
 			mEv->SetRunStartTime(kKRun12StartTime);//WHERE TO PUT THIS RUN CONFIGURATION INFORMATION IT HAS TO BE SOMEWHERE WITH EASY ACCESS FOR THE FUTURE probabliy best to put in its own file and include this file StartTime and EndTime can be taken from the first and last Event once everything is filled in
 			mEv->SetRunEndTime(kKRun12EndTime);
 			
-			mEv->SetEventTriggerTime((Double_t)dateSec);  //hmm... this doesn't work here! but we keep it for a rough estimate of the event time. This could be filled with the PcTime of any of the Samba machines or the Muon Veto Mac. 			
+
 			//getting the stamp:
 			if(runName==ericsSpecialRun && eventNum==1){
 				if(firstElementFilejl14){
