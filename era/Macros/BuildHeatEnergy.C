@@ -3,10 +3,10 @@
 #include <string>
 
 int BuildHeatEnergy(TChain* chain, string bolo, string heatgainfile, string echalntpfile, TTree* Eion) {
-
+  
   bool heatonly_flag=0;
   if (bolo == "Gc2") heatonly_flag=1;
-
+  
   // 1) Prepare the trees/chain
   TFile* f = new TFile(echalntpfile.c_str(),"RECREATE");
   TTree* t = new TTree("energytree","EdwHeatEnergy");
@@ -14,14 +14,14 @@ int BuildHeatEnergy(TChain* chain, string bolo, string heatgainfile, string echa
   Float_t Chi2Heat=0, RiseTime=0, PulseWidth=0;
   Float_t lChi2=0, lRise=0, lWidth=0;
   ULong64_t date_out=0;
-
+  
   t->Branch("Eheat",&Eheat,"Eheat/F");
   t->Branch("E0heat",&E0heat,"E0heat/F");
   t->Branch("Chi2Heat",&lChi2,"Chi2Heat/F");
   t->Branch("RiseTime",&lRise,"RiseTime/F");
   t->Branch("PulseWidth",&lWidth,"PulseWidth/F");
   if (heatonly_flag) t->Branch("DateSec",&date_out,"DateSec/l");
-
+  
   chain->SetBranchStatus("*",0);
   chain->SetBranchStatus("DateSec",1);
   string heatname=ChannelName(bolo,"heat");
@@ -40,10 +40,10 @@ int BuildHeatEnergy(TChain* chain, string bolo, string heatgainfile, string echa
   chain->SetBranchAddress(("WienerChi2_"+heatname).c_str(),&Chi2Heat);
   chain->SetBranchAddress(("RiseTime_"+heatname).c_str(),&RiseTime);
   chain->SetBranchAddress(("FWHM_"+heatname).c_str(),&PulseWidth);
-
+  
   ULong64_t date=0;
   chain->SetBranchAddress("DateSec",&date);
-
+  
   Int_t vflag=0;
   if (!heatonly_flag) {
     if (Eion->GetEntries() != chain->GetEntries()) cout << "Error ntp sizes"<<endl;
@@ -51,14 +51,14 @@ int BuildHeatEnergy(TChain* chain, string bolo, string heatgainfile, string echa
     Eion->SetBranchStatus("PolarFlag",1);
     Eion->SetBranchAddress("PolarFlag",&vflag);
   }
-
+  
   // 2) Parameters : special crosstalk + calib params
   Float_t a_talk=0;
   if (gSpecialCTalked == heatname && gSpecialCTalk != "") {
     chain->SetBranchAddress(("WienerAmpl_"+gSpecialCTalk).c_str(),&a_talk);
     chain->SetBranchStatus(("WienerAmpl_"+gSpecialCTalk).c_str(),1);
   }
-
+  
   TF1* calibfunc = new TF1("cf",HeatCalibFunc,-100,100,4);
   vector<Float_t> seuil_calcul_log;
   for (int p=0; p<gNbVoltages; p++) {
@@ -91,7 +91,7 @@ int BuildHeatEnergy(TChain* chain, string bolo, string heatgainfile, string echa
   Int_t j_gain=0;
   if (!heatonly_flag) g_buf=gain[0];
   else g_buf=1;
-
+  
   // 4) Loop
   Float_t ampl, ampl0, loga, loga0;
   Int_t vflagcor=0; // si vflag = -1 on met arbitrairement a zero.
@@ -110,14 +110,14 @@ int BuildHeatEnergy(TChain* chain, string bolo, string heatgainfile, string echa
     calibfunc->SetParameter(3,gCalib_Heat3[vflagcor]);
     if (!heatonly_flag) {
       while (date > tf[j_gain]) {
-	if (j_gain < nbgains-1) {
-	  j_gain++;
-	  g_buf=gain[j_gain];
-	} else break;
+        if (j_gain < nbgains-1) {
+          j_gain++;
+          g_buf=gain[j_gain];
+        } else break;
       }
     }
-
-    ampl=Aheat;
+    
+    ampl=Aheat;  //assign he weiner amplitude here.
     if (TMath::Finite(ampl) == 0) {
       ampl=Aheat_nosync;
       nbnan_sync++;
@@ -130,7 +130,8 @@ int BuildHeatEnergy(TChain* chain, string bolo, string heatgainfile, string echa
     if (TMath::Finite(ampl) == 0 || TMath::Finite(ampl0) == 0) {
       ampl=0; ampl0=0; nbnan++;
     }
-    ampl/=g_buf;
+    ampl/=g_buf;  //apply a time-dependent paramter to the heat signal.
+    
     ampl0/=g_buf;
     if (ampl > seuil_calcul_log[vflagcor]) loga = TMath::Log10(ampl);
     else loga=-10; // regime NL
@@ -143,7 +144,7 @@ int BuildHeatEnergy(TChain* chain, string bolo, string heatgainfile, string echa
     t->Fill();
     if (fmod((double)i,(double)100000) == 0) {cout << i << endl;}
   }
-
+  
   f->cd(); t->Write(0,TObject::kOverwrite);
   f->Close();
   chain->SetBranchStatus("*",1);
