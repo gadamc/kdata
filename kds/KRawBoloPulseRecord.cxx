@@ -63,7 +63,19 @@ void KRawBoloPulseRecord::CopyLocalMembers(const KRawBoloPulseRecord &aRec)
   fAmplitude = aRec.fAmplitude;   
   fAmplitudeBaseline = aRec.fAmplitudeBaseline;   
   fAmplitudeBaselineNoise = aRec.fAmplitudeBaselineNoise;   
- 
+  fPretriggerSize = aRec.fAmplitudeBaselineNoise;
+  fPulseRiseTime = aRec.fAmplitudeBaselineNoise;
+  fFilterSize = aRec.fAmplitudeBaselineNoise;
+  fPulseLength = aRec.fAmplitudeBaselineNoise;
+  fHeatPulseStampWidth = aRec.fAmplitudeBaselineNoise;
+  fCryoPosition = aRec.fAmplitudeBaselineNoise;
+  fPolarFet = aRec.fAmplitudeBaselineNoise;
+  fCorrPied = aRec.fAmplitudeBaselineNoise;
+  fCompModul = aRec.fAmplitudeBaselineNoise;
+  fCorrTrngl = aRec.fAmplitudeBaselineNoise;
+  fAmplModul = aRec.fAmplitudeBaselineNoise;
+  fIsHeatPulse = aRec.fAmplitudeBaselineNoise;
+  
 }
 
 
@@ -99,10 +111,21 @@ void KRawBoloPulseRecord::InitializeMembers(void)
   fChannelName.resize(0);  //the name of the channel. for example: "chaleur ID4"
   fPulseTimeWidth = 10; //returns number of ns for each point.  = 1 / f
   fTrace.resize(0); //the raw trace.
-  fAmplitude = -1; //the pulse amplitude calcuated by the DAQ
-  fAmplitudeBaseline = -1; //the baseline amplitude calculated by DAQ
-  fAmplitudeBaselineNoise = -1; //the width of the distribution of the baseline amplitude for this run period, calculated by DAQ
- 
+  fAmplitude = -99; //the pulse amplitude calcuated by the DAQ
+  fAmplitudeBaseline = -99; //the baseline amplitude calculated by DAQ
+  fAmplitudeBaselineNoise = -99; //the width of the distribution of the baseline amplitude for this run period, calculated by DAQ
+  fPretriggerSize = -99;
+  fPulseRiseTime = -99;
+  fFilterSize = -99;
+  fPulseLength = 0;
+  fHeatPulseStampWidth = -99;
+  fCryoPosition = -99;
+  fPolarFet.resize(0);
+  fCorrPied = -99;
+  fCompModul = -99;
+  fCorrTrngl = -99;
+  fAmplModul = -99;
+  fIsHeatPulse = -99;
   
 }
 
@@ -182,6 +205,114 @@ Bool_t KRawBoloPulseRecord::IsSame(const KRawBoloPulseRecord &aRec, Bool_t bPrin
 			return false;  
 	}
   
+  if(fPretriggerSize != aRec.fPretriggerSize){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fPretriggerSize Not Equal. lhs: " 
+			<< fPretriggerSize << " != rhs " << aRec.fPretriggerSize << endl;		
+		else
+			return false;  
+	}
+
+  if(fPulseRiseTime != aRec.fPulseRiseTime){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fPulseRiseTime Not Equal. lhs: " 
+			<< fPulseRiseTime << " != rhs " << aRec.fPulseRiseTime << endl;		
+		else
+			return false;  
+	}
+
+  if(fFilterSize != aRec.fFilterSize){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fFilterSize Not Equal. lhs: " 
+			<< fFilterSize << " != rhs " << aRec.fFilterSize << endl;		
+		else
+			return false;  
+	}
+
+  if(fPulseLength != aRec.fPulseLength){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fPulseLength Not Equal. lhs: " 
+			<< fPulseLength << " != rhs " << aRec.fPulseLength << endl;		
+		else
+			return false;  
+	}
+
+  if(fHeatPulseStampWidth != aRec.fHeatPulseStampWidth){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fHeatPulseStampWidth Not Equal. lhs: " 
+			<< fHeatPulseStampWidth << " != rhs " << aRec.fHeatPulseStampWidth << endl;		
+		else
+			return false;  
+	}
+
+  if(fCryoPosition != aRec.fCryoPosition){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fCryoPosition Not Equal. lhs: " 
+			<< fCryoPosition << " != rhs " << aRec.fCryoPosition << endl;		
+		else
+			return false;  
+	}
+
+  if(fPolarFet != aRec.fPolarFet){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fPolarFet Not Equal. lhs: " 
+			<< fPolarFet << " != rhs " << aRec.fPolarFet << endl;		
+		else
+			return false;  
+	}
+
+  if(fCorrPied != aRec.fCorrPied){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fCorrPied Not Equal. lhs: " 
+			<< fCorrPied << " != rhs " << aRec.fCorrPied << endl;		
+		else
+			return false;  
+	}
+
+  if(fCompModul != aRec.fCompModul){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fCompModul Not Equal. lhs: " 
+			<< fCompModul << " != rhs " << aRec.fCompModul << endl;		
+		else
+			return false;  
+	}
+
+  if(fCorrTrngl != aRec.fCorrTrngl){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fCorrTrngl Not Equal. lhs: " 
+			<< fCorrTrngl << " != rhs " << aRec.fCorrTrngl << endl;		
+		else
+			return false;  
+	}
+
+  if(fAmplModul != aRec.fAmplModul){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fAmplModul Not Equal. lhs: " 
+			<< fAmplModul << " != rhs " << aRec.fAmplModul << endl;		
+		else
+			return false;  
+	}
+
+  if(fIsHeatPulse != aRec.fIsHeatPulse){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KRawBoloPulseRecord fIsHeatPulse Not Equal. lhs: " 
+			<< fIsHeatPulse << " != rhs " << aRec.fIsHeatPulse << endl;		
+		else
+			return false;  
+	}
+  
 	
 	return bIsEqual;
 }
@@ -199,21 +330,30 @@ void KRawBoloPulseRecord::Compact(void)
 
 void KRawBoloPulseRecord::SetTrace(UInt_t size, const Short_t* aData)
 {
-  fTrace.clear();
-  for(UInt_t i = 0; i < size; i++)
-    fTrace.push_back(aData[i]);
+  fTrace.resize(0);
+  for(UInt_t i = 0; i < size; i++) fTrace.push_back(aData[i]);
 }
 
 void KRawBoloPulseRecord::FillHistogram(TH1 &hist)
 {
   //Fills hist with data found from the pulse trace. Then you can more easily plot it.
+  //The TH1 must be a TH1I, S, F or D.
   //
-  //developers note: This method shouldn't probably be a part of this class
+  //developers note: This method shouldn't be a part of this class
   //Rather, there should be some sort of data manipulation / data visualization
   //set of classes to perform these types of tasks. Otherwise, data storage object
   //could become flooded with data visualization tools. 
+  //I leave this here for now, but heed this warning.
+  //
+  //Of course, the other option is the leave this entirely up to the user. ROOT already 
+  //has the TH1 histograms and its trivial to fill the histogram or a TGraph with 
+  //a vector of shorts
+  //
+  //
   
   //test to make sure hist is either a TH1I, TH1S, TH1F, or TH1D. 
+  //isn't there a better way to do this? the problem is that TH2 and TH3 all derive from TH1
+  //
   try {
     TH1I testHist = dynamic_cast<TH1I &>(hist);
   }
@@ -237,20 +377,22 @@ void KRawBoloPulseRecord::FillHistogram(TH1 &hist)
     }
   }
  
-  hist.SetBins((Int_t)fTrace.size(), 0.0, (Double_t)fTrace.size());
-  for(UInt_t i = 0; i < fTrace.size(); i++)
-    hist.SetBinContent(i+1, fTrace[i]);
-  
+  hist.SetBins((Int_t)fTrace.size(), 0, (Double_t)fTrace.size());
+  for(UInt_t i = 0; i < fTrace.size(); i++)  hist.SetBinContent(i+1, fTrace[i]);
 }
 
 void KRawBoloPulseRecord::FillGraph(TGraph &graph)
 {
   //Fills hist with data found from the pulse trace. Then you can more easily plot it.
-  graph.Set((Int_t)fTrace.size());
+  //
+  //developers note: This method shouldn't probably be a part of this class
+  //Rather, there should be some sort of data manipulation / data visualization
+  //set of classes to perform these types of tasks. Otherwise, data storage object
+  //could become flooded with data visualization tools. 
+  //I leave this here for now, but heed this warning.
   
-  for(UInt_t i = 0; i < fTrace.size(); i++)
-    graph.SetPoint(i, i, fTrace[i]);
-
+  graph.Set((Int_t)fTrace.size());
+  for(UInt_t i = 0; i < fTrace.size(); i++) graph.SetPoint(i, i, fTrace[i]);
 }
 
 

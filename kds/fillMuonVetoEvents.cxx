@@ -494,8 +494,7 @@ Bool_t fillEvents(void)
 		if(microTime > 1.0)
 			microTime = 0; //this indicates a problem in the muon veto data stream. 
 		
-		mEvent->SetEventTriggerTime((Double_t)mMuonVetoData.fPcTimeSec + microTime);
-		
+				
 		KHLAMuonVetoSysRecord *mMvSysRec = mEvent->GetMuonVetoSystemRecord();
 		
 		mMvSysRec->SetRunNumber(mMuonVetoData.fRun);

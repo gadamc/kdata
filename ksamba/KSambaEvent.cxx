@@ -10,12 +10,10 @@
 
 #include "KSambaEvent.h"
 
-ClassImp(KSambaEvent);
 
 
 KSambaEvent::KSambaEvent(void)
 {
-  SetRecordWord("* Evenement ");
   InitializeMembers();
 }
 

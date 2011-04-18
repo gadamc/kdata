@@ -68,6 +68,11 @@ void KHLABoloPulseRecord::CopyLocalMembers(const KHLABoloPulseRecord &aRec)
 	fEnergy = aRec.fEnergy;
 	fEnergyBaseline = aRec.fEnergyBaseline;
 	fBaselineNoise = aRec.fBaselineNoise;
+  
+  
+	fPulseType = aRec.fPulseType;
+	fChannelNumber = aRec.fChannelNumber;
+  
 }
 
 KHLABoloPulseRecord::~KHLABoloPulseRecord(void)
@@ -109,7 +114,8 @@ void KHLABoloPulseRecord::InitializeMembers(void)
 	fEnergyBaseline = -99;
 	fBaselineNoise = -99;
 
-	
+  fPulseType = -99;   
+	fChannelNumber = -99;
 }
 
 Bool_t KHLABoloPulseRecord::IsSame(const KHLABoloPulseRecord &aRec, Bool_t bPrint) const
@@ -161,6 +167,24 @@ Bool_t KHLABoloPulseRecord::IsSame(const KHLABoloPulseRecord &aRec, Bool_t bPrin
 			return false;  
 	}
 	
+  if(fPulseType != aRec.fPulseType){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KHLABoloPulseRecord fPulseType Not Equal. lhs: " 
+			<< fPulseType << " != rhs " << aRec.fPulseType << endl;		
+		else
+			return false;  
+	}
+	
+	if(fChannelNumber != aRec.fChannelNumber){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KHLABoloPulseRecord fChannelNumber Not Equal. lhs: " 
+			<< fChannelNumber << " != rhs " << aRec.fChannelNumber << endl;		
+		else
+			return false;  
+	}
+  
 	
 	return bIsEqual;
 }

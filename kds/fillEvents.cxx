@@ -81,7 +81,6 @@ int main(int /*argc*/, const char** /*argv[]*/)
 			cout << i << " events filled" << endl;
 		mEv->SetRunNumber(12);
 		//mEv->SetDataCleaningWord(4);
-		mEv->SetEventTriggerTime(3.023432*i + 1257638400);
 		mEv->SetGSEventNumber(i);
 		//gObjectTable->AddObj((TObject *)mEv->GetMuonVetoSystemRecord());
 		//gObjectTable->AddObj((TObject *)mEv->GetHLABoloSysRecord());

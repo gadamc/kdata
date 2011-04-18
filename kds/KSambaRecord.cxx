@@ -64,6 +64,19 @@ void KSambaRecord::CopyLocalMembers(const KSambaRecord &aRec)
 	fSambaDAQNumber = aRec.fSambaDAQNumber;
 	fRunName = aRec.fRunName;
 	fFileNumber = aRec.fFileNumber;
+  fRegenerationFlag = aRec.fRegenerationFlag;
+  fTotalDeadTimeSec = aRec.fTotalDeadTimeSec;
+  fTotalDeadTimeMicroSec = aRec.fTotalDeadTimeMicroSec;
+  fTemperature = aRec.fTemperature;
+  fRunType = aRec.fRunType;
+  fRunCondition = aRec.fRunCondition;
+  fRunStartPcTimeSec = aRec.fRunStartPcTimeSec;
+  fRunStartPcTimeMicroSec = aRec.fRunStartPcTimeMicroSec;
+  fRunStartTriggerStamp = aRec.fRunStartTriggerStamp;
+  fSource1Regen = aRec.fSource1Regen;
+  fSource2Regen = aRec.fSource2Regen;
+  fSource1Calib = aRec.fSource1Calib;
+  fSource2Calib = aRec.fSource2Calib;
 }
 
 KSambaRecord::~KSambaRecord(void)
@@ -120,6 +133,23 @@ void KSambaRecord::InitializeMembers(void)
 	SetSambaDAQNumber(-99);
 	fFileNumber = -99;
   fRunName.resize(0);
+  fFileNumber = -99; //such as 000, 001, 002, ....
+  fRegenerationFlag = 0;
+  fTotalDeadTimeSec -99;
+  fTotalDeadTimeMicroSec -99;
+  fTemperature -99;
+  
+  //samba run header information
+  
+  fRunType.resize(0);
+  fRunCondition.resize(0);
+  fRunStartPcTimeSec = -99;
+  fRunStartPcTimeMicroSec = -99;
+  fRunStartTriggerStamp = -99;
+  fSource1Regen.resize(0);
+  fSource2Regen.resize(0);
+  fSource1Calib.resize(0);
+  fSource2Calib.resize(0);
 }
 
 
@@ -176,6 +206,39 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
 			return false;  
 	}
 	
+  if(fRegenerationFlag != aRec.fRegenerationFlag){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fRegenerationFlag Not Equal. lhs: " 
+			<< fRegenerationFlag << " != rhs " << aRec.fRegenerationFlag << endl;		
+		else
+			return false;  
+	}
+  if(fTotalDeadTimeSec != aRec.fTotalDeadTimeSec){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fTotalDeadTimeSec Not Equal. lhs: " 
+			<< fTotalDeadTimeSec << " != rhs " << aRec.fTotalDeadTimeSec << endl;		
+		else
+			return false;  
+	}
+  if(fTotalDeadTimeMicroSec != aRec.fTotalDeadTimeMicroSec){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fTotalDeadTimeMicroSec Not Equal. lhs: " 
+			<< fTotalDeadTimeMicroSec << " != rhs " << aRec.fTotalDeadTimeMicroSec << endl;		
+		else
+			return false;  
+	}
+  if(fTemperature != aRec.fTemperature){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fTemperature Not Equal. lhs: " 
+			<< fTemperature << " != rhs " << aRec.fTemperature << endl;		
+		else
+			return false;  
+	}
+  
 	if(fRunName != aRec.fRunName){
 		bIsEqual = false;
 		if (bPrint) 
@@ -185,6 +248,96 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
 			return false;  
 	}
 	
+  if(fFileNumber != aRec.fFileNumber){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fFileNumber Not Equal. lhs: " 
+			<< fFileNumber << " != rhs " << aRec.fFileNumber << endl;		
+		else
+			return false;  
+	}
+  
+  if(fRunType != aRec.fRunType){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fRunType Not Equal. lhs: " 
+			<< fRunType << " != rhs " << aRec.fRunType << endl;		
+		else
+			return false;  
+	}
+  
+  if(fRunCondition != aRec.fRunCondition){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fRunCondition Not Equal. lhs: " 
+			<< fRunCondition << " != rhs " << aRec.fRunCondition << endl;		
+		else
+			return false;  
+	}
+  
+  if(fRunStartPcTimeSec != aRec.fRunStartPcTimeSec){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fRunStartPcTimeSec Not Equal. lhs: " 
+			<< fRunStartPcTimeSec << " != rhs " << aRec.fRunStartPcTimeSec << endl;		
+		else
+			return false;  
+	}
+  
+  if(fRunStartPcTimeMicroSec != aRec.fRunStartPcTimeMicroSec){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fRunStartPcTimeMicroSec Not Equal. lhs: " 
+			<< fRunStartPcTimeMicroSec << " != rhs " << aRec.fRunStartPcTimeMicroSec << endl;		
+		else
+			return false;  
+	}
+  
+  if(fRunStartTriggerStamp != aRec.fRunStartTriggerStamp){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fRunStartTriggerStamp Not Equal. lhs: " 
+			<< fRunStartTriggerStamp << " != rhs " << aRec.fRunStartTriggerStamp << endl;		
+		else
+			return false;  
+	}
+  
+  if(fSource1Regen != aRec.fSource1Regen){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fSource1Regen Not Equal. lhs: " 
+			<< fSource1Regen << " != rhs " << aRec.fSource1Regen << endl;		
+		else
+			return false;  
+	}
+  
+  if(fSource2Regen != aRec.fSource2Regen){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fSource2Regen Not Equal. lhs: " 
+			<< fSource2Regen << " != rhs " << aRec.fSource2Regen << endl;		
+		else
+			return false;  
+	}
+  
+  if(fSource1Calib != aRec.fSource1Calib){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fSource1Calib Not Equal. lhs: " 
+			<< fSource1Calib << " != rhs " << aRec.fSource1Calib << endl;		
+		else
+			return false;  
+	}
+  
+  if(fSource2Calib != aRec.fSource2Calib){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KSambaRecord fSource2Calib Not Equal. lhs: " 
+			<< fSource2Calib << " != rhs " << aRec.fSource2Calib << endl;		
+		else
+			return false;  
+	}
+  
 	return bIsEqual;
 }
 

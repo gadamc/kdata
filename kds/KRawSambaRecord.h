@@ -31,21 +31,31 @@ public:
   void SetSambaDelay(Double32_t aVal) {fSambaDelay = aVal;  }
   void SetTriggerBit1(Int_t aVal) {fTriggerBit1 = aVal;  }
   void SetTriggerBit2(Int_t aVal) {fTriggerBit2 = aVal;  }
+  void SetDataSource(const char* aVal) {fDataSource = aVal;}
+  void SetDataBufferLength(Double32_t aVal) {fDataBufferLength = aVal;}
+  void SetIsStreamMode(Bool_t aVal) {fStreamMode = aVal;}
+
   
   Double32_t GetSambaDelay(void) const { return fSambaDelay;  }
   Int_t GetTriggerBit1(void) const { return fTriggerBit1;  }
   Int_t GetTriggerBit2(void) const { return fTriggerBit2;  }
+  const char* GetDataSource(void) const { return fDataSource.c_str();}
+  Double32_t GetDataBufferLength(void) const { return fDataBufferLength;}
+  Bool_t GetIsStreamMode(void) const { return fStreamMode;}
   
 private:
 	
   Double32_t fSambaDelay; 
   UInt_t fTriggerBit1; //Samba's Liste1 event trigger bit map
 	UInt_t fTriggerBit2; //Samba's Liste2 event trigger bit map
+  string fDataSource;
+  Double32_t fDataBufferLength; //size of Samba's internal data buffer in ms
+  Bool_t fStreamMode;
   
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KRawSambaRecord &aRec);
-  ClassDef(KRawSambaRecord,1);
+  ClassDef(KRawSambaRecord,2);
 };
 
 

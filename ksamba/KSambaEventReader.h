@@ -24,9 +24,7 @@ public:
   //Constructors
   KSambaEventReader(void);
   virtual ~KSambaEventReader(void);
-  
-  Bool_t ReadEvent(ifstream& aSambaFile, KSambaEvent* aheader = 0);
-  
+    
   //getters
   
   //setters

@@ -72,9 +72,7 @@ void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
 {
   //used by the assignment operator to copy local members (fPulseType and
   //fChanneNumber)
-  
-	fPulseType = aRec.fPulseType;
-	fChannelNumber = aRec.fChannelNumber;
+ 
 }
 
 KBoloPulseRecord::~KBoloPulseRecord(void)
@@ -112,8 +110,7 @@ void KBoloPulseRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	
-	fPulseType = -99;   
-	fChannelNumber = -99;
+
 	
 }
 
@@ -135,24 +132,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
 		//the operator== method uses this functionality.
 	}
 	
-	if(fPulseType != aRec.fPulseType){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KBoloPulseRecord fPulseType Not Equal. lhs: " 
-			<< fPulseType << " != rhs " << aRec.fPulseType << endl;		
-		else
-			return false;  
-	}
-	
-	if(fChannelNumber != aRec.fChannelNumber){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KBoloPulseRecord fChannelNumber Not Equal. lhs: " 
-			<< fChannelNumber << " != rhs " << aRec.fChannelNumber << endl;		
-		else
-			return false;  
-	}
-		
+			
 	return bIsEqual;
 }
 

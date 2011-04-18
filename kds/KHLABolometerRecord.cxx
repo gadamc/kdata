@@ -70,7 +70,7 @@ void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
 	fIonFlags.Compact();
 
 	fSambaRecord = 0;  //will need to set these by hand!
-	fPulseRecords.Clear();
+	fPulseRecords.Delete();
 
 	SetEnergyIonFiducial(aRec.GetEnergyIonFiducial());
 	SetEnergySumIonChannels(aRec.GetEnergySumIonChannels());
@@ -127,7 +127,7 @@ void KHLABolometerRecord::InitializeMembers(void)
 	fIonFlags.Clear();
 
 	fSambaRecord = 0;
-	fPulseRecords.Clear();
+	fPulseRecords.Delete();
 
 	SetEnergyIonFiducial(-99.0);
 	SetEnergySumIonChannels(-99.0);
@@ -279,10 +279,10 @@ KHLABoloPulseRecord* KHLABolometerRecord::GetPulseRecord(Int_t channel, Int_t aT
   //returns a pointer to a KHLABoloPulseRecord. channel is the channel number (1, 2, ...) and
   //a type is either heat, collectrode, veto or guard. The integers associated 
   //with those types do not need to be known. Instead call the static functions
-  //KBoloPulseRecord::GetHeatType()
-  //KBoloPulseRecord::GetVetoType()
-  //KBoloPulseRecord::GetCollectrodeType()
-  //KBoloPulseRecord::GetGuardType()
+  //KHLABoloPulseRecord::GetHeatType()
+  //KHLABoloPulseRecord::GetVetoType()
+  //KHLABoloPulseRecord::GetCollectrodeType()
+  //KHLABoloPulseRecord::GetGuardType()
   //
   //However, its much easier to use the methods GetHeatPulse, GetCollectrodePulse, etc...
   //that are found in this class
@@ -303,7 +303,7 @@ KHLABoloPulseRecord* KHLABolometerRecord::GetHeatPulse(Int_t channel) const
   //Note that aChannel should be 1 or 2.
   //
   
-  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KBoloPulseRecord::GetHeatType());
+  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KHLABoloPulseRecord::GetHeatType());
   
   return (pulse != 0) ? pulse : 0;  
 }
@@ -315,7 +315,7 @@ KHLABoloPulseRecord* KHLABolometerRecord::GetCollectrodePulse(Int_t channel) con
   //Note that aChannel should be 1 or 2.
   //
   
-  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KBoloPulseRecord::GetCollectrodeType());
+  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KHLABoloPulseRecord::GetCollectrodeType());
   
   return (pulse != 0) ? pulse : 0;  
 }
@@ -326,7 +326,7 @@ KHLABoloPulseRecord* KHLABolometerRecord::GetVetoPulse(Int_t channel) const
   //
   //Note that aChannel should be 1 or 2.
   //
-  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KBoloPulseRecord::GetVetoType());
+  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KHLABoloPulseRecord::GetVetoType());
   
   return (pulse != 0) ? pulse : 0; 
 }
@@ -337,7 +337,7 @@ KHLABoloPulseRecord* KHLABolometerRecord::GetGuardPulse(Int_t channel) const
   //
   //Note that aChannel should be 1 or 2.
   //
-  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KBoloPulseRecord::GetGuardType());
+  KHLABoloPulseRecord* pulse = GetPulseRecord(channel, KHLABoloPulseRecord::GetGuardType());
   
   return (pulse != 0) ? pulse : 0; 
 }
@@ -351,10 +351,10 @@ Double32_t KHLABolometerRecord::GetEnergy(Int_t aChannel, Int_t aType) const
   //Note that aChannel should be 1 or 2. To determine the correct
   //value for aType, use the static fuctions
   //
-  //KBoloPulseRecord::GetHeatType()
-  //KBoloPulseRecord::GetCollectrodeType()
-  //KBoloPulseRecord::GetVetoType()
-  //KBoloPulseRecord::GetGuardType()
+  //KHLABoloPulseRecord::GetHeatType()
+  //KHLABoloPulseRecord::GetCollectrodeType()
+  //KHLABoloPulseRecord::GetVetoType()
+  //KHLABoloPulseRecord::GetGuardType()
   //
   //Or, you can just use the methods GetEnergyHeat(aChannel), GetEnergyCollectrode(aChannel),
   //GetEnergyVeto(aChannel) and GetEnergyGuard(aChannel)
@@ -375,7 +375,7 @@ Double32_t KHLABolometerRecord::GetEnergyCollectrode(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetEnergy(aChannel, KBoloPulseRecord::GetCollectrodeType());
+  return GetEnergy(aChannel, KHLABoloPulseRecord::GetCollectrodeType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyVeto(Int_t aChannel) const
@@ -386,7 +386,7 @@ Double32_t KHLABolometerRecord::GetEnergyVeto(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetEnergy(aChannel, KBoloPulseRecord::GetVetoType());
+  return GetEnergy(aChannel, KHLABoloPulseRecord::GetVetoType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyGuard(Int_t aChannel) const
@@ -397,7 +397,7 @@ Double32_t KHLABolometerRecord::GetEnergyGuard(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetEnergy(aChannel, KBoloPulseRecord::GetGuardType());
+  return GetEnergy(aChannel, KHLABoloPulseRecord::GetGuardType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyHeat(Int_t aChannel) const
@@ -408,7 +408,7 @@ Double32_t KHLABolometerRecord::GetEnergyHeat(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetEnergy(aChannel, KBoloPulseRecord::GetHeatType());
+  return GetEnergy(aChannel, KHLABoloPulseRecord::GetHeatType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyBaseline(Int_t aChannel, Int_t aType) const
@@ -428,7 +428,7 @@ Double32_t KHLABolometerRecord::GetEnergyBaselineCollectrode(Int_t aChannel) con
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetCollectrodeType());
+  return GetEnergyBaseline(aChannel, KHLABoloPulseRecord::GetCollectrodeType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyBaselineVeto(Int_t aChannel) const
@@ -439,7 +439,7 @@ Double32_t KHLABolometerRecord::GetEnergyBaselineVeto(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetVetoType());
+  return GetEnergyBaseline(aChannel, KHLABoloPulseRecord::GetVetoType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyBaselineGuard(Int_t aChannel) const
@@ -450,7 +450,7 @@ Double32_t KHLABolometerRecord::GetEnergyBaselineGuard(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetGuardType());
+  return GetEnergyBaseline(aChannel, KHLABoloPulseRecord::GetGuardType());
 }
 
 Double32_t KHLABolometerRecord::GetEnergyBaselineHeat(Int_t aChannel) const
@@ -461,7 +461,7 @@ Double32_t KHLABolometerRecord::GetEnergyBaselineHeat(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetEnergyBaseline(aChannel, KBoloPulseRecord::GetHeatType());
+  return GetEnergyBaseline(aChannel, KHLABoloPulseRecord::GetHeatType());
 }
 
 Double32_t KHLABolometerRecord::GetBaselineNoise(Int_t aChannel, Int_t aType) const
@@ -481,7 +481,7 @@ Double32_t KHLABolometerRecord::GetBaselineNoiseCollectrode(Int_t aChannel) cons
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetBaselineNoise(aChannel, KBoloPulseRecord::GetCollectrodeType());
+  return GetBaselineNoise(aChannel, KHLABoloPulseRecord::GetCollectrodeType());
 }
 
 Double32_t KHLABolometerRecord::GetBaselineNoiseVeto(Int_t aChannel) const
@@ -492,7 +492,7 @@ Double32_t KHLABolometerRecord::GetBaselineNoiseVeto(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetBaselineNoise(aChannel, KBoloPulseRecord::GetVetoType());
+  return GetBaselineNoise(aChannel, KHLABoloPulseRecord::GetVetoType());
 }
 
 Double32_t KHLABolometerRecord::GetBaselineNoiseGuard(Int_t aChannel) const
@@ -503,7 +503,7 @@ Double32_t KHLABolometerRecord::GetBaselineNoiseGuard(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetBaselineNoise(aChannel, KBoloPulseRecord::GetGuardType());
+  return GetBaselineNoise(aChannel, KHLABoloPulseRecord::GetGuardType());
 }
 
 Double32_t KHLABolometerRecord::GetBaselineNoiseHeat(Int_t aChannel) const
@@ -514,7 +514,7 @@ Double32_t KHLABolometerRecord::GetBaselineNoiseHeat(Int_t aChannel) const
   //Note that aChannel should be 1 or 2.
   //
 
-  return GetBaselineNoise(aChannel, KBoloPulseRecord::GetHeatType());
+  return GetBaselineNoise(aChannel, KHLABoloPulseRecord::GetHeatType());
 }
 
 

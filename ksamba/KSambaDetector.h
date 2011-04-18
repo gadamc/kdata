@@ -11,21 +11,36 @@
 #ifndef __KSAMBADETECTOR_H__
 #define __KSAMBADETECTOR_H__
 
-#include "KSambaDataObject.h"
+#include "KSambaDetectorChannel.h"
+#include "Rtypes.h"
+#include "TObject.h"
+#include <string>
+#include <vector>
 
-class KSambaDetector  : public KSambaDataObject { 
+using namespace std;
+
+class KSambaDetector : public TObject  { 
 
 public:
   //Constructors
   KSambaDetector(void);
   virtual ~KSambaDetector(void);
 
-  //getters
+  const char* GetName(void) const { return fName.c_str();}
 
-  //setters
+  void SetName(const char* aVal) {fName = aVal;}
+  KSambaDetectorChannel* AddChannel();
+  KSambaDetectorChannel* GetChannelFromList(const char* channame);
+  Bool_t IsChannelInList(const char *channame);
+  KSambaDetectorChannel* GetChannelFromList(UInt_t i);
+  UInt_t GetChannelListSize(void) const { return fChannels.size();  }
+
 private:
 
   //private methods
+  string fName;
+  vector<KSambaDetectorChannel *> fChannels;
+  
   void InitializeMembers(void);
 
   ClassDef(KSambaDetector,1);

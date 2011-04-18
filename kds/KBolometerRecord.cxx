@@ -59,7 +59,7 @@ void KBolometerRecord::CopyLocalMembers(const KBolometerRecord &aRec)
 {
 	
 	SetDetectorName(aRec.fDetectorName.c_str());
-	
+	SetMass(aRec.GetMass());
   
 }
 
@@ -96,6 +96,7 @@ void KBolometerRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
   fDetectorName.resize(0);
+  fMass = 0;
 	
 }
 
@@ -134,6 +135,14 @@ Bool_t KBolometerRecord::IsSame(const KBolometerRecord &aRec, Bool_t bPrint) con
 		if (bPrint) 
 			cout << "KBolometerRecord fDetectorName Not Equal. lhs: " 
 			<< fDetectorName << " != rhs " << aRec.fDetectorName << endl;		
+		else
+			return false;  
+	}
+  if(fMass != aRec.fMass){
+		bIsEqual = false;
+		if (bPrint) 
+			cout << "KBolometerRecord fMass Not Equal. lhs: " 
+			<< fMass << " != rhs " << aRec.fMass << endl;		
 		else
 			return false;  
 	}

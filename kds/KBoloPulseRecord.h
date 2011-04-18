@@ -27,47 +27,33 @@ public:
 	Bool_t operator!=(const KBoloPulseRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
 	
-	//getters
-  
-	Int_t GetPulseType(void) const {return fPulseType;}
-	Int_t GetChannelNumber(void) const {return fChannelNumber;}
-	
-	Bool_t IsCollectrode(void) const {	return (fPulseType == kCollectrodeType) ? true : false; 	}
-	Bool_t IsVeto(void) const {	return (fPulseType == kVetoType) ? true : false; 	}
-	Bool_t IsGuard(void) const {	return (fPulseType == kGuardType) ? true : false; 	}
-	Bool_t IsHeat(void) const {	return (fPulseType == kHeatType) ? true : false; 	}
-	
-  static Int_t GetCollectrodeType(void) {return kCollectrodeType;  }
-  static Int_t GetVetoType(void) {return kVetoType;  }
-  static Int_t GetGuardType(void) {return kGuardType;  }
-  static Int_t GetHeatType(void) {return kHeatType;  }
-  
-	//setters
+  Double32_t GetPositiveTriggerAmp(void) const { return fPositiveTriggerAmp;}
+  Double32_t GetNegativeTriggerAmp(void) const { return fNegativeTriggerAmp;}
+  const char* GetState(void) const { return fState.c_str();}
+  Double32_t GetPolarity(void) const { return fPolarity;}
+  Double32_t GetGain(void) const { return fGain;}
 
-	void SetChannelNumber(Int_t aNum) {fChannelNumber = aNum;}
-	
-	void SetPulseIsCollectrodeType(void) {fPulseType = kCollectrodeType;}
-	void SetPulseIsVetoType(void) {fPulseType = kVetoType;}
-	void SetPulseIsGuardType(void) {fPulseType = kGuardType;}
-	void SetPulseIsHeatType(void) {fPulseType = kHeatType;}
+  void SetPositiveTriggerAmp(Double32_t aVal) {fPositiveTriggerAmp = aVal;}
+  void SetNegativeTriggerAmp(Double32_t aVal) {fNegativeTriggerAmp = aVal;}
+  void SetState(const char* aVal) {fState = aVal;}
+  void SetPolarity(Double32_t aVal) {fPolarity = aVal;}
+  void SetGain(Double32_t aVal) {fGain = aVal;}
 
-public:
-  enum kPulseChannelType {
-    kCollectrodeType = 1,
-    kVetoType = 2,
-    kGuardType = 3,
-    kHeatType = 4
-  };
 	
 private:
-	Int_t fChannelNumber;  //the channel number of the pulse data (1 or 2) 
-	Int_t fPulseType;   //a number indicating the pulse type (heat = 4, collectrode = 1, veto = 2, guard = 3)
-	
-	//private methods
+		//private methods
+  
+  Double32_t fPositiveTriggerAmp;
+  Double32_t fNegativeTriggerAmp;
+  string fState;
+  Double32_t fPolarity;
+  Double32_t fGain;
+
+  
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KBoloPulseRecord &aRec);
 	
-  ClassDef(KBoloPulseRecord,2);
+  ClassDef(KBoloPulseRecord,4);
 };
 
 

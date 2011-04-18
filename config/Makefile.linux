@@ -2,9 +2,6 @@
 #
 # AC 08/19/10
 
-##### Include directory for Motif header files #####
-
-# XMINCS         := -I/usr/X11R6/include
 
 ##### Changes to C++ compiler flags #####
 
@@ -13,8 +10,6 @@ OPT            := -g -O2
 
 # add KDATA-specific compiler switches for this platform
 KDATA_FLAGS     := 
-
-# KWMANFLAGS    := -mcpu=i686 -mieee-fp -ffloat-store
 
 EXTRALIBS      := -lrt
 
