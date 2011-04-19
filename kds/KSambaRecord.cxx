@@ -135,9 +135,9 @@ void KSambaRecord::InitializeMembers(void)
   fRunName.resize(0);
   fFileNumber = -99; //such as 000, 001, 002, ....
   fRegenerationFlag = 0;
-  fTotalDeadTimeSec -99;
-  fTotalDeadTimeMicroSec -99;
-  fTemperature -99;
+  fTotalDeadTimeSec = -99;
+  fTotalDeadTimeMicroSec = -99;
+  fTemperature = -99;
   
   //samba run header information
   
