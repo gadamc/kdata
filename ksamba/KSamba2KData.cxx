@@ -843,7 +843,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
           TString sub = GetStringFromTokenizedStringResult(arr, 3);
           TString detector = sub(0,sub.Length()-3);  //assuming the samba file format always give this! subtract 3 (instead of 2) because of the quotation 
           delete arr;
-          
+          //cout << "Adding event for " << detector << endl;
           //check to see if bolo already exists in the event, or else, add a new bolometer record. 
           KRawBolometerRecord *bolo = 0;
           Bool_t newBolo = true;
@@ -985,6 +985,9 @@ Bool_t KSamba2KData::ReadSambaData(void)
         else {
           //found a muon channel record, so must skip ahead to either the next channel
           //or the next event. 
+          //cout << "Found Muon Veto Event." << fSambaFileLine << endl;
+          fSambaFileLine.ReadToDelim(fSambaFileStream);
+          
           while( !fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginEvent2) &&
                 !fSambaFileLine.BeginsWith(kBeginChannel) && !fSambaFileStream.eof() )
             fSambaFileLine.ReadToDelim(fSambaFileStream);
@@ -998,8 +1001,8 @@ Bool_t KSamba2KData::ReadSambaData(void)
       event->SetEventTriggerStamp(gigaStamp*(1e9) + smallStamp);
       fKdataOutput.Fill();
       eventCount++;
-      
-      if (eventCount % 1000 == 0){
+      cout << eventCount << endl;
+      if (eventCount % 5000 == 0){
         cout << "......" << eventCount << " Bolometer Events" << endl;
         cout << "......" << pulseCount << " Pulses" << endl;
       }
