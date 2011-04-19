@@ -8,8 +8,9 @@
   
 '''
  
-import sys, os, glob, tarfile, tempfile, string, time, subprocess, datetime, shlex, shutil
+import sys, os, glob, tarfile, tempfile, string, time, subprocess, datetime, shlex, shutil, stat
 import rootifySambaData as rootify
+import scpToSps as scp
 
 def timeout(func, args=(), kwargs={}, timeout_duration=10, default=None):
     """This function will spawn a thread and run the given function
@@ -305,7 +306,7 @@ def readArguments(arglist):
     elif arglist[i] == '-r':
       i += 1
       val = formatvalue(arglist[i])
-      if !isinstance(val,int) or !isinstance(val,float) and (val == 'true' or val = 'false'):
+      if val == 'true' or val == 'false':
         p['timeout_hours'] = val
       else:
         print 'Invalid value for rootifyOption.', val, 'Set to default', p['rootifyOption']
@@ -473,7 +474,7 @@ def runCopy(params):
   print 'biglist', biglist
   
   print 'Appending small run directories to', params['smallrunlist']
-  appendSmallRunListFile(params['smallrunlist'], smalllist)
+  #appendSmallRunListFile(params['smallrunlist'], smalllist)
   
   print 'Tarring files'
   tempDir = tempfile.mkdtemp()
@@ -486,16 +487,9 @@ def runCopy(params):
       print ''
       print 'Uploading to Hpss', tarfile
       logfile.flush()
-      if uploadToHpss(params, tarfile):
-        tarlist.append(tarfile)
-      
-      if params['rootifyOption'] == 'true':
-        tempRootDir = tempfile.mkdtemp()
-        rootify.convertdir(item, tempRootDir)
-        allfiles = glob.glob(os.path.join(tempRootDir,'*.root'))
-        for file in allfiles:
-          scp.sendBoloData(file)
-          
+      #if uploadToHpss(params, tarfile):
+       # tarlist.append(tarfile)
+                
     # maybe I don't want to use a random directory after all
     # if i used a local, specific directory, i could recover from 
     # errors more easily...?
@@ -514,24 +508,36 @@ def runCopy(params):
         print ''
         print 'Uploading to Hpss', tarfile
         logfile.flush()
-        if uploadToHpss(params, tarfile):
-          removeFilesFromSmallList(params['smallrunlist'], transferlist)
-          tarlist.append(tarfile)  
+        #if uploadToHpss(params, tarfile):
+          #removeFilesFromSmallList(params['smallrunlist'], transferlist)
+          #tarlist.append(tarfile)  
       else:
         print 'Small File Size is too small:', totalSize, ' < ', params['minfilesize']
       
-      #rootify and send the small files too!
-      if params['rootifyOption'] == 'true':
-        for item in transferlist:
-          tempRootDir = tempfile.mkdtemp()
-          allfiles = rootify.convertdir(item, tempRootDir)
-          for file in allfiles:
-            scp.sendBoloData(file)
-            
     else:
       print 'No Small Files'
       logfile.flush()
       
+    
+    if params['rootifyOption'] == 'true':
+        tempRootDir = tempfile.mkdtemp()
+        print 'rootification directory', tempRootDir
+        os.chmod(tempRootDir, stat.S_IRWXO + stat.S_IRWXG + stat.S_IRWXU)
+        for item in newDirs:
+            print 'rootifying directory', item
+            logfile.flush()
+            allfiles = rootify.convertdir(item, tempRootDir)
+            logfile.flush()
+
+            for file in allfiles:
+                print 'scp', file
+                
+                scp.sendBoloData(file)
+                logfile.flush()
+
+        shutil.rmtree(tempRootDir)
+
+    
   except:
     print 'Deleting temporary Directory', tempDir
     shutil.rmtree(tempDir)
