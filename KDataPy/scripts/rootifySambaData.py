@@ -30,7 +30,7 @@ def convertdir(input, output):
     allfiles = glob.glob(os.path.join(input, getSambaFilePattern()))
 
     for file in allfiles:
-      rootFiles.append(convertfile(file, os.path.join(output, file + '.root')))
+      rootFiles.append( convertfile(file, os.path.join(output, os.path.basename(file)+'.root')) )
     
   else:
     print 'rootifySambaData.convertdir. Input and Output must be directory path'

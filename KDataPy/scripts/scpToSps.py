@@ -27,23 +27,32 @@ def send(item, path):
     return
   
   pathToSps = 'gadamc@edwdata.in2p3.fr:' + os.path.join('/sps/edelweis/', path)
-  command = 'scp' + ' ' + option + ' ' + item + ' ' + pathToSps
+  if option != '':
+    command = '/usr/bin/scp' + ' ' + option + ' ' + item + ' ' + pathToSps
+  else:
+    command = '/usr/bin/scp' + ' ' + item + ' ' + pathToSps
   print command
+
   args = shlex.split(command)
+  print args
   try:
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p.wait()
+    for line in p.stdout:
+      print line
+
     for line in p.stderr:
       print line
+
   except Exception as e:
     print 'an exception occured', e
     
 
-def sendBoloData(item, path = 'kdata/data/current/raw/')
+def sendBoloData(item, path = 'kdata/data/current/raw/'):
   if os.path.isfile(item):
     send(item,path) 
   else:
     print 'scpToSps.sendBoloData can only send files, not directories.'
     
-def sendMuonData(item, path = 'kdata/data/muon/')
+def sendMuonData(item, path = 'kdata/data/muon/'):
   send(item, path)
