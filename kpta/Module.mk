@@ -97,7 +97,7 @@ $(KPTA_DC):         $(KPTA_EH) $(KPTA_LH)
 
 # rule for building library
 $(KPTA_LIB):        $(KPTA_EO) $(KPTA_DO) $(KPTA_LIBDEP)
-	@echo "Building $@..."
+	@echo "Building $@...$(MAKELIB) $(PLATFORM)"
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KPTA_LIB)" $@  "$(KPTA_EO) $(KPTA_DO)" \
 	   "$(FFTWLIBS) $(KPTA_FLAGS)"  -I/opt/include -Iinclude 
