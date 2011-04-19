@@ -1001,8 +1001,8 @@ Bool_t KSamba2KData::ReadSambaData(void)
       event->SetEventTriggerStamp(gigaStamp*(1e9) + smallStamp);
       fKdataOutput.Fill();
       eventCount++;
-      cout << eventCount << endl;
-      if (eventCount % 5000 == 0){
+      //cout << eventCount << endl;
+      if (eventCount % 10000 == 0){
         cout << "......" << eventCount << " Bolometer Events" << endl;
         cout << "......" << pulseCount << " Pulses" << endl;
       }
