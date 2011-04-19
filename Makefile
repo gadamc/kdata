@@ -8,7 +8,6 @@
 #
 #   KDATA_ROOT      - KDATA release directory (usually `pwd`)
 #   ROOTSYS        - root system directory
-#   CERNDIR        - cern libraries directory (if required)
 #   FFTW_DIR       - fftw libraries directory (if required)
 #   
 #   JANSSON_DIR    - jansson directory (required for kdatabase)
@@ -98,21 +97,19 @@ EXTRA_CXXFLAGS += -I$(KDATA_ROOT)/include
 endif
 
 ROOTINCS       := -I$(ROOTSYS)/include
-FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../fftw -I$(FFTW_DIR)/../rfftw
-JANSSONINCS    := -I$(JANSSON_DIR)/../include 
-#YAJLINCS       := -I$(YAJL_DIR)/../include -I$(YAJL_DIR)/../include/yajl
-CURLINCS       := $(shell $(CURL_DIR)/curl-config --cflags)
-
 XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
 ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
 
-CERNLIBS       :=  -L$(CERNDIR) -llepto -lpythia -lpythiad -ljetset74\
-                   -lpdflib804 -lpawlib -lgraflib -lgrafX11 -lmathlib -lpacklib
-
+FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../fftw -I$(FFTW_DIR)/../rfftw
 FFTWLIBS       := -L$(FFTW_DIR) -lfftw3 -lm
-#YAJLLIBS       := -L$(YAJL_DIR) -lyajl_s
+JANSSONINCS    := -I$(JANSSON_DIR)/../include 
 JANSSONLIBS    := -L$(JANSSON_DIR) -ljansson
+
+ifneq ($(strip $(CURL_DIR)),)
+CURLINCS       := $(shell $(CURL_DIR)/curl-config --cflags)
 CURLLIBS       := $(shell $(CURL_DIR)/curl-config --libs)
+endif
+
 
 #special paths to the local ERA libraries. Needed for modules that depend upon ERA. 
 ERA_LIB := $(LPATH)/libEra.$(SOEXT)
@@ -270,7 +267,6 @@ showbuild:
 	@echo "------------------------------------------------"
 	@echo "KDATA_ROOT          = $(KDATA_ROOT)"
 	@echo "ROOTSYS            = $(ROOTSYS)"
-#	@echo "CERNDIR            = $(CERNDIR)"
 	@echo "FFTW_DIR           = $(FFTW_DIR)"
 #	@echo "YAJL_DIR           = $(YAJL_DIR)"
 	@echo "JANSSON_DIR        = $(JANSSON_DIR)"
@@ -316,7 +312,6 @@ showbuild:
 	@echo "SYSLIBS            = $(SYSLIBS)"
 	@echo "XLIBS              = $(XLIBS)"
 	@echo "F77LIBS            = $(F77LIBS)"
-#	@echo "CERNLIBS           = $(CERNLIBS)"
 	@echo "FFTWLIBS           = $(FFTWLIBS)"
 	@echo "YAJLLIBS           = $(YAJLLIBS)"
 	@echo "JANSSONLIBS        = $(JANSSONLIBS)"
