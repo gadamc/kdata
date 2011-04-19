@@ -311,13 +311,13 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
       TString detector = sub(0, sub.Length()-2);  //I make assumptions about the structure of the Samba data
       delete arr;
       
-      if (!fSambaHeader.IsInDetectorList(detector.Data())){
+      if (!fSambaHeader.IsInDetectorList(detector.Data()) && !sub.Contains("veto")){
         KSambaDetector *fNewDetector =  fSambaHeader.AddDetector();
         fNewDetector->SetName(detector.Data());
         cout << "Adding new detector to list: " << detector.Data() << endl;
         AddDetectorInfo(fNewDetector);
       }
-      else {  //we have already started adding this information
+      else if(!sub.Contains("veto")) {  //we have already started adding this information
         AddDetectorInfo(detector.Data());
       }
     }
@@ -777,7 +777,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
   string kBeginEvent2 = "* Evenement";
   string kBeginChannel = "* Voie \"" ;
   string kSeparator = "* ----------" ;
-  string kMuonVetoIgnore = "hits veto";
+  string kMuonVetoIgnore = "veto";
   
   KRawEvent *event = dynamic_cast<KRawEvent *>(fKdataOutput.GetEvent());
   
@@ -999,6 +999,10 @@ Bool_t KSamba2KData::ReadSambaData(void)
       fKdataOutput.Fill();
       eventCount++;
       
+      if (eventCount % 1000 == 0){
+        cout << "......" << eventCount << " Bolometer Events" << endl;
+        cout << "......" << pulseCount << " Pulses" << endl;
+      }
       //print out Event Info for debugging. 
       /*
       Long64_t a = gigaStamp*(1e9) + smallStamp;
