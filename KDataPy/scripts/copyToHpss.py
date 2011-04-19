@@ -487,8 +487,8 @@ def runCopy(params):
       print ''
       print 'Uploading to Hpss', tarfile
       logfile.flush()
-      #if uploadToHpss(params, tarfile):
-       # tarlist.append(tarfile)
+      if uploadToHpss(params, tarfile):
+        tarlist.append(tarfile)
                 
     # maybe I don't want to use a random directory after all
     # if i used a local, specific directory, i could recover from 
@@ -508,9 +508,9 @@ def runCopy(params):
         print ''
         print 'Uploading to Hpss', tarfile
         logfile.flush()
-        #if uploadToHpss(params, tarfile):
-          #removeFilesFromSmallList(params['smallrunlist'], transferlist)
-          #tarlist.append(tarfile)  
+        if uploadToHpss(params, tarfile):
+          removeFilesFromSmallList(params['smallrunlist'], transferlist)
+          tarlist.append(tarfile)  
       else:
         print 'Small File Size is too small:', totalSize, ' < ', params['minfilesize']
       
