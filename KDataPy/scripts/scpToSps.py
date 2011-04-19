@@ -6,7 +6,7 @@
 '''
 import os, subprocess, shlex
 
-def send(item, path = 'kdata/data/current/raw/'):
+def send(item, path):
   '''
   item can be a file or a directory and path is always relative to 
   /sps/edelweis. This script will ONLY work from two particular
@@ -38,3 +38,12 @@ def send(item, path = 'kdata/data/current/raw/'):
   except Exception as e:
     print 'an exception occured', e
     
+
+def sendBoloData(item, path = 'kdata/data/current/raw/')
+  if os.path.isfile(item):
+    send(item,path) 
+  else:
+    print 'scpToSps.sendBoloData can only send files, not directories.'
+    
+def sendMuonData(item, path = 'kdata/data/muon/')
+  send(item, path)

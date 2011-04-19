@@ -9,6 +9,7 @@
 '''
  
 import sys, os, glob, tarfile, tempfile, string, time, subprocess, datetime, shlex, shutil
+import rootifySambaData as rootify
 
 def timeout(func, args=(), kwargs={}, timeout_duration=10, default=None):
     """This function will spawn a thread and run the given function
@@ -289,6 +290,7 @@ def readArguments(arglist):
   p['logfile'] = p['workingdir'] + '/copyToHpss.log'
   p['currentTransferFile'] = p['workingdir'] + '/currentTransfer.txt'
   p['smallrunlist'] = p['workingdir'] + '/smallrunlist.txt'
+  p['rootifyOption'] = 'true'
   
   for i in range(len(arglist)):
   
@@ -299,6 +301,15 @@ def readArguments(arglist):
         p['timeout_hours'] = val
       else:
         print 'Invalid value for timeout.', val, 'Set to default', p['timeout_hours']
+    
+    elif arglist[i] == '-r':
+      i += 1
+      val = formatvalue(arglist[i])
+      if !isinstance(val,int) or !isinstance(val,float) and (val == 'true' or val = 'false'):
+        p['timeout_hours'] = val
+      else:
+        print 'Invalid value for rootifyOption.', val, 'Set to default', p['rootifyOption']
+        print 'Valid options are "true" or "false" '
     
     else:
       pass
@@ -477,7 +488,14 @@ def runCopy(params):
       logfile.flush()
       if uploadToHpss(params, tarfile):
         tarlist.append(tarfile)
- 
+      
+      if params['rootifyOption'] == 'true':
+        tempRootDir = tempfile.mkdtemp()
+        rootify.convertdir(item, tempRootDir)
+        allfiles = glob.glob(os.path.join(tempRootDir,'*.root'))
+        for file in allfiles:
+          scp.sendBoloData(file)
+          
     # maybe I don't want to use a random directory after all
     # if i used a local, specific directory, i could recover from 
     # errors more easily...?
@@ -501,6 +519,15 @@ def runCopy(params):
           tarlist.append(tarfile)  
       else:
         print 'Small File Size is too small:', totalSize, ' < ', params['minfilesize']
+      
+      #rootify and send the small files too!
+      if params['rootifyOption'] == 'true':
+        for item in transferlist:
+          tempRootDir = tempfile.mkdtemp()
+          allfiles = rootify.convertdir(item, tempRootDir)
+          for file in allfiles:
+            scp.sendBoloData(file)
+            
     else:
       print 'No Small Files'
       logfile.flush()
