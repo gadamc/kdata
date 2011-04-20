@@ -345,7 +345,7 @@ def readchannelheader(file, voie):
   header['Voie'] = voie
   header['bolometer'] = getBolometerName(voie)
   
-  if len(voie.split(' ') > 1):
+  if len(voie.split(' ')) > 1:
     header['_id'] = os.path.basename(file.name).split('_')[0] + '_samba_voieconfiguration_' + voie.split(' ')[0] + '_' + voie.split(' ')[1]
   
   else: #for the Gc2 detectors. 
