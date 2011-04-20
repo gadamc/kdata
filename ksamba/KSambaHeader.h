@@ -11,7 +11,7 @@
 #ifndef __KSAMBAHEADER_H__
 #define __KSAMBAHEADER_H__
 
-#include "KSambaDetector.h";
+#include "KSambaDetector.h"
 #include "Rtypes.h"
 #include "TObject.h"
 #include <string>
