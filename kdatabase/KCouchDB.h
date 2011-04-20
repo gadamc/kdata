@@ -21,7 +21,7 @@ public:
   KCouchDB(void);
   virtual ~KCouchDB(void);
 
-  void* UploadMuonVetoDaqMap(const char* file, const char* uri, const char *db, const char* override = "True");
+  void UploadMuonVetoDaqMap(const char* file, const char* uri, const char *db, const char* override = "True");
   
   //void* PUT();
   //void* GET();
