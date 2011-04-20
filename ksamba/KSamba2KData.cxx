@@ -306,11 +306,11 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
     
     if(fSambaFileLine.BeginsWith(startOfNewDetectorConfig)){
       
+      TString detector = GetDetectorName(fSambaFileLine.Data());
       TObjArray *arr = fSambaFileLine.Tokenize(" ");
       TString sub = GetStringFromTokenizedStringResult(arr, 2);
-      TString detector = sub(0, sub.Length()-2);  //I make assumptions about the structure of the Samba data
       delete arr;
-      
+
       if (!fSambaHeader.IsInDetectorList(detector.Data()) && !sub.Contains("veto")){
         KSambaDetector *fNewDetector =  fSambaHeader.AddDetector();
         fNewDetector->SetName(detector.Data());
@@ -328,6 +328,22 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
   return !fSambaFileStream.eof();
 }
 
+const char* KSamba2KData::GetDetectorName(const char* line)
+{
+  TString sline = line;
+  TObjArray *arr = sline.Tokenize(" ");
+  TString sub = GetStringFromTokenizedStringResult(arr, 2);
+  delete arr;
+  
+  TString detector;
+  if (sub.BeginsWith("FID") || sub.BeginsWith("ID")){
+    detector = sub(0, sub.Length()-2);  //I make assumptions about the structure of the Samba data
+  }
+  else if (sub.BeginsWith("Gc")){
+    detector = sub(0,3);
+  }
+  return detector.Data();
+}
 
 
 Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
@@ -336,55 +352,70 @@ Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
   string startOfRun = "# ===== Entete de run ====="; 
   string endOfDetecorHeader = "* ----------" ; 
   
-  TObjArray *arr = fSambaFileLine.Tokenize(" ");
-  TString sub = GetStringFromTokenizedStringResult(arr, 2);
-  delete arr;
-  
-  TString bolo = sub(0,sub.Length()-2);
+  TString bolo = GetDetectorName(fSambaFileLine.Data());
+             
   if(bolo != detector->GetName()){
     cerr << "KSamba2KData::AddDetectorInfo. Mismatch!"<< endl;
     cerr << bolo.Data() << " != " << detector->GetName() << endl;
     return false; //this should be impossible. 
   }
     
-  TString channelcentre ( sub(sub.Length()-2, 1) );
-  TString channelgarde ( sub(sub.Length()-1, 1) );
-  TString channelName = channelcentre + channelgarde;
+  TObjArray *arr = fSambaFileLine.Tokenize(" ");
+  TString sub = GetStringFromTokenizedStringResult(arr, 2);
+  delete arr;
   
-  //need to deal with channels. AB, CD, GH are standard, but Ch also is allowed
-
-  if(channelcentre != "A" && channelcentre != "C" && channelcentre != "G"){
-    cerr << "Unknown Center Channel: " << channelcentre.Data() << " Skipping Configuration." << endl;
-    return true;  //still return true so that data is read
-  }
+  TString channelcentre;
+  TString channelgarde;
+  TString channelName;
   
-  if (channelcentre == "A") {
-    if(channelgarde != "B"){
-      cerr << "Unknown Channel Pattern reading Samba Header:";
-      cerr << channelcentre.Data() << channelgarde.Data() << endl;
-      cerr << "Skipping Configuration" << endl;
-      return true; //still return true so that data is read
+  if (!bolo.BeginsWith("Gc")){  //okay for FID and ID detectors that have the format FID809AB
+                                //assume the sub is something like "chaleur FID809AB"
+    TString cc ( sub(sub.Length()-2, 1) );
+    TString cg ( sub(sub.Length()-1, 1) );
+    channelcentre = cc;
+    channelgarde = cg;
+    channelName = channelcentre + channelgarde;
+    
+    //need to deal with channels. AB, CD, GH are standard, but Ch also is allowed
+    
+    if(channelcentre != "A" && channelcentre != "C" && channelcentre != "G"){
+      cerr << "Unknown Center Channel: " << channelcentre.Data() << " Skipping Configuration." << endl;
+      return true;  //still return true so that data is read
+    }
+    
+    if (channelcentre == "A") {
+      if(channelgarde != "B"){
+        cerr << "Unknown Channel Pattern reading Samba Header:";
+        cerr << channelcentre.Data() << channelgarde.Data() << endl;
+        cerr << "Skipping Configuration" << endl;
+        return true; //still return true so that data is read
+      }
+    }
+    
+    if (channelcentre == "G") {
+      if(channelgarde != "H"){
+        cerr << "Unknown Channel Pattern reading Samba Header:";
+        cerr << channelcentre.Data() << channelgarde.Data() << endl;
+        cerr << "Skipping Configuration" << endl;
+        return true; //still return true so that data is read
+      }
+    }
+    
+    if (channelcentre == "C") {
+      if (channelgarde != "D" && channelgarde != "h"){
+        cerr << "Unknown Channel Pattern reading Samba Header:";
+        cerr << channelcentre.Data() << channelgarde.Data() << endl;
+        cerr << "Skipping Configuration" << endl;
+        return true; //still return true so that data is read
+      }
     }
   }
-  
-  if (channelcentre == "G") {
-    if(channelgarde != "H"){
-      cerr << "Unknown Channel Pattern reading Samba Header:";
-      cerr << channelcentre.Data() << channelgarde.Data() << endl;
-      cerr << "Skipping Configuration" << endl;
-      return true; //still return true so that data is read
-    }
+  else{
+    //assume the sub is something like "Gc2B"
+    TString cg ( sub(sub.Length()-1, 1) );
+    channelName = cg;
   }
-  
-  if (channelcentre == "C") {
-    if (channelgarde != "D" && channelgarde != "h"){
-      cerr << "Unknown Channel Pattern reading Samba Header:";
-      cerr << channelcentre.Data() << channelgarde.Data() << endl;
-      cerr << "Skipping Configuration" << endl;
-      return true; //still return true so that data is read
-    }
-  }
-  
+    
   KSambaDetectorChannel *chan;
   //then add the appropriate number of 
   if(!detector->IsChannelInList(channelName.Data())){ 
@@ -488,6 +519,14 @@ Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
         else if(key == "ampl-modul" ) {
           if (val == "indetermine" || val == "inconnu") chan->SetAmplModul(-9999);
           else chan->SetAmplModul(val.Atof());
+        }
+        else if(key == "d2" ) {
+          if (val != "indetermine" && val != "inconnu")
+            chan->SetDiviseurD2(val.Atof());
+        }
+        else if(key == "d3" ) {
+          if (val != "indetermine" && val != "inconnu")
+            chan->SetDiviseurD3(val.Atof());
         }
         else if(key != "d2" && key != "d3") {
           cerr << "Unkown key Reading Voie header: " << key << endl;
@@ -839,10 +878,19 @@ Bool_t KSamba2KData::ReadSambaData(void)
         if (!fSambaFileLine.Contains(kMuonVetoIgnore) && !fSambaFileStream.eof()) {
           
           TString subStr( fSambaFileLine(fSambaFileLine.Index(kBeginChannel), fSambaFileLine.Length() - fSambaFileLine.Index(kBeginChannel)) );
+         
           TObjArray *arr = subStr.Tokenize(" ");
-          TString sub = GetStringFromTokenizedStringResult(arr, 3);
-          TString detector = sub(0,sub.Length()-3);  //assuming the samba file format always give this! subtract 3 (instead of 2) because of the quotation 
+          TString sub, detector;
+          if(arr->GetEntries() == 4){
+            sub = GetStringFromTokenizedStringResult(arr, 3);
+            detector = sub(0,sub.Length()-3);  //assuming the samba file format always give this! subtract 3 (instead of 2) because of the quotation 
+          }
+          else if(arr->GetEntries() == 3){
+            sub = GetStringFromTokenizedStringResult(arr, 2);
+            detector = sub(1,sub.Length()-3);  //for Gc detectors. assuming the samba file format always give this! start with string position 1 and subtract 2 (instead of 1) because of the quotation 
+          }
           delete arr;
+
           //cout << "Adding event for " << detector << endl;
           //check to see if bolo already exists in the event, or else, add a new bolometer record. 
           KRawBolometerRecord *bolo = 0;
@@ -858,7 +906,6 @@ Bool_t KSamba2KData::ReadSambaData(void)
             bolo = event->AddBolo();
             bolo->SetDetectorName(detector.Data());
             bolo->SetSambaRecord(samba);
-            //AddBoloInformationFromHeader(bolo);
           }
           
           if(bolo == 0){
@@ -1068,10 +1115,20 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
     if(det != 0){
       TString pulseChannelName = p->GetChannelName();
       //cout << "pulse channel name from pulse: " << pulseChannelName.Data() << endl;
-      TString chanNameSub = pulseChannelName(pulseChannelName.Length()-2,2);  //ASSUME format, the last two letters are always AB, GH, CD or Ch
-                                                                              //cout << "sub name from pulse: " << chanNameSub.Data() << endl;
+      TString chanName;
+      if (detName.BeginsWith("FID") || detName.BeginsWith("ID")) {
+        chanName = pulseChannelName(pulseChannelName.Length()-2,2);  //ASSUME format, the last two letters are always AB, GH, CD or Ch
+                                                                        //cout << "sub name from pulse: " << chanNameSub.Data() << endl;
+      }
+      else if (detName.BeginsWith("Gc")){
+        chanName = pulseChannelName(pulseChannelName.Length()-1,1);
+      }
+      else {
+        cout << "AddPulseInformationFromHeader. Didn't recognize the bolometer name." << endl;
+        return;
+      }
       
-      KSambaDetectorChannel *chan = det->GetChannelFromList(chanNameSub.Data());
+      KSambaDetectorChannel *chan = det->GetChannelFromList(chanName.Data());
       if(chan != 0){
         p->SetState(chan->GetState());
         p->SetCryoPosition(chan->GetPosition());
@@ -1108,7 +1165,7 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
         b->SetMass(chan->GetMass());
       }
       else {
-        cout << "AddPulseInformationFromHeader. Couldn't find channel in list. Searched for: " << chanNameSub.Data() << endl;
+        cout << "AddPulseInformationFromHeader. Couldn't find channel in list. Searched for: " << chanName.Data() << endl;
       }
     }
     else {
