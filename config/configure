@@ -273,7 +273,7 @@ sub GetEnv($;$$$)
 sub WriteSetupScript($)
 {
     my $script_file = shift;
-
+    
     if ($script_file =~ /csh$/) {
         # write script for csh family
         open(KDATA_SH,">$script_file") or Exit("Can't create $script_file");
@@ -308,18 +308,18 @@ __END__
         foreach (keys(%KDATA_env)) {
           print KDATA_SH "export $_=$KDATA_env{$_}\n" if defined $KDATA_env{$_};
         }
-        # Set other environment variables that depend on the ones above
+	# Set other environment variables that depend on the ones above
         print KDATA_SH <<__END__;
 export PATH=\$KDATA_ROOT/bin:\$ROOTSYS/bin:\$PATH
 if (test "\$$library_path") then
-export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib:\$$library_path
+export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS:\$$library_path
 else
-export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib
+export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS
 fi
 if (test "\$$pythonlibpath") then
-  export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS/lib:\$$pythonlibpath
+export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS:\$$pythonlibpath
 else
-export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS/lib
+export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS
 fi
 __END__
         print KDATA_SH "export MACOSX_DEPLOYMENT_TARGET=10.6\n" if $ENV{'OSTYPE'} eq 'darwin';
