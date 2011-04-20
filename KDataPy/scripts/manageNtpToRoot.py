@@ -58,10 +58,11 @@ def main(dataDir = '/Users/adam/Scripts/makeNtpRoot/rawdata', outputDir = '/User
       
     rootFile = build.buildRootFile(i, outputDir)
     plotsoutput = plots.main(rootFile, outputDir)
-    graphs = plotsoutput[0]
-    plotFile = plotsoutput[1]
-    #graphs is a dictionary if key = detectorName and value = list of TGraph
-    pretty.main(plotFile, outputDir, graphs)
+    if plotsoutput != None:
+      graphs = plotsoutput[0]
+      plotFile = plotsoutput[1]
+      #graphs is a dictionary if key = detectorName and value = list of TGraph
+      pretty.main(plotFile, outputDir, graphs)
     
     last.writeToLastNtpFile(lastfile, i)
     logfile.flush()

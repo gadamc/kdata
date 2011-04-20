@@ -17,11 +17,14 @@ def main(*args):
     outputDir = args[1].rstrip('/')
   else:
     outputDir = '.'
-    
-  if os.path.isfile(filename) == False or os.path.isdir(outputDir) == False:
-    print 'first argument must be a file (the NTP ROOT file). the second argument must an output directory.'
-    sys.exit(-1)
-
+  
+  try:
+    if os.path.isfile(filename) == False or os.path.isdir(outputDir) == False:
+      print 'first argument must be a file (the NTP ROOT file). the second argument must an output directory.'
+      return None
+  except Exception as e:
+    print e
+    return None
 
   '''open the file'''
   f = TFile.Open(filename)
@@ -38,11 +41,17 @@ def main(*args):
     branch = branches.At(i).GetName()
     ret = re.match('Ampl_.',branch)
     if ret != None:
-      chan = branch.split('_')[2]
-      det = chan[:len(chan)-2]  #we assume here that the channel name is *IDXXXYY, where YY are letters
+      try:
+        if chan.find('veto') != -1:
+          continue  #skip muon veto channels
+
+        chan = branch.split('_')[2]
+        det = chan[:len(chan)-2]  #we assume here that the channel name is *IDXXXYY, where YY are letters
                               #its a bit of a hack for now... could be improved using 
                               #regular expression matching
-    
+      except:
+        continue  #if the branch name isn't how we expect it, then ignore and continue. This could be from the GCC detector, which are heat only
+
       if detector.has_key(det)==False:
         detector[det] = list()
       
