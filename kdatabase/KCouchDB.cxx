@@ -32,16 +32,6 @@ KCouchDB::~KCouchDB(void)
 
 }
 
-void* KCouchDB::PythonTest(void)
-{
-  //holy shit this works
-  
-  void *b;
-  b = (void*)fMyPy.Eval("ROOT.TBrowser()");
-  fMyPy.Bind((TBrowser *)b,"b");
-  return b;
-}
-
 void KCouchDB::UploadMuonVetoDaqMap(const char* file, const char* uri, const char *db, const char* override)
 {
   TString command = "python $KDATA_ROOT/lib/KDataPy/kdatabase/uploadMuonVetoDaqMapCsvToCouch.py";
