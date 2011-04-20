@@ -8,3 +8,5 @@ MODULES      += kpta kera kqpa
 endif
 
 MODULES += $(if $(and $(CURL_DIR),$(JANSSON_DIR)),kdatabase,)
+
+MODULES += $(if $(and $(CURL_DIR),$(JANSSON_DIR),$(FFTW_DIR)),kdsplay,)
