@@ -28,8 +28,25 @@ public:
   Double_t GetQMeanValue(Double_t anEnergy,
                                 Double_t anEnergyUncertainty) const;
   
-  static Double_t CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t aQ,const Char_t* aMinimizer = "GSLMultiMin",const Char_t* aMethod = "SteepestDescent");
-  static Double_t CalculateEOfMinDistanceLindhard(Double_t anERecoil,Double_t aQ, const Char_t* aMinimizer = "GSLMultiMin",const Char_t* aMethod = "SteepestDescent");
+  static Double_t GetMinDistanceToLindhard(Double_t anEnergyRecoil,Double_t aQ,
+                                           Double_t aScaleEnergyRecoil = 1,
+                                           Double_t aScaleQ = 1,
+                                           const Char_t* aMinimizer = "GSLMultiMin",
+                                           const Char_t* aMethod = "SteepestDescent",
+                                           Int_t aMaxNumFunctionCalls = 100000,
+                                           Int_t aMaxNumIterations = 10000,
+                                           Double_t aTolerance = 0.0001);
+  static Double_t GetEOfMinDistanceLindhard(Double_t anEnergyRecoil,Double_t aQ,
+                                            Double_t aScaleEnergyRecoil = 1,
+                                            Double_t aScaleQ = 1,
+                                            const Char_t* aMinimizer = "GSLMultiMin",
+                                            const Char_t* aMethod = "SteepestDescent",
+                                            Int_t aMaxNumFunctionCalls = 100000,
+                                            Int_t aMaxNumIterations = 10000,
+                                            Double_t aTolerance = 0.0001);
+  static Double_t GetArcLength(Double_t anEnergyRecoil,
+                               Double_t aScaleFactor = 1,
+                               Double_t aRefEnergyRecoil = 0);
 
   //getters
  

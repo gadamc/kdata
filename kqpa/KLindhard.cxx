@@ -26,6 +26,7 @@
 #include "Math/Functor.h"
 #include "TMath.h"
 
+
 Double_t DistToLindhardFunction(const Double_t* xx)
 {
   //This function calculates the square of the distance of an arbitrary point (anERecoil,aQ)
@@ -35,16 +36,18 @@ Double_t DistToLindhardFunction(const Double_t* xx)
   //The function is minimized by 
   //KQDistribution::CalculateMinDistanceToLinhard(Double_t anERecoil,Double_t aQ)
   
-  Double_t anERecoil = xx[0];
+  Double_t anEnergyRecoil = xx[0];
   Double_t aQ = xx[1];
-  Double_t anERecoilLindhard = xx[2];
+  Double_t aScaleEnergyRecoil = xx[2];
+  Double_t aScaleQ = xx[3];
+  Double_t anEnergyRecoilLindhard = xx[4];
   
   KLindhard aLind;
   
-  Double_t anEDiff = anERecoilLindhard - anERecoil; //difference of ERecoil values
-  Double_t aQDiff = aLind.GetQValue(anERecoilLindhard) - aQ; //difference of Q values
+  Double_t anEDiff = anEnergyRecoilLindhard - anEnergyRecoil; //difference of ERecoil values
+  Double_t aQDiff = aLind.GetQValue(anEnergyRecoilLindhard) - aQ; //difference of Q values
   
-  return anEDiff*anEDiff+aQDiff*aQDiff;
+  return anEDiff*anEDiff/aScaleEnergyRecoil / aScaleEnergyRecoil +aQDiff*aQDiff / aScaleQ / aScaleQ;
 }
 
 ClassImp(KLindhard);
@@ -107,7 +110,14 @@ Double_t KLindhard::GetQMeanValue(Double_t anEnergy,
 }
 
 
-Double_t KLindhard::CalculateEOfMinDistanceLindhard(Double_t anERecoil,Double_t aQ, const Char_t* aMinimizerName,const Char_t* aMethod)
+Double_t KLindhard::GetEOfMinDistanceLindhard(Double_t anEnergyRecoil,Double_t aQ,
+                                              Double_t aScaleEnergyRecoil,
+                                              Double_t aScaleQ,
+                                              const Char_t* aMinimizerName,
+                                              const Char_t* aMethod,
+                                              Int_t aMaxNumFunctionCalls,
+                                              Int_t aMaxNumIterations,
+                                              Double_t aTolerance)
 {
   // This method calculates the corresponding E_Recoil for the Lindhard function
   // for the least distance between an arbitrary point (anERecoil,aQ)
@@ -131,20 +141,22 @@ Double_t KLindhard::CalculateEOfMinDistanceLindhard(Double_t anERecoil,Double_t 
   
   ROOT::Math::Minimizer *theMinimizer = ROOT::Math::Factory::CreateMinimizer(aMinimizerName,aMethod);
 
-  theMinimizer->SetMaxFunctionCalls(1000000); //this sets the maximal number of function calls
-  theMinimizer->SetMaxIterations(100000); //this sets the maximal number of iteration
-  theMinimizer->SetTolerance(0.00001); //this sets the tolerance
+  theMinimizer->SetMaxFunctionCalls(aMaxNumFunctionCalls); //this sets the maximal number of function calls
+  theMinimizer->SetMaxIterations(aMaxNumIterations); //this sets the maximal number of iteration
+  theMinimizer->SetTolerance(aTolerance); //this sets the tolerance
     
-  ROOT::Math::Functor f(&DistToLindhardFunction,3); 
+  ROOT::Math::Functor f(&DistToLindhardFunction,5); 
    
   theMinimizer->SetFunction(f);
  
   // Set the fixed variables
-  theMinimizer->SetFixedVariable(0,"aERecoil",anERecoil);
+  theMinimizer->SetFixedVariable(0,"anEnergyRecoil",anEnergyRecoil);
   theMinimizer->SetFixedVariable(1,"aQ",aQ);
+  theMinimizer->SetFixedVariable(2,"aScaleEnergyRecoil",aScaleEnergyRecoil);
+  theMinimizer->SetFixedVariable(3,"aScaleQ",aScaleQ);
    
   //set the variable to be minimized
-  theMinimizer->SetVariable(2,"anERecoilLindhard",1,0.001);
+  theMinimizer->SetVariable(4,"anERecoilLindhard",1,0.001);
  
   theMinimizer->Minimize(); 
  
@@ -153,7 +165,14 @@ Double_t KLindhard::CalculateEOfMinDistanceLindhard(Double_t anERecoil,Double_t 
   return xs[2];
 }
 
-Double_t KLindhard::CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t aQ,const Char_t* aMinimizerName,const Char_t* aMethod)
+Double_t KLindhard::GetMinDistanceToLindhard(Double_t anEnergyRecoil,Double_t aQ,
+                                             Double_t aScaleEnergyRecoil,
+                                             Double_t aScaleQ,
+                                             const Char_t* aMinimizerName,
+                                             const Char_t* aMethod,
+                                             Int_t aMaxNumFunctionCalls,
+                                             Int_t aMaxNumIterations,
+                                             Double_t aTolerance)
 {
   // This method calculates the least Euclidean distance between an arbitrary point (anERecoil,aQ)
   // and a point of the Lindhard function in the ERecoil-Q-plane
@@ -177,21 +196,24 @@ Double_t KLindhard::CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t a
   ROOT::Math::Minimizer *theMinimizer = ROOT::Math::Factory::CreateMinimizer(aMinimizerName,aMethod);
 
     
-  theMinimizer->SetMaxFunctionCalls(1000000); //this sets the maximal number of function calls
-  theMinimizer->SetMaxIterations(100000); //this sets the maximal number of iterations
-  theMinimizer->SetTolerance(0.00001); //this sets the tolerance
+  theMinimizer->SetMaxFunctionCalls(aMaxNumFunctionCalls); //this sets the maximal number of function calls
+  theMinimizer->SetMaxIterations(aMaxNumIterations); //this sets the maximal number of iterations
+  theMinimizer->SetTolerance(aTolerance); //this sets the tolerance
     
-  ROOT::Math::Functor f(&DistToLindhardFunction,3); 
+  ROOT::Math::Functor f(&DistToLindhardFunction,5); 
    
  
   theMinimizer->SetFunction(f);
  
   //set the fixed variables
-  theMinimizer->SetFixedVariable(0,"anERecoil",anERecoil);
+  theMinimizer->SetFixedVariable(0,"anEnergyRecoil",anEnergyRecoil);
   theMinimizer->SetFixedVariable(1,"aQ",aQ);
+  theMinimizer->SetFixedVariable(2,"aScaleEnergyRecoil",aScaleEnergyRecoil);
+  theMinimizer->SetFixedVariable(3,"aScaleQ",aScaleQ);
+   
    
   //set the variable to be minimized
-  theMinimizer->SetVariable(2,"anERecoilLindhard",1,0.001);
+  theMinimizer->SetVariable(4,"anERecoilLindhard",1,0.001);
  
   theMinimizer->Minimize(); 
  
@@ -200,5 +222,21 @@ Double_t KLindhard::CalculateMinDistanceToLindhard(Double_t anERecoil,Double_t a
   
   return TMath::Sqrt(DistToLindhardFunction(xs));
   
+}
+
+Double_t KLindhard::GetArcLength(Double_t anEnergyRecoil,
+                                 Double_t aScaleFactor,
+                                 Double_t aRefEnergyRecoil)  
+{
+  // This method calculates the arc length s(E_Recoil) on the Lindhard function
+  // for a specified recoil energy with respect to the origin, where s(0)= 0
+  // The scale factor is the recoil energy in keV which corresponds to one
+  // unit length on the Q axis
+  
+  TF1 a("a","0.165");
+  TF1 b("b","0.185");
+  TF1 c("c",TString::Format("%lf",aScaleFactor).Data());
+  TF1 aFunction("f","TMath::Sqrt(a^2*b^2 / c^(0.5*b) * x^(2*b-2) + 1)");
+  return aFunction.Integral(aRefEnergyRecoil,anEnergyRecoil);
 }
 

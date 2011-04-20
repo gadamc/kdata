@@ -36,7 +36,7 @@ KQPA_LDFLAGS := $(LDFLAGS)
 KQPA_OPT     := $(OPT)
 
 
-#KQPA_OPT  += -g
+
 KQPA_OPT  := $(filter-out -O2,$(KQPA_OPT))
 KQPA_LDFLAGS := $(filter-out -O2,$(KQPA_LDFLAGS))
 

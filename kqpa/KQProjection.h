@@ -1,3 +1,4 @@
+
 //_____________________________________________
 //
 // KQProjection.h
@@ -12,6 +13,8 @@
 #include "KDataReader.h"
 #include "KHLABolometerRecord.h"
 #include "KHLAEvent.h"
+#include "KQDataRecord.h"
+
 
 #include "TH1D.h"
 #include "TH2D.h"
@@ -19,14 +22,17 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 #ifndef __KQPROJECTION_H__
 #define __KQPROJECTION_H__
 
 class KQProjection {
-  private:
+  protected:
     Double_t fVerbose;
+    vector<KQDataRecord> fData;
     TH2D* fHistogram;
     Double_t fEnergyRecoilMin;
     Double_t fEnergyRecoilMax;
@@ -37,6 +43,8 @@ class KQProjection {
     Double_t fNumBinsQ;
     string fSourceFile;
     string fBoloName;
+ 
+    
     
 
     void ResetHistogram()
@@ -63,7 +71,7 @@ class KQProjection {
                  Double_t aQMin = 0,
                  Double_t aQMax = 2,
                  const Char_t* aHistogramName = "hist");
-    ~KQProjection();
+    virtual ~KQProjection();
     //getters
     Bool_t GetVerbose() const { return fVerbose; }
     TH2D* GetHistogram() { return (TH2D*)fHistogram->Clone(); }
@@ -121,6 +129,7 @@ class KQProjection {
     
     Bool_t ReadData(Double_t anEnergyRecoilMin,
                     Double_t anEnergyRecoilMax);
+    virtual void MakeHistogram();
                     
     void Fit(TF1* aFunction);
     friend class KMultiQProjection;

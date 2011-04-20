@@ -24,7 +24,8 @@
 //
 // Double_t anEnergyRecoilMin = 0;
 // Double_t anEnergyRecoilMax = 1000;
-// aQProjection->ReadData(anEnergyRecoilMin,anEnergyRecoilMax);
+// aQProjection.ReadData(anEnergyRecoilMin,anEnergyRecoilMax);
+// aQProjection.MakeHistogram();
 // TH1D* aHistogram = aQProjection.GetProjection();
 // aHistogram->Draw();
 
@@ -44,8 +45,9 @@ KQProjection::KQProjection()
   fEnergyRecoilMax = 1000;
   fNumBinsEnergyRecoil = 1000;
   fQMin = 0;
-  fQMax = 2;
+  fQMax = 0.6;
   fNumBinsQ = 1000;
+  
   
   fHistogram = new TH2D("hist", //name
                         "hist", //title
@@ -69,6 +71,7 @@ KQProjection::KQProjection(const KQProjection& anotherKQProjection)
   fNumBinsQ = anotherKQProjection.fNumBinsQ;
   fSourceFile = anotherKQProjection.fSourceFile;
   fBoloName = anotherKQProjection.fBoloName;
+  fData = anotherKQProjection.fData;
 }
 
 
@@ -99,6 +102,8 @@ KQProjection::KQProjection(const Char_t* aSourceFile,
                                 fEnergyRecoilMax).Data(),
                         fNumBinsEnergyRecoil,fEnergyRecoilMin,
                         fEnergyRecoilMax, fNumBinsQ,fQMin,fQMax);
+  
+
 }
 
 KQProjection::~KQProjection() 
@@ -111,13 +116,16 @@ KQProjection::~KQProjection()
 Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,
                               Double_t anEnergyRecoilMax)
 {
+  fEnergyRecoilMin = anEnergyRecoilMin;
+  fEnergyRecoilMax = anEnergyRecoilMax;
+  fHistogram->SetTitle(TString::Format("E_{Recoil}: %lf .. %lf",fEnergyRecoilMin,
+                                       fEnergyRecoilMax).Data());
 
   fHistogram->Reset();
   fHistogram->GetXaxis()->SetRangeUser(anEnergyRecoilMin,
                                        anEnergyRecoilMax);
   
-  fEnergyRecoilMin = anEnergyRecoilMin;
-  fEnergyRecoilMax = anEnergyRecoilMax;
+
   
   if(fVerbose)
     cout << "Reading events ... " << endl;
@@ -161,9 +169,11 @@ Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,
         if(aBoloRecord->GetEventFlag()==fEventCategory &&
           aBoloRecord->GetDetectorName()==fBoloName &&
           aBoloRecord->GetEnergyRecoil()>= fEnergyRecoilMin &&
-          aBoloRecord->GetEnergyRecoil()<= fEnergyRecoilMax) {                                                            
-            fHistogram->Fill(aBoloRecord->GetEnergyRecoil(),
-                                         aBoloRecord->GetQvalue());
+          aBoloRecord->GetEnergyRecoil()<= fEnergyRecoilMax &&
+          aBoloRecord->GetQvalue()<=fQMax &&
+          aBoloRecord->GetQvalue()>=fQMin) {   
+            fData.push_back(KQDataRecord(aBoloRecord->GetEnergyRecoil(),
+                                         aBoloRecord->GetQvalue()));
         }
       }
     }
@@ -177,10 +187,11 @@ Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,
         aBoloRecord = aKHLAEvent->GetBolo(l);
         if(aBoloRecord->GetEventFlag()==fEventCategory &&
           aBoloRecord->GetEnergyRecoil()>= fEnergyRecoilMin &&
-          aBoloRecord->GetEnergyRecoil()<= fEnergyRecoilMax) {
-          fHistogram->Fill(aBoloRecord->GetEnergyRecoil(),
-                           aBoloRecord->GetQvalue());
-                                                                     
+          aBoloRecord->GetEnergyRecoil()<= fEnergyRecoilMax &&
+          aBoloRecord->GetQvalue()<=fQMax &&
+          aBoloRecord->GetQvalue()>=fQMin) {
+            fData.push_back(KQDataRecord(aBoloRecord->GetEnergyRecoil(),
+                                         aBoloRecord->GetQvalue()));                         
         }
       }
     }
@@ -188,11 +199,21 @@ Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,
   if(fVerbose) {
     cout << "All bolometer events: " << aNumBoloEvents << endl;
     cout << GetEventCategoryName() << " events in detector " << fBoloName << " in specified range: "
-    << fHistogram->GetEntries() << endl;
+    << fData.size() << endl;
   }
   
+  sort(fData.begin(),fData.end());
+   
   return true;
 } 
+
+void KQProjection::MakeHistogram()
+{
+  for(UInt_t k = 0; k< fData.size(); ++k)
+    fHistogram->Fill(fData[k].GetEnergyRecoil(),fData[k].GetQvalue());
+}
+  
+  
 
 
 void KQProjection::SetEventCategory(const Char_t* anEventCategory) 
