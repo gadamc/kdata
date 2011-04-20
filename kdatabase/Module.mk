@@ -50,7 +50,7 @@ KDATABASE_DIRI   := $(MODDIR)
 
 #only need to put the ERAINCS here because ERA files are NOT copied
 # to the projects include directory! This should be changed.
-KDATABASE_XTRAINCS := $(ERAINCS)  
+KDATABASE_XTRAINCS := $(ERAINCS) 
 
 #list all external module libs that this module depends on
 #if this module depends on other modules in this project you MUST
@@ -104,12 +104,12 @@ include/%.h:    $(KDATABASE_DIRI)/%.h
 
 # rule for compiling our source files
 $(KDATABASE_DIRS)/%.o:    $(KDATABASE_DIRS)/%.cxx
-	$(CXX) $(KDATABASE_OPT) $(KDATABASE_FLAGS) $(ROOTINCS) -I$(KDATABASE_XTRAINCS) -o $@ -c $< 
+	$(CXX) $(KDATABASE_OPT) $(KDATABASE_FLAGS) $(ROOTINCS) $(JANSSONINCS) $(CURLINCS) -I$(KDATABASE_XTRAINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KDATABASE_DIRS)/%.o $(KDATAED_LIB) $(KDATABASE_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(KDATABASE_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KDATABASELIBS) $(KDATABASE_XTRALIBS)
+		$(LD) $(KDATABASE_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(JANSSONLIBS) $(CURLLIBS) $(ROOTLIBS) $(SYSLIBS) $(KDATABASELIBS) $(KDATABASE_XTRALIBS)
                 
 # rules for building dictionary
 $(KDATABASE_DO):         $(KDATABASE_DC)
@@ -124,7 +124,7 @@ $(KDATABASE_LIB):        $(KDATABASE_EO) $(KDATABASE_DO) $(KDATABASE_LIBDEP)
 	@echo "Building $@..."
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KDATABASE_LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KDATABASE_LIB)" $@  "$(KDATABASE_EO) $(KDATABASE_DO) $(KDATABASE_XTRALIBS)"\
-	   "$(ROOTLIBS) $(KDATABASE_FLAGS)"  -I/opt/include -Iinclude 
+	   "$(JANSSONLIBS) $(CURLLIBS) $(ROOTLIBS) $(KDATABASE_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kdatabase:       $(KDATABASE_LIB) 
 
