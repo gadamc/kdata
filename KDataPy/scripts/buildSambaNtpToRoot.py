@@ -43,8 +43,12 @@ def buildRootFile(fname, outputdir):
   file = open(fname)
   reader = DictReader(open(fname), delimiter=' ', skipinitialspace = True)
   
-  doc = parseDoc(reader.next()) #read the first line
-  
+  try:
+      doc = parseDoc(reader.next()) #read the first line
+  except Exception as e:
+      print e
+      return None
+
   #here, i search through the key/value pairs of doc trying to determine
   #the type of value and then creating a list of variable names, an array for 
   #each variable stored in a list (necessary for TTree branching), and then
@@ -93,32 +97,33 @@ def buildRootFile(fname, outputdir):
   
   #re-read the file so that we start at the first line
   reader = DictReader(open(fname), delimiter=' ', skipinitialspace = True)
-  
-  for line in reader:
-    #print 'next line'
-    line = parseDoc(line)
-    for k, v in line.items():  
-      name = formatname(k)    
-      try:                      
-        i = varNames.index(name)  #its not guaranteed the the order of key/value pair is
+  try:
+    for line in reader:
+      #print 'next line'
+      line = parseDoc(line)
+      for k, v in line.items():  
+        name = formatname(k)    
+        try:                      
+          i = varNames.index(name)  #its not guaranteed the the order of key/value pair is
                                   #maintained. So, we have to use the list.index function
                                   #to find the proper index for this particular key
-        try:
-          arrayList[i][0] = v       #set the value to the proper array  (arrayList[i] returns an array and arrayList[i][0] is the zero'th element of the array)
-        except OverflowError:
-          print i
-          print k, v
-          raise OverflowError
+          try:
+            arrayList[i][0] = v       #set the value to the proper array  (arrayList[i] returns an array and arrayList[i][0] is the zero'th element of the array)
+          except OverflowError:
+            print i
+            print k, v
+            raise OverflowError
 
-          #print k, v
-        #print i, arrayList[i][0]
-      except ValueError:
-        pass  #this will throw if varNames doesn't have an index named 'name' In the code above,
+            #print k, v
+          #print i, arrayList[i][0]
+        except ValueError:
+          pass  #this will throw if varNames doesn't have an index named 'name' In the code above,
               #strings are ignored. so when we come across a key that isn't in our list,
               #which is probably a string, we ignore it here.
-    #print 'fill'
-    tree.Fill()
-    
+      #print 'fill'
+      tree.Fill()
+  except Exception as e:
+    print e
       
   file.cd()
   tree.Write()
