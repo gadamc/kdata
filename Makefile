@@ -99,6 +99,7 @@ endif
 ROOTINCS       := -I$(ROOTSYS)/include
 XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
 ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
+ROOTLIBS       += -Wl,-rpath,$(ROOTLIBS)/lib
 
 FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../fftw -I$(FFTW_DIR)/../rfftw
 FFTWLIBS       := -L$(FFTW_DIR) -lfftw3 -lm
