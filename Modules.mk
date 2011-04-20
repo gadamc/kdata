@@ -9,4 +9,4 @@ endif
 
 MODULES += $(if $(and $(CURL_DIR),$(JANSSON_DIR)),kdatabase,)
 
-MODULES += $(if $(and $(CURL_DIR),$(JANSSON_DIR),$(FFTW_DIR)),kdsplay,)
+#MODULES += $(if $(and $(CURL_DIR),$(JANSSON_DIR),$(FFTW_DIR)),kdsplay,)
