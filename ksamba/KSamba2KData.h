@@ -76,6 +76,7 @@ public:
   void ReadSambaRecordLine(KRawSambaRecord *samba, TString &aLine, UInt_t &gigaStamp, UInt_t &smallStamp);
   void AddPulseInformationFromHeader(KRawBoloPulseRecord *p);
   void AddSambaInformationFromHeader(KRawSambaRecord* samba);
+  const char* GetDetectorName(const char* line);
 
   TString GetStringFromTokenizedStringResult(TObjArray *arr, Int_t index);
   Int_t GetIntegerFromTokenizedStringResult(TObjArray *arr, Int_t index);
