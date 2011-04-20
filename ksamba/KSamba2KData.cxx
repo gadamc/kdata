@@ -1140,7 +1140,7 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
         p->SetCorrTrngl(0);
         p->SetAmplModul(0);
 
-        if(pulseChannelName.BeginsWith("chaleur")){
+        if(pulseChannelName.BeginsWith("chaleur") || detName.BeginsWith("Gc")){
           p->SetIsHeatPulse(1);
           p->SetPolarity(0.0);
           p->SetGain(chan->GetGainChaleur());
