@@ -8,9 +8,11 @@
 //
 // Created Wednesday 23. February 2011.
 // Special thanks to Mike Marino for "assistance" with this class. See his 
-// post on the ROOT user forums for the discussion and his example.
-
+// post on the ROOT user forums for the discussion and his example,
+// which I blatently stole
 //
+//
+
 #include "KClonesArray.h"
 #include "TClass.h"
 
