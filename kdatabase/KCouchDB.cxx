@@ -15,7 +15,9 @@
 
 
 #include "KCouchDB.h"
-#include "TPython.h"
+#include "TSystem.h"
+#include "TString.h"
+#include "jansson.h"
 
 ClassImp(KCouchDB);
 
@@ -35,8 +37,23 @@ void* KCouchDB::PythonTest(void)
   //holy shit this works
   
   void *b;
-  TPython py;
-  b = (void*)py.Eval("ROOT.TBrowser()");
-  py.Bind((TBrowser *)b,"b");
+  b = (void*)fMyPy.Eval("ROOT.TBrowser()");
+  fMyPy.Bind((TBrowser *)b,"b");
   return b;
+}
+
+void KCouchDB::UploadMuonVetoDaqMap(const char* file, const char* uri, const char *db, const char* override)
+{
+  TString command = "python $KDATA_ROOT/lib/KDataPy/kdatabase/uploadMuonVetoDaqMapCsvToCouch.py";
+  command += " ";
+  command += file;
+  command += " ";
+  command += uri;
+  command += " ";
+  command += db;
+  command += " ";
+  command += override;
+  gSystem->Exec(command.Data());
+  
+  
 }
