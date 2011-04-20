@@ -102,12 +102,16 @@ ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -
 
 FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../fftw -I$(FFTW_DIR)/../rfftw
 FFTWLIBS       := -L$(FFTW_DIR) -lfftw3 -lm
+FFTWLIBS       += -Wl,-rpath,$(FFTW_DIR)
+
 JANSSONINCS    := -I$(JANSSON_DIR)/../include 
 JANSSONLIBS    := -L$(JANSSON_DIR) -ljansson
+JANSSONLIBS    += -Wl,-rpath,$(JANSSON_DIR)
 
 ifneq ($(strip $(CURL_DIR)),)
 CURLINCS       := $(shell $(CURL_DIR)/curl-config --cflags)
-CURLLIBS       := $(shell $(CURL_DIR)/curl-config --libs)
+CURLLIBS       := -L$(shell $(CURL_DIR)/curl-config --prefix) $(shell $(CURL_DIR)/curl-config --libs)
+CURLLIBS       += -Wl,-rpath,$(shell $(CURL_DIR)/curl-config --prefix)/lib
 endif
 
 
