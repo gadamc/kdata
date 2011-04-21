@@ -12,6 +12,8 @@
 #include "TObject.h"
 //#include "TClonesArray.h"
 
+class KSambaRecord;
+
 class KEvent : public TObject {
 	
 public:
@@ -64,6 +66,10 @@ public:
     kNCTriggerType = 0x4
   };
     
+  
+  virtual KSambaRecord* GetSamba(Int_t i) const = 0;
+  virtual Int_t GetNumSambas(void) const = 0;
+
   
 private:
 	void SetTriggerType(Int_t aNum) {fTriggerType = aNum;}

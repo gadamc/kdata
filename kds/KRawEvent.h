@@ -26,6 +26,7 @@ using namespace std;
 class KHLAEvent;
 class KRawBoloPulseRecord;
 class KRawSambaRecord;
+class KSambaRecord;
 class KRawBolometerRecord;
 class KRawMuonModuleRecord;
 
@@ -56,14 +57,14 @@ public:
   Bool_t AddBoloSubRecord(const KRawBolometerRecord &inBolo);
   
   //Getters and Setters to member variables
-	Int_t GetNumSambas(void) const {return (fSamba) ? fSamba->GetEntriesFast() : 0;}
+	virtual Int_t GetNumSambas(void) const {return (fSamba) ? fSamba->GetEntriesFast() : 0;}
 	Int_t GetNumBolos(void) const {return (fBolo) ? fBolo->GetEntriesFast() : 0;;}
 	Int_t GetNumBoloPulses(void) const {return (fBoloPulse) ? fBoloPulse->GetEntriesFast() : 0;} 
 	Int_t GetNumMuonModules(void) const {return (fMuonModule) ? fMuonModule->GetEntriesFast() : 0;} 
   
   KRawMuonVetoSysRecord* GetMuonVetoSystemRecord(void) {return &fMuonSystem;}
 
-  KRawSambaRecord* GetSamba(Int_t i) const;
+  virtual KSambaRecord* GetSamba(Int_t i) const;
 	KRawBolometerRecord* GetBolo(Int_t i) const;
 	KRawBoloPulseRecord* GetBoloPulse(Int_t i) const;
 	KRawMuonModuleRecord* GetMuonModule(Int_t i) const;
