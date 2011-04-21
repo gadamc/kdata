@@ -71,7 +71,7 @@ public:
 	KHLABoloSysRecord* GetBoloSystemRecord(void) {return &fBoloSystem;}
 	KHLAMuonVetoSysRecord* GetMuonVetoSystemRecord(void) {return &fMuonSystem;}
 	
-	KHLASambaRecord* GetSamba(Int_t i) const;
+	virtual KSambaRecord* GetSamba(Int_t i) const;
 	KHLABolometerRecord* GetBolo(Int_t i) const;
 	KHLABoloPulseRecord* GetBoloPulse(Int_t i) const;
 	KHLAMuonModuleRecord* GetMuonModule(Int_t i) const;

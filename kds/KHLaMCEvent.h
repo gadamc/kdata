@@ -16,7 +16,7 @@
 //class KEventFactory;
 class TClonesArray; 
 class KMCBolometerRecord;
-
+class KSambaRecord;
 
 class KHLaMCEvent : public KEvent {         
 	
@@ -46,7 +46,15 @@ public:
 	TClonesArray* GetBoloSubRecords(void) const {return fBolo;}
 	
 	KMCBolometerRecord* AddBolo();
-	
+
+	virtual KSambaRecord* GetSamba(Int_t i) const {
+    KSambaRecord *s = 0;
+    return s;
+  }
+  virtual Int_t GetNumSambas(void) const {
+    return 0;
+  }
+
 	
 	
 private: 

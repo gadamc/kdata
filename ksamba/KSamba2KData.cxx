@@ -115,26 +115,6 @@ Bool_t  KSamba2KData::ConvertFile(void)
   if(ReadSambaHeaderGeneral())
     if(ReadSambaDetectorConfigurations())
       if(ReadSambaChannelConfigurations()){
-        //still need to read the Run header section.
-        
-        /*
-        this->Dump();
-        fSambaHeader.Dump();
-        
-        for(UInt_t i = 0; i < fSambaHeader.GetDetectorListSize(); i++){
-          KSambaDetector* det = fSambaHeader.GetDetectorFromList(i);
-          det->Dump();
-          for(UInt_t j = 0; j < det->GetChannelListSize(); j++){
-            KSambaDetectorChannel* chan = det->GetChannelFromList(j);
-            chan->Dump();
-          }
-        }
-        
-        cout << "current line: " << fSambaFileLine.Data() <<endl;
-        
-        int a;
-        cin >> a;
-        */
         if(ReadSambaRunHeader())
           if(ReadSambaData())
             if(CloseSambaFileStream())

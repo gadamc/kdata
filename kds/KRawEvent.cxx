@@ -246,7 +246,7 @@ Bool_t KRawEvent::AddBoloSubRecord(const KRawBolometerRecord &inbolo)
     Bool_t bAddSamba = true;
     
     for(Int_t n = 0; n < GetNumSambas(); n++){
-      KRawSambaRecord *samba = GetSamba(n);
+      KRawSambaRecord *samba = static_cast<KRawSambaRecord *>(GetSamba(n));
       
       if(*samba == *inSamba){
         //found the match. this samba is already in our event
@@ -461,11 +461,11 @@ KRawMuonModuleRecord* KRawEvent::AddMuonModule()
 	return AddSubRecord<KRawMuonModuleRecord>(fMuonModule);
 }
 
-KRawSambaRecord *KRawEvent::GetSamba(Int_t i) const
+KSambaRecord *KRawEvent::GetSamba(Int_t i) const
 {
   // Return the i'th Samba Sub Record for this event.
 	
-  return static_cast<KRawSambaRecord *>(fSamba->At(i));
+  return static_cast<KSambaRecord *>(fSamba->At(i));
 }
 
 KRawBolometerRecord *KRawEvent::GetBolo(Int_t i) const
@@ -653,7 +653,7 @@ void KRawEvent::Compact(void)
   fMuonModule->Compress();
   
 	for(Int_t i = 0; i < GetNumSambas(); i++){
-		KRawSambaRecord* samba = GetSamba(i);
+		KRawSambaRecord* samba = static_cast<KRawSambaRecord *>(GetSamba(i));
 		samba->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBolos(); i++){

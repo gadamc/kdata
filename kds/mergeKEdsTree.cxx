@@ -26,6 +26,7 @@
 #include "KHLAMuonVetoSysRecord.h"
 #include "KHLABolometerRecord.h"
 #include "KHLASambaRecord.h"
+#include "KSambaRecord.h"
 #include "KHLABoloPulseRecord.h"
 #include "KDataReader.h"
 #include "KDataWriter.h"
@@ -104,7 +105,7 @@ void printInfo(KHLAEvent& ev){
 	cout << endl;
 
 	for(Int_t i = 0; i < ev.GetNumSambas(); i++){
-		KHLASambaRecord* sam= ev.GetSamba(i);
+		KSambaRecord* sam= ev.GetSamba(i);
 		cout <<  "FileName: "<< sam->GetRunName()	<< " Samba Event Number: "<< sam->GetSambaEventNumber() << endl;
 		cout << "sam pointer" << sam << endl;
 	}	
@@ -134,7 +135,7 @@ void printInfo(KHLAEvent& ev){
 bool checkSpecialCase(string in, KHLAEvent* ev ){
 	if((ev->GetNumSambas())!=0){ //GetNumSambaRecs  GetSambaRecords
 		
-		KHLASambaRecord* sam=ev->GetSamba(0);
+		KSambaRecord* sam=ev->GetSamba(0);
 		if((sam->GetRunName())==in) return true;
 		else return false;
 	}

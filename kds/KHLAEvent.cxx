@@ -295,7 +295,7 @@ Bool_t KHLAEvent::AddBoloSubRecord(const KHLABolometerRecord &inBolo)
     Bool_t bAddSamba = true;
     
     for(Int_t n = 0; n < GetNumSambas(); n++){
-      KHLASambaRecord *samba = GetSamba(n);
+      KHLASambaRecord *samba = static_cast<KHLASambaRecord *>(GetSamba(n));
       
       if(*samba == *inSamba){  
         //we found a match for the samba record already in our event! 
@@ -503,11 +503,11 @@ KHLAMuonModuleRecord* KHLAEvent::AddMuonModule()
 	return AddSubRecord<KHLAMuonModuleRecord>(fMuonModule);
 }
 
-KHLASambaRecord *KHLAEvent::GetSamba(Int_t i) const
+KSambaRecord *KHLAEvent::GetSamba(Int_t i) const
 {
   // Return the i'th Samba Sub Record for this event.
 	
-  return static_cast<KHLASambaRecord *>(fSamba->At(i));
+  return static_cast<KSambaRecord *>(fSamba->At(i));
 }
 
 KHLABolometerRecord *KHLAEvent::GetBolo(Int_t i) const
@@ -736,7 +736,7 @@ void KHLAEvent::Compact(void)
   fMuonModule->Compress();
   
 	for(Int_t i = 0; i < GetNumSambas(); i++){
-		KHLASambaRecord* samba = GetSamba(i);
+		KHLASambaRecord* samba = static_cast<KHLASambaRecord *>(GetSamba(i));
 		samba->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBolos(); i++){
