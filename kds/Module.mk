@@ -58,7 +58,7 @@ KDS_DH     := $(KDS_DC:.C=.h)
 KDS_H      := $(filter-out $(KDS_LH) $(KDS_DH),$(wildcard $(KDS_DIRI)/*.h))
 KDS_ECXX   := $(wildcard $(KDS_DIRS)/K*.cxx)
 KDS_CXX    := $(filter-out $(KDS_ECXX),$(wildcard $(KDS_DIRS)/*.cxx))
-KDS_CXX    := $(filter-out $(KDS_CXX),$(KDS_DIRS)/mergeKEdsTree.cxx)
+#KDS_CXX    := $(filter-out $(KDS_CXX),$(KDS_DIRS)/mergeKEdsTree.cxx)
 
 KDS_O      := $(KDS_CXX:.cxx=.o)
 KDS_EO     := $(KDS_ECXX:.cxx=.o)
