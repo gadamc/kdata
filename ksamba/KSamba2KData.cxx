@@ -876,7 +876,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
           KRawBolometerRecord *bolo = 0;
           Bool_t newBolo = true;
           for(Int_t i = 0; i < event->GetNumBolos(); i++){
-            bolo = event->GetBolo(i);
+            bolo = static_cast<KRawBolometerRecord *>(event->GetBolo(i));
             if(detector == bolo->GetDetectorName()){
               newBolo = false;
               break;

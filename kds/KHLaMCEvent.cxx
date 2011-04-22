@@ -126,8 +126,8 @@ Bool_t KHLaMCEvent::IsSame(const KHLaMCEvent &anEvent, Bool_t bPrint) const
 	
 	if(fNumBolo == anEvent.fNumBolo){
 		for(Int_t i = 0; i < fNumBolo; i++){
-			KMCBolometerRecord *s = GetBolo(i);
-			KMCBolometerRecord *sOther = anEvent.GetBolo(i);
+			KMCBolometerRecord *s = static_cast<KMCBolometerRecord *>(GetBolo(i));
+			KMCBolometerRecord *sOther = static_cast<KMCBolometerRecord *>(anEvent.GetBolo(i));
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
@@ -151,11 +151,11 @@ Bool_t KHLaMCEvent::IsSame(const KHLaMCEvent &anEvent, Bool_t bPrint) const
 	return bIsEqual;
 }
 
-KMCBolometerRecord *KHLaMCEvent::GetBolo(Int_t i) const
+KBolometerRecord *KHLaMCEvent::GetBolo(Int_t i) const
 {
   // Return the i'th Bolometer Sub Record for this event.
 	KMCBolometerRecord *ms = 0;
-	if (i < fNumBolo) ms = (KMCBolometerRecord *)fBolo->At(i);
+	if (i < fNumBolo) ms = static_cast<KMCBolometerRecord *>(fBolo->At(i));
 	return ms;
 }
 
@@ -199,7 +199,7 @@ void KHLaMCEvent::CopyClonesArrays(const KHLaMCEvent &anEvent)
 	
 	for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
 		KMCBolometerRecord *s = AddBolo();
-		KMCBolometerRecord *sO = anEvent.GetBolo(i);
+		KMCBolometerRecord *sO = static_cast<KMCBolometerRecord *>(anEvent.GetBolo(i));
 		if(s != 0 && sO != 0) 
 			*s = *sO;
 		else

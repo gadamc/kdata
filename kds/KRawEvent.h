@@ -15,20 +15,18 @@
 #include <string>
 #include "KClonesArray.h"
 
-//#include <time>
 
 using namespace std;
 
-//class TObject;
-//class KEventFactory;
-
-
-class KHLAEvent;
 class KRawBoloPulseRecord;
 class KRawSambaRecord;
-class KSambaRecord;
 class KRawBolometerRecord;
 class KRawMuonModuleRecord;
+
+class KBoloPulseRecord;
+class KSambaRecord;
+class KBolometerRecord;
+class KMuonModuleRecord;
 
 class KRawEvent : public KEvent {         
 	
@@ -49,26 +47,9 @@ public:
 	virtual void Compact(void);
   static const char* GetClassName() {return "KRawEvent";}
   
-	virtual KEvent& operator=(const KEvent &anEvent);
+  virtual KEvent& operator=(const KEvent &anEvent);
 	virtual KRawEvent& operator=(const KRawEvent &anEvent);
-	
-  Int_t AddSubRecords(const KRawEvent &anEvent);
-  Bool_t AddMuonModuleSubRecord(const KRawMuonModuleRecord &inMuonModule);
-  Bool_t AddBoloSubRecord(const KRawBolometerRecord &inBolo);
-  
-  //Getters and Setters to member variables
-	virtual Int_t GetNumSambas(void) const {return (fSamba) ? fSamba->GetEntriesFast() : 0;}
-	Int_t GetNumBolos(void) const {return (fBolo) ? fBolo->GetEntriesFast() : 0;;}
-	Int_t GetNumBoloPulses(void) const {return (fBoloPulse) ? fBoloPulse->GetEntriesFast() : 0;} 
-	Int_t GetNumMuonModules(void) const {return (fMuonModule) ? fMuonModule->GetEntriesFast() : 0;} 
-  
-  KRawMuonVetoSysRecord* GetMuonVetoSystemRecord(void) {return &fMuonSystem;}
-
-  virtual KSambaRecord* GetSamba(Int_t i) const;
-	KRawBolometerRecord* GetBolo(Int_t i) const;
-	KRawBoloPulseRecord* GetBoloPulse(Int_t i) const;
-	KRawMuonModuleRecord* GetMuonModule(Int_t i) const;
-  
+	  
   const KClonesArray* GetSambaRecords(void) const {return static_cast<KClonesArray *>(fSamba);}
 	const KClonesArray* GetBoloRecords(void) const {return static_cast<KClonesArray *>(fBolo);}
 	const KClonesArray* GetBoloPulseRecords(void) const {return static_cast<KClonesArray *>(fBoloPulse);}
@@ -79,6 +60,23 @@ public:
 	KRawBoloPulseRecord* AddBoloPulse();
 	KRawMuonModuleRecord* AddMuonModule();
   
+  
+  //methods required by the KEvent abstract class.
+  virtual Int_t AddSubRecords(const KEvent &anEvent);
+  virtual Bool_t AddMuonModuleSubRecord(const KMuonModuleRecord &inMuonModule);
+  virtual Bool_t AddBoloSubRecord(const KBolometerRecord &inBolo);
+  
+	virtual Int_t GetNumSambas(void) const {return (fSamba) ? fSamba->GetEntriesFast() : 0;}
+	virtual Int_t GetNumBolos(void) const {return (fBolo) ? fBolo->GetEntriesFast() : 0;;}
+	virtual Int_t GetNumBoloPulses(void) const {return (fBoloPulse) ? fBoloPulse->GetEntriesFast() : 0;} 
+	virtual Int_t GetNumMuonModules(void) const {return (fMuonModule) ? fMuonModule->GetEntriesFast() : 0;} 
+  
+  virtual KMuonVetoSystemRecord* GetMuonVetoSystemRecord(void) {KMuonVetoSystemRecord *s = static_cast<KMuonVetoSystemRecord *>(&fMuonSystem); return s;}
+  
+  virtual KSambaRecord* GetSamba(Int_t i) const;
+	virtual KBolometerRecord* GetBolo(Int_t i) const;
+	virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const;
+	virtual KMuonModuleRecord* GetMuonModule(Int_t i) const;
   
 private: 
 	

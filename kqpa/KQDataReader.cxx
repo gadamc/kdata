@@ -83,7 +83,7 @@ Bool_t KQDataReader::ReadEvents(const Char_t* aSourceFile,
         cout << "Entry " << k << endl;
       aNumBoloEvents += aKHLAEvent->GetNumBolos(); 
       for(int l = 0; l<aKHLAEvent->GetNumBolos(); ++l)  {
-        aBoloRecord = aKHLAEvent->GetBolo(l);
+        aBoloRecord = static_cast<KHLABolometerRecord*>(aKHLAEvent->GetBolo(l));
         if(aBoloRecord->GetEventFlag()==fEventCategory &&
           aBoloRecord->GetDetectorName()==fBoloName &&
           aBoloRecord->GetEnergyRecoil()>= fEnergyRecoilMin &&
@@ -113,7 +113,7 @@ Bool_t KQDataReader::ReadEvents(const Char_t* aSourceFile,
   cout << "Entry " << k << endl;
       aNumBoloEvents += aKHLAEvent->GetNumBolos();
       for(int l = 0; l<aKHLAEvent->GetNumBolos(); ++l) {
-        aBoloRecord = aKHLAEvent->GetBolo(l);
+        aBoloRecord = static_cast<KHLABolometerRecord*>(aKHLAEvent->GetBolo(l));
         if(aBoloRecord->GetEventFlag()==fEventCategory &&
           aBoloRecord->GetEnergyRecoil()>= fEnergyRecoilMin &&
           aBoloRecord->GetEnergyRecoil()<= fEnergyRecoilMax) {

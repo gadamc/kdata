@@ -25,33 +25,14 @@ public:
 	Bool_t operator==(const KSystemRecord &aRec) const { return IsSame(aRec,false); }
 	Bool_t operator!=(const KSystemRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void) {/*nothing to compact */};
-	
-	//getters
-	//Int_t GetRunNumber(void) {return fRunNumber;}
-
-	Bool_t IsSystemOn(void) const {return fIsSystemOn;}	
-	
-	//setters
-	//void SetRunNumber(Int_t aNum) {fRunNumber = aNum;}
-
+  
+  Bool_t IsSystemOn(void) const {return fIsSystemOn;}	
 	void SetIsSystemOn(Bool_t a) {fIsSystemOn = a;}
 	
 private:
-	
-	//Int_t fRunNumber; //run number of the system
-	
-	Bool_t fIsSystemOn; //set to true if the system is on.
-	//Double_t fTSLSysRecord;
-	
-protected:
-	//force the derived classes to write their own call for
-	//the fTimeSinceLastSystemRecord since each derived class
-	//will be of a different "type" and will want to use
-	//a different name so that the analysis "user" will 
-	//not be confused. See KMuonVetoSystemRecord for example
-//	Double_t GetTimeSinceLastSystemRecord(void) const {return fTSLSysRecord;}
-//	void SetTimeSinceLastSystemRecord(Double_t aNum) {fTSLSysRecord = aNum;}
 		
+	Bool_t fIsSystemOn; //set to true if the system is on.
+			
 private:
 	
 	//private methods

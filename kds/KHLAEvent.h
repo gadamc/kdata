@@ -49,32 +49,14 @@ public:
 	virtual KEvent& operator=(const KEvent &anEvent);
 	virtual KHLAEvent& operator=(const KHLAEvent &anEvent);
   
-	Int_t AddSubRecords(const KHLAEvent &ev, Bool_t skimNoise = false);
-  Bool_t AddMuonModuleSubRecord(const KHLAMuonModuleRecord &inMuonModule);
-  Bool_t AddBoloSubRecord(const KHLABolometerRecord &inBolo);
-  
-	//Easy Access Methods
+  //Easy Access Methods
 	//These methods access commonly requested quantities without
 	//having to dig down into the branch structure.
 	Double_t GetSumBoloEnergyRecoil(void) const;
 	//Double_t GetSumBoloEnergyHeat(void);
 	Double_t GetSumBoloEnergyIon(void) const;
 	
-	//Getters and Setters to member variables
-	
-	Int_t GetNumSambas(void) const {return (fSamba) ? fSamba->GetEntriesFast() : 0;}
-	Int_t GetNumBolos(void) const {return (fBolo) ? fBolo->GetEntriesFast() : 0;}
-	Int_t GetNumBoloPulses(void) const {return (fBoloPulse) ? fBoloPulse->GetEntriesFast() : 0;} 
-	Int_t GetNumMuonModules(void) const {return (fMuonModule) ? fMuonModule->GetEntriesFast() : 0;} 
-	
-	//system record pointers
 	KHLABoloSysRecord* GetBoloSystemRecord(void) {return &fBoloSystem;}
-	KHLAMuonVetoSysRecord* GetMuonVetoSystemRecord(void) {return &fMuonSystem;}
-	
-	virtual KSambaRecord* GetSamba(Int_t i) const;
-	KHLABolometerRecord* GetBolo(Int_t i) const;
-	KHLABoloPulseRecord* GetBoloPulse(Int_t i) const;
-	KHLAMuonModuleRecord* GetMuonModule(Int_t i) const;
 	
 	//pointers to KClonesArrays of SubRecord objects. 
 	//unless you need some specific informaton from the KClonesArray
@@ -104,6 +86,26 @@ public:
   
   void CopyLocalMembers(const KHLAEvent &anEvent);
 	void CopyClonesArrays(const KHLAEvent &anEvent);
+  
+  Int_t AddBoloSubRecords(const KHLAEvent &anEvent, Bool_t skim = false);
+  Int_t AddMuonModuleSubRecords(const KHLAEvent &anEvent);
+  
+  //methods required by the KEvent abstract class.
+  virtual Int_t AddSubRecords(const KEvent &anEvent);
+  virtual Bool_t AddMuonModuleSubRecord(const KMuonModuleRecord &inMuonModule);
+  virtual Bool_t AddBoloSubRecord(const KBolometerRecord &inBolo);
+  
+	virtual Int_t GetNumSambas(void) const {return (fSamba) ? fSamba->GetEntriesFast() : 0;}
+	virtual Int_t GetNumBolos(void) const {return (fBolo) ? fBolo->GetEntriesFast() : 0;;}
+	virtual Int_t GetNumBoloPulses(void) const {return (fBoloPulse) ? fBoloPulse->GetEntriesFast() : 0;} 
+	virtual Int_t GetNumMuonModules(void) const {return (fMuonModule) ? fMuonModule->GetEntriesFast() : 0;} 
+  
+  virtual KMuonVetoSystemRecord* GetMuonVetoSystemRecord(void)  {return static_cast<KMuonVetoSystemRecord *>(&fMuonSystem);}
+  
+  virtual KSambaRecord* GetSamba(Int_t i) const;
+	virtual KBolometerRecord* GetBolo(Int_t i) const;
+	virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const;
+	virtual KMuonModuleRecord* GetMuonModule(Int_t i) const;
   
   
   //soon to be deprecated methods

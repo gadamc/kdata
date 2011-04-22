@@ -13,15 +13,15 @@
 //#include "TClonesArray.h"
 
 class KSambaRecord;
+class KBolometerRecord;
+class KBoloPulseRecord;
+class KMuonModuleRecord;
+class KMuonVetoSystemRecord;
 
 class KEvent : public TObject {
 	
 public:
-	//Constructors and destructor. Only Derived class and the Factory
-	//SHOULD access these methods. 
-	//However, in order for ROOT's I/O and rootcint to work properly
-	//the constructor and destructor
-	//have to be public. Otherwise, I would have made them protected or private
+	
 	KEvent(void);
 	KEvent(const KEvent &anEvent);
 	virtual ~KEvent(void);
@@ -54,7 +54,6 @@ public:
 	void SetEventTriggerStamp(Long64_t aStamp) {fEventTriggerStamp = aStamp;}
   void SetStamp(Long64_t aStamp) {SetEventTriggerStamp(aStamp);}
 
-  
 	//void SetDetectorStatusWord(Int_t aNum) {fDetectorStatusWord = aNum;}
 	//void SetBlindnessWord(Int_t aNum) {fBlindnessWord = aNum;}
 			 
@@ -67,10 +66,24 @@ public:
   };
     
   
-  virtual KSambaRecord* GetSamba(Int_t i) const = 0;
-  virtual Int_t GetNumSambas(void) const = 0;
-
+  //KEvent is an abstract base class. Derived classes must write
+  //their own implementations of the following methods.
+  virtual Int_t AddSubRecords(const KEvent &anEvent) = 0;
+  virtual Bool_t AddMuonModuleSubRecord(const KMuonModuleRecord &inMuonModule) = 0;
+  virtual Bool_t AddBoloSubRecord(const KBolometerRecord &inBolo) = 0;
   
+  virtual KSambaRecord* GetSamba(Int_t i) const = 0;
+	virtual KBolometerRecord* GetBolo(Int_t i) const = 0;
+	virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const = 0;
+	virtual KMuonModuleRecord* GetMuonModule(Int_t i) const = 0;
+  
+  virtual Int_t GetNumSambas(void) const = 0;
+	virtual Int_t GetNumBolos(void) const = 0;
+	virtual Int_t GetNumBoloPulses(void) const = 0;
+	virtual Int_t GetNumMuonModules(void) const = 0;
+  
+  virtual KMuonVetoSystemRecord* GetMuonVetoSystemRecord(void)  = 0;
+
 private:
 	void SetTriggerType(Int_t aNum) {fTriggerType = aNum;}
 	

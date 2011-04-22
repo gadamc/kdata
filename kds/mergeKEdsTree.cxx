@@ -92,7 +92,7 @@ void printInfo(KHLAEvent& ev){
 	//ev.myPrintB();
 
 	for(Int_t i = 0; i < ev.GetNumBolos(); i++){
-	  KHLABolometerRecord* bolo= ev.GetBolo(i);
+	  KHLABolometerRecord* bolo= static_cast<KHLABolometerRecord *>(ev.GetBolo(i));
 	  cout <<  "DetectorName: "<< bolo->GetDetectorName() << endl;
 	  cout << "Sam Pointer " << bolo->GetSambaRecord() << endl;
 	  for(Int_t j = 0; j < bolo->GetNumPulseRecords(); j++){
@@ -117,7 +117,7 @@ void printInfo(KHLAEvent& ev){
 	cout << endl;
 
 	for(Int_t i = 0; i < ev.GetNumBoloPulses(); i++){
-	  KHLABoloPulseRecord* pulse = ev.GetBoloPulse(i);
+	  KHLABoloPulseRecord* pulse = static_cast<KHLABoloPulseRecord*>(ev.GetBoloPulse(i));
 	  cout << "BoloPulse Pointer: " << pulse << endl;
 	  cout << "Energy " << pulse->GetEnergy() << endl;
 	  cout << "Baseline " << pulse->GetEnergyBaseline() << endl;
@@ -435,7 +435,7 @@ int mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, strin
 
 
 Bool_t checkTBit(KHLAEvent* ev){
-	KHLAMuonVetoSysRecord *mMvSysRec = ev->GetMuonVetoSystemRecord();	
+	KMuonVetoSystemRecord *mMvSysRec = ev->GetMuonVetoSystemRecord();	
 	if(mMvSysRec->TestEventQualityBit(0)){
 		 return true;
 	}
