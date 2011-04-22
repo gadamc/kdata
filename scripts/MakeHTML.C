@@ -10,6 +10,8 @@
   gSystem.Load("$KDATA_ROOT/lib/libkdatabase.so");
 
   THtml h;
+  gSystem.Exec("rm -rf html");  //completely remove the html folder so that all 
+                                //documentation files are completely rebuilt.
   h.SetHeader("scripts/kdata_header.html");
   h.SetProductName("KData");
   h.SetHomepage("https://edwdev-ik.fzk.de");
