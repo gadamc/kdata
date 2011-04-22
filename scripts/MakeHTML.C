@@ -27,6 +27,6 @@
   "  margin: 10px;" << endl <<
   "}" << endl;
   gSystem.Exec("cp scripts/kdata_header.html html/kdata_header.html");
-  gSystem.Exec("cp scripts/kdata-logo.tiff html/kdata-logo.tiff");
+  gSystem.Exec("cp scripts/kdata-logo.jpg html/kdata-logo.jpg");
 }
 
