@@ -450,7 +450,7 @@ Double_t KDataAnalysis::GetBoloPhysicsEventTime(Int_t i, KHLAEvent *ev)
 		ev = dynamic_cast< KHLAEvent *>( this->GetEvent() );
 	
 	if(ev != 0){
-		KHLABolometerRecord* bolo = ev->GetBolo(i);
+		KHLABolometerRecord* bolo = static_cast<KHLABolometerRecord *>(ev->GetBolo(i));
 		if(bolo != 0)
 			return ev->GetSecPerStamp()*(ev->GetStamp() + bolo->GetIonPulseTimeOffset());
 		else 

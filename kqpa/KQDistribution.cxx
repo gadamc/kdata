@@ -552,7 +552,7 @@ bool KQDistribution::ReadEvents()
   cout << "Entry " << k << endl;
       aNumBoloEvents += fKHLAEvent->GetNumBolos(); 
       for(int l = 0; l<fKHLAEvent->GetNumBolos(); ++l)  {
-  aBoloRecord = fKHLAEvent->GetBolo(l);
+  aBoloRecord = static_cast<KHLABolometerRecord*>(fKHLAEvent->GetBolo(l));
   if(aBoloRecord->GetEventFlag()==fEventCategory && aBoloRecord->GetDetectorName()==fDetectorName && aBoloRecord->GetEnergyRecoil()<fERecoilMax)
     fData.push_back(DataRecord(aBoloRecord->GetEnergyRecoil(),
                                aBoloRecord->GetQvalue(),
@@ -568,7 +568,7 @@ bool KQDistribution::ReadEvents()
   cout << "Entry " << k << endl;
       aNumBoloEvents += fKHLAEvent->GetNumBolos();
       for(int l = 0; l<fKHLAEvent->GetNumBolos(); ++l) {
-  aBoloRecord = fKHLAEvent->GetBolo(l);
+  aBoloRecord = static_cast<KHLABolometerRecord*>(fKHLAEvent->GetBolo(l));
   if(aBoloRecord->GetEventFlag()==fEventCategory)
     fData.push_back(DataRecord(aBoloRecord->GetEnergyRecoil(),
                                aBoloRecord->GetQvalue(),

@@ -213,154 +213,210 @@ UInt_t KHLAEvent::GetLargestUniqueIDNumber(void)
 	return aUniqueIDNumber;
 }
 
-Int_t KHLAEvent::AddSubRecords(const KHLAEvent &anEvent, Bool_t skimNoise)
+Int_t KHLAEvent::AddBoloSubRecords(const KHLAEvent &anEvent, Bool_t skim)
 {
-  //Adds the sub records of 'anEvent' to *this. If skimNoise == true,
-  //then the bolometer records (and their associated samba and bolopulse records) 
-  //for bolometer records that have an EventFlag == 0 will not be added to *this.
-  //returns the number of sub records added to *this.
-  //
-	
+
   Int_t numRecord = 0;
-	
+
   for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
-    KHLABolometerRecord *bolo0 = anEvent.GetBolo(i);
-    if(  (skimNoise==true) ? (bolo0->GetEventFlag() > 0) : true ) { //if skimNoise is true
+    KHLABolometerRecord *bolo0 = static_cast<KHLABolometerRecord *>(anEvent.GetBolo(i));
+    if(  (skim==true) ? (bolo0->GetEventFlag() > 0) : true ) { //if skimNoise is true
                                                                     //then only include this bolometer if its not noise
       if(AddBoloSubRecord(*bolo0)) numRecord++;
       else return -1;
     }
   }
-	
+  
+  return numRecord;
+}
+
+
+Int_t KHLAEvent::AddMuonModuleSubRecords(const KHLAEvent &anEvent)
+{
+  Int_t numRecord = 0;
+
   for(Int_t i = 0; i < anEvent.GetNumMuonModules(); i++){    
     if(AddMuonModuleSubRecord(*anEvent.GetMuonModule(i)))  numRecord++;
     else return -1;
-	}
-	
-	return numRecord;
+  }
+  
+  return numRecord;
 }
 
 
-Bool_t KHLAEvent::AddMuonModuleSubRecord(const KHLAMuonModuleRecord &inMuonModule)
+Int_t KHLAEvent::AddSubRecords(const KEvent &rhs)
 {
-  //Add inMuonModule to this KHLAEvent.
+  //Adds the sub records of 'anEvent' to *this. 
+  //returns the number of sub records added to *this.
+  //Even though the argument for this method says you can pass in any type of KEvent,
+  //you must pass an object that is a KHLAEvent in order for the
+  //sub records to actually be added to the event. 
+	
+  try {
+    const KHLAEvent &anEvent =  dynamic_cast<const KHLAEvent &> (rhs);
+    Int_t numRecord = 0;
+    
+    Int_t num = AddBoloSubRecords(anEvent, false);
+    if(num != -1)
+      numRecord += num;
+    else return -1;
+
+    num = AddMuonModuleSubRecords(anEvent);
+    if(num != -1)
+      numRecord += num;
+    else return -1;
+    
+    return numRecord;
+    
+  }
+  catch(bad_cast) {
+    cerr << "rhs not KHLAEvent type." << endl;
+    return -1;
+  }
   
+}
+
+
+Bool_t KHLAEvent::AddMuonModuleSubRecord(const KMuonModuleRecord &rhs)
+{
+  //Add a MuonModuleRecord to this KHLAEvent. You must add a KHLAMuonModuleRecord
+  //despite the argument type of this method. 
+
   //don't need to deal with object count here because we're not using
   //TRefs with the muon module data. 
-
-  KHLAMuonModuleRecord *muonmodule = AddMuonModule();
-  
-  if(muonmodule != 0){
-    *muonmodule = inMuonModule;
-    return true;
+  try {
+    const KHLAMuonModuleRecord &inMuonModule = dynamic_cast<const KHLAMuonModuleRecord &> (rhs);
+    KHLAMuonModuleRecord *muonmodule = AddMuonModule();
+    
+    if(muonmodule != 0){
+      *muonmodule = inMuonModule;
+      return true;
+    }
+    else return false; //only return false if AddMuonModule() doesn't work
   }
-  else return false; //only return false if AddMuonModule() doesn't work
+  
+  catch(bad_cast) {
+    cerr << "rhs not KHLAMuonModuleRecord type." << endl;
+    return false;
+  }
   
 }
 
 
-Bool_t KHLAEvent::AddBoloSubRecord(const KHLABolometerRecord &inBolo)
+Bool_t KHLAEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
 {
-  //Add inBolo to this KHLAEvent and also add the Samba record that it points
-  //to and the Pulse Records. If no Samba record is associated with inBolo (via GetSambaRecord),
+  //Add rhs to this KHLAEvent. This also automatically adds the Samba record that it points
+  //to and the Pulse Records. If no Samba record is associated with rhs (via GetSambaRecord),
   //this method returns false. If an invalid pointer to a Pulse Record is found, 
-  //this method returns false. This ensures that the event is built properly. 
+  //this method returns false. This ensures that the event is built properly.
+  //Even though the argument for this method says you can pass in any type of KBolometerRecord,
+  //you must pass an object that is a KHLABolometerRecord
   
-  Int_t ObjectNumber = TProcessID::GetObjectCount(); //save this number for later.
-	
-	//but first, we have to see what unique ID numbers exist within this particular event
-	//and start the unique ID iterations from that point! otherwise, we'll get objects in the
-	//event with the same unique ID number and the TRefs won't work. 
-	UInt_t aNumber = GetLargestUniqueIDNumber();
-	if(aNumber != 0) TProcessID::SetObjectCount(aNumber);
-	
-  KHLABolometerRecord *newBolo = AddBolo();
-  
-  if(newBolo != 0)
-    *newBolo = inBolo;  //copies everything but the TRef data.
-  else {
-    cerr << "KHLAEvent::AddBoloSubRecord Invalid new KHLABolometerRecord Pointer" << endl;
-    TProcessID::SetObjectCount(ObjectNumber);
-    return false;
-  }
-  
-  
-  //Add the samba record for this bolometer - if the samba record is already in this event
-  //then don't add a duplicate.
-  KHLASambaRecord *inSamba = inBolo.GetSambaRecord();
-  
-  if(inSamba != 0) {
+  try {
+    const KHLABolometerRecord &inBolo = dynamic_cast<const KHLABolometerRecord &> (rhs);
     
-    //first, have to check to see if there already exists a samba sub record that is exactly like this one.
-    Bool_t bAddSamba = true;
+    Int_t ObjectNumber = TProcessID::GetObjectCount(); //save this number for later.
     
-    for(Int_t n = 0; n < GetNumSambas(); n++){
-      KHLASambaRecord *samba = static_cast<KHLASambaRecord *>(GetSamba(n));
-      
-      if(*samba == *inSamba){  
-        //we found a match for the samba record already in our event! 
-        //Just set the samba record without creating a new Samba Record
-        newBolo->SetSambaRecord(samba);
-        bAddSamba = false;
-        n = GetNumSambas(); //exit the loop
-      }
-    }
+    //but first, we have to see what unique ID numbers exist within this particular event
+    //and start the unique ID iterations from that point! otherwise, we'll get objects in the
+    //event with the same unique ID number and the TRefs won't work. 
+    UInt_t aNumber = GetLargestUniqueIDNumber();
+    if(aNumber != 0) TProcessID::SetObjectCount(aNumber);
     
-    //if we didn't find an already existing samba record that matches, then we
-    //add a new samba record to this event and copy the samba 
-    //record from inBolo.
-    if(bAddSamba==true){
-      //cout << "Add new Samba" << endl;
-      KHLASambaRecord *samba = AddSamba();
-
-      *samba = *inSamba; //copy the samba record data
-      newBolo->SetSambaRecord(samba); //set the pointer
-    }
+    KHLABolometerRecord *newBolo = AddBolo();
     
-  }
-  else {
-    cerr << "KHLAEvent::AddBoloSubRecord Invalid KHLASambaRecord Pointer" << endl;
-    TProcessID::SetObjectCount(ObjectNumber);
-    return false;
-  }
-  //done adding the samba record.
-    
-  
-  //now add all of the pulse records  
-  for(Int_t j = 0; j < inBolo.GetNumPulseRecords(); j++){
-    KHLABoloPulseRecord *pulse0 = inBolo.GetPulseRecord(j);
-    if(pulse0 != 0){
-      KHLABoloPulseRecord *pulse = AddBoloPulse();
-
-      if(pulse != 0){
-        *pulse = *pulse0;
-        newBolo->AddPulseRecord(pulse);
-        pulse->SetBolometerRecord(newBolo);
-      }
-      else {
-        cerr << "KHLAEvent::AddSubRecords AddBoloPulse returned an invalid KHLABoloPulseRecord Pointer" << endl;
-        TProcessID::SetObjectCount(ObjectNumber);
-        return false;
-      }
-    }
-    
+    if(newBolo != 0)
+      *newBolo = inBolo;  //copies everything but the TRef data.
     else {
-      cerr << "KHLAEvent::AddSubRecords Invalid KHLABoloPulseRecord Pointer" << endl;
+      cerr << "KHLAEvent::AddBoloSubRecord Invalid new KHLABolometerRecord Pointer" << endl;
       TProcessID::SetObjectCount(ObjectNumber);
       return false;
     }
     
     
-  }
-
-  //Restore Object count                                                                                                     
-	//To save space in the table keeping track of all referenced objects 
-	//and computation time,
-	//we assume that our events DO NOT address each other. We reset the                                                        
-	//object count to what it was at the beginning of the event.                                                               
-	TProcessID::SetObjectCount(ObjectNumber);
+    //Add the samba record for this bolometer - if the samba record is already in this event
+    //then don't add a duplicate.
+    KHLASambaRecord *inSamba = inBolo.GetSambaRecord();
+    
+    if(inSamba != 0) {
+      
+      //first, have to check to see if there already exists a samba sub record that is exactly like this one.
+      Bool_t bAddSamba = true;
+      
+      for(Int_t n = 0; n < GetNumSambas(); n++){
+        KHLASambaRecord *samba = static_cast<KHLASambaRecord *>(GetSamba(n));
+        
+        if(*samba == *inSamba){  
+          //we found a match for the samba record already in our event! 
+          //Just set the samba record without creating a new Samba Record
+          newBolo->SetSambaRecord(samba);
+          bAddSamba = false;
+          n = GetNumSambas(); //exit the loop
+        }
+      }
+      
+      //if we didn't find an already existing samba record that matches, then we
+      //add a new samba record to this event and copy the samba 
+      //record from inBolo.
+      if(bAddSamba==true){
+        //cout << "Add new Samba" << endl;
+        KHLASambaRecord *samba = AddSamba();
+        
+        *samba = *inSamba; //copy the samba record data
+        newBolo->SetSambaRecord(samba); //set the pointer
+      }
+      
+    }
+    else {
+      cerr << "KHLAEvent::AddBoloSubRecord Invalid KHLASambaRecord Pointer" << endl;
+      TProcessID::SetObjectCount(ObjectNumber);
+      return false;
+    }
+    //done adding the samba record.
+    
+    
+    //now add all of the pulse records  
+    for(Int_t j = 0; j < inBolo.GetNumPulseRecords(); j++){
+      KHLABoloPulseRecord *pulse0 = inBolo.GetPulseRecord(j);
+      if(pulse0 != 0){
+        KHLABoloPulseRecord *pulse = AddBoloPulse();
+        
+        if(pulse != 0){
+          *pulse = *pulse0;
+          newBolo->AddPulseRecord(pulse);
+          pulse->SetBolometerRecord(newBolo);
+        }
+        else {
+          cerr << "KHLAEvent::AddSubRecords AddBoloPulse returned an invalid KHLABoloPulseRecord Pointer" << endl;
+          TProcessID::SetObjectCount(ObjectNumber);
+          return false;
+        }
+      }
+      
+      else {
+        cerr << "KHLAEvent::AddSubRecords Invalid KHLABoloPulseRecord Pointer" << endl;
+        TProcessID::SetObjectCount(ObjectNumber);
+        return false;
+      }
+      
+      
+    }
+    
+    //Restore Object count                                                                                                     
+    //To save space in the table keeping track of all referenced objects 
+    //and computation time,
+    //we assume that our events DO NOT address each other. We reset the                                                        
+    //object count to what it was at the beginning of the event.                                                               
+    TProcessID::SetObjectCount(ObjectNumber);
+    
+    return true;    
   
-  return true;
+  }
+  catch(bad_cast) {
+    cerr << "rhs not KHLABolometerRecord type." << endl;
+    return false;
+  }
+  
 }
 
 
@@ -510,25 +566,25 @@ KSambaRecord *KHLAEvent::GetSamba(Int_t i) const
   return static_cast<KSambaRecord *>(fSamba->At(i));
 }
 
-KHLABolometerRecord *KHLAEvent::GetBolo(Int_t i) const
+KBolometerRecord *KHLAEvent::GetBolo(Int_t i) const
 {
   // Return the i'th Bolometer Sub Record for this event.
 	
-  return static_cast<KHLABolometerRecord *>(fBolo->At(i));
+  return static_cast<KBolometerRecord *>(fBolo->At(i));
 }
 
-KHLABoloPulseRecord *KHLAEvent::GetBoloPulse(Int_t i) const
+KBoloPulseRecord *KHLAEvent::GetBoloPulse(Int_t i) const
 {
   // Return the i'th Bolometer Pulse Sub Record for this event.
 	
-  return static_cast<KHLABoloPulseRecord *>(fBoloPulse->At(i));
+  return static_cast<KBoloPulseRecord *>(fBoloPulse->At(i));
 }
 
-KHLAMuonModuleRecord *KHLAEvent::GetMuonModule(Int_t i) const
+KMuonModuleRecord *KHLAEvent::GetMuonModule(Int_t i) const
 {
   // Return the i'th Muon Module Sub Record for this event.
 	
-  return static_cast<KHLAMuonModuleRecord *>(fMuonModule->At(i));
+  return static_cast<KMuonModuleRecord *>(fMuonModule->At(i));
 }
 
 Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
@@ -570,8 +626,8 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	if(GetNumBolos() == anEvent.GetNumBolos()){
 		
 		for(Int_t i = 0; i < GetNumBolos(); i++){
-			KHLABolometerRecord *bolo = GetBolo(i);
-			KHLABolometerRecord *boloOther = anEvent.GetBolo(i);
+			KHLABolometerRecord *bolo = static_cast<KHLABolometerRecord *>(GetBolo(i));
+			KHLABolometerRecord *boloOther = static_cast<KHLABolometerRecord *>(anEvent.GetBolo(i));
 			if(bolo != 0 && boloOther != 0){
 				if(!bolo->IsSame(*boloOther, bPrint)){
 					if (bPrint) 
@@ -660,8 +716,8 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 	
 	if(GetNumMuonModules() == anEvent.GetNumMuonModules()){
 		for(Int_t i = 0; i < GetNumMuonModules(); i++){
-			KHLAMuonModuleRecord *s = GetMuonModule(i);
-			KHLAMuonModuleRecord *sOther = anEvent.GetMuonModule(i);
+			KHLAMuonModuleRecord *s = static_cast<KHLAMuonModuleRecord *>(GetMuonModule(i));
+			KHLAMuonModuleRecord *sOther = static_cast<KHLAMuonModuleRecord *>(anEvent.GetMuonModule(i));
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
@@ -740,15 +796,15 @@ void KHLAEvent::Compact(void)
 		samba->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBolos(); i++){
-		KHLABolometerRecord* bolo = GetBolo(i);
+		KHLABolometerRecord* bolo = static_cast<KHLABolometerRecord *>(GetBolo(i));
 		bolo->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBoloPulses(); i++){
-		KHLABoloPulseRecord* bp = GetBoloPulse(i);
+		KHLABoloPulseRecord* bp = static_cast<KHLABoloPulseRecord *>(GetBoloPulse(i));
 		bp->Compact();
 	}
 	for(Int_t i = 0; i < GetNumMuonModules(); i++){
-		KHLAMuonModuleRecord* module = GetMuonModule(i);
+		KHLAMuonModuleRecord* module = static_cast<KHLAMuonModuleRecord *>(GetMuonModule(i));
 		module->Compact();
 	}
 }
@@ -762,7 +818,7 @@ Double_t KHLAEvent::GetSumBoloEnergyRecoil(void) const
 	
 	Double_t energy = 0;
 	for(Int_t i = 0; i < GetNumBolos(); i++)
-		energy += GetBolo(i)->GetEnergyRecoil();
+		energy += static_cast<KHLABolometerRecord *>(GetBolo(i))->GetEnergyRecoil();
 	
 	return energy;
 }
@@ -777,7 +833,7 @@ Double_t KHLAEvent::GetSumBoloEnergyIon(void) const
 	
 	Double_t energy = 0;
 	for(Int_t i = 0; i < GetNumBolos(); i++)
-		energy += GetBolo(i)->GetEnergyIon();
+		energy += static_cast<KHLABolometerRecord *>(GetBolo(i))->GetEnergyIon();
 	
 	return energy;
 }
@@ -798,7 +854,7 @@ Double_t KHLAEvent::GetEventTriggerTime(void) const
   Double_t earliestTime = -1;
   
   for(Int_t i = 0; i < GetNumBolos(); i++){
-    KHLABolometerRecord *bolo = GetBolo(i);
+    KHLABolometerRecord *bolo = static_cast<KHLABolometerRecord *>(GetBolo(i));
     KHLASambaRecord *sam = bolo->GetSambaRecord();
     Double_t thisTime = sam->GetNtpDateSec() + 1.0e-6*sam->GetNtpDateMicroSec();
     if(earliestTime == -1)

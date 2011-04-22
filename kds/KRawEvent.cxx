@@ -145,7 +145,7 @@ UInt_t KRawEvent::GetLargestUniqueIDNumber(void)
   //event. This is used for adding new subrecords to events, which
   //is needed in order to "merge" the data. 
   //
-  // Note to developers: the structure of KData should be rethought
+  // Note to developers: the location of some code in kdata could be rethought
   // and this method, along with the AddSubRecord method, should probably
   // be put into a separate EventBuilder class, which could be used
   // by the KEventFactory. Or, perhaps just add it to the factory. 
@@ -195,7 +195,7 @@ UInt_t KRawEvent::GetLargestUniqueIDNumber(void)
 	return aUniqueIDNumber;
 }
 
-Int_t KRawEvent::AddSubRecords(const KRawEvent &anEvent)
+Int_t KRawEvent::AddSubRecords(const KEvent &rhs)
 {
   //Adds the sub records of 'anEvent' to *this. 
   //returns the number of sub records added to *this.
@@ -203,125 +203,161 @@ Int_t KRawEvent::AddSubRecords(const KRawEvent &anEvent)
   //hmmm... should this method be in the KEventFactory?  Or somewhere other
   //than the KRawEvent object?
 	
-  Int_t numRecord = 0;
-	
-  for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
-    if(AddBoloSubRecord(*anEvent.GetBolo(i))) numRecord++;
-    else return -1;
+  try {
+    const KRawEvent &anEvent = dynamic_cast<const KRawEvent &> (rhs);
+    
+    Int_t numRecord = 0;
+    
+    for(Int_t i = 0; i < anEvent.GetNumBolos(); i++){
+      if(AddBoloSubRecord(*anEvent.GetBolo(i))) numRecord++;
+      else return -1;
+    }
+    
+    for(Int_t i = 0; i < anEvent.GetNumMuonModules(); i++){
+      if(AddMuonModuleSubRecord(*anEvent.GetMuonModule(i))) numRecord++;
+      else return -1; 
+    }
+    
+    return numRecord;
+    
+  }
+  catch(bad_cast) {
+    cerr << "rhs not KRawEvent type." << endl;
+    return -1;
   }
   
-  for(Int_t i = 0; i < anEvent.GetNumMuonModules(); i++){
-    if(AddMuonModuleSubRecord(*anEvent.GetMuonModule(i))) numRecord++;
-    else return -1; 
-  }
-	
-  return numRecord;
-  
+    
 }
 
-Bool_t KRawEvent::AddBoloSubRecord(const KRawBolometerRecord &inbolo)
+Bool_t KRawEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
 {
+  //Add rhs to this KRawEvent. This also automatically adds the Samba record that it points
+  //to and the Pulse Records. If no Samba record is associated with rhs (via GetSambaRecord),
+  //this method returns false. If an invalid pointer to a Pulse Record is found, 
+  //this method returns false. This ensures that the event is built properly. 
+
   
-	Int_t ObjectNumber = TProcessID::GetObjectCount(); //save this number for later.
-	
-	//but first, we have to see what unique ID numbers exist within this particular event
-	//and start the unique ID iterations from that point! otherwise, we'll get objects in the
-	//event with the same unique ID number and the TRefs won't work. 
-	UInt_t aNumber = GetLargestUniqueIDNumber();
-	if(aNumber != 0) TProcessID::SetObjectCount(aNumber);
-	
-  KRawBolometerRecord *newbolo = AddBolo();
-  if (newbolo != 0)
-    *newbolo = inbolo;
-  else {
-    cerr << "KRawEvent::AddBoloSubRecord Invalid new KRawBolometerRecord Pointer" << endl;
-    TProcessID::SetObjectCount(ObjectNumber);
-    return false;
-  }
-  
-  KRawSambaRecord *inSamba = inbolo.GetSambaRecord();
-  
-  if(inSamba != 0){
-    //first, have to check to see if there already exists a samba sub record that is exactly like this one.
-    Bool_t bAddSamba = true;
+  try {
+    const KRawBolometerRecord &inbolo = dynamic_cast<const KRawBolometerRecord &> (rhs);
     
-    for(Int_t n = 0; n < GetNumSambas(); n++){
-      KRawSambaRecord *samba = static_cast<KRawSambaRecord *>(GetSamba(n));
-      
-      if(*samba == *inSamba){
-        //found the match. this samba is already in our event
-        newbolo->SetSambaRecord(samba);
-        bAddSamba = false;
-        break;
-      }
-    }
+    Int_t ObjectNumber = TProcessID::GetObjectCount(); //save this number for later.
     
-    //if we didn't find an already existing samba record, then we make 
-    //a new one and copy the contents
-    if(bAddSamba){
-      KRawSambaRecord *samba = AddSamba();
-      *samba = *inSamba;
-      newbolo->SetSambaRecord(samba);
-    }
-  }
-  else {
-    cerr << "KRawEvent::AddBoloSubRecord Invalid KRawSambaRecord Pointer" << endl;
-    TProcessID::SetObjectCount(ObjectNumber);
-    return false;
-  }
-  
-  //now just add all of the pulse records
-  
-  for(Int_t j = 0; j < inbolo.GetNumPulseRecords(); j++){
-    KRawBoloPulseRecord *inpulse = inbolo.GetPulseRecord(j);
-    if(inpulse != 0){
-      
-      KRawBoloPulseRecord *newpulse = AddBoloPulse();
-      
-      if(newpulse != 0){
-        *newpulse = *inpulse;
-        newbolo->AddPulseRecord(newpulse);
-        newpulse->SetBolometerRecord(newbolo);
-      }
-      else {
-        cerr << "KRawEvent::AddBoloSubRecord. AddBoloPulse returned a null KRawBoloPulseRecord Pointer" << endl;
-        TProcessID::SetObjectCount(ObjectNumber);
-        return false;
-      }
-    }
+    //but first, we have to see what unique ID numbers exist within this particular event
+    //and start the unique ID iterations from that point! otherwise, we'll get objects in the
+    //event with the same unique ID number and the TRefs won't work. 
+    UInt_t aNumber = GetLargestUniqueIDNumber();
+    if(aNumber != 0) TProcessID::SetObjectCount(aNumber);
+    
+    KRawBolometerRecord *newbolo = AddBolo();
+    if (newbolo != 0)
+      *newbolo = inbolo;
     else {
-      cerr << "KRawEvent::GetPulseRecord return a null KRawBoloPulseRecord Pointer" << endl;
+      cerr << "KRawEvent::AddBoloSubRecord Invalid new KRawBolometerRecord Pointer" << endl;
       TProcessID::SetObjectCount(ObjectNumber);
       return false;
     }
     
-  }
+    KRawSambaRecord *inSamba = inbolo.GetSambaRecord();
+    
+    if(inSamba != 0){
+      //first, have to check to see if there already exists a samba sub record that is exactly like this one.
+      Bool_t bAddSamba = true;
+      
+      for(Int_t n = 0; n < GetNumSambas(); n++){
+        KRawSambaRecord *samba = static_cast<KRawSambaRecord *>(GetSamba(n));
+        
+        if(*samba == *inSamba){
+          //found the match. this samba is already in our event
+          newbolo->SetSambaRecord(samba);
+          bAddSamba = false;
+          break;
+        }
+      }
+      
+      //if we didn't find an already existing samba record, then we make 
+      //a new one and copy the contents
+      if(bAddSamba){
+        KRawSambaRecord *samba = AddSamba();
+        *samba = *inSamba;
+        newbolo->SetSambaRecord(samba);
+      }
+    }
+    else {
+      cerr << "KRawEvent::AddBoloSubRecord Invalid KRawSambaRecord Pointer" << endl;
+      TProcessID::SetObjectCount(ObjectNumber);
+      return false;
+    }
+    
+    //now just add all of the pulse records
+    
+    for(Int_t j = 0; j < inbolo.GetNumPulseRecords(); j++){
+      KRawBoloPulseRecord *inpulse = inbolo.GetPulseRecord(j);
+      if(inpulse != 0){
+        
+        KRawBoloPulseRecord *newpulse = AddBoloPulse();
+        
+        if(newpulse != 0){
+          *newpulse = *inpulse;
+          newbolo->AddPulseRecord(newpulse);
+          newpulse->SetBolometerRecord(newbolo);
+        }
+        else {
+          cerr << "KRawEvent::AddBoloSubRecord. AddBoloPulse returned a null KRawBoloPulseRecord Pointer" << endl;
+          TProcessID::SetObjectCount(ObjectNumber);
+          return false;
+        }
+      }
+      else {
+        cerr << "KRawEvent::GetPulseRecord return a null KRawBoloPulseRecord Pointer" << endl;
+        TProcessID::SetObjectCount(ObjectNumber);
+        return false;
+      }
+      
+    }
   	
-  //Restore Object count                                                                                                     
-	//To save space in the table keeping track of all referenced objects 
-	//and computation time,
-	//we assume that our events DO NOT address each other. We reset the                                                        
-	//object count to what it was at the beginning of the event.                                                               
-	TProcessID::SetObjectCount(ObjectNumber);
+    //Restore Object count                                                                                                     
+    //To save space in the table keeping track of all referenced objects 
+    //and computation time,
+    //we assume that our events DO NOT address each other. We reset the                                                        
+    //object count to what it was at the beginning of the event.                                                               
+    TProcessID::SetObjectCount(ObjectNumber);
+    
+    return true;
+    
+  }
+  catch(bad_cast) {
+    cerr << "rhs not KRawBolometerRecord type." << endl;
+    return false;
+  }
   
-	return true;
+  
 }
 
 
-Bool_t KRawEvent::AddMuonModuleSubRecord(const KRawMuonModuleRecord &inMuonModule)
+Bool_t KRawEvent::AddMuonModuleSubRecord(const KMuonModuleRecord &rhs)
 {
   //Add inMuonModule to this KHLAEvent.
   
   //don't need to deal with object count here because we're not using
   //TRefs with the muon module data. 
   
-  KRawMuonModuleRecord *muonmodule = AddMuonModule();
-  
-  if(muonmodule != 0){
-    *muonmodule = inMuonModule;
-    return true;
+  try {
+    const KRawMuonModuleRecord &inMuonModule = dynamic_cast<const KRawMuonModuleRecord &> (rhs);
+
+    KRawMuonModuleRecord *muonmodule = AddMuonModule();
+    
+    if(muonmodule != 0){
+      *muonmodule = inMuonModule;
+      return true;
+    }
+    else return false; //only return false if AddMuonModule() doesn't work
   }
-  else return false; //only return false if AddMuonModule() doesn't work
+  catch(bad_cast) {
+    cerr << "rhs not KRawMuonModuleRecord type." << endl;
+    return false;
+  }
+  
+  
   
 }
 
@@ -409,8 +445,10 @@ template<class T> T* KRawEvent::AddSubRecord(TClonesArray *mArray)
 
 void KRawEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
 {
+  //now with KClonesArrays, we don't have to call DeleteArray when constructing
+  //event records.
+  //this method is deprecated and will eventually be removed. 
 	if(mArray) {
-		//we have to delete because our sub-records contain TString members! :(
 		mArray->Delete( (anOption && *anOption) ? anOption : "C" );
 	}
 }
@@ -468,25 +506,25 @@ KSambaRecord *KRawEvent::GetSamba(Int_t i) const
   return static_cast<KSambaRecord *>(fSamba->At(i));
 }
 
-KRawBolometerRecord *KRawEvent::GetBolo(Int_t i) const
+KBolometerRecord *KRawEvent::GetBolo(Int_t i) const
 {
   // Return the i'th Bolometer Sub Record for this event.
 	
-  return static_cast<KRawBolometerRecord *>(fBolo->At(i));
+  return static_cast<KBolometerRecord *>(fBolo->At(i));
 }
 
-KRawBoloPulseRecord *KRawEvent::GetBoloPulse(Int_t i) const
+KBoloPulseRecord *KRawEvent::GetBoloPulse(Int_t i) const
 {
   // Return the i'th Bolometer Pulse Sub Record for this event.
 	
-  return static_cast<KRawBoloPulseRecord *>(fBoloPulse->At(i));
+  return static_cast<KBoloPulseRecord *>(fBoloPulse->At(i));
 }
 
-KRawMuonModuleRecord *KRawEvent::GetMuonModule(Int_t i) const
+KMuonModuleRecord *KRawEvent::GetMuonModule(Int_t i) const
 {
   // Return the i'th Muon Module Sub Record for this event.
 	
-  return static_cast<KRawMuonModuleRecord *>(fMuonModule->At(i));
+  return static_cast<KMuonModuleRecord *>(fMuonModule->At(i));
 }
 
 Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
@@ -521,8 +559,8 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 	if(GetNumBolos() == anEvent.GetNumBolos()){
 		
 		for(Int_t i = 0; i < GetNumBolos(); i++){
-			KRawBolometerRecord *bolo = GetBolo(i);
-			KRawBolometerRecord *boloOther = anEvent.GetBolo(i);
+			KRawBolometerRecord *bolo = static_cast<KRawBolometerRecord *>(GetBolo(i));
+			KRawBolometerRecord *boloOther = static_cast<KRawBolometerRecord *>(anEvent.GetBolo(i));
 			if(bolo != 0 && boloOther != 0){
 				if(!bolo->IsSame(*boloOther, bPrint)){
 					if (bPrint) 
@@ -611,8 +649,8 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 	
 	if(GetNumMuonModules() == anEvent.GetNumMuonModules()){
 		for(Int_t i = 0; i < GetNumMuonModules(); i++){
-			KRawMuonModuleRecord *s = GetMuonModule(i);
-			KRawMuonModuleRecord *sOther = anEvent.GetMuonModule(i);
+			KRawMuonModuleRecord *s = static_cast<KRawMuonModuleRecord *>(GetMuonModule(i));
+			KRawMuonModuleRecord *sOther = static_cast<KRawMuonModuleRecord *>(anEvent.GetMuonModule(i));
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
@@ -657,15 +695,15 @@ void KRawEvent::Compact(void)
 		samba->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBolos(); i++){
-		KRawBolometerRecord* bolo = GetBolo(i);
+		KRawBolometerRecord* bolo = static_cast<KRawBolometerRecord *>(GetBolo(i));
 		bolo->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBoloPulses(); i++){
-		KRawBoloPulseRecord* bp = GetBoloPulse(i);
+		KRawBoloPulseRecord* bp = static_cast<KRawBoloPulseRecord *>(GetBoloPulse(i));
 		bp->Compact();
 	}
 	for(Int_t i = 0; i < GetNumMuonModules(); i++){
-		KRawMuonModuleRecord* module = GetMuonModule(i);
+		KRawMuonModuleRecord* module = static_cast<KRawMuonModuleRecord *>(GetMuonModule(i));
 		module->Compact();
 	}
 
