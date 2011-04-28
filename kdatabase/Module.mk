@@ -67,6 +67,7 @@ KDATABASE_DH     := $(KDATABASE_DC:.C=.h)
 
 KDATABASE_H      := $(filter-out $(KDATABASE_LH) $(KDATABASE_DH),$(wildcard $(KDATABASE_DIRI)/*.h))
 KDATABASE_ECXX   := $(wildcard $(KDATABASE_DIRS)/K*.cxx)
+#KDATABASE_ECXX   += $(KDATABASE_DIRS)/cJSON.cxx
 KDATABASE_CXX    := $(filter-out $(KDATABASE_ECXX),$(wildcard $(KDATABASE_DIRS)/*.cxx))
 KDATABASE_O      := $(KDATABASE_CXX:.cxx=.o)
 KDATABASE_EO     := $(KDATABASE_ECXX:.cxx=.o)
