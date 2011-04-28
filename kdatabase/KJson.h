@@ -30,16 +30,26 @@ extern "C"
 {
 #endif
 
+enum kjson_types
+{KJson_False=0,
+   KJson_True,
+   KJson_NULL,
+   KJson_Number,
+   KJson_String,
+   KJson_Array, 
+   KJson_Object, 
+   KJson_IsReference= 256
+ };
 /* KJson Types: */
-#define KJson_False 0
-#define KJson_True 1
-#define KJson_NULL 2
-#define KJson_Number 3
-#define KJson_String 4
-#define KJson_Array 5
-#define KJson_Object 6
+//#define KJson_False 0
+//#define KJson_True 1
+//#define KJson_NULL 2
+//#define KJson_Number 3
+//#define KJson_String 4
+//#define KJson_Array 5
+//#define KJson_Object 6
 	
-#define KJson_IsReference 256
+//#define KJson_IsReference 256
 
 /* The KJson structure: */
 typedef struct KJson {
