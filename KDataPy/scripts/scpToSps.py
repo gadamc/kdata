@@ -19,6 +19,7 @@ def send(item, path):
   or we need to add users, contact CC, or me (adam.cox@kit.edu)
   and they will set us up.
   '''
+  theRet = dict()
   option = ''
   if os.path.isdir(item):
     option = '-r' #add the recursive transfer
@@ -32,21 +33,26 @@ def send(item, path):
   else:
     command = '/usr/bin/scp' + ' ' + item + ' ' + pathToSps
   print command
-
+  
+  theRet['command'] = command
+  theRet['item'] = item
+  theRet['fullpath'] = pathToSps
+  
   args = shlex.split(command)
   print args
-  try:
-    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    p.wait()
-    for line in p.stdout:
-      print line
+  
+  #the following line could throw an exception, but lets let it throw that exception
+  #if it happens. The script will break, of course, but we'll know there's a problem
+  p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  p.wait()
+  for line in p.stdout:
+    print line
 
-    for line in p.stderr:
-      print line
+  for line in p.stderr:
+    print line
 
-  except Exception as e:
-    print 'an exception occured', e
-    
+
+  
 
 def sendBoloData(item, path = 'kdata/data/current/raw/'):
   if os.path.isfile(item):

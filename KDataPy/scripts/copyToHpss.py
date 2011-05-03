@@ -150,7 +150,23 @@ def sortListBySize(fileList, min = None, max = None):
 
   return all
 
-
+def hasAlreadyBeenRootified(filename, sambaDirName):
+  if os.path.isfile(filename):
+    file = open(filename, 'rU')
+    for line in file:
+      if line.strip() == os.path.basename(sambaDirName)
+        file.close()
+        return True
+  
+  file.close()
+  return False
+  
+def addToRootifiedList(filename, sambaDirName):
+  if os.path.isfile(filename):
+    file = open(filename, 'a')
+    file.write(os.path.basename(sambaDirName) + '\n')
+    file.close()
+    
 def getDictOfLastFiles(filename):
   '''  read each line of the file and get the last file name, fill a dictionary and return it.
     each element in the dictionary corresponds to a particular mac, with the key being the mac letter (a, b, c, d, ...) '''
@@ -209,7 +225,7 @@ def isDirReady(dir):
     #seuilsfile = dir.rstrip('/') + '/' + sambafile + '_seuils'
     #test if the file _log and _seuils exist in the dir
     if os.path.isfile(logfile): # and os.path.isfile(seuilsfile):
-      flogfiletime = os.path.getmtime(logfile)
+      flogfiletime = os.path.getctime(logfile)
       #fseuilstime = os.stat(seuilsfile).st_mtime
       
       #also test if the last time modified was more than 5 minutes
@@ -292,6 +308,7 @@ def readArguments(arglist):
   p['currentTransferFile'] = p['workingdir'] + '/currentTransfer.txt'
   p['smallrunlist'] = p['workingdir'] + '/smallrunlist.txt'
   p['rootifyOption'] = 'true'
+  p['rootifiedList'] = p['workingdir'] + '/rootifiedList.txt'
   
   for i in range(len(arglist)):
   
@@ -490,11 +507,7 @@ def runCopy(params):
       if uploadToHpss(params, tarfile):
         tarlist.append(tarfile)
                 
-    # maybe I don't want to use a random directory after all
-    # if i used a local, specific directory, i could recover from 
-    # errors more easily...?
-    #
-      
+ 
     print 'Searching for small files to transfer'
     transferlist = getSmallFilesToTransfer(params['smallrunlist'])
     print 'Current list of small files'
@@ -518,23 +531,30 @@ def runCopy(params):
       print 'No Small Files'
       logfile.flush()
       
-    
+      
+    #NEED TO FIX THIS... always rootifies small files even 
+    #though they've already been rootified. 
     if params['rootifyOption'] == 'true':
         tempRootDir = tempfile.mkdtemp()
         print 'rootification directory', tempRootDir
         os.chmod(tempRootDir, stat.S_IRWXO + stat.S_IRWXG + stat.S_IRWXU)
-        for item in newDirs:
+        for item in newDirs:        
+          
+          if hasAlreadyBeenRootified(params['rootifiedList'],item)==False:
+          
             print 'rootifying directory', item
             logfile.flush()
             allfiles = rootify.convertdir(item, tempRootDir)
             logfile.flush()
-
+            
             for file in allfiles:
                 print 'scp', file
-                
                 scp.sendBoloData(file)
+                notifyDbOfTransaction(file)
                 logfile.flush()
-
+            
+            addToRootifiedList(params['rootifiedList'],item)
+                
         shutil.rmtree(tempRootDir)
 
     
