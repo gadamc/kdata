@@ -154,7 +154,7 @@ def hasAlreadyBeenRootified(filename, sambaDirName):
   if os.path.isfile(filename):
     file = open(filename, 'rU')
     for line in file:
-      if line.strip() == os.path.basename(sambaDirName)
+      if line.strip() == os.path.basename(sambaDirName):
         file.close()
         return True
   
@@ -532,8 +532,7 @@ def runCopy(params):
       logfile.flush()
       
       
-    #NEED TO FIX THIS... always rootifies small files even 
-    #though they've already been rootified. 
+
     if params['rootifyOption'] == 'true':
         tempRootDir = tempfile.mkdtemp()
         print 'rootification directory', tempRootDir
@@ -550,11 +549,12 @@ def runCopy(params):
             for file in allfiles:
                 print 'scp', file
                 scp.sendBoloData(file)
-                notifyDbOfTransaction(file)
+                #notifyDbOfTransaction(file)
                 logfile.flush()
             
             addToRootifiedList(params['rootifiedList'],item)
-                
+
+        print 'Deleting temporary Directory', tempRootDir
         shutil.rmtree(tempRootDir)
 
     
