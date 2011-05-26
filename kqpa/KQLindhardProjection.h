@@ -14,6 +14,7 @@
 #include "Rtypes.h"
 #include "TH2D.h"
 #include "TH1D.h"
+#include "TString.h"
 #include "KQProjection.h"
 #include "KLindhard.h"
 #include <iostream>
@@ -41,8 +42,25 @@ class KQLindhardProjection : public KQProjection {
                  const Char_t* aHistogramName = "hist",
                  const Char_t* aMinimizer = "Minuit2",
                  const Char_t* aMethod = "Combined");
-                         
-    virtual void MakeHistogram();
+             
+              
+    virtual Bool_t MakeHistogram();
+    
+    //setters
+    void SetMinimizer(const Char_t* aMinimizer,const Char_t* aMethod) 
+    {
+      fMinimizer = aMinimizer;
+      fMethod = aMethod;
+    }
+    
+    //getters
+    const Char_t* GetMinimizer() 
+    { 
+      return TString::Format("%s::%s",fMinimizer.c_str(),fMethod.c_str()).Data();
+    }
+    
+    
+    ClassDef(KQLindhardProjection,0);
 
 };
 

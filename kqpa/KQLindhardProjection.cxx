@@ -48,7 +48,7 @@ KQLindhardProjection::KQLindhardProjection(const Char_t* aSourceFile,
 
 
 
-void KQLindhardProjection::MakeHistogram()
+Bool_t KQLindhardProjection::MakeHistogram()
 {
   // This class makes the histogram by filling with (s,l)-pairs for all read events,
   // where s is the arc length on the Lindhard function for the specific event
@@ -58,8 +58,16 @@ void KQLindhardProjection::MakeHistogram()
   // refers to a unit length
   // on the Q axis. The arc length is 0 for E_Recoil = fEnergyRecoilMin
   
+  if(!fIsDataRead)
+    this->ReadData(fEnergyRecoilMin,fEnergyRecoilMax);
+  
+    
+  
+  
+  
   Double_t theDataX[fData.size()];
   Double_t theDataY[fData.size()];
+  KLindhard aLindhard;
   
   for(Int_t k = 0; k< fData.size(); ++k) {
     theDataX[k] = KLindhard::GetArcLength(fData[k].GetEnergyRecoil(),
@@ -73,6 +81,8 @@ void KQLindhardProjection::MakeHistogram()
                                                       10000,
                                                       1000,
                                                       0.01);
+    theDataY[k] *= 
+    aLindhard.GetQValue(fData[k].GetEnergyRecoil())<fData[k].GetQvalue() ? 1 : -1;
   }
   
   fHistogram->SetBins(fNumBinsEnergyRecoil,
@@ -86,5 +96,7 @@ void KQLindhardProjection::MakeHistogram()
                                  
   for(Int_t k = 0; k< fData.size(); ++k)
     fHistogram->Fill(theDataX[k],theDataY[k]);
+  
+  return true;
 
 }
