@@ -34,10 +34,7 @@
 
 ClassImp(KQProjection);
 
-Int_t KQProjection::Fill(Double_t x,Double_t y,Double_t w) 
-{
-  return fHistogram->Fill(x,y,w);
-}
+
 
 KQProjection::KQProjection()
 {
@@ -61,6 +58,8 @@ KQProjection::KQProjection()
 
 KQProjection::KQProjection(const KQProjection& anotherKQProjection)
 {
+  fIsDataRead = anotherKQProjection.fIsDataRead;
+  fVerbose = anotherKQProjection.fVerbose;
   fHistogram = new TH2D(*(anotherKQProjection.fHistogram));
   fEnergyRecoilMin = anotherKQProjection.fEnergyRecoilMin;
   fEnergyRecoilMax = anotherKQProjection.fEnergyRecoilMax;
@@ -72,6 +71,7 @@ KQProjection::KQProjection(const KQProjection& anotherKQProjection)
   fSourceFile = anotherKQProjection.fSourceFile;
   fBoloName = anotherKQProjection.fBoloName;
   fData = anotherKQProjection.fData;
+  
 }
 
 
@@ -87,6 +87,7 @@ KQProjection::KQProjection(const Char_t* aSourceFile,
                            Double_t aQMax,
                            const Char_t* aHistogramName)
 {
+  fVerbose = true;
   fSourceFile = aSourceFile;
   fBoloName = aBoloName;
   SetEventCategory(aCategoryName);
@@ -120,10 +121,11 @@ Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,
   fEnergyRecoilMax = anEnergyRecoilMax;
   fHistogram->SetTitle(TString::Format("E_{Recoil}: %lf .. %lf",fEnergyRecoilMin,
                                        fEnergyRecoilMax).Data());
-
   fHistogram->Reset();
   fHistogram->GetXaxis()->SetRangeUser(anEnergyRecoilMin,
                                        anEnergyRecoilMax);
+                                       
+  fData.clear();
   
 
   
@@ -203,12 +205,17 @@ Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,
   }
   
   sort(fData.begin(),fData.end());
+  
+  fIsDataRead = true;
    
   return true;
 } 
 
-void KQProjection::MakeHistogram()
+Bool_t KQProjection::MakeHistogram()
 {
+  if(!fIsDataRead)
+    ReadData(fEnergyRecoilMin,fEnergyRecoilMax);
+  
   for(UInt_t k = 0; k< fData.size(); ++k)
     fHistogram->Fill(fData[k].GetEnergyRecoil(),fData[k].GetQvalue());
 }
@@ -269,4 +276,9 @@ const Char_t* KQProjection::GetEventCategoryName() const
 
 void KQProjection::Fit(TF1* aFunction) {
   fHistogram->ProjectionY()->Fit(aFunction);
+}
+
+Int_t KQProjection::Fill(Double_t x,Double_t y,Double_t w) 
+{
+  return fHistogram->Fill(x,y,w);
 }

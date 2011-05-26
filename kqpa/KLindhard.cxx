@@ -50,6 +50,7 @@ Double_t DistToLindhardFunction(const Double_t* xx)
   return anEDiff*anEDiff/aScaleEnergyRecoil / aScaleEnergyRecoil +aQDiff*aQDiff / aScaleQ / aScaleQ;
 }
 
+
 ClassImp(KLindhard);
 
 KLindhard::KLindhard(void)
@@ -236,7 +237,7 @@ Double_t KLindhard::GetArcLength(Double_t anEnergyRecoil,
   TF1 a("a","0.165");
   TF1 b("b","0.185");
   TF1 c("c",TString::Format("%lf",aScaleFactor).Data());
-  TF1 aFunction("f","TMath::Sqrt(a^2*b^2 / c^(0.5*b) * x^(2*b-2) + 1)");
+  TF1 aFunction("f","TMath::Sqrt(a^2*b^2 * x^(2*b-2) + 1/c^2)");
   return aFunction.Integral(aRefEnergyRecoil,anEnergyRecoil);
 }
 

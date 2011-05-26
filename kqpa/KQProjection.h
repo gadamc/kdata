@@ -31,6 +31,7 @@ using namespace std;
 
 class KQProjection {
   protected:
+    Double_t fIsDataRead;
     Double_t fVerbose;
     vector<KQDataRecord> fData;
     TH2D* fHistogram;
@@ -73,6 +74,7 @@ class KQProjection {
                  const Char_t* aHistogramName = "hist");
     virtual ~KQProjection();
     //getters
+    Bool_t IsDataRead() const { return fIsDataRead; }
     Bool_t GetVerbose() const { return fVerbose; }
     TH2D* GetHistogram() { return (TH2D*)fHistogram->Clone(); }
     TH1D* GetProjection() { return (TH1D*)fHistogram->ProjectionY()->Clone(); }
@@ -129,7 +131,7 @@ class KQProjection {
     
     Bool_t ReadData(Double_t anEnergyRecoilMin,
                     Double_t anEnergyRecoilMax);
-    virtual void MakeHistogram();
+    virtual Bool_t MakeHistogram();
                     
     void Fit(TF1* aFunction);
     friend class KMultiQProjection;
