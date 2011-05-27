@@ -312,14 +312,14 @@ __END__
         print KDATA_SH <<__END__;
 export PATH=\$KDATA_ROOT/bin:\$ROOTSYS/bin:\$PATH
 if (test "\$$library_path") then
-export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS:\$$library_path
+export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib:\$$library_path
 else
-export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS
+export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib
 fi
 if (test "\$$pythonlibpath") then
-export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS:\$$pythonlibpath
+export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS/lib:\$$pythonlibpath
 else
-export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS
+export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS/lib
 fi
 __END__
         print KDATA_SH "export MACOSX_DEPLOYMENT_TARGET=10.6\n" if $ENV{'OSTYPE'} eq 'darwin';
