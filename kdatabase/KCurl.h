@@ -28,29 +28,43 @@ public:
   KCurl(void);
   virtual ~KCurl(void);
     
-  //void* PUT();
-  //void* GET();
   //void* POST()
   //void* DELETE();
-  //void GetDoc(const char* docid);
-  //void View(const char* view);
-  //Int_t Put(const char* url, const char* db, const char* data, const char* user = 0, const char* pword = 0);
-  Int_t Get(const char* url, const char* db, const char* item, const char* user = 0, const char* pword = 0);
+  Int_t Put(const char* url, const char* item, const char* thedoc = 0);
+  Int_t Get(const char* url, const char* item);
   const char* GetReturn(void) const; 
   Int_t GetReturnSize(void) const;
   
-public:
+  Bool_t GetVerbose(void) const { return fVerbose;}
+  void SetVerbose(Bool_t aVal = true) {fVerbose = aVal;}
+  
+private:
 
   vector<string> fReturn;
+  
+  typedef struct{
+    const char* buf;
+    int len;
+    int pos;
+  } readarg_t;
+  
+  Bool_t fVerbose;
 
   static size_t WriteMemoryCallback(void *ptr, size_t size, size_t nmemb, void *data)
-  {
-    KCurl *mem = (KCurl *)data;
-    if(size*nmemb > 0) {
-      string s((char *)ptr, size * nmemb);
-      mem->fReturn.push_back(s.data());
-    }    
-    return size * nmemb;
+  { KCurl *mem = (KCurl *)data;
+    if(size*nmemb > 0) { string s((char *)ptr, size * nmemb); mem->fReturn.push_back(s.data()); }    
+    return size * nmemb; 
+  }
+  
+  static size_t ReadBufferCallback(char *bufptr, size_t size, size_t nitems, void *userp)
+  { 
+    readarg_t *rarg = (readarg_t *)userp;
+    size_t len = rarg->len - rarg->pos;
+    if (len > size * nitems)
+      len = size * nitems;
+    memcpy(bufptr, rarg->buf + rarg->pos, len);
+    rarg->pos += len;
+    return len;
   }
   
   ClassDef(KCurl,1);
