@@ -69,7 +69,6 @@ if ($opt_all) {
     push(@env_list, 
                     'FFTW_DIR',
   #'YAJL_DIR',
-                    'JANSSON_DIR',
                     'CURL_DIR'
   #'LIBCURL',
                     #'HISTO_DIR',
@@ -80,7 +79,6 @@ if ($opt_all) {
 # set FFTW_DIR to '/usr/local/lib' by default
 $ENV{FFTW_DIR} or $ENV{FFTW_DIR} = '/usr/local/lib';
 #$ENV{YAJL_DIR} or $ENV{YAJL_DIR} = '/usr/local/lib';
-$ENV{JANSSON_DIR} or $ENV{JANSSON_DIR} = '/usr/local/lib';
 $ENV{CURL_DIR} or $ENV{CURL_DIR} = '/usr/local/bin';
 #$ENV{LIBCURL} or $ENV{LIBCURL} = '/usr/lib';
 
@@ -153,7 +151,6 @@ if ($opt_all) {
     #GetEnv('CERNDIR','liblepto.a');
     GetEnv('FFTW_DIR','libfftw3.a');
   #GetEnv('YAJL_DIR','libyajl_s.a', 'Required for kdatabase. You can skip this if kdatabase is removed from your Modules.mk file.');
-    GetEnv('JANSSON_DIR','libjansson.a', 'Required for kdatabase. You can skip this if kdatabase is removed from your Modules.mk file.');
     GetEnv('CURL_DIR','curl-config','Required for kdatabase. You can skip this if kdatabase is removed from your Modules.mk file.');
   #GetEnv('LIBCURL',"libcurl","This is optional");
     #GetEnv('HISTO_DIR','libFHistoHB.a','This only needs to be set if KWMAN was extracted with HISTOSCOPE_PRESENT.');
