@@ -18,7 +18,6 @@ int main (int /*argc*/, char** argv)
   KJson *doc = KJson_CreateObject();
     
   //add some key/value pairs. 
-  KJson_AddItemToObject(doc, "_id", KJson_CreateString(argv[5]));
   KJson_AddItemToObject(doc, "author", KJson_CreateString("samba"));
   KJson_AddItemToObject(doc, "type", KJson_CreateString("samba run header"));
   KJson_AddItemToObject(doc, "Temperature", KJson_CreateNumber(0.02002));
@@ -41,6 +40,7 @@ int main (int /*argc*/, char** argv)
   //print out the json document just to check what it looks like
   char* buf = KJson_Print(doc);
   printf("\nHere is the document we're about to send.");
+  cout << "The ID will be appended. _id : " << argv[5] << endl;
   printf("\n%s\n\n",buf);  
   unsigned int len = strlen(buf); //** I save the length here and use it later with curl call!
   printf("It has a length of %u\n\n", len);
@@ -54,7 +54,7 @@ int main (int /*argc*/, char** argv)
   string myitem = "";
   myitem += argv[2];
   myitem += "/";
-  myitem += KJson_PrintUnformatted(KJson_GetObjectItem(doc, "_id"));
+  myitem += argv[5];
   
   printf("will call curl PUT %s\n\n", myurl);
   
