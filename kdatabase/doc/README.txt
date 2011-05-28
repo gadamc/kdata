@@ -38,16 +38,20 @@ root[1] gInterpreter->AddIncludePath("$KDATA_ROOT/include")
 root[2] .L $KDATA_ROOT/include/KJson.h+  //this will generate the KJson.so
 //and it will complain that KJson was already in the TClassTable list... but forget about it.
 
-These commands are found in the kdatabase/setupKJson.h file. You can execute it by 
+These commands are found in the kdatabase/setupKJson.h file. You can execute all
+of them at once by calling
+ 
 root[3] .x $KDATA_ROOT/kdatabase/setupKJson.h
 
-Then you should be able to use all of the KJson functions in your script.
-
-That's it, you should be able to use KJson in the ROOT interpreter. 
+That's it, you should be able to use KJson and all of its functions in the ROOT interpreter. 
 
 If you want to compile a program that uses KJson, 
 you don't need to do anything special. Just include the the header as normal.
-See test.cxx as an example. 
+
+Read below for the documentation on using KJson/cJSON. Also, check out the .h file
+for a list of the available functions
+https://edwdev-ik.fzk.de/kdata_dev_ref/src/KJson.h.html
+
 
 //--------------------------------------------------------
 
