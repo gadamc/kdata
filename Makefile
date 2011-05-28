@@ -10,7 +10,6 @@
 #   ROOTSYS        - root system directory
 #   FFTW_DIR       - fftw libraries directory (if required)
 #   
-#   JANSSON_DIR    - jansson directory (required for kdatabase)
 #   CURL_DIR       - libcurl directory (required for kdatabase)
 #
 #
@@ -101,17 +100,17 @@ XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
 ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
 ROOTLIBS       += -Wl,-rpath,$(ROOTSYS)/lib
 
-FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../fftw -I$(FFTW_DIR)/../rfftw
+FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../include/fftw -I$(FFTW_DIR)/../include/rfftw
 FFTWLIBS       := -L$(FFTW_DIR) -lfftw3 -lm
 FFTWLIBS       += -Wl,-rpath,$(FFTW_DIR)
 
-JANSSONINCS    := -I$(JANSSON_DIR)/../include 
-JANSSONLIBS    := -L$(JANSSON_DIR) -ljansson
-JANSSONLIBS    += -Wl,-rpath,$(JANSSON_DIR)
+#JANSSONINCS    := -I$(JANSSON_DIR)/../include 
+#JANSSONLIBS    := -L$(JANSSON_DIR) -ljansson
+#JANSSONLIBS    += -Wl,-rpath,$(JANSSON_DIR)
 
 ifneq ($(strip $(CURL_DIR)),)
 CURLINCS       := $(shell $(CURL_DIR)/curl-config --cflags)
-CURLLIBS       := -L$(shell $(CURL_DIR)/curl-config --prefix) $(shell $(CURL_DIR)/curl-config --libs)
+CURLLIBS       := -L$(shell $(CURL_DIR)/curl-config --prefix)/lib $(shell $(CURL_DIR)/curl-config --libs)
 CURLLIBS       += -Wl,-rpath,$(shell $(CURL_DIR)/curl-config --prefix)/lib
 endif
 
@@ -274,7 +273,7 @@ showbuild:
 	@echo "ROOTSYS            = $(ROOTSYS)"
 	@echo "FFTW_DIR           = $(FFTW_DIR)"
 #	@echo "YAJL_DIR           = $(YAJL_DIR)"
-	@echo "JANSSON_DIR        = $(JANSSON_DIR)"
+#	@echo "JANSSON_DIR        = $(JANSSON_DIR)"
 	@echo "CURL_DIR           = $(CURL_DIR)"
 	@echo ""
 	@echo "MODULES            = $(MODULES)"
@@ -308,7 +307,7 @@ showbuild:
 	@echo ""
 	@echo "FFTWINCS           = $(FFTWINCS)"
 #	@echo "YAJLINCS           = $(YAJLINCS)"
-	@echo "JANSSONINCS        = $(JANSSONINCS)"
+#	@echo "JANSSONINCS        = $(JANSSONINCS)"
 	@echo "CURLINCS           = $(CURLINCS)"
 	@echo ""
 	@echo "KDATALIBDIRS       = $(KDATALIBDIRS)"
@@ -318,8 +317,8 @@ showbuild:
 	@echo "XLIBS              = $(XLIBS)"
 	@echo "F77LIBS            = $(F77LIBS)"
 	@echo "FFTWLIBS           = $(FFTWLIBS)"
-	@echo "YAJLLIBS           = $(YAJLLIBS)"
-	@echo "JANSSONLIBS        = $(JANSSONLIBS)"
+#	@echo "YAJLLIBS           = $(YAJLLIBS)"
+#	@echo "JANSSONLIBS        = $(JANSSONLIBS)"
 	@echo "CURLLIBS           = $(CURLLIBS)"
 	@echo ""
 	@echo "OSTHREADLIB        = $(OSTHREADLIB)"

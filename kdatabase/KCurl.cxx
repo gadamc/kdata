@@ -135,7 +135,7 @@ Int_t KCurl::Put(const char* url, const char* item, const char* thedoc)
   //If thedoc == 0, then the ' -d "thedoc" ' is excluded.
   //
   //For CouchDB access, typical values are
-  // url = edwdbik.fzk.de:5984
+  // url = edwdbik.fzk.de:5984 (don't include the http://)
   // item = (a docid, a view, or even _all_docs). 
   //     If you are putting a file on the database, your item should look something like
   //     "databasename/docid", where "edwdb" is the standard database name
