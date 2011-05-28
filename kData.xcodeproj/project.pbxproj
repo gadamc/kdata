@@ -54,8 +54,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXFileReference section */
-		6602B20312FC5D2700293310 /* KCouchDB.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KCouchDB.cxx; path = ../kData/kdatabase/KCouchDB.cxx; sourceTree = SOURCE_ROOT; };
-		6602B20412FC5D2700293310 /* KCouchDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KCouchDB.h; path = ../kData/kdatabase/KCouchDB.h; sourceTree = SOURCE_ROOT; };
 		6602B20612FC5D5A00293310 /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Module_libs.mk; path = ../kData/kdatabase/Module_libs.mk; sourceTree = SOURCE_ROOT; };
 		6602B20712FC5D5A00293310 /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Module.mk; path = ../kData/kdatabase/Module.mk; sourceTree = SOURCE_ROOT; };
 		6610DDEB121ECC290047036E /* depend.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = depend.sh; sourceTree = "<group>"; };
@@ -121,7 +119,6 @@
 		6610DE3E121EDADB0047036E /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		6610DE3F121EDADB0047036E /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
 		6610DE9D121F2D100047036E /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		6610DE9F121F2D210047036E /* WishList.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = WishList.rtf; sourceTree = "<group>"; };
 		6610DEA0121F2D2A0047036E /* Modules.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Modules.mk; sourceTree = "<group>"; };
 		6610DEA2121F2D390047036E /* checkenv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = checkenv; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.perl; };
 		6610DEA3121F2D390047036E /* configure */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.perl; path = configure; sourceTree = "<group>"; };
@@ -321,22 +318,20 @@
 		66420CA7132A5DDD002160CE /* KQHistogramRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQHistogramRecord.h; sourceTree = "<group>"; };
 		66420CE9132D47FD002160CE /* skimAllEventsWithFiducial.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = skimAllEventsWithFiducial.cxx; path = ../kData/kds/skimAllEventsWithFiducial.cxx; sourceTree = SOURCE_ROOT; };
 		66420CEA132D525D002160CE /* skimAllEventsWithFiducialGuardBolo.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = skimAllEventsWithFiducialGuardBolo.cxx; path = ../kData/kds/skimAllEventsWithFiducialGuardBolo.cxx; sourceTree = SOURCE_ROOT; };
+		6650302C135D9D350000A283 /* rootifySambaData.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = rootifySambaData.py; sourceTree = "<group>"; };
+		6650303D135DCA800000A283 /* scpToSps.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = scpToSps.py; sourceTree = "<group>"; };
+		66503172135EFBEA0000A283 /* KDataDisplay.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KDataDisplay.cxx; sourceTree = "<group>"; };
+		66503173135EFBEA0000A283 /* KDataDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDataDisplay.h; sourceTree = "<group>"; };
+		66503174135EFBEA0000A283 /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
+		66503175135EFBEA0000A283 /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		6650BB581271DC3F002B9B5B /* KSambaHeader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaHeader.cxx; sourceTree = "<group>"; };
 		6650BB591271DC3F002B9B5B /* KSambaHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaHeader.h; sourceTree = "<group>"; };
-		6650BB5A1271DC3F002B9B5B /* KSambaPulse.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaPulse.cxx; sourceTree = "<group>"; };
-		6650BB5B1271DC3F002B9B5B /* KSambaPulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaPulse.h; sourceTree = "<group>"; };
-		6650BB5C1271DC3F002B9B5B /* KSambaReader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaReader.cxx; sourceTree = "<group>"; };
-		6650BB5D1271DC3F002B9B5B /* KSambaReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaReader.h; sourceTree = "<group>"; };
 		6650BB5E1271DC3F002B9B5B /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
 		6650BB5F1271DC3F002B9B5B /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		6650BB601271DC59002B9B5B /* KSambaDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaDetector.h; sourceTree = "<group>"; };
 		6650BB611271DC59002B9B5B /* KSambaDetector.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaDetector.cxx; sourceTree = "<group>"; };
-		6650BB661271DCDF002B9B5B /* KSambaDataObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaDataObject.h; sourceTree = "<group>"; };
-		6650BB671271DCDF002B9B5B /* KSambaDataObject.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaDataObject.cxx; sourceTree = "<group>"; };
 		66696F77123F5ACD005B9DB7 /* KEventDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KEventDisplay.h; sourceTree = "<group>"; };
 		66696F78123F5ACD005B9DB7 /* KEventDisplay.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KEventDisplay.cxx; sourceTree = "<group>"; };
-		667757031345CD47009C0D1C /* json_verify.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json_verify.cxx; path = kdatabase/json_verify.cxx; sourceTree = SOURCE_ROOT; };
-		66775707134651E3009C0D1C /* testwrite.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testwrite.cxx; path = kdatabase/testwrite.cxx; sourceTree = SOURCE_ROOT; };
 		667757201347CE8F009C0D1C /* testwrite2.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testwrite2.cxx; path = kdatabase/testwrite2.cxx; sourceTree = SOURCE_ROOT; };
 		66775739134900C4009C0D1C /* testread.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testread.cxx; path = kdatabase/testread.cxx; sourceTree = SOURCE_ROOT; };
 		6680ED751355BEA40008ED68 /* uploadBBoloPositionMap.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = uploadBBoloPositionMap.py; sourceTree = "<group>"; };
@@ -354,27 +349,21 @@
 		6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEventTest.cxx; path = ../kData/kds/fillEventTest.cxx; sourceTree = SOURCE_ROOT; };
 		6687D1C3122F863B005AD0F9 /* KMergeKds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMergeKds.h; sourceTree = "<group>"; };
 		6687D1C4122F863B005AD0F9 /* KMergeKds.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeKds.cxx; sourceTree = "<group>"; };
-		66951FBE1311473B00AF13B1 /* test.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test.cxx; path = ../kData/kdatabase/test.cxx; sourceTree = SOURCE_ROOT; };
-		669520051314EEE200AF13B1 /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module.mk; sourceTree = "<group>"; };
-		669520061314EEE200AF13B1 /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
-		6695200C1314F75800AF13B1 /* KRawDataDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRawDataDisplay.h; sourceTree = "<group>"; };
-		6695200D1314F75800AF13B1 /* KRawDataDisplay.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KRawDataDisplay.cxx; sourceTree = "<group>"; };
-		669520121315065B00AF13B1 /* KDataDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KDataDisplay.h; sourceTree = "<group>"; };
-		669520131315065B00AF13B1 /* KDataDisplay.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KDataDisplay.cxx; sourceTree = "<group>"; };
 		669523001315BB1900AF13B1 /* KClonesArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KClonesArray.h; sourceTree = "<group>"; };
 		669523011315BB1900AF13B1 /* KClonesArray.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KClonesArray.cxx; sourceTree = "<group>"; };
-		6695231B1316916B00AF13B1 /* KSambaEvent.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KSambaEvent.cxx; path = ../kData/ksamba/KSambaEvent.cxx; sourceTree = SOURCE_ROOT; };
-		6695231C1316916B00AF13B1 /* KSambaEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSambaEvent.h; path = ../kData/ksamba/KSambaEvent.h; sourceTree = SOURCE_ROOT; };
 		66AF7F89129456CF0075B1C5 /* KSambaDetectorChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaDetectorChannel.h; sourceTree = "<group>"; };
 		66AF7F8A129456CF0075B1C5 /* KSambaDetectorChannel.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaDetectorChannel.cxx; sourceTree = "<group>"; };
 		66AF7F91129458AF0075B1C5 /* KSamba2KData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSamba2KData.h; sourceTree = "<group>"; };
 		66AF7F92129458AF0075B1C5 /* KSamba2KData.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSamba2KData.cxx; sourceTree = "<group>"; };
-		66AF8021129461B70075B1C5 /* KSambaRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaRun.h; sourceTree = "<group>"; };
-		66AF8022129461B70075B1C5 /* KSambaRun.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaRun.cxx; sourceTree = "<group>"; };
-		66AF808D129474F50075B1C5 /* KSambaHeaderReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaHeaderReader.h; sourceTree = "<group>"; };
-		66AF808E129474F50075B1C5 /* KSambaHeaderReader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaHeaderReader.cxx; sourceTree = "<group>"; };
-		66AF8096129476E80075B1C5 /* KSambaEventReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaEventReader.h; sourceTree = "<group>"; };
-		66AF8097129476E80075B1C5 /* KSambaEventReader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaEventReader.cxx; sourceTree = "<group>"; };
+		66B12F4A1368AD950003A6F2 /* KCurl.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KCurl.cxx; path = ../kData/kdatabase/KCurl.cxx; sourceTree = SOURCE_ROOT; };
+		66B12F4B1368AD9A0003A6F2 /* KCurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KCurl.h; path = ../kData/kdatabase/KCurl.h; sourceTree = SOURCE_ROOT; };
+		66B12F4D1368B1720003A6F2 /* setupKJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = setupKJson.h; path = kdatabase/setupKJson.h; sourceTree = SOURCE_ROOT; };
+		66B12F79136965740003A6F2 /* KJson.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KJson.cxx; path = ../kData/kdatabase/KJson.cxx; sourceTree = SOURCE_ROOT; };
+		66B12F7A136965740003A6F2 /* KJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJson.h; path = ../kData/kdatabase/KJson.h; sourceTree = SOURCE_ROOT; };
+		66B12F7B136965740003A6F2 /* test.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test.cxx; path = ../kData/kdatabase/test.cxx; sourceTree = SOURCE_ROOT; };
+		66B12F8B1369693D0003A6F2 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		66B12FE51369A96F0003A6F2 /* KCouchDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KCouchDB.h; path = kdatabase/KCouchDB.h; sourceTree = SOURCE_ROOT; };
+		66B12FE61369A96F0003A6F2 /* KCouchDB.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KCouchDB.cxx; path = kdatabase/KCouchDB.cxx; sourceTree = SOURCE_ROOT; };
 		66B2327512F2FB480047DEDC /* KBoloConfig.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KBoloConfig.cxx; sourceTree = "<group>"; };
 		66B2327612F2FB480047DEDC /* KBoloConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBoloConfig.h; sourceTree = "<group>"; };
 		66B2327712F2FB640047DEDC /* KRun12Temp.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KRun12Temp.cxx; sourceTree = "<group>"; };
@@ -391,8 +380,20 @@
 		66C0BFA3131FB57B005C3E28 /* manageSambaToCouch.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = manageSambaToCouch.py; sourceTree = "<group>"; };
 		66CDBA051265F3F50004CA5C /* countRatesMuonVetoSystemRun12.root */ = {isa = PBXFileReference; lastKnownFileType = file; path = countRatesMuonVetoSystemRun12.root; sourceTree = "<group>"; };
 		66CDBA061265F4330004CA5C /* findMuonAndBoloRates.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = findMuonAndBoloRates.c; sourceTree = "<group>"; };
+		66D49939136033EC00281C50 /* KQLindhardProjection.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQLindhardProjection.cxx; sourceTree = "<group>"; };
+		66D4993A136033EC00281C50 /* KQLindhardProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQLindhardProjection.h; sourceTree = "<group>"; };
+		66D49BC21361C92000281C50 /* edelweiss-logo.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "edelweiss-logo.jpeg"; path = "../kData/scripts/edelweiss-logo.jpeg"; sourceTree = SOURCE_ROOT; };
+		66D49BC31361C92000281C50 /* kdata_header.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = kdata_header.html; path = ../kData/scripts/kdata_header.html; sourceTree = SOURCE_ROOT; };
+		66D49BD713620EE500281C50 /* kdata-logo.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "kdata-logo.tiff"; path = "../kData/scripts/kdata-logo.tiff"; sourceTree = SOURCE_ROOT; };
+		66D49BDE1362179F00281C50 /* kdata-logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "kdata-logo.jpg"; path = "../kData/scripts/kdata-logo.jpg"; sourceTree = SOURCE_ROOT; };
 		66DA8067130694A200B82362 /* KANAReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KANAReader.h; sourceTree = "<group>"; };
 		66DA8068130694A200B82362 /* KANAReader.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KANAReader.cxx; sourceTree = "<group>"; };
+		66DBC52D1390574D00F56215 /* KQContour.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQContour.cxx; sourceTree = "<group>"; };
+		66DBC52E1390574D00F56215 /* KQContour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQContour.h; sourceTree = "<group>"; };
+		66DBC52F1390574D00F56215 /* KQContourPoint.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQContourPoint.cxx; sourceTree = "<group>"; };
+		66DBC5301390574D00F56215 /* KQContourPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQContourPoint.h; sourceTree = "<group>"; };
+		66DBC5311390574D00F56215 /* KQContourPointList.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQContourPointList.cxx; sourceTree = "<group>"; };
+		66DBC5321390574D00F56215 /* KQContourPointList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQContourPointList.h; sourceTree = "<group>"; };
 		66DCA1831248D8B000FDE323 /* KBaselineRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KBaselineRemoval.cxx; sourceTree = "<group>"; };
 		66DCA1841248D8B000FDE323 /* KBaselineRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBaselineRemoval.h; sourceTree = "<group>"; };
 		66DCA1851248D8B000FDE323 /* KHalfComplexPower.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexPower.cxx; sourceTree = "<group>"; };
@@ -426,15 +427,19 @@
 		6602B16D12FC5B1700293310 /* kdatabase */ = {
 			isa = PBXGroup;
 			children = (
+				66B12F8A1369692C0003A6F2 /* doc */,
+				66B12F79136965740003A6F2 /* KJson.cxx */,
+				66B12F7A136965740003A6F2 /* KJson.h */,
+				66B12F7B136965740003A6F2 /* test.cxx */,
 				6602B20612FC5D5A00293310 /* Module_libs.mk */,
 				6602B20712FC5D5A00293310 /* Module.mk */,
-				6602B20312FC5D2700293310 /* KCouchDB.cxx */,
-				6602B20412FC5D2700293310 /* KCouchDB.h */,
-				66951FBE1311473B00AF13B1 /* test.cxx */,
-				667757031345CD47009C0D1C /* json_verify.cxx */,
-				66775707134651E3009C0D1C /* testwrite.cxx */,
+				66B12F4B1368AD9A0003A6F2 /* KCurl.h */,
+				66B12F4A1368AD950003A6F2 /* KCurl.cxx */,
 				667757201347CE8F009C0D1C /* testwrite2.cxx */,
 				66775739134900C4009C0D1C /* testread.cxx */,
+				66B12F4D1368B1720003A6F2 /* setupKJson.h */,
+				66B12FE51369A96F0003A6F2 /* KCouchDB.h */,
+				66B12FE61369A96F0003A6F2 /* KCouchDB.cxx */,
 			);
 			name = kdatabase;
 			path = kpta;
@@ -444,20 +449,20 @@
 			isa = PBXGroup;
 			children = (
 				6610DE9D121F2D100047036E /* Makefile */,
-				6610DE9F121F2D210047036E /* WishList.rtf */,
 				6610DEA0121F2D2A0047036E /* Modules.mk */,
 				6610DF47122096630047036E /* install_kdata */,
 				66CDBA041265F3F50004CA5C /* kdsRun12Files */,
 				662EC1A912343BD3007E432B /* kdsScripts */,
+				66D49BBB1361C00F00281C50 /* doc */,
 				6610DEA1121F2D390047036E /* config */,
 				661F3088131D239000D8727D /* KDataPy */,
 				6610DDEA121ECC290047036E /* scripts */,
 				663FF1CA12E8869000EA6EF5 /* kqpa */,
 				6610DE3A121EDA680047036E /* ktemplate */,
-				669520001314EEE100AF13B1 /* kdisplay */,
 				6650BB551271DC3F002B9B5B /* ksamba */,
 				6602B16D12FC5B1700293310 /* kdatabase */,
 				66DCA1821248D8B000FDE323 /* kpta */,
+				66503170135EFBEA0000A283 /* kdsplay */,
 				6610DDED121ECC440047036E /* kds */,
 				6610DF4D122149780047036E /* era */,
 				6610E7CA122703DA0047036E /* kera */,
@@ -468,6 +473,10 @@
 		6610DDEA121ECC290047036E /* scripts */ = {
 			isa = PBXGroup;
 			children = (
+				66D49BC21361C92000281C50 /* edelweiss-logo.jpeg */,
+				66D49BDE1362179F00281C50 /* kdata-logo.jpg */,
+				66D49BD713620EE500281C50 /* kdata-logo.tiff */,
+				66D49BC31361C92000281C50 /* kdata_header.html */,
 				6610DDEB121ECC290047036E /* depend.sh */,
 				6610DDEC121ECC290047036E /* MakeHTML.C */,
 			);
@@ -830,6 +839,8 @@
 				661F3097131D260C00D8727D /* copyToHpss.py */,
 				661F3098131D260C00D8727D /* deleteFromHpss.py */,
 				661F309D131D260C00D8727D /* uploadMuonVetoDaqMapCsvToCouch.py */,
+				6650302C135D9D350000A283 /* rootifySambaData.py */,
+				6650303D135DCA800000A283 /* scpToSps.py */,
 			);
 			path = scripts;
 			sourceTree = "<group>";
@@ -857,6 +868,8 @@
 		663FF1CA12E8869000EA6EF5 /* kqpa */ = {
 			isa = PBXGroup;
 			children = (
+				66D49939136033EC00281C50 /* KQLindhardProjection.cxx */,
+				66D4993A136033EC00281C50 /* KQLindhardProjection.h */,
 				66420CA2132A5DDD002160CE /* KMultiQProjection.cxx */,
 				66420CA3132A5DDD002160CE /* KMultiQProjection.h */,
 				66420CA4132A5DDD002160CE /* KQHistogramManager.cxx */,
@@ -889,38 +902,42 @@
 				66B232AE12F339B70047DEDC /* KNuclearRecoilBand.cxx */,
 				66B2351D12F56B750047DEDC /* KNeganovLuke.h */,
 				66B2351E12F56B750047DEDC /* KNeganovLuke.cxx */,
+				66DBC52D1390574D00F56215 /* KQContour.cxx */,
+				66DBC52E1390574D00F56215 /* KQContour.h */,
+				66DBC52F1390574D00F56215 /* KQContourPoint.cxx */,
+				66DBC5301390574D00F56215 /* KQContourPoint.h */,
+				66DBC5311390574D00F56215 /* KQContourPointList.cxx */,
+				66DBC5321390574D00F56215 /* KQContourPointList.h */,
 			);
 			name = kqpa;
 			path = ../kData/kqpa;
 			sourceTree = SOURCE_ROOT;
 		};
+		66503170135EFBEA0000A283 /* kdsplay */ = {
+			isa = PBXGroup;
+			children = (
+				66503172135EFBEA0000A283 /* KDataDisplay.cxx */,
+				66503173135EFBEA0000A283 /* KDataDisplay.h */,
+				66503174135EFBEA0000A283 /* Module.mk */,
+				66503175135EFBEA0000A283 /* Module_libs.mk */,
+			);
+			name = kdsplay;
+			path = ../kData/kdsplay;
+			sourceTree = SOURCE_ROOT;
+		};
 		6650BB551271DC3F002B9B5B /* ksamba */ = {
 			isa = PBXGroup;
 			children = (
-				6695231B1316916B00AF13B1 /* KSambaEvent.cxx */,
-				6695231C1316916B00AF13B1 /* KSambaEvent.h */,
-				66AF8022129461B70075B1C5 /* KSambaRun.cxx */,
-				66AF8021129461B70075B1C5 /* KSambaRun.h */,
 				6650BB581271DC3F002B9B5B /* KSambaHeader.cxx */,
 				6650BB591271DC3F002B9B5B /* KSambaHeader.h */,
-				6650BB5A1271DC3F002B9B5B /* KSambaPulse.cxx */,
-				6650BB5B1271DC3F002B9B5B /* KSambaPulse.h */,
-				6650BB5C1271DC3F002B9B5B /* KSambaReader.cxx */,
-				6650BB5D1271DC3F002B9B5B /* KSambaReader.h */,
 				6650BB5E1271DC3F002B9B5B /* Module.mk */,
 				6650BB5F1271DC3F002B9B5B /* Module_libs.mk */,
 				66AF7F89129456CF0075B1C5 /* KSambaDetectorChannel.h */,
 				66AF7F8A129456CF0075B1C5 /* KSambaDetectorChannel.cxx */,
 				6650BB601271DC59002B9B5B /* KSambaDetector.h */,
 				6650BB611271DC59002B9B5B /* KSambaDetector.cxx */,
-				6650BB661271DCDF002B9B5B /* KSambaDataObject.h */,
-				6650BB671271DCDF002B9B5B /* KSambaDataObject.cxx */,
 				66AF7F91129458AF0075B1C5 /* KSamba2KData.h */,
 				66AF7F92129458AF0075B1C5 /* KSamba2KData.cxx */,
-				66AF808D129474F50075B1C5 /* KSambaHeaderReader.h */,
-				66AF808E129474F50075B1C5 /* KSambaHeaderReader.cxx */,
-				66AF8096129476E80075B1C5 /* KSambaEventReader.h */,
-				66AF8097129476E80075B1C5 /* KSambaEventReader.cxx */,
 			);
 			path = ksamba;
 			sourceTree = "<group>";
@@ -955,18 +972,13 @@
 			name = Event;
 			sourceTree = "<group>";
 		};
-		669520001314EEE100AF13B1 /* kdisplay */ = {
+		66B12F8A1369692C0003A6F2 /* doc */ = {
 			isa = PBXGroup;
 			children = (
-				669520051314EEE200AF13B1 /* Module.mk */,
-				669520061314EEE200AF13B1 /* Module_libs.mk */,
-				6695200C1314F75800AF13B1 /* KRawDataDisplay.h */,
-				6695200D1314F75800AF13B1 /* KRawDataDisplay.cxx */,
-				669520121315065B00AF13B1 /* KDataDisplay.h */,
-				669520131315065B00AF13B1 /* KDataDisplay.cxx */,
+				66B12F8B1369693D0003A6F2 /* README.txt */,
 			);
-			name = kdisplay;
-			path = ../kData/kdisplay;
+			name = doc;
+			path = ../kData/kdatabase/doc;
 			sourceTree = SOURCE_ROOT;
 		};
 		66C0BFA4131FB580005C3E28 /* NtpToRoot */ = {
@@ -1003,6 +1015,14 @@
 			);
 			name = kdsRun12Files;
 			path = ../kData/kdsRun12Files;
+			sourceTree = SOURCE_ROOT;
+		};
+		66D49BBB1361C00F00281C50 /* doc */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = doc;
+			path = ../kData/doc;
 			sourceTree = SOURCE_ROOT;
 		};
 		66DCA1821248D8B000FDE323 /* kpta */ = {
