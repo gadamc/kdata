@@ -27,16 +27,19 @@ def send(item, path):
     print 'wie bitte? item is neither a directory or a file?'
     return
   
-  pathToSps = 'gadamc@edwdata.in2p3.fr:' + os.path.join('/sps/edelweis/', path)
+  spspath = os.path.join('/sps/edelweis/', path)
+  
+  scppath = 'gadamc@edwdata.in2p3.fr:' + spspath
   if option != '':
-    command = '/usr/bin/scp' + ' ' + option + ' ' + item + ' ' + pathToSps
+    command = '/usr/bin/scp' + ' ' + option + ' ' + item + ' ' + scppath
   else:
-    command = '/usr/bin/scp' + ' ' + item + ' ' + pathToSps
+    command = '/usr/bin/scp' + ' ' + item + ' ' + scppath
   print command
   
   theRet['command'] = command
   theRet['item'] = item
-  theRet['fullpath'] = pathToSps
+  theRet['spspath'] = spspath
+  theRet['uname'] = os.uname()
   
   args = shlex.split(command)
   print args
@@ -51,14 +54,14 @@ def send(item, path):
   for line in p.stderr:
     print line
 
-
+  return theRet
   
 
 def sendBoloData(item, path = 'kdata/data/current/raw/'):
   if os.path.isfile(item):
-    send(item,path) 
+    return send(item,path) 
   else:
     print 'scpToSps.sendBoloData can only send files, not directories.'
     
 def sendMuonData(item, path = 'kdata/data/muon/'):
-  send(item, path)
+  return send(item, path)

@@ -25,16 +25,10 @@ public:
 	virtual void AddProcessor(KPtaProcessor *p);
 	virtual void AddProcessorAt(KPtaProcessor *p, unsigned int index);
 	virtual void DeleteProcessors(void);
-
   virtual void SetIsOwner(bool anOpt = true);
   
-  //getters
-	//virtual unsigned int GetNumProcessorsInChain(void);
-	//PrintProcessorList
-	
-	//Access to processors after they've been added to the list!?!
-	
-  //setters
+  //KPtaProcessor* GetProcessor(Int_t i) { return fProcessorList.At(i);}
+  
 private:
 	vector<KPtaProcessor*> fProcessorList;
   bool fIsOwner; 

@@ -5,7 +5,7 @@ import findSambaPartitionFiles as find
 import datetime
 import re
 
-def main(uri = 'http://edelweiss:darkmatr@edelweiss.cloudant.com',
+def main(uri = 'http://127.0.0.1:5984',
         dataDir = '/Users/adam/Scripts/uploadSambaToCouch/rawdata', 
         lastfile = '/Users/adam/Scripts/uploadSambaToCouch/lastSambaPartitionUploaded.txt',
         logFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.log', 
