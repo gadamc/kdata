@@ -7,6 +7,6 @@ ifneq ($(FFTW_DIR),)
 MODULES      += kpta kera kqpa
 endif
 
-MODULES += $(if $(and $(CURL_DIR),kdatabase,)
+MODULES += $(if $(CURL_DIR),kdatabase,)
 
 #MODULES += $(if $(and $(CURL_DIR),$(FFTW_DIR)),kdsplay,)
