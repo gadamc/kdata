@@ -76,7 +76,7 @@ def readrunheader(file):
       
     if line == '# ===== Entete de run =====':
       print 'Found start of run. Creating Run Document'
-      runDict['_id'] = 'run_' + os.path.basename(file.name).split('_')[0] + '_kdatascript'
+      runDict['_id'] = 'run_' + os.path.basename(file.name) + '_kdatascript'
       break
   
   #found the start of the run header, now read the lines
