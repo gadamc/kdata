@@ -3,19 +3,6 @@
 from couchdbkit import Server, Database
 import sys, os
 
-#_____________
-# upload
-def upload(db, docs):
-    #print 'upload:\t%i' % n
-    try:
-      db.bulk_save(docs)
-      del docs
-      return list()
-    except BulkSaveError as e:
-      print e.errors
-      print 'couchdbkit.BulkSaveError.'
-      print 'Will not delete the docs list and return to continue adding to docs'
-      return docs
   
 def getyeardict():
   return {'i':2008, 'j':2009, 'k':2010, 'l':2011, 'm':2012, 'n':2013, 'o':2014, 'p':2015, 'q':2016}
@@ -34,59 +21,56 @@ def formatSrbYearMonthDirStructure(sambaDirName):
   basename = os.path.basename(sambaDirName)
   return str(getyeardir(basename)) + '/' + getmonthdir(basename) + '{0:02d}'.format((getyeardir(basename) - 2000)) + '/events'
 
-def getDocsFromView(vr, tiername):
-
-  docs = list()
-     
+def addDocsFromView(vr, tiername):
+  global db
+       
   for row in vr:
-    doc = row['doc']
+    print 'adding tier to', row['id']
+    doc = db.get(row['id'])
     tierdict = dict()
     if tiername == 'tier0':
       tierdict['processname'] = 'rootifyAndCopyToSps'
       tierdict['file'] = '/sps/edelweiss/kdata/data/current/raw/' + os.path.basename(doc['file']) + '.root'
       tierdict['hostname'] = 'ccali.in2p3.fr'
-    
+      tierdict['command'] = '/usr/bin/scp '  + doc['file'] + ' gadamc@edwdata.in2p3.fr:/sps/edelweiss/kdata/data/current/raw/' + os.path.basename(tierdict['file'])
+      tierdict['scpErrs'] = list()
+      tierdict['uname'] = os.uname()
     else:
       print 'only supporting tier0'
       sys.exit(-1)
     
     doc['status'] = 'good'
     doc[tiername] = tierdict
-    docs.append(doc)
-  
-  return docs
+    db.save_doc(doc)
 
+  
 def addTierToRun(uri, dbname, tiername, runname):
-  s = Server(uri)
-  db = s[dbname]
-  
-  vr = db.view('proc/daqdoc', include_docs = True, reduce = False, key = runname)
+  global db
+  vr = db.view('proc/daqdoc', reduce = False, key = runname)
 
-  docs = getDocsFromView(vr, tiername)
+  addDocsFromView(vr, tiername)
   
-  if len(docs) > 0:
-    upload(db, docs)  
   
 def addTierToRangeOfRuns(uri, dbname, tiername, startrun, endrun):
-  s = Server(uri)
-  db = s[dbname]
+  global db
+  vr = db.view('proc/daqdoc',  reduce = False, startkey = startrun, endkey = endrun)
   
-  vr = db.view('proc/daqdoc', include_docs = True, reduce = False, start_key = startrun, end_key = endrun)
+  addDocsFromView(vr, tiername)
   
-  docs = getDocsFromView(vr, tiername)
-      
-  if len(docs) > 0:
-    upload(db, docs)
-
 def main(*args):
-
+  
+  
   if len(args) < 4:
     return Done
     
   uri = args[0]
   dbname = args[1]
   tiername = args[2]
-  
+
+  global db
+  s = Server(uri)
+  db = s[dbname]
+
   if len(args) == 4:
     runname = args[3]
     addTierToRun(uri, dbname, tiername, runname)
