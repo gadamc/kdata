@@ -34,10 +34,11 @@ def send(item, path):
   command = '/usr/bin/scp' + ' ' + option + ' ' + item + ' ' + scppath
   print command
   
-  theRet['command'] = command
+  theRet['scpcommand'] = command
   theRet['item'] = os.path.basename(item)
-  theRet['spspath'] = spspath
-  theRet['uname'] = os.uname()
+  theRet['file'] = spspath
+  theRet['hostname'] = 'ccali.in2p3.fr'
+  theRet['localuname'] = os.uname()
   theRet['scpErrs'] = list()
   
   args = shlex.split(command)

@@ -2,52 +2,11 @@
 
 from couchdbkit import Server, Database
 import sys
-
-#_____________
-# upload
-def upload(db, docs):
-    #print 'upload:\t%i' % n
-    try:
-      db.bulk_save(docs)
-      del docs
-      return list()
-    except BulkSaveError as e:
-      print e.errors
-      print 'couchdbkit.BulkSaveError.'
-      print 'Will not delete the docs list and return to continue adding to docs'
-      return docs
   
-  
-def deleteTierFromFile(uri, dbname, tiername, runname):
-  s = Server(uri)
-  db = s[dbname]
-  
-  vr = db.view('proc/daqdoc', include_docs = True, reduce = False, key = runname)
-
-  docs = list()
-  
+def deleteFromView(vr, db, tiername):
+    
   for row in vr:
-    doc = row['doc']
-    print 'checking', doc['_id']
-    if doc.has_key(tiername):
-      print 'deleting', tiername, 'from', doc['_id']
-      del doc[tiername]
-      docs.append(doc)
-  
-  if len(docs) > 0:
-    upload(db, docs)
-  
-  
-def deleteTierFromListOfRuns(uri, dbname, tiername, startrun, endrun):
-  s = Server(uri)
-  db = s[dbname]
-  
-  vr = db.view('proc/daqdoc', include_docs = True, reduce = False, start_key = startrun, end_key = endrun)
-  
-  docs = list()
-  
-  for row in vr:
-    doc = row['doc']
+    doc = db.get(row['id'])
     print 'checking', doc['_id']
     if doc.has_key(tiername):
       print 'deleting', tiername, 'from', doc['_id']
@@ -56,10 +15,21 @@ def deleteTierFromListOfRuns(uri, dbname, tiername, startrun, endrun):
         doc['status'] = 'closed'
       else:
         doc['status'] = 'good'
-      docs.append(doc)
+      db.save_doc(doc)
+
+def deleteTierFromFile(uri, dbname, tiername, runname):
+  s = Server(uri)
+  db = s[dbname]
   
-  if len(docs) > 0:
-    upload(db, docs)
+  vr = db.view('proc/daqdoc',  reduce = False, key = runname)
+  deleteFromView(vr, db, tiername)
+  
+def deleteTierFromListOfRuns(uri, dbname, tiername, startrun, endrun):
+  s = Server(uri)
+  db = s[dbname]
+  
+  vr = db.view('proc/daqdoc',  reduce = False, startkey = startrun, endkey = endrun)
+  deleteFromView(vr, db, tiername)
 
 def main(*args):
 
