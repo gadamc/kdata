@@ -10,7 +10,7 @@ def send(item, path):
   '''
   item can be a file or a directory and path is always relative to 
   /sps/edelweis. This script will ONLY work from two particular
-  computer. The S7 machine at Modane (134.158.176.27) and the KIT 
+  computers. The S7 machine at Modane (134.158.176.27) and the KIT 
   kalinka machine (ikkatrinsrv1.fzk.de). This is because the CC in Lyon
   has created a special account for us to use for non-interactive
   authentication via ssh key exchange. The keys for each of these computer
@@ -30,16 +30,15 @@ def send(item, path):
   spspath = os.path.join('/sps/edelweis/', path)
   
   scppath = 'gadamc@edwdata.in2p3.fr:' + spspath
-  if option != '':
-    command = '/usr/bin/scp' + ' ' + option + ' ' + item + ' ' + scppath
-  else:
-    command = '/usr/bin/scp' + ' ' + item + ' ' + scppath
+  
+  command = '/usr/bin/scp' + ' ' + option + ' ' + item + ' ' + scppath
   print command
   
   theRet['command'] = command
-  theRet['item'] = item
+  theRet['item'] = os.path.basename(item)
   theRet['spspath'] = spspath
   theRet['uname'] = os.uname()
+  theRet['scpErrs'] = list()
   
   args = shlex.split(command)
   print args
@@ -53,6 +52,7 @@ def send(item, path):
 
   for line in p.stderr:
     print line
+    theRet['scpErrs'].append(line)
 
   return theRet
   
@@ -62,6 +62,7 @@ def sendBoloData(item, path = 'kdata/data/current/raw/'):
     return send(item,path) 
   else:
     print 'scpToSps.sendBoloData can only send files, not directories.'
+    return dict()
     
 def sendMuonData(item, path = 'kdata/data/muon/'):
   return send(item, path)
