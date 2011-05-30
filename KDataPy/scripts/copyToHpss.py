@@ -9,8 +9,6 @@
 '''
  
 import sys, os, glob, tarfile, tempfile, string, time, subprocess, datetime, shlex, shutil, stat
-import rootifySambaData as rootify
-import scpToSps as scp
 
 def timeout(func, args=(), kwargs={}, timeout_duration=10, default=None):
     """This function will spawn a thread and run the given function
@@ -307,8 +305,6 @@ def readArguments(arglist):
   p['logfile'] = p['workingdir'] + '/copyToHpss.log'
   p['currentTransferFile'] = p['workingdir'] + '/currentTransfer.txt'
   p['smallrunlist'] = p['workingdir'] + '/smallrunlist.txt'
-  p['rootifyOption'] = 'true'
-  p['rootifiedList'] = p['workingdir'] + '/rootifiedList.txt'
   
   for i in range(len(arglist)):
   
@@ -320,15 +316,7 @@ def readArguments(arglist):
       else:
         print 'Invalid value for timeout.', val, 'Set to default', p['timeout_hours']
     
-    elif arglist[i] == '-r':
-      i += 1
-      val = formatvalue(arglist[i])
-      if val == 'true' or val == 'false':
-        p['timeout_hours'] = val
-      else:
-        print 'Invalid value for rootifyOption.', val, 'Set to default', p['rootifyOption']
-        print 'Valid options are "true" or "false" '
-    
+      
     else:
       pass
       #we don't know this option
@@ -531,32 +519,6 @@ def runCopy(params):
       print 'No Small Files'
       logfile.flush()
       
-      
-
-    if params['rootifyOption'] == 'true':
-        tempRootDir = tempfile.mkdtemp()
-        print 'rootification directory', tempRootDir
-        os.chmod(tempRootDir, stat.S_IRWXO + stat.S_IRWXG + stat.S_IRWXU)
-        for item in newDirs:        
-          
-          if hasAlreadyBeenRootified(params['rootifiedList'],item)==False:
-          
-            print 'rootifying directory', item
-            logfile.flush()
-            allfiles = rootify.convertdir(item, tempRootDir)
-            logfile.flush()
-            
-            for file in allfiles:
-                print 'scp', file
-                scp.sendBoloData(file)
-                #notifyDbOfTransaction(file)
-                logfile.flush()
-            
-            addToRootifiedList(params['rootifiedList'],item)
-
-        print 'Deleting temporary Directory', tempRootDir
-        shutil.rmtree(tempRootDir)
-
     
   except:
     print 'Deleting temporary Directory', tempDir
