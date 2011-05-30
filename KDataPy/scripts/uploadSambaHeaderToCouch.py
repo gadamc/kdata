@@ -286,21 +286,6 @@ def readchannelheader(file, voie):
   return header
 
 
-#_____________
-# upload
-def upload(db, docs):
-    #print 'upload:\t%i' % n
-    try:
-      db.bulk_save(docs)
-      del docs
-      return list()
-    except BulkSaveError as e:
-      print e.errors
-      print 'couchdbkit.BulkSaveError.'
-      print 'Will not delete the docs list and return to continue adding to docs'
-      return docs
-
-
 def uploadFile(filename, uri, dbname, override=None):
   if override == None:
     override = False
