@@ -16,6 +16,7 @@ def convertfile(input, output):
   if os.path.isfile(input) and os.path.isdir(output)==False:
     c = KSamba2KData(input, output)
     c.ConvertFile()
+    print 'converted file to root file'
   else:
     print 'rootifySambaData.convertfile. Input must be a file path and Output cannot be a directory'
     return ''

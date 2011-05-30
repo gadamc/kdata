@@ -13,7 +13,7 @@ class TierProcess(object):
   def __init__(self, servername, dbname, yourFunction):
     self.sv = Server(servername)
     self.db = self.sv.get_or_create_db(dbname)
-    self.func = dofunction
+    self.func = yourFunction
   
   def doprocess(self,  *args, **kwargs):
     '''
@@ -35,6 +35,12 @@ class TierProcess(object):
     just calls couchdbkit.Database.view method. all arguments are the same
     '''
     return self.db.view(view_name, schema, wrapper, **params)
+
+  def get(self, doc_id, **params):
+    '''
+    just calls couchdbkit.Database.view method. all arguments are the same
+    '''
+    return self.db.get(doc_id, **params)
 
 
 class CopyProcess(TierProcess):

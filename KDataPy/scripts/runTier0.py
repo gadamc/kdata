@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
 from TierProcess import *
-import os, sys, tempfile
+import os, sys, tempfile, shutil
 import rootifySambaData as rt
 import scpToSps as scp
-
-
 
 def rootifyAndScp(*args, **kwargs):
   
@@ -14,19 +12,23 @@ def rootifyAndScp(*args, **kwargs):
     sys.exit(-1)
     
   tempDir = tempfile.mkdtemp()
-  outputFile = os.path.join(tempDir, args[0])
+  print 'creating temporary directory', tempDir
+  outputFile = os.path.join(tempDir, os.path.basename(args[0]) + '.root') 
   
   #rootify the File into a KData File!
+  print 'calling rootification and producing', outputFile
   theReturn = rt.convertfile(args[0], outputFile)
 
   if theReturn != outputFile:
-    print 'something happened with rootification'
+    print 'something crazy happened with rootification'
     sys.exit(-1)
     
   #now send it via secure copy!
+  print 'calling secure copy'
   scpRet = scp.sendBoloData(outputFile)
   
   #clean up
+  print 'removing temporary directory', tempDir
   shutil.rmtree(tempDir)
   
   return scpRet
@@ -42,13 +44,14 @@ def main(*argv):
   #document to the database
   myTier = TierProcess(argv[0], argv[1], rootifyAndScp)
   
-  vr = myTier.view('proc/tier0', include_docs=True, reduce=False)
+  vr = myTier.view('proc/tier0', reduce=False)
   
   for row in vr:
-    doc = row['doc']
-    
-    tierDict = myProcessor.doprocess(doc['file']) #this step calls rootfiyAndScp
-    
+    doc = myTier.get(row['id'])
+    print 'have doc', row['id']
+    tierDict = myTier.doprocess(doc['file']) #this step calls rootfiyAndScp
+    print 'called process'
+
     if len(tierDict) > 0:
       #add a few more items to the document
       
@@ -56,11 +59,12 @@ def main(*argv):
       
       if len(tierDict['scpErrs']) > 0:
         doc['status'] = 'bad'
-      
+      else:
+        doc['status'] = 'good'
       #this step will add the tierDict dictionary to the 
       #database document and then upload it to the DB
       doc['tier0'] = tierDict
-      myProcessor.upload(doc)
+      myTier.upload(doc)
       
     else:
       print 'the process returned an empty dictionary!'
