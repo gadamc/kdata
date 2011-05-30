@@ -7,34 +7,33 @@ class TierProcess(object):
     In order for this to work, the function reference that you 
     pass into this objects constructor must be of the form
     
-    def myfunction(*args, **kwargs)
+    def yourFunction(*args, **kwargs)
     
-    '''
-  def __init__(self, servername, dbname, tiername, dofunction):
+  '''
+  def __init__(self, servername, dbname, yourFunction):
     self.sv = Server(servername)
     self.db = self.sv.get_or_create_db(dbname)
-    self.name = tiername
     self.func = dofunction
   
-  
   def doprocess(self,  *args, **kwargs):
-    
-    return self.func(*args, **kwargs)
-  
-  
-  def record(self, doc, tierdict)
-  '''
-    Save the document to the database. 
     '''
-  doc[str(self.name)] = tierdict
-  
-  if self.db.doc_exist(doc['_id']):
-    doc['_rev'] = self.db.get_rev(doc['_id'])
-  self.db.save_doc(doc)
-  return doc['_id']
-  
-  
+    call yourFunction with the args/kwargs and return the results
+    '''
+    return self.func(*args, **kwargs)
+    
+  def upload(self, doc):
+    '''
+    Save the document to the database. 
+    '''  
+    if self.db.doc_exist(doc['_id']):
+      doc['_rev'] = self.db.get_rev(doc['_id'])
+    self.db.save_doc(doc)
+    return doc['_id']
+
   def view(self, view_name, schema=None, wrapper=None, **params):
+    '''
+    just calls couchdbkit.Database.view method. all arguments are the same
+    '''
     return self.db.view(view_name, schema, wrapper, **params)
 
 
@@ -42,7 +41,7 @@ class CopyProcess(TierProcess):
   '''   
     This is a Copy Processing class based on the TierProcess used to handle data processing
     based upon documents found in an instance of a CouchDB. 
-    '''
+  '''
   import shutil
   def copyfunction(self, *args, **kwargs):
     '''
@@ -53,9 +52,9 @@ class CopyProcess(TierProcess):
       '''
     return self.shutil.copy( args[0], args[1])
   
-  def __init__(self, servername, dbname, tiername):
+  def __init__(self, servername, dbname):
     
-    TierProcess.__init__( self, servername, dbname, tiername, self.copyfunction)
+    TierProcess.__init__( self, servername, dbname, self.copyfunction)
 
 
 class RemoteCopyProcess(CopyProcess):
@@ -66,7 +65,7 @@ class RemoteCopyProcess(CopyProcess):
     machines used for the remote copying. Otherwise, user intervention will be 
     required when secure copy is called. This requires that the command 'scp' exists
     on the machine where this class is used. 
-    '''
+  '''
   import subprocess
   def copyfunction(self, *args, **kwargs):
     '''
