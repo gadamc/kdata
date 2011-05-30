@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from TierProcess import *
-import os, sys. tempfile
+import os, sys, tempfile
 import rootifySambaData as rt
 import scpToSps as scp
 
@@ -40,21 +40,27 @@ def main(*argv):
   
   #create a TierProcess instance, which will assist in uploading the tier
   #document to the database
-  myTier = TierProcess(argv[0], argv[1], 'tier0', rootifyAndScp)
+  myTier = TierProcess(argv[0], argv[1], rootifyAndScp)
   
   vr = myTier.view('proc/tier0', include_docs=True, reduce=False)
   
   for row in vr:
     doc = row['doc']
     
-    procReturn = myProcessor.doprocess(doc['file']) #this step calls rootfiyAndScp
+    tierDict = myProcessor.doprocess(doc['file']) #this step calls rootfiyAndScp
     
-    if len(procReturn) > 0:
+    if len(tierDict) > 0:
+      #add a few more items to the document
       
-      if len(procReturn['scpErrs']) > 0:
+      tierDict['processname'] = 'rootifyAndCopyToSps'
+      
+      if len(tierDict['scpErrs']) > 0:
         doc['status'] = 'bad'
       
-      myProcessor.record(doc, procReturn)
+      #this step will add the tierDict dictionary to the 
+      #database document and then upload it to the DB
+      doc['tier0'] = tierDict
+      myProcessor.upload(doc)
       
     else:
       print 'the process returned an empty dictionary!'
