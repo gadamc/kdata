@@ -186,6 +186,11 @@ Double_t KEvent::GetSecPerStamp(void) const
 {
 	//returns the number of seconds that each Opera stamp spans.
 	//Currently, each stamp value is 10 microseconds long. 
+	//Actually there is an .8% deviation from 10 microseconds due to 
+	//6 MHz base frequency in the Super Cluzel which is reduced to 
+	//to a 10.08? microsends period length. This seems to be a reduction of 65 
+	//cycles to one. A redcution of 60 cycles to one should be much closer to 
+	//10 microseconds in fact 1.00000000000000008e-05 s long.
 	return 1.e-5;
 }
 

@@ -31,12 +31,15 @@ KDataFileIO::KDataFileIO(void)
 
 	fFile = 0;
 	fTree = 0;
-	
+	fChain = 0;
 }
 
 KDataFileIO::~KDataFileIO(void)
 {
-  //Delete();
+    delete fChain; //
+    //Delete(); //out commented due to python script chrash
+    //I have to test if Delete() (delete fFile) takes care of the Tchain itself; 
+    //maybe the TChain is also associated to the current File and deleted once delete fFile is called
 }
 
 void KDataFileIO::InitializeMembers(void)
@@ -50,6 +53,7 @@ void KDataFileIO::InitializeMembers(void)
 	//THESE ARE DEFAULT VALUES AND SHOULD NEVER BE CHANGED!
 	fTreeName = "t";
 	fTreeTitle = "KDSTree";
+    fChainTitle = "KDSChain";
 	fBranchName = "event";
 
 }
@@ -73,15 +77,20 @@ void KDataFileIO::CreateTree(void)
 	if(fTree != 0) {
 		delete fTree; fTree = 0;
 	}
+	if(fChain != 0) {
+        delete fChain; fChain = 0;
+    }
 		
 	fTree = new TTree(fTreeName.c_str(), fTreeTitle.c_str());
-	
+    fChain = new TChain(fTreeName.c_str(), fChainTitle.c_str());
+    
 	if(fTree->IsZombie())
 		cout << "KDataFileIO::CreateTree TTree is Zombie" << endl; 	
-	
+    if(fChain->IsZombie())
+        cout << "KDataFileIO::CreateTree TChain is Zombie" << endl;  
 }
 
-void KDataFileIO::GetTreePointerInFile(void)
+void KDataFileIO::GetTreePointerInFile(const Char_t* name)
 {
 	
   if (fFile == 0){
@@ -95,15 +104,32 @@ void KDataFileIO::GetTreePointerInFile(void)
 	//	delete fTree; fTree = 0;
 	//}
 	
-	fTree = (TTree *)fFile->Get(fTreeName.c_str());
-
-	if(fTree == 0){
-		cout << "KDataFileIO - Couldn't Find Tree " << fTreeName.c_str() << " in file " << endl;
-		return;
-	}
-	if(fTree->IsZombie())
-		cout << "KDataFileIO::GetTreePointerInFile. TTree is Zombie" << endl; 
-  
+	//fTree = (TChain *)fFile->Get(fTreeName.c_str());
+    if(fChain!=0){
+        cout << "Calling fChain " << fChain << " AddFile(\"" << name << "\");" << endl,
+        fChain->AddFile(name);
+    }
+    else{
+        if(fChain==0){
+            CreateTree();
+            fChain->AddFile(name); //Create Tree does print some error messegas to screen if it fails, but 
+                                    // it does not catch any exception, use an if statement to check again?
+        }
+        if(fChain->IsZombie()){
+            cout << "KDataFileIO::GetTreePointerInFile. TChain is Zombie" << endl; 
+        }
+    }
+    if (fTree==0){
+        CreateTree();
+    }
+    else{
+        if(fTree == 0){ //that is a weird if statement, it was already checked beforehand!
+            cout << "KDataFileIO - Couldn't Find Tree " << fTreeName.c_str() << " in file " << endl;
+            return;
+        }
+        if(fTree->IsZombie())
+            cout << "KDataFileIO::GetTreePointerInFile. TTree is Zombie" << endl; 
+    }
 }
 
 
@@ -115,6 +141,7 @@ Bool_t KDataFileIO::Close(Option_t *opt)
 	
 	if(fFile == 0){
 		fTree = 0; //the tree should be have been deleted. 
+		fChain=0; //the chain should have been deleted
 		return true;
 	}
 	
@@ -129,6 +156,7 @@ Bool_t KDataFileIO::Close(Option_t *opt)
 		delete fFile; 
     fFile = 0;
 		fTree = 0; //the tree is deleted by the TFile
+		fChain= 0; //the chain is deleted by the TFile
 		return true;
 	}
 	
@@ -154,7 +182,7 @@ TFile* KDataFileIO::OpenFileForReading(const Char_t* name)
     cout << "KDataFileIO - Unable to Open file: " << name << endl;
     return fFile;
   }
-	GetTreePointerInFile();
+	GetTreePointerInFile(name);
 
 	return fFile;
 }

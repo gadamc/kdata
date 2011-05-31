@@ -31,18 +31,16 @@ public:
 	Bool_t operator!=(const KEvent &anEvent) const { return !(*this==anEvent); }	
 	virtual void Clear(Option_t *option = "C");
 	virtual void Compact(void) {/*nothing to compact */}
-  static const char* GetClassName() {return "KEvent"; }
+	static const char* GetClassName() {return "KEvent"; }
 	
-	  
+	//Getter
 	Long64_t GetEventTriggerStamp(void) const {return fEventTriggerStamp;}
-  Long64_t GetStamp(void) const {  
+	Long64_t GetStamp(void) const {  
     //this calls GetEventTriggerStamp
     //deprecated kdata version > 4.1
     return GetEventTriggerStamp();  
   }
-  
 	Int_t GetTriggerType(void) const {return fTriggerType;}
-	
 	//Int_t GetDetectorStatusWord(void) const {return fDetectorStatusWord;}
 	//Int_t GetBlindnessWord(void) const {return fBlindnessWord;}
 	Bool_t IsBlind(void) const;
@@ -50,9 +48,8 @@ public:
 	Double_t GetStampTime(void) const; 
 
 	//Setters
-  
 	void SetEventTriggerStamp(Long64_t aStamp) {fEventTriggerStamp = aStamp;}
-  void SetStamp(Long64_t aStamp) {SetEventTriggerStamp(aStamp);}
+	void SetStamp(Long64_t aStamp) {SetEventTriggerStamp(aStamp);}
 
 	//void SetDetectorStatusWord(Int_t aNum) {fDetectorStatusWord = aNum;}
 	//void SetBlindnessWord(Int_t aNum) {fBlindnessWord = aNum;}
@@ -72,12 +69,12 @@ public:
   virtual Bool_t AddMuonModuleSubRecord(const KMuonModuleRecord &inMuonModule) = 0;
   virtual Bool_t AddBoloSubRecord(const KBolometerRecord &inBolo) = 0;
   
-  virtual KSambaRecord* GetSamba(Int_t i) const = 0;
+	virtual KSambaRecord* GetSamba(Int_t i) const = 0;
 	virtual KBolometerRecord* GetBolo(Int_t i) const = 0;
 	virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const = 0;
 	virtual KMuonModuleRecord* GetMuonModule(Int_t i) const = 0;
   
-  virtual Int_t GetNumSambas(void) const = 0;
+	virtual Int_t GetNumSambas(void) const = 0;
 	virtual Int_t GetNumBolos(void) const = 0;
 	virtual Int_t GetNumBoloPulses(void) const = 0;
 	virtual Int_t GetNumMuonModules(void) const = 0;

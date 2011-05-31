@@ -93,7 +93,7 @@ void KFileTransfer::SetDefaultValues(void)
 
   
 	fServer = "ccali.in2p3.fr";
-	fSourcePath = "/sps/edelweis/kdata/data/rootevts/";
+	fSourcePath = "/sps/edelweis/kdata/data/rawlinks/";
 	fTargetPath = "/tmp/";
   fExtraRsyncOptions = "";
 	

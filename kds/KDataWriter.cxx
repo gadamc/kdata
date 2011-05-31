@@ -159,10 +159,9 @@ Bool_t KDataWriter::SetTreeBranch(KEvent **anEvent)
 			
 		}
 		else if( dynamic_cast<KRawEvent*>(*anEvent) !=0 ) {
-			//cout << typeid(*hlaEv).name() << endl;
-			//cout << hlaEv << " " << anEvent << endl;
+            //cout << "trying to create a Branch and cast it as TBrachElement*" << endl;
 			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KRawEvent::GetClassName(), anEvent, 512000, 99));
-			
+			//cout << "dynamic_cast worked" << endl;
 		}
 		else if( dynamic_cast<KHLaMCEvent*>(*anEvent) !=0 ) {
 			//cout << typeid(*hlaEv).name() << endl;
@@ -310,7 +309,7 @@ TTree* KDataWriter::CloneTree(TTree *treeIn, Long64_t nEnt, Option_t* anOpt)
 	//if we clone the tree from treeIn, then we don't use
 	//the local event object memory space. So, we should delete it. 
 	
-	fTree = treeIn->CloneTree(nEnt, anOpt);
+	fTree = (TTree*) treeIn->CloneTree(nEnt, anOpt);
 	
 	return fTree;
 }
@@ -326,7 +325,7 @@ TTree *KDataWriter::ConcatenateTrees(TList* li, Option_t *anOpt)
 	if(fLocalEvent != 0)
 		KEventFactory::DeleteEvent(fLocalEvent); fLocalEvent = 0;
 	
-	fTree = TTree::MergeTrees(li,anOpt);
+    fTree = (TTree*) TTree::MergeTrees(li,anOpt);
 	
 	return fTree;
 }
