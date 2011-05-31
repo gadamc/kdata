@@ -84,6 +84,11 @@ void KDataFileIO::CreateTree(void)
 void KDataFileIO::GetTreePointerInFile(void)
 {
 	
+  if (fFile == 0){
+		cout << "KDataFileIO - File Pointer is NULL" << endl;
+		return;
+	}
+  
 	fFile->cd();
 	
 	//if(fTree != 0) {
@@ -145,7 +150,10 @@ TFile* KDataFileIO::OpenFileForReading(const Char_t* name)
 {
 	
 	fFile = TFile::Open(name, "read");
-	
+	if (fFile == 0){
+    cout << "KDataFileIO - Unable to Open file: " << name << endl;
+    return fFile;
+  }
 	GetTreePointerInFile();
 
 	return fFile;
