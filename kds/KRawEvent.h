@@ -39,41 +39,41 @@ public:
 	KRawEvent(void);
 	KRawEvent(const KRawEvent &anEvent);
 	virtual ~KRawEvent(void);
-  virtual void Clear(Option_t *opt = "C");
-  void ClearArrays(Option_t *opt = "C");
-  Bool_t IsSame(const KRawEvent &anEvent, Bool_t bPrint = false) const;
-  Bool_t operator==(const KRawEvent &anEvent) const { return IsSame(anEvent,false); }
+	virtual void Clear(Option_t *opt = "C");
+	void ClearArrays(Option_t *opt = "C");
+	Bool_t IsSame(const KRawEvent &anEvent, Bool_t bPrint = false) const;
+	Bool_t operator==(const KRawEvent &anEvent) const { return IsSame(anEvent,false); }
 	Bool_t operator!=(const KRawEvent &anEvent) const { return !(*this==anEvent); }
 	virtual void Compact(void);
-  static const char* GetClassName() {return "KRawEvent";}
+	static const char* GetClassName() {return "KRawEvent";}
   
-  virtual KEvent& operator=(const KEvent &anEvent);
+	virtual KEvent& operator=(const KEvent &anEvent);
 	virtual KRawEvent& operator=(const KRawEvent &anEvent);
 	  
-  const KClonesArray* GetSambaRecords(void) const {return static_cast<KClonesArray *>(fSamba);}
+	const KClonesArray* GetSambaRecords(void) const {return static_cast<KClonesArray *>(fSamba);}
 	const KClonesArray* GetBoloRecords(void) const {return static_cast<KClonesArray *>(fBolo);}
 	const KClonesArray* GetBoloPulseRecords(void) const {return static_cast<KClonesArray *>(fBoloPulse);}
 	const KClonesArray* GetMuonModuleRecords(void) const {return static_cast<KClonesArray *>(fMuonModule);}
   
-  KRawSambaRecord* AddSamba();
+	KRawSambaRecord* AddSamba();
 	KRawBolometerRecord* AddBolo();
 	KRawBoloPulseRecord* AddBoloPulse();
 	KRawMuonModuleRecord* AddMuonModule();
   
   
-  //methods required by the KEvent abstract class.
-  virtual Int_t AddSubRecords(const KEvent &anEvent);
-  virtual Bool_t AddMuonModuleSubRecord(const KMuonModuleRecord &inMuonModule);
-  virtual Bool_t AddBoloSubRecord(const KBolometerRecord &inBolo);
+	//methods required by the KEvent abstract class.
+	virtual Int_t AddSubRecords(const KEvent &anEvent);
+	virtual Bool_t AddMuonModuleSubRecord(const KMuonModuleRecord &inMuonModule);
+	virtual Bool_t AddBoloSubRecord(const KBolometerRecord &inBolo);
   
 	virtual Int_t GetNumSambas(void) const {return (fSamba) ? fSamba->GetEntriesFast() : 0;}
 	virtual Int_t GetNumBolos(void) const {return (fBolo) ? fBolo->GetEntriesFast() : 0;;}
 	virtual Int_t GetNumBoloPulses(void) const {return (fBoloPulse) ? fBoloPulse->GetEntriesFast() : 0;} 
 	virtual Int_t GetNumMuonModules(void) const {return (fMuonModule) ? fMuonModule->GetEntriesFast() : 0;} 
   
-  virtual KMuonVetoSystemRecord* GetMuonVetoSystemRecord(void) {KMuonVetoSystemRecord *s = static_cast<KMuonVetoSystemRecord *>(&fMuonSystem); return s;}
+	virtual KMuonVetoSystemRecord* GetMuonVetoSystemRecord(void) {KMuonVetoSystemRecord *s = static_cast<KMuonVetoSystemRecord *>(&fMuonSystem); return s;}
   
-  virtual KSambaRecord* GetSamba(Int_t i) const;
+	virtual KSambaRecord* GetSamba(Int_t i) const;
 	virtual KBolometerRecord* GetBolo(Int_t i) const;
 	virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const;
 	virtual KMuonModuleRecord* GetMuonModule(Int_t i) const;
@@ -89,10 +89,10 @@ private:
   TClonesArray *fBoloPulse; //-> an array of pulse record
   TClonesArray *fMuonModule; //-> an array of muon module records
   
-  void CreateArrays(void);
+	void CreateArrays(void);
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KRawEvent &anEvent);
-  void CopyClonesArrays(const KRawEvent &anEvent);
+	void CopyClonesArrays(const KRawEvent &anEvent);
   
   template<class T> T* AddSubRecord(TClonesArray *mArray);
   void DeleteArray(Option_t *anOpt, TClonesArray *mArray);

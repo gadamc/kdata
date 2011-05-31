@@ -76,6 +76,9 @@ void KDataReader::InitializeMembers(void)
 }
 
 
+
+
+
 Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t useCache)
 {
   //closes any file that is already open and then opens fileName.
@@ -87,11 +90,11 @@ Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t u
 	Bool_t theRet = false;
   
 	if(fFile != 0){
-		if(fTree != 0){
+        if(fChain != 0){
 			if(SetBranchAddress(anEvent)){
         SetUseInternalCache(useCache);
 				if(GetEntry(0) > 0)
-					fEntries = fTree->GetEntries();
+					fEntries = fChain->GetEntries();
         theRet = true;
         fIsOpen = true;
 			}
@@ -132,9 +135,9 @@ void KDataReader::SetUseInternalCache(Bool_t option)
   //all branches in the tree are added to the cache.
   //
   
-  if(option && fTree != 0){
-    fTree->SetCacheSize(20000000);
-    fTree->AddBranchToCache("*", true);
+  if(option && fChain != 0){
+    fChain->SetCacheSize(20000000);
+    fChain->AddBranchToCache("*", true);
   }
   /*else {
     cerr << "KDataReader::SetUseInternalCache. There's no way of undoing this." << endl;
@@ -143,25 +146,36 @@ void KDataReader::SetUseInternalCache(Bool_t option)
   }*/
 }
 
+Int_t KDataReader::AddFile(const char* name, Long64_t nentries , const char* tname )
+{
+    //Add file to the TChain
+    
+    Int_t returnVal=fChain->AddFile(name, nentries, tname);
+    fEntries=fChain->GetEntries();
+    return returnVal;
+    
+}
+
+
 Bool_t KDataReader::SetBranchAddress(KEvent **anEvent)
 {
   //set the branch address to anEvent.
   
-	if(fTree == 0) return false;
+	if(fChain == 0) return false;
 	
 	if(anEvent == 0){ 
-		TBranchElement *fBranch = (TBranchElement *)fTree->GetBranch(GetBranchName().c_str());
+		TBranchElement *fBranch = (TBranchElement *)fChain->GetBranch(GetBranchName().c_str());
 		if(fBranch == 0) return false;
 		
 		fLocalEvent = KEventFactory::NewEvent(fBranch->GetClassName());
 		if(fLocalEvent != 0) {
-			fTree->SetBranchAddress(GetBranchName().c_str(), &fLocalEvent);
+			fChain->SetBranchAddress(GetBranchName().c_str(), &fLocalEvent);
     }
     else 
 			return false; 
 	}
 	else 
-		fTree->SetBranchAddress(GetBranchName().c_str(), anEvent);
+		fChain->SetBranchAddress(GetBranchName().c_str(), anEvent);
 	
 	return true;
 	
@@ -181,10 +195,10 @@ KEvent* KDataReader::GetEvent(void)
 
   
 	KEvent* event = 0;
-	if(fTree !=0){
-		if(!fTree->IsZombie())
+	if(fChain !=0){
+		if(!fChain->IsZombie())
 		{
-			TBranchElement *fB = (TBranchElement *)fTree->GetBranch(GetBranchName().c_str());
+			TBranchElement *fB = (TBranchElement *)fChain->GetBranch(GetBranchName().c_str());
 			event = (KEvent *)fB->GetObject();
 		}
 	}
@@ -215,13 +229,13 @@ Int_t KDataReader::GetEntry(Int_t anEntry)
 	//anEntry.
 	
 	Int_t theRet = -1;
-	if(fTree == 0) {
+	if(fChain == 0) {
 		fCurrentEntry = 0;
 		return -1;
 	}
 	else {
-		fTree->GetCurrentFile()->cd();  //make sure we are in the right directory
-		theRet = fTree->GetEntry(anEntry);
+		fChain->GetCurrentFile()->cd();  //make sure we are in the right directory
+		theRet = fChain->GetEntry(anEntry);
 		if(theRet > 0) 
 			fCurrentEntry = anEntry;
 		
@@ -237,19 +251,19 @@ Int_t KDataReader::GetEntryWithGSEventNumber(Int_t anEntry)
   
 	if(fGSEventIndex==0){
 		cout << "Building index..." << endl;
-		fTree->BuildIndex("fGSEventNumber");
+		fChain->BuildIndex("fGSEventNumber");
 		fGSEventIndex=1;
 	}
 	
 	Int_t theRet = -1;
-	if(fTree == 0) {
+	if(fChain == 0) {
 		fCurrentEntry = 0;
 		return -1;
 	}
 	else {
-		theRet = fTree->GetEntryWithIndex(anEntry);
+		theRet = fChain->GetEntryWithIndex(anEntry);
 		if(theRet > 0) 
-			fCurrentEntry = fTree->GetEntryNumberWithIndex(anEntry);
+            fCurrentEntry = fChain->GetEntryNumberWithIndex(anEntry);
 		
 		return theRet;
 	}

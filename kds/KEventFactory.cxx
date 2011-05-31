@@ -25,7 +25,7 @@
 //
 // For example, 
 //
-// KHLAEvent *myEvent == KEventFactory::NewHLAEvent();
+// KHLAEvent *myEvent = KEventFactory::NewHLAEvent();
 //
 // KDS Developer's Note: If you want the KDataReader and KDataWriter classes
 // to recognize your KEvent-based class, after you derive from KEvent, 
