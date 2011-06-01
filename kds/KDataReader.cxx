@@ -26,6 +26,12 @@ using namespace std;
 
 ClassImp(KDataReader);
 
+KDataReader::KDataReader(void)
+{
+  fLocalEvent = 0;
+  InitializeMembers();
+}
+
 KDataReader::KDataReader(const Char_t* fileName, KEvent **anEvent, Bool_t useCache)
 {
   //standard constructor. You must at least provide a fileName. If you
@@ -90,7 +96,7 @@ Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t u
 	Bool_t theRet = false;
   
 	if(fFile != 0){
-        if(fChain != 0){
+    if(fChain != 0){
 			if(SetBranchAddress(anEvent)){
         SetUseInternalCache(useCache);
 				if(GetEntry(0) > 0)
@@ -109,12 +115,12 @@ Bool_t KDataReader::Close(Option_t *opt)
   //close the file with option opt. See TFile::Close(Option_t*)
   if(fIsOpen == false)
     return true;  // you've already closed it.
-
+  
 	if(fLocalEvent!=0) {
 		KEventFactory::DeleteEvent(fLocalEvent);
 		fLocalEvent = 0;
 	}
-
+  
   
   fIsOpen = !KDataFileIO::Close(opt);
   
@@ -140,20 +146,33 @@ void KDataReader::SetUseInternalCache(Bool_t option)
     fChain->AddBranchToCache("*", true);
   }
   /*else {
-    cerr << "KDataReader::SetUseInternalCache. There's no way of undoing this." << endl;
-    cerr << "  If you've previously called this method with option = true, then" << endl;
-    cerr << "  all branches in the tree are added to the cache." << endl; 
-  }*/
+   cerr << "KDataReader::SetUseInternalCache. There's no way of undoing this." << endl;
+   cerr << "  If you've previously called this method with option = true, then" << endl;
+   cerr << "  all branches in the tree are added to the cache." << endl; 
+   }*/
 }
 
 Int_t KDataReader::AddFile(const char* name, Long64_t nentries , const char* tname )
 {
-    //Add file to the TChain
-    
-    Int_t returnVal=fChain->AddFile(name, nentries, tname);
-    fEntries=fChain->GetEntries();
-    return returnVal;
-    
+  //Add file to the TChain
+  Int_t returnVal = 0;
+  
+  if (fChain == 0 || fTree == 0 || fFile == 0) {  //a bit hacky...
+    if(!OpenFile(name, 0, true)){
+      cout << "KDataReader - Could not open " << name << endl;
+      returnVal = 0;
+    }
+    else 
+      returnVal = 1;
+
+  }
+  else {
+    returnVal = fChain->AddFile(name, nentries, tname);
+    fEntries = fChain->GetEntries();
+  }
+  
+  return returnVal;
+  
 }
 
 
@@ -192,7 +211,7 @@ KEvent* KDataReader::GetEvent(void)
   //KDataReader myFile("/path/to/myKHLADataFile.root");
   //KHLAEvent *e = (KHLAEvent *)myFile.GetEvent();
   //
-
+  
   
 	KEvent* event = 0;
 	if(fChain !=0){
@@ -263,7 +282,7 @@ Int_t KDataReader::GetEntryWithGSEventNumber(Int_t anEntry)
 	else {
 		theRet = fChain->GetEntryWithIndex(anEntry);
 		if(theRet > 0) 
-            fCurrentEntry = fChain->GetEntryNumberWithIndex(anEntry);
+      fCurrentEntry = fChain->GetEntryNumberWithIndex(anEntry);
 		
 		return theRet;
 	}
@@ -303,7 +322,7 @@ Int_t KDataReader::GetNextMuonEntry(Int_t anEntry)
 		size=GetEntry(anEntry+1);
 	}
 	while(size>0 && e->GetNumMuonModules()==0){
-	size=GetNextEntry();
+    size=GetNextEntry();
 	}
 	return size;
 }
@@ -330,7 +349,7 @@ Int_t KDataReader::GetPreviousMuonEntry(Int_t anEntry)
 	else
 		size=GetEntry(anEntry-1);
 	while(size>0 && e->GetNumMuonModules()==0){
-	size=GetPreviousEntry();
+    size=GetPreviousEntry();
 	}
 	return size;
 }
@@ -357,7 +376,7 @@ Int_t KDataReader::GetNextBoloEntry(Int_t anEntry)
 	else
 		size=GetEntry(anEntry+1);
 	while(size>0 && e->GetNumBolos()==0){
-	size=GetNextEntry();
+    size=GetNextEntry();
 	}
 	return size;
 }
@@ -383,7 +402,7 @@ Int_t KDataReader::GetPreviousBoloEntry(Int_t anEntry)
 	else
 		size=GetEntry(anEntry-1);
 	while(size>0 && e->GetNumBolos()==0){
-	size=GetPreviousEntry();
+    size=GetPreviousEntry();
 	}
 	return size;
 }
