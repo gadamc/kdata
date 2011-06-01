@@ -30,7 +30,7 @@ protected:
 	TFile* OpenFileForReading(const Char_t* name);
 	//give the derived classes direct access to these
 	TFile *fFile;
-	TTree *fTree; //TChain *fChain
+	TTree *fTree; 
 	TChain *fChain;
 
 public:

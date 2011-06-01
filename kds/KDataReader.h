@@ -20,6 +20,7 @@ class KDataReader : public KDataFileIO {
 public:
   //Constructors
 	//KDataReader(const Char_t* fileName);
+  KDataReader(void);
 	KDataReader(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
   virtual ~KDataReader(void);
 

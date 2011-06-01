@@ -28,7 +28,7 @@ ClassImp(KDataFileIO);
 KDataFileIO::KDataFileIO(void)
 {
   InitializeMembers();
-
+  
 	fFile = 0;
 	fTree = 0;
 	fChain = 0;
@@ -36,10 +36,11 @@ KDataFileIO::KDataFileIO(void)
 
 KDataFileIO::~KDataFileIO(void)
 {
-    delete fChain; //
-    //Delete(); //out commented due to python script chrash
-    //I have to test if Delete() (delete fFile) takes care of the Tchain itself; 
-    //maybe the TChain is also associated to the current File and deleted once delete fFile is called
+  if (fChain != 0) delete fChain; //
+  
+  //Delete(); //out commented due to python script chrash
+  //I have to test if Delete() (delete fFile) takes care of the Tchain itself; 
+  //maybe the TChain is also associated to the current File and deleted once delete fFile is called
 }
 
 void KDataFileIO::InitializeMembers(void)
@@ -53,9 +54,9 @@ void KDataFileIO::InitializeMembers(void)
 	//THESE ARE DEFAULT VALUES AND SHOULD NEVER BE CHANGED!
 	fTreeName = "t";
 	fTreeTitle = "KDSTree";
-    fChainTitle = "KDSChain";
+  fChainTitle = "KDSChain";
 	fBranchName = "event";
-
+  
 }
 
 void KDataFileIO::Delete(void)
@@ -66,7 +67,7 @@ void KDataFileIO::Delete(void)
 		delete fFile; 
     fFile = 0;
 	}
-	 
+  
 }
 
 void KDataFileIO::CreateTree(void)
@@ -78,16 +79,16 @@ void KDataFileIO::CreateTree(void)
 		delete fTree; fTree = 0;
 	}
 	if(fChain != 0) {
-        delete fChain; fChain = 0;
-    }
-		
+    delete fChain; fChain = 0;
+  }
+  
 	fTree = new TTree(fTreeName.c_str(), fTreeTitle.c_str());
-    fChain = new TChain(fTreeName.c_str(), fChainTitle.c_str());
-    
+  fChain = new TChain(fTreeName.c_str(), fChainTitle.c_str());
+  
 	if(fTree->IsZombie())
 		cout << "KDataFileIO::CreateTree TTree is Zombie" << endl; 	
-    if(fChain->IsZombie())
-        cout << "KDataFileIO::CreateTree TChain is Zombie" << endl;  
+  if(fChain->IsZombie())
+    cout << "KDataFileIO::CreateTree TChain is Zombie" << endl;  
 }
 
 void KDataFileIO::GetTreePointerInFile(const Char_t* name)
@@ -105,31 +106,32 @@ void KDataFileIO::GetTreePointerInFile(const Char_t* name)
 	//}
 	
 	//fTree = (TChain *)fFile->Get(fTreeName.c_str());
-    if(fChain!=0){
-        cout << "Calling fChain " << fChain << " AddFile(\"" << name << "\");" << endl,
-        fChain->AddFile(name);
+  if(fChain!=0){
+    cout << "Calling fChain " << fChain << " AddFile(\"" << name << "\");" << endl,
+    fChain->AddFile(name);
+  }
+  else{
+    if(fChain==0){
+      CreateTree();
+      fChain->AddFile(name); //Create Tree does print some error messegas to screen if it fails, but 
+                             // it does not catch any exception, use an if statement to check again?
     }
-    else{
-        if(fChain==0){
-            CreateTree();
-            fChain->AddFile(name); //Create Tree does print some error messegas to screen if it fails, but 
-                                    // it does not catch any exception, use an if statement to check again?
-        }
-        if(fChain->IsZombie()){
-            cout << "KDataFileIO::GetTreePointerInFile. TChain is Zombie" << endl; 
-        }
+    if(fChain->IsZombie()){
+      cout << "KDataFileIO::GetTreePointerInFile. TChain is Zombie" << endl; 
     }
-    if (fTree==0){
-        CreateTree();
+  }
+  
+  if (fTree==0){
+    CreateTree();
+  }
+  else{
+    if(fTree == 0){ 
+      cout << "KDataFileIO - Couldn't Find Tree " << fTreeName.c_str() << " in file " << endl;
+      return;
     }
-    else{
-        if(fTree == 0){ //that is a weird if statement, it was already checked beforehand!
-            cout << "KDataFileIO - Couldn't Find Tree " << fTreeName.c_str() << " in file " << endl;
-            return;
-        }
-        if(fTree->IsZombie())
-            cout << "KDataFileIO::GetTreePointerInFile. TTree is Zombie" << endl; 
-    }
+    if(fTree->IsZombie())
+      cout << "KDataFileIO::GetTreePointerInFile. TTree is Zombie" << endl; 
+  }
 }
 
 
@@ -164,9 +166,9 @@ Bool_t KDataFileIO::Close(Option_t *opt)
 
 
 TFile* KDataFileIO::OpenFileForWriting(const Char_t* name, const Char_t* option, 
-													const Char_t* title)
+                                       const Char_t* title)
 {
-	 
+  
 	fFile =  TFile::Open(name, option, title); 
 	//MUST do this after initializing the TFile
 	CreateTree();
@@ -183,7 +185,7 @@ TFile* KDataFileIO::OpenFileForReading(const Char_t* name)
     return fFile;
   }
 	GetTreePointerInFile(name);
-
+  
 	return fFile;
 }
 
@@ -199,7 +201,7 @@ const char* KDataFileIO::GetFileName(void) const
 		return fFile->GetName();
 	}
 	else return "";
-		
+  
 }
 
 const char* KDataFileIO::GetEventClassName(void) const
