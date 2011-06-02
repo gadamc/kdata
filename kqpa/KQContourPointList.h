@@ -15,7 +15,10 @@
 #include "TMarker.h"
 #include "KQContourPoint.h"
 #include <fstream>
+#include <vector>
 #include <string>
+#include <iostream>
+#include <iomanip>
 #include <string.h>
 using namespace std;
 
@@ -27,11 +30,61 @@ class KQContourPointList {
     string fMode;
     string fFileName;
     vector<KQContourPoint*> fPoints;
+    Double_t fEnergyRecoilMin;
+    Double_t fEnergyRecoilMax;
+    Double_t fQvalueMin;
+    Double_t fQvalueMax;
+    TF2* fEmptyFrame;   
+    void UpdateEmptyFrame();
+    
   public:
     KQContourPointList(const Char_t* aFileName = "",
-                       const Char_t* aMode ="QERecoil"
+                       const Char_t* aMode ="QERecoil",
+                       Double_t  anEnergyRecoilMin = 0,
+                       Double_t anEnergyRecoilMax = 1000,
+                       Double_t aQvalueMin = 0,
+                       Double_t aQvalueMax = 2
     );
+    ~KQContourPointList();
+    
+    //setters
+    void SetEnergyRecoilMin(Double_t anEnergyRecoilMin)
+    { 
+      fEnergyRecoilMin = anEnergyRecoilMin; 
+      UpdateEmptyFrame();
+    }
+    void SetEnergyRecoilMax(Double_t anEnergyRecoilMax)
+    { 
+      fEnergyRecoilMax = anEnergyRecoilMax;
+      UpdateEmptyFrame();
+    }
+    void SetQvalueMin(Double_t aQvalueMin)
+    { 
+      fQvalueMin = aQvalueMin;
+      UpdateEmptyFrame();
+    }
+    void SetQvalueMax(Double_t aQvalueMax)
+    { 
+      fQvalueMax = aQvalueMax;
+      UpdateEmptyFrame();
+    }
+    
+    //getters
+    Double_t GetEnergyRecoilMin() const { return fEnergyRecoilMin; }
+    Double_t GetEnergyRecoilMax() const { return fEnergyRecoilMax; }
+    Double_t GetQvalueMin() const { return fQvalueMin; }
+    Double_t GetQvalueMax() const { return fQvalueMax; }
+    UInt_t GetEntries() const { return fPoints.size(); }
+    
     void ReadASCIIFile(const Char_t* aFileName = "");
+    void Draw(Option_t* anOption = "");
+    void AddPoint(Double_t aQvalue,
+              Double_t anEnergyRecoil,
+              Double_t aSigmaIon,
+              Double_t aSigmaHeat);
+    void RemovePoint(UInt_t anINdex = 0);
+    void ClearPoints();
+    void ShowPoints();
   ClassDef(KQContourPointList,0);
 };
 

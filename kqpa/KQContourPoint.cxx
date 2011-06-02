@@ -73,6 +73,8 @@ KQContourPoint::KQContourPoint(Double_t aQvalue,
   fFunction->SetParameter(5,fVoltageBias/fEpsilon);
   fFunction->SetNpx(1000);
   fFunction->SetNpy(1000);
+  fFunction->GetXaxis()->SetTitle("E_{Recoil} [keV]");
+  fFunction->GetYaxis()->SetTitle("Q");
   
   KQContour aContour(fFunction);
   fMarker = new TMarker(fEnergyRecoil,fQvalue,2);
@@ -100,8 +102,9 @@ KQContourPoint::~KQContourPoint()
 void KQContourPoint::SetConfidenceLevel(Double_t aConfidenceLevel)
 {
   fConfidenceLevel = aConfidenceLevel;
-  Double_t aVal = TMath::Exp(- 0.5 * TMath::Sqrt(2) * TMath::ErfInverse(aConfidenceLevel));
-  fFunction->SetContour(0,&aVal);
+  KQContour aContour(fFunction);
+  fFunction->SetContour(1);
+  fFunction->SetContourLevel(0,aContour.GetContour(fConfidenceLevel));
 }
 
 void KQContourPoint::Draw(Option_t* anOption)
