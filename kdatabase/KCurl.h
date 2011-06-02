@@ -32,16 +32,15 @@ public:
   //void* DELETE();
   Int_t Put(const char* url, const char* item, const char* thedoc = 0);
   Int_t Get(const char* url, const char* item);
-  const char* GetReturn(void) const; 
-  Int_t GetReturnSize(void) const;
-  
+ 
+  const char* GetReturn(void) const {return fReturn.c_str();}
+  size_t GetReturnSize(void) const {return fReturn.size();}
   Bool_t GetVerbose(void) const { return fVerbose;}
   void SetVerbose(Bool_t aVal = true) {fVerbose = aVal;}
   
 private:
 
-  vector<string> fReturn;
-  
+  string fReturn;
   typedef struct{
     const char* buf;
     int len;
@@ -52,10 +51,12 @@ private:
 
   static size_t WriteMemoryCallback(void *ptr, size_t size, size_t nmemb, void *data)
   { KCurl *mem = (KCurl *)data;
-    if(size*nmemb > 0) { string s((char *)ptr, size * nmemb); mem->fReturn.push_back(s.data()); }    
+    const char* stringdata = (const char*)ptr;
+    if(size*nmemb > 0)
+      mem->fReturn.append(stringdata, size*nmemb);
     return size * nmemb; 
   }
-  
+
   static size_t ReadBufferCallback(char *bufptr, size_t size, size_t nitems, void *userp)
   { 
     readarg_t *rarg = (readarg_t *)userp;
