@@ -160,7 +160,7 @@ typedef struct KJson {
 	int valueint;
 	double valuedouble;
 
-	char *string;
+	char *key;
 } KJson;
 
 By default all values are 0 unless set by virtue of being meaningful.
@@ -175,9 +175,9 @@ KJson.h
 A Number has valueint and valuedouble. If you're expecting an int, read valueint, if not read
 valuedouble.
 
-Any entry which is in the linked list which is the child of an object will have a "string"
-which is the "name" of the entry. When I said "name" in the above example, that's "string".
-"string" is the JSON name for the 'variable name' if you will.
+Any entry which is in the linked list which is the child of an object will have a "key"
+which is the "name" of the entry. When I said "name" in the above example, that's "key".
+"key" is the JSON name for the 'variable name' if you will.
 
 Now you can trivially walk the lists, recursively, and parse as you please.
 You can invoke KJson_Parse to get KJson to parse for you, and then you can take

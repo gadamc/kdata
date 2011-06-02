@@ -62,7 +62,7 @@ typedef struct KJson {
 	int valueint;				/* The item's number, if type==KJson_Number */
 	double valuedouble;			/* The item's number, if type==KJson_Number */
 
-	char *string;				/* The item's name string, if this item is the child of, or is in the list of subitems of an object. */
+	char *key;				/* The item's name string, if this item is the child of, or is in the list of subitems of an object. */
 } KJson;
 
 typedef struct KJson_Hooks {
