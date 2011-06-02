@@ -51,18 +51,36 @@ KQContour::KQContour(TF2* aFunction) : fFunction(aFunction)
   fHistogram->SetDirectory(0);
             
   
-  fHistogram->FillRandom(fFunction->GetName(),fNumEntries);
-  
+  //fHistogram->FillRandom(fFunction->GetName(),fNumEntries);
+  Double_t aBinContent = 0;
   for(Int_t k = 0; k<fHistogram->GetNbinsX(); ++k)
-    for(Int_t l = 0; l<fHistogram->GetNbinsY(); ++l)
-      fBins.push_back(KQBinRecord(k,l,fHistogram->GetBinContent(k,l)));
+    for(Int_t l = 0; l<fHistogram->GetNbinsY(); ++l) {
+      aBinContent= fNumEntries * fHistogram->GetXaxis()->GetBinWidth(0)
+      * fHistogram->GetYaxis()->GetBinWidth(0) *
+      fFunction->Eval(fHistogram->GetXaxis()->GetXmin()+(k-0.5) *               
+           fHistogram->GetXaxis()->GetBinWidth(0),
+                               fHistogram->GetYaxis()->GetXmin() + (l -0.5) *
+                               fHistogram->GetYaxis()->GetBinWidth(0));
+      fHistogram->SetBinContent(k,l,aBinContent);
+      fBins.push_back(KQBinRecord(k,l,aBinContent));
+    }
     
   sort(fBins.begin(),fBins.end());
 }
 
 void KQContour::RefillHistogram()
 {
-  fHistogram->FillRandom(fFunction->GetName(),fNumEntries);
+  Double_t aBinContent = 0;
+  for(Int_t k = 0; k<fHistogram->GetNbinsX(); ++k)
+    for(Int_t l = 0; l<fHistogram->GetNbinsY(); ++l) {
+      aBinContent= fNumEntries *
+      fFunction->Eval(fHistogram->GetXaxis()->GetXmin()+(k-0.5) *               
+           fHistogram->GetXaxis()->GetBinWidth(0),
+                               fHistogram->GetYaxis()->GetXmin() + (l -0.5) *
+                               fHistogram->GetYaxis()->GetBinWidth(0));
+      fHistogram->SetBinContent(k,l,aBinContent);
+      fBins.push_back(KQBinRecord(k,l,aBinContent));
+    }
 }
 
 
