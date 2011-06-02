@@ -38,7 +38,7 @@ class TierProcess(object):
 
   def get(self, doc_id, **params):
     '''
-    just calls couchdbkit.Database.view method. all arguments are the same
+    just calls couchdbkit.Database.get method. all arguments are the same
     '''
     return self.db.get(doc_id, **params)
 
