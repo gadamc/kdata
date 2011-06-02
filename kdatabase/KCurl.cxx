@@ -23,6 +23,7 @@ ClassImp(KCurl);
 KCurl::KCurl(void)
 {
   SetVerbose(0);
+  fReturn = "";
 }
 
 KCurl::~KCurl(void)
@@ -30,26 +31,6 @@ KCurl::~KCurl(void)
   curl_global_cleanup();
 }
 
-const char* KCurl::GetReturn(void) const
-{
-  string b;
-  for(UInt_t i = 0; i < fReturn.size(); i++){
-    b += fReturn[i];
-  }
-  return b.c_str();
-}
-
-Int_t KCurl::GetReturnSize(void) const
-{
-  //gives the full size of the response from the server (in bytes)
-  //
-  
-  Int_t size;
-  for(UInt_t i = 0; i < fReturn.size(); i++){
-    size += fReturn[i].size();
-  }
-  return size;
-}
 
 Int_t KCurl::Get(const char* url, const char* item)
 {
@@ -84,8 +65,7 @@ Int_t KCurl::Get(const char* url, const char* item)
   curlhandle = curl_easy_init();
   CURLcode res;
   
-  fReturn.resize(0);
-  
+  fReturn = "";
   if(curlhandle) {
     
     string myurl;
@@ -118,7 +98,7 @@ Int_t KCurl::Get(const char* url, const char* item)
   }
   
   
-  return GetReturnSize();
+  return res;
 }
 
 
@@ -159,9 +139,7 @@ Int_t KCurl::Put(const char* url, const char* item, const char* thedoc)
   curlhandle = curl_easy_init();
   CURLcode res;
   
-  fReturn.resize(0);
-  
-  ;
+  fReturn = "";
   
   if(curlhandle) {
     
