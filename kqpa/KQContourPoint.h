@@ -63,7 +63,8 @@ class KQContourPoint {
     Double_t GetVoltageBias() const { return fVoltageBias; }
     Double_t GetEpsilon() const { return fEpsilon; }
     Double_t GetConfidenceLevel() const { return fConfidenceLevel; }
-    TF2* GetFunction() const { return (TF2*)(fFunction->Clone()); }
+    TF2* GetFunctionClone() const { return (TF2*)(fFunction->Clone()); }
+    TF2* GetFunction() const { return fFunction; }
     
     void Draw(Option_t* anOption = "");
 

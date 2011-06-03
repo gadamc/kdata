@@ -75,6 +75,17 @@ class KQContourPointList {
     Double_t GetQvalueMin() const { return fQvalueMin; }
     Double_t GetQvalueMax() const { return fQvalueMax; }
     UInt_t GetEntries() const { return fPoints.size(); }
+    TF2* GetEmptyFrame() const { return fEmptyFrame; }
+    KQContourPoint* GetElement(UInt_t anIndex) const 
+    {
+      if(anIndex >= fPoints.size()) {
+        cout << "KQContourPoint* GetElement(UInt_t anIndex): invalid index,"
+        << " must be <" << fPoints.size() << endl;
+        return 0;
+      }
+      else
+        return fPoints[anIndex];
+    }
     
     void ReadASCIIFile(const Char_t* aFileName = "");
     void Draw(Option_t* anOption = "");
