@@ -28,10 +28,10 @@ class KQContourPoint {
     Double_t fVoltageBias;
     Double_t fEpsilon;
     Double_t fConfidenceLevel;
+    Double_t fConfidenceLevelError;
     TF2* fFunction;
     TMarker* fMarker;
   public:
-    //constructors
     KQContourPoint(Double_t aQvalue = 0,
                    Double_t anEnergyRecoil = 0,
                    Double_t aSigmaIon = 0,
@@ -39,10 +39,13 @@ class KQContourPoint {
                    Double_t aSigmaIonHeat = 0,
                    Double_t aConfidenceLevel = 0.9,
                    Double_t aVoltageBias = 8.0,
-                   Double_t anEpsilon = 3.0);
+                   Double_t anEpsilon = 3.0,
+                   Double_t anNpx = 1000,
+                   Double_t anNpy = 1000,
+                   Double_t aNumSigmas = 10
+                  );
     ~KQContourPoint();
 
-    //setters
     void SetQvalue(Double_t aQvalue) { fQvalue = aQvalue; }
     void SetEnergyRecoil(Double_t anEnergyRecoil) { fEnergyRecoil = anEnergyRecoil; }
     void SetSigmaEnergyHeat(Double_t aSigmaEnergyHeat) { fSigmaEnergyHeat = aSigmaEnergyHeat; }
@@ -54,7 +57,6 @@ class KQContourPoint {
     void SetRange(Double_t xmin, Double_t ymin,
                   Double_t xmax, Double_t ymax);
 
-    //getters
     Double_t GetQvalue() const { return fQvalue; }
     Double_t GetEnergyRecoil() const { return fEnergyRecoil; }
     Double_t GetSigmaEnergyHeat() const { return fSigmaEnergyHeat; }
@@ -63,6 +65,12 @@ class KQContourPoint {
     Double_t GetVoltageBias() const { return fVoltageBias; }
     Double_t GetEpsilon() const { return fEpsilon; }
     Double_t GetConfidenceLevel() const { return fConfidenceLevel; }
+    Double_t GetConfidenceLevelError() const { return fConfidenceLevelError; }
+    TMarker* GetMarker() const { return fMarker; }
+    TH2D* GetHistogram();
+    TH2D* GetContourHistogram();
+    
+    
     TF2* GetFunctionClone() const { return (TF2*)(fFunction->Clone()); }
     TF2* GetFunction() const { return fFunction; }
     

@@ -28,10 +28,8 @@ class KQContour {
     TF2* fFunction;
     TH2D* fHistogram;
     vector<KQBinRecord> fBins;
-    
-    Int_t fMaxNumFunctionCalls;
-    Int_t fMaxNumIterations;
-    Double_t fTolerance;
+    Double_t fConfidenceLevel;
+    Double_t fConfidenceLevelError;
     
     void RefillHistogram();
     
@@ -54,9 +52,12 @@ class KQContour {
 
     
     //getters
-    Int_t GetNumBinsX() { return fNumBinsX; }
-    Int_t GetNumBinsY() { return fNumBinsY; }
-    Int_t GetNumEntries() { return fNumEntries; }
+    Int_t GetNumBinsX() const { return fNumBinsX; }
+    Int_t GetNumBinsY() const { return fNumBinsY; }
+    Int_t GetNumEntries() const { return fNumEntries; }
+    Double_t GetConfidenceLevel() const { return fConfidenceLevel; }
+    Double_t GetConfidenceLevelError() const { return fConfidenceLevelError; }
+    
     
     TF2* GetFunction() { return fFunction; }
     TH2D* GetHistogram() { return (TH2D*)(fHistogram->Clone()); }

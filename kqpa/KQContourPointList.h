@@ -13,6 +13,7 @@
 #include "TF2.h"
 #include "TMath.h"
 #include "TMarker.h"
+#include "TObjString.h"
 #include "KQContourPoint.h"
 #include <fstream>
 #include <vector>

@@ -7,6 +7,10 @@
 //
 // * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
+// This class represents a single EDW event (Q, E_{Recoil}, sigma_ion,
+// sigma_heat), whose confidence region for a specified confidence level can be
+// drawn ( marker for central value, and contour line surrounding the
+// confidence region
 
 #include "KQContourPoint.h"
 
@@ -23,20 +27,17 @@ KQContourPoint::KQContourPoint(Double_t aQvalue,
                                Double_t aSigmaEnergyIonHeat,
                                Double_t aConfidenceLevel,
                                Double_t aVoltageBias,
-                               Double_t anEpsilon)
+                               Double_t anEpsilon,
+                               Double_t anNpx,
+                               Double_t anNpy,
+                               Double_t aNumSigmas
+                              )
   : fQvalue(aQvalue), fEnergyRecoil(anEnergyRecoil),
   fSigmaEnergyIon(aSigmaEnergyIon),
   fSigmaEnergyHeat(aSigmaEnergyHeat), fSigmaEnergyIonHeat(aSigmaEnergyIonHeat),
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
   fConfidenceLevel(aConfidenceLevel)
 {
-  // [0] : fQvalue
-  // [1] : fEnergyRecoil
-  // [2] : fSigmaIon
-  // [3] : fSigmaHeat
-  // [4] : fSigmaIonHeat
-  // [5] : fVoltageBias
-  // [6] : fEpsilon
   
   Double_t aSigmaEnergyRecoil = TMath::Sqrt(
   (1+ fVoltageBias/fEpsilon)*(1+fVoltageBias/fEpsilon)*fSigmaEnergyHeat*
@@ -47,6 +48,13 @@ KQContourPoint::KQContourPoint(Double_t aQvalue,
   (1+fVoltageBias/fEpsilon)*fSigmaEnergyHeat*fSigmaEnergyHeat
   + TMath::Power((1/fEnergyRecoil + fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
   fSigmaEnergyIon,2));
+  // [0] : fQvalue
+  // [1] : fEnergyRecoil
+  // [2] : fSigmaIon
+  // [3] : fSigmaHeat
+  // [4] : fSigmaIonHeat
+  // [5] : fVoltageBias
+  // [6] : fEpsilon
   
   fFunction = new TF2(TString::Format("f%d_%d_%d_%d_%d",Int_t(aQvalue*100),
                                       Int_t(anEnergyRecoil),
@@ -60,10 +68,10 @@ KQContourPoint::KQContourPoint(Double_t aQvalue,
  "( (1 + y * [5])/(1 + [5]) * x - (1 + [0] * [5])/(1 + [5]) *[1])))"
  "* TMath::Abs([1])/ 2 / TMath::Pi() / TMath::Sqrt([2]^2 * [3]^2 - [4]^4) /"
  "(1+[5])",
-                      anEnergyRecoil-10*aSigmaEnergyRecoil,
-                      anEnergyRecoil+10*aSigmaEnergyRecoil,
-                      aQvalue-10*aSigmaQvalue,
-                      aQvalue+10*aSigmaQvalue);
+                      anEnergyRecoil-aNumSigmas*aSigmaEnergyRecoil,
+                      anEnergyRecoil+aNumSigmas*aSigmaEnergyRecoil,
+                      aQvalue-aNumSigmas*aSigmaQvalue,
+                      aQvalue+aNumSigmas*aSigmaQvalue);
 
   fFunction->SetParameter(0,fQvalue);
   fFunction->SetParameter(1,fEnergyRecoil);
@@ -71,21 +79,15 @@ KQContourPoint::KQContourPoint(Double_t aQvalue,
   fFunction->SetParameter(3,fSigmaEnergyHeat);
   fFunction->SetParameter(4,fSigmaEnergyIonHeat);
   fFunction->SetParameter(5,fVoltageBias/fEpsilon);
-  fFunction->SetNpx(1000);
-  fFunction->SetNpy(1000);
+  fFunction->SetNpx(anNpx);
+  fFunction->SetNpy(anNpy);
+  fFunction->SetLineStyle(1);
   fFunction->GetXaxis()->SetTitle("E_{Recoil} [keV]");
   fFunction->GetYaxis()->SetTitle("Q");
-  
-  KQContour aContour(fFunction);
+ 
   fMarker = new TMarker(fEnergyRecoil,fQvalue,2);
-  fFunction->SetContour(1);
-  fFunction->SetContourLevel(0,aContour.GetContour(fConfidenceLevel));
   
-
-  
-  Double_t aVal = TMath::Exp(- 0.5 * TMath::Sqrt(2) * TMath::ErfInverse(aConfidenceLevel));
-
-  
+ SetConfidenceLevel(aConfidenceLevel);
 }
 
 
@@ -105,10 +107,12 @@ void KQContourPoint::SetConfidenceLevel(Double_t aConfidenceLevel)
   KQContour aContour(fFunction);
   fFunction->SetContour(1);
   fFunction->SetContourLevel(0,aContour.GetContour(fConfidenceLevel));
+  fConfidenceLevelError = aContour.GetConfidenceLevelError();
 }
 
 void KQContourPoint::Draw(Option_t* anOption)
 {
+  //draws the event
   fFunction->Draw(anOption);
   fMarker->Draw("same");
 }
@@ -117,6 +121,21 @@ void KQContourPoint::SetRange(Double_t xmin, Double_t ymin,
                               Double_t xmax, Double_t ymax)
 {
   fFunction->SetRange(xmin,ymin,xmax,ymax);
+}
+
+TH2D* KQContourPoint::GetHistogram()
+{
+  //This method returns the 
+  KQContour aContour(fFunction);
+  return aContour.GetHistogram();
+}
+
+TH2D* KQContourPoint::GetContourHistogram()
+{
+  //This method returns a hard copy of a histogram which has bin contents of 1
+  //for bins in the confidence region and 0 else
+  KQContour aContour(fFunction);
+  return aContour.GetContourHistogram(fConfidenceLevel);
 }
 
 

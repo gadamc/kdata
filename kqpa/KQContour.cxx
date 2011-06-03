@@ -97,6 +97,7 @@ Double_t KQContour::GetConfidence(Double_t aValue)
   return aResult;     
 }
 
+
 Double_t KQContour::EvaluateConfidence(Double_t* x, Double_t* p)
 {
   Double_t result = GetConfidence(x[0])-p[0];
@@ -104,33 +105,13 @@ Double_t KQContour::EvaluateConfidence(Double_t* x, Double_t* p)
 }
 
 
+
+
 Double_t KQContour::GetContour(Double_t aConfidenceLevel)
 {
+  fConfidenceLevel = aConfidenceLevel;
 
-/*  
- ROOT::Math::Minimizer *theMinimizer = ROOT::Math::Factory::CreateMinimizer(aMinimizerName,aMethod);
- 
- theMinimizer->SetMaxFunctionCalls(aMaxNumFunctionCalls); //this sets the maximal number of function calls
-  theMinimizer->SetMaxIterations(aMaxNumIterations); //this sets the maximal number of iteration
-  theMinimizer->SetTolerance(aTolerance); //this sets the tolerance
-    
-  ROOT::Math::Functor f(&GetValueForConfidence,3); 
-   
-  theMinimizer->SetFunction(f);
- 
-  // Set the fixed variables
-  Long_t aNum = (Long_t)(fHistogram);
-  theMinimizer->SetFixedVariable(0,"hist",aNum);
-  theMinimizer->SetFixedVariable(1,"aConfidenceLevel",aConfidenceLevel);
-   
-  //set the variable to be minimized
-  theMinimizer->SetVariable(2,"aValue",100,0.1);
- 
-  theMinimizer->Minimize(); 
-  
-  const Double_t* xs = theMinimizer->X();
-  return xs[2];
-*/
+
 
   Int_t aSum = 0;
   Int_t anIndex = fBins.size()-1;
@@ -140,9 +121,13 @@ Double_t KQContour::GetContour(Double_t aConfidenceLevel)
   if(anIndex<0)
     ++anIndex;
   
+  fConfidenceLevelError = fBins[anIndex].GetBinContent()/fNumEntries;
+  
   return fBins[anIndex].GetBinContent()/fHistogram->GetXaxis()->GetBinWidth(0)
          /fHistogram->GetYaxis()->GetBinWidth(0)/fNumEntries;
 }
+
+
 
 TH2D* KQContour::GetContourHistogram(Double_t aConfidenceLevel)
 {
