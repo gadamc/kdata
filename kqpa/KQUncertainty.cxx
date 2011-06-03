@@ -77,7 +77,8 @@ KQUncertainty::~KQUncertainty(void)
 
 Double_t KQUncertainty::GetQValue(Double_t anEnergy)
 {
-  //Returns the Q value for a nuclear recoil event with recoil energy = anEnergy.
+  //This method returns the Q value for a nuclear recoil event with specified
+  //recoil energy
   
   KLindhard lind;
   return lind.GetQValue(anEnergy);
@@ -86,8 +87,8 @@ Double_t KQUncertainty::GetQValue(Double_t anEnergy)
 Double_t KQUncertainty::GetQMeanValue(Double_t anEnergy,
                                       Double_t anEnergyUncertainty)
 {
-  //Returns the Q mean value for binned data of nuclear recoil events with
-  //mean "anEnergy" and uncertainty "anEnergyUncertainty"
+  //This method returns the Q mean value for binned data of nuclear recoil
+  //events for specified mean and uncertainty
   KLindhard lind;
   return lind.GetQMeanValue(anEnergy,anEnergyUncertainty);
 }

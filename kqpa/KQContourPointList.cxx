@@ -61,12 +61,49 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName)
     ifstream is(aFileName);
     Double_t anEnergyIon, anEnergyHeat;
     Double_t aQvalue, anEnergyRecoil, aSigmaIon, aSigmaHeat;
+    char aCString[100];
+    TString aString;
+    TObjArray* theTokens;
+    TObjString* anElement;
+    Int_t aLineCounter = 0;
+    
     if(fMode=="QERecoil")
       while(!is.eof())
       {
-        is >> aQvalue >> anEnergyRecoil >> aSigmaIon >> aSigmaHeat;
+        //is >> aQvalue >> anEnergyRecoil >> aSigmaIon >> aSigmaHeat;
+        ++aLineCounter;
+        is.getline(aCString,100);
+        aString = aCString;
+        theTokens = aString.Tokenize(" ");
+        
+        //empty lines
+        if(!theTokens->GetEntries())
+          continue;
+        
+        //comment lines 
+        anElement = (TObjString*)theTokens->At(0);
+        if(anElement->GetString()=="#") 
+          continue;
+        
+        if(theTokens->GetEntries()!=4) {
+          cout << "KQContourPointList::ReadASCIIFile(): invalid format in line "
+          << aLineCounter <<", 4 Double_t values <Q> <E_recoil> <sigma_ion> "
+          << "<sigma_heat> expected " << endl;
+          continue;
+        }
+        
+        anElement = (TObjString*)theTokens->At(0);
+        aQvalue = anElement->GetString().Atof();
+        anElement = (TObjString*)theTokens->At(1);
+        anEnergyRecoil = anElement->GetString().Atof();
+        anElement = (TObjString*)theTokens->At(2);
+        aSigmaIon = anElement->GetString().Atof();
+        anElement = (TObjString*)theTokens->At(3);
+        aSigmaHeat = anElement->GetString().Atof();
+          
         fPoints.push_back(new KQContourPoint(aQvalue, anEnergyRecoil,
                                             aSigmaIon, aSigmaHeat));
+        cout << "... event " << fPoints.size() << " processed" << endl;
       }
       /* //has to be implemented
       else
@@ -88,6 +125,7 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName)
 
 void KQContourPointList::Draw(Option_t* anOption)
 {
+  //draws all events in the list
   fEmptyFrame->SetRange(fEnergyRecoilMin,
                         fQvalueMin,
                         fEnergyRecoilMax,
