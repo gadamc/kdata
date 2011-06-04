@@ -49,7 +49,7 @@ def main(*argv):
   for row in vr:
     doc = myTier.get(row['id'])
     print 'have doc', row['id']
-    doc['status'] = 'tier0 in progress']
+    doc['status'] = 'tier0 in progress'
     myTier.upload(doc)
     tierDict = myTier.doprocess(doc['file']) #this step calls rootfiyAndScp
     print 'called process'
