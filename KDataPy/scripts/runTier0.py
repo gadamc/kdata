@@ -57,7 +57,7 @@ def main(*argv):
     if len(tierDict) > 0:
       #add a few more items to the document
       dd = datetime.datetime.utcnow()
-      tierDict['date_filed'] = {'year':dd.year, 'month':dd.month, 'day':dd.day, 'hour':dd.hour, 'minute':dd.minute, 'second':dd.second, 'microsecond':dd.microsecond} 
+      tierDict['date'] = {'year':dd.year, 'month':dd.month, 'day':dd.day, 'hour':dd.hour, 'minute':dd.minute, 'second':dd.second, 'microsecond':dd.microsecond} 
       tierDict['processname'] = 'rootifyAndCopyToSps'
       
       if len(tierDict['scpErrs']) > 0:
