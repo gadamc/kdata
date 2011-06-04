@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from TierProcess import *
-import os, sys, tempfile, shutil
+import os, sys, tempfile, shutil, datetime
 import rootifySambaData as rt
 import scpToSps as scp
 
@@ -49,6 +49,8 @@ def main(*argv):
   for row in vr:
     doc = myTier.get(row['id'])
     print 'have doc', row['id']
+    doc['status'] = 'tier0 in progress']
+    myTier.upload(doc)
     tierDict = myTier.doprocess(doc['file']) #this step calls rootfiyAndScp
     print 'called process'
 
