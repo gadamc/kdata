@@ -1,0 +1,86 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{palatino}
+\usepackage{geometry}
+\geometry{hmargin=2cm,top=2cm,bottom=2cm}
+
+
+\title{HowTo_Draw_Confidence_Regions}
+\author{Daniel Wegner}
+
+\begin{document}
+
+
+In order to draw contour lines representing 90\% confidence regions for single EDW events one has to do the following steps:
+
+\begin{enumerate}
+\item Load the kqpa library.
+\begin{verbatim} gSystem->Load("$KDATA_ROOT/lib/libkqpa.so"); \end{verbatim}
+\item Make a KQContourPointList object.
+\begin{verbatim} KQContourPointList aList; \end{verbatim}
+\item Fill the list with points (Q, ERecoil, $\sigma_{E_{ion}}$ , $\sigma_{E_{heat}}$)
+\begin{enumerate}
+\item Read an ASCII file in the current working directory with lines of the form <$Q$> <$E_{recoil}$> <$\sigma_{E_{ion}}$> <$\sigma_{E_{heat}}$> 
+\begin{verbatim} aList.ReadASCIIFile(aFileName); \end{verbatim}
+\item Add events manually
+\begin{verbatim} aList.AddPoint(aQvalue,anEnergyRecoil,aSigmaIon,aSigmaHeat); \end{verbatim}
+\end{enumerate}
+\item Draw the events in an empty frame
+\begin{verbatim} aList.Draw(anOption = ""); \end{verbatim}
+\end{enumerate}
+
+The default values of the empty frame ($E_{recoil} = 0..1000 keV$, $Q = 0..2$) can be changed with set methods
+\begin{verbatim}
+aList.SetQvalueMax(aNewQvalueMin);
+aList.SetQvalueMin(aNewQvalueMin);
+aList.SetEnergyRecoilMax(aNewEnergyRecoilMax);
+aList.SetEnergyRecoilMin(aNewEnergyRecoilMin);
+\end{verbatim}
+
+The list of points can be cleared by
+\begin{verbatim}
+aList.ClearPoints();
+\end{verbatim}
+and single events can be removed by
+\begin{verbatim}
+aListRemovePoint(anIndex);
+\end{verbatim}
+In order to find valid indices the size of the list can be retrieved by
+\begin{verbatim}
+UInt_t aSize = aList.GetEntries();
+\end{verbatim}
+
+Also single events can be created and drawn:
+\begin{verbatim}
+KQContourPoint anEvent(aQvalue,
+                       anEnergyRecoil,
+                       aSigmaIon,
+                       aSigmaHeat,
+                       aSigmaIonHeat,
+                       aConfidenceLevel,
+                       aVoltageBias,
+                       anEpsilon);
+anEvent.Draw(anOption="");
+\end{verbatim}
+In case that there might be changes necessary on the empty frame or the contour function, they can directly be retrieved by
+\begin{verbatim}
+TF2* aFunction = aList.GetEmptyFrame();
+TF2* aFunction = anEvent.GetFunction();
+\end{verbatim}
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+\end{document}
