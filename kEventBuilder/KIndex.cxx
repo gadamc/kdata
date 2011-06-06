@@ -99,6 +99,7 @@ Int_t KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts)
 		Int_t currentEntries=CheckTimeRestarts(macs);
 		if(currentEntries > 0){
 			fN=RemoveEntriesFromList();
+			fNeedFurtherProcessing=true;
 		}
 		else{
 			fNeedFurtherProcessing=false;
@@ -130,6 +131,7 @@ Int_t KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts)
 		Int_t currentEntries=CheckTimeRestarts(macs);
 		if(currentEntries > 0){
 			fN=RemoveEntriesFromList();
+			fNeedFurtherProcessing=true;
 			cout << "KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts): Removed entries after restart from current merging. To be processed later" << endl;
 		}
 	}
@@ -199,8 +201,8 @@ Int_t KIndex::CheckTimeRestarts(Short_t* macs){
 	cout << "KIndex::CheckTimeRestarts(Short_t* macs) entered" << endl;
 	Bool_t restart=false;
 	fEntriesToRemove= new Int_t[fR->GetEntries()];
-	Int_t *stampOfRestart=new Int_t[100];
-	Int_t *lastStamp=new Int_t[100];
+	Long64_t *stampOfRestart=new Long64_t[100];
+	Long64_t *lastStamp=new Long64_t[100];
 	for(Int_t i=0; i<100; i++){
 			stampOfRestart[i]=0;
 			lastStamp[i]=0;
@@ -211,15 +213,21 @@ Int_t KIndex::CheckTimeRestarts(Short_t* macs){
 			cout << "KIndex::CheckTimeRestarts(Short_t* macs) Mac["<<i<<"] is present in the data." << endl;
 		}
 	}
+	cout << fN << " " << fIndex[1] <<  endl;
+	//char goOn;
 	for(Int_t j=0; j<fN; j++){
 		fR->GetEntry(fIndex[j]);
+		//if(fIndex[j]!=j)cout << j << " "<< fIndex[j] << endl;
 		Int_t k=0;
-			if(-lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()]+fE->GetStamp()<-1e5){//time Restart stamp jump back of a second or more
-					cout << "KIndex::CheckTimeRestarts(Short_t* macs): restart at " << lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()] <<" " << fE->GetStamp() << " "<< fE->GetSamba(k)->GetNtpDateSec() << endl;
+			if((-lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()]+fE->GetEventTriggerStamp())<-1e5){//time Restart stamp jump back of 1 second or more
+					cout << "KIndex::CheckTimeRestarts(Short_t* macs): restart at Mac" << fE->GetSamba(k)->GetSambaDAQNumber()<<" " << fE->GetSamba(k)->GetSambaEventNumber()<<" " << lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()] <<" " << fE->GetStamp() << " "<< fE->GetSamba(k)->GetNtpDateSec() << endl;
+					//cin >> goOn;
 					restart=true;
 					stampOfRestart[fE->GetSamba(k)->GetSambaDAQNumber()]=lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()];
 			}
-			lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()]=fE->GetStamp();
+			//cout << "KIndex::CheckTimeRestarts(Short_t* macs): lastStamp at Mac" << fE->GetSamba(k)->GetSambaDAQNumber() <<" " << fE->GetSamba(k)->GetSambaEventNumber()<< " " << lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()] <<" " << fE->GetStamp() << " "<< fE->GetSamba(k)->GetNtpDateSec() << endl;
+			lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()]=fE->GetEventTriggerStamp();
+			//cout << "KIndex::CheckTimeRestarts(Short_t* macs): lastStamp at Mac" << fE->GetSamba(k)->GetSambaDAQNumber() <<" " << fE->GetSamba(k)->GetSambaEventNumber()<< " " << lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()] <<" " << fE->GetStamp() << " "<< fE->GetSamba(k)->GetNtpDateSec() << endl;
 			if(stampOfRestart[fE->GetSamba(k)->GetSambaDAQNumber()]>0){//add event to exclude list
 				fEntriesToRemove[l]=fIndex[j];
 				l++;
