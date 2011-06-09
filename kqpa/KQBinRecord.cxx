@@ -7,6 +7,8 @@
 //
 // * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
+// THis class stores information about a bin and is used to build a sorted list
+// of bins with ascending order of bin contents
 
 #include "KQBinRecord.h"
 
@@ -22,4 +24,6 @@ KQBinRecord::KQBinRecord(Int_t anX,
                          Double_t aBinContent)
                          : fX(anX), fY(anY), fBinContent(aBinContent)
 {
+  // constructor
+  //
 }

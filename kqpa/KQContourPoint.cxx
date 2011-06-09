@@ -38,6 +38,16 @@ KQContourPoint::KQContourPoint(Double_t aQvalue,
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
   fConfidenceLevel(aConfidenceLevel)
 {
+  // The constructor generates the pdf g(E_recoil,Q)
+  // (documentation in ~/doc/ERecoiLQDistribution.pdf)
+  // and sets the  specified fixed parameters
+  // The uncertainties in E_recoil and Q direction are estimated
+  // by standard error propagation and then the ranges of the function
+  // set to the modal values (aQvalue, anEnergyRecoil)
+  // +/- a specified multiple of them
+  // A marker is set for the modal values and a contour line for the specified
+  // confidence level
+  
   
   Double_t aSigmaEnergyRecoil = TMath::Sqrt(
   (1+ fVoltageBias/fEpsilon)*(1+fVoltageBias/fEpsilon)*fSigmaEnergyHeat*
@@ -103,6 +113,9 @@ KQContourPoint::~KQContourPoint()
 
 void KQContourPoint::SetConfidenceLevel(Double_t aConfidenceLevel)
 {
+  // This method changes the confidence level and adjusts the single contour
+  // line of the function
+  
   fConfidenceLevel = aConfidenceLevel;
   KQContour aContour(fFunction);
   fFunction->SetContour(1);
@@ -112,7 +125,8 @@ void KQContourPoint::SetConfidenceLevel(Double_t aConfidenceLevel)
 
 void KQContourPoint::Draw(Option_t* anOption)
 {
-  //draws the event
+  // This method draws the event
+  // (marker for the modal values and contour line for the confidence region)
   fFunction->Draw(anOption);
   fMarker->Draw("same");
 }
@@ -120,12 +134,15 @@ void KQContourPoint::Draw(Option_t* anOption)
 void KQContourPoint::SetRange(Double_t xmin, Double_t ymin,
                               Double_t xmax, Double_t ymax)
 {
+  //This method sets the range of the function
   fFunction->SetRange(xmin,ymin,xmax,ymax);
 }
 
 TH2D* KQContourPoint::GetHistogram()
 {
-  //This method returns the 
+  // This method returns a hard copy of a histogram representing the
+  // (E_recoil,Q)-distribution,which was  used to determine the contour line for
+  // the specified confidence level
   KQContour aContour(fFunction);
   return aContour.GetHistogram();
 }
