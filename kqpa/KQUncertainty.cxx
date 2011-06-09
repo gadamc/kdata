@@ -110,11 +110,11 @@ Double_t KQUncertainty::GetCovarianceQERecoil(Double_t anIonEnergy,
   // #vec{q} = #(){#splitline{E_{Recoil}}{Q}}
   // END_LATEX
   // BEGIN_LATEX
-  // #vec{r} = #(){#splitline{E_{Ion}}{E_{Heat}}
+  // #vec{r} = #(){#splitline{E_{Ion}}{E_{Heat}}}
   // END_LATEX
   // and the Jacobian
   // BEGIN_LATEX
-  // J = #(){#splitline{#frac{#partial E_{Recoil}}{#partial E_{Ion}}}{#frac{#partial Q}{#partial E_{Heat}}} #splitline{#frac{#partial E_{Recoil}}{#partial E_{Ion}}}{#frac{#partial Q}{#partial E_{Heat}}}}
+  // J = #frac{ #partial #vec{q}}{#partial #vec{r}}
   // END_LATEX
   // is given, then the covariance matrix is calculated then by error propagation
   // BEGIN_LATEX

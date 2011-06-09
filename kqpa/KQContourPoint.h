@@ -20,17 +20,18 @@
 
 class KQContourPoint {
   private:
-    Double_t fQvalue;
-    Double_t fEnergyRecoil;
-    Double_t fSigmaEnergyIon;
-    Double_t fSigmaEnergyHeat;
-    Double_t fSigmaEnergyIonHeat;
-    Double_t fVoltageBias;
-    Double_t fEpsilon;
-    Double_t fConfidenceLevel;
-    Double_t fConfidenceLevelError;
-    TF2* fFunction;
-    TMarker* fMarker;
+    Double_t fQvalue; // Q value
+    Double_t fEnergyRecoil; // recoil energy
+    Double_t fSigmaEnergyIon; // uncertainty on the ion energy
+    Double_t fSigmaEnergyHeat; // uncertainty on the  heat energy
+    Double_t fSigmaEnergyIonHeat; // root of covariance between the ion and
+    // heat energy
+    Double_t fVoltageBias; // voltage bias
+    Double_t fEpsilon; // epsilon_gamma
+    Double_t fConfidenceLevel; // confidence level
+    Double_t fConfidenceLevelError; // uncertainty on the confidence level
+    TF2* fFunction; // function representing the pdf g(E_recoil,Q)
+    TMarker* fMarker; // marker representing the modal value (E_recoil,Q)
   public:
     KQContourPoint(Double_t aQvalue = 0,
                    Double_t anEnergyRecoil = 0,

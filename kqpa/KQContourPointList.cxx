@@ -7,6 +7,21 @@
 //
 // * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
+// This class is used to draw multiple KQContourPoints in the same frame
+// The user can manually add events by calling
+//   void KQContourPointList::AddPoint(Double_t aQvalue,
+//             Double_t anEnergyRecoil,
+//             Double_t aSigmaIon,
+//             Double_t aSigmaHeat)
+//
+//  or he can read ASCII files by calling
+//    void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
+//                                       const Char_t aMode)
+//
+// Then he can draw the events by calling
+//        void Draw(Option_t* anOption = "");
+//  or print the events by calling
+//   void KQContourPointList::ShowPoints()
 
 #include "KQContourPointList.h" 
 
@@ -23,6 +38,8 @@ KQContourPointList::KQContourPointList(const Char_t* aFileName,
 fEnergyRecoilMax(anEnergyRecoilMax), fQvalueMin(aQvalueMin),
 fQvalueMax(aQvalueMax)
 {
+  // The constructor generates an empty frame with the specified range
+  
   fEmptyFrame = new TF2("emptyframe",
                         "0*x*y",
                         fEnergyRecoilMin,
@@ -41,6 +58,7 @@ KQContourPointList::~KQContourPointList()
 
 void KQContourPointList::UpdateEmptyFrame()
 {
+  // This method updates the empty frame if the ranges change
   if(fEmptyFrame) {
     fEmptyFrame->SetRange(fEnergyRecoilMin,
                           fQvalueMin,
@@ -51,10 +69,19 @@ void KQContourPointList::UpdateEmptyFrame()
   }
 }
 
-void KQContourPointList::ReadASCIIFile(const Char_t* aFileName)
+void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
+                                       const Char_t* aMode)
 {
+  // This method reads an ASCII file and builds a list of KQContourPoints
+  // Depending form the specified mode a different format of the lines is
+  // expected:
+ //
+ // aMode = "QERecoil":    < Q > <E_recoil> <sigma_ion> <sigma_heat>
+ 
   if(strcmp(aFileName,""))
     fFileName = aFileName;
+  if(strcmp(aMode,""))
+    fMode = aMode;
   
   if(strcmp(fFileName.c_str(),""))
   {
@@ -125,7 +152,8 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName)
 
 void KQContourPointList::Draw(Option_t* anOption)
 {
-  //draws all events in the list
+  //This method draws all events in the list (marker + contour line)
+  //in the empty frame
   fEmptyFrame->SetRange(fEnergyRecoilMin,
                         fQvalueMin,
                         fEnergyRecoilMax,
@@ -148,6 +176,7 @@ void KQContourPointList::AddPoint(Double_t aQvalue,
               Double_t aSigmaIon,
               Double_t aSigmaHeat)
 {
+  //This method adds a point to the list of events
   fPoints.push_back(new KQContourPoint(aQvalue,
                                        anEnergyRecoil,
                                        aSigmaIon,
@@ -156,11 +185,13 @@ void KQContourPointList::AddPoint(Double_t aQvalue,
 
 void KQContourPointList::ClearPoints()
 {
+  // This method clears the events
   fPoints.clear();
 }
 
 void KQContourPointList::RemovePoint(UInt_t anIndex)
 {
+  // This method removes a single event from the list
   if(anIndex>=fPoints.size()) {
     cout << "void KQContourPointList::RemovePoint(): index out of range, must"
     << " be smaller than " << fPoints.size() << endl;
@@ -171,6 +202,7 @@ void KQContourPointList::RemovePoint(UInt_t anIndex)
 
 void KQContourPointList::ShowPoints()
 {
+  //This methods prints the parameters of all events in the list
   for(UInt_t k = 0; k< fPoints.size(); ++k) {
     cout << setw(4) << "Q: " << setw(15) <<  fPoints[k]->GetQvalue() 
     << setw(10) << "E_recoil: " << setw(15) << 

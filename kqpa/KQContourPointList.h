@@ -28,14 +28,14 @@ using namespace std;
 
 class KQContourPointList {
   private:
-    string fMode;
-    string fFileName;
-    vector<KQContourPoint*> fPoints;
-    Double_t fEnergyRecoilMin;
-    Double_t fEnergyRecoilMax;
-    Double_t fQvalueMin;
-    Double_t fQvalueMax;
-    TF2* fEmptyFrame;   
+    string fMode; // file reading mode
+    string fFileName; // ASCII filename
+    vector<KQContourPoint*> fPoints; // data points
+    Double_t fEnergyRecoilMin; // minimal recoil energy of the empty frame
+    Double_t fEnergyRecoilMax; // maximal recoil energy of the empty frame
+    Double_t fQvalueMin; // minimal Q value of the empty frame
+    Double_t fQvalueMax; // maximal Q value of the empty frame
+    TF2* fEmptyFrame;   // function representing the empty frame
     void UpdateEmptyFrame();
     
   public:
@@ -88,7 +88,8 @@ class KQContourPointList {
         return fPoints[anIndex];
     }
     
-    void ReadASCIIFile(const Char_t* aFileName = "");
+    void ReadASCIIFile(const Char_t* aFileName = "",
+                       const Char_t* aMode = "");
     void Draw(Option_t* anOption = "");
     void AddPoint(Double_t aQvalue,
               Double_t anEnergyRecoil,
