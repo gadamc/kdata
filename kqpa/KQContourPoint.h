@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KQContourPoint.cxx
+// KQContourPoint.h
 // KDataStructure
 //
 // Author: Daniel Wegner <mailto:Daniel.Wegner@student.kit.edu> on 4/28/11.
@@ -22,6 +22,8 @@ class KQContourPoint {
   private:
     Double_t fQvalue; // Q value
     Double_t fEnergyRecoil; // recoil energy
+    Double_t fEnergyIon; // ion energy
+    Double_t fEnergyHeat; // heat energy
     Double_t fSigmaEnergyIon; // uncertainty on the ion energy
     Double_t fSigmaEnergyHeat; // uncertainty on the  heat energy
     Double_t fSigmaEnergyIonHeat; // root of covariance between the ion and
@@ -33,8 +35,9 @@ class KQContourPoint {
     TF2* fFunction; // function representing the pdf g(E_recoil,Q)
     TMarker* fMarker; // marker representing the modal value (E_recoil,Q)
   public:
-    KQContourPoint(Double_t aQvalue = 0,
-                   Double_t anEnergyRecoil = 0,
+    KQContourPoint(Double_t aQvalueOrEnergyIon = 0,
+                   Double_t anEnergyRecoilOrEnergyHeat = 0,
+                   const Char_t* aMode = "QErecoil",
                    Double_t aSigmaIon = 0,
                    Double_t aSigmaHeat = 0,
                    Double_t aSigmaIonHeat = 0,
@@ -47,8 +50,10 @@ class KQContourPoint {
                   );
     ~KQContourPoint();
 
-    void SetQvalue(Double_t aQvalue) { fQvalue = aQvalue; }
-    void SetEnergyRecoil(Double_t anEnergyRecoil) { fEnergyRecoil = anEnergyRecoil; }
+    void SetQvalue(Double_t aQvalue);
+    void SetEnergyRecoil(Double_t anEnergyRecoil);
+    void SetEnergyIon(Double_t anEnergyIon);
+    void SetEnergyHeat(Double_t anEnergyHeat);
     void SetSigmaEnergyHeat(Double_t aSigmaEnergyHeat) { fSigmaEnergyHeat = aSigmaEnergyHeat; }
     void SetSigmaEnergyIon(Double_t aSigmaEnergyIon) { fSigmaEnergyIon = aSigmaEnergyIon; }
     void SetSigmaIonHeat(Double_t aSigmaEnergyIonHeat) { fSigmaEnergyIonHeat = aSigmaEnergyIonHeat; }
@@ -60,6 +65,8 @@ class KQContourPoint {
 
     Double_t GetQvalue() const { return fQvalue; }
     Double_t GetEnergyRecoil() const { return fEnergyRecoil; }
+    Double_t GetEnergyIon() const { return fEnergyIon; }
+    Double_t GetEnergyHeat() const { return fEnergyHeat; }
     Double_t GetSigmaEnergyHeat() const { return fSigmaEnergyHeat; }
     Double_t GetSigmaEnergyIon() const { return fSigmaEnergyIon; }
     Double_t GetSigmaEnergyIonHeat() const { return fSigmaEnergyIonHeat; }

@@ -76,7 +76,8 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
   // Depending form the specified mode a different format of the lines is
   // expected:
  //
- // aMode = "QERecoil":    < Q > <E_recoil> <sigma_ion> <sigma_heat>
+ // aMode = "QErecoil":    < Q > <E_recoil> <sigma_ion> <sigma_heat>
+ // aMode = "IonHeat": <E_ion> <E_heat> <sigma_ion> <sigma_heat>
  
   if(strcmp(aFileName,""))
     fFileName = aFileName;
@@ -94,7 +95,7 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
     TObjString* anElement;
     Int_t aLineCounter = 0;
     
-    if(fMode=="QERecoil")
+    if(fMode=="QErecoil")
       while(!is.eof())
       {
         //is >> aQvalue >> anEnergyRecoil >> aSigmaIon >> aSigmaHeat;
@@ -129,18 +130,49 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         aSigmaHeat = anElement->GetString().Atof();
           
         fPoints.push_back(new KQContourPoint(aQvalue, anEnergyRecoil,
+                                             "QErecoil",
                                             aSigmaIon, aSigmaHeat));
         cout << "... event " << fPoints.size() << " processed" << endl;
       }
-      /* //has to be implemented
       else
-    if(fMode=="EIonEHeat")
+    if(fMode=="IonHeat")
       while(!is.eof())
       {
-        is >> anEnergyIon >> anEnergyHeat >> aSigmaIon, aSigmaHeat;
-        fPoints.push_back(new KQContourPoint(
+        //is >> aQvalue >> anEnergyRecoil >> aSigmaIon >> aSigmaHeat;
+        ++aLineCounter;
+        is.getline(aCString,100);
+        aString = aCString;
+        theTokens = aString.Tokenize(" ");
+        
+        //empty lines
+        if(!theTokens->GetEntries())
+          continue;
+        
+        //comment lines 
+        anElement = (TObjString*)theTokens->At(0);
+        if(anElement->GetString()=="#") 
+          continue;
+        
+        if(theTokens->GetEntries()!=4) {
+          cout << "KQContourPointList::ReadASCIIFile(): invalid format in line "
+          << aLineCounter <<", 4 Double_t values <E_ion> <E_heat> <sigma_ion>"
+          << " <sigma_heat> expected " << endl;
+          continue;
+        }
+        
+        anElement = (TObjString*)theTokens->At(0);
+        anEnergyIon = anElement->GetString().Atof();
+        anElement = (TObjString*)theTokens->At(1);
+        anEnergyHeat = anElement->GetString().Atof();
+        anElement = (TObjString*)theTokens->At(2);
+        aSigmaIon = anElement->GetString().Atof();
+        anElement = (TObjString*)theTokens->At(3);
+        aSigmaHeat = anElement->GetString().Atof();
+          
+        fPoints.push_back(new KQContourPoint(anEnergyIon, anEnergyHeat,
+                                             "IonHeat",aSigmaIon, aSigmaHeat));
+        cout << "... event " << fPoints.size() << " processed" << endl;
       }
-      */
   }
   else
   {
@@ -171,14 +203,15 @@ void KQContourPointList::Draw(Option_t* anOption)
   }
 }
 
-void KQContourPointList::AddPoint(Double_t aQvalue,
-              Double_t anEnergyRecoil,
+void KQContourPointList::AddPoint(Double_t aQvalueOrEnergyIon,
+              Double_t anEnergyRecoilOrEnergyHeat,
               Double_t aSigmaIon,
               Double_t aSigmaHeat)
 {
   //This method adds a point to the list of events
-  fPoints.push_back(new KQContourPoint(aQvalue,
-                                       anEnergyRecoil,
+  fPoints.push_back(new KQContourPoint(aQvalueOrEnergyIon,
+                                       anEnergyRecoilOrEnergyHeat,
+                                       fMode.c_str(),
                                        aSigmaIon,
                                        aSigmaHeat));
 }
