@@ -6,12 +6,14 @@
 \usepackage{geometry}
 \geometry{hmargin=2cm,top=2cm,bottom=2cm}
 
-
-\title{HowTo_Draw_Confidence_Regions}
+\title{HowTo Draw Confidence Regions}
 \author{Daniel Wegner}
 
 \begin{document}
 
+\maketitle
+
+\section{Standard use}
 
 In order to draw contour lines representing 90\% confidence regions for single EDW events one has to do the following steps:
 
@@ -19,17 +21,24 @@ In order to draw contour lines representing 90\% confidence regions for single E
 \item Load the kqpa library.
 \begin{verbatim} gSystem->Load("$KDATA_ROOT/lib/libkqpa.so"); \end{verbatim}
 \item Make a KQContourPointList object.
-\begin{verbatim} KQContourPointList aList; \end{verbatim}
-\item Fill the list with points (Q, ERecoil, $\sigma_{E_{ion}}$ , $\sigma_{E_{heat}}$)
+\begin{verbatim} KQContourPointList aList("QErecoil"); \end{verbatim}
+or 
+\begin{verbatim} KQContourPointList aList("IonHeat"); \end{verbatim}
+\item Fill the list with points ($Q$, $E_{Recoil}$, $\sigma_{E_{ion}}$ , $\sigma_{E_{heat}}$) or ($E_{ion}$, $E_{heat}$ , $\sigma_{E_{ion}}$, $\sigma_{E_{heat}}$)
+
 \begin{enumerate}
-\item Read an ASCII file in the current working directory with lines of the form <$Q$> <$E_{recoil}$> <$\sigma_{E_{ion}}$> <$\sigma_{E_{heat}}$> 
+\item Read an ASCII file in the current working directory with lines of the form \\ <$Q$> <$E_{recoil}$> <$\sigma_{E_{ion}}$> <$\sigma_{E_{heat}}$> for mode "QErecoil" \\
+ <$E_{ion}$> <$E_{heat}$> <$\sigma_{E_{ion}}$> <$\sigma_{E_{heat}}$> for mode "IonHeat"
 \begin{verbatim} aList.ReadASCIIFile(aFileName); \end{verbatim}
 \item Add events manually
-\begin{verbatim} aList.AddPoint(aQvalue,anEnergyRecoil,aSigmaIon,aSigmaHeat); \end{verbatim}
+\begin{verbatim} aList.AddPoint(aQvalue,anEnergyRecoil,aSigmaIon,aSigmaHeat); \end{verbatim} for mode "QErecoil"
+\begin{verbatim} aList.AddPoint(anEnergyIon,anEnergyHeat,aSigmaIon,aSigmaHeat); \end{verbatim} for mode "IonHeat"
 \end{enumerate}
 \item Draw the events in an empty frame
 \begin{verbatim} aList.Draw(anOption = ""); \end{verbatim}
 \end{enumerate}
+
+\section{Additional features}
 
 The default values of the empty frame ($E_{recoil} = 0..1000 keV$, $Q = 0..2$) can be changed with set methods
 \begin{verbatim}
@@ -56,6 +65,7 @@ Also single events can be created and drawn:
 \begin{verbatim}
 KQContourPoint anEvent(aQvalue,
                        anEnergyRecoil,
+                       "QERecoil",
                        aSigmaIon,
                        aSigmaHeat,
                        aSigmaIonHeat,
@@ -64,23 +74,25 @@ KQContourPoint anEvent(aQvalue,
                        anEpsilon);
 anEvent.Draw(anOption="");
 \end{verbatim}
+or
+\begin{verbatim}
+KQContourPoint anEvent(anEnergyIon,
+                       anEnergyHeat,
+                       "IonHeat",
+                       aSigmaIon,
+                       aSigmaHeat,
+                       aSigmaIonHeat,
+                       aConfidenceLevel,
+                       aVoltageBias,
+                       anEpsilon);
+anEvent.Draw(anOption="");
+\end{verbatim}
+
 In case that there might be changes necessary on the empty frame or the contour function, they can directly be retrieved by
 \begin{verbatim}
 TF2* aFunction = aList.GetEmptyFrame();
 TF2* aFunction = anEvent.GetFunction();
 \end{verbatim}
-
-
-
-
-
-
-
-
-
-
-
- 
 
 
 \end{document}

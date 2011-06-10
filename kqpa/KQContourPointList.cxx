@@ -27,8 +27,8 @@
 
 ClassImp(KQContourPointList);
 
-KQContourPointList::KQContourPointList(const Char_t* aFileName,
-                                       const Char_t* aMode,
+KQContourPointList::KQContourPointList(const Char_t* aMode,
+                                       const Char_t* aFileName,
                                        Double_t anEnergyRecoilMin,
                                        Double_t anEnergyRecoilMax,
                                        Double_t aQvalueMin,
