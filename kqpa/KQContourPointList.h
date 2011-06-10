@@ -39,8 +39,8 @@ class KQContourPointList {
     void UpdateEmptyFrame();
     
   public:
-    KQContourPointList(const Char_t* aFileName = "",
-                       const Char_t* aMode ="QErecoil",
+    KQContourPointList( const Char_t* aMode ="QErecoil",
+                        const Char_t* aFileName = "",
                        Double_t  anEnergyRecoilMin = 0,
                        Double_t anEnergyRecoilMax = 1000,
                        Double_t aQvalueMin = 0,
