@@ -40,7 +40,7 @@ class KQContourPointList {
     
   public:
     KQContourPointList(const Char_t* aFileName = "",
-                       const Char_t* aMode ="QERecoil",
+                       const Char_t* aMode ="QErecoil",
                        Double_t  anEnergyRecoilMin = 0,
                        Double_t anEnergyRecoilMax = 1000,
                        Double_t aQvalueMin = 0,
@@ -69,8 +69,7 @@ class KQContourPointList {
       fQvalueMax = aQvalueMax;
       UpdateEmptyFrame();
     }
-    
-    //getters
+   
     Double_t GetEnergyRecoilMin() const { return fEnergyRecoilMin; }
     Double_t GetEnergyRecoilMax() const { return fEnergyRecoilMax; }
     Double_t GetQvalueMin() const { return fQvalueMin; }
