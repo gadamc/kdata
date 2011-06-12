@@ -34,6 +34,10 @@ class KQContourPoint {
     Double_t fConfidenceLevelError; // uncertainty on the confidence level
     TF2* fFunction; // function representing the pdf g(E_recoil,Q)
     TMarker* fMarker; // marker representing the modal value (E_recoil,Q)
+    Int_t fNumBinsX; // number of bins in X direction of the
+    // distribution histogram
+    Int_t fNumBinsY; // number of bins in Y direction of the 
+    // distribution histogram
   public:
     KQContourPoint(Double_t aQvalueOrEnergyIon = 0,
                    Double_t anEnergyRecoilOrEnergyHeat = 0,
@@ -44,8 +48,8 @@ class KQContourPoint {
                    Double_t aConfidenceLevel = 0.9,
                    Double_t aVoltageBias = 8.0,
                    Double_t anEpsilon = 3.0,
-                   Double_t anNpx = 1000,
-                   Double_t anNpy = 1000,
+                   Double_t aNumBinsX = 1000,
+                   Double_t aNumBinsY = 1000,
                    Double_t aNumSigmas = 10
                   );
     ~KQContourPoint();
@@ -54,6 +58,8 @@ class KQContourPoint {
     void SetEnergyRecoil(Double_t anEnergyRecoil);
     void SetEnergyIon(Double_t anEnergyIon);
     void SetEnergyHeat(Double_t anEnergyHeat);
+    void SetNumBinsX(Int_t aNumBinsX);
+    void SetNumBinsY(Int_t aNumBinsY);
     void SetSigmaEnergyHeat(Double_t aSigmaEnergyHeat) { fSigmaEnergyHeat = aSigmaEnergyHeat; }
     void SetSigmaEnergyIon(Double_t aSigmaEnergyIon) { fSigmaEnergyIon = aSigmaEnergyIon; }
     void SetSigmaIonHeat(Double_t aSigmaEnergyIonHeat) { fSigmaEnergyIonHeat = aSigmaEnergyIonHeat; }
@@ -67,6 +73,8 @@ class KQContourPoint {
     Double_t GetEnergyRecoil() const { return fEnergyRecoil; }
     Double_t GetEnergyIon() const { return fEnergyIon; }
     Double_t GetEnergyHeat() const { return fEnergyHeat; }
+    Int_t GetNumBinsX() const { return fNumBinsX; }
+    Int_t GetNumBinsY() const { return fNumBinsY; }
     Double_t GetSigmaEnergyHeat() const { return fSigmaEnergyHeat; }
     Double_t GetSigmaEnergyIon() const { return fSigmaEnergyIon; }
     Double_t GetSigmaEnergyIonHeat() const { return fSigmaEnergyIonHeat; }

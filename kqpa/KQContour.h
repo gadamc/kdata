@@ -40,7 +40,7 @@ class KQContour {
     KQContour(TF2* aFunction,
               Double_t aNumBinsX = 1000,
               Double_t aNumBinsY = 1000,
-              Double_t aNumEntries = 1000000 );
+              Double_t aNumEntries = 100000000 );
     
      void SetNumBinsX(Double_t aNumBinsX)
     { 

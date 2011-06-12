@@ -71,7 +71,10 @@ KQContourPoint anEvent(aQvalue,
                        aSigmaIonHeat,
                        aConfidenceLevel,
                        aVoltageBias,
-                       anEpsilon);
+                       anEpsilon,
+                       aNumBinsX,
+                       aNumBinsY,
+                       aNumSigmas;
 anEvent.Draw(anOption="");
 \end{verbatim}
 or
@@ -84,9 +87,15 @@ KQContourPoint anEvent(anEnergyIon,
                        aSigmaIonHeat,
                        aConfidenceLevel,
                        aVoltageBias,
-                       anEpsilon);
+                       anEpsilon,
+                       aNumBinsX,
+                       aNumBinsY,
+                       aNumSigmas);
 anEvent.Draw(anOption="");
 \end{verbatim}
+aNumBinsX and aNumBinsY are the dimensions of the distribution histogram from which the contour for the specified confidence level is determined.
+The default values (1000,1000) should and seem to be sufficient in most cases, but can be increased if needed. \\
+aNumSigmas (default 10) is the number of sigmas calculated by uncorrelated error propagation in $E_{recoil}$ and $Q$ to determine the ranges ($\overline{x} \pm n_{sigmas} \cdot \sigma_{x}$,$\overline{y} \pm n_{sigmas} \cdot \sigma_{y}$  whereas for means the specified or calculated center values for $E_{recoil}$ and $Q$ are assumed)  for the contour function (also the draw range if single draw). \\[0.5cm]
 
 In case that there might be changes necessary on the empty frame or the contour function, they can directly be retrieved by
 \begin{verbatim}
