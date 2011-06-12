@@ -48,6 +48,8 @@ fNumBinsY(aNumBinsY), fNumEntries(aNumEntries)
             fNumBinsX,fFunction->GetXmin(),fFunction->GetXmax(),
             fNumBinsY,fFunction->GetYmin(),fFunction->GetYmax());
   fHistogram->SetDirectory(0);
+  fHistogram->GetXaxis()->SetTitle("E_{recoil} [keV]");
+  fHistogram->GetYaxis()->SetTitle("Q");
   
   // list of  KQBinRecords is built
   Double_t aBinContent = 0;
@@ -168,7 +170,7 @@ Double_t KQContour::GetContour(Double_t aConfidenceLevel)
 
   Int_t aSum = 0;
   Int_t anIndex = fBins.size()-1;
-  for(;anIndex>=0 && aSum < aConfidenceLevel*fHistogram->GetEntries(); --anIndex)
+  for(;anIndex>=0 && aSum < aConfidenceLevel*fNumEntries; --anIndex)
     aSum += fBins[anIndex].GetBinContent();
   
   if(anIndex<0)
@@ -197,9 +199,11 @@ TH2D* KQContour::GetContourHistogram(Double_t aConfidenceLevel)
                               fHistogram->GetYaxis()->GetXmin(),
                               fHistogram->GetYaxis()->GetXmax());
   aContourHistogram->SetDirectory(0);
+  aContourHistogram->GetXaxis()->SetTitle("E_{recoil} [keV]");
+  aContourHistogram->GetYaxis()->SetTitle("Q");
   Int_t aSum = 0;
   Int_t anIndex = fBins.size()-1;
-  for(;anIndex>=0 && aSum < aConfidenceLevel*fHistogram->GetEntries(); --anIndex) {
+  for(;anIndex>=0 && aSum < aConfidenceLevel*fNumEntries; --anIndex) {
     aSum += fBins[anIndex].GetBinContent();
     aContourHistogram->SetBinContent(fBins[anIndex].GetX(),
                                      fBins[anIndex].GetY(),

@@ -29,15 +29,16 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
                                Double_t aConfidenceLevel,
                                Double_t aVoltageBias,
                                Double_t anEpsilon,
-                               Double_t anNpx,
-                               Double_t anNpy,
+                               Double_t aNumBinsX,
+                               Double_t aNumBinsY,
                                Double_t aNumSigmas
                               )
   : fQvalue(aQvalueOrEnergyIon), fEnergyRecoil(anEnergyRecoilOrEnergyHeat),
   fSigmaEnergyIon(aSigmaEnergyIon),
   fSigmaEnergyHeat(aSigmaEnergyHeat), fSigmaEnergyIonHeat(aSigmaEnergyIonHeat),
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
-  fConfidenceLevel(aConfidenceLevel)
+  fConfidenceLevel(aConfidenceLevel), fNumBinsX(aNumBinsX),
+  fNumBinsY(aNumBinsY)
 {
   // The constructor generates the pdf g(E_recoil,Q)
   // (documentation in ~/doc/ERecoiLQDistribution.pdf)
@@ -52,7 +53,7 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   if(!strcmp(aMode,"QErecoil"))
   {
     fEnergyIon = fQvalue* fEnergyRecoil;
-    fEnergyHeat = (1+ fQvalue*fVoltageBias/fEpsilon)/fVoltageBias/fEpsilon *
+    fEnergyHeat = (1+ fQvalue*fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
   }
   else
@@ -113,8 +114,8 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   fFunction->SetParameter(3,fSigmaEnergyHeat);
   fFunction->SetParameter(4,fSigmaEnergyIonHeat);
   fFunction->SetParameter(5,fVoltageBias/fEpsilon);
-  fFunction->SetNpx(anNpx);
-  fFunction->SetNpy(anNpy);
+  fFunction->SetNpx(2000);
+  fFunction->SetNpy(2000);
   fFunction->SetLineStyle(1);
   fFunction->GetXaxis()->SetTitle("E_{Recoil} [keV]");
   fFunction->GetYaxis()->SetTitle("Q");
@@ -141,7 +142,9 @@ void KQContourPoint::SetConfidenceLevel(Double_t aConfidenceLevel)
   // line of the function
   
   fConfidenceLevel = aConfidenceLevel;
-  KQContour aContour(fFunction);
+  KQContour aContour(fFunction,
+                     fNumBinsX,
+                     fNumBinsY);
   fFunction->SetContour(1);
   fFunction->SetContourLevel(0,aContour.GetContour(fConfidenceLevel));
   fConfidenceLevelError = aContour.GetConfidenceLevelError();
@@ -169,7 +172,9 @@ TH2D* KQContourPoint::GetHistogram()
   // (E_recoil,Q)-distribution,which was  used to determine the contour line for
   // the specified confidence level
   
-  KQContour aContour(fFunction);
+  KQContour aContour(fFunction,
+                     fNumBinsX,
+                     fNumBinsY);
   return aContour.GetHistogram();
 }
 
@@ -178,7 +183,9 @@ TH2D* KQContourPoint::GetContourHistogram()
   //This method returns a hard copy of a histogram which has bin contents of 1
   //for bins in the confidence region and 0 else
   
-  KQContour aContour(fFunction);
+  KQContour aContour(fFunction,
+                     fNumBinsX,
+                     fNumBinsY);
   return aContour.GetContourHistogram(fConfidenceLevel);
 }
 
@@ -189,7 +196,7 @@ void KQContourPoint::SetQvalue(Double_t aQvalue)
   
   fQvalue = aQvalue;
   fEnergyIon = fQvalue*fEnergyRecoil;
-  fEnergyHeat = (1+ fQvalue* fVoltageBias/fEpsilon)/fVoltageBias/fEpsilon *
+  fEnergyHeat = (1+ fQvalue* fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
   fFunction->SetParameter(0,fEnergyIon);
   fFunction->SetParameter(1,fEnergyHeat);
@@ -202,7 +209,7 @@ void KQContourPoint::SetEnergyRecoil(Double_t anEnergyRecoil)
   
   fEnergyRecoil = anEnergyRecoil;
   fEnergyIon = fQvalue* fEnergyRecoil;
-  fEnergyHeat = (1+ fQvalue*fVoltageBias/fEpsilon)/fVoltageBias/fEpsilon *
+  fEnergyHeat = (1+ fQvalue*fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
   fFunction->SetParameter(0,fEnergyIon);
   fFunction->SetParameter(1,fEnergyHeat);
@@ -232,6 +239,24 @@ void KQContourPoint::SetEnergyHeat(Double_t anEnergyHeat)
   fQvalue = fEnergyIon/fEnergyRecoil;
   fFunction->SetParameter(0,fEnergyIon);
   fFunction->SetParameter(1,fEnergyHeat);
+}
+
+void KQContourPoint::SetNumBinsX(Int_t aNumBinsX)
+{
+  // This method sets the number of bins in X direction of the  distribution
+ // distribution histogram and recalculates the contour for the specified
+ // confidence level with the new histogram
+  fNumBinsX = aNumBinsX;
+  SetConfidenceLevel(fConfidenceLevel);
+}
+
+void KQContourPoint::SetNumBinsY(Int_t aNumBinsY)
+{
+  // This method sets the number of bins in Y direction of the  distribution
+  // distribution histogram and recalculates the contour for the specified
+  // confidence level with the new histogram
+  fNumBinsY = aNumBinsY;
+  SetConfidenceLevel(fConfidenceLevel);
 }
 
 
