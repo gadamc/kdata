@@ -47,7 +47,7 @@ fNumBinsY(aNumBinsY), fNumEntries(aNumEntries)
   fHistogram = new TH2D("hist","hist",
             fNumBinsX,fFunction->GetXmin(),fFunction->GetXmax(),
             fNumBinsY,fFunction->GetYmin(),fFunction->GetYmax());
-  fHistogram->SetDirectory(0);
+  fHistogram->AddDirectory(0);
   fHistogram->GetXaxis()->SetTitle("E_{recoil} [keV]");
   fHistogram->GetYaxis()->SetTitle("Q");
   
@@ -198,7 +198,7 @@ TH2D* KQContour::GetContourHistogram(Double_t aConfidenceLevel)
                               fNumBinsY,
                               fHistogram->GetYaxis()->GetXmin(),
                               fHistogram->GetYaxis()->GetXmax());
-  aContourHistogram->SetDirectory(0);
+  aContourHistogram->AddDirectory(0);
   aContourHistogram->GetXaxis()->SetTitle("E_{recoil} [keV]");
   aContourHistogram->GetYaxis()->SetTitle("Q");
   Int_t aSum = 0;
