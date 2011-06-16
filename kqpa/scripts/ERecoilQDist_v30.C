@@ -62,9 +62,12 @@
 #include "TFileInfo.h"
 #include "THashList.h"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 TF2* fkt = 0;
+TF2* QMeanFkt = 0;
+TF2* ERecoilMeanFkt = 0;
 TH2D* mchist = 0;
 TH2D* pdfhist = 0; 
 TH2D* totalmchist = 0;
@@ -76,6 +79,7 @@ TFile* file = 0;
 TTree* tree = 0;
 Double_t chi2 = 0;
 Double_t ndf = 0;
+Double_t coverage = 0;
 
 TDirectory* Rint = gDirectory;
 
@@ -87,7 +91,6 @@ void ERecoilQDist_v30(Double_t anEIonMean = 100,
            Double_t anEHeatSigma = 1,
            Int_t aNumBinsX = 2000,
            Int_t aNumBinsY = 2000,
-           Int_t aNumTimes = 1,
            Long_t aNumEntries = 1E9,
            Double_t aV = 3,
            Double_t anEpsilon = 1,
@@ -138,6 +141,64 @@ void ERecoilQDist_v30(Double_t anEIonMean = 100,
   fkt->SetNpx(1000);
   fkt->SetNpy(1000);
   fkt->SetLineWidth(1);
+  
+    if(!gROOT->FindObject("QMeanf"))
+  {
+    QMeanFkt = new TF2("QMeanf",
+      "y*[0]/2/TMath::Pi()/[3]/[4]/(1+[5]/[6])*TMath::Abs(x)*"
+      "TMath::Exp(-0.5*((x*y-[1])*(x*y-[1])/[3]/[3]"
+      "+TMath::Power(((1+y*[5]/[6])/(1+[5]/[6])*x-[2])"
+      "/[4],2)))");
+    QMeanFkt->SetParName(0,"c");
+    QMeanFkt->SetParName(1,"#bar{E_{ion}}");
+    QMeanFkt->SetParName(2,"#bar{E_{heat}}");
+    QMeanFkt->SetParName(3,"#sigma_{E_{ion}}");
+    QMeanFkt->SetParName(4,"#sigma_{E_{heat}}");
+    QMeanFkt->SetParName(5,"V");
+    QMeanFkt->SetParName(6,"#epsilon_{#gamma}");
+  }
+    else
+      QMeanFkt = (TF2*)gROOT->FindObject("QMeanf");
+  QMeanFkt->SetParameter(0,1.);
+  QMeanFkt->FixParameter(1,anEIonMean);
+  QMeanFkt->FixParameter(2,anEHeatMean);
+  QMeanFkt->FixParameter(3,anEIonSigma);
+  QMeanFkt->FixParameter(4,anEHeatSigma);
+  QMeanFkt->FixParameter(5,aV);
+  QMeanFkt->FixParameter(6,anEpsilon);
+  QMeanFkt->SetNpx(1000);
+  QMeanFkt->SetNpy(1000);
+  QMeanFkt->SetLineWidth(1);
+  
+  if(!gROOT->FindObject("ERecoilMeanf"))
+  {
+    ERecoilMeanFkt = new TF2("ERecoilMeanf",
+      "x*[0]/2/TMath::Pi()/[3]/[4]/(1+[5]/[6])*TMath::Abs(x)*"
+      "TMath::Exp(-0.5*((x*y-[1])*(x*y-[1])/[3]/[3]"
+      "+TMath::Power(((1+y*[5]/[6])/(1+[5]/[6])*x-[2])"
+      "/[4],2)))");
+    ERecoilMeanFkt->SetParName(0,"c");
+    ERecoilMeanFkt->SetParName(1,"#bar{E_{ion}}");
+    ERecoilMeanFkt->SetParName(2,"#bar{E_{heat}}");
+    ERecoilMeanFkt->SetParName(3,"#sigma_{E_{ion}}");
+    ERecoilMeanFkt->SetParName(4,"#sigma_{E_{heat}}");
+    ERecoilMeanFkt->SetParName(5,"V");
+    ERecoilMeanFkt->SetParName(6,"#epsilon_{#gamma}");
+  }
+    else
+      ERecoilMeanFkt = (TF2*)gROOT->FindObject("ERecoilMeanf");
+  ERecoilMeanFkt->SetParameter(0,1.);
+  ERecoilMeanFkt->FixParameter(1,anEIonMean);
+  ERecoilMeanFkt->FixParameter(2,anEHeatMean);
+  ERecoilMeanFkt->FixParameter(3,anEIonSigma);
+  ERecoilMeanFkt->FixParameter(4,anEHeatSigma);
+  ERecoilMeanFkt->FixParameter(5,aV);
+  ERecoilMeanFkt->FixParameter(6,anEpsilon);
+  ERecoilMeanFkt->SetNpx(1000);
+  ERecoilMeanFkt->SetNpy(1000);
+  ERecoilMeanFkt->SetLineWidth(1);
+  
+  
   
     TString aFileName(TString::Format("%f_%f_%f_%f.root",
              anEIonMean,
@@ -332,9 +393,13 @@ mchist->GetBinContent(k,l) <<
       }
     }
     --ndf; 
+    
+    
+    coverage = nevents/mchist->GetEffectiveEntries();
+    
       cout << "percentage events mc/ pdf: " << aCorrectionFactor << endl;
     cout << nevents << " of " << mchist->GetEffectiveEntries() << " events"
-    << " = " << nevents/mchist->GetEffectiveEntries() << endl;
+    << " = " << coverage << endl;
     cout << "chi2 / ndf : " << chi2 << "/" << ndf << " = " << chi2/ndf << endl;
     cout << "TMath::Prob(chi2,ndf): " << TMath::Prob(chi2,ndf) << endl;
     cout << "histres filled" << endl;
@@ -348,17 +413,29 @@ void LoadFile(const Char_t* aFileName)
     file->Close();
   file = TFile::Open(aFileName);
   mchist = (TH2D*)file->Get("mchist");
- // fkt = (TF2*)mchist->GetFunction("f");
+  fkt = (TF2*)mchist->GetFunction("f");
   cout << " ... loading finished" << endl;
 }
 
 void MakeGraphs(const Char_t* aFileFormat = "pdf")
 {
+  ofstream ostex("evaluation.tex");
   TCanvas c1("c1","c1");
   TFileCollection aFileCollection("file collection","file collection");
   aFileCollection.Add("*.root");
   TString aFilePrefix;
   TFileInfo* info;
+  
+  vector<Double_t> chi2s;
+  vector<Double_t> ndfs;
+  vector<Double_t> chiprobs;
+  vector<Double_t> coverages;
+  vector<Double_t> EIonMeans;
+  vector<Double_t> EHeatMeans;
+  vector<Double_t> EIonSigmas;
+  vector<Double_t> EHeatSigmas;
+  vector<string> H0s;
+  
   for(Int_t k = 0; k< aFileCollection.GetNFiles(); ++k) {
     info = (TFileInfo*)aFileCollection.GetList()->At(k);
     LoadFile(info->GetFirstUrl()->GetFile());
@@ -370,40 +447,98 @@ void MakeGraphs(const Char_t* aFileFormat = "pdf")
     c1.SaveAs(TString::Format("%s_mchist.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
+    ostex << TString::Format("\\includegraphics{%s_mchist.%s}",
+                                           aFilePrefix.Data(),
+                                           aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_mchist.%s",
                             aFilePrefix.Data(),
                             aFileFormat).Data() << endl;
+                            
     mchist->ProjectionY()->Draw();
     c1.SaveAs(TString::Format("%s_py.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
+    ostex << TString::Format("\\includegraphics{%s_py.%s}",
+                             aFilePrefix.Data(),
+                             aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_py.%s",
                             aFilePrefix.Data(),
                             aFileFormat).Data() << endl;
+                            
     mchist->ProjectionX()->Draw();
     c1.SaveAs(TString::Format("%s_px.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
+    ostex << TString::Format("\\includegraphics{%s_px.%s}",
+                             aFilePrefix.Data(),
+                             aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_px.%s",
                             aFilePrefix.Data(),
                             aFileFormat).Data() << endl;
+                            
     histres->ProjectionY()->Draw();
+
     c1.SaveAs(TString::Format("%s_pyres.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
+    ostex << TString::Format("\\includegraphics{%s_pyres.%s}",
+                             aFilePrefix.Data(),
+                             aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_pyres.%s",
                             aFilePrefix.Data(),
                             aFileFormat).Data() << endl;
+                            
     histres->ProjectionX()->Draw();
     c1.SaveAs(TString::Format("%s_pxres.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
+    ostex << TString::Format("\\includegraphics{%s_pxres.%s}",
+                             aFilePrefix.Data(),
+                             aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_pxres.%s",
                             aFilePrefix.Data(),
                             aFileFormat).Data() << endl;
+                            
+    gaushist->Draw();
+    gaushist->Fit("gaus");
+    c1.SaveAs(TString::Format("%s_gaus.%s",
+                              aFilePrefix.Data(),
+                              aFileFormat).Data());
+    ostex << TString::Format("\\includegraphics{%s_gaus.%s}",
+                             aFilePrefix.Data(),
+                             aFileFormat).Data() << endl;
+                             
+     chi2s.push_back(chi2);
+     ndfs.push_back(ndf);
+     coverages.push_back(coverage);
+     chiprobs.push_back(TMath::Prob(chi2,ndf));
+     
+     if(TMath::Prob(chi2,ndf)>0.01)
+       H0s.push_back("yes");
+     else
+       H0s.push_back("no");
+     
 
   }
+  
+  ostex << endl;
+  ostex << "\\begin{minipage}{\\textwidth}" << endl;
+  ostex << "\\captionof{table}{$\\chi^2$ values for the corresponding parameter"
+  " combinations and acceptance of the null hypothesis $H_0$}" << endl;
+  ostex << "\\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|} \\hline" << endl;
+  ostex << "$\\overline{E_{Ion}}$ & $\\overline{E_{Heat}}$ & $\\sigma_{E_{Ion}}$"
+  " & $\\sigma_{E_{Heat}}$ & $\\chi^2$ & ndf & $n_{min}$ & "
+  " TMath::Prob($\\chi^2$,ndf) & CL of pdf & $H_0$ \\\\ \\hline \\hline" << endl;
+  for(Int_t k = 0; k< aFileCollection.GetNFiles(); ++k)
+    ostex << EIonMeans[k] << " & " << EHeatMeans[k] << " & " << 
+    EIonSigmas[k] << " & " << EHeatSigmas[k] << " & " << chi2s[k] << " & "
+    << ndfs[k] << " & " << coverages[k] << " & " << H0s[k].c_str()
+    << " \\\\ \\hline " << endl;
+  ostex << "\\end{tabular} \\\\[1cm] " << endl;
+    
+  
 }
+
 
   
            
