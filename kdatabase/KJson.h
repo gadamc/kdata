@@ -99,7 +99,7 @@ extern KJson *KJson_CreateTrue();
 extern KJson *KJson_CreateFalse();
 extern KJson *KJson_CreateBool(int b);
 extern KJson *KJson_CreateNumber(double num);
-extern KJson *KJson_CreateString(const char *string);
+extern KJson *KJson_CreateString(const char *key);
 extern KJson *KJson_CreateArray();
 extern KJson *KJson_CreateObject();
 
@@ -107,24 +107,24 @@ extern KJson *KJson_CreateObject();
 extern KJson *KJson_CreateIntArray(int *numbers,int count);
 extern KJson *KJson_CreateFloatArray(float *numbers,int count);
 extern KJson *KJson_CreateDoubleArray(double *numbers,int count);
-extern KJson *KJson_CreateStringArray(const char **strings,int count);
+extern KJson *KJson_CreateStringArray(const char **keys,int count);
 
 /* Append item to the specified array/object. */
 extern void KJson_AddItemToArray(KJson *array, KJson *item);
-extern void	KJson_AddItemToObject(KJson *object,const char *string,KJson *item);
+extern void	KJson_AddItemToObject(KJson *object,const char *key,KJson *item);
 /* Append reference to item to the specified array/object. Use this when you want to add an existing KJson to a new KJson, but don't want to corrupt your existing KJson. */
 extern void KJson_AddItemReferenceToArray(KJson *array, KJson *item);
-extern void	KJson_AddItemReferenceToObject(KJson *object,const char *string,KJson *item);
+extern void	KJson_AddItemReferenceToObject(KJson *object,const char *key,KJson *item);
 
 /* Remove/Detatch items from Arrays/Objects. */
 extern KJson *KJson_DetachItemFromArray(KJson *array,int which);
 extern void   KJson_DeleteItemFromArray(KJson *array,int which);
-extern KJson *KJson_DetachItemFromObject(KJson *object,const char *string);
-extern void   KJson_DeleteItemFromObject(KJson *object,const char *string);
+extern KJson *KJson_DetachItemFromObject(KJson *object,const char *key);
+extern void   KJson_DeleteItemFromObject(KJson *object,const char *key);
 	
   /* Update array items. */
 extern void KJson_ReplaceItemInArray(KJson *array,int which,KJson *newitem);
-extern void KJson_ReplaceItemInObject(KJson *object,const char *string,KJson *newitem);
+extern void KJson_ReplaceItemInObject(KJson *object,const char *key,KJson *newitem);
   
 extern void KJson_AddNullToObject(KJson* object,const char* name);
 extern void KJson_AddTrueToObject(KJson* object,const char* name);
