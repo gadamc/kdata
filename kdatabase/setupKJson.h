@@ -1,6 +1,7 @@
 {
-  gInterpreter->AddIncludePath("$KDATA_ROOT/include");
+  gInterpreter->AddIncludePath("$KDATA_ROOT/kdatabase");
   gSystem->Load("libkdatabase");
-  gROOT->ProcessLine(".L $KDATA_ROOT/include/KJson.h+");
+  gSystem->Exec("cp $KDATA_ROOT/kdatabase/KJson.cxx $PWD");
+  gROOT->ProcessLine(".L KJson.cxx++");
   
 }
