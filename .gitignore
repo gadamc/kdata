@@ -69,3 +69,4 @@
 *.o
 *_Dict.C
 *_Dict.h
+*.DS_Store
