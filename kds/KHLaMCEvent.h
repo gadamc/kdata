@@ -78,7 +78,7 @@ private:
 
   
   
-	ClassDef(KHLaMCEvent ,1);
+	ClassDef(KHLaMCEvent ,2);
 };
 
 

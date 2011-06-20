@@ -72,6 +72,7 @@ KDATABASE_CXX    := $(filter-out $(KDATABASE_ECXX),$(wildcard $(KDATABASE_DIRS)/
 KDATABASE_O      := $(KDATABASE_CXX:.cxx=.o)
 KDATABASE_EO     := $(KDATABASE_ECXX:.cxx=.o)
 KDATABASE_EH     := $(KDATABASE_ECXX:.cxx=.h)
+KDATABASE_DICTH  := $(KDATABASE_EH:.h=.h+)
 
 KDATABASE_EXE    := $(patsubst $(KDATABASE_DIRS)/%.cxx,bin/%,$(KDATABASE_CXX))
 
@@ -118,7 +119,7 @@ $(KDATABASE_DO):         $(KDATABASE_DC)
 
 $(KDATABASE_DC):         $(KDATABASE_EH) $(KDATABASE_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KDATABASE_XTRAINCS)  $(KDATABASE_EH) $(KDATABASE_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KDATABASE_XTRAINCS)  $(KDATABASE_DICTH) $(KDATABASE_LH) 
 
 # rule for building library
 $(KDATABASE_LIB):        $(KDATABASE_EO) $(KDATABASE_DO) $(KDATABASE_LIBDEP) 

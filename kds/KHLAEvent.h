@@ -181,7 +181,7 @@ private:
 	UInt_t GetLargestUniqueIDNumber(void);
   
 	
-	ClassDef(KHLAEvent ,3);
+	ClassDef(KHLAEvent ,4);
 };
 
 

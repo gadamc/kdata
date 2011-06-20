@@ -32,7 +32,7 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLABoloSysRecord &aSysRec);
-  ClassDef(KHLABoloSysRecord,1);
+  ClassDef(KHLABoloSysRecord,2);
 };
 
 

@@ -46,6 +46,7 @@ KSAMBA_CXX    := $(filter-out $(KSAMBA_ECXX),$(wildcard $(KSAMBA_DIRS)/*.cxx))
 KSAMBA_O      := $(KSAMBA_CXX:.cxx=.o)
 KSAMBA_EO     := $(KSAMBA_ECXX:.cxx=.o)
 KSAMBA_EH     := $(KSAMBA_ECXX:.cxx=.h)
+KSAMBA_DICTH  := $(KSAMBA_EH:.h=.h+)
 
 KSAMBA_EXE    := $(patsubst $(KSAMBA_DIRS)/%.cxx,bin/%,$(KSAMBA_CXX))
 
@@ -93,7 +94,7 @@ $(KSAMBA_DO):         $(KSAMBA_DC)
 
 $(KSAMBA_DC):         $(KSAMBA_EH) $(KSAMBA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KSAMBA_EH) $(KSAMBA_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KSAMBA_DICTH) $(KSAMBA_LH) 
 
 # rule for building library
 $(KSAMBA_LIB):        $(KSAMBA_EO) $(KSAMBA_DO) $(KSAMBA_LIBDEP)

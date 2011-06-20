@@ -55,7 +55,7 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KRawSambaRecord &aRec);
-  ClassDef(KRawSambaRecord,2);
+  ClassDef(KRawSambaRecord,3);
 };
 
 

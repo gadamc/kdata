@@ -37,7 +37,7 @@ private:
   void InitializeMembers(void);
 	void Add(TObject */*obj*/){	}  //remove this method from use
 	
-  ClassDef(KEventCollection,1);
+  ClassDef(KEventCollection,2);
 };
 
 

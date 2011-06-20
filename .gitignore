@@ -1,0 +1,71 @@
+
+# /
+/build
+/bin
+/lib
+/include
+
+# /KDataPy/scripts/
+/KDataPy/scripts/mergeKdataRawTest.py
+
+# /config/
+/config/setup_kdata.sh
+/config/setup_kdata.csh
+
+# /era/
+/era/*.o
+/era/*.d
+/era/ERA_LinkDef.h
+/era/ERADict.cxx
+/era/ERADict.h
+
+# /kds/
+/kds/*Dict.C
+/kds/*Dict.h
+/kds/*.o
+/kds/*.d
+/kds/mergeKEdsTree_cxx.so
+
+# /kdsScripts/
+/kdsScripts/new.root
+/kdsScripts/fillMuonVetoEvents_cc.so
+/kdsScripts/fillExample_cc.so
+/kdsScripts/concatDst_cc.so
+/kdsScripts/EdwT_log.txt
+/kdsScripts/filldstEvents_cc.so
+/kdsScripts/rootScript_localConcat.c
+/kdsScripts/processMuonVetoToEDSLocal.cc
+/kdsScripts/processMuonVetoToEDSLocal.c
+/kdsScripts/rootScript_concatMuon.c
+/kdsScripts/fillEraToEds_cc.so
+/kdsScripts/fillEraToKEds_cc.so
+/kdsScripts/mergeEdsTree_cc.so
+/kdsScripts/mergeEdsTreeTest.cc
+/kdsScripts/mergeKEdsTree_cc.so
+/kdsScripts/rootScript_concatBoloDst.c
+/kdsScripts/rootScript_concatBoloEraGamma.c
+/kdsScripts/rootScript_concatBoloEraNeutron.c
+/kdsScripts/rootScript_fillEraToKEdsEventsLocal.c
+/kdsScripts/rootScript_fillEraToKEdsEventsNeutron.c
+/kdsScripts/rootScript_mergeEdsTreesBolo.c
+/kdsScripts/rootScript_mergeEdsTreesLocal.c
+/kdsScripts/rootScript_mergeKEdsTreesNeutron.c
+
+# /kera/
+/kera/kera_Dict.C
+/kera/kera_Dict.h
+/kera/*.d
+/kera/*.o
+
+# /kpta/
+/kpta/kpsa_Dict.C
+/kpta/kpsa_Dict.h
+/kpta/*.d
+/kpta/*.o
+/kpta/kpta_Dict.C
+/kpta/kpta_Dict.h
+
+*.d
+*.o
+*_Dict.C
+*_Dict.h

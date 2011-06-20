@@ -100,7 +100,7 @@ private:
   
   UInt_t GetLargestUniqueIDNumber(void);
 
-	ClassDef(KRawEvent ,1);
+	ClassDef(KRawEvent ,2);
 };
 
 

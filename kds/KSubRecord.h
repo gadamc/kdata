@@ -34,7 +34,7 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	
-  ClassDef(KSubRecord,1);
+  ClassDef(KSubRecord,2);
 };
 
 

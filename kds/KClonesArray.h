@@ -33,7 +33,7 @@ public:
   virtual void Clear(Option_t *opt);
   virtual void RemoveAndCompress(TObject *obj);
   
-  ClassDef( KClonesArray, 1 )
+  ClassDef( KClonesArray, 2 )
 };
 
 #endif /* __KCLONESARRAY_H__ */

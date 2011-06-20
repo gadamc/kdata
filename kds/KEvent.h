@@ -98,7 +98,7 @@ private:
 	void CopyLocalMembers(const KEvent &anEvent);
 	
 	
-	ClassDef(KEvent, 3);
+	ClassDef(KEvent, 4);
 };
 
 #endif // __KEVENT_H__

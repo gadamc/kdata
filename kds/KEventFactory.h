@@ -54,7 +54,7 @@ private:
   //private methods
 	static void BuildEvent(KEvent *event);
 	
-  ClassDef(KEventFactory,1);
+  ClassDef(KEventFactory,2);
 };
 
 

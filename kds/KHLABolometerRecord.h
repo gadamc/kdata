@@ -148,7 +148,7 @@ private:
   Double32_t GetEnergyBaseline(Int_t aChannel, Int_t aType) const;
   Double32_t GetBaselineNoise(Int_t aChannel, Int_t aType) const;
 
-  ClassDef(KHLABolometerRecord,2);
+  ClassDef(KHLABolometerRecord,3);
 };
 
 

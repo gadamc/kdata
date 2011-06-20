@@ -72,7 +72,7 @@ private:
 	KDataWriter(const KDataWriter &aWriter);
 	KDataWriter& operator=( const KDataWriter &aWriter);
 	
-  ClassDef(KDataWriter,1);
+  ClassDef(KDataWriter,2);
 };
 
 

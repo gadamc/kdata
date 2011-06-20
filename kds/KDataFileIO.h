@@ -59,7 +59,7 @@ private:
   void InitializeMembers(void);
 	void CreateTree(void);
   void GetTreePointerInFile(const char* name);
-	ClassDef(KDataFileIO,1);
+	ClassDef(KDataFileIO,2);
 };
 
 

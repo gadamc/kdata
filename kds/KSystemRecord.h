@@ -39,7 +39,7 @@ private:
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KSystemRecord &aRec);
 
-	ClassDef(KSystemRecord,1);
+	ClassDef(KSystemRecord,2);
 };
 
 
