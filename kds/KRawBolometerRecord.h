@@ -55,7 +55,7 @@ private:
 	void CopyLocalMembers(const KRawBolometerRecord &aRec);
 
 
-  ClassDef(KRawBolometerRecord,1);
+  ClassDef(KRawBolometerRecord,2);
 };
 
 

@@ -49,7 +49,7 @@ private:
   void InitializeMembers(void);
 	void CopyLocalMembers(const KBolometerRecord &aRec);
 	
-  ClassDef(KBolometerRecord,2);
+  ClassDef(KBolometerRecord,3);
 };
 
 

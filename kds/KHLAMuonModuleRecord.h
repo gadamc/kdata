@@ -33,7 +33,7 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLAMuonModuleRecord &aRec);
-  ClassDef(KHLAMuonModuleRecord,1);
+  ClassDef(KHLAMuonModuleRecord,2);
 };
 
 

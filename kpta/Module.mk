@@ -44,6 +44,7 @@ KPTA_CXX    := $(filter-out $(KPTA_ECXX),$(wildcard $(KPTA_DIRS)/*.cxx))
 KPTA_O      := $(KPTA_CXX:.cxx=.o)
 KPTA_EO     := $(KPTA_ECXX:.cxx=.o)
 KPTA_EH     := $(KPTA_ECXX:.cxx=.h)
+KPTA_DICTH  := $(KPTA_EH:.h=.h+)
 
 KPTA_EXE    := $(patsubst $(KPTA_DIRS)/%.cxx,bin/%,$(KPTA_CXX))
 
@@ -93,7 +94,7 @@ $(KPTA_DO):         $(KPTA_DC)
 
 $(KPTA_DC):         $(KPTA_EH) $(KPTA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KPTA_EH) $(KPTA_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KPTA_DICTH) $(KPTA_LH) 
 
 # rule for building library
 $(KPTA_LIB):        $(KPTA_EO) $(KPTA_DO) $(KPTA_LIBDEP)

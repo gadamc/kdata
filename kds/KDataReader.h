@@ -65,7 +65,7 @@ private:
 	KDataReader(const KDataReader &aReader);
 	KDataReader& operator=( const KDataReader &aReader );
 	
-  ClassDef(KDataReader,1);
+  ClassDef(KDataReader,2);
 };
 
 

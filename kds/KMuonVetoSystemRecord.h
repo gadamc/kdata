@@ -102,7 +102,7 @@ private:
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KMuonVetoSystemRecord &aRec);
 
-  ClassDef(KMuonVetoSystemRecord,3);
+  ClassDef(KMuonVetoSystemRecord,4);
 };
 
 

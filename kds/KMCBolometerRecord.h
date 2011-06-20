@@ -85,7 +85,7 @@ private:
   void InitializeMembers(void);
 	void CopyLocalMembers(const KMCBolometerRecord &aRec);
 	
-  ClassDef(KMCBolometerRecord,1);
+  ClassDef(KMCBolometerRecord,2);
 };
 
 

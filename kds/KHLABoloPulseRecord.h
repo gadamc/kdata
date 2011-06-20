@@ -86,7 +86,7 @@ private:
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLABoloPulseRecord &aRec);
 	
-  ClassDef(KHLABoloPulseRecord,3);
+  ClassDef(KHLABoloPulseRecord,4);
 };
 
 

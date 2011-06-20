@@ -106,7 +106,7 @@ private:
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KSambaRecord &aRec);
 	
-  ClassDef(KSambaRecord,4);
+  ClassDef(KSambaRecord,5);
 };
 
 

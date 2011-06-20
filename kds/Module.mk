@@ -63,6 +63,7 @@ KDS_CXX    := $(filter-out $(KDS_ECXX),$(wildcard $(KDS_DIRS)/*.cxx))
 KDS_O      := $(KDS_CXX:.cxx=.o)
 KDS_EO     := $(KDS_ECXX:.cxx=.o)
 KDS_EH     := $(KDS_ECXX:.cxx=.h)
+KDS_DICTH  := $(KDS_EH:.h=.h+)
 
 
 KDS_EXE    := $(patsubst $(KDS_DIRS)/%.cxx,bin/%,$(KDS_CXX))
@@ -111,7 +112,7 @@ $(KDS_DO):         $(KDS_DC)
 
 $(KDS_DC):         $(KDS_EH) $(KDS_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KDS_EH) $(KDS_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KDS_DICTH) $(KDS_LH) 
 
 # rule for building library
 $(KDS_LIB):        $(KDS_EO) $(KDS_DO) $(KDS_LIBDEP) 

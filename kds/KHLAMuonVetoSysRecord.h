@@ -32,7 +32,7 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLAMuonVetoSysRecord &aSysRec);
-  ClassDef(KHLAMuonVetoSysRecord,1);
+  ClassDef(KHLAMuonVetoSysRecord,2);
 };
 
 

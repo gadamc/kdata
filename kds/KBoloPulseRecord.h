@@ -53,7 +53,7 @@ private:
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KBoloPulseRecord &aRec);
 	
-  ClassDef(KBoloPulseRecord,4);
+  ClassDef(KBoloPulseRecord,5);
 };
 
 

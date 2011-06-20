@@ -72,6 +72,7 @@ KQPA_CXX    := $(filter-out $(KQPA_ECXX),$(wildcard $(KQPA_DIRS)/*.cxx))
 KQPA_O      := $(KQPA_CXX:.cxx=.o)
 KQPA_EO     := $(KQPA_ECXX:.cxx=.o)
 KQPA_EH     := $(KQPA_ECXX:.cxx=.h)
+KQPA_DICTH  := $(KQPA_EH:.h=.h+)
 
 KQPA_EXE    := $(patsubst $(KQPA_DIRS)/%.cxx,bin/%,$(KQPA_CXX))
 
@@ -118,7 +119,7 @@ $(KQPA_DO):         $(KQPA_DC)
 
 $(KQPA_DC):         $(KQPA_EH) $(KQPA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KQPA_XTRAINCS)  $(KQPA_EH) $(KQPA_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KQPA_XTRAINCS)  $(KQPA_DICTH) $(KQPA_LH) 
 
 # rule for building library
 $(KQPA_LIB):        $(KQPA_EO) $(KQPA_DO) $(KQPA_LIBDEP)

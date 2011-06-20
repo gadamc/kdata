@@ -81,7 +81,7 @@ private:
   //private methods
   //void InitializeMembers(void);
 
-  ClassDef(KDataAnalysis,1);
+  ClassDef(KDataAnalysis,2);
 };
 
 

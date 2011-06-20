@@ -50,6 +50,7 @@ KTMP_CXX    := $(filter-out $(KTMP_ECXX),$(wildcard $(KTMP_DIRS)/*.cxx))
 KTMP_O      := $(KTMP_CXX:.cxx=.o)
 KTMP_EO     := $(KTMP_ECXX:.cxx=.o)
 KTMP_EH     := $(KTMP_ECXX:.cxx=.h)
+KTMP_DICTH  := $(KTMP_EH:.h=.h+)
 
 KTMP_EXE    := $(patsubst $(KTMP_DIRS)/%.cxx,bin/%,$(KTMP_CXX))
 
@@ -99,7 +100,7 @@ $(KTMP_DO):         $(KTMP_DC)
 
 $(KTMP_DC):         $(KTMP_EH) $(KTMP_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KTMP_EH) $(KTMP_LH) 
+	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KTMP_DICTH) $(KTMP_LH) 
 
 # rule for building library
 $(KTMP_LIB):        $(KTMP_EO) $(KTMP_DO) $(KTMP_LIBDEP)

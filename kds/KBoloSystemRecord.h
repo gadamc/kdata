@@ -36,7 +36,7 @@ private:
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KBoloSystemRecord &aRec);
 
-  ClassDef(KBoloSystemRecord,1);
+  ClassDef(KBoloSystemRecord,2);
 };
 
 

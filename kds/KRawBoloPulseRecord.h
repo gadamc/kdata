@@ -118,7 +118,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KRawBoloPulseRecord &aRec);
 
-  ClassDef(KRawBoloPulseRecord,2);
+  ClassDef(KRawBoloPulseRecord,3);
 };
 
 
