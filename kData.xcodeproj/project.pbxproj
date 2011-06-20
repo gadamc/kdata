@@ -333,6 +333,8 @@
 		6650BB5F1271DC3F002B9B5B /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Module_libs.mk; sourceTree = "<group>"; };
 		6650BB601271DC59002B9B5B /* KSambaDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSambaDetector.h; sourceTree = "<group>"; };
 		6650BB611271DC59002B9B5B /* KSambaDetector.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaDetector.cxx; sourceTree = "<group>"; };
+		6659D83413AFF6C70024735E /* KNeganovLuke.cxx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = KNeganovLuke.cxx; path = kqpa/KNeganovLuke.cxx; sourceTree = SOURCE_ROOT; };
+		6659D83513AFF6C70024735E /* KNeganovLuke.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KNeganovLuke.h; path = kqpa/KNeganovLuke.h; sourceTree = SOURCE_ROOT; };
 		66696F77123F5ACD005B9DB7 /* KEventDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KEventDisplay.h; sourceTree = "<group>"; };
 		66696F78123F5ACD005B9DB7 /* KEventDisplay.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KEventDisplay.cxx; sourceTree = "<group>"; };
 		667757201347CE8F009C0D1C /* testwrite2.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testwrite2.cxx; path = kdatabase/testwrite2.cxx; sourceTree = SOURCE_ROOT; };
@@ -370,10 +372,6 @@
 		66B2327612F2FB480047DEDC /* KBoloConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBoloConfig.h; sourceTree = "<group>"; };
 		66B2327712F2FB640047DEDC /* KRun12Temp.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KRun12Temp.cxx; sourceTree = "<group>"; };
 		66B2327812F2FB640047DEDC /* KRun12Temp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRun12Temp.h; sourceTree = "<group>"; };
-		66B232AD12F339B70047DEDC /* KNuclearRecoilBand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNuclearRecoilBand.h; sourceTree = "<group>"; };
-		66B232AE12F339B70047DEDC /* KNuclearRecoilBand.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KNuclearRecoilBand.cxx; sourceTree = "<group>"; };
-		66B2351D12F56B750047DEDC /* KNeganovLuke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KNeganovLuke.h; sourceTree = "<group>"; };
-		66B2351E12F56B750047DEDC /* KNeganovLuke.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KNeganovLuke.cxx; sourceTree = "<group>"; };
 		66BCF20012EBBD1700B8A206 /* KQUncertainty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQUncertainty.h; sourceTree = "<group>"; };
 		66BCF20112EBBD1700B8A206 /* KQUncertainty.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQUncertainty.cxx; sourceTree = "<group>"; };
 		66C093D513AF75620038045F /* KLowPassFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLowPassFilter.h; sourceTree = "<group>"; };
@@ -916,10 +914,8 @@
 				663FF1D412E8876500EA6EF5 /* KLindhard.cxx */,
 				66BCF20012EBBD1700B8A206 /* KQUncertainty.h */,
 				66BCF20112EBBD1700B8A206 /* KQUncertainty.cxx */,
-				66B232AD12F339B70047DEDC /* KNuclearRecoilBand.h */,
-				66B232AE12F339B70047DEDC /* KNuclearRecoilBand.cxx */,
-				66B2351D12F56B750047DEDC /* KNeganovLuke.h */,
-				66B2351E12F56B750047DEDC /* KNeganovLuke.cxx */,
+				6659D83413AFF6C70024735E /* KNeganovLuke.cxx */,
+				6659D83513AFF6C70024735E /* KNeganovLuke.h */,
 				66DBC52D1390574D00F56215 /* KQContour.cxx */,
 				66DBC52E1390574D00F56215 /* KQContour.h */,
 				66DBC52F1390574D00F56215 /* KQContourPoint.cxx */,
