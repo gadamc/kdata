@@ -51,8 +51,10 @@ public:
   const char* GetPolarFet(void) const { return fPolarFet.c_str();}
   Double32_t GetCorrPied(void) const { return fCorrPied;}
   Double32_t GetCompModul(void) const { return fCompModul;}
+  Double32_t GetCompModulation(void) const { return GetCompModul();}
   Double32_t GetCorrTrngl(void) const { return fCorrTrngl;}
   Double32_t GetAmplModul(void) const { return fAmplModul;}
+  Double32_t GetAmplModulation(void) const { return GetAmplModul();}
   Bool_t GetIsHeatPulse(void) const { return fIsHeatPulse;}
 
   void SetChannelName(const char* name) {fChannelName = name;  } 
@@ -71,8 +73,10 @@ public:
   void SetPolarFet(const char* aVal) {fPolarFet = aVal;}
   void SetCorrPied(Double32_t aVal) {fCorrPied = aVal;}
   void SetCompModul(Double32_t aVal) {fCompModul = aVal;}
+  void SetCompModulation(Double32_t aVal) {SetCompModul(aVal);}
   void SetCorrTrngl(Double32_t aVal) {fCorrTrngl = aVal;}
   void SetAmplModul(Double32_t aVal) {fAmplModul = aVal;}
+  void SetAmplModulation(Double32_t aVal) {SetAmplModul(aVal);}
   void SetIsHeatPulse(Bool_t aVal) {fIsHeatPulse = aVal;}
 
   void FillHistogram(TH1 &hist);
@@ -96,17 +100,17 @@ private:
   Double32_t fPulseRiseTime;
   Int_t fFilterSize;
   UInt_t fPulseLength;
-  Double32_t fHeatPulseStampWidth;
+  Double32_t fHeatPulseStampWidth;  //size of the heat pulse for this bolometer in stamps (same as D2 in Samba)
   Int_t fCryoPosition;
   string fPolarFet;
   
   //these are only valid for chaleur signals, but to keep the structure
   //to have just one type of pulse record (could change to have an ionization and heat pulse)
-  //these value are included in all pulse records. 
-  Double32_t fCorrPied;
-  Double32_t fCompModul;
-  Double32_t fCorrTrngl;
-  Double32_t fAmplModul;
+  //these value are included in all pulse records.... why aren't these in the Samba record?
+  Double32_t fCorrPied;  //heat modulation paramter
+  Double32_t fCompModul; //heat modulation compensation(?)
+  Double32_t fCorrTrngl;  //heat modultion parameter
+  Double32_t fAmplModul;  //amplitude of heat modulation
   Bool_t fIsHeatPulse;
 
   
