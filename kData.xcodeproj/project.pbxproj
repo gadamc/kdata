@@ -54,6 +54,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXFileReference section */
+		6600E8FF13AB8FA200FC9A4D /* JSONValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONValue.h; path = kdatabase/JSONValue.h; sourceTree = SOURCE_ROOT; };
+		6600E90013AB8FA200FC9A4D /* JSONValue.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JSONValue.cxx; path = kdatabase/JSONValue.cxx; sourceTree = SOURCE_ROOT; };
+		6600E90913AB954800FC9A4D /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSON.h; path = kdatabase/JSON.h; sourceTree = SOURCE_ROOT; };
+		6600E90A13AB954800FC9A4D /* JSON.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JSON.cxx; path = kdatabase/JSON.cxx; sourceTree = SOURCE_ROOT; };
 		6602B20612FC5D5A00293310 /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Module_libs.mk; path = ../kData/kdatabase/Module_libs.mk; sourceTree = SOURCE_ROOT; };
 		6602B20712FC5D5A00293310 /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Module.mk; path = ../kData/kdatabase/Module.mk; sourceTree = SOURCE_ROOT; };
 		6610DDEB121ECC290047036E /* depend.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = depend.sh; sourceTree = "<group>"; };
@@ -268,7 +272,6 @@
 		661F3094131D260C00D8727D /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		661F3096131D260C00D8727D /* buildSambaNtpToRoot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = buildSambaNtpToRoot.py; sourceTree = "<group>"; };
 		661F3097131D260C00D8727D /* copyToHpss.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = copyToHpss.py; sourceTree = "<group>"; };
-		661F3098131D260C00D8727D /* deleteFromHpss.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = deleteFromHpss.py; sourceTree = "<group>"; };
 		661F3099131D260C00D8727D /* findNtpFilesForRoot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = findNtpFilesForRoot.py; sourceTree = "<group>"; };
 		661F309A131D260C00D8727D /* lastNtpRootFileDate.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = lastNtpRootFileDate.py; sourceTree = "<group>"; };
 		661F309B131D260C00D8727D /* makeNtpRootAmplCorrelationPlots.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = makeNtpRootAmplCorrelationPlots.py; sourceTree = "<group>"; };
@@ -343,7 +346,6 @@
 		66826FA912D61A2F00E34890 /* KRawBolometerRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KRawBolometerRecord.h; path = ../kData/kds/KRawBolometerRecord.h; sourceTree = SOURCE_ROOT; };
 		66834214122D710300A73231 /* allPassOne_GSEventNumbers */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = allPassOne_GSEventNumbers; path = ../kData/bin/allPassOne_GSEventNumbers; sourceTree = SOURCE_ROOT; };
 		66834215122D710300A73231 /* breakupKDataFile */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = breakupKDataFile; path = ../kData/bin/breakupKDataFile; sourceTree = SOURCE_ROOT; };
-		66834216122D710300A73231 /* edwrootana */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = edwrootana; path = ../kData/bin/edwrootana; sourceTree = SOURCE_ROOT; };
 		66834217122D710300A73231 /* fillEvents */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = fillEvents; path = ../kData/bin/fillEvents; sourceTree = SOURCE_ROOT; };
 		66834218122D710300A73231 /* skimNoNoiseBolos */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = skimNoNoiseBolos; path = ../kData/bin/skimNoNoiseBolos; sourceTree = SOURCE_ROOT; };
 		6687D12A122E8E36005AD0F9 /* fillEventTest.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fillEventTest.cxx; path = ../kData/kds/fillEventTest.cxx; sourceTree = SOURCE_ROOT; };
@@ -374,6 +376,13 @@
 		66B2351E12F56B750047DEDC /* KNeganovLuke.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KNeganovLuke.cxx; sourceTree = "<group>"; };
 		66BCF20012EBBD1700B8A206 /* KQUncertainty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQUncertainty.h; sourceTree = "<group>"; };
 		66BCF20112EBBD1700B8A206 /* KQUncertainty.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQUncertainty.cxx; sourceTree = "<group>"; };
+		66C093D513AF75620038045F /* KLowPassFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLowPassFilter.h; sourceTree = "<group>"; };
+		66C093D613AF75620038045F /* KLowPassFilter.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KLowPassFilter.cxx; sourceTree = "<group>"; };
+		66C0941B13AF87330038045F /* KIndex.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KIndex.cxx; sourceTree = "<group>"; };
+		66C0941C13AF87330038045F /* KIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIndex.h; sourceTree = "<group>"; };
+		66C0941D13AF87330038045F /* KMergeRoot.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeRoot.cxx; sourceTree = "<group>"; };
+		66C0941E13AF87330038045F /* KMergeRoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMergeRoot.h; sourceTree = "<group>"; };
+		66C0941F13AF87330038045F /* stripPulsTraces.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stripPulsTraces.cxx; sourceTree = "<group>"; };
 		66C0BF96131E6590005C3E28 /* printPrettyNtpRootGraphs.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = printPrettyNtpRootGraphs.py; sourceTree = "<group>"; };
 		66C0BFA1131FB560005C3E28 /* lastSambaPartitionToCouch.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = lastSambaPartitionToCouch.py; sourceTree = "<group>"; };
 		66C0BFA2131FB568005C3E28 /* findSambaPartitionFiles.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = findSambaPartitionFiles.py; sourceTree = "<group>"; };
@@ -394,6 +403,12 @@
 		66DBC5301390574D00F56215 /* KQContourPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQContourPoint.h; sourceTree = "<group>"; };
 		66DBC5311390574D00F56215 /* KQContourPointList.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQContourPointList.cxx; sourceTree = "<group>"; };
 		66DBC5321390574D00F56215 /* KQContourPointList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQContourPointList.h; sourceTree = "<group>"; };
+		66DBC5591392FD5E00F56215 /* test.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
+		66DBC55A1392FD5E00F56215 /* TierProcess.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = TierProcess.py; sourceTree = "<group>"; };
+		66DBC55B1392FE2300F56215 /* removeTier.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = removeTier.py; sourceTree = "<group>"; };
+		66DBC57E1393C7CF00F56215 /* manageNtpToRoot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = manageNtpToRoot.py; sourceTree = "<group>"; };
+		66DBC58F1393D03000F56215 /* runTier0.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = runTier0.py; sourceTree = "<group>"; };
+		66DBC5CF1393E94B00F56215 /* addTier.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = addTier.py; sourceTree = "<group>"; };
 		66DCA1831248D8B000FDE323 /* KBaselineRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KBaselineRemoval.cxx; sourceTree = "<group>"; };
 		66DCA1841248D8B000FDE323 /* KBaselineRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBaselineRemoval.h; sourceTree = "<group>"; };
 		66DCA1851248D8B000FDE323 /* KHalfComplexPower.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexPower.cxx; sourceTree = "<group>"; };
@@ -440,6 +455,10 @@
 				66B12F4D1368B1720003A6F2 /* setupKJson.h */,
 				66B12FE51369A96F0003A6F2 /* KCouchDB.h */,
 				66B12FE61369A96F0003A6F2 /* KCouchDB.cxx */,
+				6600E8FF13AB8FA200FC9A4D /* JSONValue.h */,
+				6600E90013AB8FA200FC9A4D /* JSONValue.cxx */,
+				6600E90913AB954800FC9A4D /* JSON.h */,
+				6600E90A13AB954800FC9A4D /* JSON.cxx */,
 			);
 			name = kdatabase;
 			path = kpta;
@@ -461,6 +480,7 @@
 				6610DE3A121EDA680047036E /* ktemplate */,
 				6650BB551271DC3F002B9B5B /* ksamba */,
 				6602B16D12FC5B1700293310 /* kdatabase */,
+				66C0941A13AF87330038045F /* kEventBuilder */,
 				66DCA1821248D8B000FDE323 /* kpta */,
 				66503170135EFBEA0000A283 /* kdsplay */,
 				6610DDED121ECC440047036E /* kds */,
@@ -832,15 +852,13 @@
 		661F3095131D260C00D8727D /* scripts */ = {
 			isa = PBXGroup;
 			children = (
+				66DBC55D139304C200F56215 /* dbProcessing */,
 				66C0BFB2131FB7E0005C3E28 /* SambaToCouch */,
 				66C0BFA4131FB580005C3E28 /* NtpToRoot */,
 				661F30A2131D264B00D8727D /* __init__.py */,
 				6680ED751355BEA40008ED68 /* uploadBBoloPositionMap.py */,
 				661F3097131D260C00D8727D /* copyToHpss.py */,
-				661F3098131D260C00D8727D /* deleteFromHpss.py */,
 				661F309D131D260C00D8727D /* uploadMuonVetoDaqMapCsvToCouch.py */,
-				6650302C135D9D350000A283 /* rootifySambaData.py */,
-				6650303D135DCA800000A283 /* scpToSps.py */,
 			);
 			path = scripts;
 			sourceTree = "<group>";
@@ -981,9 +999,23 @@
 			path = ../kData/kdatabase/doc;
 			sourceTree = SOURCE_ROOT;
 		};
+		66C0941A13AF87330038045F /* kEventBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				66C0941B13AF87330038045F /* KIndex.cxx */,
+				66C0941C13AF87330038045F /* KIndex.h */,
+				66C0941D13AF87330038045F /* KMergeRoot.cxx */,
+				66C0941E13AF87330038045F /* KMergeRoot.h */,
+				66C0941F13AF87330038045F /* stripPulsTraces.cxx */,
+			);
+			name = kEventBuilder;
+			path = ../kData/kEventBuilder;
+			sourceTree = SOURCE_ROOT;
+		};
 		66C0BFA4131FB580005C3E28 /* NtpToRoot */ = {
 			isa = PBXGroup;
 			children = (
+				66DBC57E1393C7CF00F56215 /* manageNtpToRoot.py */,
 				661F3096131D260C00D8727D /* buildSambaNtpToRoot.py */,
 				661F3099131D260C00D8727D /* findNtpFilesForRoot.py */,
 				661F309A131D260C00D8727D /* lastNtpRootFileDate.py */,
@@ -1000,9 +1032,9 @@
 				66C0BFA1131FB560005C3E28 /* lastSambaPartitionToCouch.py */,
 				66C0BFA2131FB568005C3E28 /* findSambaPartitionFiles.py */,
 				66C0BFA3131FB57B005C3E28 /* manageSambaToCouch.py */,
+				661F30A0131D260C00D8727D /* uploadSambaSeuilsToCouchDB.py */,
 				661F309E131D260C00D8727D /* uploadSambaHeaderToCouch.py */,
 				661F309F131D260C00D8727D /* uploadSambaNtpToCouchDB.py */,
-				661F30A0131D260C00D8727D /* uploadSambaSeuilsToCouchDB.py */,
 			);
 			name = SambaToCouch;
 			sourceTree = "<group>";
@@ -1025,6 +1057,20 @@
 			path = ../kData/doc;
 			sourceTree = SOURCE_ROOT;
 		};
+		66DBC55D139304C200F56215 /* dbProcessing */ = {
+			isa = PBXGroup;
+			children = (
+				66DBC5591392FD5E00F56215 /* test.py */,
+				66DBC55A1392FD5E00F56215 /* TierProcess.py */,
+				66DBC5CF1393E94B00F56215 /* addTier.py */,
+				66DBC55B1392FE2300F56215 /* removeTier.py */,
+				6650303D135DCA800000A283 /* scpToSps.py */,
+				66DBC58F1393D03000F56215 /* runTier0.py */,
+				6650302C135D9D350000A283 /* rootifySambaData.py */,
+			);
+			name = dbProcessing;
+			sourceTree = "<group>";
+		};
 		66DCA1821248D8B000FDE323 /* kpta */ = {
 			isa = PBXGroup;
 			children = (
@@ -1046,6 +1092,8 @@
 				66DCA1921248D8B000FDE323 /* KRealToHalfComplexDFT.h */,
 				66DCA1931248D8B000FDE323 /* Module.mk */,
 				66DCA1941248D8B000FDE323 /* Module_libs.mk */,
+				66C093D513AF75620038045F /* KLowPassFilter.h */,
+				66C093D613AF75620038045F /* KLowPassFilter.cxx */,
 			);
 			path = kpta;
 			sourceTree = "<group>";
@@ -1055,7 +1103,6 @@
 			children = (
 				66834214122D710300A73231 /* allPassOne_GSEventNumbers */,
 				66834215122D710300A73231 /* breakupKDataFile */,
-				66834216122D710300A73231 /* edwrootana */,
 				66834217122D710300A73231 /* fillEvents */,
 				66834218122D710300A73231 /* skimNoNoiseBolos */,
 			);
