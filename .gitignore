@@ -70,3 +70,4 @@
 *_Dict.C
 *_Dict.h
 *.DS_Store
+/kData.xcodeproj/project.xcworkspace/xcuserdata/adam.xcuserdatad/UserInterfaceState.xcuserstate
