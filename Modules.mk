@@ -1,7 +1,6 @@
 ##### List of KDATA modules to build #####
 
-MODULES      := kds era ktemplate ksamba 
-MODULES += kEventBuilder
+MODULES      := kds era ktemplate ksamba kebap
 
 ### kera depends on kpta now, so it must come afterwards in this list. 
 ifneq ($(FFTW_DIR),)
