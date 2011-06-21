@@ -87,24 +87,37 @@ Int_t KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts)
 		delete fIndex;
 		delete fIndexValue;
 		fIndexValue=new Long64_t[fNEntries];
-		fIndex=fEntriesToRemove;
+		*fIndex=*fEntriesToRemove;
+		Int_t z=0;
 		for (Int_t i=0; i< fNEntries; i++){
 			fR->GetEntry(fIndex[i]);
 			fIndexValue[i]=fE->GetStamp();
+			if(fIndex[i]!=i){
+				if(z < 15){
+					cout << "i : fIndex[i]: " << i << " : " << fIndex[i] << endl;
+					z++;
+				}
+			}
 		}
 		fN=fNEntries;
-		cout << "KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts) Copied fEntriesToRemove to fIndex. "<< fN << "entries to be processed"<< endl;
+		cout << "KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts) Copied fEntriesToRemove to fIndex. "<< fN << " entries to be processed"<< endl;
 		//cout << fIndex.size() << fIndexValue.size() << fN << fIndex.size()/sizeof(Int_t) << fIndexValue.size()/sizeof(Long64_t) << endl;
 		Short_t *macs=GetNumberOfAcquisitionMacs();
+
 		Int_t currentEntries=CheckTimeRestarts(macs);
+		cout << "currentEntries " << currentEntries << endl;
 		if(currentEntries > 0){
+			cout << "Removing entries from list " << endl;
 			fN=RemoveEntriesFromList();
+			cout << "The seg Fault appear in Remove entries from List..." << endl;
 			fNeedFurtherProcessing=true;
 		}
 		else{
 			fNeedFurtherProcessing=false;
 		}
+		cout << "KINdex::BuildIndex(fNeedFurtherProcessing) Going to Sort Index." << endl;
 		SortIndex();
+		cout << "KINdex::BuildIndex(fNeedFurtherProcessing) Return with fN " << fN << endl;
 		return fN;
 	}
     if(r==0){
@@ -129,8 +142,10 @@ Int_t KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts)
 		cout << "KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts) boolRestarts==true" << endl;
 		Short_t *macs=GetNumberOfAcquisitionMacs();
 		Int_t currentEntries=CheckTimeRestarts(macs);
+		cout << "KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts) Exited checkTimeRestarts with returnvalue " << currentEntries << endl;
 		if(currentEntries > 0){
 			fN=RemoveEntriesFromList();
+			cout << "KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts) Exited RemoveEntriesFromList() with returnvalue " << fN << endl;
 			fNeedFurtherProcessing=true;
 			cout << "KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts): Removed entries after restart from current merging. To be processed later" << endl;
 		}
@@ -140,6 +155,7 @@ Int_t KIndex::BuildIndex(KDataReader* r, Bool_t boolRestarts)
 }
 
 Int_t KIndex::RemoveEntriesFromList(void){
+	cout << "KIndex::RemoveEntriesFromList(void): entered fN : fNEntries : fIndex " << fN << " " << fNEntries << " " << fIndex << endl;
 	if(fNEntries>0 && fIndex!=0){
 		Int_t *newArray=new Int_t[fN-fNEntries];
 		Long64_t *newArrayValue=new Long64_t[fN-fNEntries];
@@ -200,7 +216,12 @@ Int_t KIndex::CheckTimeRestarts(Short_t* macs){
 	}
 	cout << "KIndex::CheckTimeRestarts(Short_t* macs) entered" << endl;
 	Bool_t restart=false;
-	fEntriesToRemove= new Int_t[fR->GetEntries()];
+	if(fEntriesToRemove==0){
+		fEntriesToRemove= new Int_t[fR->GetEntries()];
+	}
+	for(Int_t i=0; i< fR->GetEntries(); i++){
+		fEntriesToRemove[i]=0;
+	}
 	Long64_t *stampOfRestart=new Long64_t[100];
 	Long64_t *lastStamp=new Long64_t[100];
 	for(Int_t i=0; i<100; i++){
@@ -209,15 +230,21 @@ Int_t KIndex::CheckTimeRestarts(Short_t* macs){
 		}
 	Int_t l=0;
 	for(Int_t i=0; i<100; i++){
-		if(macs[i]==1){
-			cout << "KIndex::CheckTimeRestarts(Short_t* macs) Mac["<<i<<"] is present in the data." << endl;
+		if(macs[i] == 1){
+			cout << "KIndex::CheckTimeRestarts(Short_t* macs) Mac[" << i << "] is present in the data." << endl;
 		}
 	}
-	cout << fN << " " << fIndex[1] <<  endl;
+	cout << "fN: "<< fN << " fIndex[1]:" << fIndex[1] <<  endl;
 	//char goOn;
+	Int_t z=0;
 	for(Int_t j=0; j<fN; j++){
 		fR->GetEntry(fIndex[j]);
-		//if(fIndex[j]!=j)cout << j << " "<< fIndex[j] << endl;
+		if(fIndex[j] != j){
+			if( z < 15){
+				cout << j << " "<< fIndex[j] << endl;
+				z++;
+			}
+		}
 		Int_t k=0;
 			if((-lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()]+fE->GetEventTriggerStamp())<-1e5){//time Restart stamp jump back of 1 second or more
 					cout << "KIndex::CheckTimeRestarts(Short_t* macs): restart at Mac" << fE->GetSamba(k)->GetSambaDAQNumber()<<" " << fE->GetSamba(k)->GetSambaEventNumber()<<" " << lastStamp[fE->GetSamba(k)->GetSambaDAQNumber()] <<" " << fE->GetStamp() << " "<< fE->GetSamba(k)->GetNtpDateSec() << endl;
