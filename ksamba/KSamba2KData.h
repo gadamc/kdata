@@ -59,7 +59,6 @@ public:
 
   //private methods
   void InitializeMembers(void);
-  void DetermineSambaByteOrder(void);
   Bool_t OpenSambaFileStream(void);
   Bool_t OpenKdataFile(void);
   Bool_t CheckStartOfSambaFile(void);
