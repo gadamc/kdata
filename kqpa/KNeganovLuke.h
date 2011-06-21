@@ -25,7 +25,7 @@
 #ifndef __KNEGANOVLUKE_H__
 #define __KNEGANOVLUKE_H__
 
-#include "RTypes.h"
+#include "Rtypes.h"
 
 class KNeganovLuke {
   
