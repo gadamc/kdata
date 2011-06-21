@@ -335,6 +335,10 @@
 		6650BB611271DC59002B9B5B /* KSambaDetector.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KSambaDetector.cxx; sourceTree = "<group>"; };
 		6659D83413AFF6C70024735E /* KNeganovLuke.cxx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = KNeganovLuke.cxx; path = kqpa/KNeganovLuke.cxx; sourceTree = SOURCE_ROOT; };
 		6659D83513AFF6C70024735E /* KNeganovLuke.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KNeganovLuke.h; path = kqpa/KNeganovLuke.h; sourceTree = SOURCE_ROOT; };
+		6659D83F13B0DD9C0024735E /* KSimpleLowPassFilter.cxx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KSimpleLowPassFilter.cxx; sourceTree = "<group>"; };
+		6659D84013B0DD9C0024735E /* KSimpleLowPassFilter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = KSimpleLowPassFilter.h; sourceTree = "<group>"; };
+		6659D86D13B0FBB60024735E /* KSimpleHighPassFilter.cxx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KSimpleHighPassFilter.cxx; sourceTree = "<group>"; };
+		6659D86E13B0FBB60024735E /* KSimpleHighPassFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSimpleHighPassFilter.h; sourceTree = "<group>"; };
 		66696F77123F5ACD005B9DB7 /* KEventDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KEventDisplay.h; sourceTree = "<group>"; };
 		66696F78123F5ACD005B9DB7 /* KEventDisplay.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KEventDisplay.cxx; sourceTree = "<group>"; };
 		667757201347CE8F009C0D1C /* testwrite2.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testwrite2.cxx; path = kdatabase/testwrite2.cxx; sourceTree = SOURCE_ROOT; };
@@ -374,8 +378,6 @@
 		66B2327812F2FB640047DEDC /* KRun12Temp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KRun12Temp.h; sourceTree = "<group>"; };
 		66BCF20012EBBD1700B8A206 /* KQUncertainty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQUncertainty.h; sourceTree = "<group>"; };
 		66BCF20112EBBD1700B8A206 /* KQUncertainty.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQUncertainty.cxx; sourceTree = "<group>"; };
-		66C093D513AF75620038045F /* KLowPassFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KLowPassFilter.h; sourceTree = "<group>"; };
-		66C093D613AF75620038045F /* KLowPassFilter.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KLowPassFilter.cxx; sourceTree = "<group>"; };
 		66C0941B13AF87330038045F /* KIndex.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KIndex.cxx; sourceTree = "<group>"; };
 		66C0941C13AF87330038045F /* KIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIndex.h; sourceTree = "<group>"; };
 		66C0941D13AF87330038045F /* KMergeRoot.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KMergeRoot.cxx; sourceTree = "<group>"; };
@@ -1086,10 +1088,12 @@
 				66DCA1901248D8B000FDE323 /* KPulseAnalysisChain.h */,
 				66DCA1911248D8B000FDE323 /* KRealToHalfComplexDFT.cxx */,
 				66DCA1921248D8B000FDE323 /* KRealToHalfComplexDFT.h */,
+				6659D83F13B0DD9C0024735E /* KSimpleLowPassFilter.cxx */,
+				6659D84013B0DD9C0024735E /* KSimpleLowPassFilter.h */,
 				66DCA1931248D8B000FDE323 /* Module.mk */,
 				66DCA1941248D8B000FDE323 /* Module_libs.mk */,
-				66C093D513AF75620038045F /* KLowPassFilter.h */,
-				66C093D613AF75620038045F /* KLowPassFilter.cxx */,
+				6659D86D13B0FBB60024735E /* KSimpleHighPassFilter.cxx */,
+				6659D86E13B0FBB60024735E /* KSimpleHighPassFilter.h */,
 			);
 			path = kpta;
 			sourceTree = "<group>";

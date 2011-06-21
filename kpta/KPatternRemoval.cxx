@@ -82,7 +82,10 @@ bool KPatternRemoval::CalculatePattern(void)
   //patterns available in the range (numPatterns) and then calculates the average pattern
   //between fBaselineStart and fBaselineStart+numPatterns*fPatternLength. 
   
-	if(GetPatternLength() < 1) return false;
+	if(GetPatternLength() <= 0){
+    fPattern.resize(fPatternLength, 0);
+    return true;
+  }
 	
   fPattern.clear();
 	fPattern.resize(GetPatternLength(), 0);
@@ -131,6 +134,15 @@ bool KPatternRemoval::SubtractPattern(vector<double> &aPattern)
 	fOutputPulse.resize(fInputPulse.size(),0);  //make them the same size.
 	unsigned int patternCount = 0;
 	
+  if (aPattern.size() == 0) {
+    fOutputPulse = fInputPulse;
+    return true;  
+  } //return true in case pattern size is zero. 
+    //this could be the case when dealing with 
+    //heat pulses, but one wants to keep using the
+    //same pulse chain processor, but sets the pattern length 
+    //to zero.
+  
 	try {
 		for(unsigned int i = 0; i < fOutputPulse.size(); i++){
 			if(patternCount == aPattern.size())
