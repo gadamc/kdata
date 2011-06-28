@@ -417,9 +417,11 @@ void LoadFile(const Char_t* aFileName)
   cout << " ... loading finished" << endl;
 }
 
-void MakeGraphs(const Char_t* aFileFormat = "pdf")
+void MakeGraphs(const Char_t* aFileFormat = "pdf",
+                Double_t aSignificanceLevel = 0.01)
 {
-  ofstream ostex("evaluation.tex");
+  ofstream ostextable("table.tex");
+  ofstream ostexgraphics("graphics.tex");
   TCanvas c1("c1","c1");
   TFileCollection aFileCollection("file collection","file collection");
   aFileCollection.Add("*.root");
@@ -447,7 +449,7 @@ void MakeGraphs(const Char_t* aFileFormat = "pdf")
     c1.SaveAs(TString::Format("%s_mchist.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
-    ostex << TString::Format("\\includegraphics{%s_mchist.%s}",
+    ostexgraphics << TString::Format("\\includegraphics{%s_mchist.%s}",
                                            aFilePrefix.Data(),
                                            aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_mchist.%s",
@@ -458,7 +460,7 @@ void MakeGraphs(const Char_t* aFileFormat = "pdf")
     c1.SaveAs(TString::Format("%s_py.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
-    ostex << TString::Format("\\includegraphics{%s_py.%s}",
+    ostexgraphics << TString::Format("\\includegraphics{%s_py.%s}",
                              aFilePrefix.Data(),
                              aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_py.%s",
@@ -469,7 +471,7 @@ void MakeGraphs(const Char_t* aFileFormat = "pdf")
     c1.SaveAs(TString::Format("%s_px.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
-    ostex << TString::Format("\\includegraphics{%s_px.%s}",
+    ostexgraphics << TString::Format("\\includegraphics{%s_px.%s}",
                              aFilePrefix.Data(),
                              aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_px.%s",
@@ -481,7 +483,7 @@ void MakeGraphs(const Char_t* aFileFormat = "pdf")
     c1.SaveAs(TString::Format("%s_pyres.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
-    ostex << TString::Format("\\includegraphics{%s_pyres.%s}",
+    ostexgraphics << TString::Format("\\includegraphics{%s_pyres.%s}",
                              aFilePrefix.Data(),
                              aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_pyres.%s",
@@ -492,7 +494,7 @@ void MakeGraphs(const Char_t* aFileFormat = "pdf")
     c1.SaveAs(TString::Format("%s_pxres.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
-    ostex << TString::Format("\\includegraphics{%s_pxres.%s}",
+    ostexgraphics << TString::Format("\\includegraphics{%s_pxres.%s}",
                              aFilePrefix.Data(),
                              aFileFormat).Data() << endl;
     cout << TString::Format("... saved %s_pxres.%s",
@@ -504,7 +506,7 @@ void MakeGraphs(const Char_t* aFileFormat = "pdf")
     c1.SaveAs(TString::Format("%s_gaus.%s",
                               aFilePrefix.Data(),
                               aFileFormat).Data());
-    ostex << TString::Format("\\includegraphics{%s_gaus.%s}",
+    ostexgraphics << TString::Format("\\includegraphics{%s_gaus.%s}",
                              aFilePrefix.Data(),
                              aFileFormat).Data() << endl;
                              
@@ -512,29 +514,34 @@ void MakeGraphs(const Char_t* aFileFormat = "pdf")
      ndfs.push_back(ndf);
      coverages.push_back(coverage);
      chiprobs.push_back(TMath::Prob(chi2,ndf));
+     EIonMeans.push_back(fkt->GetParameter(1));
+     EHeatMeans.push_back(fkt->GetParameter(2));
+     EIonSigmas.push_back(fkt->GetParameter(3));
+     EHeatSigmas.push_back(fkt->GetParameter(4));
      
-     if(TMath::Prob(chi2,ndf)>0.01)
+     if(TMath::Prob(chi2,ndf)>aSignificanceLevel)
        H0s.push_back("yes");
      else
        H0s.push_back("no");
      
 
   }
-  
-  ostex << endl;
-  ostex << "\\begin{minipage}{\\textwidth}" << endl;
-  ostex << "\\captionof{table}{$\\chi^2$ values for the corresponding parameter"
+ 
+  ostextable << "\\begin{minipage}{\\textwidth}" << endl;
+  ostextable << "\\captionof{table}{$\\chi^2$ values for the corresponding"
+   " parameter "
   " combinations and acceptance of the null hypothesis $H_0$}" << endl;
-  ostex << "\\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|} \\hline" << endl;
-  ostex << "$\\overline{E_{Ion}}$ & $\\overline{E_{Heat}}$ & $\\sigma_{E_{Ion}}$"
+  ostextable << "\\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|} \\hline" << endl;
+  ostextable << "$\\overline{E_{Ion}}$ & $\\overline{E_{Heat}}$ & "
+   "$\\sigma_{E_{Ion}}$"
   " & $\\sigma_{E_{Heat}}$ & $\\chi^2$ & ndf & $n_{min}$ & "
   " TMath::Prob($\\chi^2$,ndf) & CL of pdf & $H_0$ \\\\ \\hline \\hline" << endl;
   for(Int_t k = 0; k< aFileCollection.GetNFiles(); ++k)
-    ostex << EIonMeans[k] << " & " << EHeatMeans[k] << " & " << 
+    ostextable << EIonMeans[k] << " & " << EHeatMeans[k] << " & " << 
     EIonSigmas[k] << " & " << EHeatSigmas[k] << " & " << chi2s[k] << " & "
     << ndfs[k] << " & " << coverages[k] << " & " << H0s[k].c_str()
     << " \\\\ \\hline " << endl;
-  ostex << "\\end{tabular} \\\\[1cm] " << endl;
+  ostextable << "\\end{tabular} \\\\[1cm] " << endl;
     
   
 }
