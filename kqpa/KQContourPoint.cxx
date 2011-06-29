@@ -38,7 +38,7 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   fSigmaEnergyHeat(aSigmaEnergyHeat), fSigmaEnergyIonHeat(aSigmaEnergyIonHeat),
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
   fConfidenceLevel(aConfidenceLevel), fNumBinsX(aNumBinsX),
-  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas)
+  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas) , fHaveParametersChanged(false)
 {
   // The constructor generates the pdf g(E_recoil,Q)
   // (documentation in ~/doc/ERecoiLQDistribution.pdf)
@@ -164,13 +164,17 @@ void KQContourPoint::SetConfidenceLevel(Double_t aConfidenceLevel)
   // line of the function
   
   fConfidenceLevel = aConfidenceLevel;
-  ResetFunction();
+  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::Draw(Option_t* anOption)
 {
   // This method draws the event
   // (marker for the modal values and contour line for the confidence region)
+  if(fHaveParametersChanged) {
+    ResetFunction();
+    fHaveParametersChanged = false;
+  }
   fFunction->Draw(anOption);
   fMarker->Draw("same");
 }
@@ -188,7 +192,10 @@ TH2D* KQContourPoint::GetHistogram()
   // This method returns a hard copy of a histogram representing the
   // (E_recoil,Q)-distribution,which was  used to determine the contour line for
   // the specified confidence level
-  
+  if(fHaveParametersChanged) {
+    ResetFunction();
+    fHaveParametersChanged = false;
+  }
   KQContour aContour(fFunction,
                      fNumBinsX,
                      fNumBinsY);
@@ -199,7 +206,10 @@ TH2D* KQContourPoint::GetContourHistogram()
 {
   //This method returns a hard copy of a histogram which has bin contents of 1
   //for bins in the confidence region and 0 else
-  
+  if(fHaveParametersChanged) {
+    ResetFunction();
+    fHaveParametersChanged = false;
+  }
   KQContour aContour(fFunction,
                      fNumBinsX,
                      fNumBinsY);
@@ -215,7 +225,7 @@ void KQContourPoint::SetQvalue(Double_t aQvalue)
   fEnergyIon = fQvalue*fEnergyRecoil;
   fEnergyHeat = (1+ fQvalue* fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
-  ResetFunction();
+  fHaveParametersChanged = true;
   ResetMarker();
 }
 
@@ -228,7 +238,7 @@ void KQContourPoint::SetEnergyRecoil(Double_t anEnergyRecoil)
   fEnergyIon = fQvalue* fEnergyRecoil;
   fEnergyHeat = (1+ fQvalue*fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
-  ResetFunction();
+  fHaveParametersChanged = true;
   ResetMarker();
 }
 
@@ -241,7 +251,7 @@ void KQContourPoint::SetEnergyIon(Double_t anEnergyIon)
   fEnergyRecoil = (1 + fVoltageBias/ fEpsilon) * fEnergyHeat
     - fVoltageBias/fEpsilon * fEnergyIon;
   fQvalue = fEnergyIon/fEnergyRecoil;
-  ResetFunction();
+  fHaveParametersChanged = true;
   ResetMarker();
 }
 
@@ -254,7 +264,7 @@ void KQContourPoint::SetEnergyHeat(Double_t anEnergyHeat)
   fEnergyRecoil = (1 + fVoltageBias/ fEpsilon) * fEnergyHeat
     - fVoltageBias/fEpsilon * fEnergyIon;
   fQvalue = fEnergyIon/fEnergyRecoil;
-  ResetFunction();
+  fHaveParametersChanged = true;
   ResetMarker();
 }
 
@@ -264,7 +274,7 @@ void KQContourPoint::SetNumBinsX(Int_t aNumBinsX)
  // distribution histogram and recalculates the contour for the specified
  // confidence level with the new histogram
   fNumBinsX = aNumBinsX;
-  ResetFunction();
+  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetNumBinsY(Int_t aNumBinsY)
@@ -273,7 +283,7 @@ void KQContourPoint::SetNumBinsY(Int_t aNumBinsY)
   // distribution histogram and recalculates the contour for the specified
   // confidence level with the new histogram
   fNumBinsY = aNumBinsY;
-  ResetFunction();
+  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetSigmaEnergyHeat(Double_t aSigmaEnergyHeat)
@@ -281,7 +291,7 @@ void KQContourPoint::SetSigmaEnergyHeat(Double_t aSigmaEnergyHeat)
   // This method sets the uncertainty of the heat energy and adjusts the contour
   // line
   fSigmaEnergyHeat = aSigmaEnergyHeat;
-  ResetFunction();
+  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetSigmaEnergyIon(Double_t aSigmaEnergyIon)
@@ -289,7 +299,7 @@ void KQContourPoint::SetSigmaEnergyIon(Double_t aSigmaEnergyIon)
   // This methods sets the uncertainty of the ion energy and adjusts the contour
   // line
   fSigmaEnergyIon = aSigmaEnergyIon;
-  ResetFunction();
+  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetSigmaIonHeat(Double_t aSigmaEnergyIonHeat) 
@@ -297,21 +307,21 @@ void KQContourPoint::SetSigmaIonHeat(Double_t aSigmaEnergyIonHeat)
   // This method sets the root square of the covariance between the heat and ion
  // energy and adjusts the contour line
   fSigmaEnergyIonHeat = aSigmaEnergyIonHeat;
-  ResetFunction();
+  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetVoltageBias(Double_t aVoltageBias)
 {
   // This method sets the voltage bias and adjusts the contour line
   fVoltageBias = aVoltageBias;
-  ResetFunction();
+  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetEpsilon(Double_t anEpsilon)
 {
   // This method sets the epsilon and adjusts the contour line
   fEpsilon = anEpsilon;
-  ResetFunction();
+  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetNpx(Int_t anNpx)
