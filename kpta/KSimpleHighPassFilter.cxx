@@ -23,6 +23,8 @@
 // and then adds back on the necessary values to get a high pass filter. 
 // This could be optimized if the integration/filtering code was all writen here.
 // We'll see. If the processing takes too long, then these filters should be looked at.
+// However, I don't expect this filter to really be very useful given that much more 
+// sophisticated filtering techniques exist.
 //
 
 #include "KSimpleHighPassFilter.h"
@@ -71,12 +73,12 @@ bool KSimpleHighPassFilter::RunProcess(void)
       else
         nextvalue = fInputPulse[i+1];
       
-      if (i > 0) {
-        if(fInputPulse[i-1] == fInputPulse[i])
-          currentvalue = fInputPulse[i];
-        else
-          currentvalue = 0.5*(fInputPulse[i] + nextvalue);
-      }
+      if(i == 0)
+        currentvalue = 0.5*(fInputPulse[i] + nextvalue);
+      else if(fInputPulse[i-1] == fInputPulse[i])
+        currentvalue = fInputPulse[i];
+      else
+        currentvalue = 0.5*(fInputPulse[i] + nextvalue);
       
       fOutputPulse[i] = currentvalue - lpf[i];
     }
