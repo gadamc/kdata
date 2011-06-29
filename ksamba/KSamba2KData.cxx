@@ -509,7 +509,7 @@ Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
             chan->SetDiviseurD3(val.Atof());
         }
         else if(key != "d2" && key != "d3") {
-          cerr << "Unkown key Reading Voie header: " << key << endl;
+          cerr << "Unknown key Reading Voie header: " << key << endl;
           //foundGoodKey = false; //just keep reading... Samba is allowed to insert a new key
         }
 

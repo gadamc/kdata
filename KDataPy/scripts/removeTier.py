@@ -32,7 +32,11 @@ def deleteTierFromListOfRuns(uri, dbname, tiername, startrun, endrun):
   deleteFromView(vr, db, tiername)
 
 def main(*args):
-
+  '''
+    This script will remove a "tier" key from a database run document.  You can give this script
+    a single run, or a list of runs. (For now, it will remove the tier from ALL partition files within
+    a single run. 
+  '''
   if len(args) < 4:
     return Done
     
