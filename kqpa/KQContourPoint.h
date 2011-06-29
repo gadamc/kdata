@@ -40,6 +40,7 @@ class KQContourPoint {
     // distribution histogram
     Int_t fNumSigmas; // number of sigmas of the recoil energy and Q value
     // to build the region taken into regard to calculate the contour line
+   Bool_t fHaveParametersChanged;
     
     void ResetFunction();
     void ResetMarker();
