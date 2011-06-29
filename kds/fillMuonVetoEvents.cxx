@@ -25,11 +25,9 @@
 #include "TButton.h"
 
 //Kdata includes
-#include "KHLAEvent.h"
-#include "KHLAMuonModuleRecord.h"
-#include "KHLAMuonVetoSysRecord.h"
-#include "KHLABolometerRecord.h"
-#include "KHLASambaRecord.h"
+#include "KRawEvent.h"
+#include "KRawMuonModuleRecord.h"
+#include "KRawMuonVetoSysRecord.h"
 #include "KDataWriter.h"
 #include "KDataReader.h"
 
@@ -37,7 +35,7 @@
 TFile *mMuonVetoRootFile = 0;
 KDataWriter *mKEDSOutFile = 0;
 TTree *mMuonTree = 0;  
-KHLAEvent *mEvent = 0;
+KRawEvent *mEvent = 0;
 
 //warning! These have to be the same everywhere! Might need to 
 //consider some sort of Singleton class. Or... better yet, 
@@ -325,7 +323,7 @@ Bool_t openMuonVetoFile(const Char_t* file)
 
 Bool_t openKEDSOutFile(const Char_t* file)
 {
-	mKEDSOutFile = new KDataWriter(file);
+	mKEDSOutFile = new KDataWriter(file, KRawEvent::GetClassName());
 	if(mKEDSOutFile != 0){
 		return mKEDSOutFile->IsReady();
 	}
@@ -367,7 +365,7 @@ Bool_t setMuonVetoFileBranches(void)
 Bool_t setOutputKEDSBranches(void)
 {
 	if(mKEDSOutFile != 0){
-		mEvent = dynamic_cast<KHLAEvent *>(mKEDSOutFile->GetEvent());
+		mEvent = dynamic_cast<KRawEvent *>(mKEDSOutFile->GetEvent());
 	}
 	if(mEvent != 0) return true;
 	else return false;
@@ -483,9 +481,7 @@ Bool_t fillEvents(void)
 		
 		mMuonTree->GetEntry(entry);
 		mMuonTree->SetScanField(100);
-		mEvent->SetRunNumber(kKRunNumber);
-		mEvent->SetRunStartTime(kKRun12StartTime);
-		mEvent->SetRunEndTime(kKRun12EndTime);
+		
 		
 		mEvent->SetStamp(mMuonVetoData.f10muSecStamp);
 		
@@ -495,7 +491,7 @@ Bool_t fillEvents(void)
 			microTime = 0; //this indicates a problem in the muon veto data stream. 
 		
 				
-		KHLAMuonVetoSysRecord *mMvSysRec = static_cast<KHLAMuonVetoSysRecord *>(mEvent->GetMuonVetoSystemRecord());
+		KRawMuonVetoSysRecord *mMvSysRec = static_cast<KRawMuonVetoSysRecord *>(mEvent->GetMuonVetoSystemRecord());
 		
 		mMvSysRec->SetRunNumber(mMuonVetoData.fRun);
 		mMvSysRec->SetIsSystemOn(true);
@@ -523,7 +519,7 @@ Bool_t fillEvents(void)
 			//cout << "Found " << numberOfModsHit << " modules Hit" << endl;
 			for(Int_t module = 1; module < kNumMuonModules+1; module++){
 				if(mModHits[module]){
-					KHLAMuonModuleRecord *mMod = mEvent->AddMuonModule();
+					KRawMuonModuleRecord *mMod = mEvent->AddMuonModule();
 					mMod->SetModuleNumber(module);
 					for(Int_t pmt = 0; pmt < kNumPmtsPerMod; pmt++){
 						mMod->SetAdc(pmt, mADCVals[module][pmt]);
