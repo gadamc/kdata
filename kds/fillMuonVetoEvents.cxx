@@ -25,9 +25,14 @@
 #include "TButton.h"
 
 //Kdata includes
+#include "KEvent.h"
 #include "KRawEvent.h"
 #include "KRawMuonModuleRecord.h"
 #include "KRawMuonVetoSysRecord.h"
+#include "KHLAEvent.h"
+#include "KHLAMuonModuleRecord.h"
+#include "KHLAMuonVetoSysRecord.h"
+
 #include "KDataWriter.h"
 #include "KDataReader.h"
 
@@ -35,7 +40,7 @@
 TFile *mMuonVetoRootFile = 0;
 KDataWriter *mKEDSOutFile = 0;
 TTree *mMuonTree = 0;  
-KRawEvent *mEvent = 0;
+KEvent *mEvent = 0;
 
 //warning! These have to be the same everywhere! Might need to 
 //consider some sort of Singleton class. Or... better yet, 
@@ -321,10 +326,14 @@ Bool_t openMuonVetoFile(const Char_t* file)
 	return mMuonVetoRootFile->IsOpen();
 }
 
-Bool_t openKEDSOutFile(const Char_t* file)
+Bool_t openKEDSOutFile(const Char_t* file, const Char_t* fileType)
 {
-	mKEDSOutFile = new KDataWriter(file, KRawEvent::GetClassName());
-	if(mKEDSOutFile != 0){
+	if(fileType == 0)
+    mKEDSOutFile = new KDataWriter(file, KRawEvent::GetClassName());
+	else 
+    mKEDSOutFile = new KDataWriter(file, fileType);
+  
+  if(mKEDSOutFile != 0){
 		return mKEDSOutFile->IsReady();
 	}
 	else return false;
@@ -364,11 +373,15 @@ Bool_t setMuonVetoFileBranches(void)
 
 Bool_t setOutputKEDSBranches(void)
 {
+  
+  mEvent = 0;
+  
 	if(mKEDSOutFile != 0){
-		mEvent = dynamic_cast<KRawEvent *>(mKEDSOutFile->GetEvent());
+		mEvent = mKEDSOutFile->GetEvent();
 	}
-	if(mEvent != 0) return true;
-	else return false;
+	  
+  if(mEvent != 0) return true;
+  else return false;
 }
 
 Int_t getMuonModulesData(Bool_t mMods[], Int_t mADCVals[][kNumPmtsPerMod], 
@@ -472,6 +485,8 @@ Bool_t fillEvents(void)
 	Int_t numEmptyEvents = 0;
 	Int_t nEvents = mMuonTree->GetEntries();
 		
+  
+  
 	for(Int_t entry = 0; entry < nEvents; entry++){
 		
 		if(entry%20000==0 && entry!=0 )
@@ -491,7 +506,7 @@ Bool_t fillEvents(void)
 			microTime = 0; //this indicates a problem in the muon veto data stream. 
 		
 				
-		KRawMuonVetoSysRecord *mMvSysRec = static_cast<KRawMuonVetoSysRecord *>(mEvent->GetMuonVetoSystemRecord());
+		KMuonVetoSystemRecord *mMvSysRec = mEvent->GetMuonVetoSystemRecord();
 		
 		mMvSysRec->SetRunNumber(mMuonVetoData.fRun);
 		mMvSysRec->SetIsSystemOn(true);
@@ -519,7 +534,17 @@ Bool_t fillEvents(void)
 			//cout << "Found " << numberOfModsHit << " modules Hit" << endl;
 			for(Int_t module = 1; module < kNumMuonModules+1; module++){
 				if(mModHits[module]){
-					KRawMuonModuleRecord *mMod = mEvent->AddMuonModule();
+        
+          KMuonModuleRecord *mMod = 0;
+          if(dynamic_cast<KRawEvent *>(mEvent))
+            mMod = dynamic_cast<KRawEvent *>(mEvent)->AddMuonModule();
+          else if(dynamic_cast<KHLAEvent *>(mEvent))
+            mMod = dynamic_cast<KHLAEvent *>(mEvent)->AddMuonModule();
+          
+          else {
+            cout << "What! " << endl;
+            exit(-1);
+          }
 					mMod->SetModuleNumber(module);
 					for(Int_t pmt = 0; pmt < kNumPmtsPerMod; pmt++){
 						mMod->SetAdc(pmt, mADCVals[module][pmt]);
@@ -625,7 +650,7 @@ Bool_t writeCloseAndCleanup(void)
 	return true;
 }
 
-Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outKEDSFile)
+Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outKEDSFile, const Char_t* fileOption)
 {
 	if(!openMuonVetoFile(muonVetoFile)){
 		cout << "Can't open Muon Veto File" << endl;
@@ -633,7 +658,7 @@ Int_t MuonVetoToDS(const Char_t* muonVetoFile, const Char_t* outKEDSFile)
 	}
 	cout << "Opened Muon Veto File " << muonVetoFile << endl;
 	
-	if(!openKEDSOutFile(outKEDSFile)){
+	if(!openKEDSOutFile(outKEDSFile, fileOption)){
 		cout << "Can't open output KEDS File" << endl;
 		return -1;
 	}
@@ -848,13 +873,20 @@ int main(int argc, char* argv[])
       testDataIntegrity(myApp->Argv()[1], myApp->Argv()[2], myApp->Argv()[3]);
   }*/
   
-  if(MuonVetoToDS(argv[1], argv[2])){
+  char* thirdOption = 0; 
+  
+  if (argc >= 4){
+    thirdOption = new char[strlen(argv[3])+1];
+    strcpy(thirdOption,argv[3]);
+  }
+  
+  if(MuonVetoToDS(argv[1], argv[2], thirdOption)){
     
-    if(argc == 4)
+    if(argc == 5)
       
     {
-      cout << "Running Data Integrity Test. Output to " << argv[3] << endl;
-      testDataIntegrity(argv[1], argv[2], argv[3]);
+      cout << "Running Data Integrity Test. Output to " << argv[4] << endl;
+      testDataIntegrity(argv[1], argv[2], argv[4]);
     }
     
   }
