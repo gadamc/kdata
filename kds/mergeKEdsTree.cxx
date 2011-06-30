@@ -471,7 +471,7 @@ Int_t mergeKEdsTree(string inputPath1, string inputPath2, string outputPath, str
 	cout << "File 1"<< endl;
 
 	
-	KDataWriter f(outputPath.c_str() "KHLAEvent");
+	KDataWriter f(outputPath.c_str(), "KHLAEvent");
 	KHLAEvent *mEv = dynamic_cast<KHLAEvent *>(f.GetEvent());
 	if(mEv == 0) return -1;
 	f.GetTTree()->BranchRef(); //creates an extra Branch table filled with Branches that have TRefs or TRefArrays
