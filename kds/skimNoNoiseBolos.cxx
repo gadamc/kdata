@@ -59,7 +59,7 @@ int main(int argc, char* argv[] )
 	cout << "Input file         " << inEDSFile.Data() << endl;
 	cout << "Output file        " << outFile.Data() << endl;
 	
-	KDataWriter fOutEds(outFile.Data(), "HLA", "recreate");
+	KDataWriter fOutEds(outFile.Data(), "KHLAEvent");
 	KEvent *eout = fOutEds.GetEvent();
 	KHLAEvent *mEout =  dynamic_cast<KHLAEvent*>( eout );
 	
