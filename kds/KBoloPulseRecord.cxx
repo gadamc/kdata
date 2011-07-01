@@ -72,7 +72,13 @@ void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
 {
   //used by the assignment operator to copy local members (fPulseType and
   //fChanneNumber)
- 
+  fPositiveTriggerAmp = aRec.fPositiveTriggerAmp;
+  fNegativeTriggerAmp = aRec.fNegativeTriggerAmp;
+  fState = aRec.fState; 
+  fPolarity = aRec.fPolarity;
+  fGain = aRec.fGain;
+
+  
 }
 
 KBoloPulseRecord::~KBoloPulseRecord(void)

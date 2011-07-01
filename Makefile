@@ -232,14 +232,14 @@ include/dummy.d: prepare $(RMKDEP) $(ALLHDRS)
 	   touch $@; \
 	fi)
 
-%.d: %.c
-	$(MAKEDEP) $@ "$(CFLAGS)" $< > $@
+#%.d: %.c
+#	$(MAKEDEP) $@ "$(CFLAGS)" $< > $@
 
-%.d: %.cxx
-	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
+#%.d: %.cxx
+#	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
 
-%.d: %.C
-	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
+#%.d: %.C
+#	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
 
 $(RMKDEP): $(ROOTSYS)/bin/rmkdepend
 	@$(INSTALLDIR) bin
