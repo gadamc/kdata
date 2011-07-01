@@ -40,10 +40,10 @@ class KQContourPoint {
     // distribution histogram
     Int_t fNumSigmas; // number of sigmas of the recoil energy and Q value
     // to build the region taken into regard to calculate the contour line
-   Bool_t fHaveParametersChanged;
+   Bool_t fHaveParametersChanged; // this flag is set true if parameter changes
+   // by using set methods and set false when the contour/marker is reset
     
-    void ResetFunction();
-    void ResetMarker();
+
     
   public:
     KQContourPoint(Double_t aQvalueOrEnergyIon = 0,
@@ -55,20 +55,23 @@ class KQContourPoint {
                    Double_t aConfidenceLevel = 0.9,
                    Double_t aVoltageBias = 8.0,
                    Double_t anEpsilon = 3.0,
-                   Double_t aNumBinsX = 1000,
-                   Double_t aNumBinsY = 1000,
+                   Double_t aNumBinsX = 500,
+                   Double_t aNumBinsY = 500,
                    Double_t aNumSigmas = 10
                   );
     ~KQContourPoint();
 
+    void CalculateContour();
+    void ResetMarker();
     void SetQvalue(Double_t aQvalue);
     void SetEnergyRecoil(Double_t anEnergyRecoil);
     void SetEnergyIon(Double_t anEnergyIon);
     void SetEnergyHeat(Double_t anEnergyHeat);
-    void SetNumBinsX(Int_t aNumBinsX);
-    void SetNumBinsY(Int_t aNumBinsY);
+    void SetResolutionX(Int_t aNumBinsX);
+    void SetResolutionY(Int_t aNumBinsY);
     void SetNpx(Int_t anNpx);
     void SetNpy(Int_t anNpy);
+    void SetNumSigmas(Double_t aNumSigmas);
     void SetSigmaEnergyHeat(Double_t aSigmaEnergyHeat);
     void SetSigmaEnergyIon(Double_t aSigmaEnergyIon);
     void SetSigmaIonHeat(Double_t aSigmaEnergyIonHeat);
@@ -82,10 +85,11 @@ class KQContourPoint {
     Double_t GetEnergyRecoil() const { return fEnergyRecoil; }
     Double_t GetEnergyIon() const { return fEnergyIon; }
     Double_t GetEnergyHeat() const { return fEnergyHeat; }
-    Int_t GetNumBinsX() const { return fNumBinsX; }
-    Int_t GetNumBinsY() const { return fNumBinsY; }
+    Int_t GetResolutionX() const { return fNumBinsX; }
+    Int_t GetResolutionY() const { return fNumBinsY; }
     Int_t GetNpx() const { return fFunction->GetNpx(); }
     Int_t GetNpy() const { return fFunction->GetNpy(); }
+    Double_t GetNumSigmas() const { return fNumSigmas; }
     Double_t GetSigmaEnergyHeat() const { return fSigmaEnergyHeat; }
     Double_t GetSigmaEnergyIon() const { return fSigmaEnergyIon; }
     Double_t GetSigmaEnergyIonHeat() const { return fSigmaEnergyIonHeat; }

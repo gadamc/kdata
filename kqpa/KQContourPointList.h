@@ -21,6 +21,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string.h>
+#include <limits.h>
 using namespace std;
 
 #ifndef __KQCONTOURPOINTLIST_H__
@@ -88,7 +89,8 @@ class KQContourPointList {
     }
     
     void ReadASCIIFile(const Char_t* aFileName = "",
-                       const Char_t* aMode = "");
+                       const Char_t* aMode = "",
+                       Int_t aMaxNumEntries = INT_MAX);
     void Draw(Option_t* anOption = "");
     void AddPoint(Double_t aQvalue,
               Double_t anEnergyRecoil,
