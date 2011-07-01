@@ -47,6 +47,8 @@ public:
   Int_t GetFilterSize(void) const { return fFilterSize;}
   UInt_t GetPulseLength(void) const { return fPulseLength;}
   Double32_t GetHeatPulseStampWidth(void) const { return fHeatPulseStampWidth;}
+  Double32_t GetSampleFrequency(void) const {return 1./(GetPulseTimeWidth()*1.e-9);}
+  Double32_t GetNyquistFrequency(void) const { return GetSampleFrequency()/2.;}
   Int_t GetCryoPosition(void) const { return fCryoPosition;}
   const char* GetPolarFet(void) const { return fPolarFet.c_str();}
   Double32_t GetCorrPied(void) const { return fCorrPied;}
