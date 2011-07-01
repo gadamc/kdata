@@ -38,7 +38,7 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   fSigmaEnergyHeat(aSigmaEnergyHeat), fSigmaEnergyIonHeat(aSigmaEnergyIonHeat),
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
   fConfidenceLevel(aConfidenceLevel), fNumBinsX(aNumBinsX),
-  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas) , fHaveParametersChanged(false)
+  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas) , fHaveParametersChanged(true)
 {
   // The constructor generates the pdf g(E_recoil,Q)
   // (documentation in ~/doc/ERecoiLQDistribution.pdf)
@@ -72,12 +72,10 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
       return;
     }
     
-  ResetFunction();
-  ResetMarker();
 }
   
   
-void KQContourPoint::ResetFunction()
+void KQContourPoint::CalculateContour()
 {
    // This method resets the function due to parameter  changes 
     Double_t aSigmaEnergyRecoil = TMath::Sqrt(
@@ -98,11 +96,7 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
   // [4] : fSigmaIonHeat
   // [5] : fVoltageBias
   // [6] : fEpsilon
- if(fFunction)
- {
-   delete fFunction;
-   fFunction = 0;
- }
+
   fFunction = new TF2(TString::Format("f%d_%d_%d_%d_%d",
                                       Int_t(fQvalue*100),
                                       Int_t(fEnergyRecoil*100),
@@ -127,8 +121,8 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
   fFunction->SetParameter(3,fSigmaEnergyHeat);
   fFunction->SetParameter(4,fSigmaEnergyIonHeat);
   fFunction->SetParameter(5,fVoltageBias/fEpsilon);
-  fFunction->SetNpx(2000);
-  fFunction->SetNpy(2000);
+  fFunction->SetNpx(1000);
+  fFunction->SetNpy(1000);
   fFunction->SetLineStyle(1);
   fFunction->GetXaxis()->SetTitle("E_{Recoil} [keV]");
   fFunction->GetYaxis()->SetTitle("Q");
@@ -172,7 +166,8 @@ void KQContourPoint::Draw(Option_t* anOption)
   // This method draws the event
   // (marker for the modal values and contour line for the confidence region)
   if(fHaveParametersChanged) {
-    ResetFunction();
+    CalculateContour();
+    ResetMarker();
     fHaveParametersChanged = false;
   }
   fFunction->Draw(anOption);
@@ -193,7 +188,7 @@ TH2D* KQContourPoint::GetHistogram()
   // (E_recoil,Q)-distribution,which was  used to determine the contour line for
   // the specified confidence level
   if(fHaveParametersChanged) {
-    ResetFunction();
+    CalculateContour();
     fHaveParametersChanged = false;
   }
   KQContour aContour(fFunction,
@@ -207,7 +202,7 @@ TH2D* KQContourPoint::GetContourHistogram()
   //This method returns a hard copy of a histogram which has bin contents of 1
   //for bins in the confidence region and 0 else
   if(fHaveParametersChanged) {
-    ResetFunction();
+    CalculateContour();
     fHaveParametersChanged = false;
   }
   KQContour aContour(fFunction,
@@ -268,7 +263,7 @@ void KQContourPoint::SetEnergyHeat(Double_t anEnergyHeat)
   ResetMarker();
 }
 
-void KQContourPoint::SetNumBinsX(Int_t aNumBinsX)
+void KQContourPoint::SetResolutionX(Int_t aNumBinsX)
 {
   // This method sets the number of bins in X direction of the  distribution
  // distribution histogram and recalculates the contour for the specified
@@ -277,7 +272,7 @@ void KQContourPoint::SetNumBinsX(Int_t aNumBinsX)
   fHaveParametersChanged = true;
 }
 
-void KQContourPoint::SetNumBinsY(Int_t aNumBinsY)
+void KQContourPoint::SetResolutionY(Int_t aNumBinsY)
 {
   // This method sets the number of bins in Y direction of the  distribution
   // distribution histogram and recalculates the contour for the specified
@@ -336,6 +331,14 @@ void KQContourPoint::SetNpy(Int_t anNpy)
   // This method sets the number of points of the contour function in Q 
   // direction
   fFunction->SetNpy(anNpy);
+}
+
+void KQContourPoint::SetNumSigmas(Double_t aNumSigmas)
+{
+  // This method sets the number of sigmas determining the ranges of the 
+  // histogram used to calculate the contour
+  fNumSigmas = aNumSigmas;
+  fHaveParametersChanged = true;
 }
 
 

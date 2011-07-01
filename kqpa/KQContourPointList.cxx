@@ -70,7 +70,8 @@ void KQContourPointList::UpdateEmptyFrame()
 }
 
 void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
-                                       const Char_t* aMode)
+                                       const Char_t* aMode,
+                                       Int_t aMaxNumEntries)
 {
   // This method reads an ASCII file and builds a list of KQContourPoints
   // Depending form the specified mode a different format of the lines is
@@ -96,7 +97,7 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
     Int_t aLineCounter = 0;
     
     if(fMode=="QErecoil")
-      while(!is.eof())
+      while(!is.eof() && aLineCounter < aMaxNumEntries)
       {
         //is >> aQvalue >> anEnergyRecoil >> aSigmaIon >> aSigmaHeat;
         ++aLineCounter;
@@ -136,7 +137,7 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
       }
       else
     if(fMode=="IonHeat")
-      while(!is.eof())
+      while(!is.eof() && aLineCounter < aMaxNumEntries)
       {
         //is >> aQvalue >> anEnergyRecoil >> aSigmaIon >> aSigmaHeat;
         ++aLineCounter;
@@ -200,6 +201,7 @@ void KQContourPointList::Draw(Option_t* anOption)
   fEmptyFrame->Draw(anOption);
   for(UInt_t k = 0; k < fPoints.size(); ++k) {
     fPoints[k]->Draw("same");
+    cout << "event " << k << " drawn" << endl;
   }
 }
 
