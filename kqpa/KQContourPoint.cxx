@@ -89,14 +89,14 @@ fVoltageBias*fVoltageBias/fEpsilon/fEpsilon*fSigmaEnergyIon*fSigmaEnergyIon);
   + TMath::Power((1/fEnergyRecoil +
 fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
   fSigmaEnergyIon,2));
-  // [0] : fQvalue
-  // [1] : fEnergyRecoil
+  // [0] : fEnergyIon
+  // [1] : fEnergyHeat                      0,
   // [2] : fSigmaIon
   // [3] : fSigmaHeat
   // [4] : fSigmaIonHeat
   // [5] : fVoltageBias
   // [6] : fEpsilon
-
+/*
   fFunction = new TF2(TString::Format("f%d_%d_%d_%d_%d",
                                       Int_t(fQvalue*100),
                                       Int_t(fEnergyRecoil*100),
@@ -114,7 +114,25 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
                      fEnergyRecoil + fNumSigmas*aSigmaEnergyRecoil,
                      fQvalue - fNumSigmas*aSigmaQvalue,
                      fQvalue + fNumSigmas*aSigmaQvalue);
+ */ 
 
+  fFunction = new TF2(TString::Format("f%d_%d_%d_%d_%d",
+                                      Int_t(fQvalue*100),
+                                      Int_t(fEnergyRecoil*100),
+                                      Int_t(fSigmaEnergyIon*100),
+                                      Int_t(fSigmaEnergyHeat*100),
+                                      Int_t(fSigmaEnergyIonHeat*100)).Data(),
+                     // 0,
+                      &KErecoilQDensity::SingleEventProbDensity,
+                     fEnergyRecoil - fNumSigmas*aSigmaEnergyRecoil,
+                     fEnergyRecoil + fNumSigmas*aSigmaEnergyRecoil,
+                     fQvalue - fNumSigmas*aSigmaQvalue,
+                     fQvalue + fNumSigmas*aSigmaQvalue,
+                     6
+                      //"KErecoilQDensity",
+                      //"SingleEventProbDensity"
+                     );
+                     
   fFunction->SetParameter(0,fEnergyIon);
   fFunction->SetParameter(1,fEnergyHeat);
   fFunction->SetParameter(2,fSigmaEnergyIon);
@@ -132,7 +150,7 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
                      fNumBinsY);
   fFunction->SetContour(1);
   fFunction->SetContourLevel(0,aContour.GetContour(fConfidenceLevel));
-  fConfidenceLevelError = aContour.GetConfidenceLevelError();
+  fConfidenceLevelError = aContour.GetConfidenceLevelError();                  
   
 }
   

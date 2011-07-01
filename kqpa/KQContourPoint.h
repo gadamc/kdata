@@ -14,6 +14,7 @@
 #include "TMath.h"
 #include "TMarker.h"
 #include "KQContour.h"
+#include "KErecoilQDensity.h"
 
 #ifndef __KQCONTOURPOINT_H__
 #define __KQCONTOURPOINT_H__
