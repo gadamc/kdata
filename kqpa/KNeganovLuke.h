@@ -1,6 +1,6 @@
 //______________________________________________________________________
 //
-// KNeganovLuke.cxx
+// KNeganovLuke.h
 // Author: Adam Cox <mailto:adam.cox@kit.edu>
 //
 // *Copyright 2011 Karlsruhe Inst. of Technology. All Rights Reserved.

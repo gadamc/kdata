@@ -83,7 +83,17 @@ Double_t coverage = 0;
 
 TDirectory* Rint = gDirectory;
 
-
+Double_t  ERecoilQPropDensity(Double_t *x, Double_t *par)
+{
+  Double_t c = 1 + par[5]/par[6];
+  Double_t c2 = 1+ x[1]*par[5]/par[6];
+  Double_t a = par[0]/2/TMath::Pi()/par[3]/par[4]/c*TMath::Abs(x[0]);
+  Double_t n = x[0]*x[1]-par[1];
+  Double_t m = c2/c*x[0]-par[2];
+  
+  Double_t result = a*TMath::Exp(-0.5*(n*n/par[3]/par[3]+m*m/par[4]/par[4]));
+  return result;
+}
 
 void ERecoilQDist_v30(Double_t anEIonMean = 100,
            Double_t anEHeatMean = 100,
@@ -116,11 +126,7 @@ void ERecoilQDist_v30(Double_t anEIonMean = 100,
   
   if(!gROOT->FindObject("f"))
   {
-    fkt = new TF2("f",
-      "[0]/2/TMath::Pi()/[3]/[4]/(1+[5]/[6])*TMath::Abs(x)*"
-      "TMath::Exp(-0.5*((x*y-[1])*(x*y-[1])/[3]/[3]"
-      "+TMath::Power(((1+y*[5]/[6])/(1+[5]/[6])*x-[2])"
-      "/[4],2)))");
+    fkt = new TF2("f",ERecoilQPropDensity,0,1000,0,2,7);
     fkt->SetParName(0,"c");
     fkt->SetParName(1,"#bar{E_{ion}}");
     fkt->SetParName(2,"#bar{E_{heat}}");
@@ -144,11 +150,7 @@ void ERecoilQDist_v30(Double_t anEIonMean = 100,
   
     if(!gROOT->FindObject("QMeanf"))
   {
-    QMeanFkt = new TF2("QMeanf",
-      "y*[0]/2/TMath::Pi()/[3]/[4]/(1+[5]/[6])*TMath::Abs(x)*"
-      "TMath::Exp(-0.5*((x*y-[1])*(x*y-[1])/[3]/[3]"
-      "+TMath::Power(((1+y*[5]/[6])/(1+[5]/[6])*x-[2])"
-      "/[4],2)))");
+    QMeanFkt = new TF2("QMeanf",ERecoilQPropDensity,0,1000,0,2,7);
     QMeanFkt->SetParName(0,"c");
     QMeanFkt->SetParName(1,"#bar{E_{ion}}");
     QMeanFkt->SetParName(2,"#bar{E_{heat}}");
@@ -172,11 +174,7 @@ void ERecoilQDist_v30(Double_t anEIonMean = 100,
   
   if(!gROOT->FindObject("ERecoilMeanf"))
   {
-    ERecoilMeanFkt = new TF2("ERecoilMeanf",
-      "x*[0]/2/TMath::Pi()/[3]/[4]/(1+[5]/[6])*TMath::Abs(x)*"
-      "TMath::Exp(-0.5*((x*y-[1])*(x*y-[1])/[3]/[3]"
-      "+TMath::Power(((1+y*[5]/[6])/(1+[5]/[6])*x-[2])"
-      "/[4],2)))");
+    ERecoilMeanFkt = new TF2("ERecoilMeanf",ERecoilQPropDensity,0,1000,0,2,7);
     ERecoilMeanFkt->SetParName(0,"c");
     ERecoilMeanFkt->SetParName(1,"#bar{E_{ion}}");
     ERecoilMeanFkt->SetParName(2,"#bar{E_{heat}}");
