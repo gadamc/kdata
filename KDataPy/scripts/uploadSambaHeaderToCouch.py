@@ -386,6 +386,13 @@ def uploadFile(filename, uri, dbname, override=None):
   runDict['hostipaddress'] = socket.gethostbyname( socket.gethostname() )
   runDict['hostname'] = socket.gethostname()
   runDict['size_in_bytes'] = os.path.getsize(runDict['file'])
+
+  #this will write a new version of the document to the DB if it
+  #already exists! 
+  if db.doc_exist(runDict['_id']) and override==True:
+     runDict['_rev'] = db.get_rev(runDict['_id'])
+     print 'overriding document', runDict['_id'], runDict['_rev']
+
   db.save_doc(runDict)
   
   file.close()
