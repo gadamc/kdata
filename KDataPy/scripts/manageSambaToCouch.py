@@ -10,7 +10,7 @@ def main(uri = 'http://127.0.0.1:5984',
         lastfile = '/Users/adam/Scripts/uploadSambaToCouch/lastSambaPartitionUploaded.txt',
         logFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.log', 
         errFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.err',
-        db = 'edwdb', startDir = ''):
+        db = 'edwdb', startDir = '', override = None):
         
   logfile = open(logFileName, 'a')
   errfile = open(errFileName, 'a')
@@ -53,7 +53,7 @@ def main(uri = 'http://127.0.0.1:5984',
   for i in filelist:
 
     print 'Uploading ', i , 'to Couch'
-    result = upload.uploadFile(i, uri, db)
+    result = upload.uploadFile(i, uri, db, override)
     #graphs is a dictionary if key = detectorName and value = list of TGraph
     #result = True
     
