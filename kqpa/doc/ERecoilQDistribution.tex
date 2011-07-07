@@ -56,115 +56,18 @@
 \tableofcontents
 \newpage
 
-\section{Derivation}
-The aim of this paper is to derive the propability density of the quantity
-\begin{gather}
-\vec{q} = \begin{pmatrix} E_{recoil} \\ Q \end{pmatrix}
-\end{gather}
-The quantity $\vec{q}$ depends from 
-\begin{gather}
-\vec{r} = \begin{pmatrix} E_{ion} \\ E_{heat} \end{pmatrix}
-\end{gather}
-The dependency is given by
-\begin{gather}
-T: \vec{r} \rightarrow \vec{q} , \begin{pmatrix} E_{ion} \\ E_{heat} \end{pmatrix}  \rightarrow \begin{pmatrix} E_{recoil} \\ Q \end{pmatrix} = \begin{pmatrix} \left( 1 + \frac{V}{\epsilon_\gamma} \right) E_{heat} - \frac{V}{\epsilon_\gamma} E_{ion} \\ \frac{E_{ion}}{\left( 1 + \frac{V}{\epsilon_\gamma} \right) E_{heat} - \frac{V}{\epsilon_\gamma} E_{ion}} \end{pmatrix}
-\end{gather}
-Then the inverse transformation is given by
-\begin{gather}
-T^{-1}: \vec{q} \rightarrow \vec{r}, \begin{pmatrix} E_{recoil} \\ Q \end{pmatrix} \rightarrow \begin{pmatrix} E_{ion} \\ E_{heat} \end{pmatrix} = \begin{pmatrix} Q E_{recoil} \\ \frac{1 + Q \frac{V}{\epsilon_\gamma}}{1 + \frac{V}{\epsilon_\gamma}} E_{recoil} \end{pmatrix}
-\end{gather}
-The derivative then is given by
-\begin{gather}
-T'(\vec{r}) = \begin{pmatrix} \frac{\partial E_{recoil}}{\partial E_{ion}} & \frac{\partial E_{recoil}}{\partial E_{heat}} \\ \frac{\partial Q}{\partial E_{ion}} & \frac{\partial Q}{\partial E_{heat}} \end{pmatrix}
-= \begin{pmatrix} - \frac{V}{\epsilon_\gamma} & 1 + \frac{V}{\epsilon_\gamma} \\ \frac{1}{E_{recoil}} + \frac{V}{\epsilon_\gamma} \frac{E_{ion}}{E_{recoil}^2} & - \left( 1 + \frac{V}{\epsilon_\gamma} \right) \frac{E_{ion}}{E_{recoil}^2} \end{pmatrix}
-\end{gather}
-and thus the determinant of it is
-\begin{gather}
-\det T'(\vec{r}) =  \frac{V}{\epsilon_\gamma} \left( 1 + \frac{V}{\epsilon_\gamma} \right) \frac{E_{ion}}{E_{recoil}^2} - \left(1 + \frac{V}{\epsilon_\gamma}\right) \left( \frac{1}{E_{recoil}} + \frac{V}{\epsilon_\gamma} \frac{E_{ion}}{E_{recoil}^2} \right) = - \frac{1 + \frac{V}{\epsilon_\gamma}}{E_{recoil}}
-\end{gather}
-Obviously for all values for $E_{recoil}$ the determinant doesn't vanish and thus the transformation is invertible in the whole domain according to the inverse function theorem.
-
-If we assume that $\vec{r}$ is a multivariate normal-distributed quantity, that means it follows the propability density
-\begin{gather}
-f(\vec{r}) = \frac{1}{2 \pi \sqrt{\det C}} \exp \left( - \frac{1}{2} (\vec{r} - \vec{r}_0)^T C^{-1} (\vec{r} - \vec{r}_0) \right)
-\end{gather}
-with the covariance matrix
-\begin{gather}
-C = \begin{pmatrix} \sigma_{ion}^2 & \sigma_{ion-heat}^2 \\ \sigma_{ion-heat}^2 & \sigma_{heat}^2 \end{pmatrix}
-\end{gather}
-, we get the propability density function $g(\vec{q})$ \cite{Henze}[p. 246]
-\begin{gather}
-g(\vec{q}) = \frac{f(T^{-1}(\vec{q}))}{\left| det T'(T^{-1}(\vec{q})) \right|} \\ =  \exp \left( - \frac{1}{2}  \begin{pmatrix} Q E_{recoil} - \overline{E_{ion}}\\ \frac{1 + Q \frac{V}{\epsilon_\gamma}}{1 + \frac{V}{\epsilon_\gamma}} E_{recoil} - \overline{E_{heat}} \end{pmatrix}^T \begin{pmatrix} \sigma_{ion}^2 & \sigma_{ion-heat}^2 \\ \sigma_{ion-heat}^2 & \sigma_{heat}^2 \end{pmatrix}^{-1} \begin{pmatrix} Q E_{recoil} - \overline{E_{ion}} \\ \frac{1 + Q \frac{V}{\epsilon_\gamma}}{1 + \frac{V}{\epsilon_\gamma}} E_{recoil} - \overline{E_{heat}} \end{pmatrix} \right) \\
-\times  \frac{\left| E_{recoil} \right| }{2 \pi \sqrt{\sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4} \left(1 + \frac{V}{\epsilon_\gamma}\right)} \label{propfunc}
-\end{gather} 
-\section{Statistical moments}
-In order to determine the means $\left \langle Q \right \rangle$ and $\left \langle E_{recoil} \right \rangle$ we have to calculate
-\begin{gather}
-\left \langle Q \right \rangle = \int_{-\infty}^{\infty} dQ \, Q \cdot  \int_{-\infty}^{\infty} dE_{recoil} \, g(E_{recoil},Q) \\
-\left \langle E_{recoil} \right \rangle = \int_{-\infty}^{\infty} dQ \int_{-\infty}^{\infty} dE_{recoil} E_{recoil} g(E_{recoil},Q)
-\end{gather}
-Obviously the exponent in $g(E_{recoil},Q)$ is a square polynomial in $Q$ as well as in $E_{recoil}$.
-So we can write
-\begin{gather}
-g(E_{recoil},Q) = k \cdot \left| E_{recoil} \right| \cdot \exp \left( a_{E_{recoil}} E_{recoil}^2 + b_{E_{recoil}} E_{recoil} + c_{E_{recoil}} \right) \\
-= k \cdot \left| E_{recoil} \right| \cdot \exp \left( a_Q Q^2 + b_Q Q + c_Q \right)
-\end{gather}
-with
-\begin{gather}
-k = \frac{1}{\sqrt{\sigma_{ion}^2 \cdot \sigma_{heat}^2 - \sigma_{ion-heat}^4} \left(1 + \frac{V}{\epsilon_\gamma} \right)} \\
-a_{E_{recoil}} = \frac{Q^2 \sigma_{heat}^2}{2 \left( \sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4 \right)} \\
-b_{E_{recoil}} = \frac{1}{\sigma_{ion}^2 \cdot \sigma_{heat}^2 - \sigma_{ion-heat}^4}
-\end{gather}
-
-Then the means are
-\begin{gather}
-\overline{E_{recoil}} = \\
-\overline{Q} = \frac{\left| E_{recoil} \right| }{2 \pi \sqrt{\sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4} \left(1 + \frac{V}{\epsilon_\gamma}\right)} \cdot 
-\end{gather}
+\input{Derivation.tex}
+\input{MarginalDistributions.tex}
+\input{StatisticalMoments.tex}
+\input{ToyExperiments.tex}
+\input{IntegralErrorEstimation.tex}
 
 
 
-\section{Toy experiments}
-In order to test the goodness of this density function, one can do monte carlo simulation.This can be done in ROOT by creating many events $(E_{Recoil},Q)$ from Gaussian distributed quantities $E_{Ion}$ with uncertainty $\sigma_{E_{Ion}}$ and $E_{Heat}$ with uncertainty $\sigma_{E_{Heat}}$ and fixed parameters $V$, $\epsilon$,
-where
-\begin{gather}
-E_{Recoil} = \left( 1 + \frac{V}{\epsilon} \right) E_{Heat} - \frac{V}{\epsilon} E_{Ion} \\
-Q = \frac{E_{Ion}}{E_{Recoil}}
-\end{gather}
-Then by filling a TH2D histogram with these events and compare it to another TH2D histogram created from the propability density function (pdf) $g(E_{Recoil},Q)$ by the TH2D::FillRandom() method, one can do a $\chi^2$ test to test the null hypothesis $H_0$, that both samples origin from the same distribution.
-For each bin the quantity
-\begin{gather}
-z_i = \frac{n_{pdf,i} - n_{mc,i}}{\sqrt{n_{pdf,i}+n_{mc,i}}}
-\end{gather}
-can be determined which should be standard normally distributed for high numbers of events $n_{pdf,i}$ and $n_{mc,i}$.
-The test then is applied on
-\begin{gather}
-\chi^2 = \sum_i z_i^2
-\end{gather}
-where the sum goes over all bins with more than a certain number of events, which should be high enough to be normally distributed in good approximation. \\
 
-\subsection{Integral error estimation}
-The exact way to determine the expected bin contents would be to integrate $g(E_{recoil,Q}$ over the ranges of the bin and multiply with the total number of entries $n_{entries}$:
-\begin{gather}
-n_{i,pdf} = n_{entries} \cdot \int_{E_{recoil,i,min}}^{E_{recoil,i,max}} dE_{recoil} \int_{Q_{i,min}}^{Q_{i,max}} dQ \, g(E_{recoil},Q)
-\end{gather}
-As these integrations are very time-consuming the effort can be reduced by taylor-expanding $g(E_{recoil},Q$ at the centers of the bins.
-Then with $\vec{a}_i = \begin{pmatrix} E_{recoil,i,min} \\ Q_{i,min} \end{pmatrix}$ and $\vec{b}_i = \begin{pmatrix} E_{recoil,i,max} \\ Q_{i,max} \end{pmatrix}$ we have
-\begin{gather}
-n_{i,pdf} = n_{entries} \cdot \int_{E_{recoil,i,min}}^{E_{recoil,i,max}} dE_{recoil} \int_{Q_{i,min}}^{Q_{i,max}} dQ \, g(E_{recoil},Q) \\
- = n_{entries} \cdot \int_{E_{recoil,i,min}}^{E_{recoil,i,max}} dE_{recoil} \int_{Q_{i,min}}^{Q_{i,max}} dQ \sum_{n_{E_{recoil}} = 0}^\infty \sum_{n_{Q} = 0}^\infty
-\frac{\left( \vec{x} - \frac{\vec{b}_i + \vec{a}_i}{2} \right)^{n_{E_{recoil}}} \left( \vec{x} - \frac{\vec{b}_i + \vec{a}_i}{2} \right)^{n_{Q}}}{n_{E_{recoil}}! n_Q!}
-\cdot \frac{\partial^{n_{E_{recoil}}}}{\partial E_{recoil} ^{n_{E_recoil}}} \frac{\partial^{n_{Q}}}{\partial Q^{n_{Q}}} g(E_{recoil,i},Q_i)
-\end{gather}
-In the double for all terms where $n_{E_{recoil}}$ and $n_{Q}$ are even the integral vanish as the indefinite integrals are odd with respect to the center of the bin:
-\begin{gather}
-n_{i,pdf} = n_{entries} \cdot \left(  \left| \vec{b}_i - \vec{a}_i \right| g(E_{recoil,i},Q) \right. \\
-+ \frac{1}{6} \frac{\partial^2}{\partial E_{recoil}^2} g(E_{recoil,i},Q_i) \cdot \left( \frac{E_{recoil,i,max} - E_{recoil,i,min}}{2} \right)^3 
-+ \frac{1}{6} \frac{\partial^2}{\partial Q^2} g(E_{recoil,i},Q_i) \cdot \left( \frac{Q_{i,max} - Q_{i,min}}{2} \right)^3  \\
-+ \left. \mathcal O \left( \left( \frac{E_{recoil,i,max} - E_{recoil,i,min}}{2} \right)^3 \left( \frac{Q_{i,max} - Q_{i,min}}{2} \right)^3 \right) \right)
-\end{gather}
-This procedure is applied for some examples in the following: \\[0.5cm]
-\captionof{figure}{Histograms with Monte Carlo events for some parameter combinations of $\bar{E_{Ion}}$,$\bar{E_{Heat}}$, $\sigma_{E_{Ion}}$, and $\sigma_{E_{Heat}}$ fitted with the pdf $f(E_{Recoil},Q) = c \cdot g(E_{Recoil},Q)$ and distribution of $z_i$ for minimal number of pdf events $n_{min}>400$}
+
+
+
 
 
 \begin{minipage}{\textwidth}
@@ -192,74 +95,9 @@ $\overline{E_{Ion}}$ & $\overline{E_{heat}}$ & $\sigma_{E_{Ion}}$ & $\sigma_{E_{
 The confidence level of the propability density function (CL of pdf) gives the percentage of the events in the $\chi^2$ sum to the total sum of all monte carlo events.
 For the acceptance of the null hypothesis $H_0$, a significance level of 1\% is assumed. That means it is accepted if TMath::Prob($\chi^2$,ndf)>0.01.
 So in one case out of 12 the null hypothesis $H_0$ has to be rejected. 
-\subsection{script}
-The plots have been created by the script on in the scripts directory:
-\begin{verbatim}
-$KDATA_ROOT/kqpa/scripts/ERecoilQDist_v30.C
-\end{verbatim}
-This file offers some methods:
-\begin{enumerate}
-\item \begin{verbatim}
-ERecoilQDist_v30(Double_t anEIonMean = 100,
-								 Double_t anEHeatMean = 100,
-								 Double_t anEIonSigma = 1,
-								 Double_t anEHeatSigma = 1,
-								 Double_t aNumBinsX = 2000,
-								 Double_t aNumBinsY = 2000,
-								 Long_t aNumEntries = 1E9,
-								 Double_t aV = 3,
-								 Double_t anEpsilon = 1,
-								 Option_t* aFitOption = "`0LI"')
-\end{verbatim}
-This methods creates two histograms "`mchist"' from creating random numbers distributed according the given parameters The histograms have the dimensions (aNumBinsX,aNumBinsY) and the boundaries are chosen, so that it covers $\pm$ aNumSigmas standard deviations calculated from error propagation around the center value.
-\begin{gather}
-\overline{E_{Recoil}} = \left(1 + \frac{V}{\epsilon_\gamma} \right) \overline{E_{Heat}} - \frac{V}{\epsilon_\gamma} \overline{E_{Ion}} \\
-\overline{Q} = \frac{\overline{E_{Ion}}}{\overline{E_{Recoil}}} 
-\end{gather}
-In the case of $E_{Recoil}$ this is the expectation value
-\begin{gather}
-\mean{E_{Recoil}} = \overline{E_{recoil}} \\
-\mean{E_{Ion}} = \overline{E_{Ion}} \\
-\mean{E_{Heat}} = \overline{E_{Heat}}
-\end{gather}
-, as $E_{Heat}$ and $E_{Ion}$ are Gaussian distributed, but in the case of $Q$
-there is bias between $\overline{Q}$ and $\mean{Q}$: 
-\begin{gather}
-\mean{Q(E_{EIon},E_{Recoil})} = \mean{\exp \left( \begin{pmatrix} E_{Ion} - \mean{E_{Ion}} \\ E_{Heat} - \mean{E_{Heat}} \end{pmatrix} \nabla \right) Q(E_{Ion},E_{Recoil})} \\
-= \mean{Q(\mean{E_{Ion}},\mean{E_{Heat}}) + \frac{\partial Q}{\partial E_{Ion}} \frac{\partial Q}{E_{Heat}} (E_{Ion} - \mean{E_{Ion}})(E_{Heat} - \mean{E_{Heat}}) + \right. \\ \left. \frac{1}{2} \frac{\partial^2 Q}{\partial E_{Ion}^2} (E_{Ion} - \mean{E_{Ion}})^2 + \frac{1}{2} \frac{\partial^2 Q}{\partial E_{Heat}^2} (E_{Heat} - \mean{E_{Heat}})^2 + \mathcal O \left( \begin{pmatrix} E_{Ion} - \mean{E_{Ion}} \\ E_{Heat} - \mean{E_{Heat}} \end{pmatrix}^3 \right)} \\
-= \overline{Q} + \left( \frac{1}{\mean{E_{Recoil}}} + \frac{V}{\epsilon_\gamma} \frac{\mean{E_{Ion}}}{\mean{E_{Recoil}}^2} \right) \left( 1 + \frac{V}{\epsilon_\gamma} \right) \frac{\mean{E_{Ion}}}{\mean{E_{Recoil}}^2} \sigma_{Ion-Heat}^2 \\ +  \left( \frac{V}{\epsilon_\gamma} \frac{1}{\mean{E_{Recoil}}^2} \right) \left( 1 +  \frac{V}{\epsilon_\gamma} \frac{\mean{E_{Ion}}}{\mean{E_{Recoil}}} \right) \sigma_{Ion}^2 + \left(1 + \frac{V}{\epsilon_\gamma} \right)^2 \frac{\mean{E_{Ion}}}{\mean{E_{Recoil}}^3} \sigma_{Heat}^2 + \mathcal O \left(\mean{ \begin{pmatrix} E_{Ion} - \mean{E_{Ion}} \\ E_{Heat} - \mean{E_{Heat}} \end{pmatrix}^3} \right)
-\end{gather}
-If the covariance matrix of $\begin{pmatrix} E_{Ion} \\ E_{Heat} \end{pmatrix}$ has very small entries, the square terms can be neglected.
-Additionally "`mchist"' is fitted with the pdf "`fkt"' alias 'f' and "`aFitOption"' and the histogram is stored in a ROOT file:
-\begin{quote}
-<$E_{Ion}$>\_<$E_{Heat}$>\_<$\sigma_{E_{Ion}}$>\_<$\sigma_{E_{Heat}}$>.root
-\end{quote}
-\item
-\begin{verbatim}
-void ShowBinGausDistribution(Int_t aMinNumEntries = 400,
-                             Int_t aMaxNumEntries = 1E50)
-\end{verbatim}
-This method builds the histogram "pdfhist" for the theoretical distribution, where the bin contents $n_{pdf,i}$ are determined by evaluating the fitting function of the monte carlo histogram at the bin center values and a histogram "histres" representing the differences for each bin between the the entries in the monte carlo histogram and the pdf histogram. Then it builds a TH1D "gaushist" and fills it with the $z_i$ calculated from the entries of "mchist" and "`pdfhist"'. Only entries with bin content larger than "aMinNumEntries" and smaller than "aMaxNumEntries" in "pdfhist" are considered. As the histograms might have different numbers of effective entries in the histograms' ranges, the $z_i$ need some correction:
-\begin{gather}
-z_i = \frac{n_{mc,i} - c \cdot n_{pdf,i}}{n_{mc,i} + c^2 \cdot n_{pdf,i}}
-\end{gather} 
-where $c = \frac{n_{entries,mc}}{n_{entries,pdf}}$ is the quotient of the effective entries of both histograms.
-Then with the number of $z_i$ (number of degrees of freedom) and the sum
-\begin{gather}
-\chi^2 = \sum_i z_i
-\end{gather}
-a $\chi^2$ test can be applied.
-$\chi^2$, the number of degrees of freedom, the percentage of collected entries
-are printed. 
-\item
-\begin{verbatim}
-void MakeGraphs(const Char_t* aFileFormat = "pdf",
-                Double_t aSignificanceLevel = 0.01)
-\end{verbatim}
-This method makes graphs for the monte carlo histograms, their projections on both axis (<parameter_list>_px.<aFileFormat>) and <parameter_list>_py.<aFileFormat>), the projections of the residual histograms on both axis, ((<parameter_list>_pxres.<aFileFormat>) and <parameter_list>_respy.<aFileFormat>)
-and the Gaus histograms (<parameter_list>_gaus.<aFileFormat>) filled with $z_i$ for all ROOT files in the current working directory and saves them in the specified file format. \\
-Additionally it makes a tex file "graphics.tex" with includegraphics-commands for all images and a tex file "table.tex" which contains a table showing the results of the $chi^2$ tests based on the specified significance level.
-\end{enumerate}
+
+\input{Script.tex}
+\input{Bibliography.tex}
 
 
 
@@ -269,9 +107,7 @@ Additionally it makes a tex file "graphics.tex" with includegraphics-commands fo
 
 
 
-\begin{thebibliography}{1cm}
-\bibitem{Henze} Henze, Stochastik I, Einfuhrung in die Wahrscheinlichkeitstheorie und Statistik, 2004
-\end{thebibliography}
+
 
 
 

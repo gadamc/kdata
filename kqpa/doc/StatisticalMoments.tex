@@ -1,0 +1,24 @@
+\section{Statistical moments}
+In order to determine the means $\left \langle Q \right \rangle$ and $\left \langle E_{recoil} \right \rangle$ we have to calculate
+\begin{gather}
+\left \langle Q \right \rangle = \int_{-\infty}^{\infty} dQ \, Q \cdot  \int_{-\infty}^{\infty} dE_{recoil} \, g(E_{recoil},Q) \\
+\left \langle E_{recoil} \right \rangle = \int_{-\infty}^{\infty} dQ \int_{-\infty}^{\infty} dE_{recoil} E_{recoil} g(E_{recoil},Q)
+\end{gather}
+Obviously the exponent in $g(E_{recoil},Q)$ is a square polynomial in $Q$ as well as in $E_{recoil}$.
+So we can write
+\begin{gather}
+g(E_{recoil},Q) = k \cdot \left| E_{recoil} \right| \cdot \exp \left( a_{E_{recoil}} E_{recoil}^2 + b_{E_{recoil}} E_{recoil} + c_{E_{recoil}} \right) \\
+= k \cdot \left| E_{recoil} \right| \cdot \exp \left( a_Q Q^2 + b_Q Q + c_Q \right)
+\end{gather}
+with
+\begin{gather}
+k = \frac{1}{\sqrt{\sigma_{ion}^2 \cdot \sigma_{heat}^2 - \sigma_{ion-heat}^4} \left(1 + \frac{V}{\epsilon_\gamma} \right)} \\
+a_{E_{recoil}} = \frac{Q^2 \sigma_{heat}^2}{2 \left( \sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4 \right)} \\
+b_{E_{recoil}} = \frac{1}{\sigma_{ion}^2 \cdot \sigma_{heat}^2 - \sigma_{ion-heat}^4}
+\end{gather}
+
+Then the means are
+\begin{gather}
+\overline{E_{recoil}} = \\
+\overline{Q} = \frac{\left| E_{recoil} \right| }{2 \pi \sqrt{\sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4} \left(1 + \frac{V}{\epsilon_\gamma}\right)} \cdot 
+\end{gather}
