@@ -1,5 +1,5 @@
 \section{Marginal Distributions}
-\subsection{$g_{E_recoil}(Q)$}
+\subsection{$g_{E_{recoil}}(Q)$}
 In order to determine the marginal distribution
 \begin{gather}
 g_{E_{recoil}}(Q) = \int_{-\infty}^\infty dE_{recoil} \, g(E_{recoil},Q)
@@ -91,10 +91,10 @@ Substituting $\tilde{a}_E = - a_E$ and $ y = \sqrt{\tilde{a}_E} x$ leads to
 \cdot \frac{b_E}{2 \tilde{a}_E \sqrt{\tilde{a}_E}} \cdot
  \int_{- \frac{b_E}{2 \sqrt{\tilde{a}_E}}}^{\frac{b_E}{2 \sqrt{\tilde{a}_E}}}
 dy \exp( - y^2) \\
-= \frac{k_E}{\tilde{a}_E} \exp \left( c_E \right) 
+= \framebox{$\displaystyle \frac{k_E}{\tilde{a}_E} \exp \left( c_E \right) 
 + k_E \exp \left( c_E + \frac{b_E^2}{4 \tilde{a}_E} \right)
-\cdot \frac{b_E}{2 \tilde{a}_E \sqrt{\tilde{a}_E}} \cdot \frac{\sqrt{\pi}}{2}
-\operatorname{erf} \left( \frac{b_E}{2 \sqrt{\tilde{a}_E}} \right) 
+\cdot \frac{b_E}{2 \tilde{a}_E \sqrt{\tilde{a}_E}} \cdot \sqrt{\pi}
+\operatorname{erf} \left( \frac{b_E}{2 \sqrt{\tilde{a}_E}} \right)$}
 \end{gather}
 
 \subsection{$g_Q(E_{recoil})$}
@@ -111,7 +111,48 @@ b_Q Q + c_Q ) \label{propfuncQ}
 \end{gather}
 with
 \begin{gather}
-k_E = \frac{\left| E_{recoil} \right| }{2 \pi \sqrt{\sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4}
+k_Q = \frac{\left| E_{recoil} \right| }{2 \pi \sqrt{\sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4}
  \left(1 + \frac{V}{\epsilon_\gamma}\right)} \\
+a_Q = - \left( \frac{g_{11}}{2} + g_{12} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} + \frac{g_{22}}{2} 
+\frac{ \left( \frac{V}{\epsilon_\gamma} \right)^2}{\left( 1 + \frac{V}{\epsilon_\gamma} \right)^2} \right) E_{recoil}^2  \\
+b_Q = - \left( g_{12} \frac{1}{1 + \frac{V}{\epsilon_\gamma}}
++ g_{22} \frac{\frac{V}{\epsilon_\gamma}}{\left(1 + \frac{V}{\epsilon_\gamma} \right)^2} \right) E_{recoil}^2 \\ + \left(g_{11} \overline{E_{ion}} 
+ + g_{12} \overline{E_{heat}}  + g_{12} \overline{E_{ion}} \frac{\frac{V}{\epsilon}}{1+ \frac{V}{\epsilon_\gamma}}  + g_{22} \overline{E_{heat}} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} \right) E_{recoil}  \\
+c_Q = - \frac{g_{11}}{2} \overline{E_{ion}}^2 - g_{12} \overline{E_{ion}} \cdot \overline{E_{heat}} - \frac{g_{22}}{2} \overline{E_{heat}}^2 - \frac{g_{22}}{2} \frac{1}{\left(1 + \frac{V}{\epsilon_\gamma} \right)^2} E_{recoil}^2 \\
++ \left( g_{12} \overline{E_{ion}} \frac{1}{1+ \frac{V}{\epsilon_\gamma}} 
++ g_{22} \overline{E_{heat}} \frac{1}{1 + \frac{V}{\epsilon_\gamma}} \right) E_{recoil}
 \end{gather}
+\newpage
+\begin{landscape}
+Again completing the square in the exponent of (\ref{propfuncQ}) results in
+\begin{gather}
+g_Q(E_{recoil}) = \int_{-\infty}^{\infty} dQ \, g(E_{recoil},Q) \\
+= k_Q \exp \left( c_Q - \frac{b_Q^2}{4 a_Q} \right) \int_{-\infty}^{\infty} dQ \, \exp \left( a_Q \left( Q + \frac{b_Q}{2 a_Q} \right)^2 \right) \\
+= k_Q \exp \left( c_Q - \frac{b_Q^2}{4 a_Q} \right) \frac{\sqrt{\pi}}{ \sqrt{-a_Q}} \\
+= \frac{\left| E_{recoil} \right| }{2 \pi \sqrt{\sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4} \left(1 + \frac{V}{\epsilon_\gamma}\right)} \times \\
+\exp \left(-\frac{g_{11}}{2} \overline{E_{ion}}^2 - g_{12} \overline{E_{ion}} \cdot \overline{E_{heat}} - \frac{g_{22}}{2} \overline{E_{heat}}^2 - \frac{g_{22}}{2} \frac{1}{\left(1 + \frac{V}{\epsilon_\gamma} \right)^2} E_{recoil}^2 \right.\\
+\left. + \left( g_{12} \overline{E_{ion}} \frac{1}{1+ \frac{V}{\epsilon_\gamma}} 
++ g_{22} \overline{E_{heat}} \frac{1}{1 + \frac{V}{\epsilon_\gamma}} \right) E_{recoil} - \frac{\left(- \left( g_{12} \frac{1}{1 + \frac{V}{\epsilon_\gamma}}
++ g_{22} \frac{\frac{V}{\epsilon_\gamma}}{\left(1 + \frac{V}{\epsilon_\gamma} \right)^2} \right) E_{recoil}^2 + \left(g_{11} \overline{E_{ion}} + g_{12} \overline{E_{heat}}  + g_{12} \overline{E_{ion}} \frac{\frac{V}{\epsilon}}{1+ \frac{V}{\epsilon_\gamma}}  + g_{22} \overline{E_{heat}} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} \right) E_{recoil} \right)^2}{-4 \left( \frac{g_{11}}{2} + g_{12} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} + \frac{g_{22}}{2} \frac{ \left( \frac{V}{\epsilon_\gamma} \right)^2}{\left( 1 + \frac{V}{\epsilon_\gamma} \right)^2} \right) E_{recoil}^2 } \right) \times \\
+\frac{\sqrt{\pi}}{ \sqrt{\left( \frac{g_{11}}{2} + g_{12} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} + \frac{g_{22}}{2} \frac{ \left( \frac{V}{\epsilon_\gamma} \right)^2}{\left( 1 + \frac{V}{\epsilon_\gamma} \right)^2} \right) E_{recoil}^2}}
+\end{gather}
+\newpage
+\begin{gather}
+= \frac{1 }{\sqrt{2 \pi} \sqrt{\sigma_{ion}^2 \sigma_{heat}^2 - \sigma_{ion-heat}^4} \sqrt{g_{11} \left(1 + \frac{V}{\epsilon_\gamma} \right)^2 + 2 g_{12} \frac{V}{\epsilon_\gamma} \left( 1+ \frac{V}{\epsilon_\gamma} \right) + g_{22}  \left( \frac{V}{\epsilon_\gamma} \right)^2}} \times \\
+\exp \left( \left( - \frac{g_{22}}{2} \frac{1}{\left(1+ \frac{V}{\epsilon_\gamma} \right)^2} + \frac{\left( g_{12} \frac{1}{1 + \frac{V}{\epsilon_\gamma}}
++ g_{22} \frac{\frac{V}{\epsilon_\gamma}}{\left(1 + \frac{V}{\epsilon_\gamma} \right)^2} \right)^2}{4 \left( \frac{g_{11}}{2} + g_{12} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} + \frac{g_{22}}{2} \frac{ \left( \frac{V}{\epsilon_\gamma} \right)^2}{\left( 1 + \frac{V}{\epsilon_\gamma} \right)^2} \right)} \right) E_{recoil}^2 \right. \\ \left. + \left( g_{12} \overline{E_{ion}} \frac{1}{1+ \frac{V}{\epsilon_\gamma}} 
++ g_{22} \overline{E_{heat}} \frac{1}{1 + \frac{V}{\epsilon_\gamma}} - 2 \frac{\left( g_{12} \frac{1}{1 + \frac{V}{\epsilon_\gamma}}
++ g_{22} \frac{\frac{V}{\epsilon_\gamma}}{\left(1 + \frac{V}{\epsilon_\gamma} \right)^2} \right) \left(g_{11} \overline{E_{ion}} + g_{12} \overline{E_{heat}}  + g_{12} \overline{E_{ion}} \frac{\frac{V}{\epsilon}}{1+ \frac{V}{\epsilon_\gamma}}  + g_{22} \overline{E_{heat}} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} \right) }{4 \left( \frac{g_{11}}{2} + g_{12} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} + \frac{g_{22}}{2} \frac{ \left( \frac{V}{\epsilon_\gamma} \right)^2}{\left( 1 + \frac{V}{\epsilon_\gamma} \right)^2} \right)} \right) E_{recoil} \right. \\ \left. + \left(-\frac{g_{11}}{2} \overline{E_{ion}}^2 - g_{12} \overline{E_{ion}} \cdot \overline{E_{heat}} - \frac{g_{22}}{2} \overline{E_{heat}}^2 + \frac{\left(g_{11} \overline{E_{ion}} + g_{12} \overline{E_{heat}}  + g_{12} \overline{E_{ion}} \frac{\frac{V}{\epsilon}}{1+ \frac{V}{\epsilon_\gamma}}  + g_{22} \overline{E_{heat}} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} \right)^2}{4 \left( \frac{g_{11}}{2} + g_{12} \frac{\frac{V}{\epsilon_\gamma}}{1+ \frac{V}{\epsilon_\gamma}} + \frac{g_{22}}{2} \frac{ \left( \frac{V}{\epsilon_\gamma} \right)^2}{\left( 1 + \frac{V}{\epsilon_\gamma} \right)^2} \right)} \right) \right) \\
+= \framebox{$\displaystyle \frac{1}{\sqrt{2 \pi} \sqrt{ \sigma_{heat}^2 \left(1 + \frac{V}{\epsilon_\gamma} \right)^2 - 2 \sigma_{ion-heat}^2 \frac{V}{\epsilon_\gamma} \left( 1 + \frac{V}{\epsilon_\gamma} \right) + \sigma_{ion}^2 \left( \frac{V}{\epsilon_\gamma} \right)^2}} \exp \left( - \frac{1}{2} \frac{\left(E_{recoil} - \left( \overline{E_{heat}} \left( 1 + \frac{V}{\epsilon_\gamma} \right) - \overline{E_{ion}} \frac{V}{\epsilon_\gamma} \right) \right)^2}{\sigma_{heat}^2 \left(1 + \frac{V}{\epsilon_\gamma} \right)^2 - 2 \sigma_{ion-heat}^2 \frac{V}{\epsilon_\gamma} \left( 1 + \frac{V}{\epsilon_\gamma} \right) + \sigma_{ion}^2 \left( \frac{V}{\epsilon_\gamma} \right)^2} \right) $} \label{propfuncMargE}
+\end{gather}
+Obviously this is a normal distribution, which is not surprising since $E_{recoil}$ is a weighted sum of two normal distributed quantities, $E_{ion}$ and $E_{heat}$:
+\begin{gather}
+E_{recoil} = \left( 1 + \frac{V}{\epsilon_\gamma} \right) E_{heat} - \frac{V}{\epsilon_\gamma} E_{ion}
+\end{gather}
+
+\end{landscape}
+
+
+
+
 

@@ -38,7 +38,7 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   fSigmaEnergyHeat(aSigmaEnergyHeat), fSigmaEnergyIonHeat(aSigmaEnergyIonHeat),
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
   fConfidenceLevel(aConfidenceLevel), fNumBinsX(aNumBinsX),
-  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas) , fHaveParametersChanged(true)
+  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas)
 {
   // The constructor generates the pdf g(E_recoil,Q)
   // (documentation in ~/doc/ERecoiLQDistribution.pdf)
@@ -49,6 +49,9 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   // +/- a specified multiple of them
   // A marker is set for the modal values and a contour line for the specified
   // confidence level
+  
+  fFunction = 0;
+  fMarker = 0;
   
   if(!strcmp(aMode,"QErecoil"))
   {
@@ -72,6 +75,48 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
       return;
     }
     
+  CalculateContour();
+   ResetMarker();
+   fPreviousVersion = new KQContourPoint(*this);
+}
+
+KQContourPoint::KQContourPoint(const KQContourPoint& anotherPoint)
+{
+    this->fPreviousVersion = 0;
+    this->fQvalue = anotherPoint.fQvalue;
+    this->fEnergyRecoil = anotherPoint.fEnergyRecoil;
+    this->fEnergyIon = anotherPoint.fEnergyIon;
+    this->fEnergyHeat = anotherPoint.fEnergyHeat;
+    this->fSigmaEnergyIon = anotherPoint.fSigmaEnergyIon;
+    this->fSigmaEnergyHeat = anotherPoint.fSigmaEnergyHeat;
+    this->fSigmaEnergyIonHeat = anotherPoint.fSigmaEnergyIonHeat;
+    this->fVoltageBias = anotherPoint.fVoltageBias;
+    this->fEpsilon = anotherPoint.fEpsilon;
+    this->fConfidenceLevel = anotherPoint.fConfidenceLevel;
+    this->fConfidenceLevelError = anotherPoint.fConfidenceLevelError;
+    if(anotherPoint.fFunction)
+      this->fFunction = new TF2(*(anotherPoint.fFunction));
+    else
+      this->fFunction = 0;
+    if(anotherPoint.fMarker)
+      this->fMarker = new TMarker(*(anotherPoint.fMarker));
+    else
+      this->fMarker = 0;
+    this->fNumBinsX = anotherPoint.fNumBinsX;
+    this->fNumBinsY = anotherPoint.fNumBinsY;
+    this->fNumSigmas = anotherPoint.fNumSigmas;
+}
+
+KQContourPoint::~KQContourPoint()
+{
+  if(fFunction) {
+    delete this->fFunction;
+    this->fFunction = 0;
+  }
+  if(fMarker) {
+      delete this->fMarker;
+      this->fMarker = 0;
+  }
 }
   
   
@@ -96,25 +141,7 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
   // [4] : fSigmaIonHeat
   // [5] : fVoltageBias
   // [6] : fEpsilon
-/*
-  fFunction = new TF2(TString::Format("f%d_%d_%d_%d_%d",
-                                      Int_t(fQvalue*100),
-                                      Int_t(fEnergyRecoil*100),
-                                      Int_t(fSigmaEnergyIon*100),
-                                      Int_t(fSigmaEnergyHeat*100),
-                                      Int_t(fSigmaEnergyIonHeat*100)).Data(),
- "TMath::Exp(-0.5 *( [3]^2/([3]^2*[2]^2 - [4]^4) * ( y * x - [0])^2"
- "+ [2]^2/([3]^2*[2]^2 - [4]^4) *( (1 + y * [5])/(1 + [5]) * x "
- "- [1])^2"
- "- 2 * [4]^2/([3]^2*[2]^2 - [4]^4) * ( y * x - [0]) * "
- "( (1 + y * [5])/(1 + [5]) * x - [1])))"
- "* TMath::Abs(x)/ 2 / TMath::Pi() / TMath::Sqrt([2]^2 * [3]^2 - [4]^4) /"
- "(1+[5])",
-                     fEnergyRecoil - fNumSigmas*aSigmaEnergyRecoil,
-                     fEnergyRecoil + fNumSigmas*aSigmaEnergyRecoil,
-                     fQvalue - fNumSigmas*aSigmaQvalue,
-                     fQvalue + fNumSigmas*aSigmaQvalue);
- */ 
+
 
   fFunction = new TF2(TString::Format("f%d_%d_%d_%d_%d",
                                       Int_t(fQvalue*100),
@@ -157,18 +184,16 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
 void KQContourPoint::ResetMarker()
 {
   // This method resets the marker due to parameter changes
+  if(fMarker) {
+    delete fMarker;
+    fMarker = 0;
+  }
   fMarker = new TMarker(fEnergyRecoil,fQvalue,2);
 }
 
 
 
-KQContourPoint::~KQContourPoint()
-{
-  if(fFunction)
-    delete fFunction;
-  if(fMarker)
-      delete fMarker;
-}
+
 
 void KQContourPoint::SetConfidenceLevel(Double_t aConfidenceLevel)
 {
@@ -176,18 +201,19 @@ void KQContourPoint::SetConfidenceLevel(Double_t aConfidenceLevel)
   // line of the function
   
   fConfidenceLevel = aConfidenceLevel;
-  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::Draw(Option_t* anOption)
 {
   // This method draws the event
   // (marker for the modal values and contour line for the confidence region)
-  if(fHaveParametersChanged) {
-    CalculateContour();
-    ResetMarker();
-    fHaveParametersChanged = false;
-  }
+  if(fPreviousVersion)
+    if(*this!=*fPreviousVersion) {
+      CalculateContour();
+      ResetMarker();
+      //delete fPreviousVersion;
+      fPreviousVersion = new KQContourPoint(*this);
+    }
   fFunction->Draw(anOption);
   fMarker->Draw("same");
 }
@@ -205,10 +231,13 @@ TH2D* KQContourPoint::GetHistogram()
   // This method returns a hard copy of a histogram representing the
   // (E_recoil,Q)-distribution,which was  used to determine the contour line for
   // the specified confidence level
-  if(fHaveParametersChanged) {
-    CalculateContour();
-    fHaveParametersChanged = false;
-  }
+  if(fPreviousVersion)
+    if(*this!=*fPreviousVersion) {
+      CalculateContour();
+      ResetMarker();
+      //delete fPreviousVersion;
+      fPreviousVersion = new KQContourPoint(*this);
+    }
   KQContour aContour(fFunction,
                      fNumBinsX,
                      fNumBinsY);
@@ -219,9 +248,8 @@ TH2D* KQContourPoint::GetContourHistogram()
 {
   //This method returns a hard copy of a histogram which has bin contents of 1
   //for bins in the confidence region and 0 else
-  if(fHaveParametersChanged) {
+  if(fPreviousVersion) {
     CalculateContour();
-    fHaveParametersChanged = false;
   }
   KQContour aContour(fFunction,
                      fNumBinsX,
@@ -238,7 +266,6 @@ void KQContourPoint::SetQvalue(Double_t aQvalue)
   fEnergyIon = fQvalue*fEnergyRecoil;
   fEnergyHeat = (1+ fQvalue* fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
-  fHaveParametersChanged = true;
   ResetMarker();
 }
 
@@ -251,7 +278,6 @@ void KQContourPoint::SetEnergyRecoil(Double_t anEnergyRecoil)
   fEnergyIon = fQvalue* fEnergyRecoil;
   fEnergyHeat = (1+ fQvalue*fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
-  fHaveParametersChanged = true;
   ResetMarker();
 }
 
@@ -264,7 +290,6 @@ void KQContourPoint::SetEnergyIon(Double_t anEnergyIon)
   fEnergyRecoil = (1 + fVoltageBias/ fEpsilon) * fEnergyHeat
     - fVoltageBias/fEpsilon * fEnergyIon;
   fQvalue = fEnergyIon/fEnergyRecoil;
-  fHaveParametersChanged = true;
   ResetMarker();
 }
 
@@ -277,7 +302,6 @@ void KQContourPoint::SetEnergyHeat(Double_t anEnergyHeat)
   fEnergyRecoil = (1 + fVoltageBias/ fEpsilon) * fEnergyHeat
     - fVoltageBias/fEpsilon * fEnergyIon;
   fQvalue = fEnergyIon/fEnergyRecoil;
-  fHaveParametersChanged = true;
   ResetMarker();
 }
 
@@ -287,7 +311,6 @@ void KQContourPoint::SetResolutionX(Int_t aNumBinsX)
  // distribution histogram and recalculates the contour for the specified
  // confidence level with the new histogram
   fNumBinsX = aNumBinsX;
-  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetResolutionY(Int_t aNumBinsY)
@@ -296,7 +319,6 @@ void KQContourPoint::SetResolutionY(Int_t aNumBinsY)
   // distribution histogram and recalculates the contour for the specified
   // confidence level with the new histogram
   fNumBinsY = aNumBinsY;
-  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetSigmaEnergyHeat(Double_t aSigmaEnergyHeat)
@@ -304,7 +326,6 @@ void KQContourPoint::SetSigmaEnergyHeat(Double_t aSigmaEnergyHeat)
   // This method sets the uncertainty of the heat energy and adjusts the contour
   // line
   fSigmaEnergyHeat = aSigmaEnergyHeat;
-  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetSigmaEnergyIon(Double_t aSigmaEnergyIon)
@@ -312,7 +333,6 @@ void KQContourPoint::SetSigmaEnergyIon(Double_t aSigmaEnergyIon)
   // This methods sets the uncertainty of the ion energy and adjusts the contour
   // line
   fSigmaEnergyIon = aSigmaEnergyIon;
-  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetSigmaIonHeat(Double_t aSigmaEnergyIonHeat) 
@@ -320,21 +340,18 @@ void KQContourPoint::SetSigmaIonHeat(Double_t aSigmaEnergyIonHeat)
   // This method sets the root square of the covariance between the heat and ion
  // energy and adjusts the contour line
   fSigmaEnergyIonHeat = aSigmaEnergyIonHeat;
-  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetVoltageBias(Double_t aVoltageBias)
 {
   // This method sets the voltage bias and adjusts the contour line
   fVoltageBias = aVoltageBias;
-  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetEpsilon(Double_t anEpsilon)
 {
   // This method sets the epsilon and adjusts the contour line
   fEpsilon = anEpsilon;
-  fHaveParametersChanged = true;
 }
 
 void KQContourPoint::SetNpx(Int_t anNpx)
@@ -356,7 +373,46 @@ void KQContourPoint::SetNumSigmas(Double_t aNumSigmas)
   // This method sets the number of sigmas determining the ranges of the 
   // histogram used to calculate the contour
   fNumSigmas = aNumSigmas;
-  fHaveParametersChanged = true;
+}
+
+Bool_t operator!=(KQContourPoint& aPoint,
+                  KQContourPoint& anotherPoint)
+{
+  return(aPoint.fQvalue != anotherPoint.fQvalue ||
+               aPoint.fEnergyRecoil != anotherPoint.fEnergyRecoil ||
+               aPoint.fEnergyIon != anotherPoint.fEnergyIon ||
+               aPoint.fEnergyHeat != anotherPoint.fEnergyHeat ||
+               aPoint.fSigmaEnergyIon != anotherPoint.fSigmaEnergyIon ||
+               aPoint.fSigmaEnergyHeat != anotherPoint.fSigmaEnergyHeat ||
+               aPoint.fSigmaEnergyIonHeat != anotherPoint.fSigmaEnergyIonHeat ||
+               aPoint.fVoltageBias != anotherPoint.fVoltageBias ||
+               aPoint.fEpsilon != anotherPoint.fEpsilon ||
+               aPoint.fConfidenceLevel != anotherPoint.fConfidenceLevel ||
+               aPoint.fConfidenceLevelError !=
+               anotherPoint.fConfidenceLevelError ||
+               aPoint.fNumBinsX != anotherPoint.fNumBinsX ||
+               aPoint.fNumBinsY != anotherPoint.fNumBinsY ||
+               aPoint.fNumSigmas != anotherPoint.fNumSigmas);
+}
+
+Bool_t operator==(KQContourPoint& aPoint,
+                  KQContourPoint& anotherPoint)
+{
+  return(aPoint.fQvalue == anotherPoint.fQvalue &&
+               aPoint.fEnergyRecoil == anotherPoint.fEnergyRecoil &&
+               aPoint.fEnergyIon == anotherPoint.fEnergyIon &&
+               aPoint.fEnergyHeat == anotherPoint.fEnergyHeat &&
+               aPoint.fSigmaEnergyIon == anotherPoint.fSigmaEnergyIon &&
+               aPoint.fSigmaEnergyHeat == anotherPoint.fSigmaEnergyHeat &&
+               aPoint.fSigmaEnergyIonHeat == anotherPoint.fSigmaEnergyIonHeat &&
+               aPoint.fVoltageBias == anotherPoint.fVoltageBias &&
+               aPoint.fEpsilon == anotherPoint.fEpsilon &&
+               aPoint.fConfidenceLevel == anotherPoint.fConfidenceLevel &&
+               aPoint.fConfidenceLevelError ==
+               anotherPoint.fConfidenceLevelError &&
+               aPoint.fNumBinsX == anotherPoint.fNumBinsX &&
+               aPoint.fNumBinsY == anotherPoint.fNumBinsY &&
+               aPoint.fNumSigmas == anotherPoint.fNumSigmas);
 }
 
 

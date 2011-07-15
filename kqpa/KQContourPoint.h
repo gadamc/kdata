@@ -21,6 +21,7 @@
 
 class KQContourPoint {
   private:
+    KQContourPoint* fPreviousVersion; // copy of this
     Double_t fQvalue; // Q value
     Double_t fEnergyRecoil; // recoil energy
     Double_t fEnergyIon; // ion energy
@@ -41,8 +42,6 @@ class KQContourPoint {
     // distribution histogram
     Int_t fNumSigmas; // number of sigmas of the recoil energy and Q value
     // to build the region taken into regard to calculate the contour line
-   Bool_t fHaveParametersChanged; // this flag is set true if parameter changes
-   // by using set methods and set false when the contour/marker is reset
     
 
     
@@ -60,6 +59,7 @@ class KQContourPoint {
                    Double_t aNumBinsY = 500,
                    Double_t aNumSigmas = 10
                   );
+    KQContourPoint(const KQContourPoint& anotherPoint);
     ~KQContourPoint();
 
     void CalculateContour();
@@ -107,6 +107,10 @@ class KQContourPoint {
     TF2* GetFunction() const { return fFunction; }
     
     void Draw(Option_t* anOption = "");
+    friend Bool_t operator!=(KQContourPoint& aPoint,
+                             KQContourPoint& anotherPoint);
+    friend Bool_t operator==(KQContourPoint& aPoint,
+                             KQContourPoint& anotherPoint);
 
   ClassDef(KQContourPoint,0);
 };
