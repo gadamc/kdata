@@ -8,7 +8,13 @@
 //
 // Created Friday 1. July 2011
 //
-//
+// A simple class that calculates the probability density for a true 
+// value of (ERecoil,Q) for a specifed experimental value (EIon, EHeat)
+// (Bayesian probabilty)
+// This can be done for a single event as well as for multiple events
+// Additionally marginal distributions with respect to E_recoil and Q
+// are available
+
 
 #include "KErecoilQDensity.h"
 
@@ -24,13 +30,24 @@ KErecoilQDensity::~KErecoilQDensity()
 
 Double_t KErecoilQDensity::SingleEventProbDensity(Double_t *x, Double_t * par)
 {
+  //This function represents the propability density g(E_recoil,Q)
+  // (documented in $KDATA_ROOT/doc/ERecoilQDistribution.pdf) for a single event
+  // Bayes Theorem is given by 
+  //BEGIN_LATEX
+  // f(a|x) = #frac{f(x|a) #dot f(a)}{f(x)}
+  //END_LATEX
+  // So from a Bayesian point of view with flat prior (f(a) = const)  this
+  // represents the propability density f(a|x) to have a true event in a certain
+  // region in the  (ERecoil,Q)-plane for given experimental data for an event
+  //
+  // These experimental values are
    // par[0] : mean ion energy
   // par[1] :  mean heat energy
   // par[2] :  sigma ion
   // par[3] : sigma heat
   // par[4] : sigma ion heat
-  // par[5] : voltage bias
-  // par[6] : epsilon
+  // par[5] : voltage bias/ epsilon_gamma
+  
   Double_t det = par[2]*par[2]*par[3]*par[3] - par[4]*par[4]*par[4]*par[4];
   Double_t c1 = par[3]*par[3]/det;
   Double_t c2 = par[2]*par[2]/det;
@@ -51,9 +68,33 @@ Double_t KErecoilQDensity::SingleEventProbDensity(Double_t *x, Double_t * par)
 
 Double_t KErecoilQDensity::MultiEventProbDensity(Double_t* x,Double_t* par)
 {
+  // This function represents the propability density for multiple events, which
+  // is the product of single event propabilities g_i(E_recoil,i,Q_i).
+  // (The events are assumed to be uncorrelated between each other)
+  // Again from a Bayesian point of view with flat prior (f(a) = const) it
+  // represents the propability densitiy
+  //BEGIN_LATEX
+  // f(#vec{a}|#vec{x})  = #prod_{i=0}^{n-1} f_{i}(a_{i}|x_{i})
+  //END_LATEX
+  // to have true events a_i in certain regions of the (ERecoil,Q)-planes
+  // (in total a (ERecoil,Q)^n-plane) for the corresponding events x_i.
+  // The function is 2n - dimensional, where n is the number of events
+ //
+ // The experimental values are
+ // par[0]: number of events n
+ // par[6*i+1]: mean ion energy of the i-th event
+ // par[6*i+2]: mean heat energy of the i-th event
+ // par[6*i+3]: sigma ion of the i-th event
+ // par[6*i+4]: sigma heat of the i-th event
+ // par[6*i+5]: sigma ion heat of the i-th event
+ // par[6*i+6]: voltage bias/ epsilon_gamma of the i-th event
+ //
+ // The elements of the true values a_i are
+ // x[2*i]: recoil energy of the i-th event
+ // x[2*i+1]: Q value of the i-th event
+ 
   Int_t aSize = (Int_t)par[0];
   Double_t det, c1, c2, c3, n, m, a, result, factor;
-  
   for(Int_t k = 0; k<aSize; ++k) {
      det = par[6*k+3]*par[6*k+3]*par[6*k+4]*par[6*k+4] -
       par[6*k+5]*par[6*k+5]*par[6*k+5]*par[6*k+5];
@@ -68,5 +109,158 @@ Double_t KErecoilQDensity::MultiEventProbDensity(Double_t* x,Double_t* par)
   }
   return result;
 }
+
+Double_t KErecoilQDensity::SingleEventMarginalDensityERecoil(Double_t *x,
+                                                             Double_t* par)
+{
+  // This function represents the marginal distribution g(E_recoil) for a single
+  // event, which is the integral of g(E_recoil,Q) over Q from -infinity to
+  // infinity
+  // From a Bayesian point of view it represents the propability density to 
+  // obtain a certain true value of the recoil energy for arbitrary Q value
+  // and given experimental data for an event
+  //
+  // These experimental values are
+   // par[0] : mean ion energy
+  // par[1] :  mean heat energy
+  // par[2] :  sigma ion
+  // par[3] : sigma heat
+  // par[4] : sigma ion heat
+  // par[5] : voltage bias/ epsilon_gamma
+  
+  Double_t sigma, mean,result;
+  sigma = TMath::Sqrt(par[3]*par[3]*(1+par[5])*(1+par[5])
+                                      -2*par[4]*par[4]*par[5]*(1+par[5])
+                                      +par[2]*par[2]*par[5]*par[5]);
+  mean = par[1]*(1+par[5])-par[0]*par[5];
+  result = 1/TMath::Sqrt(2*TMath::Pi())/sigma *
+                 TMath::Exp(- (x[0] - mean)*(x[0]-mean)/2/sigma/sigma);
+  return result;
+}
+
+Double_t KErecoilQDensity::MultiEventMarginalDensityERecoil(Double_t *x,
+                                                             Double_t* par)
+{
+  // This function represents the marginal distribution g(E_recoil) for multiple
+  // events, which is the product of single event marginal densities
+  // g_i(E_recoil,i)
+  // From a Bayesian point of view it represents the propability density to 
+  // obtain  certain true values of the recoil energy E_recoil,i 
+  // for arbitrary Q values Q_i
+  // and the corresponding experimental data for an event
+  //
+  // These experimental values are
+  // par[0]: number of events
+   // par[6*i+1] : mean ion energy of the i-th event
+  // par[6*i+2] :  mean heat energy of the i-th event
+  // par[6*i+3] :  sigma ion of the i-th event
+  // par[6*i+4] : sigma heat of the i-th event
+  // par[6*i+5] : sigma ion heat of the i-th event
+  // par[6*i+6] : voltage bias/ epsilon_gamma
+  
+  Double_t sigma,c,mean,result,n;
+  c = 1/TMath::Sqrt(2*TMath::Pi());
+  n = par[0];
+  
+  result = 1;
+  for(Int_t k = 0; k<n; ++k) {
+    sigma = TMath::Sqrt(par[6*k+4]*par[6*k+4]*(1+par[6*k+6])*(1+par[6*k+6])
+                                      -2*par[6*k+5]*par[6*k+5]
+                                      *par[6*k+6]*(1+par[6*k+6])
+                                      +par[6*k+3]*par[6*k+3]
+                                      *par[6*k+6]*par[6*k+6]);
+    mean = par[6*k+2]*(1+par[6*k+6])-par[6*k+1]*par[6*k+6];
+    result *= c/sigma *
+                  TMath::Exp(- (x[0] - mean)*(x[k]-mean)/2/sigma/sigma);
+  }
+  return result;
+}
+
+Double_t KErecoilQDensity::SingleEventMarginalDensityQ(Double_t *x,
+                                                             Double_t* par)
+{
+  // This function represents the marginal distribution g(Q) for a single
+  // event, which is the integral of g(E_recoil,Q) over E_recoil from -infinity
+  // to infinity.
+  // From a Bayesian point of view it represents the propability density to 
+  // obtain a certain true value of the Q value for arbitrary E_recoil value
+  // and given experimental data for an event
+  //
+  // These experimental values are
+   // par[0] : mean ion energy
+  // par[1] :  mean heat energy
+  // par[2] :  sigma ion
+  // par[3] : sigma heat
+  // par[4] : sigma ion heat
+  // par[5] : voltage bias/ epsilon_gamma
+  
+  Double_t kE, aE, bE, cE,g11,det,c,c2,g12,g22,result;
+  det = par[2]*par[2]*par[3]*par[3]-
+         -par[4]*par[4]*par[4]*par[4];
+  c = (1 + x[0]*par[5])/(1+par[5]);
+  g11 = par[3]*par[3]/det;
+  g12 = -par[4]*par[4]/det;
+  g22 = par[2]*par[2]/det;
+ kE = 1./2/TMath::Pi()/TMath::Sqrt(det)/(1+par[5]);
+ aE = g11/2*x[0]*x[0]+g12*x[0]*c+g22/2*c*c;
+ bE = g11*x[0]*par[0]+g12*x[0]*par[1]
+          +(g12*par[0] + g22*par[1])*c;
+ cE = - g11/2*par[0]*par[0] - g12*par[0]*par[1]-g22/2*par[1]*par[1];
+ 
+ c2 = bE/2/TMath::Sqrt(aE);
+ result =kE/aE*TMath::Exp(cE)+kE*TMath::Exp(cE+c2*c2)
+               *c2/aE*TMath::Sqrt(TMath::Pi())*
+               TMath::Erf(c2);
+  return result;
+}
+
+Double_t KErecoilQDensity::MultiEventMarginalDensityQ(Double_t *x,
+                                                             Double_t* par)
+{
+  // This function represents the marginal distribution g(Q) for multiple
+  // events, which is the product of single event marginal densities
+  // g_i(
+  // From a Bayesian point of view it represents the propability density to 
+  // obtain a certain true value of the Q value for arbitrary Q value
+  // and given experimental data for an event
+  //
+  // These experimental values are
+  // par[0]: number of events n
+  // par[6*k+1] : mean ion energy of the i-th event
+  // par[6*k+2] :  mean heat energy of the i-th event
+  // par[6*k+3] :  sigma ion of the i-th event
+  // par[6*k+4] : sigma heat of the i-th event
+  // par[6*k+5] : sigma ion heat of the i-th event
+  // par[6*k+6] : voltage bias/ epsilon_gamma
+  
+  Double_t kE, aE, bE, cE,g11,det,c,c2,g12,g22,n,result;
+  n = par[0];
+  
+  result = 1;
+  for(Int_t k = 0; k<n; ++k) {
+    det = par[6*k+3]*par[6*k+3]*par[6*k+4]*par[6*k+4]-
+          -par[6*k+5]*par[6*k+5]*par[6*k+5]*par[6*k+5];
+    c = (1 + x[k]*par[6*k+6])/(1+par[6*k+6]);
+    g11 = par[6*k+4]*par[6*k+4]/det;
+    g12 = -par[6*k+5]*par[6*k+5]/det;
+    g22 = par[6*k+3]*par[6*k+3]/det;
+  kE = 1/2/TMath::Pi()/TMath::Sqrt(det)/(1+par[6*k+6]);
+  aE = g11/2*x[k]*x[k]+g12*x[k]*c+g22/2*c*c;
+  bE = g11*x[k]*par[6*k+1]+g12*x[k]*par[6*k+2]
+            +(g12*par[6*k+1] + g22*par[6*k+2])*c;
+  cE = - g11/2*par[6*k+1]*par[6*k+1] -
+  g12*par[6*k+1]*par[6*k+2]-g22/2*par[6*k+2]*par[6*k+2];
+  
+  c2 = bE/2/TMath::Sqrt(aE);
+  result *= kE/aE*TMath::Exp(cE)+kE*TMath::Exp(cE+c2*c2)
+                *c2/aE*TMath::Sqrt(TMath::Pi())*
+                TMath::Erf(c2);
+  }
+  return result;
+}
+
+
+
+
 
 

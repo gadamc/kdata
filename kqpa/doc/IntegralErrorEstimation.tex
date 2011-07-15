@@ -9,7 +9,7 @@ Then with $\vec{a}_i = \begin{pmatrix} E_{recoil,i,min} \\ Q_{i,min} \end{pmatri
 n_{i,pdf} = n_{entries} \cdot \int_{E_{recoil,i,min}}^{E_{recoil,i,max}} dE_{recoil} \int_{Q_{i,min}}^{Q_{i,max}} dQ \, g(E_{recoil},Q) \\
  = n_{entries} \cdot \int_{E_{recoil,i,min}}^{E_{recoil,i,max}} dE_{recoil} \int_{Q_{i,min}}^{Q_{i,max}} dQ \sum_{n_{E_{recoil}} = 0}^\infty \sum_{n_{Q} = 0}^\infty
 \frac{\left( \vec{x} - \frac{\vec{b}_i + \vec{a}_i}{2} \right)^{n_{E_{recoil}}} \left( \vec{x} - \frac{\vec{b}_i + \vec{a}_i}{2} \right)^{n_{Q}}}{n_{E_{recoil}}! n_Q!}
-\cdot \frac{\partial^{n_{E_{recoil}}}}{\partial E_{recoil} ^{n_{E_recoil}}} \frac{\partial^{n_{Q}}}{\partial Q^{n_{Q}}} g(E_{recoil,i},Q_i)
+\cdot \frac{\partial^{n_{E_{recoil}}}}{\partial E_{recoil} ^{n_{E_{recoil}}}} \frac{\partial^{n_{Q}}}{\partial Q^{n_{Q}}} g(E_{recoil,i},Q_i)
 \end{gather}
 In the double for all terms where $n_{E_{recoil}}$ and $n_{Q}$ are even the integral vanish as the indefinite integrals are odd with respect to the center of the bin:
 \begin{gather}

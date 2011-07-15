@@ -9,13 +9,7 @@
 // Created Friday 1. July 2011
 //
 //
-// A simple class that calculates the probability density for a true 
-// value of (ERecoil,Q) for a specifed experimental value (EIon, EHeat)
-// (Bayesian probabilty)
-// This can be done for a single event as well as for multiple events
-// As the true values of different events are supposed to be uncorrelated
-// the probability density for multiple events is the product of single event
-// probabilities
+
 
 #ifndef __KERECOILQDENSITY_H__
 #define __KERECOILQDENSITY_H__
@@ -31,6 +25,14 @@ public:
 
    static Double_t SingleEventProbDensity(Double_t *x, Double_t * par);
    static Double_t MultiEventProbDensity(Double_t* x,Double_t* par);
+   static Double_t SingleEventMarginalDensityERecoil(Double_t* x,
+                                                     Double_t* par);
+   static Double_t MultiEventMarginalDensityERecoil(Double_t* x,
+                                                    Double_t* par);
+   static Double_t SingleEventMarginalDensityQ(Double_t* x,
+                                                    Double_t* par);
+   static Double_t MultiEventMarginalDensityQ(Double_t* x,
+                                                    Double_t* par);
   
  
   
