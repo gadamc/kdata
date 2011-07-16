@@ -41,7 +41,7 @@ bool KBaselineRemoval::RunProcess(void)
 {
   //cout << "Run Process: " << GetName() << endl;
 	double theAve = CalculateAverage();
-	if(theAve > -90000)
+	if(theAve > -99999)
 		return Subtract(theAve);
 	else {
     fOutputPulse = fInputPulse;
