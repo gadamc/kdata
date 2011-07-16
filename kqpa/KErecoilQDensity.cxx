@@ -110,7 +110,7 @@ Double_t KErecoilQDensity::MultiEventProbDensity(Double_t* x,Double_t* par)
   return result;
 }
 
-Double_t KErecoilQDensity::SingleEventMarginalDensityERecoil(Double_t *x,
+Double_t KErecoilQDensity::SingleEventMarginalDensityErecoil(Double_t *x,
                                                              Double_t* par)
 {
   // This function represents the marginal distribution g(E_recoil) for a single
@@ -138,7 +138,34 @@ Double_t KErecoilQDensity::SingleEventMarginalDensityERecoil(Double_t *x,
   return result;
 }
 
-Double_t KErecoilQDensity::MultiEventMarginalDensityERecoil(Double_t *x,
+Double_t KErecoilQDensity::SingleEventMomentErecoil(Double_t *x,
+                                                             Double_t* par)
+{
+  // This function represents the function (E_recoil-E_recoil,ref)^n*g(E_recoil)
+  // from which the central moments of E_recoil can be calculated
+  //
+  // These  values are
+   // par[0] : mean ion energy
+  // par[1] :  mean heat energy
+  // par[2] :  sigma ion
+  // par[3] : sigma heat
+  // par[4] : sigma ion heat
+  // par[5] : voltage bias/ epsilon_gamma
+  // par[6] : index of moment n
+  // par[7] : reference point E_recoil,ref
+  
+  Double_t sigma, mean,result;
+  sigma = TMath::Sqrt(par[3]*par[3]*(1+par[5])*(1+par[5])
+                                      -2*par[4]*par[4]*par[5]*(1+par[5])
+                                      +par[2]*par[2]*par[5]*par[5]);
+  mean = par[1]*(1+par[5])-par[0]*par[5];
+  result = 1/TMath::Sqrt(2*TMath::Pi())/sigma *
+                 TMath::Exp(- (x[0] - mean)*(x[0]-mean)/2/sigma/sigma)
+                 *TMath::Power(x[0]-par[7],par[6]);
+  return result;
+}
+
+Double_t KErecoilQDensity::MultiEventMarginalDensityErecoil(Double_t *x,
                                                              Double_t* par)
 {
   // This function represents the marginal distribution g(E_recoil) for multiple
@@ -155,7 +182,7 @@ Double_t KErecoilQDensity::MultiEventMarginalDensityERecoil(Double_t *x,
   // par[6*i+2] :  mean heat energy of the i-th event
   // par[6*i+3] :  sigma ion of the i-th event
   // par[6*i+4] : sigma heat of the i-th event
-  // par[6*i+5] : sigma ion heat of the i-th event
+  // par[6*i+5] : sigma ion heat of the i-th event.q
   // par[6*i+6] : voltage bias/ epsilon_gamma
   
   Double_t sigma,c,mean,result,n;
@@ -214,6 +241,42 @@ Double_t KErecoilQDensity::SingleEventMarginalDensityQ(Double_t *x,
   return result;
 }
 
+Double_t KErecoilQDensity::SingleEventMomentQ(Double_t *x,
+                                                             Double_t* par)
+{
+  // This function represents the function  (Q-Q_ref)^n*g(Q)
+  // from which the n-th central moment of Q can be calculated
+  //
+  // The values are
+   // par[0] : mean ion energy
+  // par[1] :  mean heat energy
+  // par[2] :  sigma ion
+  // par[3] : sigma heat
+  // par[4] : sigma ion heat
+  // par[5] : voltage bias/ epsilon_gamma
+  // par[6]: index of the moment n
+  // par[7]: reference point Q_ref
+  
+  Double_t kE, aE, bE, cE,g11,det,c,c2,g12,g22,result;
+  det = par[2]*par[2]*par[3]*par[3]-
+         -par[4]*par[4]*par[4]*par[4];
+  c = (1 + x[0]*par[5])/(1+par[5]);
+  g11 = par[3]*par[3]/det;
+  g12 = -par[4]*par[4]/det;
+  g22 = par[2]*par[2]/det;
+ kE = 1./2/TMath::Pi()/TMath::Sqrt(det)/(1+par[5]);
+ aE = g11/2*x[0]*x[0]+g12*x[0]*c+g22/2*c*c;
+ bE = g11*x[0]*par[0]+g12*x[0]*par[1]
+          +(g12*par[0] + g22*par[1])*c;
+ cE = - g11/2*par[0]*par[0] - g12*par[0]*par[1]-g22/2*par[1]*par[1];
+ 
+ c2 = bE/2/TMath::Sqrt(aE);
+ result =kE/aE*TMath::Exp(cE)+kE*TMath::Exp(cE+c2*c2)
+               *c2/aE*TMath::Sqrt(TMath::Pi())*
+               TMath::Erf(c2)*TMath::Power(x[0]-par[7],par[6]);
+  return result;
+}
+
 Double_t KErecoilQDensity::MultiEventMarginalDensityQ(Double_t *x,
                                                              Double_t* par)
 {
@@ -258,6 +321,8 @@ Double_t KErecoilQDensity::MultiEventMarginalDensityQ(Double_t *x,
   }
   return result;
 }
+
+
 
 
 
