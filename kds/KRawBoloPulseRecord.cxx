@@ -63,18 +63,18 @@ void KRawBoloPulseRecord::CopyLocalMembers(const KRawBoloPulseRecord &aRec)
   fAmplitude = aRec.fAmplitude;   
   fAmplitudeBaseline = aRec.fAmplitudeBaseline;   
   fAmplitudeBaselineNoise = aRec.fAmplitudeBaselineNoise;   
-  fPretriggerSize = aRec.fAmplitudeBaselineNoise;
-  fPulseRiseTime = aRec.fAmplitudeBaselineNoise;
-  fFilterSize = aRec.fAmplitudeBaselineNoise;
-  fPulseLength = aRec.fAmplitudeBaselineNoise;
-  fHeatPulseStampWidth = aRec.fAmplitudeBaselineNoise;
-  fCryoPosition = aRec.fAmplitudeBaselineNoise;
-  fPolarFet = aRec.fAmplitudeBaselineNoise;
-  fCorrPied = aRec.fAmplitudeBaselineNoise;
-  fCompModul = aRec.fAmplitudeBaselineNoise;
-  fCorrTrngl = aRec.fAmplitudeBaselineNoise;
-  fAmplModul = aRec.fAmplitudeBaselineNoise;
-  fIsHeatPulse = aRec.fAmplitudeBaselineNoise;
+  fPretriggerSize = aRec.fPretriggerSize;
+  fPulseRiseTime = aRec.fPulseRiseTime;
+  fFilterSize = aRec.fFilterSize;
+  fPulseLength = aRec.fPulseLength;
+  fHeatPulseStampWidth = aRec.fHeatPulseStampWidth;
+  fCryoPosition = aRec.fCryoPosition;
+  fPolarFet = aRec.fPolarFet;
+  fCorrPied = aRec.fCorrPied;
+  fCompModul = aRec.fCompModul;
+  fCorrTrngl = aRec.fCorrTrngl;
+  fAmplModul = aRec.fAmplModul;
+  fIsHeatPulse = aRec.fIsHeatPulse;
   
 }
 

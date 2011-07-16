@@ -476,7 +476,7 @@ void KHLAEvent::InitializeMembers(void)
   SetRunNumber(-99);
   SetRunStartTime(-99.0);
 	SetRunEndTime(-99.0);
-  SetGSEventNumber(-99);
+  SetGSEventNumber(0);
 	
 }
 

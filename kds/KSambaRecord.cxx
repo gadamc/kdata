@@ -143,8 +143,8 @@ void KSambaRecord::InitializeMembers(void)
   
   fRunType.resize(0);
   fRunCondition.resize(0);
-  fRunStartPcTimeSec = -99;
-  fRunStartPcTimeMicroSec = -99;
+  fRunStartPcTimeSec = 0;
+  fRunStartPcTimeMicroSec = 0;
   fRunStartTriggerStamp = -99;
   fSource1Regen.resize(0);
   fSource2Regen.resize(0);
