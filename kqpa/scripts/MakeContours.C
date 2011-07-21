@@ -15,6 +15,8 @@
 // 90% CL contour lines with markers for central values are drawn
 
 #ifndef __CINT__
+#include "KQUncertainty.h"
+#include "KRun12Temp.h"
 #include "KQContourPointList.h"
 #include "KDataReader.h"
 #include "KHLAEvent.h"
@@ -47,16 +49,21 @@ KQContourPointList* aList = 0;
 void MakeContours(const Char_t* aKEventROOTFile,
                   const Char_t* aDetectorName ="FID401",
                   Int_t anEventCategory = 2,
-                  Double_t anEnergyIonMin = 0,
-                  Double_t anEnergyIonMax = 100,
-                  Double_t anEnergyHeatMin = 0,
-                  Double_t anEnergyHeatMax = 100
+                  Double_t anEnergyRecoilMin = 0,
+                  Double_t anEnergyRecoilMax = 100,
+                  Double_t aQvalueMin = 0,
+                  Double_t aQvalueMax = 1
                   )
 {
+  KRun12Temp calib("BoloConfigFile.txt");
+  calib.ReadCalibrationFile("BoloConfigFile.txt");
+  Int_t aDetectorIndex;
   Double_t anEnergyIon;
   Double_t anEnergyHeat;
   Double_t aSigmaEnergyIon;
   Double_t aSigmaEnergyHeat;
+  Double_t aSigmaEnergyIon356;
+  Double_t aSigmaEnergyHeat356;
   Double_t aQvalue;
   Double_t anEnergyRecoil;
   aReader = new KDataReader(aKEventROOTFile);
@@ -66,6 +73,8 @@ void MakeContours(const Char_t* aKEventROOTFile,
   cout << "KHLAEvents total: " << aReader->GetEntries() << endl;
   for(Int_t k = 0; k<aReader->GetEntries(); ++k) {
     aReader->GetEntry(k);
+    if(!(k%100000))
+      cout << "entry " << k << endl;
     for(Int_t l = 0; l< anHLAEvent->GetNumBolos(); ++l) {
       aBoloEvent = static_cast<KHLABolometerRecord*>(anHLAEvent->GetBolo(l));
       anEnergyIon = aBoloEvent->GetEnergyIon();
@@ -74,23 +83,75 @@ void MakeContours(const Char_t* aKEventROOTFile,
       aSigmaEnergyHeat = aBoloEvent->GetBaselineNoiseHeat(1);
       aQvalue = aBoloEvent->GetQvalue();
       anEnergyRecoil = aBoloEvent->GetEnergyRecoil();
+      aDetectorIndex= calib.GetCalibrationEntry(aBoloEvent->GetDetectorName().c_str());
+      aSigmaEnergyIon356 = calib.GetUncerIonCalib(aDetectorIndex);
+      aSigmaEnergyHeat356 = calib.GetUncerHeatCalib(aDetectorIndex);
+      aSigmaEnergyIon = aSigmaEnergyIon356;
+      aSigmaEnergyHeat = aSigmaEnergyHeat356;
       
-      if(aBoloEvent->GetEventFlag()==anEventCategory)
-        if(aBoloEvent->GetDetectorName()==aDetectorName)
-          if(anEnergyIonMin <= anEnergyRecoil && anEnergyRecoil <= anEnergyIonMax
-          && anEnergyHeatMin <= aQvalue && aQvalue <= anEnergyHeatMax) {
-        os << aQvalue << " ";
-        os << anEnergyRecoil << " ";
-        os << aSigmaEnergyIon << " ";
-        os << TMath::Sqrt(anEnergyRecoil) << " ";
-        os << endl;
-        cout << aQvalue << " ";
-        cout << anEnergyRecoil << " ";
-        cout << aSigmaEnergyIon << " ";
-        cout << TMath::Sqrt(anEnergyRecoil) << " ";
-        cout << endl;
-        ++anEventCounter;
-      } //if   
+      if(strcmp(aDetectorName,"ALL")) {
+        if(aBoloEvent->GetEventFlag()==anEventCategory)
+          if(aBoloEvent->GetDetectorName()==aDetectorName)
+            if(anEnergyRecoilMin <= anEnergyRecoil && anEnergyRecoil <= anEnergyRecoilMax
+            && aQvalueMin <= aQvalue && aQvalue <= aQvalueMax) {
+          os << aQvalue << " ";
+          os << anEnergyRecoil << " ";
+          os << KQUncertainty::GetChannelUncertainty(anEnergyIon,
+                                                    aSigmaEnergyIon,
+                                                    aSigmaEnergyIon356)
+            << " ";
+          os << KQUncertainty::GetChannelUncertainty(anEnergyHeat,
+                                                    aSigmaEnergyHeat,
+                                                    aSigmaEnergyHeat356)
+            << " ";
+          os << endl;
+          cout << aQvalue << " ";
+          cout << anEnergyRecoil << " ";
+          cout << KQUncertainty::GetChannelUncertainty(anEnergyIon,
+                                                    aSigmaEnergyIon,
+                                                    aSigmaEnergyIon356)
+            << " ";
+          cout << KQUncertainty::GetChannelUncertainty(anEnergyHeat,
+                                                    aSigmaEnergyHeat,
+                                                    aSigmaEnergyHeat356)
+            << " ";
+          cout << "\t\t" << aSigmaEnergyHeat << " " << aSigmaEnergyHeat356 << endl;
+          cout << endl;
+          ++anEventCounter;
+          } //if   
+      }
+      else  
+      {
+          if(aBoloEvent->GetEventFlag()==anEventCategory)
+            if(anEnergyRecoilMin <= anEnergyRecoil && anEnergyRecoil <= anEnergyRecoilMax
+            && aQvalueMin <= aQvalue && aQvalue <= aQvalueMax) {
+          os << aQvalue << " ";
+          os << anEnergyRecoil << " ";
+          os << KQUncertainty::GetChannelUncertainty(anEnergyIon,
+                                                    aSigmaEnergyIon,
+                                                    aSigmaEnergyIon356)
+            << " ";
+          os << KQUncertainty::GetChannelUncertainty(anEnergyHeat,
+                                                    aSigmaEnergyHeat,
+                                                    aSigmaEnergyHeat356)
+            << " ";
+          os << endl;
+          cout << aQvalue << " ";
+          cout << anEnergyRecoil << " ";
+          cout << KQUncertainty::GetChannelUncertainty(anEnergyIon,
+                                                    aSigmaEnergyIon,
+                                                    aSigmaEnergyIon356)
+            << " ";
+          cout << KQUncertainty::GetChannelUncertainty(anEnergyHeat,
+                                                    aSigmaEnergyHeat,
+                                                    aSigmaEnergyHeat356)
+            << " ";
+          cout << "\t\t" << aSigmaEnergyHeat << " " << aSigmaEnergyHeat356 << endl;
+          cout << endl;
+          ++anEventCounter;
+          } //if 
+      }
+          
     } //for  
   } //for
   cout << "events: " << anEventCounter << endl;
