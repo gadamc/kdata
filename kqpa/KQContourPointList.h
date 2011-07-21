@@ -36,12 +36,14 @@ class KQContourPointList {
     Double_t fEnergyRecoilMax; // maximal recoil energy of the empty frame
     Double_t fQvalueMin; // minimal Q value of the empty frame
     Double_t fQvalueMax; // maximal Q value of the empty frame
+    Double_t fConfidenceLevel; // confidence level
     TF2* fEmptyFrame;   // function representing the empty frame
-    void UpdateEmptyFrame();
+    void UpdateFunctions();
     
   public:
     KQContourPointList( const Char_t* aMode ="QErecoil",
                         const Char_t* aFileName = "",
+                        Double_t aConfidenceLevel = 0.9,
                        Double_t  anEnergyRecoilMin = 0,
                        Double_t anEnergyRecoilMax = 1000,
                        Double_t aQvalueMin = 0,
@@ -53,28 +55,34 @@ class KQContourPointList {
     void SetEnergyRecoilMin(Double_t anEnergyRecoilMin)
     { 
       fEnergyRecoilMin = anEnergyRecoilMin; 
-      UpdateEmptyFrame();
+      UpdateFunctions();
     }
     void SetEnergyRecoilMax(Double_t anEnergyRecoilMax)
     { 
       fEnergyRecoilMax = anEnergyRecoilMax;
-      UpdateEmptyFrame();
+      UpdateFunctions();
     }
     void SetQvalueMin(Double_t aQvalueMin)
     { 
       fQvalueMin = aQvalueMin;
-      UpdateEmptyFrame();
+      UpdateFunctions();
     }
     void SetQvalueMax(Double_t aQvalueMax)
     { 
       fQvalueMax = aQvalueMax;
-      UpdateEmptyFrame();
+      UpdateFunctions();
     }
+    void SetConfidenceLevel(Double_t aConfidenceLevel)
+    {
+      fConfidenceLevel = aConfidenceLevel;
+    }
+    void SetNpx(Int_t anNpx);
    
     Double_t GetEnergyRecoilMin() const { return fEnergyRecoilMin; }
     Double_t GetEnergyRecoilMax() const { return fEnergyRecoilMax; }
     Double_t GetQvalueMin() const { return fQvalueMin; }
     Double_t GetQvalueMax() const { return fQvalueMax; }
+    Double_t GetConfidenceLevel() const { return fConfidenceLevel; }
     UInt_t GetEntries() const { return fPoints.size(); }
     TF2* GetEmptyFrame() const { return fEmptyFrame; }
     KQContourPoint* GetElement(UInt_t anIndex) const 

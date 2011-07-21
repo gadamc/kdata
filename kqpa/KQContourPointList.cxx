@@ -29,6 +29,7 @@ ClassImp(KQContourPointList);
 
 KQContourPointList::KQContourPointList(const Char_t* aMode,
                                        const Char_t* aFileName,
+                                       Double_t aConfidenceLevel,
                                        Double_t anEnergyRecoilMin,
                                        Double_t anEnergyRecoilMax,
                                        Double_t aQvalueMin,
@@ -36,7 +37,7 @@ KQContourPointList::KQContourPointList(const Char_t* aMode,
                                       )
 : fMode(aMode), fFileName(aFileName), fEnergyRecoilMin(anEnergyRecoilMin),
 fEnergyRecoilMax(anEnergyRecoilMax), fQvalueMin(aQvalueMin),
-fQvalueMax(aQvalueMax)
+fQvalueMax(aQvalueMax), fConfidenceLevel(aConfidenceLevel)
 {
   // The constructor generates an empty frame with the specified range
   
@@ -56,7 +57,7 @@ KQContourPointList::~KQContourPointList()
     delete fEmptyFrame;
 }
 
-void KQContourPointList::UpdateEmptyFrame()
+void KQContourPointList::UpdateFunctions()
 {
   // This method updates the empty frame if the ranges change
   if(fEmptyFrame) {
@@ -67,6 +68,11 @@ void KQContourPointList::UpdateEmptyFrame()
     fEmptyFrame->GetXaxis()->SetTitle("E_{Recoil} [keV]");
     fEmptyFrame->GetYaxis()->SetTitle("Q");
   }
+  for(UInt_t k = 0; k<fPoints.size(); ++k)
+    fPoints[k]->SetRange(fEnergyRecoilMin,
+                         fQvalueMin,
+                         fEnergyRecoilMax,
+                         fQvalueMax);
 }
 
 void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
@@ -132,7 +138,8 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
           
         fPoints.push_back(new KQContourPoint(aQvalue, anEnergyRecoil,
                                              "QErecoil",
-                                            aSigmaIon, aSigmaHeat));
+                                            aSigmaIon, aSigmaHeat,
+                                            0,fConfidenceLevel));
         cout << "... event " << fPoints.size() << " processed" << endl;
       }
       else
@@ -171,7 +178,8 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         aSigmaHeat = anElement->GetString().Atof();
           
         fPoints.push_back(new KQContourPoint(anEnergyIon, anEnergyHeat,
-                                             "IonHeat",aSigmaIon, aSigmaHeat));
+                                             "IonHeat",aSigmaIon, aSigmaHeat,
+                                             0, fConfidenceLevel));
         cout << "... event " << fPoints.size() << " processed" << endl;
       }
   }
@@ -211,6 +219,12 @@ void KQContourPointList::Draw(Option_t* anOption)
   }
 }
 
+void KQContourPointList::SetNpx(Int_t anNpx)
+{
+  for(UInt_t k = 0; k<fPoints.size(); ++k)
+    fPoints[k]->SetNpx(anNpx);
+}
+
 void KQContourPointList::AddPoint(Double_t aQvalueOrEnergyIon,
               Double_t anEnergyRecoilOrEnergyHeat,
               Double_t aSigmaIon,
@@ -221,7 +235,9 @@ void KQContourPointList::AddPoint(Double_t aQvalueOrEnergyIon,
                                        anEnergyRecoilOrEnergyHeat,
                                        fMode.c_str(),
                                        aSigmaIon,
-                                       aSigmaHeat));
+                                       aSigmaHeat,
+                                       0,
+                                       fConfidenceLevel));
 }
 
 void KQContourPointList::ClearPoints()
