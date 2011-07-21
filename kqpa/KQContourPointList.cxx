@@ -191,6 +191,12 @@ void KQContourPointList::Draw(Option_t* anOption)
                         fQvalueMin,
                         fEnergyRecoilMax,
                         fQvalueMax);
+  for(UInt_t k = 0; k< fPoints.size(); ++k) {
+    fPoints[k]->SetRange(fEnergyRecoilMin,
+                         fQvalueMin,
+                         fEnergyRecoilMax,
+                         fQvalueMax);
+  }
   fEmptyFrame->GetXaxis()->SetTitle("E_{Recoil} [keV]");
   fEmptyFrame->GetYaxis()->SetTitle("Q");
   if(!fPoints.size()) {

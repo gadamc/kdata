@@ -28,8 +28,8 @@ Bool_t KRun12Temp::ReadCalibrationFile(const Char_t* aFileName)
     fFileName = aFileName;
   if(fFileName!="") {
     fTree = new TTree("ConfigTree","values from file");
-    Int_t aNumEntries = fTree->ReadFile(aFileName,"name/C:detector_no/I:fwhm_ion/D:\
-    fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
+    Int_t aNumEntries = fTree->ReadFile(aFileName,"name/C:detector_no/I:fwhm_ion/D:"
+    "fwhm_ion356:fwhm_heat:fwhm_heat356:bias:r_fiducial");
     
     if(!aNumEntries) {
       cout << "KRun12Temp::ReadCalibrationFile(): file " << aFileName << 
@@ -46,6 +46,11 @@ Bool_t KRun12Temp::ReadCalibrationFile(const Char_t* aFileName)
 Int_t KRun12Temp::GetCalibrationEntry(const char* aBoloName)
 {
   //This method gets the entry for the specified bolometer
+  if(!fTree) {
+    cout << "KRun12Temp::GetCalibrationEntry(): no calibration data read" << endl;
+    cout << "Call KRun12Temp::ReadCalibrationFile(const Char_t* aFileName)" << endl;
+    return -1;
+  }
   fTree->ResetBranchAddresses();
   char name[100];
   fTree->SetBranchAddress("name",name);

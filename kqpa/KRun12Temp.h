@@ -36,6 +36,7 @@ class KRun12Temp {
     Double_t GetUncerHeatCalib(Int_t anEntry);
     Double_t GetVoltageBias(Int_t anEntry);
     Double_t GetRadius(Int_t anEntry);
+    TTree* GetTree() { return fTree; }
 
 
   ClassDef(KRun12Temp,0);
