@@ -47,7 +47,7 @@ fNumBinsY(aNumBinsY), fNumEntries(aNumEntries)
   fHistogram = new TH2D("hist","hist",
             fNumBinsX,fFunction->GetXmin(),fFunction->GetXmax(),
             fNumBinsY,fFunction->GetYmin(),fFunction->GetYmax());
-  fHistogram->AddDirectory(0);
+  fHistogram->SetDirectory(0);
   fHistogram->GetXaxis()->SetTitle("E_{recoil} [keV]");
   fHistogram->GetYaxis()->SetTitle("Q");
   
@@ -67,6 +67,14 @@ fNumBinsY(aNumBinsY), fNumEntries(aNumEntries)
     
    //list of KQBinRecords is sorted
   sort(fBins.begin(),fBins.end());
+}
+
+KQContour::~KQContour()
+{
+  if(fHistogram) {
+    delete fHistogram;
+    fHistogram = 0;
+  }
 }
 
 void KQContour::RefillHistogram()

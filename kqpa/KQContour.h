@@ -42,6 +42,8 @@ class KQContour {
               Double_t aNumBinsY = 1000,
               Double_t aNumEntries = 100000000 );
     
+    ~KQContour();
+    
      void SetNumBinsX(Double_t aNumBinsX)
     { 
       fNumBinsX = aNumBinsX;
@@ -76,7 +78,7 @@ class KQContour {
     Double_t EvaluateConfidence(Double_t* x,Double_t* p);
 
                         
-  ClassDef(KQContour,0);
+  ClassDef(KQContour,1);
 };
 
 #endif

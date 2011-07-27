@@ -14,7 +14,7 @@
 // which is then loaded by the KQContourPointList and then the events with
 // 90% CL contour lines with markers for central values are drawn
 
-#ifndef __CINT__
+//#ifndef __CINT__
 #include "KQUncertainty.h"
 #include "KRun12Temp.h"
 #include "KQContourPointList.h"
@@ -26,16 +26,18 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <set>
 #include <string>
 using namespace std;
-#else
+
+/*#else
 class KQContourPointList;
 class KDataReader;
 class KHLAEvent;
 class KHLABolometerRecord;
 #endif
 
-
+*/
 
 
 
@@ -46,8 +48,8 @@ KHLABolometerRecord* aBoloEvent = 0;
 KQContourPointList* aList = 0;
 
 
-void MakeContours(const Char_t* aKEventROOTFile,
-                  const Char_t* aDetectorName ="FID401",
+void ReadData(const Char_t* aKEventROOTFile,
+                  set<string> aSetOfDetectors,
                   Int_t anEventCategory = 2,
                   Double_t anEnergyRecoilMin = 0,
                   Double_t anEnergyRecoilMax = 100,
@@ -55,6 +57,16 @@ void MakeContours(const Char_t* aKEventROOTFile,
                   Double_t aQvalueMax = 1
                   )
 {
+  //This method reads bolo events from a ROOT file and writes 
+  // lines <Q> <E_recoil> <sigma_ion> <sigma_heat> <voltage bias> 
+  // to an ASCII file "events.txt" for all  events with specified restrictions
+  // The heat and ion uncertainties are calculated by interpolating
+  // between the uncertainties at noise level read from the ROOT file
+  // and the uncertainties at 133Ba calibration level E = 356 keV
+  // read from an ASCII file "BoloConfigFile.txt" containing calibration data
+  // for run 12
+  // For the latter there might be a more sophisticated way to store and retrieve
+  // calibration data for future runs and additional detectors
   KRun12Temp calib("BoloConfigFile.txt");
   calib.ReadCalibrationFile("BoloConfigFile.txt");
   Int_t aDetectorIndex;
@@ -66,6 +78,7 @@ void MakeContours(const Char_t* aKEventROOTFile,
   Double_t aSigmaEnergyHeat356;
   Double_t aQvalue;
   Double_t anEnergyRecoil;
+  Double_t aVoltageBias;
   aReader = new KDataReader(aKEventROOTFile);
   ofstream os("events.txt");
   anHLAEvent = (KHLAEvent*)aReader->GetEvent();
@@ -86,12 +99,13 @@ void MakeContours(const Char_t* aKEventROOTFile,
       aDetectorIndex= calib.GetCalibrationEntry(aBoloEvent->GetDetectorName().c_str());
       aSigmaEnergyIon356 = calib.GetUncerIonCalib(aDetectorIndex);
       aSigmaEnergyHeat356 = calib.GetUncerHeatCalib(aDetectorIndex);
-      aSigmaEnergyIon = aSigmaEnergyIon356;
-      aSigmaEnergyHeat = aSigmaEnergyHeat356;
+      aVoltageBias = calib.GetVoltageBias(aDetectorIndex);
+      //aSigmaEnergyIon = aSigmaEnergyIon356;
+      //aSigmaEnergyHeat = aSigmaEnergyHeat356;
       
-      if(strcmp(aDetectorName,"ALL")) {
+      if(aSetOfDetectors.size()) {
         if(aBoloEvent->GetEventFlag()==anEventCategory)
-          if(aBoloEvent->GetDetectorName()==aDetectorName)
+         if(aSetOfDetectors.find(aBoloEvent->GetDetectorName())!=aSetOfDetectors.end())
             if(anEnergyRecoilMin <= anEnergyRecoil && anEnergyRecoil <= anEnergyRecoilMax
             && aQvalueMin <= aQvalue && aQvalue <= aQvalueMax) {
           os << aQvalue << " ";
@@ -104,6 +118,7 @@ void MakeContours(const Char_t* aKEventROOTFile,
                                                     aSigmaEnergyHeat,
                                                     aSigmaEnergyHeat356)
             << " ";
+          os << aVoltageBias;
           os << endl;
           cout << aQvalue << " ";
           cout << anEnergyRecoil << " ";
@@ -115,7 +130,8 @@ void MakeContours(const Char_t* aKEventROOTFile,
                                                     aSigmaEnergyHeat,
                                                     aSigmaEnergyHeat356)
             << " ";
-          cout << "\t\t" << aSigmaEnergyHeat << " " << aSigmaEnergyHeat356 << endl;
+          cout << aVoltageBias << " ";
+          cout << "\t\t" << aSigmaEnergyHeat << "\t" << aSigmaEnergyHeat356 << endl;
           cout << endl;
           ++anEventCounter;
           } //if   
@@ -135,6 +151,7 @@ void MakeContours(const Char_t* aKEventROOTFile,
                                                     aSigmaEnergyHeat,
                                                     aSigmaEnergyHeat356)
             << " ";
+          os << aVoltageBias;
           os << endl;
           cout << aQvalue << " ";
           cout << anEnergyRecoil << " ";
@@ -146,7 +163,9 @@ void MakeContours(const Char_t* aKEventROOTFile,
                                                     aSigmaEnergyHeat,
                                                     aSigmaEnergyHeat356)
             << " ";
-          cout << "\t\t" << aSigmaEnergyHeat << " " << aSigmaEnergyHeat356 << endl;
+          cout << aVoltageBias << " ";
+          cout << "\t\t" << aSigmaEnergyHeat << "\t" << aSigmaEnergyHeat356 << endl;
+       
           cout << endl;
           ++anEventCounter;
           } //if 
@@ -155,7 +174,37 @@ void MakeContours(const Char_t* aKEventROOTFile,
     } //for  
   } //for
   cout << "events: " << anEventCounter << endl;
+}
+
+void DrawEvents(Int_t aNumber = 10)
+{
   aList = new KQContourPointList("QErecoil","events.txt");
-  aList->ReadASCIIFile("events.txt","");
+  aList->ReadASCIIFile("events.txt","QErecoil",aNumber);
   aList->Draw();
 }
+
+void MakeContours()
+{
+  set<string> detectors;
+  detectors.insert("ID401");
+  detectors.insert("ID402");
+  detectors.insert("ID403");
+  detectors.insert("ID404");
+  detectors.insert("ID405");
+  detectors.insert("ID2");
+  detectors.insert("ID3");
+  detectors.insert("ID5");
+  detectors.insert("ID6");
+  detectors.insert("FID401");
+  detectors.insert("FID402");
+  
+  ReadData("Kds_Run12_v4.0_p2_skim.root",
+           detectors,
+           2, // event category: fiducial
+           0, // E_recoil,min
+           1000, // E_ recoil,max
+           0, // Q_min
+           0.6); // Q_max
+  DrawEvents();
+}
+

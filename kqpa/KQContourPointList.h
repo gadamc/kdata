@@ -97,7 +97,7 @@ class KQContourPointList {
     }
     
     void ReadASCIIFile(const Char_t* aFileName = "",
-                       const Char_t* aMode = "",
+                       const Char_t* aMode = "QErecoil",
                        Int_t aMaxNumEntries = INT_MAX);
     void Draw(Option_t* anOption = "");
     void AddPoint(Double_t aQvalue,
@@ -107,7 +107,7 @@ class KQContourPointList {
     void RemovePoint(UInt_t anINdex = 0);
     void ClearPoints();
     void ShowPoints();
-  ClassDef(KQContourPointList,0);
+  ClassDef(KQContourPointList,1);
 };
 
 #endif

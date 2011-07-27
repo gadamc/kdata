@@ -159,7 +159,6 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
                       //"KErecoilQDensity",
                       //"SingleEventProbDensity"
                      );
-                     
   fFunction->SetParameter(0,fEnergyIon);
   fFunction->SetParameter(1,fEnergyHeat);
   fFunction->SetParameter(2,fSigmaEnergyIon);
@@ -169,16 +168,18 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
   fFunction->SetNpx(1000);
   fFunction->SetNpy(1000);
   fFunction->SetLineStyle(1);
+  fFunction->SetLineWidth(0.5);
+  /*
   fFunction->GetXaxis()->SetTitle("E_{Recoil} [keV]");
   fFunction->GetYaxis()->SetTitle("Q");
-  
+  */
   KQContour aContour(fFunction,
                      fNumBinsX,
                      fNumBinsY);
   fFunction->SetContour(1);
   fFunction->SetContourLevel(0,aContour.GetContour(fConfidenceLevel));
   fConfidenceLevelError = aContour.GetConfidenceLevelError();                  
-  
+ 
 }
   
 void KQContourPoint::ResetMarker()
@@ -189,6 +190,7 @@ void KQContourPoint::ResetMarker()
     fMarker = 0;
   }
   fMarker = new TMarker(fEnergyRecoil,fQvalue,2);
+  fMarker->SetMarkerSize(0.1);
 }
 
 
