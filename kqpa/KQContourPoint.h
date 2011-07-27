@@ -112,7 +112,7 @@ class KQContourPoint {
     friend Bool_t operator==(KQContourPoint& aPoint,
                              KQContourPoint& anotherPoint);
 
-  ClassDef(KQContourPoint,0);
+  ClassDef(KQContourPoint,1);
 };
 
 #endif

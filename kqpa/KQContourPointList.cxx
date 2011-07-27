@@ -96,6 +96,7 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
     ifstream is(aFileName);
     Double_t anEnergyIon, anEnergyHeat;
     Double_t aQvalue, anEnergyRecoil, aSigmaIon, aSigmaHeat;
+    Double_t aVoltageBias;
     char aCString[100];
     TString aString;
     TObjArray* theTokens;
@@ -120,10 +121,10 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         if(anElement->GetString()=="#") 
           continue;
         
-        if(theTokens->GetEntries()!=4) {
+        if(theTokens->GetEntries()!=5) {
           cout << "KQContourPointList::ReadASCIIFile(): invalid format in line "
-          << aLineCounter <<", 4 Double_t values <Q> <E_recoil> <sigma_ion> "
-          << "<sigma_heat> expected " << endl;
+          << aLineCounter <<", 5 Double_t values <Q> <E_recoil> <sigma_ion> "
+          << "<sigma_heat> <voltage bias> expected " << endl;
           continue;
         }
         
@@ -135,11 +136,13 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         aSigmaIon = anElement->GetString().Atof();
         anElement = (TObjString*)theTokens->At(3);
         aSigmaHeat = anElement->GetString().Atof();
+        anElement = (TObjString*)theTokens->At(4);
+        aVoltageBias = anElement->GetString().Atof();
           
         fPoints.push_back(new KQContourPoint(aQvalue, anEnergyRecoil,
                                              "QErecoil",
                                             aSigmaIon, aSigmaHeat,
-                                            0,fConfidenceLevel));
+                                            0,fConfidenceLevel,aVoltageBias));
         cout << "... event " << fPoints.size() << " processed" << endl;
       }
       else
@@ -161,10 +164,10 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         if(anElement->GetString()=="#") 
           continue;
         
-        if(theTokens->GetEntries()!=4) {
+        if(theTokens->GetEntries()!=5) {
           cout << "KQContourPointList::ReadASCIIFile(): invalid format in line "
-          << aLineCounter <<", 4 Double_t values <E_ion> <E_heat> <sigma_ion>"
-          << " <sigma_heat> expected " << endl;
+          << aLineCounter <<", 5 Double_t values <E_ion> <E_heat> <sigma_ion>"
+          << " <sigma_heat> <voltage bias> expected " << endl;
           continue;
         }
         
@@ -176,10 +179,12 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         aSigmaIon = anElement->GetString().Atof();
         anElement = (TObjString*)theTokens->At(3);
         aSigmaHeat = anElement->GetString().Atof();
+         anElement = (TObjString*)theTokens->At(4);
+        aVoltageBias = anElement->GetString().Atof();
           
         fPoints.push_back(new KQContourPoint(anEnergyIon, anEnergyHeat,
                                              "IonHeat",aSigmaIon, aSigmaHeat,
-                                             0, fConfidenceLevel));
+                                             0, fConfidenceLevel,aVoltageBias));
         cout << "... event " << fPoints.size() << " processed" << endl;
       }
   }
