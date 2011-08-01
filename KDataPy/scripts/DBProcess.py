@@ -1,6 +1,6 @@
-from couchdbkit import Server, Database, Document
+rom couchdbkit import Server, Database, Document
 
-class DataProcess(object):
+class DBProcess(object):
   '''   
     This is a generic data Processing class used to handle data processing
     based upon documents found in an instance of a CouchDB. 
@@ -43,9 +43,9 @@ class DataProcess(object):
     return self.db.get(doc_id, **params)
 
 
-class CopyProcess(DataProcess):
+class CopyProcess(DBProcess):
   '''   
-    This is a Copy Processing class based on the DataProcess used to handle data processing
+    This is a Copy Processing class based on the DBProcess used to handle data processing
     based upon documents found in an instance of a CouchDB. 
   '''
   import shutil
@@ -60,12 +60,12 @@ class CopyProcess(DataProcess):
   
   def __init__(self, servername, dbname):
     
-    DataProcess.__init__( self, servername, dbname, self.copyfunction)
+    DBProcess.__init__( self, servername, dbname, self.copyfunction)
 
 
 class RemoteCopyProcess(CopyProcess):
   '''   
-    This is a Remote Copy Processing class based on the DataProcess used to handle data processing
+    This is a Remote Copy Processing class based on the DBProcess used to handle data processing
     based upon documents found in an instance of a CouchDB. 
     Non-interactive authentication (SSL key sharing) should be set up between the two 
     machines used for the remote copying. Otherwise, user intervention will be 
