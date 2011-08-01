@@ -60,6 +60,10 @@
 		6600E90A13AB954800FC9A4D /* JSON.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JSON.cxx; path = kdatabase/JSON.cxx; sourceTree = SOURCE_ROOT; };
 		6602B20612FC5D5A00293310 /* Module_libs.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Module_libs.mk; path = ../kData/kdatabase/Module_libs.mk; sourceTree = SOURCE_ROOT; };
 		6602B20712FC5D5A00293310 /* Module.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Module.mk; path = ../kData/kdatabase/Module.mk; sourceTree = SOURCE_ROOT; };
+		6604F79613E6BA9200FE59CF /* DBProcess.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = DBProcess.py; path = KDataPy/scripts/DBProcess.py; sourceTree = SOURCE_ROOT; };
+		6604F79713E6BD6000FE59CF /* runProc0.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = runProc0.py; path = KDataPy/scripts/runProc0.py; sourceTree = SOURCE_ROOT; };
+		6604F79813E6BD6000FE59CF /* removeProc.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = removeProc.py; path = KDataPy/scripts/removeProc.py; sourceTree = SOURCE_ROOT; };
+		6604F79913E6BD6000FE59CF /* addProc.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = addProc.py; path = KDataPy/scripts/addProc.py; sourceTree = SOURCE_ROOT; };
 		6610DDEB121ECC290047036E /* depend.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = depend.sh; sourceTree = "<group>"; };
 		6610DDEC121ECC290047036E /* MakeHTML.C */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MakeHTML.C; sourceTree = "<group>"; };
 		6610DDEE121ECC440047036E /* allPassOne_GSEventNumbers.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = allPassOne_GSEventNumbers.cxx; path = kds/allPassOne_GSEventNumbers.cxx; sourceTree = "<group>"; };
@@ -402,12 +406,7 @@
 		66DBC5301390574D00F56215 /* KQContourPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQContourPoint.h; sourceTree = "<group>"; };
 		66DBC5311390574D00F56215 /* KQContourPointList.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KQContourPointList.cxx; sourceTree = "<group>"; };
 		66DBC5321390574D00F56215 /* KQContourPointList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KQContourPointList.h; sourceTree = "<group>"; };
-		66DBC5591392FD5E00F56215 /* test.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = test.py; sourceTree = "<group>"; };
-		66DBC55A1392FD5E00F56215 /* TierProcess.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = TierProcess.py; sourceTree = "<group>"; };
-		66DBC55B1392FE2300F56215 /* removeTier.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = removeTier.py; sourceTree = "<group>"; };
 		66DBC57E1393C7CF00F56215 /* manageNtpToRoot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = manageNtpToRoot.py; sourceTree = "<group>"; };
-		66DBC58F1393D03000F56215 /* runTier0.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = runTier0.py; sourceTree = "<group>"; };
-		66DBC5CF1393E94B00F56215 /* addTier.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = addTier.py; sourceTree = "<group>"; };
 		66DCA1831248D8B000FDE323 /* KBaselineRemoval.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KBaselineRemoval.cxx; sourceTree = "<group>"; };
 		66DCA1841248D8B000FDE323 /* KBaselineRemoval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KBaselineRemoval.h; sourceTree = "<group>"; };
 		66DCA1851248D8B000FDE323 /* KHalfComplexPower.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KHalfComplexPower.cxx; sourceTree = "<group>"; };
@@ -1045,12 +1044,11 @@
 		66DBC55D139304C200F56215 /* dbProcessing */ = {
 			isa = PBXGroup;
 			children = (
-				66DBC5591392FD5E00F56215 /* test.py */,
-				66DBC55A1392FD5E00F56215 /* TierProcess.py */,
-				66DBC5CF1393E94B00F56215 /* addTier.py */,
-				66DBC55B1392FE2300F56215 /* removeTier.py */,
+				6604F79713E6BD6000FE59CF /* runProc0.py */,
+				6604F79813E6BD6000FE59CF /* removeProc.py */,
+				6604F79913E6BD6000FE59CF /* addProc.py */,
+				6604F79613E6BA9200FE59CF /* DBProcess.py */,
 				6650303D135DCA800000A283 /* scpToSps.py */,
-				66DBC58F1393D03000F56215 /* runTier0.py */,
 				6650302C135D9D350000A283 /* rootifySambaData.py */,
 			);
 			name = dbProcessing;
@@ -1103,6 +1101,9 @@
 /* Begin PBXProject section */
 		6610DD48121ECAAA0047036E /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0410;
+			};
 			buildConfigurationList = 6610DD4B121ECAAA0047036E /* Build configuration list for PBXProject "kData" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -1210,7 +1211,6 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = make;
 				ZERO_LINK = NO;
 			};
@@ -1231,7 +1231,6 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = clean;
 				ZERO_LINK = NO;
 			};
@@ -1252,7 +1251,6 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = "make-era";
 				ZERO_LINK = NO;
 			};
@@ -1273,7 +1271,6 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = "make-era";
 				ZERO_LINK = NO;
 			};
