@@ -1,4 +1,4 @@
-rom couchdbkit import Server, Database, Document
+from couchdbkit import Server, Database, Document
 
 class DBProcess(object):
   '''   
