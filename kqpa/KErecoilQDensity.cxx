@@ -95,6 +95,7 @@ Double_t KErecoilQDensity::MultiEventProbDensity(Double_t* x,Double_t* par)
  
   Int_t aSize = (Int_t)par[0];
   Double_t det, c1, c2, c3, n, m, a, result, factor;
+  result = 1;
   for(Int_t k = 0; k<aSize; ++k) {
      det = par[6*k+3]*par[6*k+3]*par[6*k+4]*par[6*k+4] -
       par[6*k+5]*par[6*k+5]*par[6*k+5]*par[6*k+5];
@@ -289,11 +290,11 @@ Double_t KErecoilQDensity::MultiEventMarginalDensityQ(Double_t *x,
   //
   // These experimental values are
   // par[0]: number of events n
-  // par[6*k+1] : mean ion energy of the i-th event
-  // par[6*k+2] :  mean heat energy of the i-th event
-  // par[6*k+3] :  sigma ion of the i-th event
-  // par[6*k+4] : sigma heat of the i-th event
-  // par[6*k+5] : sigma ion heat of the i-th event
+  // par[6*k+1] : mean ion energy of the k-th event
+  // par[6*k+2] :  mean heat energy of the k-th event
+  // par[6*k+3] :  sigma ion of the k-th event
+  // par[6*k+4] : sigma heat of the k-th event
+  // par[6*k+5] : sigma ion heat of the k-th event
   // par[6*k+6] : voltage bias/ epsilon_gamma
   
   Double_t kE, aE, bE, cE,g11,det,c,c2,g12,g22,n,result;
@@ -320,6 +321,60 @@ Double_t KErecoilQDensity::MultiEventMarginalDensityQ(Double_t *x,
                 TMath::Erf(c2);
   }
   return result;
+}
+
+Double_t KErecoilQDensity::MultiEventCummulativePropDensity(Double_t* x,Double_t* par)
+{
+  // This function represents a cummulative distribution h(E_recoil,Q) for 
+  // multiple events, which represents the propability that there exists at least one true event a
+  // in a certain small region dOmega
+  //
+  //BEGIN_LATEX
+  // P(#exists a #in d#Omega) = h(E_{recoil},Q) d#Omega = 1 - #prod_{i=1}^{n} (1 - g_{i}(E_{recoil},Q) d#Omega)
+  // = 1 - ( 1  - #sum_{i=1}^{n} g_{i}(E_{recoil},Q) d#Omega  + O(d#Omega^{2})}
+  // = #sum_{i=1}^{n} g_{i}(E_{recoil},Q) d#Omega
+  //END_LATEX
+  // 
+  // Thus we obtain
+  //
+  //BEGIN_LATEX
+  // h(E_{recoil},Q) = #sum_{i=1}^{n} g_{i}(E_{recoil},Q)
+  //END_LATEX
+  //
+  // This distribution is unconvenient to integrate over large regions
+  //
+  //BEGIN_LATEX
+  // d#Omega >> #frac{1}{g_i(E_{recoil},Q)}
+  //END_LATEX
+  //
+  //where the function values of the distributions g_i(E_recoil,Q) have strong variations.
+  //
+  // These experimental values are
+  // par[0]: number of events n
+  // par[6*k+1] : mean ion energy of the k-th event
+  // par[6*k+2] :  mean heat energy of the k-th event
+  // par[6*k+3] :  sigma ion of the k-th event
+  // par[6*k+4] : sigma heat of the k-th event
+  // par[6*k+5] : sigma ion heat of the k-th event
+  // par[6*k+6] : voltage bias/ epsilon_gamma
+  
+    Int_t aSize = (Int_t)par[0];
+  Double_t det, c1, c2, c3, n, m, a, result, summand;
+  result = 0;
+  for(Int_t k = 0; k<aSize; ++k) {
+     det = par[6*k+3]*par[6*k+3]*par[6*k+4]*par[6*k+4] -
+      par[6*k+5]*par[6*k+5]*par[6*k+5]*par[6*k+5];
+    c1 = par[6*k+4]*par[6*k+4]/det;
+    c2 = par[6*k+3]*par[6*k+3]/det;
+    c3 = par[6*k+5]*par[6*k+5]/det;
+    n = x[0]*x[1]-par[6*k+1];
+    m = (1+x[1]*par[6*k+6])/(1+par[6*k+6])*x[0]-par[6*k+2];
+    a = TMath::Abs(x[2*k])/2/TMath::Pi()/TMath::Sqrt(det)/(1+par[6*k+6]);
+    summand = a*TMath::Exp(-0.5*(c1*n*n + c2*m*m - 2*c3*n*m));
+    result += summand;
+  }
+  return result;
+  
 }
 
 

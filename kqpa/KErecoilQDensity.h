@@ -38,6 +38,7 @@ public:
                                                     Double_t* par);
    static Double_t SingleEventMomentQ(Double_t *x,
                                                              Double_t* par);
+   static Double_t MultiEventCummulativePropDensity(Double_t* x,Double_t* par);
 
   
  
