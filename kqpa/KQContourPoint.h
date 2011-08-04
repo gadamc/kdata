@@ -15,6 +15,7 @@
 #include "TMarker.h"
 #include "KQContour.h"
 #include "KErecoilQDensity.h"
+#include "KLindhard.h"
 
 #ifndef __KQCONTOURPOINT_H__
 #define __KQCONTOURPOINT_H__
@@ -107,6 +108,10 @@ class KQContourPoint {
     TF2* GetFunction() const { return fFunction; }
     
     void Draw(Option_t* anOption = "");
+    Bool_t CutsALine(TF1* aFunction,
+                     Int_t aNumPoints = 1000);
+    Bool_t CutsLindhardLine(Int_t aNumPoints = 1000);
+    Bool_t CutsOne(Int_t aNumPoints = 1000);
     friend Bool_t operator!=(KQContourPoint& aPoint,
                              KQContourPoint& anotherPoint);
     friend Bool_t operator==(KQContourPoint& aPoint,

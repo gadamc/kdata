@@ -98,7 +98,8 @@ class KQContourPointList {
     
     void ReadASCIIFile(const Char_t* aFileName = "",
                        const Char_t* aMode = "QErecoil",
-                       Int_t aMaxNumEntries = INT_MAX);
+                       Int_t aMaxNumEntries = INT_MAX,
+                       TF1* aFunction = 0);
     void Draw(Option_t* anOption = "");
     void AddPoint(Double_t aQvalue,
               Double_t anEnergyRecoil,
@@ -107,6 +108,7 @@ class KQContourPointList {
     void RemovePoint(UInt_t anINdex = 0);
     void ClearPoints();
     void ShowPoints();
+    TF2* GetCummulativeProbDensity(const Char_t* aFunctionName = "");
   ClassDef(KQContourPointList,1);
 };
 

@@ -323,7 +323,7 @@ Double_t KErecoilQDensity::MultiEventMarginalDensityQ(Double_t *x,
   return result;
 }
 
-Double_t KErecoilQDensity::MultiEventCummulativePropDensity(Double_t* x,Double_t* par)
+Double_t KErecoilQDensity::MultiEventCummulativeProbDensity(Double_t* x,Double_t* par)
 {
   // This function represents a cummulative distribution h(E_recoil,Q) for 
   // multiple events, which represents the propability that there exists at least one true event a
