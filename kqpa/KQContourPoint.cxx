@@ -220,6 +220,73 @@ void KQContourPoint::Draw(Option_t* anOption)
   fMarker->Draw("same");
 }
 
+Bool_t KQContourPoint::CutsALine(TF1* aFunction,Int_t aNumPoints)
+{
+  // This method checks if a given function cuts the confidence region
+  // of the event
+  // This is done by comparing the function value corresponding to the contour
+  // line with a specified number of function values
+  //
+  //BEGIN_LATEX
+  // g_{i} = g(E_{recoil,i},aFunction(E_{recoil,i})
+  //END_LATEX
+  //
+  // with
+  //
+  //BEGIN_LATEX
+  // E_{recoil,i} = E_{recoil,min} + i * (E_{recoil,max} - E_{recoil,min})
+  //END_LATEX
+  //
+  // with the minimal and maximal values for E_recoil
+  //BEGIN_LATEX
+  // E_{recoil,min}
+  // E_{recoil,max}
+  //END_LATEX
+  // of the internal TF1 representing the contour
+  // If there is one value g_i exceeding the function value on the contour line
+  // the method returns true otherwise false
+  KQContour aContour(fFunction,
+                     fNumBinsX,
+                     fNumBinsY);
+  Double_t aThreshold = aContour.GetContour(fConfidenceLevel);
+  Double_t anErecoilMin = aFunction->GetXmin();
+  Double_t anErecoilMax = aFunction->GetXmax();
+  
+  for(Int_t k = 0; k<aNumPoints; ++k) {
+    if(fFunction->Eval(anErecoilMin + (Double_t)k/aNumPoints*
+                       (anErecoilMax - anErecoilMin),
+                       aFunction->Eval(anErecoilMin + (Double_t)k/
+                       aNumPoints*(anErecoilMax - anErecoilMin)))>aThreshold)
+      return true;
+  }
+  return false;
+}
+
+Bool_t KQContourPoint::CutsLindhardLine(Int_t aNumPoints)
+{
+  // This method checks if the Lindhard function
+  //BEGIN_LATEX
+  // f(E_{recoil}) = 0.165 * E_{recoil}^{0.185}
+  //END_LATEX
+  //cuts the confidence region of the event
+  KLindhard lind;
+  return(this->CutsALine(lind.GetFormula(),aNumPoints));
+}
+
+Bool_t KQContourPoint::CutsOne(Int_t aNumPoints)
+{
+  //This method checks if the function
+  //BEGIN_LATEX
+  // f(E_{recoil}) = 1
+  //END_LATEX
+  //cuts the confidence region of the event
+  TF1* aFunction = new TF1("f",
+                           "1",
+                           fFunction->GetXmin(),
+                           fFunction->GetXmax());
+  return(this->CutsALine(aFunction,aNumPoints));
+}
+
 void KQContourPoint::SetRange(Double_t xmin, Double_t ymin,
                               Double_t xmax, Double_t ymax)
 {

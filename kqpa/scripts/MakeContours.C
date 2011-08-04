@@ -49,12 +49,13 @@ KQContourPointList* aList = 0;
 
 
 void ReadData(const Char_t* aKEventROOTFile,
+              const Char_t* outfile,
                   set<string> aSetOfDetectors,
                   Int_t anEventCategory = 2,
-                  Double_t anEnergyRecoilMin = 0,
-                  Double_t anEnergyRecoilMax = 100,
+                  Double_t anEnergyRecoilMin = 20,
+                  Double_t anEnergyRecoilMax = 200,
                   Double_t aQvalueMin = 0,
-                  Double_t aQvalueMax = 1
+                  Double_t aQvalueMax = 1.4
                   )
 {
   //This method reads bolo events from a ROOT file and writes 
@@ -80,7 +81,8 @@ void ReadData(const Char_t* aKEventROOTFile,
   Double_t anEnergyRecoil;
   Double_t aVoltageBias;
   aReader = new KDataReader(aKEventROOTFile);
-  ofstream os("events.txt");
+  ofstream os(outfile);
+  os << "# Q E_recoil sigma_ion sigma_heat voltage_bias" << endl;
   anHLAEvent = (KHLAEvent*)aReader->GetEvent();
   Int_t anEventCounter = 0;
   cout << "KHLAEvents total: " << aReader->GetEntries() << endl;
@@ -102,7 +104,6 @@ void ReadData(const Char_t* aKEventROOTFile,
       aVoltageBias = calib.GetVoltageBias(aDetectorIndex);
       //aSigmaEnergyIon = aSigmaEnergyIon356;
       //aSigmaEnergyHeat = aSigmaEnergyHeat356;
-      
       if(aSetOfDetectors.size()) {
         if(aBoloEvent->GetEventFlag()==anEventCategory)
          if(aSetOfDetectors.find(aBoloEvent->GetDetectorName())!=aSetOfDetectors.end())
@@ -170,16 +171,19 @@ void ReadData(const Char_t* aKEventROOTFile,
           ++anEventCounter;
           } //if 
       }
+
           
     } //for  
   } //for
   cout << "events: " << anEventCounter << endl;
 }
 
-void DrawEvents(Int_t aNumber = 10)
+void DrawEvents(const Char_t* outfile,
+                Int_t aNumber = 10,
+                TF1* aFunction = 0)
 {
-  aList = new KQContourPointList("QErecoil","events.txt");
-  aList->ReadASCIIFile("events.txt","QErecoil",aNumber);
+  aList = new KQContourPointList("QErecoil",outfile);
+  aList->ReadASCIIFile(outfile,"QErecoil",aNumber,aFunction);
   aList->Draw();
 }
 
@@ -198,13 +202,14 @@ void MakeContours()
   detectors.insert("FID401");
   detectors.insert("FID402");
   
-  ReadData("Kds_Run12_v4.0_p2_skim.root",
+  ReadData("/kalinka/storage/edelweiss/Bolo/Run12/Eds/Merge/Bckgd/Kds_AllBolos.root",
+           "bckgd.txt",
            detectors,
            2, // event category: fiducial
-           0, // E_recoil,min
-           1000, // E_ recoil,max
+           20, // E_recoil,min
+           200, // E_ recoil,max
            0, // Q_min
-           0.6); // Q_max
-  DrawEvents();
+           1.4); // Q_max
+  //DrawEvents("gamma.txt",10000);
 }
 

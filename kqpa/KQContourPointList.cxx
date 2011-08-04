@@ -77,7 +77,8 @@ void KQContourPointList::UpdateFunctions()
 
 void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
                                        const Char_t* aMode,
-                                       Int_t aMaxNumEntries)
+                                       Int_t aMaxNumEntries,
+                                       TF1* aFunction)
 {
   // This method reads an ASCII file and builds a list of KQContourPoints
   // Depending form the specified mode a different format of the lines is
@@ -94,8 +95,12 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
   if(strcmp(fFileName.c_str(),""))
   {
     ifstream is(aFileName);
+    KQContourPoint* aPoint;
     Double_t anEnergyIon, anEnergyHeat;
-    Double_t aQvalue, anEnergyRecoil, aSigmaIon, aSigmaHeat;
+    Double_t aQvalue = 0;
+    Double_t anEnergyRecoil = 0;
+    Double_t aSigmaIon = 0;
+    Double_t aSigmaHeat = 0;
     Double_t aVoltageBias;
     char aCString[100];
     TString aString;
@@ -139,10 +144,17 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         anElement = (TObjString*)theTokens->At(4);
         aVoltageBias = anElement->GetString().Atof();
           
-        fPoints.push_back(new KQContourPoint(aQvalue, anEnergyRecoil,
+        aPoint = new KQContourPoint(aQvalue, anEnergyRecoil,
                                              "QErecoil",
                                             aSigmaIon, aSigmaHeat,
-                                            0,fConfidenceLevel,aVoltageBias));
+                                            0,fConfidenceLevel,aVoltageBias);
+        if(aFunction) {
+          if(aPoint->CutsALine(aFunction))                                    
+            fPoints.push_back(aPoint);
+        }
+        else
+          fPoints.push_back(aPoint);
+          
         cout << "... event " << fPoints.size() << " processed" << endl;
       }
       else
@@ -182,9 +194,17 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
          anElement = (TObjString*)theTokens->At(4);
         aVoltageBias = anElement->GetString().Atof();
           
-        fPoints.push_back(new KQContourPoint(anEnergyIon, anEnergyHeat,
-                                             "IonHeat",aSigmaIon, aSigmaHeat,
-                                             0, fConfidenceLevel,aVoltageBias));
+        aPoint = new KQContourPoint(aQvalue, anEnergyRecoil,
+                                             "QErecoil",
+                                            aSigmaIon, aSigmaHeat,
+                                            0,fConfidenceLevel,aVoltageBias);
+        if(aFunction) {
+          if(aPoint->CutsALine(aFunction))                                    
+            fPoints.push_back(aPoint);
+        }
+        else
+          fPoints.push_back(aPoint);
+        
         cout << "... event " << fPoints.size() << " processed" << endl;
       }
   }
@@ -272,4 +292,33 @@ void KQContourPointList::ShowPoints()
     fPoints[k]->GetSigmaEnergyIon() << setw(10) << "sigma_heat:" << setw(15) <<
     fPoints[k]->GetSigmaEnergyHeat() << endl;
   }
+}
+
+TF2* KQContourPointList::GetCummulativeProbDensity(
+        const Char_t* aFunctionName)
+{
+  TF2* aFunction = new TF2(TString::Format("h%s",aFunctionName).Data(),
+                           &KErecoilQDensity::MultiEventCummulativeProbDensity,
+                           fEmptyFrame->GetXmin(),
+                           fEmptyFrame->GetXmax(),
+                           fEmptyFrame->GetYmin(),
+                           fEmptyFrame->GetYmax(),
+                           6*fPoints.size()+1);
+  aFunction->SetParameter(0,fPoints.size());
+  for(UInt_t k = 0; k<fPoints.size(); ++k) {
+    aFunction->SetParameter(6*k+1,fPoints[k]->GetEnergyIon());
+    aFunction->SetParameter(6*k+2,fPoints[k]->GetEnergyHeat());
+    aFunction->SetParameter(6*k+3,fPoints[k]->GetSigmaEnergyIon());
+    aFunction->SetParameter(6*k+4,fPoints[k]->GetSigmaEnergyHeat());
+    aFunction->SetParameter(6*k+5,fPoints[k]->GetSigmaEnergyIonHeat());
+    aFunction->SetParameter(6*k+6,fPoints[k]->GetVoltageBias()/
+                                  fPoints[k]->GetEpsilon());  
+  }
+  aFunction->SetNpx(1000);
+  aFunction->SetNpy(1000);
+  aFunction->SetLineStyle(1);
+  aFunction->SetLineWidth(0.5);
+  return aFunction;
+                      
+    
 }
