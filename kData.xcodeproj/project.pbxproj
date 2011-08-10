@@ -350,6 +350,12 @@
 		667757201347CE8F009C0D1C /* testwrite2.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testwrite2.cxx; path = kdatabase/testwrite2.cxx; sourceTree = SOURCE_ROOT; };
 		66775739134900C4009C0D1C /* testread.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testread.cxx; path = kdatabase/testread.cxx; sourceTree = SOURCE_ROOT; };
 		6680ED751355BEA40008ED68 /* uploadBBoloPositionMap.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = uploadBBoloPositionMap.py; sourceTree = "<group>"; };
+		6681093813EAF28F00108EB9 /* KErecoilQDensity.cxx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = KErecoilQDensity.cxx; path = kqpa/KErecoilQDensity.cxx; sourceTree = SOURCE_ROOT; };
+		6681093913EAF28F00108EB9 /* KErecoilQDensity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = KErecoilQDensity.h; path = kqpa/KErecoilQDensity.h; sourceTree = SOURCE_ROOT; };
+		6681093A13EC41AC00108EB9 /* JSON_Readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = JSON_Readme.txt; path = kdatabase/doc/JSON_Readme.txt; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		6681093B13EC41AC00108EB9 /* KJson_Readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = KJson_Readme.txt; path = kdatabase/doc/KJson_Readme.txt; sourceTree = SOURCE_ROOT; };
+		6681093C13EC41AC00108EB9 /* ReadMeFirst.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = ReadMeFirst.txt; path = kdatabase/doc/ReadMeFirst.txt; sourceTree = SOURCE_ROOT; };
+		6681093F13EC53B300108EB9 /* exampleProg.cxx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = exampleProg.cxx; sourceTree = "<group>"; };
 		66826F9912D618B000E34890 /* KRawMuonModuleRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KRawMuonModuleRecord.cxx; path = ../kData/kds/KRawMuonModuleRecord.cxx; sourceTree = SOURCE_ROOT; };
 		66826F9A12D618B000E34890 /* KRawMuonModuleRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KRawMuonModuleRecord.h; path = ../kData/kds/KRawMuonModuleRecord.h; sourceTree = SOURCE_ROOT; };
 		66826FA512D619C400E34890 /* KRawSambaRecord.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KRawSambaRecord.cxx; path = ../kData/kds/KRawSambaRecord.cxx; sourceTree = SOURCE_ROOT; };
@@ -375,7 +381,6 @@
 		66B12F79136965740003A6F2 /* KJson.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KJson.cxx; path = ../kData/kdatabase/KJson.cxx; sourceTree = SOURCE_ROOT; };
 		66B12F7A136965740003A6F2 /* KJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KJson.h; path = ../kData/kdatabase/KJson.h; sourceTree = SOURCE_ROOT; };
 		66B12F7B136965740003A6F2 /* test.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test.cxx; path = ../kData/kdatabase/test.cxx; sourceTree = SOURCE_ROOT; };
-		66B12F8B1369693D0003A6F2 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		66B12FE51369A96F0003A6F2 /* KCouchDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KCouchDB.h; path = kdatabase/KCouchDB.h; sourceTree = SOURCE_ROOT; };
 		66B12FE61369A96F0003A6F2 /* KCouchDB.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KCouchDB.cxx; path = kdatabase/KCouchDB.cxx; sourceTree = SOURCE_ROOT; };
 		66B2327512F2FB480047DEDC /* KBoloConfig.cxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KBoloConfig.cxx; sourceTree = "<group>"; };
@@ -654,6 +659,7 @@
 		6610DE3A121EDA680047036E /* ktemplate */ = {
 			isa = PBXGroup;
 			children = (
+				6681093F13EC53B300108EB9 /* exampleProg.cxx */,
 				6610DE3E121EDADB0047036E /* Module_libs.mk */,
 				6610DE3F121EDADB0047036E /* Module.mk */,
 				6610DE3B121EDA680047036E /* KMyTemplateClass.cxx */,
@@ -909,6 +915,8 @@
 				663FF1CC12E8869000EA6EF5 /* KQAdjustPanel.h */,
 				663FF1CD12E8869000EA6EF5 /* KQDistribution.cxx */,
 				663FF1CE12E8869000EA6EF5 /* KQDistribution.h */,
+				6681093813EAF28F00108EB9 /* KErecoilQDensity.cxx */,
+				6681093913EAF28F00108EB9 /* KErecoilQDensity.h */,
 				663FF1CF12E8869000EA6EF5 /* Module.mk */,
 				663FF1D012E8869000EA6EF5 /* Module_libs.mk */,
 				663FF1D312E8876500EA6EF5 /* KLindhard.h */,
@@ -990,7 +998,9 @@
 		66B12F8A1369692C0003A6F2 /* doc */ = {
 			isa = PBXGroup;
 			children = (
-				66B12F8B1369693D0003A6F2 /* README.txt */,
+				6681093A13EC41AC00108EB9 /* JSON_Readme.txt */,
+				6681093B13EC41AC00108EB9 /* KJson_Readme.txt */,
+				6681093C13EC41AC00108EB9 /* ReadMeFirst.txt */,
 			);
 			name = doc;
 			path = ../kData/kdatabase/doc;
