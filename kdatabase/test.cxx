@@ -28,13 +28,13 @@
 void doit(char *text)
 {
 	char *out;KJson *json;
-	
-	json=KJson_Parse(text);
-	if (!json) {printf("Error before: [%s]\n",KJson_GetErrorPtr());}
+
+	json=KJson::Parse(text);
+	if (!json) {printf("Error before: [%s]\n",KJson::GetErrorPtr());}
 	else
 	{
-		out=KJson_Print(json);
-		KJson_Delete(json);
+		out=KJson::Print(json);
+		KJson::Delete(json);
 		printf("%s\n",out);
 		free(out);
 	}
@@ -60,70 +60,70 @@ void create_objects()
 	/* Here we construct some JSON standards, from the JSON site. */
 	
 	/* Our "Video" datatype: */
-	root=KJson_CreateObject();	
-	KJson_AddItemToObject(root, "name", KJson_CreateString("Jack (\"Bee\") Nimble"));
-	KJson_AddItemToObject(root, "format", fmt=KJson_CreateObject());
-	KJson_AddStringToObject(fmt,"type",		"rect");
-	KJson_AddNumberToObject(fmt,"width",		1920);
-	KJson_AddNumberToObject(fmt,"height",		1080);
-	KJson_AddFalseToObject (fmt,"interlace");
-	KJson_AddNumberToObject(fmt,"frame rate",	24);
+	root=KJson::CreateObject();	
+	KJson::AddItemToObject(root, "name", KJson::CreateString("Jack (\"Bee\") Nimble"));
+	KJson::AddItemToObject(root, "format", fmt=KJson::CreateObject());
+	KJson::AddStringToObject(fmt,"type",		"rect");
+	KJson::AddNumberToObject(fmt,"width",		1920);
+	KJson::AddNumberToObject(fmt,"height",		1080);
+	KJson::AddFalseToObject (fmt,"interlace");
+	KJson::AddNumberToObject(fmt,"frame rate",	24);
 	
-	out=KJson_Print(root);	KJson_Delete(root);	printf("%s\n",out);	free(out);	// Print to text, Delete the KJson, print it, release the string.
+	out=KJson::Print(root);	KJson::Delete(root);	printf("%s\n",out);	free(out);	// Print to text, Delete the KJson, print it, release the string.
 
 	// Our "days of the week" array: 
 	const char *strings[7]={"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
-	root=KJson_CreateStringArray(strings,7);
+	root=KJson::CreateStringArray(strings,7);
 
-	out=KJson_Print(root);	KJson_Delete(root);	printf("%s\n",out);	free(out);
+	out=KJson::Print(root);	KJson::Delete(root);	printf("%s\n",out);	free(out);
 
 	/* Our matrix: */
 	int numbers[3][3]={{0,-1,0},{1,0,0},{0,0,1}};
-	root=KJson_CreateArray();
-	for (i=0;i<3;i++) KJson_AddItemToArray(root,KJson_CreateIntArray(numbers[i],3));
+	root=KJson::CreateArray();
+	for (i=0;i<3;i++) KJson::AddItemToArray(root,KJson::CreateIntArray(numbers[i],3));
 
-/*	KJson_ReplaceItemInArray(root,1,KJson_CreateString("Replacement")); */
+/*	KJson::ReplaceItemInArray(root,1,KJson::CreateString("Replacement")); */
 	
-	out=KJson_Print(root);	KJson_Delete(root);	printf("%s\n",out);	free(out);
+	out=KJson::Print(root);	KJson::Delete(root);	printf("%s\n",out);	free(out);
 
 
 	/* Our "gallery" item: */
 	int ids[4]={116,943,234,38793};
-	root=KJson_CreateObject();
-	KJson_AddItemToObject(root, "Image", img=KJson_CreateObject());
-	KJson_AddNumberToObject(img,"Width",800);
-	KJson_AddNumberToObject(img,"Height",600);
-	KJson_AddStringToObject(img,"Title","View from 15th Floor");
-	KJson_AddItemToObject(img, "Thumbnail", thm=KJson_CreateObject());
-	KJson_AddStringToObject(thm, "Url", "http:/*www.example.com/image/481989943");
-	KJson_AddNumberToObject(thm,"Height",125);
-	KJson_AddStringToObject(thm,"Width","100");
-	KJson_AddItemToObject(img,"IDs", KJson_CreateIntArray(ids,4));
+	root=KJson::CreateObject();
+	KJson::AddItemToObject(root, "Image", img=KJson::CreateObject());
+	KJson::AddNumberToObject(img,"Width",800);
+	KJson::AddNumberToObject(img,"Height",600);
+	KJson::AddStringToObject(img,"Title","View from 15th Floor");
+	KJson::AddItemToObject(img, "Thumbnail", thm=KJson::CreateObject());
+	KJson::AddStringToObject(thm, "Url", "http:/*www.example.com/image/481989943");
+	KJson::AddNumberToObject(thm,"Height",125);
+	KJson::AddStringToObject(thm,"Width","100");
+	KJson::AddItemToObject(img,"IDs", KJson::CreateIntArray(ids,4));
 
-	out=KJson_Print(root);	KJson_Delete(root);	printf("%s\n",out);	free(out);
+	out=KJson::Print(root);	KJson::Delete(root);	printf("%s\n",out);	free(out);
 
 	/* Our array of "records": */
 	struct record fields[2]={
 		{"zip",37.7668,-1.223959e+2,"","SAN FRANCISCO","CA","94107","US"},
 		{"zip",37.371991,-1.22026e+2,"","SUNNYVALE","CA","94085","US"}};
 
-	root=KJson_CreateArray();
+	root=KJson::CreateArray();
 	for (i=0;i<2;i++)
 	{
-		KJson_AddItemToArray(root,fld=KJson_CreateObject());
-		KJson_AddStringToObject(fld, "precision", fields[i].precision);
-		KJson_AddNumberToObject(fld, "Latitude", fields[i].lat);
-		KJson_AddNumberToObject(fld, "Longitude", fields[i].lon);
-		KJson_AddStringToObject(fld, "Address", fields[i].address);
-		KJson_AddStringToObject(fld, "City", fields[i].city);
-		KJson_AddStringToObject(fld, "State", fields[i].state);
-		KJson_AddStringToObject(fld, "Zip", fields[i].zip);
-		KJson_AddStringToObject(fld, "Country", fields[i].country);
+		KJson::AddItemToArray(root,fld=KJson::CreateObject());
+		KJson::AddStringToObject(fld, "precision", fields[i].precision);
+		KJson::AddNumberToObject(fld, "Latitude", fields[i].lat);
+		KJson::AddNumberToObject(fld, "Longitude", fields[i].lon);
+		KJson::AddStringToObject(fld, "Address", fields[i].address);
+		KJson::AddStringToObject(fld, "City", fields[i].city);
+		KJson::AddStringToObject(fld, "State", fields[i].state);
+		KJson::AddStringToObject(fld, "Zip", fields[i].zip);
+		KJson::AddStringToObject(fld, "Country", fields[i].country);
 	}
 	
-/*	KJson_ReplaceItemInObject(KJson_GetArrayItem(root,1),"City",KJson_CreateIntArray(ids,4)); */
+/*	KJson::ReplaceItemInObject(KJson::GetArrayItem(root,1),"City",KJson::CreateIntArray(ids,4)); */
 	
-	out=KJson_Print(root);	KJson_Delete(root);	printf("%s\n",out);	free(out);
+	out=KJson::Print(root);	KJson::Delete(root);	printf("%s\n",out);	free(out);
 
 }
 
