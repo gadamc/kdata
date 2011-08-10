@@ -70,6 +70,7 @@ ALLLIBS      += $(KTMP_LIB)
 endif
 ALLEXECS     += $(KTMP_EXE)
 
+KTMP_XTRALIBS := $(KDSLIBS) $(KPTALIBS)
 
 
 # include all dependency files
@@ -92,7 +93,7 @@ $(KTMP_DIRS)/%.o:    $(KTMP_DIRS)/%.cxx
 # rule for building executables
 bin/%: $(KTMP_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KTMPLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KTMPLIBS) $(KTMP_XTRALIBS)
                 
 # rules for building dictionary
 $(KTMP_DO):         $(KTMP_DC)
