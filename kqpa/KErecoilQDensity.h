@@ -16,6 +16,12 @@
 
 #include "Rtypes.h"
 #include "TMath.h"
+#include "TF2.h"
+#include "Math/WrappedMultiTF1.h"
+#include "Math/AdaptiveIntegratorMultiDim.h"
+#include "Math/GSLMCIntegrator.h"
+#include <iostream>
+using namespace std;
 
 class KErecoilQDensity {
   
@@ -39,6 +45,7 @@ public:
    static Double_t SingleEventMomentQ(Double_t *x,
                                                              Double_t* par);
    static Double_t MultiEventCummulativeProbDensity(Double_t* x,Double_t* par);
+   static Double_t MultiEventProbabilityOfAtLeastOneEvent(Double_t* x,Double_t* par);
 
   
  

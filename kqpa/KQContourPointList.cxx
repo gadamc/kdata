@@ -319,6 +319,33 @@ TF2* KQContourPointList::GetCummulativeProbDensity(
   aFunction->SetLineStyle(1);
   aFunction->SetLineWidth(0.5);
   return aFunction;
-                      
-    
+}
+
+TF2* KQContourPointList::GetProbabilityOfAtLeastOneEvent(
+  const Char_t* aFunctionName,
+  Double_t aTolerance)
+{
+  TF2*  aFunction = new TF2(TString::Format("g%s",aFunctionName).Data(),
+                &KErecoilQDensity::MultiEventProbabilityOfAtLeastOneEvent,
+                0,
+                1,
+                0,
+                1,
+                6*fPoints.size()+5);
+  aFunction->SetParameter(0,fPoints.size());
+  aFunction->SetParameter(1,aTolerance);
+  aFunction->SetParameter(2,0);
+  aFunction->SetParameter(3,1);
+  aFunction->SetParameter(4,0);
+  aFunction->SetParameter(5,1);
+  for(UInt_t k = 0; k<fPoints.size(); ++k) {
+    aFunction->SetParameter(6*k+6,fPoints[k]->GetEnergyIon());
+    aFunction->SetParameter(6*k+7,fPoints[k]->GetEnergyHeat());
+    aFunction->SetParameter(6*k+8,fPoints[k]->GetSigmaEnergyIon());
+    aFunction->SetParameter(6*k+9,fPoints[k]->GetSigmaEnergyHeat());
+    aFunction->SetParameter(6*k+10,fPoints[k]->GetSigmaEnergyIonHeat());
+    aFunction->SetParameter(6*k+11,fPoints[k]->GetVoltageBias()/
+                                                                fPoints[k]->GetEpsilon());
+  }
+    return aFunction;
 }

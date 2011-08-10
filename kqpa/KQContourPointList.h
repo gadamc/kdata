@@ -109,6 +109,9 @@ class KQContourPointList {
     void ClearPoints();
     void ShowPoints();
     TF2* GetCummulativeProbDensity(const Char_t* aFunctionName = "");
+    TF2* GetProbabilityOfAtLeastOneEvent(
+      const Char_t* aFunctionName = "",
+      Double_t aTolerance = 0.0001);
   ClassDef(KQContourPointList,1);
 };
 
