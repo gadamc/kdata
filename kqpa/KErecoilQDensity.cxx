@@ -369,13 +369,86 @@ Double_t KErecoilQDensity::MultiEventCummulativeProbDensity(Double_t* x,Double_t
     c3 = par[6*k+5]*par[6*k+5]/det;
     n = x[0]*x[1]-par[6*k+1];
     m = (1+x[1]*par[6*k+6])/(1+par[6*k+6])*x[0]-par[6*k+2];
-    a = TMath::Abs(x[2*k])/2/TMath::Pi()/TMath::Sqrt(det)/(1+par[6*k+6]);
+    a = TMath::Abs(x[0])/2/TMath::Pi()/TMath::Sqrt(det)/(1+par[6*k+6]);
     summand = a*TMath::Exp(-0.5*(c1*n*n + c2*m*m - 2*c3*n*m));
     result += summand;
   }
   return result;
   
 }
+
+Double_t KErecoilQDensity::MultiEventProbabilityOfAtLeastOneEvent(Double_t* x,Double_t* par)
+{
+  // This function represents the propability that there exists at least one true event
+  //  in an arbitrary area Omega of rectangular shape in the E_recoil-Q plane
+  // It is given by
+  //BEGIN_LATEX
+  // P(#exists a #in Omega) = h(E_{recoil},Q) d#Omega = 1 - #prod_{i=1}^{n} (1 - #int_{#Omega} g_{i}(E_{recoil},Q) d#Omega)
+  //END_LATEX
+  
+  // The parameters are
+  //
+  // par[0] : number of events n
+  // par[1]: integration tolerance
+  // par[2] : lower boundary of the recoil energy for integration
+  // par[3]: higher boundary of the recoil energy for integration
+  // par[4]: lower boundary of the Q value for integration
+  // par[5]: higher boundary of the Q value for integration
+  // par[6*k+6]: ion energy of the k-th event
+  // par[6*k+7]: heat energy of the k-th event
+  // par[6*k+8]: ion energy uncertainty of the k-th event
+  // par[6*k+9]: heat energy uncertainty of the k-th event
+  // par[6*k+10]: ion-heat energy correlation of the k-th event
+  // par[6*k+11]: voltage bias over epsilon_gamma of the k-th event
+  
+  Double_t p[6];
+  Double_t aSize = par[0];
+  Double_t aTolerance = par[1];
+  Double_t anEnergyRecoilMin = par[2];
+  Double_t anEnergyRecoilMax = par[3];
+  Double_t aQvalueMin = par[4];
+  Double_t aQvalueMax = par[5];
+  Double_t product = 1;
+  
+  // create the function and wrap it
+  TF2 f("f",
+        &KErecoilQDensity::SingleEventProbDensity,
+        anEnergyRecoilMin,
+        anEnergyRecoilMax,
+        aQvalueMin,
+        aQvalueMax,
+        6);
+  ROOT::Math::WrappedMultiTF1 wf1(f);
+  
+  // create the integrator
+  //ROOT::Math::AdaptiveIntegratorMultiDim ig;
+  ROOT::Math::GSLMCIntegrator ig(ROOT::Math::IntegrationMultiDim::kVEGAS);
+  
+  //Set parameters of the integration
+  ig.SetFunction(wf1);
+  ig.SetRelTolerance(aTolerance);
+  
+  Double_t xmin[] = { anEnergyRecoilMin, aQvalueMin };
+  Double_t xmax[] = { anEnergyRecoilMax, aQvalueMax };
+  
+  
+  for(Int_t k = 0; k<aSize; ++k) {
+    p[0] = par[6*k+6];
+    p[1] = par[6*k+7];
+    p[2] = par[6*k+8];
+    p[3] = par[6*k+9];
+    p[4] = par[6*k+10];
+    p[5] = par[6*k+11];
+    
+    wf1.SetParameters(p);
+    product *= 1 - ig.Integral(xmin,xmax);
+  }
+  
+  return 1 - product;
+  
+}
+
+
 
 
 
