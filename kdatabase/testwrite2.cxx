@@ -1,4 +1,6 @@
-#include "KJson.cxx"  //yeah, this is annoying... you have to include the .cxx file, which is a bunch of c functions
+
+
+#include "KJson.h"  
 #include "KCurl.h"
 
 using namespace std;
@@ -7,7 +9,7 @@ int main (int /*argc*/, char** argv)
 {
   //
   //usage:
-  //testwrite2 <url> <database> <username> <password> <doc_id> 
+  //testwrite2 <url> <database> <doc_id> 
   //
   // <url> -- don't include http://  use just 127.0.0.1:5984 or 134.158.176.27:5984
   // <database> = testdb
@@ -15,30 +17,30 @@ int main (int /*argc*/, char** argv)
   //
   
   
-  KJson *doc = KJson_CreateObject();
+  KJson *doc = KJson::CreateObject();
     
   //add some key/value pairs. 
-  KJson_AddItemToObject(doc, "author", KJson_CreateString("samba"));
-  KJson_AddItemToObject(doc, "type", KJson_CreateString("samba run header"));
-  KJson_AddItemToObject(doc, "Temperature", KJson_CreateNumber(0.02002));
-  KJson_AddItemToObject(doc, "Year", KJson_CreateNumber(2011));
+  KJson::AddItemToObject(doc, "author", KJson::CreateString("samba"));
+  KJson::AddItemToObject(doc, "type", KJson::CreateString("samba run header"));
+  KJson::AddItemToObject(doc, "Temperature", KJson::CreateNumber(0.02002));
+  KJson::AddItemToObject(doc, "Year", KJson::CreateNumber(2011));
   
   //add a subdoc (a nested set of key/value pairs) to doc
   KJson *fmt;
-  KJson_AddItemToObject(doc, "Bolo.reglages", fmt=KJson_CreateObject());
-  KJson_AddItemToObject(fmt, "polar-centre", KJson_CreateNumber(4.0));
-  KJson_AddItemToObject(fmt, "polar-garde", KJson_CreateNumber(1.5));
+  KJson::AddItemToObject(doc, "Bolo.reglages", fmt=KJson::CreateObject());
+  KJson::AddItemToObject(fmt, "polar-centre", KJson::CreateNumber(4.0));
+  KJson::AddItemToObject(fmt, "polar-garde", KJson::CreateNumber(1.5));
   
   //add an array to doc
   KJson *array;
-  KJson_AddItemToObject(doc, "Date", array=KJson_CreateArray());
-  KJson_AddItemToArray(array, KJson_CreateNumber(2011));
-  KJson_AddItemToArray(array, KJson_CreateNumber(4));
-  KJson_AddItemToArray(array, KJson_CreateNumber(2));
+  KJson::AddItemToObject(doc, "Date", array=KJson::CreateArray());
+  KJson::AddItemToArray(array, KJson::CreateNumber(2011));
+  KJson::AddItemToArray(array, KJson::CreateNumber(4));
+  KJson::AddItemToArray(array, KJson::CreateNumber(2));
   
   
   //print out the json document just to check what it looks like
-  char* buf = KJson_Print(doc);
+  char* buf = KJson::Print(doc);
   printf("\nHere is the document we're about to send.");
   cout << "The ID will be appended. _id : " << argv[5] << endl;
   printf("\n%s\n\n",buf);  
@@ -49,16 +51,16 @@ int main (int /*argc*/, char** argv)
   //now send the json document to the server with KCurl
   KCurl c;
   char myurl[1000];
-  sprintf(myurl, "%s:%s@%s", argv[3], argv[4], argv[1]);
+  sprintf(myurl, "%s", argv[1]);
   
   string myitem = "";
   myitem += argv[2];
   myitem += "/";
-  myitem += argv[5];
+  myitem += argv[3];
   
   printf("will call curl PUT %s\n\n", myurl);
   
-  c.Put(myurl, myitem.data(), KJson_PrintUnformatted(doc));
+  c.Put(myurl, myitem.data(), KJson::PrintUnformatted(doc));
   
   cout << "The Return " << endl;
   cout << c.GetReturn() << endl;

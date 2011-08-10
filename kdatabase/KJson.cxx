@@ -23,18 +23,12 @@
 /* KJson */
 /* JSON parser in C. */
 
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <float.h>
-#include <limits.h>
-#include <ctype.h>
+
 #include "KJson.h"
 
 static const char *ep;
 
-const char *KJson_GetErrorPtr() {return ep;}
+const char *KJson::GetErrorPtr() {return ep;}
 
 static int KJson_strcasecmp(const char *s1,const char *s2)
 {
@@ -57,7 +51,7 @@ static char* KJson_strdup(const char* str)
       return copy;
 }
 
-void KJson_InitHooks(KJson_Hooks* hooks)
+void KJson::InitHooks(Hooks* hooks)
 {
     if (!hooks) { /* Reset hooks */
         KJson_malloc = malloc;
@@ -78,13 +72,13 @@ static KJson *KJson_New_Item()
 }
 
 /* Delete a KJson structure. */
-void KJson_Delete(KJson *c)
+void KJson::Delete(KJson *c)
 {
 	KJson *next;
 	while (c)
 	{
 		next=c->next;
-		if (!(c->type&KJson_IsReference) && c->child) KJson_Delete(c->child);
+		if (!(c->type&KJson_IsReference) && c->child) Delete(c->child);
 		if (!(c->type&KJson_IsReference) && c->valuestring) KJson_free(c->valuestring);
 		if (c->key) KJson_free(c->key);
 		KJson_free(c);
@@ -235,21 +229,6 @@ static char *print_object(KJson *item,int depth,int fmt);
 
 /* Utility to jump whitespace and cr/lf */
 static const char *skip(const char *in) {while (in && *in && (unsigned char)*in<=32) in++; return in;}
-
-/* Parse an object - create a new root, and populate. */
-KJson *KJson_Parse(const char *value)
-{
-	KJson *c=KJson_New_Item();
-	ep=0;
-	if (!c) return 0;       /* memory fail */
-
-	if (!parse_value(c,skip(value))) {KJson_Delete(c);return 0;}
-	return c;
-}
-
-/* Render a KJson item/entity/structure to text. */
-char *KJson_Print(KJson *item)				{return print_value(item,0,1);}
-char *KJson_PrintUnformatted(KJson *item)	{return print_value(item,0,0);}
 
 /* Parser core - when encountering text, process appropriately. */
 static const char *parse_value(KJson *item,const char *value)
@@ -457,52 +436,69 @@ static char *print_object(KJson *item,int depth,int fmt)
 	return out;	
 }
 
-/* Get Array size/item / object item. */
-int    KJson_GetArraySize(KJson *array)							{KJson *c=array->child;int i=0;while(c)i++,c=c->next;return i;}
-KJson *KJson_GetArrayItem(KJson *array,int item)				{KJson *c=array->child;  while (c && item>0) item--,c=c->next; return c;}
-KJson *KJson_GetObjectItem(KJson *object,const char *akey)	{KJson *c=object->child; while (c && KJson_strcasecmp(c->key,akey)) c=c->next; return c;}
-
 /* Utility for array list handling. */
 static void suffix_object(KJson *prev,KJson *item) {prev->next=item;item->prev=prev;}
 /* Utility for handling references. */
 static KJson *create_reference(KJson *item) {KJson *ref=KJson_New_Item();if (!ref) return 0;memcpy(ref,item,sizeof(KJson));ref->key=0;ref->type|=KJson_IsReference;ref->next=ref->prev=0;return ref;}
 
-/* Add item to array/object. */
-void   KJson_AddItemToArray(KJson *array, KJson *item)						{KJson *c=array->child;if (!item) return; if (!c) {array->child=item;} else {while (c && c->next) c=c->next; suffix_object(c,item);}}
-void   KJson_AddItemToObject(KJson *object,const char *akey,KJson *item)	{if (!item) return; if (item->key) KJson_free(item->key);item->key=KJson_strdup(akey);KJson_AddItemToArray(object,item);}
-void	KJson_AddItemReferenceToArray(KJson *array, KJson *item)						{KJson_AddItemToArray(array,create_reference(item));}
-void	KJson_AddItemReferenceToObject(KJson *object,const char *akey,KJson *item)	{KJson_AddItemToObject(object,akey,create_reference(item));}
 
-KJson *KJson_DetachItemFromArray(KJson *array,int which)			{KJson *c=array->child;while (c && which>0) c=c->next,which--;if (!c) return 0;
+/* Parse an object - create a new root, and populate. */
+KJson *KJson::Parse(const char *value)
+{
+	KJson *c=KJson_New_Item();
+	ep=0;
+	if (!c) return 0;       /* memory fail */
+
+	if (!parse_value(c,skip(value))) {Delete(c);return 0;}
+	return c;
+}
+
+/* Render a KJson item/entity/structure to text. */
+char *KJson::Print(KJson *item)				{return print_value(item,0,1);}
+char *KJson::PrintUnformatted(KJson *item)	{return print_value(item,0,0);}
+
+
+/* Get Array size/item / object item. */
+int    KJson::GetArraySize(KJson *array)							{KJson *c=array->child;int i=0;while(c)i++,c=c->next;return i;}
+KJson *KJson::GetArrayItem(KJson *array,int item)				{KJson *c=array->child;  while (c && item>0) item--,c=c->next; return c;}
+KJson *KJson::GetObjectItem(KJson *object,const char *akey)	{KJson *c=object->child; while (c && KJson_strcasecmp(c->key,akey)) c=c->next; return c;}
+
+/* Add item to array/object. */
+void   KJson::AddItemToArray(KJson *array, KJson *item)						{KJson *c=array->child;if (!item) return; if (!c) {array->child=item;} else {while (c && c->next) c=c->next; suffix_object(c,item);}}
+void   KJson::AddItemToObject(KJson *object,const char *akey,KJson *item)	{if (!item) return; if (item->key) KJson_free(item->key);item->key=KJson_strdup(akey);AddItemToArray(object,item);}
+void	KJson::AddItemReferenceToArray(KJson *array, KJson *item)						{AddItemToArray(array,create_reference(item));}
+void	KJson::AddItemReferenceToObject(KJson *object,const char *akey,KJson *item)	{AddItemToObject(object,akey,create_reference(item));}
+
+KJson *KJson::DetachItemFromArray(KJson *array,int which)			{KJson *c=array->child;while (c && which>0) c=c->next,which--;if (!c) return 0;
 	if (c->prev) c->prev->next=c->next;if (c->next) c->next->prev=c->prev;if (c==array->child) array->child=c->next;c->prev=c->next=0;return c;}
-void   KJson_DeleteItemFromArray(KJson *array,int which)			{KJson_Delete(KJson_DetachItemFromArray(array,which));}
-KJson *KJson_DetachItemFromObject(KJson *object,const char *akey) {int i=0;KJson *c=object->child;while (c && KJson_strcasecmp(c->key,akey)) i++,c=c->next;if (c) return KJson_DetachItemFromArray(object,i);return 0;}
-void   KJson_DeleteItemFromObject(KJson *object,const char *akey) {KJson_Delete(KJson_DetachItemFromObject(object,akey));}
+void   KJson::DeleteItemFromArray(KJson *array,int which)			{Delete(DetachItemFromArray(array,which));}
+KJson *KJson::DetachItemFromObject(KJson *object,const char *akey) {int i=0;KJson *c=object->child;while (c && KJson_strcasecmp(c->key,akey)) i++,c=c->next;if (c) return DetachItemFromArray(object,i);return 0;}
+void   KJson::DeleteItemFromObject(KJson *object,const char *akey) {Delete(DetachItemFromObject(object,akey));}
 
 /* Replace array/object items with new ones. */
-void   KJson_ReplaceItemInArray(KJson *array,int which,KJson *newitem)		{KJson *c=array->child;while (c && which>0) c=c->next,which--;if (!c) return;
+void   KJson::ReplaceItemInArray(KJson *array,int which,KJson *newitem)		{KJson *c=array->child;while (c && which>0) c=c->next,which--;if (!c) return;
 	newitem->next=c->next;newitem->prev=c->prev;if (newitem->next) newitem->next->prev=newitem;
-	if (c==array->child) array->child=newitem; else newitem->prev->next=newitem;c->next=c->prev=0;KJson_Delete(c);}
-void   KJson_ReplaceItemInObject(KJson *object,const char *akey,KJson *newitem){int i=0;KJson *c=object->child;while(c && KJson_strcasecmp(c->key,akey))i++,c=c->next;if(c){newitem->key=KJson_strdup(akey);KJson_ReplaceItemInArray(object,i,newitem);}}
+	if (c==array->child) array->child=newitem; else newitem->prev->next=newitem;c->next=c->prev=0;Delete(c);}
+void   KJson::ReplaceItemInObject(KJson *object,const char *akey,KJson *newitem){int i=0;KJson *c=object->child;while(c && KJson_strcasecmp(c->key,akey))i++,c=c->next;if(c){newitem->key=KJson_strdup(akey);ReplaceItemInArray(object,i,newitem);}}
 
 /* Create basic types: */
-KJson *KJson_CreateNull()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_NULL;return item;}
-KJson *KJson_CreateTrue()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_True;return item;}
-KJson *KJson_CreateFalse()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_False;return item;}
-KJson *KJson_CreateBool(int b)					{KJson *item=KJson_New_Item();if(item)item->type=b?KJson_True:KJson_False;return item;}
-KJson *KJson_CreateNumber(double num)			{KJson *item=KJson_New_Item();if(item){item->type=KJson_Number;item->valuedouble=num;item->valueint=(int)num;}return item;}
-KJson *KJson_CreateString(const char *akey)	{KJson *item=KJson_New_Item();if(item){item->type=KJson_String;item->valuestring=KJson_strdup(akey);}return item;}
-KJson *KJson_CreateArray()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_Array;return item;}
-KJson *KJson_CreateObject()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_Object;return item;}
+KJson *KJson::CreateNull()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_NULL;return item;}
+KJson *KJson::CreateTrue()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_True;return item;}
+KJson *KJson::CreateFalse()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_False;return item;}
+KJson *KJson::CreateBool(int b)					{KJson *item=KJson_New_Item();if(item)item->type=b?KJson_True:KJson_False;return item;}
+KJson *KJson::CreateNumber(double num)			{KJson *item=KJson_New_Item();if(item){item->type=KJson_Number;item->valuedouble=num;item->valueint=(int)num;}return item;}
+KJson *KJson::CreateString(const char *akey)	{KJson *item=KJson_New_Item();if(item){item->type=KJson_String;item->valuestring=KJson_strdup(akey);}return item;}
+KJson *KJson::CreateArray()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_Array;return item;}
+KJson *KJson::CreateObject()						{KJson *item=KJson_New_Item();if(item)item->type=KJson_Object;return item;}
 
 /* Create Arrays: */
-KJson *KJson_CreateIntArray(int *numbers,int count)				{int i;KJson *n=0,*p=0,*a=KJson_CreateArray();for(i=0;a && i<count;i++){n=KJson_CreateNumber(numbers[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}
-KJson *KJson_CreateFloatArray(float *numbers,int count)			{int i;KJson *n=0,*p=0,*a=KJson_CreateArray();for(i=0;a && i<count;i++){n=KJson_CreateNumber(numbers[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}
-KJson *KJson_CreateDoubleArray(double *numbers,int count)		{int i;KJson *n=0,*p=0,*a=KJson_CreateArray();for(i=0;a && i<count;i++){n=KJson_CreateNumber(numbers[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}
-KJson *KJson_CreateStringArray(const char **strings,int count)	{int i;KJson *n=0,*p=0,*a=KJson_CreateArray();for(i=0;a && i<count;i++){n=KJson_CreateString(strings[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}
+KJson *KJson::CreateIntArray(int *numbers,int count)				{int i;KJson *n=0,*p=0,*a=CreateArray();for(i=0;a && i<count;i++){n=CreateNumber(numbers[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}
+KJson *KJson::CreateFloatArray(float *numbers,int count)			{int i;KJson *n=0,*p=0,*a=CreateArray();for(i=0;a && i<count;i++){n=CreateNumber(numbers[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}
+KJson *KJson::CreateDoubleArray(double *numbers,int count)		{int i;KJson *n=0,*p=0,*a=CreateArray();for(i=0;a && i<count;i++){n=CreateNumber(numbers[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}
+KJson *KJson::CreateStringArray(const char **strings,int count)	{int i;KJson *n=0,*p=0,*a=CreateArray();for(i=0;a && i<count;i++){n=CreateString(strings[i]);if(!i)a->child=n;else suffix_object(p,n);p=n;}return a;}
 
-void KJson_AddNullToObject(KJson* object,const char* name){return KJson_AddItemToObject(object, name, KJson_CreateNull());}	
-void KJson_AddTrueToObject(KJson* object,const char* name){  return KJson_AddItemToObject(object, name, KJson_CreateTrue());}	
-void KJson_AddFalseToObject(KJson* object,const char* name){return KJson_AddItemToObject(object, name, KJson_CreateFalse());}		
-void KJson_AddNumberToObject(KJson* object,const char* name,double n){return KJson_AddItemToObject(object, name, KJson_CreateNumber(n)); }
-void KJson_AddStringToObject(KJson* object,const char* name,const char* s){  return KJson_AddItemToObject(object, name, KJson_CreateString(s));}	
+void KJson::AddNullToObject(KJson* object,const char* name){return AddItemToObject(object, name, CreateNull());}	
+void KJson::AddTrueToObject(KJson* object,const char* name){  return AddItemToObject(object, name, CreateTrue());}	
+void KJson::AddFalseToObject(KJson* object,const char* name){return AddItemToObject(object, name, CreateFalse());}		
+void KJson::AddNumberToObject(KJson* object,const char* name,double n){return AddItemToObject(object, name, CreateNumber(n)); }
+void KJson::AddStringToObject(KJson* object,const char* name,const char* s){  return AddItemToObject(object, name, CreateString(s));}	

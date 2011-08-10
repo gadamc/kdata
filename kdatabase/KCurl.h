@@ -17,6 +17,7 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -30,8 +31,8 @@ public:
     
   //void* POST()
   //void* DELETE();
-  Int_t Put(const char* url, const char* item, const char* thedoc = 0);
-  Int_t Get(const char* url, const char* item);
+  Int_t Put(const char* url, const char* item, const char* opt = "-a", const char* thedoc = 0);
+  Int_t Get(const char* url, const char* item, const char* opt = "-a");
  
   const char* GetReturn(void) const {return fReturn.c_str();}
   size_t GetReturnSize(void) const {return fReturn.size();}
@@ -67,6 +68,10 @@ private:
     rarg->pos += len;
     return len;
   }
+  
+  bool DoAcceptSSLCertificate(const char* opt);
+  //bool DoUseSSL(const char* opt);
+
   
   ClassDef(KCurl,1);
   
