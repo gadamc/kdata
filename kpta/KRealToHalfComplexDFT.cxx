@@ -68,7 +68,7 @@ void KRealToHalfComplexDFT::SetFFTWPlan(void)
 	if(fInputPulse  && fOutputPulse )
 		fPlan = (void*)fftw_plan_r2r_1d( (int)fInputSize, fInputPulse, fOutputPulse, FFTW_R2HC, MapFlag());
 	else 
-		cerr << "KHalfComplexToRealDFT::SetFFTWPlan. Arrays are empty." << endl;
+		cerr << "KRealToHalfComplexDFT::SetFFTWPlan. Arrays are empty." << endl;
 	
 }
 
