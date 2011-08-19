@@ -24,11 +24,9 @@ public:
 	double CalculateAverage(void) const;
 	virtual bool Subtract(double aVal);
 	
-  //getters
 	double GetBaselineStart(void) const {return fBaselineStart;}
 	double GetBaselineStop(void) const {return fBaselineStop;}
   
-	//setters
 	virtual void SetBaselineStart(double aVal) {fBaselineStart = aVal;}
 	virtual void SetBaselineStop(double aVal) {fBaselineStop = aVal;}
 	

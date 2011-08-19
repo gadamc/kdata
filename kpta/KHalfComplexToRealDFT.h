@@ -21,38 +21,22 @@ public:
   virtual ~KHalfComplexToRealDFT(void);
 	
 	virtual bool RunProcess(void);
-	
-  //setters
-	virtual void SetInputPulse(const vector<double> &aPulse); //Set the input pulse
-	virtual void SetInputPulse(const vector<short> &aPulse); //Set the input pulse 
-	virtual void SetInputPulse(const vector<float> &aPulse); //Set the input pulse
-	virtual void SetInputPulse(const vector<int> &aPulse); //Set the input pulse
-	virtual void SetInputPulse(const char* aFile);
-	
+  
 	virtual void SetFFTWFlag(const char* aFlag = 0);
-	
-	//getters
-	virtual const double* GetIn_fft(void)const {return fIn_fft;}
-	virtual const double* GetOut_fft(void)const {return fOut_fft;}
 	virtual const char* GetFFTWFlag(void){return fFFTWFlag.c_str();}
 	
 private:
-	
-	void* fPlan; //points to the fftw_plan 
-	double *fIn_fft;  //all real input
-	double *fOut_fft;  //in half-complex format
-  string fFFTWFlag;
-	
 	//private methods
   void InitializeMembers(void);
-	
+ 
 protected:
-	
+	void* fPlan; //points to the fftw_plan 
+  string fFFTWFlag;
+  
 	virtual unsigned int MapFlag(void);
-	virtual void AllocateFFTArrays(void);
-	virtual void FillFFTArrays(void);
+	virtual void AllocateArrays(unsigned int size);
 	virtual void SetFFTWPlan(void);
-	virtual bool CopyArrayToOutput(void);
+	virtual bool Normalize(void);
 	virtual bool CalculateFFT(void);
 	
 };

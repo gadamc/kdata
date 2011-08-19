@@ -4,7 +4,7 @@ MODULES      := kds era ksamba kebap
 
 ### kera depends on kpta now, so it must come afterwards in this list. 
 ifneq ($(FFTW_DIR),)
-MODULES      += kpta kera kqpa ktemplate
+MODULES      += kpta kqpa ktemplate
 endif
 
 MODULES += $(if $(CURL_DIR),kdatabase,)

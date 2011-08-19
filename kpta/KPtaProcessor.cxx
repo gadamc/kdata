@@ -24,69 +24,64 @@ KPtaProcessor::KPtaProcessor(void)
 
 KPtaProcessor::~KPtaProcessor(void)
 {
+  if(fInputPulse) {
+    delete[] fInputPulse;
+    fInputPulse = 0;
+    fInputSize =0;
+  }
+  
+  if(fOutputPulse) {
+    delete[] fOutputPulse;
+    fOutputPulse = 0;
+    fOutputSize =0;
+  }
   
 }
 
 void KPtaProcessor::InitializeMembers(void)
 {
   fProcessorName = "";
+  fInputPulse = 0;
+  fOutputPulse = 0;
+  fInputSize = 0;
+  fOutputSize = 0;
 }
 
-template<class T> void KPtaProcessor::SetThisToInputPulse(const vector<T> &aPulse)
+void KPtaProcessor::AllocateArrays(unsigned int size)
 {
-	fInputPulse.resize(aPulse.size(),0);
+  if(fInputPulse) delete [] fInputPulse;
+  if(fOutputPulse) delete [] fOutputPulse;
+  fInputPulse = new double[ size ];
+  fOutputPulse = new double[ size ];
+  fInputSize = fOutputSize = size;
+  
+}
+
+template <class T> void KPtaProcessor::SetTheInputPulse(const T* aPulse, unsigned int size)
+{
+  if(size != fInputSize)
+    AllocateArrays(size);
+  
+  for(unsigned int i = 0; i < size; i++)
+    *(fInputPulse + i) = *(aPulse + i);
+  
+}
+
+
+template <class T> void KPtaProcessor::SetTheInputPulse(const vector<T> &aPulse)
+{
+  if(aPulse.size() != fInputSize)
+    AllocateArrays(aPulse.size());  
 	
 		try {
-			for(unsigned int i = 0; i < fInputPulse.size(); i++){
-				fInputPulse.at(i) = aPulse.at(i);
+			for(unsigned int i = 0; i < fInputSize; i++){
+				*(fInputPulse+i) = aPulse.at(i);
 			}
 		}
 		catch (out_of_range& e) {
 			//I think this should be impossible... 
 			cerr << "KPtaProcessor::SetThisToInputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
 		}
-}
-
-void KPtaProcessor::GetOutputPulse(vector<float> &myPulse) const
-{
-	//Demote the precision and obtain a copy of the output pulse in single precision.
-	//Note that working with floats is slower (because the vector has to be copied 
-	//from double precision to single precision) and more error prone. 
-	//It's better just to use a vector of doubles.
-	
-	myPulse.resize(fOutputPulse.size(),0);
-	
-	try {
-		for(unsigned int i = 0; i < myPulse.size(); i++){
-			myPulse.at(i) = fOutputPulse.at(i);
-		}
-	}
-	catch (out_of_range& e) {
-		//I think this should be impossible... 
-		cerr << "vector<float> KPtaProcessor::GetOutputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-	}
-
-}
-
-void KPtaProcessor::GetInputPulse(vector<float> &myPulse) const
-{
-	//Demote the precision and obtain a copy of the input pulse in single precision.
-	//Note that working with floats is slower (because the vector has to be copied 
-	//from double precision to single precision) and more error prone. 
-	//It's better just to use a vector of doubles.
-	
-	myPulse.resize(fInputPulse.size(),0);
-	
-	try {
-		for(unsigned int i = 0; i < myPulse.size(); i++){
-			myPulse.at(i) = fInputPulse.at(i);
-		}
-	}
-	catch (out_of_range& e) {
-		//I think this should be impossible... 
-		cerr << "vector<float> KPtaProcessor::GetOutputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-	}
-	
 }
 
 void KPtaProcessor::SetInputPulse(const char* aFile)
@@ -98,20 +93,20 @@ void KPtaProcessor::SetInputPulse(const char* aFile)
 	
   ifstream mFile(aFile,ios::in);
   if (!mFile) {
-    cerr << "No ascii trace file found: " << aFile << endl; 
+    cerr << "No file found: " << aFile << endl; 
 		return;
   }
 	
 	double theValue = 0;
 	string line;
-	fInputPulse.clear();
+  vector<double> inputPulse;
 	
   while (getline(mFile,line)) {
     istringstream ss(line);
 		ss >> theValue; 
-		fInputPulse.push_back(theValue);
+		inputPulse.push_back(theValue);
   }
-	
   mFile.close();
 	
+  SetInputPulse(inputPulse);
 }

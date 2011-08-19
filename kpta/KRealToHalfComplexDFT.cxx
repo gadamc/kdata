@@ -47,253 +47,30 @@ KRealToHalfComplexDFT::KRealToHalfComplexDFT(void)
 
 KRealToHalfComplexDFT::~KRealToHalfComplexDFT(void)
 {
-	if(fIn_fft != 0){
-		fftw_free(fIn_fft);
-		fIn_fft = 0;
-	}
-	if(fOut_fft != 0){
-		fftw_free(fOut_fft);
-		fOut_fft = 0;
-	}
-	
-	fftw_destroy_plan((fftw_plan)fPlan);
+
 }
 
 void KRealToHalfComplexDFT::InitializeMembers(void)
 {
- 	fIn_fft = fOut_fft = 0;
-	fPlan = 0;
-	SetFFTWFlag(); //default option is to measure. 
+
 }
 
 bool KRealToHalfComplexDFT::RunProcess(void)
 {
-	if(CalculateFFT()) 		
-		return CopyArrayToOutput();
-	
-	else return false;
+  return CalculateFFT();
+
 }
-
-bool KRealToHalfComplexDFT::CopyArrayToOutput(void)
-{
-	try{
-		for(unsigned int i = 0; i < fOutputPulse.size(); i++){
-			fOutputPulse.at(i) = fOut_fft[i]; 
-		}
-	}
-	catch (out_of_range &e) {
-		//I think this should be impossible... 
-		cerr << "KRealToHalfComplexDFT::RunProcess. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-		return false;
-	}
-	
-	return true;
-	
-}
-
-bool KRealToHalfComplexDFT::CalculateFFT(void)
-{
-	if(fIn_fft == 0 || fOut_fft == 0) {
-		cerr << "KRealToHalfComplexDFT::CalculateFFT. Arrays for FFT have not been set." << endl;
-		return false;
-	}
-	
-	if(fPlan)
-		fftw_execute((fftw_plan)fPlan);
-	else {
-		cerr << "KRealToHalfComplexDFT::CalculateFFT. The plan hasn't been initialized" << endl;
-		return false;
-	}
-
-	return true;
-}
-
-void KRealToHalfComplexDFT::SetInputPulse(const vector<double> &aPulse)
-{
-	//Set the input pulse See the base class
-	//KPtaProcessor::SetInputPulse(const vector<double> &aPulse)
-	
-	bool reAllocate = false;
-	if(aPulse.size() != fInputPulse.size())
-		reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aPulse);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-}
-
-void KRealToHalfComplexDFT::SetInputPulse(const vector<short> &aPulse)
-{
-	//Set the input pulse. See the base class
-	//KPtaProcessor::SetInputPulse(const vector<short> &aPulse)
-	
-	bool reAllocate = false;
-	if(aPulse.size() != fInputPulse.size())
-		reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aPulse);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-	
-}
-
-void KRealToHalfComplexDFT::SetInputPulse(const vector<float> &aPulse)
-{ 
-	//Set the input pulse See the base class
-	//KPtaProcessor::SetInputPulse(const vector<float> &aPulse)
-	
-	bool reAllocate = false;
-	if(aPulse.size() != fInputPulse.size())
-		reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aPulse);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-} 
-
-void KRealToHalfComplexDFT::SetInputPulse(const vector<int> &aPulse)
-{
-	//Set the input pulse See the base class
-	//KPtaProcessor::SetInputPulse(const vector<int> &aPulse)
-	
-	bool reAllocate = false;
-	if(aPulse.size() != fInputPulse.size())
-		reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aPulse);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-}
-
-void KRealToHalfComplexDFT::SetInputPulse(const char* aFile)
-{
-	//Set the input pulse. See the base class
-	//KPtaProcessor::SetInputPulse(const char* aFile)
-	
-	//There's no way of knowing the size of the pulse, so we must
-	//reallocate the FFT arrays. 
-	bool reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aFile);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-}
-
-void KRealToHalfComplexDFT::AllocateFFTArrays(void)
-{
-	if(fIn_fft != 0){
-		fftw_free(fIn_fft);
-		fIn_fft = 0;
-	}
-	if(fOut_fft != 0){
-		fftw_free(fOut_fft);
-		fOut_fft = 0;
-	}
-	
-	fIn_fft = (double*)fftw_malloc(sizeof(double)*fInputPulse.size());
-	fOut_fft = (double*)fftw_malloc(sizeof(double)*fInputPulse.size());
-	
-	SetFFTWPlan();  //reset the fftw plan with the new arrays. 
-}
-
-void KRealToHalfComplexDFT::FillFFTArrays(void)
-{
-	//you must make sure that the fIn_fft and fOut_fft
-	//arrays are of the same size as the fInputPulse vector
-	//or this will cause a crash.
-	
-	if(fIn_fft == 0 || fOut_fft == 0) return;
-	
-	try{
-		for(unsigned int i = 0; i < fInputPulse.size(); i++){
-			fIn_fft[i] = fInputPulse.at(i);
-			fOut_fft[i] = 0;
-		}
-	}
-	catch (out_of_range &e) {
-		//I think this should be impossible... 
-		cerr << "KRealToHalfComplexDFT::FillFFTArrays. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-	}
-	
-}
-
 void KRealToHalfComplexDFT::SetFFTWPlan(void)
 {
 	//This will erase the contents of fIn_fft and fOut_fft. So make sure that these
 	//arrays are filled with their initial values AFTER this method is called. 
 	
-	if(fIn_fft != 0 && fOut_fft != 0)
-		fPlan = (void*)fftw_plan_r2r_1d( (int)fInputPulse.size(), fIn_fft, fOut_fft, FFTW_R2HC, MapFlag());
-	else {
-		cerr << "KRealToHalfComplexDFT::SetFFTWPlan. Arrays are empty." << endl;
-	}
-
+	if(fInputPulse  && fOutputPulse )
+		fPlan = (void*)fftw_plan_r2r_1d( (int)fInputSize, fInputPulse, fOutputPulse, FFTW_R2HC, MapFlag());
+	else 
+		cerr << "KHalfComplexToRealDFT::SetFFTWPlan. Arrays are empty." << endl;
+	
 }
 
-void KRealToHalfComplexDFT::SetFFTWFlag(const char* aFlag)
-{
-	//allowed options
-	//"ES" == FFTW_ESTIMATE
-	//"M" == FFTW_MEASURE
-	//"P" == FFTW_PATIENT
-	//"EX" == FFTW_EXHAUSTIVE
-	//
-	// These flags tell FFTW how much it should look for the very best
-	// algorithm to make the caluclation of the DFT. ES has the lowest
-	// overhead for searching for an algorithm, but the choice it makes
-	// may be suboptimal. For repeated use of an instance of this object
-	// FFTW_MEASURE is preferred, which is the default value.
-	//
-	
-	if(aFlag != 0)
-		fFFTWFlag = aFlag;
-	else fFFTWFlag = "M";
-	
-	if(fFFTWFlag != "ES" && fFFTWFlag != "M" && fFFTWFlag != "P" && fFFTWFlag != "EX"){
-		cerr << "KRealToHalfComplexDFT::SetOption. Invalid option: " << fFFTWFlag << endl;
-		cerr << "    setting option to default value of 'M' "  << endl;
-		fFFTWFlag = "M";
-	}
-		
-}
 
-unsigned int KRealToHalfComplexDFT::MapFlag(void)
-{
-	//allowed options
-	//"ES" == FFTW_ESTIMATE
-	//"M" == FFTW_MEASURE
-	//"P" == FFTW_PATIENT
-	//"EX" == FFTW_EXHAUSTIVE
-		
-	if(fFFTWFlag == "ES")
-		return FFTW_ESTIMATE;
-	if(fFFTWFlag == "M")
-		return FFTW_MEASURE;
-	if(fFFTWFlag == "P")
-		return FFTW_PATIENT;
-	if(fFFTWFlag == "EX")
-		return FFTW_EXHAUSTIVE;
-	
-	return FFTW_ESTIMATE;
-}
 

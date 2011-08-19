@@ -1,13 +1,3 @@
-//
-//  KIIRFilter.cxx
-//  kData
-//
-//  Created by Adam Cox on 7/8/11.
-//  Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
-//
-
-#include "KIIRFilter.h"
-
 //______________________________________________________________________
 //
 // KIIRFilter.cxx
@@ -42,33 +32,34 @@ void KIIRFilter::InitializeMembers(void)
 {
   //no local members to initialize
   
-  //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
-  //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+
 }
 
 bool KIIRFilter::RunProcess(void)
 {
+	/*
 	if(fInputPulse.size() < 2) return false;
-	
-	unsigned int N = fInputPulse.size();
-  if (fOutputPulse.size() != 1 + (N/2))
-    fOutputPulse.resize(1+(N/2),0);
-	
-	try{
-		fOutputPulse.at(0) = pow(fInputPulse.at(0),2);
-		fOutputPulse.at(N/2) = pow(fInputPulse.at(N/2),2);
-		
-		for (unsigned int k=1; k<N/2; k++) 
-			fOutputPulse.at(k) = pow(fInputPulse.at(k),2) + pow(fInputPulse.at(N-k),2);
-		
-		return true;
-		
-	}
-	catch (out_of_range &e) {
-		cerr << "KIIRFilter::RunProcess. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-    
-		return false;
-	}
+	 
+	 unsigned int N = fInputPulse.size();
+	  if (fOutputPulse.size() != 1 + (N/2))
+	    fOutputPulse.resize(1+(N/2),0);
+	 
+	 try{
+	   fOutputPulse.at(0) = pow(fInputPulse.at(0),2);
+	   fOutputPulse.at(N/2) = pow(fInputPulse.at(N/2),2);
+	   
+	   for (unsigned int k=1; k<N/2; k++) 
+	     fOutputPulse.at(k) = pow(fInputPulse.at(k),2) + pow(fInputPulse.at(N-k),2);
+	   
+	   return true;
+	   
+	 }
+	 catch (out_of_range &e) {
+	   cerr << "KIIRFilter::RunProcess. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
+	    
+	   return false;
+	 }*/
+     return true;
   
 }
 
