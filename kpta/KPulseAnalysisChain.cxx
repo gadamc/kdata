@@ -230,7 +230,7 @@ void KPulseAnalysisChain::SetMyOutputPulse(const double* p, unsigned int s)
     fOutputPulse = new double[s];
   }
 
-  memcpy(fOutputPulse, p, s);  
+  memcpy(fOutputPulse, p, s*sizeof(double));  
 }
 
 /*void KPulseAnalysisChain::GetNumProcessorsInChain(void)
