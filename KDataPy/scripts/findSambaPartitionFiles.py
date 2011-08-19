@@ -16,7 +16,7 @@ def getListOfSambaFilesToUpload(topDir, minimumSambaFileDict):
   for dirpath, dirs, files in os.walk(topDir):
     for f in files:
       parentdir = dirpath.split('/')[len(dirpath.split('/'))-1]
-      if re.match(sambaex_partition, f) and re.match(sambaex,parentdir) and re.search('.root',f)==None and f.endwith('.gz')==False:
+      if re.match(sambaex_partition, f) and re.match(sambaex,parentdir) and re.search('.root',f)==None and f.endswith('.gz')==False:
         
         fnumber = int(f.split('_')[1])
         runname = f.split('_')[0]
