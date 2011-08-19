@@ -82,7 +82,7 @@ $(KPTA_DIRS)/%.o:    $(KPTA_DIRS)/%.cxx
 # rule for building executables
 bin/%: $(KPTA_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KPTALIBS) $(FFTWLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(SYSLIBS) $(KPTALIBS) $(FFTWLIBS)
                 
 # rules for building dictionary
 $(KPTA_DO):         $(KPTA_DC)
