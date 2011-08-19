@@ -28,23 +28,6 @@ order to make this easily integrate into the KData build system and to "naturall
 fit into the rest of the KData framework. All strings found in the code and 
 in this documentation that are "KJson", were originally "cJSON".
 
-At this time, since KJson is a C library and because I'm too busy at the moment
-to either port it into a C++ library or to figure out exactly how to load
-this into the libkdatabase, in order to use KJson in the ROOT interpreter, you 
-must do the following
-
-root[0] gSystem->Load("libkdatabase")
-root[1] gInterpreter->AddIncludePath("$KDATA_ROOT/include")
-root[2] .L $KDATA_ROOT/include/KJson.h+  //this will generate the KJson.so
-//and it will complain that KJson was already in the TClassTable list... but forget about it.
-
-These commands are found in the kdatabase/setupKJson.h file. You can execute all
-of them at once by calling
- 
-root[3] .x $KDATA_ROOT/kdatabase/setupKJson.h
-
-That's it, you should be able to use KJson and all of its functions in the ROOT interpreter. 
-
 If you want to compile a program that uses KJson, 
 you don't need to do anything special. Just include the the header as normal.
 
@@ -66,15 +49,6 @@ It's a single file of C, and a single header file.
 JSON is described best here: http://www.json.org/
 It's like XML, but fat-free. You use it to move data around, store things, or just
 generally represent your program's state.
-
-
-First up, how do I build?
-Add KJson.c to your project, and put KJson.h somewhere in the header search path.
-For example, to build the test app:
-
-gcc KJson.c test.c -o test -lm
-./test
-
 
 As a library, KJson exists to take away as much legwork as it can, but not get in your way.
 As a point of pragmatism (i.e. ignoring the truth), I'm going to say that you can use it
@@ -100,35 +74,35 @@ Some JSON:
 Assume that you got this from a file, a webserver, or magic JSON elves, whatever,
 you have a char * to it. Everything is a KJson struct.
 Get it parsed:
-	KJson *root = KJson_Parse(my_json_string);
+	KJson *root = KJson::Parse(my_json_string);
 
 This is an object. We're in C. We don't have objects. But we do have structs.
 What's the framerate?
 
-	KJson *format = KJson_GetObjectItem(root,"format");
-	int framerate = KJson_GetObjectItem(format,"frame rate")->valueint;
+	KJson *format = KJson::GetObjectItem(root,"format");
+	int framerate = KJson::GetObjectItem(format,"frame rate")->valueint;
 
 
 Want to change the framerate?
-	KJson_GetObjectItem(format,"frame rate")->valueint=25;
+	KJson::GetObjectItem(format,"frame rate")->valueint=25;
 	
 Back to disk?
-	char *rendered=KJson_Print(root);
+	char *rendered=KJson::Print(root);
 
 Finished? Delete the root (this takes care of everything else).
-	KJson_Delete(root);
+	KJson::Delete(root);
 
 That's AUTO mode. If you're going to use Auto mode, you really ought to check pointers
 before you dereference them. If you want to see how you'd build this struct in code?
 	KJson *root,*fmt;
-	root=KJson_CreateObject();	
-	KJson_AddItemToObject(root, "name", KJson_CreateString("Jack (\"Bee\") Nimble"));
-	KJson_AddItemToObject(root, "format", fmt=KJson_CreateObject());
-  KJson_AddItemToObject(fmt, "type", KJson_CreateString("type") );
-  KJson_AddItemToObject(fmt, "width", KJson_CreateNumber(1920) );
-  KJson_AddItemToObject(fmt, "height", KJson_CreateNumber(1080) );
-  KJson_AddItemToObject(fmt, "interlace", KJson_CreateFalse() );
-  KJson_AddItemToObject(fmt, "frame rate", KJson_CreateNumber(24) );
+	root=KJson::CreateObject();	
+	KJson::AddItemToObject(root, "name", KJson::CreateString("Jack (\"Bee\") Nimble"));
+	KJson::AddItemToObject(root, "format", fmt=KJson::CreateObject());
+  KJson::AddItemToObject(fmt, "type", KJson::CreateString("type") );
+  KJson::AddItemToObject(fmt, "width", KJson::CreateNumber(1920) );
+  KJson::AddItemToObject(fmt, "height", KJson::CreateNumber(1080) );
+  KJson::AddItemToObject(fmt, "interlace", KJson::CreateFalse() );
+  KJson::AddItemToObject(fmt, "frame rate", KJson::CreateNumber(24) );
  
 
 Hopefully we can agree that's not a lot of code? There's no overhead, no unnecessary setup.
@@ -180,7 +154,7 @@ which is the "name" of the entry. When I said "name" in the above example, that'
 "key" is the JSON name for the 'variable name' if you will.
 
 Now you can trivially walk the lists, recursively, and parse as you please.
-You can invoke KJson_Parse to get KJson to parse for you, and then you can take
+You can invoke KJson::Parse to get KJson to parse for you, and then you can take
 the root object, and traverse the structure (which is, formally, an N-tree),
 and tokenise as you please. If you wanted to build a callback style parser, this is how
 you'd do it (just an example, since these things are very specific):
@@ -218,9 +192,9 @@ You'd use:
 
 void parse_object(KJson *item)
 {
-	int i; for (i=0;i<KJson_GetArraySize(item);i++)
+	int i; for (i=0;i<KJson::GetArraySize(item);i++)
 	{
-		KJson *subitem=KJson_GetArrayItem(item,i);
+		KJson *subitem=KJson::GetArrayItem(item,i);
 		// handle subitem.	
 	}
 }
@@ -255,7 +229,7 @@ KJson *objects[24];
 
 KJson *Create_array_of_anything(KJson **items,int num)
 {
-	int i;KJson *prev, *root=KJson_CreateArray();
+	int i;KJson *prev, *root=KJson::CreateArray();
 	for (i=0;i<24;i++)
 	{
 		if (!i)	root->child=objects[i];
@@ -271,13 +245,8 @@ KJson doesn't make any assumptions about what order you create things in.
 You can attach the objects, as above, and later add children to each
 of those objects.
 
-As soon as you call KJson_Print, it renders the structure to text.
+As soon as you call KJson::Print, it renders the structure to text.
 
-
-
-The test.c code shows how to handle a bunch of typical cases. If you uncomment
-the code, it'll load, parse and print a bunch of test files, also from json.org,
-which are more complex than I'd care to try and stash into a const char array[].
 
 
 Enjoy KJson!

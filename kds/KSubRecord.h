@@ -17,7 +17,7 @@ class KSubRecord : public TObject {
 public:
   //Constructors
   KSubRecord(void);
-	KSubRecord(const KSubRecord &/*aRec*/):TObject() { } //nothing to do. don't copy TObject attributes 
+	KSubRecord( const KSubRecord &/*aRec*/):TObject() { } //nothing to do. don't copy TObject attributes 
 	KSubRecord& operator=(const KSubRecord &/*aRec*/) {return *this;} //nothing to do
   virtual ~KSubRecord(void);
 	virtual void Clear(Option_t *opt = "C");
