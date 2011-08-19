@@ -6,10 +6,6 @@
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
-// Input pulse is assumed to be of the half-complex form
-//   (r0, r1, r2, ..., rn/2, i(n+1)/2-1, ..., i2, i1).
-// Calculates rk*rk + ik*ik, for each k, with i0 = 0 and iN/2 = 0.
-// The output "pulse" is this power spectrum and N/2 + 1 values long. 
 //
 //
 //
@@ -59,7 +55,7 @@ bool KIIRFilter::RunProcess(void)
 	    
 	   return false;
 	 }*/
-     return true;
+  return true;
   
 }
 
