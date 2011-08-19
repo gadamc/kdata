@@ -42,6 +42,10 @@
 #include "KHalfComplexToRealDFT.h"
 #include <fftw3.h>
 
+using namespace std;
+
+ClassImp(KHalfComplexToRealDFT);
+
 KHalfComplexToRealDFT::KHalfComplexToRealDFT(void)
 {
 	SetName("KHalfComplexToRealDFT");
@@ -72,7 +76,6 @@ KHalfComplexToRealDFT::~KHalfComplexToRealDFT(void)
 void KHalfComplexToRealDFT::InitializeMembers(void)
 {
 	fPlan = 0;
-	SetFFTWFlag(); //default option is to measure. 
 }
   
 bool KHalfComplexToRealDFT::RunProcess(void)

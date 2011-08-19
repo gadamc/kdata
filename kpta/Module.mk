@@ -8,12 +8,8 @@
 # 'kpta' to Modules.mk in the $KDATA_ROOT directory,
 # then type "make" (or gmake) in $KDATA_ROOT.
 #
-# This is not a standard module. It is intended to be ROOT independent.
-# For now, the only ROOT parts that are used are to create a dictionary
-# and link it to the rest of the objects in order to be able to access
-# these classes from within ROOT CINT. The idea is that this module
-# could be a pulse trace analysis library that is completely indepenent
-# of ROOT. 
+# Requirement for ROOT was added back to this library in order to have
+# support for template functions from the CINT and Python.
 #
 # However, if this restriction is debilitating for development of 
 # this library or for physics reasons, we should reconsider how this
@@ -81,12 +77,12 @@ include/%.h:    $(KPTA_DIRI)/%.h
     
 # rule for compiling our source files
 $(KPTA_DIRS)/%.o:    $(KPTA_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KPTA_FLAGS) $(FFTWINCS) -o $@ -c $< 
+	$(CXX) $(OPT) $(KPTA_FLAGS) $(ROOTINCS) $(FFTWINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KPTA_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(SYSLIBS) $(KPTALIBS) $(FFTWLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KPTALIBS) $(FFTWLIBS)
                 
 # rules for building dictionary
 $(KPTA_DO):         $(KPTA_DC)
@@ -101,7 +97,7 @@ $(KPTA_LIB):        $(KPTA_EO) $(KPTA_DO) $(KPTA_LIBDEP)
 	@echo "Building $@...$(MAKELIB) $(PLATFORM)"
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KPTA_LIB)" $@  "$(KPTA_EO) $(KPTA_DO)" \
-	   "$(FFTWLIBS) $(KPTA_FLAGS)"  -I/opt/include -Iinclude 
+	   $(ROOTLIBS) "$(FFTWLIBS) $(KPTA_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kpta:       $(KPTA_LIB)
 

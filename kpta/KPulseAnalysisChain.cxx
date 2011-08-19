@@ -26,6 +26,8 @@
 
 using namespace std;
 
+ClassImp(KPulseAnalysisChain);
+
 
 KPulseAnalysisChain::KPulseAnalysisChain(void)
 {
@@ -101,7 +103,24 @@ void KPulseAnalysisChain::InitializeMembers(void)
   fIsOwner = false;
 }
 
+/*
 bool KPulseAnalysisChain::RunProcess(void)
+{
+  RunProcess(false);
+}
+
+void KPulseAnalysisChain::SetPulsePointer(KPtaProcessor* p, double* pulse, unsigned int i, bool memopt)
+{
+  if(memopt)
+    p->SetInputPulse(pulse); //this call just sets the pointer, reusing the same space in memory
+  else
+    p->SetIntputPulse(pulse, i); //this call will copy the values from this to the memory for p
+}
+*/
+
+
+//bool KPulseAnalysisChain::RunProcess(bool smartMemory)
+bool KPulseAnalysisChain::RunProcess(void )
 {
 	//call RunProcess for each KPtaProcessor in the list.
   //returns true if all processors run and no errors are reported.
@@ -112,6 +131,25 @@ bool KPulseAnalysisChain::RunProcess(void)
 	//if a processor fails (returns "false"), will return a -X, 
 	//where X is the Xth processor in the list. 
 	//
+	//The KPulseAnalysisChain does not play well if you're trying to be fancy
+	//with memory usage. It will probably cause a memory leak. 
+	
+	//the smartMemory part hasn't been added yet.. 
+	//
+	//if smartMemory == true, then the processors in the chain will only use
+	//the memory allocated for the input and output pulses allocated by this KPulseAnalysisChain.
+	//Otherwise, each processor in the chain will have its own input/output pulses and will copy data
+	//to their respective memory before performing their operation.
+	//
+	//Note that this will probably break with the FFT-related processors, so be careful with that.
+	//
+	//
+  
+  if(fInputPulse == 0 || fOutputPulse == 0) {
+    cerr << "input and output pulses are not allocated." << endl;
+    return false;
+  }
+  
   
 	int theReturn = 0;
 	
@@ -123,6 +161,7 @@ bool KPulseAnalysisChain::RunProcess(void)
         
         //set the input pulse of the first processor. 
         if(i == 0)
+          //SetInputPulsePointer(p, GetInputPulse(), GetInputPulseSize(), smartMemory);
           p->SetInputPulse(GetInputPulse(), GetInputPulseSize());
         
 				if(p->RunProcess()){
@@ -134,6 +173,7 @@ bool KPulseAnalysisChain::RunProcess(void)
 						if(pnext != 0) {
               //cout << "Pulse Analysis Chain. Found Next Processor: " << j << endl;
               //if this fails here, then this will break... the next processor won't get the pulse
+              //SetInputPulsePointer(pnext, p->GetOutputPulse(), p->GetOutputPulseSize(), smartMemory)
 							pnext->SetInputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
               break; //break out of the while loop if this is a valid pointer to a processor;
             }
@@ -152,7 +192,7 @@ bool KPulseAnalysisChain::RunProcess(void)
 			}
 			
       if(i == fProcessorList.size() - 1)
-        SetOutputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
+        SetMyOutputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
 		}
 		catch (out_of_range& e) {
 			//I think this should be impossible... 
@@ -183,7 +223,7 @@ void KPulseAnalysisChain::AddProcessorAt(KPtaProcessor *p, unsigned int index)
 		fProcessorList.insert(fProcessorList.begin() + index, p);
 }
 
-void KPulseAnalysisChain::SetOutputPulse(const double* p, unsigned int s)
+void KPulseAnalysisChain::SetMyOutputPulse(const double* p, unsigned int s)
 {
   if(s != fOutputSize){
     if(fOutputPulse) delete [] fOutputPulse;

@@ -19,16 +19,15 @@
 // you can call SetMinRCToBinRatio and give it a value greater than the value
 // you gave in SetRc. The routine will then subdivide your input pulse accordingly
 // and peform the integration on the subdivided pulse. 
-// This class utilizes the KSimpleLowPassFilter class to perform the integration
+// This inherits from the KSimpleLowPassFilter class to perform the integration
 // and then adds back on the necessary values to get a high pass filter. 
-// This could be optimized if the integration/filtering code was all writen here.
-// We'll see. If the processing takes too long, then these filters should be looked at.
-// However, I don't expect this filter to really be very useful given that much more 
-// sophisticated filtering techniques exist.
 //
 
 #include "KSimpleHighPassFilter.h"
-#include "KSimpleLowPassFilter.h"
+
+using namespace std;
+
+ClassImp(KSimpleHighPassFilter);
 
 KSimpleHighPassFilter::KSimpleHighPassFilter(void)
 {
@@ -56,15 +55,11 @@ bool KSimpleHighPassFilter::RunProcess(void)
     cerr << "input and output pulses are not allocated." << endl;
     return false;
   }
-  
-  KSimpleLowPassFilter f;
-  f.SetInputPulse(GetInputPulse(), GetInputPulseSize());
-  f.SetRc(GetRc());
-  f.SetMinRCToBinRatio(GetMinRCToBinRatio());
-  if(!f.RunProcess())
+
+  if(!KSimpleLowPassFilter::RunProcess())
     return false;
   
-  double* lpf = f.GetOutputPulse();
+  double* lpf = fOutputPulse;
     
   double nextvalue, currentvalue;
   

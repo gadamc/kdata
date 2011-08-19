@@ -14,7 +14,9 @@
 #include <cmath>
 #include <cstring>
 
-//ClassImp(KPatternRemoval);
+using namespace std;
+
+ClassImp(KPatternRemoval);
 
 KPatternRemoval::KPatternRemoval(void)
 {
@@ -76,7 +78,7 @@ bool KPatternRemoval::RunProcess(void)
   
 }
 
-template<class T> bool KPatternRemoval::RunProcess(vector<T> &aPattern)
+template<class T> bool KPatternRemoval::RunProcess(std::vector<T> &aPattern)
 {
   //Subtracts aPattern from the input pulse and assigns the result to the output pulse.
   
@@ -91,7 +93,7 @@ template<class T> bool KPatternRemoval::RunProcess(vector<T> &aPattern)
 }
 
 
-template<class T> bool KPatternRemoval::SetPattern(vector<T> &aPattern)
+template<class T> bool KPatternRemoval::SetPattern(std::vector<T> &aPattern)
 {
   //sets the pattern and sets fUseExternalPattern to true if
   //the memory for the pattern is properly allocated.

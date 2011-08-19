@@ -6,12 +6,18 @@
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
-// 
+// Standard FIR filter. Convolutions are only done in the time-domain at the moment. 
 //
 //
 //
 
 #include "KFIRFilter.h"
+#include <algorithm>
+
+using namespace std;
+
+ClassImp(KFIRFilter);
+
 
 KFIRFilter::KFIRFilter(void)
 {
@@ -57,6 +63,7 @@ bool KFIRFilter::RunProcess(void)
   
   double* inptr = fInputPulse;
   double* outptr = fOutputPulse;
+  memset(outptr, 0, fOutputSize*sizeof(double)); //make sure the thing is empty. 
   unsigned int i, ii; i = ii = 0;
   
   for( ; i < fCoefSize; i++){
@@ -83,15 +90,5 @@ bool KFIRFilter::RunProcess(void)
   
 }
 
-void KFIRFilter::SetCoefficients(vector<double> &coef)
-{
-  if (coef.size() != fCoefSize){
-    if(fCoefficients) delete [] fCoefficients;
-    fCoefSize = coef.size();
-    fCoefficients = new double[fCoefSize];
-  }
-  for(unsigned int i = 0; i < fCoefSize; i++)
-    *(fCoefficients+i) = coef[i];
-}
 
 

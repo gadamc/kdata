@@ -13,6 +13,8 @@
 
 #include "KPtaProcessor.h"
 
+using namespace std;
+
 class KPatternRemoval : public KPtaProcessor { 
 
 public:
@@ -48,6 +50,9 @@ private:
 	double* fPattern;
   //private methods
   void InitializeMembers(void);
+  
+  ClassDef(KPatternRemoval,1);
+  
 
 };
 

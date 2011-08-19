@@ -24,6 +24,10 @@
 #include "KSimpleLowPassFilter.h"
 #include "math.h"
 
+using namespace std;
+
+ClassImp(KSimpleLowPassFilter);
+
 KSimpleLowPassFilter::KSimpleLowPassFilter(void)
 {
 
