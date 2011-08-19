@@ -50,10 +50,10 @@ bool KFIRFilter::RunProcess(void)
     return false;
   }
   
-  if(fCoefSize > fInputSize){
+  /*if(fCoefSize > fInputSize){
     cerr << "the number of coefficients is greater than the pulse length" << endl;
     return false; 
-  }
+  }*/
   
   //in the future: 
   //check to see if the calculation done by fft convolution is faster than 
@@ -61,15 +61,17 @@ bool KFIRFilter::RunProcess(void)
 	//for small D, time-domain calculation is faster.
 	//
   
-  double* inptr = fInputPulse;
+  double* inptr = (fCoefSize>fInputSize)?fCoefficients:fInputPulse; // swap input and coefficients in case that the number of coefficients is greater than the pulse lenth
+  double* coeff = (fCoefSize>fInputSize)?fInputPulse:fCoefficients; // to ensure that the following for loops do not break
+  unsigned int CoefSize = (fCoefSize>fInputSize)?fInputSize:fCoefSize;
   double* outptr = fOutputPulse;
   memset(outptr, 0, fOutputSize*sizeof(double)); //make sure the thing is empty. 
   unsigned int i, ii; i = ii = 0;
   
-  for( ; i < fCoefSize; i++){
+  for( ; i < CoefSize; i++){
     ii = 0;
     for( ; ii <= i; ii++)
-      *outptr += *(fCoefficients+ii) * *(inptr - ii);
+      *outptr += *(coeff+ii) * *(inptr - ii);
     
     inptr++;
     outptr++;
@@ -78,8 +80,8 @@ bool KFIRFilter::RunProcess(void)
   
   for( ; i < fOutputSize; i++){ 
     ii = 0;
-    for( ; ii < fCoefSize; ii++)
-      *outptr += *(fCoefficients+ii) * *(inptr - ii);
+    for( ; ii < CoefSize; ii++)
+      *outptr += *(coeff+ii) * *(inptr - ii);
     
     inptr++;
     outptr++;
