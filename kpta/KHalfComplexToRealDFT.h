@@ -24,6 +24,7 @@ public:
   
 	virtual void SetFFTWFlag(const char* aFlag = 0);
 	virtual const char* GetFFTWFlag(void){return fFFTWFlag.c_str();}
+	virtual void SetFFTWPlan(void);
 	
 private:
 	//private methods
@@ -35,7 +36,6 @@ protected:
   
 	virtual unsigned int MapFlag(void);
 	virtual void AllocateArrays(unsigned int size);
-	virtual void SetFFTWPlan(void);
 	virtual bool Normalize(void);
 	virtual bool CalculateFFT(void);
 	

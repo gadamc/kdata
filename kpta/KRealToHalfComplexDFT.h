@@ -22,6 +22,7 @@ public:
   virtual ~KRealToHalfComplexDFT(void);
 	
 	virtual bool RunProcess(void);
+	virtual void SetFFTWPlan(void);
 	
 private:
 	
@@ -30,7 +31,6 @@ private:
 
 protected:
 	
-	virtual void SetFFTWPlan(void);
 	
 	//ClassDef(KRealToHalfComplexDFT,1);
   
