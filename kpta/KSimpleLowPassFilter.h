@@ -35,7 +35,7 @@ private:
   //private methods
   void InitializeMembers(void);
   
-  ClassDef(KSimpleLowPassFilter,1);
+  //ClassDef(KSimpleLowPassFilter,1);
   
 };
 

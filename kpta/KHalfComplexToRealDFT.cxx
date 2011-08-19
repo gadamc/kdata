@@ -44,7 +44,7 @@
 
 using namespace std;
 
-ClassImp(KHalfComplexToRealDFT);
+//ClassImp(KHalfComplexToRealDFT);
 
 KHalfComplexToRealDFT::KHalfComplexToRealDFT(void)
 {

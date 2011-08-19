@@ -77,7 +77,7 @@ include/%.h:    $(KPTA_DIRI)/%.h
     
 # rule for compiling our source files
 $(KPTA_DIRS)/%.o:    $(KPTA_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KPTA_FLAGS) $(ROOTINCS) $(FFTWINCS) -o $@ -c $< 
+	$(CXX) $(OPT) $(KPTA_FLAGS) $(FFTWINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KPTA_DIRS)/%.o $(KDATAED_LIB) 
@@ -86,7 +86,7 @@ bin/%: $(KPTA_DIRS)/%.o $(KDATAED_LIB)
                 
 # rules for building dictionary
 $(KPTA_DO):         $(KPTA_DC)
-	$(CXX) $(NOOPT) $(KPTA_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
+	$(CXX) $(NOOPT) $(KPTA_FLAGS) -I. -o $@ -c $< 
 
 $(KPTA_DC):         $(KPTA_EH) $(KPTA_LH)
 	@echo "Generating dictionary $@..."
@@ -97,7 +97,7 @@ $(KPTA_LIB):        $(KPTA_EO) $(KPTA_DO) $(KPTA_LIBDEP)
 	@echo "Building $@...$(MAKELIB) $(PLATFORM)"
 	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
 	   "$(SOFLAGS)" "$(KPTA_LIB)" $@  "$(KPTA_EO) $(KPTA_DO)" \
-	   $(ROOTLIBS) "$(FFTWLIBS) $(KPTA_FLAGS)"  -I/opt/include -Iinclude 
+	   "$(FFTWLIBS) $(KPTA_FLAGS)"  -I/opt/include -Iinclude 
 
 all-kpta:       $(KPTA_LIB)
 
