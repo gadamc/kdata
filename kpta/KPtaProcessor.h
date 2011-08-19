@@ -13,7 +13,7 @@
 #include <stdexcept> 
 #include <iostream>
 #include <vector>
-#include "Rtypes.h"
+//#include "Rtypes.h"
  
 class KPtaProcessor  { 
 
@@ -58,7 +58,7 @@ public:
 	
 	
 	
-	ClassDef(KPtaProcessor,1)
+	//ClassDef(KPtaProcessor,1)
 	
 protected:
 

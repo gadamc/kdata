@@ -32,7 +32,7 @@ protected:
 	
 	virtual void SetFFTWPlan(void);
 	
-	ClassDef(KRealToHalfComplexDFT,1);
+	//ClassDef(KRealToHalfComplexDFT,1);
   
 };
 

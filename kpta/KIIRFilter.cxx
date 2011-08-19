@@ -13,7 +13,7 @@
 #include "KIIRFilter.h"
 #include <cmath>
 
-ClassImp(KIIRFilter);
+//ClassImp(KIIRFilter);
 
 KIIRFilter::KIIRFilter(void)
 {

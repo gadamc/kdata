@@ -51,7 +51,7 @@ private:
   //private methods
   void InitializeMembers(void);
   
-  ClassDef(KPatternRemoval,1);
+ // ClassDef(KPatternRemoval,1);
   
 
 };

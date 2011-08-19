@@ -16,7 +16,7 @@
 
 using namespace std;
 
-ClassImp(KFIRFilter);
+//ClassImp(KFIRFilter);
 
 
 KFIRFilter::KFIRFilter(void)
