@@ -41,9 +41,9 @@ void KPatternRemoval::InitializeMembers(void)
   //default baseline stop is 20*pattern length (2000 points)
   
 
-	fPatternLength = 100; //default pattern length size;
+	fPatternLength = 200; //default pattern length size;
 	fBaselineStart = 0;
-	fBaselineStop = fPatternLength*20; //40% of a standard ion pulse of length 5000 pts
+	fBaselineStop = fPatternLength*20; //4000 points -  standard ion pulse of length 8192 pts
 	fPattern = new double[fPatternLength];
   fUseExternalPattern = false;
 }
@@ -65,7 +65,7 @@ bool KPatternRemoval::RunProcess(void)
   
   //cout << "Run Process: " << GetName() << endl;
 
-  if (!fUseExternalPattern) 
+  if (fUseExternalPattern) 
     return SubtractPattern();
     
   else return (CalculatePattern() ? SubtractPattern() : false);
@@ -137,7 +137,7 @@ bool KPatternRemoval::CalculatePattern(void)
     cerr << "input and output pulses are not allocated." << endl;
     return false;
   }
-  memset(fPattern, 0, fPatternLength);
+  memset(fPattern, 0, fPatternLength*sizeof(double));
 	
 	// count the number of full patterns that can fit in the range fBaselineStart:fBaselineStop
 	// and force the routine to only consider full patterns.
@@ -152,7 +152,8 @@ bool KPatternRemoval::CalculatePattern(void)
 		if(patternCount == fPatternLength)
 			patternCount = 0;
 		
-		*(fPattern + patternCount++) += *(fInputPulse+i)/numPatterns;
+		*(fPattern+patternCount) += *(fInputPulse+i)/numPatterns;
+    patternCount++;
 	}
 	
 	return true;
@@ -168,7 +169,7 @@ bool KPatternRemoval::SubtractPattern(void)
   //but this processor is part of a KPulseAnalysisChain and you just want to set 
   
   if (fPatternLength == 0) {
-     memcpy(fOutputPulse,fInputPulse, (fOutputSize >= fInputSize) ? fInputSize : fOutputSize );
+     memcpy(fOutputPulse,fInputPulse, (fOutputSize >= fInputSize) ? fInputSize*sizeof(double) : fOutputSize*sizeof(double) );
      return true;  
    } //return true in case pattern size is zero. 
      //this could be the case when dealing with 
@@ -234,11 +235,6 @@ bool KPatternRemoval::SetPatternLength(unsigned int aLength)
   //sets the length of the pattern. This allocates memory and 
   //destroys the previous pattern if aLength is different from the 
   //current pattern length. 
-  //This returns false if aLength is larger than the input pulse size.
-  //
-  
-  if(aLength < fInputSize)
-    return false;
   
   if(aLength != fPatternLength){
     if(fPattern) {
