@@ -89,8 +89,8 @@ template <class T> void KPtaProcessor::SetTheInputPulse(const T* aPulse, unsigne
   if(size != fInputSize)
     AllocateArrays(size);
 
-    for(unsigned int i = 0; i < size; i++)
-      *(fInputPulse+i) = aPulse[i];
+  for(unsigned int i = 0; i < size; i++)
+    *(fInputPulse+i) = aPulse[i];
 }
 
 
@@ -99,15 +99,15 @@ template <class T> void KPtaProcessor::SetTheInputPulse(const std::vector<T> &aP
   if(aPulse.size() != fInputSize)
     AllocateArrays(aPulse.size());  
 	
-		try {
-			for(unsigned int i = 0; i < fInputSize; i++){
-				*(fInputPulse+i) = aPulse.at(i);
-			}
+	try {
+		for(unsigned int i = 0; i < fInputSize; i++){
+			*(fInputPulse+i) = aPulse.at(i);
 		}
-		catch (std::out_of_range& e) {
-			//I think this should be impossible... 
-			std::cerr << "KPtaProcessor::SetThisToInputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << std::endl;
-		}
+	}
+	catch (std::out_of_range& e) {
+		//I think this should be impossible... 
+		std::cerr << "KPtaProcessor::SetThisToInputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << std::endl;
+	}
 }
 
 
