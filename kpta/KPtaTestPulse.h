@@ -12,8 +12,7 @@
 #define __KPTATESTPULSE_H__
 
 #include <vector>
-
-using namespace std;
+#include "Rtypes.h"
 
 class KPtaTestPulse  { 
 
@@ -26,7 +25,7 @@ public:
 	virtual void CreateSquareWave(void);
   virtual void CreateWhiteNoise(void);
 	
-	virtual vector<double> GetPulse(void) const {return fPulse;	}
+	virtual std::vector<double> GetPulse(void) const {return fPulse;	}
 	
 	virtual unsigned int GetLength(void)  const {return fPulse.size();	}
 	virtual unsigned int GetPeriod(void)  const {return fPeriod;	}
@@ -41,11 +40,13 @@ private:
 	unsigned int fPeriod;
 	unsigned int fAmp;
 	
-	vector<double> fPulse;
+	std::vector<double> fPulse;
 	
   //private methods
   void InitializeMembers(void);
 
+  ClassDef(KPtaTestPulse,1);
+  
 };
 
 

@@ -30,6 +30,8 @@ private:
   //private methods
   void InitializeMembers(void);
   
+  ClassDef(KIIRFilter,1);
+  
 };
 
 

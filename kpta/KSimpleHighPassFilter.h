@@ -13,8 +13,10 @@
 #define __KSIMPLEHIGHPASSFILTER_H__
 
 #include "KPtaProcessor.h"
+#include "KSimpleLowPassFilter.h"
 
-class KSimpleHighPassFilter : public KPtaProcessor  { 
+
+class KSimpleHighPassFilter : public KSimpleLowPassFilter  { 
   
 public:
   //Constructors
@@ -22,18 +24,12 @@ public:
   virtual ~KSimpleHighPassFilter(void);
   virtual bool RunProcess(void);
   
-  double GetRc(void){return fRc;}
-  void SetRc(double aVal){fRc = aVal;}
-  
-  double GetMinRCToBinRatio(void){return fMinRCToBinRatio;}
-  void SetMinRCToBinRatio(double aVal){fMinRCToBinRatio = aVal;}
-  
 private:
-  double fRc;  //should be in units of the time width of each sample of your pulse
-  double fMinRCToBinRatio;
-  
+ 
   //private methods
   void InitializeMembers(void);
+  
+  ClassDef(KSimpleHighPassFilter,1);
   
 };
 

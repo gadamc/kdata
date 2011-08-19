@@ -23,6 +23,10 @@
 #include <cstdlib>
 #include <ctime>
 
+using namespace std;
+
+ClassImp(KPtaTestPulse);
+
 
 KPtaTestPulse::KPtaTestPulse(void)
 {

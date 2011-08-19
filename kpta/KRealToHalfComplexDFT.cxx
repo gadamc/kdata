@@ -37,6 +37,10 @@
 #include "KRealToHalfComplexDFT.h"
 #include <fftw3.h>
 
+using namespace std;
+
+ClassImp(KRealToHalfComplexDFT);
+
 KRealToHalfComplexDFT::KRealToHalfComplexDFT(void)
 {
 	SetName("KRealToHalfComplexDFT");

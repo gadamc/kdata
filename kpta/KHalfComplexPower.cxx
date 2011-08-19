@@ -17,6 +17,9 @@
 #include "KHalfComplexPower.h"
 #include <cmath>
 
+ClassImp(KHalfComplexPower);
+
+
 KHalfComplexPower::KHalfComplexPower(void)
 {
 

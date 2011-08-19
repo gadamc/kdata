@@ -27,14 +27,18 @@ public:
 	virtual void DeleteProcessors(void);
   virtual void SetIsOwner(bool anOpt = true);
   
-  //KPtaProcessor* GetProcessor(Int_t i) { return fProcessorList.At(i);}
+  KPtaProcessor* GetProcessor(Int_t i) { return fProcessorList.at(i);}
+  virtual void SetMyOutputPulse(const double* p, unsigned int s);
   
 private:
-	vector<KPtaProcessor*> fProcessorList;
+	std::vector<KPtaProcessor*> fProcessorList;
   bool fIsOwner; 
   //private methods
   void InitializeMembers(void);
-  void SetOutputPulse(const double* p, unsigned int s);
+  
+  
+  ClassDef(KPulseAnalysisChain,1);
+  
 };
 
 //

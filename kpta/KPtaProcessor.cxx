@@ -16,6 +16,11 @@
 #include <fstream>
 #include <sstream>
 
+using namespace std;
+
+
+ClassImp(KPtaProcessor)
+
 KPtaProcessor::KPtaProcessor(void)
 {
 
@@ -24,16 +29,18 @@ KPtaProcessor::KPtaProcessor(void)
 
 KPtaProcessor::~KPtaProcessor(void)
 {
-  if(fInputPulse) {
-    delete[] fInputPulse;
-    fInputPulse = 0;
-    fInputSize =0;
-  }
-  
-  if(fOutputPulse) {
-    delete[] fOutputPulse;
-    fOutputPulse = 0;
-    fOutputSize =0;
+  if(!fDoNotDelete){
+    if(fInputPulse) {
+      delete[] fInputPulse;
+      fInputPulse = 0;
+      fInputSize =0;
+    }
+
+    if(fOutputPulse) {
+      delete[] fOutputPulse;
+      fOutputPulse = 0;
+      fOutputSize =0;
+    }
   }
   
 }
@@ -45,6 +52,7 @@ void KPtaProcessor::InitializeMembers(void)
   fOutputPulse = 0;
   fInputSize = 0;
   fOutputSize = 0;
+  fDoNotDelete = false;
 }
 
 void KPtaProcessor::AllocateArrays(unsigned int size)
@@ -53,36 +61,52 @@ void KPtaProcessor::AllocateArrays(unsigned int size)
   if(fOutputPulse) delete [] fOutputPulse;
   fInputPulse = new double[ size ];
   fOutputPulse = new double[ size ];
+  memset(fOutputPulse, 0, size*sizeof(double));
   fInputSize = fOutputSize = size;
   
 }
 
-template <class T> void KPtaProcessor::SetTheInputPulse(const T* aPulse, unsigned int size)
+void KPtaProcessor::SetInputPulse(double *aPulse)
 {
-  if(size != fInputSize)
-    AllocateArrays(size);
-  
-  for(unsigned int i = 0; i < size; i++)
-    *(fInputPulse + i) = *(aPulse + i);
-  
+  //This is a relatively dangerous method. Use it only if you know what you're doing.
+  //However, using this method to set the pointer to the intput pulse is a clever way
+  //of reducing the amount of CPU time spent copying pulses around. Instead, you can use
+  //this to reuse memory.
+  //
+  //Make sure that you set the output pulse pointer and the size of the pulses. 
+  //
+  //Also, note that you probably shouldn't use this for the FFT-related methods since
+  //those use a special fftw memory allocation and deallocation function. 
+  //However, it might work as well - see the fftw documentation. 
+  //
+  //This automatically calls "DoNotDeletePulses" which tells the KPtaProcessor
+  //not to delete the pulse in the destructor. 
+  //
+  fInputPulse = aPulse;
+  fDoNotDelete = true;
 }
 
 
-template <class T> void KPtaProcessor::SetTheInputPulse(const vector<T> &aPulse)
+void KPtaProcessor::SetOutputPulse(double *aPulse)
 {
-  if(aPulse.size() != fInputSize)
-    AllocateArrays(aPulse.size());  
-	
-		try {
-			for(unsigned int i = 0; i < fInputSize; i++){
-				*(fInputPulse+i) = aPulse.at(i);
-			}
-		}
-		catch (out_of_range& e) {
-			//I think this should be impossible... 
-			cerr << "KPtaProcessor::SetThisToInputPulse. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-		}
+  //This is a relatively dangerous method. Use it only if you know what you're doing.
+  //However, using this method to set the pointer to the intput pulse is a clever way
+  //of reducing the amount of CPU time spent copying pulses around. Instead, you can use
+  //this to reuse memory.
+  //
+  //Make sure that you set the output pulse pointer and the size of the pulses. 
+  //
+  //Also, note that you probably shouldn't use this for the FFT-related methods since
+  //those use a special fftw memory allocation and deallocation function. 
+  //However, it might work as well - see the fftw documentation. 
+  //
+  //This automatically calls "DoNotDeletePulses" which tells the KPtaProcessor
+  //not to delete the pulse in the destructor. 
+  //
+  fOutputPulse = aPulse;
+  fDoNotDelete = true;
 }
+
 
 void KPtaProcessor::SetInputPulse(const char* aFile)
 {

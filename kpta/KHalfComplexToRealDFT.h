@@ -31,7 +31,7 @@ private:
  
 protected:
 	void* fPlan; //points to the fftw_plan 
-  string fFFTWFlag;
+  std::string fFFTWFlag;
   
 	virtual unsigned int MapFlag(void);
 	virtual void AllocateArrays(unsigned int size);
@@ -39,6 +39,8 @@ protected:
 	virtual bool Normalize(void);
 	virtual bool CalculateFFT(void);
 	
+	ClassDef(KHalfComplexToRealDFT,1);
+  
 };
 
 
