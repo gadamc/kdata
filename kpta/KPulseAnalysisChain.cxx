@@ -123,7 +123,7 @@ bool KPulseAnalysisChain::RunProcess(void)
         
         //set the input pulse of the first processor. 
         if(i == 0)
-          p->SetInputPulse(GetInputPulse());
+          p->SetInputPulse(GetInputPulse(), GetInputPulseSize());
         
 				if(p->RunProcess()){
 					theReturn++;
@@ -134,7 +134,7 @@ bool KPulseAnalysisChain::RunProcess(void)
 						if(pnext != 0) {
               //cout << "Pulse Analysis Chain. Found Next Processor: " << j << endl;
               //if this fails here, then this will break... the next processor won't get the pulse
-							pnext->SetInputPulse(p->GetOutputPulse());
+							pnext->SetInputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
               break; //break out of the while loop if this is a valid pointer to a processor;
             }
             j++;
@@ -145,14 +145,14 @@ bool KPulseAnalysisChain::RunProcess(void)
           cerr << p->GetName() << " Processor Failed. Stopping Subsequent Processes for this Chain. " << endl;
           cerr << "   The output pulse for this chain should be the same as the input pulse." << endl;
           cerr << "   If you're sure this is a bug, submit a report at https://edwdev-ik.fzk.de/bugs" << endl;
-          fOutputPulse = fInputPulse;  //make th output equal the input.
+          //fOutputPulse = fInputPulse;  //make the output equal the input.
           break;
         }
 				
 			}
 			
       if(i == fProcessorList.size() - 1)
-        fOutputPulse = p->GetOutputPulse();
+        SetOutputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
 		}
 		catch (out_of_range& e) {
 			//I think this should be impossible... 
@@ -181,6 +181,16 @@ void KPulseAnalysisChain::AddProcessorAt(KPtaProcessor *p, unsigned int index)
 	
 	else 
 		fProcessorList.insert(fProcessorList.begin() + index, p);
+}
+
+void KPulseAnalysisChain::SetOutputPulse(const double* p, unsigned int s)
+{
+  if(s != fOutputSize){
+    if(fOutputPulse) delete [] fOutputPulse;
+    fOutputPulse = new double[s];
+  }
+
+  memcpy(fOutputPulse, p, s);  
 }
 
 /*void KPulseAnalysisChain::GetNumProcessorsInChain(void)

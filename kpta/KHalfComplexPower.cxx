@@ -7,9 +7,9 @@
 //
 //
 // Input pulse is assumed to be of the half-complex form
-//   (r0, r1, r2, ..., rn/2, i(n+1)/2-1, ..., i2, i1).
+//   (r0, r1, r2, ..., rN/2, i(N+1)/2-1, ..., i2, i1).
 // Calculates rk*rk + ik*ik, for each k, with i0 = 0 and iN/2 = 0.
-// The output "pulse" is this power spectrum and N/2 + 1 values long. 
+// The output "pulse" is this power spectrum and N/2 + 1 values long
 //
 //
 //
@@ -32,31 +32,25 @@ void KHalfComplexPower::InitializeMembers(void)
 {
   //no local members to initialize
   
-  //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
-  //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+
 }
 
 bool KHalfComplexPower::RunProcess(void)
 {
-	if(fInputPulse.size() < 2) return false;
+	if(fInputSize < 2) return false;
+	  
+  if(fOutputPulse==0 || fOutputSize != 1 + fInputSize/2 ){  //resize if necessary
+    delete [] fOutputPulse;
+    fOutputPulse = new double[1 + (fInputSize/2)];
+    fOutputSize = 1 + fInputSize/2;
+  }
 	
-	unsigned int N = fInputPulse.size();
-  fOutputPulse.resize(1+(N/2),0);
-	
-	try{
-		fOutputPulse.at(0) = pow(fInputPulse.at(0),2);
-		fOutputPulse.at(N/2) = pow(fInputPulse.at(N/2),2);
+  *fOutputPulse = pow(*fInputPulse,2); //the first element in the array
+	*(fOutputPulse+(fInputSize/2)) = pow(*(fInputPulse+(fInputSize/2)) ,2);
 		
-		for (unsigned int k=1; k<N/2; k++) 
-			fOutputPulse.at(k) = pow(fInputPulse.at(k),2) + pow(fInputPulse.at(N-k),2);
+	for (unsigned int k=1; k<fInputSize/2; k++) 
+		*(fOutputPulse+k) = pow(*(fInputPulse+k),2) + pow(*(fInputPulse+(fInputSize-k)),2);
 		
-		return true;
-		
-	}
-	catch (out_of_range &e) {
-		cerr << "KHalfComplexPower::RunProcess. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-
-		return false;
-	}
+  return true;
 
 }

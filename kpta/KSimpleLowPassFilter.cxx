@@ -46,17 +46,23 @@ void KSimpleLowPassFilter::InitializeMembers(void)
 bool KSimpleLowPassFilter::RunProcess(void)
 {
   
-  vector<double> tempPulse;
+  if(fInputPulse == 0 || fOutputPulse == 0) {
+    cerr << "input and output pulses are not allocated." << endl;
+    return false;
+  }
+  
   //first, make the pulse "quasi-periodic" to eliminate artificial
   //filtering effects due to filtering of a signal that has a DC offset
   int numBinsToAdd = floor(GetRc()*10);
-
+  int tempSize = numBinsToAdd + (int)fInputSize;
+  double *tempPulse = new double[tempSize];
+  
   try {
-    for (int i = 0; i < numBinsToAdd + (int)fInputPulse.size(); i++){
+    for (int i = 0; i < tempSize; i++){
       if (i < numBinsToAdd)
-        tempPulse.push_back(fInputPulse.at(0));
+        *(tempPulse+i) = *(fInputPulse+0);
       else
-        tempPulse.push_back(fInputPulse.at(i - numBinsToAdd));
+        *(tempPulse+i) = *(fInputPulse+(i - numBinsToAdd));
       
     }
 	}
@@ -65,21 +71,19 @@ bool KSimpleLowPassFilter::RunProcess(void)
 		cerr << "    stopping calculation";
 		return false;
 	}
-
-  fOutputPulse.resize(fInputPulse.size());
   
   try {
     double binDivFactor = GetMinRCToBinRatio()/GetRc() + 1.0;  //this is only useful if the RC is small.
     double binSize = 1./binDivFactor;
-    double theIntegral = tempPulse[0];
+    double theIntegral = *tempPulse;
 
-    for(int t=0; t < (int)tempPulse.size(); t++){
+    for(int t=0; t < tempSize; t++){
       
-      if(t >= numBinsToAdd) fOutputPulse[t-numBinsToAdd] = 0.;  //don't care about the first numBinsToAdd
+      if(t >= numBinsToAdd) *(fOutputPulse+(t-numBinsToAdd)) = 0.;  //don't care about the first numBinsToAdd
       
       for(int i = 0; i < (int)binDivFactor; i++){
-        theIntegral = theIntegral*exp(-binSize/fRc) + (tempPulse[t] / binDivFactor) *exp(-0.5*binSize/fRc)*binSize/fRc;
-        if(t >= numBinsToAdd) fOutputPulse[t-numBinsToAdd] += theIntegral;
+        theIntegral = theIntegral*exp(-binSize/fRc) + (*(tempPulse+t) / binDivFactor) *exp(-0.5*binSize/fRc)*binSize/fRc;
+        if(t >= numBinsToAdd) *(fOutputPulse+(t-numBinsToAdd)) += theIntegral;
       }
     }
     

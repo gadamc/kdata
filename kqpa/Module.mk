@@ -51,7 +51,7 @@ KQPA_DIRI   := $(MODDIR)
 
 #only need to put the ERAINCS here because ERA files are NOT copied
 # to the projects include directory! This should be changed.
-KQPA_XTRAINCS := $(ERAINCS)  
+KQPA_XTRAINCS := $(ERAINCS)
 
 #list all external module libs that this module depends on
 #if this module depends on other modules in this project you MUST

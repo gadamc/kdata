@@ -19,39 +19,36 @@ public:
   //Constructors
   KPatternRemoval(void);
   virtual ~KPatternRemoval(void);
+  
 	virtual bool RunProcess(void);
+  template<class T> bool RunProcess(vector<T> &aPattern);
 
 	virtual bool CalculatePattern(void);
 	virtual bool SubtractPattern(void);
-	virtual bool SubtractPattern(vector<double> &aPattern);
 	
-  //getters
+	virtual double* GetPattern(void) const { return fPattern;}
+	template<class T> bool SetPattern(vector<T> &aPulse);
+	
 	virtual unsigned int GetPatternLength(void) const { return fPatternLength;}
 	virtual unsigned int GetBaselineStart(void) const { return fBaselineStart;}
 	virtual unsigned int GetBaselineStop(void) const { return fBaselineStop;}
 
-	virtual vector<double> GetPattern(void) const { return fPattern;}
-
-  //setters
-	virtual void SetPatternLength(unsigned int aLength){ fPatternLength = aLength;}
+  virtual bool SetPatternLength(unsigned int aLength);
 	virtual void SetBaselineStart(unsigned int aVal);
 	virtual void SetBaselineStop(unsigned int aVal);
 	
-	virtual bool SetPattern(vector<double> &aPattern);
-	virtual bool SetPattern(vector<short> &aPulse){ return SetThisToPattern(aPulse);} //Set the pattern 
-	virtual bool SetPattern(vector<float> &aPulse){ return SetThisToPattern(aPulse);} //Set the pattern
-	virtual bool SetPattern(vector<int> &aPulse){ return SetThisToPattern(aPulse);} //Set the pattern
-	
+  virtual void SetUseExternalPattern(bool opt){opt = fUseExternalPattern;}
+  virtual bool GetUseExternalPattern(void) const {return fUseExternalPattern;}
+  
 private:
-	unsigned int fPatternLength;  //used primarily for the CalculatePattern routine. Whenever you call SetPattern, this value is changed to match the length of the pattern you passed in.
+	unsigned int fPatternLength;  
 	unsigned int fBaselineStart;
 	unsigned int fBaselineStop;
-	vector<double> fPattern;
+  bool fUseExternalPattern;
+	double* fPattern;
   //private methods
   void InitializeMembers(void);
-	template<class T> bool SetThisToPattern(vector<T> &aPulse);
 
-  //ClassDef(KPatternRemoval,1);
 };
 
 

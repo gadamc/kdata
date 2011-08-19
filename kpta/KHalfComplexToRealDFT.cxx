@@ -52,56 +52,53 @@ KHalfComplexToRealDFT::KHalfComplexToRealDFT(void)
 
 KHalfComplexToRealDFT::~KHalfComplexToRealDFT(void)
 {
-	if(fIn_fft != 0){
-		fftw_free(fIn_fft);
-		fIn_fft = 0;
+  //since using fftw, destroy the pulses here with fftw_free
+  //see the fftw documentation for why this is done
+	if(fInputPulse != 0){
+		fftw_free(fInputPulse);
+		fInputPulse = 0;
+    fInputSize = 0;
 	}
-	if(fOut_fft != 0){
-		fftw_free(fOut_fft);
-		fOut_fft = 0;
+	if(fOutputPulse != 0){
+		fftw_free(fOutputPulse);
+		fOutputPulse = 0;
+    fOutputSize = 0;
 	}
 	
 	fftw_destroy_plan((fftw_plan)fPlan);
+	
 }
 
 void KHalfComplexToRealDFT::InitializeMembers(void)
 {
- 	fIn_fft = fOut_fft = 0;
 	fPlan = 0;
 	SetFFTWFlag(); //default option is to measure. 
 }
-
+  
 bool KHalfComplexToRealDFT::RunProcess(void)
 {
 	if(CalculateFFT()) 		
-		return CopyArrayToOutput();
+		return Normalize();
 	
 	else return false;
 }
 
-bool KHalfComplexToRealDFT::CopyArrayToOutput(void)
+bool KHalfComplexToRealDFT::Normalize(void)
 {
   //copies the normalized real array to the fOutputPulse.
   
-	try{
-		for(unsigned int i = 0; i < fOutputPulse.size(); i++){
-			fOutputPulse.at(i) = fOut_fft[i]/fOutputPulse.size();  // this IS NORMALIZED
-		}
-	}
-	catch (out_of_range &e) {
-		//I think this should be impossible... 
-		cerr << "KHalfComplexToRealDFT::RunProcess. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-		return false;
-	}
-	
+	for(unsigned int i = 0; i < fOutputSize; i++)
+    *(fOutputPulse+i) = *(fOutputPulse+i)/fOutputSize;  // this IS NORMALIZED
+		
 	return true;
 	
 }
 
 bool KHalfComplexToRealDFT::CalculateFFT(void)
 {
-	if(fIn_fft == 0 || fOut_fft == 0) {
-		cerr << "KHalfComplexToRealDFT::CalculateFFT. Arrays for FFT have not been set." << endl;
+  
+	if(fInputPulse == 0 || fOutputPulse == 0) {
+		cerr << "KHalfComplexToRealDFT::CalculateFFT. input and output arrays have not been set." << endl;
 		return false;
 	}
 	
@@ -115,162 +112,33 @@ bool KHalfComplexToRealDFT::CalculateFFT(void)
 	return true;
 }
 
-void KHalfComplexToRealDFT::SetInputPulse(const vector<double> &aPulse)
-{
-	//Set the input pulse See the base class
-	//KPtaProcessor::SetInputPulse(const vector<double> &aPulse)
-	//This method is overwritten here because the
-  //fIn_fft and fOut_fft arrays must be re-allocated if the size
-  //of the pulse changes.
-  
-	bool reAllocate = false;
-	if(aPulse.size() != fInputPulse.size())
-		reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aPulse);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-}
 
-void KHalfComplexToRealDFT::SetInputPulse(const vector<short> &aPulse)
+void KHalfComplexToRealDFT::AllocateArrays(unsigned int size)
 {
-	//Set the input pulse. See the base class
-	//KPtaProcessor::SetInputPulse(const vector<short> &aPulse)
-  //This method is overwritten here because the
-  //fIn_fft and fOut_fft arrays must be re-allocated if the size
-  //of the pulse changes.
+  //allocate memory for the input and output arrays. but use the fftw_malloc function
+  //see the fftw documentation for why this is done
   
-	bool reAllocate = false;
-	if(aPulse.size() != fInputPulse.size())
-		reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aPulse);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-	
-}
-
-void KHalfComplexToRealDFT::SetInputPulse(const vector<float> &aPulse)
-{ 
-	//Set the input pulse See the base class
-	//KPtaProcessor::SetInputPulse(const vector<float> &aPulse)
-  //This method is overwritten here because the
-  //fIn_fft and fOut_fft arrays must be re-allocated if the size
-  //of the pulse changes.
+	if(fInputPulse)	fftw_free(fInputPulse);
+	if(fOutputPulse) fftw_free(fOutputPulse);	
+  fInputSize = fOutputSize = size;
   
-	bool reAllocate = false;
-	if(aPulse.size() != fInputPulse.size())
-		reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aPulse);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-} 
-
-void KHalfComplexToRealDFT::SetInputPulse(const vector<int> &aPulse)
-{
-	//Set the input pulse See the base class
-	//KPtaProcessor::SetInputPulse(const vector<int> &aPulse)
-  //This method is overwritten here because the
-  //fIn_fft and fOut_fft arrays must be re-allocated if the size
-  //of the pulse changes.
-  
-	bool reAllocate = false;
-	if(aPulse.size() != fInputPulse.size())
-		reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aPulse);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-}
-
-void KHalfComplexToRealDFT::SetInputPulse(const char* aFile)
-{
-	//Set the input pulse. See the base class
-	//KPtaProcessor::SetInputPulse(const char* aFile)
-  //This method is overwritten here because the
-  //fIn_fft and fOut_fft arrays must be re-allocated if the size
-  //of the pulse changes.
-  
-	//There's no way of knowing the size of the pulse, so we must
-	//reallocate the FFT arrays. 
-	bool reAllocate = true;
-	
-	//set it using the base class.
-	KPtaProcessor::SetInputPulse(aFile);
-	fOutputPulse.resize(fInputPulse.size(),0);
-	
-	if(reAllocate) 
-		AllocateFFTArrays();
-	FillFFTArrays();
-}
-
-void KHalfComplexToRealDFT::AllocateFFTArrays(void)
-{
-  //allocate memory for the fIn_fft and fOut_fft arrays.
-  
-	if(fIn_fft != 0){
-		fftw_free(fIn_fft);
-		fIn_fft = 0;
-	}
-	if(fOut_fft != 0){
-		fftw_free(fOut_fft);
-		fOut_fft = 0;
-	}
-	
-	fIn_fft = (double*)fftw_malloc(sizeof(double)*fInputPulse.size());
-	fOut_fft = (double*)fftw_malloc(sizeof(double)*fInputPulse.size());
+	fInputPulse = (double*)fftw_malloc(sizeof(double)*fInputSize);
+	fOutputPulse = (double*)fftw_malloc(sizeof(double)*fInputSize);
 	
 	SetFFTWPlan();  //reset the fftw plan with the new arrays. 
 }
 
-void KHalfComplexToRealDFT::FillFFTArrays(void)
-{
-	//you must make sure that the fIn_fft and fOut_fft
-	//arrays are of the same size as the fInputPulse vector
-	//or this will cause a crash.
-	
-	if(fIn_fft == 0 || fOut_fft == 0) return;
-	
-	try{
-		for(unsigned int i = 0; i < fInputPulse.size(); i++){
-			fIn_fft[i] = fInputPulse.at(i);
-			fOut_fft[i] = 0;
-		}
-	}
-	catch (out_of_range &e) {
-		//I think this should be impossible... 
-		cerr << "KHalfComplexToRealDFT::FillFFTArrays. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-	}
-	
-}
 
 void KHalfComplexToRealDFT::SetFFTWPlan(void)
 {
 	//This will erase the contents of fIn_fft and fOut_fft. So make sure that these
 	//arrays are filled with their initial values AFTER this method is called. 
 	
-	if(fIn_fft != 0 && fOut_fft != 0)
-		fPlan = (void*)fftw_plan_r2r_1d( (int)fInputPulse.size(), fIn_fft, fOut_fft, FFTW_HC2R, MapFlag());
-	else {
+	if(fInputPulse  && fOutputPulse )
+		fPlan = (void*)fftw_plan_r2r_1d( (int)fInputSize, fInputPulse, fOutputPulse, FFTW_HC2R, MapFlag());
+	else 
 		cerr << "KHalfComplexToRealDFT::SetFFTWPlan. Arrays are empty." << endl;
-	}
+	
 	
 }
 

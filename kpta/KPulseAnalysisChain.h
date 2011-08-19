@@ -34,7 +34,7 @@ private:
   bool fIsOwner; 
   //private methods
   void InitializeMembers(void);
-  void SetOutputPulse(const vector<double>);
+  void SetOutputPulse(const double* p, unsigned int s);
 };
 
 //

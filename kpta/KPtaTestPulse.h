@@ -26,14 +26,12 @@ public:
 	virtual void CreateSquareWave(void);
   virtual void CreateWhiteNoise(void);
 	
-	//getters
 	virtual vector<double> GetPulse(void) const {return fPulse;	}
 	
 	virtual unsigned int GetLength(void)  const {return fPulse.size();	}
 	virtual unsigned int GetPeriod(void)  const {return fPeriod;	}
 	virtual unsigned int GetAmp(void)  const {return fAmp;	}
 
-  //setters	
 	virtual void SetLength(unsigned int aVal){fPulse.resize(aVal,0);	}
 	virtual void SetPeriod(unsigned int aVal){fPeriod = aVal;	}
 	virtual void SetAmp(unsigned int aVal){fAmp = aVal;	}

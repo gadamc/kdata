@@ -51,46 +51,38 @@ void KSimpleHighPassFilter::InitializeMembers(void)
 
 bool KSimpleHighPassFilter::RunProcess(void)
 {
+  
+  if(fInputPulse == 0 || fOutputPulse == 0) {
+    cerr << "input and output pulses are not allocated." << endl;
+    return false;
+  }
+  
   KSimpleLowPassFilter f;
-  f.SetInputPulse(GetInputPulse());
+  f.SetInputPulse(GetInputPulse(), GetInputPulseSize());
   f.SetRc(GetRc());
   f.SetMinRCToBinRatio(GetMinRCToBinRatio());
   if(!f.RunProcess())
     return false;
   
-  vector<double> lpf = f.GetOutputPulse();
-  
-  fOutputPulse.resize(fInputPulse.size());
-  
+  double* lpf = f.GetOutputPulse();
+    
   double nextvalue, currentvalue;
   
-  
-  try {
+  for(unsigned int i = 0; i < fInputSize; i++){
+    if(i == fInputSize-1)
+      nextvalue = *(fInputPulse+i);
+    else
+      nextvalue = *(fInputPulse+(i+1));
     
-    for(int i = 0; i < (int)fInputPulse.size(); i++){
-      if(i == (int)fInputPulse.size()-1)
-        nextvalue = fInputPulse[i];
-      else
-        nextvalue = fInputPulse[i+1];
-      
-      if(i == 0)
-        currentvalue = 0.5*(fInputPulse[i] + nextvalue);
-      else if(fInputPulse[i-1] == fInputPulse[i])
-        currentvalue = fInputPulse[i];
-      else
-        currentvalue = 0.5*(fInputPulse[i] + nextvalue);
-      
-      fOutputPulse[i] = currentvalue - lpf[i];
-    }
+    if(i == 0)
+      currentvalue = 0.5*( *(fInputPulse+i) + nextvalue);
+    else if( *(fInputPulse+(i-1)) == *(fInputPulse+i))
+      currentvalue = *(fInputPulse+i);
+    else
+      currentvalue = 0.5*( *(fInputPulse+i) + nextvalue);
     
-  } 
+    *(fOutputPulse+i) = currentvalue - *(lpf+i);
+  }
   
-  catch (out_of_range& e) {
-		cerr << "KSimpleHighPassFilter. exception caught: " << e.what() << endl;
-		cerr << "    stopping calculation";
-		return false;
-	}
-  
- 
   return true;
 }

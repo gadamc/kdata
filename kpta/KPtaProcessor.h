@@ -21,38 +21,50 @@ class KPtaProcessor  {
 public:
   KPtaProcessor(void);
   virtual ~KPtaProcessor(void);
+
+  //all derived classes must over-ride this method
+  virtual bool RunProcess(void) = 0;
   
-	virtual void SetInputPulse(const vector<double> &aPulse){fInputPulse = aPulse;} //Set the input pulse
-	virtual void SetInputPulse(const vector<short> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse 
-	virtual void SetInputPulse(const vector<float> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse
-	virtual void SetInputPulse(const vector<int> &aPulse){ SetThisToInputPulse(aPulse);} //Set the input pulse
+  //this weird pattern is so that SetInputPulse can be overloaded in derived classes.
+  virtual void SetInputPulse(vector<double> &aPulse){SetTheInputPulse(aPulse);}
+  virtual void SetInputPulse(vector<float> &aPulse){SetTheInputPulse(aPulse);}
+  virtual void SetInputPulse(vector<int> &aPulse){SetTheInputPulse(aPulse);}
+  virtual void SetInputPulse(vector<short> &aPulse){SetTheInputPulse(aPulse);}
+    
+  virtual void SetInputPulse(const double* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+  virtual void SetInputPulse(const float* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+  virtual void SetInputPulse(const int* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+  virtual void SetInputPulse(const short* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+  
 	virtual void SetInputPulse(const char* aFile);
 	
-	virtual vector<double> GetOutputPulse(void) const {return fOutputPulse;}  //obtain a copy of the output pulse with double precision
-	virtual void GetOutputPulse(vector<float> &myPulse) const; //demote the precision and obtian a copy of the output pulse in single precision
-	
-	virtual vector<double> GetInputPulse(void) const {return fInputPulse;}  //obtain a copy of the input pulse
-	virtual void GetInputPulse(vector<float> &myPulse) const; //demote the precision and obtian a copy of the output pulse in single precision
+	virtual double* GetOutputPulse(void) const {return fOutputPulse;}  
+  virtual unsigned int GetOutputPulseSize(void) const {return fOutputSize;}
+	virtual double* GetInputPulse(void) const {return fInputPulse;}  
+  virtual unsigned int GetInputPulseSize(void) const {return fOutputSize;}
 
-	virtual bool RunProcess(void) = 0;
-  //getters
 	virtual const char* GetName(void) const {return fProcessorName.c_str();}
-  //setter
 	virtual void SetName(const char* aName){fProcessorName = aName;}
 	
 protected:
 
 	string fProcessorName;
-	vector<double> fInputPulse;
-	vector<double> fOutputPulse;
+	double* fInputPulse;
+	double* fOutputPulse;
+  unsigned int fInputSize;
+  unsigned int fOutputSize;
 	
-	
+	template <class T> void SetTheInputPulse(const vector<T> &aPulse);
+  template <class T> void SetTheInputPulse(const T* aPulse, unsigned int size);
+  virtual void AllocateArrays(unsigned int size);
+  
+  
 private:
 	
-	template<class T> void SetThisToInputPulse(const vector<T> &aPulse);
   //private methods
   void InitializeMembers(void);
 	
+  
 };
 
 
