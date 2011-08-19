@@ -86,7 +86,7 @@ bin/%: $(KPTA_DIRS)/%.o $(KDATAED_LIB)
                 
 # rules for building dictionary
 $(KPTA_DO):         $(KPTA_DC)
-	$(CXX) $(NOOPT) $(KPTA_FLAGS) -I. -o $@ -c $< 
+	$(CXX) $(NOOPT) $(KPTA_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
 
 $(KPTA_DC):         $(KPTA_EH) $(KPTA_LH)
 	@echo "Generating dictionary $@..."
