@@ -25,6 +25,7 @@
 #include "KRawEvent.h"
 #include "KHLAEvent.h"
 #include "KHLaMCEvent.h"
+#include "KAmpEvent.h"
 #include <typeinfo>
 #include <exception> 
 #include <iostream>
@@ -47,7 +48,11 @@ KDataWriter::KDataWriter(const Char_t* name, const Char_t* eventType,
 {	
   //standard constructor
 	//name = file name 
-  //eventType = HLA, Raw, or HLaMC, plus any other objects based on KEvent
+  //eventType = KHLAEvent, KRawEvent, or HLaMC, plus any other objects based on KEvent.
+  //The KEvent-based classes should all have a static method called GetClassName that retuns the name of the class.
+  //Pass this result into eventType. For example, KHLAEvent::GetClassName() would create a KData file that holds
+  //KHLAEvent objects (this is the default behavior). For raw events, pass KRawEvent::GetClassName(). 
+  //This, of course, requires that the KEventFactory knows about the KEvent-based class. 
   //mode = recreate, update
 	
 	fEventBranch = 0;
@@ -169,8 +174,14 @@ Bool_t KDataWriter::SetTreeBranch(KEvent **anEvent)
 			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KHLaMCEvent::GetClassName(), anEvent, 512000, 99));
 			
 		}
+		else if( dynamic_cast<KAmpEvent*>(*anEvent) !=0 ) {
+			//cout << typeid(*hlaEv).name() << endl;
+			//cout << hlaEv << " " << anEvent << endl;
+			fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KAmpEvent::GetClassName(), anEvent, 512000, 99));
+			
+		}
 		else{
-			cout << "KDataWriter::SetTreeBranch(KHLAEvent* ) Unsupported Event Class " << endl;
+			cout << "KDataWriter::SetTreeBranch. Unsupported Event Class " << endl;
 		}
 
     //fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), **anEvent.ClassName(), anEvent, 512000, 99));
@@ -284,11 +295,11 @@ Bool_t KDataWriter::Close(Option_t *opt)
 		return true; //we've already closed the file. 
 	
 	fEventBranch = 0;
-	if(fLocalEvent != 0){
-		if(KEventFactory::DeleteEvent(fLocalEvent))
-			fLocalEvent = 0;
-
-	}
+	//if(fLocalEvent != 0){
+	//	if(KEventFactory::DeleteEvent(fLocalEvent))
+	//		fLocalEvent = 0;
+	//}
+  fLocalEvent = 0;
 	bIsReady = !KDataFileIO::Close(opt);
 	
 	return !bIsReady;

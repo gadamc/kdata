@@ -19,6 +19,7 @@ class KEvent;
 class KHLAEvent;
 class KRawEvent;
 class KHLaMCEvent;
+class KAmpEvent;
 
 class KEventFactory  { 
 
@@ -40,11 +41,12 @@ public:
   KEventFactory(void);
   virtual ~KEventFactory(void);
 	
-	static KEvent* NewEvent(const Char_t* type); //support polymorphism
-	static KEvent* NewEvent(const KEvent* event);  //support polymorphism -- this is like a copy constructor
+	static KEvent* NewEvent(const Char_t* type); 
+	static KEvent* NewEvent(const KEvent* event);  
 	static KHLAEvent* NewHLAEvent(void);
 	static KHLaMCEvent* NewHLaMCEvent(void);
 	static KRawEvent* NewRawEvent(void);
+	static KAmpEvent* NewAmpEvent(void);
 	static Bool_t DeleteEvent(KEvent* event);
 	//shared_ptr<KHLAEvent> NewHLAEventTest(void);
 	

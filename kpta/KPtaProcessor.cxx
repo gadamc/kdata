@@ -63,7 +63,6 @@ void KPtaProcessor::AllocateArrays(unsigned int size)
   fOutputPulse = new double[ size ];
   memset(fOutputPulse, 0, size*sizeof(double));
   fInputSize = fOutputSize = size;
-  
 }
 
 void KPtaProcessor::SetInputPulse(double *aPulse)

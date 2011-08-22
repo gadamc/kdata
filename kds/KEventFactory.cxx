@@ -15,7 +15,7 @@
 // some type of Event class that derives from KEvent. When 
 // an event class is created that derives from KEvent, the author
 // must make sure to declare GetClassName method 
-// their class. See the KHLAEvent and KRawEvent source files for 
+// their class. See the KHLAEvent, KAmpEvent and KRawEvent source files for 
 // an example. 
 //
 // To use this class, one simply asks the object for a new event of 
@@ -38,6 +38,7 @@
 #include "KHLAEvent.h"
 #include "KRawEvent.h"
 #include "KHLaMCEvent.h"
+#include "KAmpEvent.h"
 #include "TClass.h"
 //#include "KMCEvent.h"
 
@@ -85,6 +86,10 @@ KEvent* KEventFactory::NewEvent(const Char_t* type)
 		event = new KHLaMCEvent;
 		if(event != 0) BuildEvent(event);
 	}
+	else if(sType.compare(KAmpEvent::GetClassName())==0){
+		event = new KAmpEvent;
+		if(event != 0) BuildEvent(event);
+	}
 	/*
 	 else if(sType.compare("MC") == 0){
 	 event = new KMCEvent;
@@ -120,6 +125,14 @@ KHLaMCEvent* KEventFactory::NewHLaMCEvent(void)
 	//you must delete it.
 	
 	return dynamic_cast<KHLaMCEvent*>(NewEvent(KHLaMCEvent::GetClassName()));
+}
+
+KAmpEvent* KEventFactory::NewAmpEvent(void)
+{
+	//returns a pointer to a KAmpEvent object. You own the memory, so
+	//you must delete it.
+	
+	return dynamic_cast<KAmpEvent*>(NewEvent(KAmpEvent::GetClassName()));
 }
 
 Bool_t KEventFactory::DeleteEvent(KEvent *event)
@@ -177,6 +190,12 @@ void KEventFactory::BuildEvent(KEvent *event)
 	else if(const KHLaMCEvent *mHLaMCEvent = dynamic_cast<const KHLaMCEvent*>(event)){
 		//do whatever is needed. nothing for now. 
 		if(mHLaMCEvent){
+			//do stuff. 
+		}
+	}
+	else if(const KAmpEvent *mAmpEvent = dynamic_cast<const KAmpEvent*>(event)){
+		//do whatever is needed. nothing for now. 
+		if(mAmpEvent){
 			//do stuff. 
 		}
 	}

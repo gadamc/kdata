@@ -40,12 +40,11 @@ void KFIRFilter::InitializeMembers(void)
 
 bool KFIRFilter::RunProcess(void)
 {
-	//at this time, the number of coefficients, D,  must be less than the length of the 
-	//pulse, N. The output pulse is the same length of the input pulse, but remember
-	//that the first D points in the output pulse is the transient response of the 
-	//filter. Currently, this only calcuates at time-domain convolution. 
-	
-	if(fInputPulse == 0 || fOutputPulse == 0) {
+  //The output pulse is the same length of the input pulse, but remember
+  //that the first D points in the output pulse is the transient response of the 
+  //filter. Currently, this only calcuates at time-domain convolution. 
+  
+  if(fInputPulse == 0 || fOutputPulse == 0) {
     cerr << "input and output pulses are not allocated." << endl;
     return false;
   }
@@ -57,13 +56,13 @@ bool KFIRFilter::RunProcess(void)
   
   //in the future: 
   //check to see if the calculation done by fft convolution is faster than 
-	//convolution in the time domain. then choose which algorithm to use.
-	//for small D, time-domain calculation is faster.
-	//
-  
-  double* inptr = (fCoefSize>fInputSize)?fCoefficients:fInputPulse; // swap input and coefficients in case that the number of coefficients is greater than the pulse lenth
-  double* coeff = (fCoefSize>fInputSize)?fInputPulse:fCoefficients; // to ensure that the following for loops do not break
-  unsigned int CoefSize = (fCoefSize>fInputSize)?fInputSize:fCoefSize;
+  //convolution in the time domain. then choose which algorithm to use.
+  //for small D, time-domain calculation is faster.
+  //
+
+  double* inptr = (fCoefSize > fInputSize) ? fCoefficients : fInputPulse; // swap input and coefficients in case that the number of coefficients is greater than the pulse lenth
+  double* coeff = (fCoefSize > fInputSize) ? fInputPulse : fCoefficients; // to ensure that the following for loops do not break
+  unsigned int CoefSize = (fCoefSize > fInputSize) ? fInputSize : fCoefSize;
   double* outptr = fOutputPulse;
   memset(outptr, 0, fOutputSize*sizeof(double)); //make sure the thing is empty. 
   unsigned int i, ii; i = ii = 0;
@@ -76,7 +75,6 @@ bool KFIRFilter::RunProcess(void)
     inptr++;
     outptr++;
   }
-  
   
   for( ; i < fOutputSize; i++){ 
     ii = 0;

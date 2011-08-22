@@ -33,7 +33,7 @@ public:
   virtual void Compact(void);
 	
 	//getters
-	string GetDetectorName(void) const;
+	const Char_t* GetDetectorName(void) const;
 	Double32_t GetMass(void) const { return fMass;}
 
 	//setters

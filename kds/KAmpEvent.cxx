@@ -1,6 +1,6 @@
 //_____________________________________________
 //
-// KRawEvent.cxx
+// KAmpEvent.cxx
 // KDataStructure
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de>
@@ -19,15 +19,16 @@
 //
 //
 
-#include "KRawEvent.h"
+#include "KAmpEvent.h"
 #include "TProcessID.h"
 #include "KClonesArray.h"
 
 //sub record includes
 #include "KRawSambaRecord.h"
-#include "KRawBolometerRecord.h"
-#include "KRawBoloPulseRecord.h"
+#include "KAmpBolometerRecord.h"
+#include "KAmpBoloPulseRecord.h"
 #include "KRawMuonModuleRecord.h"
+#include "KPulseAnalysisRecord.h"
 
 #include <typeinfo>
 #include <iostream>
@@ -35,9 +36,9 @@
 
 using namespace std;
 
-ClassImp(KRawEvent);
+ClassImp(KAmpEvent);
 
-KRawEvent::KRawEvent(void)
+KAmpEvent::KAmpEvent(void)
 {
 	//Default constructor 
 	InitializeMembers();
@@ -46,16 +47,17 @@ KRawEvent::KRawEvent(void)
 	fBolo = 0;
 	fBoloPulse = 0;
 	fMuonModule = 0;
-	
+  fPulseAna= 0;
+  
 	CreateArrays();
 
 }
 
-KRawEvent::KRawEvent(const KRawEvent &anEvent)
+KAmpEvent::KAmpEvent(const KAmpEvent &anEvent)
 : KEvent(anEvent)
 {
   //Copy Constructor. The TRefs will point to newly created objects
-	//and not to the data members of the KRawEvent object you passed in.
+	//and not to the data members of the KAmpEvent object you passed in.
 	
 	CopyLocalMembers(anEvent);
 	
@@ -68,13 +70,14 @@ KRawEvent::KRawEvent(const KRawEvent &anEvent)
 	fBolo = 0;
 	fBoloPulse = 0;
 	fMuonModule = 0;
+  fPulseAna = 0;
 	CreateArrays();
   
 	CopyClonesArrays(anEvent);
 }
 
 
-KRawEvent::~KRawEvent(void) 
+KAmpEvent::~KAmpEvent(void) 
 {
   //destructor 
   Clear("C");
@@ -92,12 +95,14 @@ KRawEvent::~KRawEvent(void)
 	if(fMuonModule) delete fMuonModule;
 	fMuonModule = 0;
 	
-	if(fSamba != 0) cout << "WTF!" <<endl;
+	if(fPulseAna) delete fPulseAna;
+	fPulseAna = 0;
+	
 	
 }
 
 
-KEvent& KRawEvent::operator=(const KEvent &anEvent)
+KEvent& KAmpEvent::operator=(const KEvent &anEvent)
 {
   //assignment operator
   
@@ -107,7 +112,7 @@ KEvent& KRawEvent::operator=(const KEvent &anEvent)
 	if(&anEvent == this) return *this;
 
   try {
-		const KRawEvent &rhs = dynamic_cast<const KRawEvent&>(anEvent);
+		const KAmpEvent &rhs = dynamic_cast<const KAmpEvent&>(anEvent);
 		this->operator=(rhs);
 		
 	}
@@ -119,7 +124,7 @@ KEvent& KRawEvent::operator=(const KEvent &anEvent)
 	return *this;
 }
 
-KRawEvent& KRawEvent::operator=(const KRawEvent &anEvent)
+KAmpEvent& KAmpEvent::operator=(const KAmpEvent &anEvent)
 {
   //assignment operator
   
@@ -138,7 +143,7 @@ KRawEvent& KRawEvent::operator=(const KRawEvent &anEvent)
 }
 
 
-UInt_t KRawEvent::GetLargestUniqueIDNumber(void)
+UInt_t KAmpEvent::GetLargestUniqueIDNumber(void)
 {
   //returns the largest unique ID number for TRefs in this
   //event. This is used for adding new subrecords to events, which
@@ -190,20 +195,30 @@ UInt_t KRawEvent::GetLargestUniqueIDNumber(void)
 		else if(GetMuonModule(i)->GetUniqueID() > aUniqueIDNumber)
 			aUniqueIDNumber = GetMuonModule(i)->GetUniqueID();
 	}
+	
+	for(Int_t i = 0; i < GetNumPulseAnalysisRecords(); i++){
+		if(!bIsInitialized && i == 0){
+			aUniqueIDNumber = GetPulseAnalysisRecord(i)->GetUniqueID();
+			bIsInitialized = true;
+		}
+		else if(GetPulseAnalysisRecord(i)->GetUniqueID() > aUniqueIDNumber)
+			aUniqueIDNumber = GetPulseAnalysisRecord(i)->GetUniqueID();
+	}
+	
   
 	return aUniqueIDNumber;
 }
 
-Int_t KRawEvent::AddSubRecords(const KEvent &rhs)
+Int_t KAmpEvent::AddSubRecords(const KEvent &rhs)
 {
   //Adds the sub records of 'anEvent' to *this. 
   //returns the number of sub records added to *this.
   //
   //hmmm... should this method be in the KEventFactory?  Or somewhere other
-  //than the KRawEvent object?
+  //than the KAmpEvent object?
 	
   try {
-    const KRawEvent &anEvent = dynamic_cast<const KRawEvent &> (rhs);
+    const KAmpEvent &anEvent = dynamic_cast<const KAmpEvent &> (rhs);
     
     Int_t numRecord = 0;
     
@@ -221,23 +236,23 @@ Int_t KRawEvent::AddSubRecords(const KEvent &rhs)
     
   }
   catch(bad_cast) {
-    cerr << "rhs not KRawEvent type." << endl;
+    cerr << "rhs not KAmpEvent type." << endl;
     return -1;
   }
   
     
 }
 
-Bool_t KRawEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
+Bool_t KAmpEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
 {
-  //Add rhs to this KRawEvent. This also automatically adds the Samba record that it points
+  //Add rhs to this KAmpEvent. This also automatically adds the Samba record that it points
   //to and the Pulse Records. If no Samba record is associated with rhs (via GetSambaRecord),
   //this method returns false. If an invalid pointer to a Pulse Record is found, 
   //this method returns false. This ensures that the event is built properly. 
 
   
   try {
-    const KRawBolometerRecord &inbolo = dynamic_cast<const KRawBolometerRecord &> (rhs);
+    const KAmpBolometerRecord &inbolo = dynamic_cast<const KAmpBolometerRecord &> (rhs);
     
     Int_t ObjectNumber = TProcessID::GetObjectCount(); //save this number for later.
     
@@ -247,11 +262,11 @@ Bool_t KRawEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
     UInt_t aNumber = GetLargestUniqueIDNumber();
     if(aNumber != 0) TProcessID::SetObjectCount(aNumber);
     
-    KRawBolometerRecord *newbolo = AddBolo();
+    KAmpBolometerRecord *newbolo = AddBolo();
     if (newbolo != 0)
       *newbolo = inbolo;
     else {
-      cerr << "KRawEvent::AddBoloSubRecord Invalid new KRawBolometerRecord Pointer" << endl;
+      cerr << "KAmpEvent::AddBoloSubRecord Invalid new KAmpBolometerRecord Pointer" << endl;
       TProcessID::SetObjectCount(ObjectNumber);
       return false;
     }
@@ -282,7 +297,7 @@ Bool_t KRawEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
       }
     }
     else {
-      cerr << "KRawEvent::AddBoloSubRecord Invalid KRawSambaRecord Pointer" << endl;
+      cerr << "KAmpEvent::AddBoloSubRecord Invalid KRawSambaRecord Pointer" << endl;
       TProcessID::SetObjectCount(ObjectNumber);
       return false;
     }
@@ -290,24 +305,50 @@ Bool_t KRawEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
     //now just add all of the pulse records
     
     for(Int_t j = 0; j < inbolo.GetNumPulseRecords(); j++){
-      KRawBoloPulseRecord *inpulse = inbolo.GetPulseRecord(j);
+      KAmpBoloPulseRecord *inpulse = inbolo.GetPulseRecord(j);
       if(inpulse != 0){
         
-        KRawBoloPulseRecord *newpulse = AddBoloPulse();
+        KAmpBoloPulseRecord *newpulse = AddBoloPulse();
         
         if(newpulse != 0){
           *newpulse = *inpulse;
           newbolo->AddPulseRecord(newpulse);
           newpulse->SetBolometerRecord(newbolo);
+          
+          //need to add all of the KPulseAnalysisRecord records here. 
+          for(Int_t k = 0; k < inpulse->GetNumPulseAnalysisRecords(); k++)
+          {
+            KPulseAnalysisRecord *inAnaRecord = inpulse->GetPulseAnalysisRecord(k);
+            if(inAnaRecord){
+              KPulseAnalysisRecord *newAnaRecord = AddPulseAnalysisRecord();
+
+              if(newAnaRecord != 0){
+                *newAnaRecord = *inAnaRecord;
+                newpulse->AddPulseAnalysisRecord(newAnaRecord);
+                newAnaRecord->SetBoloPulseRecord(newpulse);
+                newAnaRecord->SetBolometerRecord(newbolo);
+              }
+              else {
+                cerr << "KAmpEvent::AddBoloSubRecord. AddPulseAnalysisRecord returned a null KPulseAnalysisRecord Pointer" << endl;
+                TProcessID::SetObjectCount(ObjectNumber);
+                return false;
+              }
+            }
+            else {
+              cerr << "KAmpEvent::GetPulseAnalysisRecord return a null KPulseAnalysisRecord Pointer" << endl;
+              TProcessID::SetObjectCount(ObjectNumber);
+              return false;
+            }
+          }
         }
         else {
-          cerr << "KRawEvent::AddBoloSubRecord. AddBoloPulse returned a null KRawBoloPulseRecord Pointer" << endl;
+          cerr << "KAmpEvent::AddBoloSubRecord. AddBoloPulse returned a null KAmpBoloPulseRecord Pointer" << endl;
           TProcessID::SetObjectCount(ObjectNumber);
           return false;
         }
       }
       else {
-        cerr << "KRawEvent::GetPulseRecord return a null KRawBoloPulseRecord Pointer" << endl;
+        cerr << "KAmpEvent::GetPulseRecord return a null KAmpBoloPulseRecord Pointer" << endl;
         TProcessID::SetObjectCount(ObjectNumber);
         return false;
       }
@@ -325,7 +366,7 @@ Bool_t KRawEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
     
   }
   catch(bad_cast) {
-    cerr << "rhs not KRawBolometerRecord type." << endl;
+    cerr << "rhs not KAmpBolometerRecord type." << endl;
     return false;
   }
   
@@ -333,9 +374,9 @@ Bool_t KRawEvent::AddBoloSubRecord(const KBolometerRecord &rhs)
 }
 
 
-Bool_t KRawEvent::AddMuonModuleSubRecord(const KMuonModuleRecord &rhs)
+Bool_t KAmpEvent::AddMuonModuleSubRecord(const KMuonModuleRecord &rhs)
 {
-  //Add muon module to the is event.
+  //Add a muon module record to this event.
   
   //don't need to deal with object count here because we're not using
   //TRefs with the muon module data. 
@@ -361,7 +402,7 @@ Bool_t KRawEvent::AddMuonModuleSubRecord(const KMuonModuleRecord &rhs)
 }
 
 
-void KRawEvent::CopyClonesArrays(const KRawEvent &anEvent)
+void KAmpEvent::CopyClonesArrays(const KAmpEvent &anEvent)
 {
     
   ClearArrays("C");
@@ -369,7 +410,7 @@ void KRawEvent::CopyClonesArrays(const KRawEvent &anEvent)
 }
 
 
-void KRawEvent::CopyLocalMembers(const KRawEvent &anEvent)
+void KAmpEvent::CopyLocalMembers(const KAmpEvent &anEvent)
 {
   //copies local data members
   
@@ -381,15 +422,16 @@ void KRawEvent::CopyLocalMembers(const KRawEvent &anEvent)
 
 
 
-void KRawEvent::ClearArrays(Option_t *anOption)
+void KAmpEvent::ClearArrays(Option_t *anOption)
 {
 	ClearArray(anOption, fSamba);  //have to call delete on Samba array because the KSambaRecord class contains a string
 	ClearArray(anOption, fBolo); // also contains a string, like KSambaRecord
 	ClearArray(anOption, fBoloPulse);
 	ClearArray(anOption, fMuonModule);
+	ClearArray(anOption, fPulseAna);
 }
 
-void KRawEvent::Clear(Option_t *opt)
+void KAmpEvent::Clear(Option_t *opt)
 {
   ClearArrays(opt);
 	//delete any memory allocated by the KEvent class here that
@@ -406,12 +448,12 @@ void KRawEvent::Clear(Option_t *opt)
 	InitializeMembers();
 }
 
-void KRawEvent::InitializeMembers(void)
+void KAmpEvent::InitializeMembers(void)
 {
 	
 }
 
-void KRawEvent::CreateArrays(void)
+void KAmpEvent::CreateArrays(void)
 {
   
 	//Allocates memory for the KClonesArrays if they haven't already
@@ -421,14 +463,16 @@ void KRawEvent::CreateArrays(void)
 		fSamba = new KClonesArray(KRawSambaRecord::Class(),2);
 	
 	if(!fBolo)
-    fBolo = new KClonesArray(KRawBolometerRecord::Class(),5);
+    fBolo = new KClonesArray(KAmpBolometerRecord::Class(),5);
 	
 	if(!fBoloPulse)
-		fBoloPulse = new KClonesArray(KRawBoloPulseRecord::Class(),20);
+		fBoloPulse = new KClonesArray(KAmpBoloPulseRecord::Class(),20);
 	
 	if(!fMuonModule)
     fMuonModule = new KClonesArray(KRawMuonModuleRecord::Class(),5);
   
+  if(!fPulseAna)
+    fPulseAna = new KClonesArray(KPulseAnalysisRecord::Class(),80);
 	
 	//why doesn't this create a memory leak? CreateArrays is called
 	//by the default constructor. Does ROOT realize that I already 
@@ -437,12 +481,12 @@ void KRawEvent::CreateArrays(void)
   
 }
 
-template<class T> T* KRawEvent::AddSubRecord(TClonesArray *mArray)
+template<class T> T* KAmpEvent::AddSubRecord(TClonesArray *mArray)
 {
   return static_cast<T* >(static_cast<KClonesArray *>(mArray)->GetNewOrCleanedObject( mArray->GetEntriesFast() ) );
 }
 
-void KRawEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
+void KAmpEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
 {
   //now with KClonesArrays, we don't have to call DeleteArray when constructing
   //event records.
@@ -453,7 +497,7 @@ void KRawEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
 }
 
 
-void KRawEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)
+void KAmpEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)
 {
 	if(mArray) {
 		static_cast<KClonesArray *>(mArray)->Clear( (anOption && *anOption) ? anOption : "C" );
@@ -461,74 +505,89 @@ void KRawEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)
 }
 
 
-KRawSambaRecord* KRawEvent::AddSamba(void)
+KRawSambaRecord* KAmpEvent::AddSamba(void)
 {
-	//Use this event only when creating an event and you want to add
+	//Use this method only when creating an event and you want to add
 	//a new SubRecord.
 	
 	return AddSubRecord<KRawSambaRecord>(fSamba);
 }
 
-KRawBolometerRecord* KRawEvent::AddBolo(void)
+KAmpBolometerRecord* KAmpEvent::AddBolo(void)
 {
-	//Use this event only when creating an event and you want to add
+	//Use this method only when creating an event and you want to add
 	//a new SubRecord.
 	
 	AddTriggerType(kBoloTriggerType);
-	return AddSubRecord<KRawBolometerRecord>(fBolo);
+	return AddSubRecord<KAmpBolometerRecord>(fBolo);
 }
 
 
-KRawBoloPulseRecord* KRawEvent::AddBoloPulse(void)
+KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(void)
 {
-  //Use this event only when creating an event and you want to add
+  //Use this method only when creating an event and you want to add
 	//a new SubRecord.
   
   AddTriggerType(kBoloTriggerType);
-  return AddSubRecord<KRawBoloPulseRecord>(fBoloPulse);
+  return AddSubRecord<KAmpBoloPulseRecord>(fBoloPulse);
 }
 
 
-KRawMuonModuleRecord* KRawEvent::AddMuonModule()
+KRawMuonModuleRecord* KAmpEvent::AddMuonModule()
 {
-	//Use this event only when creating an event and you want to add
+	//Use this method only when creating an event and you want to add
 	//a new SubRecord.
 	
 	AddTriggerType(kMuonVetoTriggerType);
 	return AddSubRecord<KRawMuonModuleRecord>(fMuonModule);
 }
 
-KSambaRecord *KRawEvent::GetSamba(Int_t i) const
+KPulseAnalysisRecord* KAmpEvent::AddPulseAnalysisRecord()
+{
+	//Use this method only when creating an event and you want to add
+	//a new SubRecord.
+	
+	return AddSubRecord<KPulseAnalysisRecord>(fPulseAna);
+}
+
+KSambaRecord *KAmpEvent::GetSamba(Int_t i) const
 {
   // Return the i'th Samba Sub Record for this event.
 	
   return static_cast<KSambaRecord *>(fSamba->At(i));
 }
 
-KBolometerRecord *KRawEvent::GetBolo(Int_t i) const
+KBolometerRecord *KAmpEvent::GetBolo(Int_t i) const
 {
   // Return the i'th Bolometer Sub Record for this event.
 	
   return static_cast<KBolometerRecord *>(fBolo->At(i));
 }
 
-KBoloPulseRecord *KRawEvent::GetBoloPulse(Int_t i) const
+KBoloPulseRecord *KAmpEvent::GetBoloPulse(Int_t i) const
 {
   // Return the i'th Bolometer Pulse Sub Record for this event.
 	
   return static_cast<KBoloPulseRecord *>(fBoloPulse->At(i));
 }
 
-KMuonModuleRecord *KRawEvent::GetMuonModule(Int_t i) const
+KMuonModuleRecord *KAmpEvent::GetMuonModule(Int_t i) const
 {
   // Return the i'th Muon Module Sub Record for this event.
 	
   return static_cast<KMuonModuleRecord *>(fMuonModule->At(i));
 }
 
-Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
+KPulseAnalysisRecord *KAmpEvent::GetPulseAnalysisRecord(Int_t i) const
 {
-  //Compares two KRawEvents and their member variables to test for equality.
+  // Return the i'th Muon Module Sub Record for this event.
+	
+  return static_cast<KPulseAnalysisRecord *>(fPulseAna->At(i));
+}
+
+Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
+{
+  //Compares two KAmpEvents and their member variables to test for equality.
 	//If bPrint is set to true, then a message for each member variable that is different
 	//will print to standard out. Otherwise, this method will return false and quit
 	//checking member variables as soon as it finds a unequal data member.
@@ -548,7 +607,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
   
 	if(!fMuonSystem.IsSame(anEvent.fMuonSystem, bPrint)){
 		if (bPrint) 
-			cout << "KRawEvent fMuonSystem Not Equal" << endl;		
+			cout << "KAmpEvent fMuonSystem Not Equal" << endl;		
 		bIsEqual = false;
 		if(!bPrint)
 			return false;
@@ -558,12 +617,12 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 	if(GetNumBolos() == anEvent.GetNumBolos()){
 		
 		for(Int_t i = 0; i < GetNumBolos(); i++){
-			KRawBolometerRecord *bolo = static_cast<KRawBolometerRecord *>(GetBolo(i));
-			KRawBolometerRecord *boloOther = static_cast<KRawBolometerRecord *>(anEvent.GetBolo(i));
+			KAmpBolometerRecord *bolo = static_cast<KAmpBolometerRecord *>(GetBolo(i));
+			KAmpBolometerRecord *boloOther = static_cast<KAmpBolometerRecord *>(anEvent.GetBolo(i));
 			if(bolo != 0 && boloOther != 0){
 				if(!bolo->IsSame(*boloOther, bPrint)){
 					if (bPrint) 
-						cout << "KRawEvent KRawBolometerRecord number " << i << " Not Equal" << endl;		
+						cout << "KAmpEvent KAmpBolometerRecord number " << i << " Not Equal" << endl;		
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -576,7 +635,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 				if(sam != 0 && samOther != 0){
 					if(!sam->IsSame(*samOther, bPrint)){
 						if(bPrint)
-							cout << "KRawEvent KRawBolometerRecord number " << i << " Samba Records not equal" << endl;
+							cout << "KAmpEvent KAmpBolometerRecord number " << i << " Samba Records not equal" << endl;
 						bIsEqual = false;
 						if(!bPrint)
 							return false;
@@ -584,7 +643,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 				}
 				else {
 					if(bPrint)
-						cout << "KRawEvent KRawBolometerRecord number " << i << " Got NULL Pointers for Samba Records" << endl;
+						cout << "KAmpEvent KAmpBolometerRecord number " << i << " Got NULL Pointers for Samba Records" << endl;
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -594,13 +653,13 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 				
 				if(bolo->GetNumPulseRecords() == boloOther->GetNumPulseRecords()){
 					for(Int_t k = 0; k < bolo->GetNumPulseRecords(); k++){
-						KRawBoloPulseRecord *pulse = bolo->GetPulseRecord(k);
-						KRawBoloPulseRecord *pulseOther = boloOther->GetPulseRecord(k);
+						KAmpBoloPulseRecord *pulse = bolo->GetPulseRecord(k);
+						KAmpBoloPulseRecord *pulseOther = boloOther->GetPulseRecord(k);
 						
 						if(pulse != 0 && pulseOther != 0){
 							if(!pulse->IsSame(*pulseOther, bPrint)){
 								if(bPrint)
-									cout << "KRawEvent KRawBolometerRecord number " << i << " Pulse Record " << k << " not equal" << endl;
+									cout << "KAmpEvent KAmpBolometerRecord number " << i << " Pulse Record " << k << " not equal" << endl;
 								bIsEqual = false;
 								if(!bPrint)
 									return false;
@@ -608,7 +667,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 						}
 						else {
 							if(bPrint)
-								cout << "KRawEvent KRawBolometerRecord number " << i << " Got NULL Pointers for Pulse Record" << k << endl;
+								cout << "KAmpEvent KAmpBolometerRecord number " << i << " Got NULL Pointers for Pulse Record" << k << endl;
 							bIsEqual = false;
 							if(!bPrint)
 								return false;
@@ -617,7 +676,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 				}
 				else {
 					if(bPrint)
-						cout << "KRawEvent KRawBolometerRecord number " << i << " Number of Pulse Records Not Equal" << endl;	
+						cout << "KAmpEvent KAmpBolometerRecord number " << i << " Number of Pulse Records Not Equal" << endl;	
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -627,7 +686,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 			}
 			else {
 				if(bPrint)
-					cout << "KRawEvent KRawBolometerRecord number " << i << " Got NULL Pointers for Bolometer Record" << endl;
+					cout << "KAmpEvent KAmpBolometerRecord number " << i << " Got NULL Pointers for Bolometer Record" << endl;
 				bIsEqual = false;
 				if(!bPrint)
 					return false;
@@ -638,7 +697,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 	}
 	else {
 		if (bPrint) 
-			cout << "KRawEvent size of Bolo Array Not Equal" << endl;		
+			cout << "KAmpEvent size of Bolo Array Not Equal" << endl;		
 		bIsEqual = false;
 		if(!bPrint)
 			return false;
@@ -653,7 +712,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 			if(s != 0 && sOther != 0){
 				if(!s->IsSame(*sOther, bPrint)){
 					if (bPrint) 
-						cout << "KRawEvent KRawBoloPulseRecord number " << i << " Not Equal" << endl;		
+						cout << "KAmpEvent KRawMuonModuleRecord number " << i << " Not Equal" << endl;		
 					bIsEqual = false;
 					if(!bPrint)
 						return false;
@@ -663,18 +722,43 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 	}
 	else {
 		if (bPrint) 
-			cout << "KRawEvent size of muon module array Not Equal" << endl;		
+			cout << "KAmpEvent size of muon module array Not Equal" << endl;		
 		bIsEqual = false;
 		if(!bPrint)
 			return false;
 	}
   
+  
+  if(GetNumPulseAnalysisRecords() == anEvent.GetNumPulseAnalysisRecords()){
+		for(Int_t i = 0; i < GetNumPulseAnalysisRecords(); i++){
+			KPulseAnalysisRecord *s = static_cast<KPulseAnalysisRecord *>(GetPulseAnalysisRecord(i));
+			KPulseAnalysisRecord *sOther = static_cast<KPulseAnalysisRecord *>(anEvent.GetPulseAnalysisRecord(i));
+			if(s != 0 && sOther != 0){
+				if(!s->IsSame(*sOther, bPrint)){
+					if (bPrint) 
+						cout << "KAmpEvent KPulseAnalysisRecord number " << i << " Not Equal" << endl;		
+					bIsEqual = false;
+					if(!bPrint)
+						return false;
+				}
+			}
+		}
+	}
+	else {
+		if (bPrint) 
+			cout << "KAmpEvent size of pulse amplitude array Not Equal" << endl;		
+		bIsEqual = false;
+		if(!bPrint)
+			return false;
+	}
+	
+	
 	return bIsEqual;
   
 }
 
 
-void KRawEvent::Compact(void)
+void KAmpEvent::Compact(void)
 {
 	//Make the event class as small as possible. this calls 'Compact' for all member
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
@@ -688,17 +772,18 @@ void KRawEvent::Compact(void)
   fBolo->Compress();
   fBoloPulse->Compress();
   fMuonModule->Compress();
+  fPulseAna->Compress();
   
 	for(Int_t i = 0; i < GetNumSambas(); i++){
 		KRawSambaRecord* samba = static_cast<KRawSambaRecord *>(GetSamba(i));
 		samba->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBolos(); i++){
-		KRawBolometerRecord* bolo = static_cast<KRawBolometerRecord *>(GetBolo(i));
+		KAmpBolometerRecord* bolo = static_cast<KAmpBolometerRecord *>(GetBolo(i));
 		bolo->Compact();
 	}
 	for(Int_t i = 0; i < GetNumBoloPulses(); i++){
-		KRawBoloPulseRecord* bp = static_cast<KRawBoloPulseRecord *>(GetBoloPulse(i));
+		KAmpBoloPulseRecord* bp = static_cast<KAmpBoloPulseRecord *>(GetBoloPulse(i));
 		bp->Compact();
 	}
 	for(Int_t i = 0; i < GetNumMuonModules(); i++){
@@ -706,6 +791,10 @@ void KRawEvent::Compact(void)
 		module->Compact();
 	}
 
+  for(Int_t i = 0; i < GetNumPulseAnalysisRecords(); i++){
+		KPulseAnalysisRecord* pa = static_cast<KPulseAnalysisRecord *>(GetPulseAnalysisRecord(i));
+		pa->Compact();
+	}
   
 }
 

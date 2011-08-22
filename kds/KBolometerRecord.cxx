@@ -95,21 +95,19 @@ void KBolometerRecord::InitializeMembers(void)
   
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-  fDetectorName.resize(0);
+  fDetectorName = "";
   fMass = 0;
 	
 }
 
 void KBolometerRecord::SetDetectorName(const Char_t* aWord)
 {
-	
 	fDetectorName = aWord;
 }
 
-string KBolometerRecord::GetDetectorName(void) const 
+const Char_t* KBolometerRecord::GetDetectorName(void) const 
 {
-	
-	return fDetectorName;
+  return fDetectorName.c_str();
 }
 
 

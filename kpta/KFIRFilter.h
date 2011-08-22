@@ -52,7 +52,6 @@ private:
   
 };
 
-
 template <class T> void KFIRFilter::SetTheCoefficients(std::vector<T> &coef)
 {
   if (coef.size() != fCoefSize){
@@ -69,9 +68,8 @@ template <class T> void KFIRFilter::SetTheCoefficients(const T* coef, unsigned i
   if (size != fCoefSize){
     if(fCoefficients) delete [] fCoefficients;
     fCoefSize = size;
-    fCoefficients = new double[fCoefSize];
+    fCoefficients = new double[fCoefSize];    
   }
-  
   for(unsigned int i = 0; i < fCoefSize; i++)
     *(fCoefficients+i) = coef[i];
     

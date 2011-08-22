@@ -53,7 +53,7 @@ private:
 	string fTreeName;
 	string fTreeTitle;
 	string fBranchName;
-    string fChainTitle;
+  string fChainTitle;
 	
   //private methods
   void InitializeMembers(void);
