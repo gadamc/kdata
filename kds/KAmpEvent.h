@@ -1,5 +1,5 @@
 /*
- *  KRawEvent.h
+ *  KAmpEvent.h
  *  KDataStructure
  *
  *  Created by Adam Cox on 3/24/10.
@@ -7,25 +7,25 @@
  *
  */
 
-#ifndef __KRAWEVENT_H__
-#define __KRAWEVENT_H__
+#ifndef __KAMPEVENT_H__
+#define __KAMPEVENT_H__
 
 #include "KEvent.h"
 #include "KRawMuonVetoSysRecord.h"
 #include "KClonesArray.h"
 
-
-class KRawBoloPulseRecord;
+class KAmpBoloPulseRecord;
 class KRawSambaRecord;
-class KRawBolometerRecord;
+class KAmpBolometerRecord;
 class KRawMuonModuleRecord;
+class KPulseAnalysisRecord;
 
 class KBoloPulseRecord;
 class KSambaRecord;
 class KBolometerRecord;
 class KMuonModuleRecord;
 
-class KRawEvent : public KEvent {         
+class KAmpEvent : public KEvent {         
 	
 public:
 	//Constructors and destructor. Only Derived class and the Factory
@@ -33,30 +33,31 @@ public:
 	//However, in order for ROOT's I/O to work properly
 	//the constructor and destructor
 	//have to be public. Otherwise, I would have made them protected or private
-	KRawEvent(void);
-	KRawEvent(const KRawEvent &anEvent);
-	virtual ~KRawEvent(void);
+	KAmpEvent(void);
+	KAmpEvent(const KAmpEvent &anEvent);
+	virtual ~KAmpEvent(void);
 	virtual void Clear(Option_t *opt = "C");
 	void ClearArrays(Option_t *opt = "C");
-	Bool_t IsSame(const KRawEvent &anEvent, Bool_t bPrint = false) const;
-	Bool_t operator==(const KRawEvent &anEvent) const { return IsSame(anEvent,false); }
-	Bool_t operator!=(const KRawEvent &anEvent) const { return !(*this==anEvent); }
+	Bool_t IsSame(const KAmpEvent &anEvent, Bool_t bPrint = false) const;
+	Bool_t operator==(const KAmpEvent &anEvent) const { return IsSame(anEvent,false); }
+	Bool_t operator!=(const KAmpEvent &anEvent) const { return !(*this==anEvent); }
 	virtual void Compact(void);
-	static const char* GetClassName() {return "KRawEvent";}
+	static const char* GetClassName() {return "KAmpEvent";}
   
 	virtual KEvent& operator=(const KEvent &anEvent);
-	virtual KRawEvent& operator=(const KRawEvent &anEvent);
+	virtual KAmpEvent& operator=(const KAmpEvent &anEvent);
 	  
 	const KClonesArray* GetSambaRecords(void) const {return static_cast<KClonesArray *>(fSamba);}
 	const KClonesArray* GetBoloRecords(void) const {return static_cast<KClonesArray *>(fBolo);}
 	const KClonesArray* GetBoloPulseRecords(void) const {return static_cast<KClonesArray *>(fBoloPulse);}
 	const KClonesArray* GetMuonModuleRecords(void) const {return static_cast<KClonesArray *>(fMuonModule);}
+  const KClonesArray* GetPulseAnalysisRecord(void) const {return static_cast<KClonesArray *>(fPulseAna);}
   
 	KRawSambaRecord* AddSamba();
-	KRawBolometerRecord* AddBolo();
-	KRawBoloPulseRecord* AddBoloPulse();
+	KAmpBolometerRecord* AddBolo();
+	KAmpBoloPulseRecord* AddBoloPulse();
 	KRawMuonModuleRecord* AddMuonModule();
-  
+  KPulseAnalysisRecord* AddPulseAnalysisRecord();
   
 	//methods required by the KEvent abstract class.
 	virtual Int_t AddSubRecords(const KEvent &anEvent);
@@ -67,6 +68,7 @@ public:
 	virtual Int_t GetNumBolos(void) const {return (fBolo) ? fBolo->GetEntriesFast() : 0;;}
 	virtual Int_t GetNumBoloPulses(void) const {return (fBoloPulse) ? fBoloPulse->GetEntriesFast() : 0;} 
 	virtual Int_t GetNumMuonModules(void) const {return (fMuonModule) ? fMuonModule->GetEntriesFast() : 0;} 
+  virtual Int_t GetNumPulseAnalysisRecords(void) const {return (fPulseAna) ? fPulseAna->GetEntriesFast() : 0;} 
   
 	virtual KMuonVetoSystemRecord* GetMuonVetoSystemRecord(void) {KMuonVetoSystemRecord *s = static_cast<KMuonVetoSystemRecord *>(&fMuonSystem); return s;}
   
@@ -74,6 +76,7 @@ public:
 	virtual KBolometerRecord* GetBolo(Int_t i) const;
 	virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const;
 	virtual KMuonModuleRecord* GetMuonModule(Int_t i) const;
+  virtual KPulseAnalysisRecord* GetPulseAnalysisRecord(Int_t i) const;
   
 private: 
 	
@@ -85,11 +88,12 @@ private:
   TClonesArray *fBolo; //-> an array of bolometer records
   TClonesArray *fBoloPulse; //-> an array of pulse record
   TClonesArray *fMuonModule; //-> an array of muon module records
+  TClonesArray *fPulseAna; //-> an array of pulse analysis, each calculated by a different method
   
 	void CreateArrays(void);
 	void InitializeMembers(void);
-	void CopyLocalMembers(const KRawEvent &anEvent);
-	void CopyClonesArrays(const KRawEvent &anEvent);
+	void CopyLocalMembers(const KAmpEvent &anEvent);
+	void CopyClonesArrays(const KAmpEvent &anEvent);
   
   template<class T> T* AddSubRecord(TClonesArray *mArray);
   void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
@@ -97,9 +101,9 @@ private:
   
   UInt_t GetLargestUniqueIDNumber(void);
 
-	ClassDef(KRawEvent ,2);
+	ClassDef(KAmpEvent ,1);
 };
 
 
 
-#endif // __KRAWEVENT_H__
+#endif // __KAMPEVENT_H__
