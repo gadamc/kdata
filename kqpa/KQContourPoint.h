@@ -10,6 +10,7 @@
 
 
 #include "Rtypes.h"
+#include "TObject.h"
 #include "TF2.h"
 #include "TMath.h"
 #include "TMarker.h"
@@ -20,7 +21,7 @@
 #ifndef __KQCONTOURPOINT_H__
 #define __KQCONTOURPOINT_H__
 
-class KQContourPoint {
+class KQContourPoint : public TObject {
   private:
     KQContourPoint* fPreviousVersion; // copy of this
     Double_t fQvalue; // Q value
@@ -71,6 +72,7 @@ class KQContourPoint {
     void SetEnergyHeat(Double_t anEnergyHeat);
     void SetResolutionX(Int_t aNumBinsX);
     void SetResolutionY(Int_t aNumBinsY);
+    void SetFunction();
     void SetNpx(Int_t anNpx);
     void SetNpy(Int_t anNpy);
     void SetNumSigmas(Double_t aNumSigmas);

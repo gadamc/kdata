@@ -10,6 +10,7 @@
 
 
 #include "Rtypes.h"
+#include "TObject.h"
 #include "TF2.h"
 #include "TMath.h"
 #include "TMarker.h"
@@ -27,7 +28,7 @@ using namespace std;
 #ifndef __KQCONTOURPOINTLIST_H__
 #define __KQCONTOURPOINTLIST_H__
 
-class KQContourPointList {
+class KQContourPointList : public TObject {
   private:
     string fMode; // file reading mode
     string fFileName; // ASCII filename
@@ -112,6 +113,10 @@ class KQContourPointList {
     TF2* GetProbabilityOfAtLeastOneEvent(
       const Char_t* aFunctionName = "",
       Double_t aTolerance = 0.0001);
+    TH1D* GetDistributionOfTrueValues(const Char_t* aHistogramName = "NumTrueValues",
+                                                  TF1* aLowerBoundary = 0,
+                                                  TF1* anUpperBoundary = 0,
+                                                  UInt_t aMonteCarloSize = 10000);
   ClassDef(KQContourPointList,1);
 };
 

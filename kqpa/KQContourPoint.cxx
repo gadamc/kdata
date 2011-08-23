@@ -75,8 +75,7 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
       return;
     }
     
-  CalculateContour();
-   ResetMarker();
+   SetFunction();
    fPreviousVersion = new KQContourPoint(*this);
 }
 
@@ -118,11 +117,10 @@ KQContourPoint::~KQContourPoint()
       this->fMarker = 0;
   }
 }
-  
-  
-void KQContourPoint::CalculateContour()
+
+void KQContourPoint::SetFunction()
 {
-   // This method resets the function due to parameter  changes 
+     // This method resets the function due to parameter  changes 
     Double_t aSigmaEnergyRecoil = TMath::Sqrt(
   (1+ fVoltageBias/fEpsilon)*(1+fVoltageBias/fEpsilon)*fSigmaEnergyHeat*
   fSigmaEnergyHeat
@@ -169,6 +167,11 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
   fFunction->SetNpy(1000);
   fFunction->SetLineStyle(1);
   fFunction->SetLineWidth(0.5);
+}
+  
+  
+void KQContourPoint::CalculateContour()
+{
   /*
   fFunction->GetXaxis()->SetTitle("E_{Recoil} [keV]");
   fFunction->GetYaxis()->SetTitle("Q");
@@ -210,7 +213,7 @@ void KQContourPoint::Draw(Option_t* anOption)
   // This method draws the event
   // (marker for the modal values and contour line for the confidence region)
   if(fPreviousVersion)
-    if(*this!=*fPreviousVersion) {
+    if(*this!=*fPreviousVersion||!fMarker) {
       CalculateContour();
       ResetMarker();
       //delete fPreviousVersion;
@@ -301,7 +304,7 @@ TH2D* KQContourPoint::GetHistogram()
   // (E_recoil,Q)-distribution,which was  used to determine the contour line for
   // the specified confidence level
   if(fPreviousVersion)
-    if(*this!=*fPreviousVersion) {
+    if(*this!=*fPreviousVersion||!fMarker) {
       CalculateContour();
       ResetMarker();
       //delete fPreviousVersion;
