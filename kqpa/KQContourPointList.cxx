@@ -349,3 +349,69 @@ TF2* KQContourPointList::GetProbabilityOfAtLeastOneEvent(
   }
     return aFunction;
 }
+
+TH1D* KQContourPointList::GetDistributionOfTrueValues(const Char_t* aHistogramName,
+                                                  TF1* aLowerBoundary,
+                                                  TF1* anUpperBoundary,
+                                                  UInt_t aMonteCarloSize)
+{
+  //This method returns a histogram showing the distribution of the number of 
+  // true events within an area between boundary values given by
+  // aLowerBoundary and anUpperBoundary 
+  // for the measured events of this KQContourPointList
+  // This histogram is created by generating random events, one for each KQContourPoint
+  // in the list, from their pdfs, incrementing a counter for each event which
+  // lies in the specified area and then filling the histogram with this counter
+  // This procedure is repeated <aMonteCarloSize> times.
+  // Only one or none boundary functions can be specified, then the area
+  // is regarded unrestricted upwards, downwards or on both sides.
+  
+  TH1D* result = new TH1D(aHistogramName,
+                          "Distribution of number of true events in a specified area"
+                          "for this KQContouPointList",
+                          fPoints.size()+1,
+                          0,
+                          fPoints.size());
+  
+  Int_t aTrueEventCounter = 0;
+  Double_t anEnergyRecoil =0;
+  Double_t aQvalue = 0;
+  Int_t aFunctionFlag = -1;
+  
+  if(aLowerBoundary&&anUpperBoundary)
+    aFunctionFlag = 0;
+  else
+    if(aLowerBoundary&&!anUpperBoundary)
+      aFunctionFlag = 1;
+    else
+      if(!aLowerBoundary&&anUpperBoundary)
+        aFunctionFlag = 2;
+  for(UInt_t k = 0; k< aMonteCarloSize; ++k)
+  {
+      cout << "iteration " << k << endl;
+    aTrueEventCounter = 0;
+    for(UInt_t l = 0; l<fPoints.size(); ++l) {
+      this->GetElement(l)->GetFunction()->GetRandom2(anEnergyRecoil,aQvalue);
+      switch(aFunctionFlag) {
+        case 0: 
+          if(aQvalue>aLowerBoundary->Eval(anEnergyRecoil)&&
+             aQvalue<anUpperBoundary->Eval(anEnergyRecoil))
+            ++aTrueEventCounter;
+          break;
+        case 1:
+          if(aQvalue>aLowerBoundary->Eval(anEnergyRecoil))
+            ++aTrueEventCounter;
+          break;
+        case 2:
+          if(aQvalue<anUpperBoundary->Eval(anEnergyRecoil))
+            ++aTrueEventCounter;
+          break;
+        default:
+          ++aTrueEventCounter;
+          break;
+      }
+    }
+    result->Fill(aTrueEventCounter); 
+  }    
+  return result;
+}
