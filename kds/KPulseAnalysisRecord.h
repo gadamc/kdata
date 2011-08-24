@@ -38,6 +38,7 @@ public:
   virtual Double32_t GetChiSq(void) const { return fChiSq;}
   virtual Double32_t GetBaselineAmplitudeWidth(void) const { return fBaselineAmplitudeWidth;}
   virtual Double32_t GetRisetime(void) const { return fRiseTime;}
+  virtual Double32_t GetPulseWidth(void) const { return fPulseWidth;}
 
   virtual void SetAmp(Double32_t aVal) {  fAmp = aVal;}
   virtual void SetCalculationType(const char* atype) {  fCalcType = atype;}
@@ -47,6 +48,7 @@ public:
   virtual void SetChiSq(Double32_t aval) {  fChiSq =  aval;}
   virtual void SetBaselineAmplitudeWidth(Double32_t aval) {  fBaselineAmplitudeWidth =  aval;}
   virtual void SetRisetime(Double32_t aval) {  fRiseTime =  aval;}
+  virtual void SetPulseWidth(Double32_t aval) {  fPulseWidth =  aval;}
   
   KAmpBolometerRecord* GetBolometerRecord(void) const {return (KAmpBolometerRecord*)fBolometerRecord.GetObject();}
 	KAmpBoloPulseRecord* GetBoloPulseRecord(void) const {return (KAmpBoloPulseRecord*)fBoloPulseRecord.GetObject();}
@@ -77,6 +79,9 @@ private:
   
   TRef fBolometerRecord;
   TRef fBoloPulseRecord;
+  
+  //always add new member variables to the end of this list - this improves backwards compatibility
+  Double32_t fPulseWidth;
   
   //pulse width
   //best-fit parameter results
