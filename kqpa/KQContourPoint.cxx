@@ -38,7 +38,7 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   fSigmaEnergyHeat(aSigmaEnergyHeat), fSigmaEnergyIonHeat(aSigmaEnergyIonHeat),
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
   fConfidenceLevel(aConfidenceLevel), fNumBinsX(aNumBinsX),
-  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas)
+  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas), fConfidenceFunctionValue(-1)
 {
   // The constructor generates the pdf g(E_recoil,Q)
   // (documentation in ~/doc/ERecoiLQDistribution.pdf)
@@ -121,6 +121,13 @@ KQContourPoint::~KQContourPoint()
 void KQContourPoint::SetFunction()
 {
      // This method resets the function due to parameter  changes 
+     
+  if(fFunction)
+  {
+    delete fFunction;
+    fFunction = 0;
+  }
+  
     Double_t aSigmaEnergyRecoil = TMath::Sqrt(
   (1+ fVoltageBias/fEpsilon)*(1+fVoltageBias/fEpsilon)*fSigmaEnergyHeat*
   fSigmaEnergyHeat
@@ -176,11 +183,13 @@ void KQContourPoint::CalculateContour()
   fFunction->GetXaxis()->SetTitle("E_{Recoil} [keV]");
   fFunction->GetYaxis()->SetTitle("Q");
   */
+  cout << "contour reset" << endl;
   KQContour aContour(fFunction,
                      fNumBinsX,
                      fNumBinsY);
   fFunction->SetContour(1);
-  fFunction->SetContourLevel(0,aContour.GetContour(fConfidenceLevel));
+  fConfidenceFunctionValue = aContour.GetContour(fConfidenceLevel);
+  fFunction->SetContourLevel(0,fConfidenceFunctionValue);
   fConfidenceLevelError = aContour.GetConfidenceLevelError();                  
  
 }
@@ -213,7 +222,8 @@ void KQContourPoint::Draw(Option_t* anOption)
   // This method draws the event
   // (marker for the modal values and contour line for the confidence region)
   if(fPreviousVersion)
-    if(*this!=*fPreviousVersion||!fMarker) {
+    if(*this!=*fPreviousVersion||!fMarker||fConfidenceFunctionValue==-1) {
+      SetFunction();
       CalculateContour();
       ResetMarker();
       //delete fPreviousVersion;
@@ -248,18 +258,22 @@ Bool_t KQContourPoint::CutsALine(TF1* aFunction,Int_t aNumPoints)
   // of the internal TF1 representing the contour
   // If there is one value g_i exceeding the function value on the contour line
   // the method returns true otherwise false
-  KQContour aContour(fFunction,
-                     fNumBinsX,
-                     fNumBinsY);
-  Double_t aThreshold = aContour.GetContour(fConfidenceLevel);
+  if(fPreviousVersion)
+    if(*this!=*fPreviousVersion||!fMarker||fConfidenceFunctionValue==-1) {
+      SetFunction();
+      CalculateContour();
+      ResetMarker();
+      //delete fPreviousVersion;
+      fPreviousVersion = new KQContourPoint(*this);
+    }
+
   Double_t anErecoilMin = aFunction->GetXmin();
   Double_t anErecoilMax = aFunction->GetXmax();
-  
   for(Int_t k = 0; k<aNumPoints; ++k) {
     if(fFunction->Eval(anErecoilMin + (Double_t)k/aNumPoints*
                        (anErecoilMax - anErecoilMin),
                        aFunction->Eval(anErecoilMin + (Double_t)k/
-                       aNumPoints*(anErecoilMax - anErecoilMin)))>aThreshold)
+                       aNumPoints*(anErecoilMax - anErecoilMin)))>fConfidenceFunctionValue)
       return true;
   }
   return false;
@@ -290,6 +304,25 @@ Bool_t KQContourPoint::CutsOne(Int_t aNumPoints)
   return(this->CutsALine(aFunction,aNumPoints));
 }
 
+Bool_t KQContourPoint::IsInConfidenceRegion(Double_t anEnergyRecoil,
+					    Double_t aQvalue)
+{
+  // This method checks if a pair (E_recoil,Q) lies in the event's confidence region
+  // This is done by comparing the pdf function value on (E_recoil,Q) with
+  // the pdf function value on the confidence line
+  // If g(E_recoil,Q) is larger than g(CL), it lies in the confidence region
+  // and true is returned, otherwise false
+  if(fPreviousVersion)
+  if(*this!=*fPreviousVersion||!fMarker||fConfidenceFunctionValue==-1) {
+    SetFunction();
+    CalculateContour();
+    ResetMarker();
+    //delete fPreviousVersion;
+    fPreviousVersion = new KQContourPoint(*this);
+  }
+  return(fFunction->Eval(anEnergyRecoil,aQvalue)>fConfidenceFunctionValue);
+}
+
 void KQContourPoint::SetRange(Double_t xmin, Double_t ymin,
                               Double_t xmax, Double_t ymax)
 {
@@ -305,6 +338,7 @@ TH2D* KQContourPoint::GetHistogram()
   // the specified confidence level
   if(fPreviousVersion)
     if(*this!=*fPreviousVersion||!fMarker) {
+      SetFunction();
       CalculateContour();
       ResetMarker();
       //delete fPreviousVersion;
@@ -320,9 +354,14 @@ TH2D* KQContourPoint::GetContourHistogram()
 {
   //This method returns a hard copy of a histogram which has bin contents of 1
   //for bins in the confidence region and 0 else
-  if(fPreviousVersion) {
-    CalculateContour();
-  }
+  if(fPreviousVersion)
+    if(*this!=*fPreviousVersion||!fMarker||fConfidenceFunctionValue==-1) {
+      SetFunction();
+      CalculateContour();
+      ResetMarker();
+      //delete fPreviousVersion;
+      fPreviousVersion = new KQContourPoint(*this);
+    }
   KQContour aContour(fFunction,
                      fNumBinsX,
                      fNumBinsY);
@@ -338,7 +377,6 @@ void KQContourPoint::SetQvalue(Double_t aQvalue)
   fEnergyIon = fQvalue*fEnergyRecoil;
   fEnergyHeat = (1+ fQvalue* fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
-  ResetMarker();
 }
 
 void KQContourPoint::SetEnergyRecoil(Double_t anEnergyRecoil)
@@ -350,7 +388,6 @@ void KQContourPoint::SetEnergyRecoil(Double_t anEnergyRecoil)
   fEnergyIon = fQvalue* fEnergyRecoil;
   fEnergyHeat = (1+ fQvalue*fVoltageBias/fEpsilon)/(1+fVoltageBias/fEpsilon) *
     fEnergyRecoil;
-  ResetMarker();
 }
 
 void KQContourPoint::SetEnergyIon(Double_t anEnergyIon)
@@ -362,7 +399,6 @@ void KQContourPoint::SetEnergyIon(Double_t anEnergyIon)
   fEnergyRecoil = (1 + fVoltageBias/ fEpsilon) * fEnergyHeat
     - fVoltageBias/fEpsilon * fEnergyIon;
   fQvalue = fEnergyIon/fEnergyRecoil;
-  ResetMarker();
 }
 
 void KQContourPoint::SetEnergyHeat(Double_t anEnergyHeat)
@@ -374,7 +410,6 @@ void KQContourPoint::SetEnergyHeat(Double_t anEnergyHeat)
   fEnergyRecoil = (1 + fVoltageBias/ fEpsilon) * fEnergyHeat
     - fVoltageBias/fEpsilon * fEnergyIon;
   fQvalue = fEnergyIon/fEnergyRecoil;
-  ResetMarker();
 }
 
 void KQContourPoint::SetResolutionX(Int_t aNumBinsX)
@@ -482,6 +517,7 @@ Bool_t operator==(KQContourPoint& aPoint,
                aPoint.fConfidenceLevel == anotherPoint.fConfidenceLevel &&
                aPoint.fConfidenceLevelError ==
                anotherPoint.fConfidenceLevelError &&
+
                aPoint.fNumBinsX == anotherPoint.fNumBinsX &&
                aPoint.fNumBinsY == anotherPoint.fNumBinsY &&
                aPoint.fNumSigmas == anotherPoint.fNumSigmas);

@@ -36,7 +36,8 @@ class KQContourPoint : public TObject {
     Double_t fEpsilon; // epsilon_gamma
     Double_t fConfidenceLevel; // confidence level
     Double_t fConfidenceLevelError; // uncertainty on the confidence level
-    TF2* fFunction; // function representing the pdf g(E_recoil,Q)
+    Double_t fConfidenceFunctionValue; // function value corresponding to the confidence line
+    TF2* fFunction; //! function representing the pdf g(E_recoil,Q)
     TMarker* fMarker; // marker representing the modal value (E_recoil,Q)
     Int_t fNumBinsX; // number of bins in X direction of the
     // distribution histogram
@@ -101,6 +102,7 @@ class KQContourPoint : public TObject {
     Double_t GetEpsilon() const { return fEpsilon; }
     Double_t GetConfidenceLevel() const { return fConfidenceLevel; }
     Double_t GetConfidenceLevelError() const { return fConfidenceLevelError; }
+    Double_t GetConfidenceFunctionValue() const { return fConfidenceFunctionValue; }
     TMarker* GetMarker() const { return fMarker; }
     TH2D* GetHistogram();
     TH2D* GetContourHistogram();
@@ -114,6 +116,8 @@ class KQContourPoint : public TObject {
                      Int_t aNumPoints = 1000);
     Bool_t CutsLindhardLine(Int_t aNumPoints = 1000);
     Bool_t CutsOne(Int_t aNumPoints = 1000);
+    Bool_t IsInConfidenceRegion(Double_t anEnergyRecoil,
+				Double_t aQvalue);
     friend Bool_t operator!=(KQContourPoint& aPoint,
                              KQContourPoint& anotherPoint);
     friend Bool_t operator==(KQContourPoint& aPoint,
