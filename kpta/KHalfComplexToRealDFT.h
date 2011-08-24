@@ -18,6 +18,9 @@ class KHalfComplexToRealDFT : public KPtaProcessor  {
 public:
   //Constructors
   KHalfComplexToRealDFT(void);
+  //for the memory-savy programmers
+  KHalfComplexToRealDFT(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
   virtual ~KHalfComplexToRealDFT(void);
 	
 	virtual bool RunProcess(void);

@@ -24,6 +24,13 @@ KPatternRemoval::KPatternRemoval(void)
   InitializeMembers();
 }
 
+KPatternRemoval::KPatternRemoval(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KPtaProcessor(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KPatternRemoval"); 
+   InitializeMembers();
+}
+
 KPatternRemoval::~KPatternRemoval(void)
 {
   if(fPattern){

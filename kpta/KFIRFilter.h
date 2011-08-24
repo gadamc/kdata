@@ -20,6 +20,9 @@ class KFIRFilter : public KPtaProcessor {
 public:
   //Constructors
   KFIRFilter(void);
+  //for the memory-savy programmers
+  KFIRFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
   virtual ~KFIRFilter(void);
   
 	virtual bool RunProcess(void);

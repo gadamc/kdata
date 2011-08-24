@@ -21,6 +21,10 @@ public:
   KPtaProcessor(void);
   virtual ~KPtaProcessor(void);
 
+  //for the memory-savy programmers
+  KPtaProcessor(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize){
+    SetInputPulse(inPulse); SetInputPulseSize(inSize); SetOutputPulse(outPulse); SetOutputPulseSize(outsize);
+  }
   //all derived classes must over-ride this method
   virtual bool RunProcess(void) = 0;
   

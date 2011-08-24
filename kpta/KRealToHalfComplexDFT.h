@@ -19,6 +19,9 @@ class KRealToHalfComplexDFT : public KHalfComplexToRealDFT  {
 public:
   //Constructors
   KRealToHalfComplexDFT(void);
+  //for the memory-savy programmers
+  KRealToHalfComplexDFT(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
   virtual ~KRealToHalfComplexDFT(void);
 	
 	virtual bool RunProcess(void);

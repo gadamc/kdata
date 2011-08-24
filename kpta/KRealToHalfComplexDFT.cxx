@@ -45,8 +45,13 @@ KRealToHalfComplexDFT::KRealToHalfComplexDFT(void)
 {
 	SetName("KRealToHalfComplexDFT");
   InitializeMembers();
-	
-	
+}
+
+KRealToHalfComplexDFT::KRealToHalfComplexDFT(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KHalfComplexToRealDFT(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KRealToHalfComplexDFT"); 
+   InitializeMembers();
 }
 
 KRealToHalfComplexDFT::~KRealToHalfComplexDFT(void)

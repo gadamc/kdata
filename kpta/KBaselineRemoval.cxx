@@ -21,6 +21,13 @@ KBaselineRemoval::KBaselineRemoval(void)
   InitializeMembers();
 }
 
+KBaselineRemoval::KBaselineRemoval(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KPtaProcessor(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KBaselineRemoval"); 
+   InitializeMembers();
+}
+ 
 KBaselineRemoval::~KBaselineRemoval(void)
 {
 

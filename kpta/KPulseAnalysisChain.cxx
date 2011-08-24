@@ -31,7 +31,8 @@ using namespace std;
 
 KPulseAnalysisChain::KPulseAnalysisChain(void)
 {
-	
+	SetName("KPulseAnalysisChain");
+  
   InitializeMembers();
   fIsOwner = 0;
 }
