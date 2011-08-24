@@ -20,20 +20,16 @@ KIIRFirstOrder::KIIRFirstOrder(void)
 {
   SetName("KIIRFirstOrder");
   InitializeMembers();
-  double a[1], b[2];
-  a[0] = b[0] = b[1] = 0;
-  SetCoefficients(a,1,b,2);
+  SetCoefA(0);
+  SetCoefB(0,0);
 }
 
 KIIRFirstOrder::KIIRFirstOrder(double a1, double b0, double b1)
 {
   SetName("KIIRFirstOrder");
   InitializeMembers();
-  double aa[1], bb[1];
-  aa[0] = a1;
-  bb[0] = b0;
-  bb[1] = b1;
-  SetCoefficients(aa,1,bb,2);
+  SetCoefA(a1);
+  SetCoefB(b0,b1);
 }
 
 KIIRFirstOrder::~KIIRFirstOrder(void)
@@ -77,11 +73,15 @@ bool KIIRFirstOrder::RunProcess(void)
     return false;
   }
   
-  *fOutputPulse = *fCoefB * *fInputPulse;
+  //clear the output pulse
+  memset(fOutputPulse, 0, fOutputSize*sizeof(double));
+
+  *fOutputPulse =  (*fInputPulse) * (*fCoefB);
+  
   unsigned int i = 1;
   for( ; i < fOutputSize; i++)
-    *(fOutputPulse+i) = *fCoefA * *(fOutputPulse+i-1)  + *fCoefB **(fInputPulse+i);
-  
+    *(fOutputPulse+i) =  *(fOutputPulse+i-1) * (*fCoefA)  + *(fInputPulse+i) * (*fCoefB) +  *(fInputPulse+i-1) *  (*(fCoefB+1));
+ 
   return true;
 }
 
