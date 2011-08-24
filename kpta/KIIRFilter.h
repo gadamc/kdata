@@ -18,15 +18,22 @@ class KIIRFilter : public KPtaProcessor {
 public:
   //Constructors
   KIIRFilter(void);
+  //for the memory-savy programmers
+  KIIRFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
   virtual ~KIIRFilter(void);
   
-	virtual bool RunProcess(void);
+	virtual bool RunProcess(void) = 0;
 	
-  //getters
+  void SetCoefficients(double* a, unsigned int asize, double* b, unsigned int bsize);
   
-  //setters
+protected:
+  double *fCoefA;
+  unsigned int fCoefASize;
+  double *fCoefB;
+  unsigned int fCoefBSize;
+  
 private:
-  
   //private methods
   void InitializeMembers(void);
   

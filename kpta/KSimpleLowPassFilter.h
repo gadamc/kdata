@@ -19,6 +19,9 @@ class KSimpleLowPassFilter : public KPtaProcessor  {
 public:
   //Constructors
   KSimpleLowPassFilter(void);
+  //for the memory-savy programmers
+  KSimpleLowPassFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
   virtual ~KSimpleLowPassFilter(void);
   virtual bool RunProcess(void);
   

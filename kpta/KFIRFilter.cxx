@@ -21,8 +21,15 @@ using namespace std;
 
 KFIRFilter::KFIRFilter(void)
 {
-  
+  SetName("KFIRFilter");
   InitializeMembers();
+}
+
+KFIRFilter::KFIRFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KPtaProcessor(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KFIRFilter"); 
+   InitializeMembers();
 }
 
 KFIRFilter::~KFIRFilter(void)
@@ -48,12 +55,7 @@ bool KFIRFilter::RunProcess(void)
     cerr << "input and output pulses are not allocated." << endl;
     return false;
   }
-  
-  /*if(fCoefSize > fInputSize){
-    cerr << "the number of coefficients is greater than the pulse length" << endl;
-    return false; 
-  }*/
-  
+ 
   //in the future: 
   //check to see if the calculation done by fft convolution is faster than 
   //convolution in the time domain. then choose which algorithm to use.

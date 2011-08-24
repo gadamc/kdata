@@ -17,8 +17,15 @@
 
 KIIRFilter::KIIRFilter(void)
 {
-  
+  SetName("KIIRFilter");
   InitializeMembers();
+}
+
+KIIRFilter::KIIRFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KPtaProcessor(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KIIRFilter"); 
+   InitializeMembers();
 }
 
 KIIRFilter::~KIIRFilter(void)
@@ -26,38 +33,33 @@ KIIRFilter::~KIIRFilter(void)
   
 }
 
+void KIIRFilter::SetCoefficients(double* a, unsigned int asize, double* b, unsigned int bsize)
+{
+  if(bsize != fCoefBSize){
+    if(fCoefB) delete [] fCoefB;
+    fCoefBSize = bsize;
+    fCoefB = new double[fCoefBSize];
+  }
+  
+  if(asize != fCoefASize){
+    if(fCoefA) delete [] fCoefA;
+    fCoefASize = asize;
+    fCoefA = new double[fCoefASize];
+  }
+  
+  memcpy(fCoefA, a, asize);
+  memcpy(fCoefB, b, bsize);
+}
+
+
 void KIIRFilter::InitializeMembers(void)
 {
   //no local members to initialize
-  
+  fCoefA = 0;
+  fCoefASize = 0;
+  fCoefB = 0;
+  fCoefBSize = 0;
 
 }
 
-bool KIIRFilter::RunProcess(void)
-{
-	/*
-	if(fInputPulse.size() < 2) return false;
-	 
-	 unsigned int N = fInputPulse.size();
-	  if (fOutputPulse.size() != 1 + (N/2))
-	    fOutputPulse.resize(1+(N/2),0);
-	 
-	 try{
-	   fOutputPulse.at(0) = pow(fInputPulse.at(0),2);
-	   fOutputPulse.at(N/2) = pow(fInputPulse.at(N/2),2);
-	   
-	   for (unsigned int k=1; k<N/2; k++) 
-	     fOutputPulse.at(k) = pow(fInputPulse.at(k),2) + pow(fInputPulse.at(N-k),2);
-	   
-	   return true;
-	   
-	 }
-	 catch (out_of_range &e) {
-	   cerr << "KIIRFilter::RunProcess. exception caught: " << e.what() << " ending the copy of the pulse." << endl;
-	    
-	   return false;
-	 }*/
-  return true;
-  
-}
 

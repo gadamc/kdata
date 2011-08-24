@@ -21,6 +21,10 @@ class KSimpleHighPassFilter : public KSimpleLowPassFilter  {
 public:
   //Constructors
   KSimpleHighPassFilter(void);
+  //for the memory-savy programmers
+  KSimpleHighPassFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
+  
   virtual ~KSimpleHighPassFilter(void);
   virtual bool RunProcess(void);
   

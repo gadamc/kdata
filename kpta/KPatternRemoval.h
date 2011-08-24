@@ -20,6 +20,9 @@ class KPatternRemoval : public KPtaProcessor {
 public:
   //Constructors
   KPatternRemoval(void);
+  //for the memory-savy programmers
+  KPatternRemoval(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
   virtual ~KPatternRemoval(void);
   
 	virtual bool RunProcess(void);

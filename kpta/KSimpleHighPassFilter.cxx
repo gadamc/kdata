@@ -31,8 +31,15 @@ using namespace std;
 
 KSimpleHighPassFilter::KSimpleHighPassFilter(void)
 {
-  
+  SetName("KSimpleHighPassFilter");
   InitializeMembers();
+}
+
+KSimpleHighPassFilter::KSimpleHighPassFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KSimpleLowPassFilter(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KSimpleHighPassFilter"); 
+   InitializeMembers();
 }
 
 KSimpleHighPassFilter::~KSimpleHighPassFilter(void)
@@ -40,7 +47,6 @@ KSimpleHighPassFilter::~KSimpleHighPassFilter(void)
   
   
 }
-
 
 void KSimpleHighPassFilter::InitializeMembers(void)
 {

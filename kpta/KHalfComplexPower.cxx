@@ -22,7 +22,7 @@
 
 KHalfComplexPower::KHalfComplexPower(void)
 {
-
+  SetName("KHalfComplexPower");
   InitializeMembers();
 }
 

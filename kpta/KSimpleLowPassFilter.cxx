@@ -30,16 +30,22 @@ using namespace std;
 
 KSimpleLowPassFilter::KSimpleLowPassFilter(void)
 {
-
+  SetName("KSimpleLowPassFilter");
   InitializeMembers();
 }
+
+KSimpleLowPassFilter::KSimpleLowPassFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KPtaProcessor(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KSimpleLowPassFilter"); 
+   InitializeMembers();
+}
+
 
 KSimpleLowPassFilter::~KSimpleLowPassFilter(void)
 {
 
-
 }
-
 
 void KSimpleLowPassFilter::InitializeMembers(void)
 {
@@ -49,57 +55,39 @@ void KSimpleLowPassFilter::InitializeMembers(void)
 
 bool KSimpleLowPassFilter::RunProcess(void)
 {
-  
+
   if(fInputPulse == 0 || fOutputPulse == 0) {
     cerr << "input and output pulses are not allocated." << endl;
     return false;
   }
-  
+
   //first, make the pulse "quasi-periodic" to eliminate artificial
   //filtering effects due to filtering of a signal that has a DC offset
   int numBinsToAdd = floor(GetRc()*10);
   int tempSize = numBinsToAdd + (int)fInputSize;
   double *tempPulse = new double[tempSize];
-  
-  try {
-    for (int i = 0; i < tempSize; i++){
-      if (i < numBinsToAdd)
-        *(tempPulse+i) = *(fInputPulse+0);
-      else
-        *(tempPulse+i) = *(fInputPulse+(i - numBinsToAdd));
-      
-    }
-	}
-	catch (out_of_range& e) {
-		cerr << "KSimpleLowPassFilter. exception caught while creating temp pulse: " << e.what() << endl;
-		cerr << "    stopping calculation";
-		return false;
-	}
-  
-  try {
-    double binDivFactor = GetMinRCToBinRatio()/GetRc() + 1.0;  //this is only useful if the RC is small.
-    double binSize = 1./binDivFactor;
-    double theIntegral = *tempPulse;
 
-    for(int t=0; t < tempSize; t++){
-      
-      if(t >= numBinsToAdd) *(fOutputPulse+(t-numBinsToAdd)) = 0.;  //don't care about the first numBinsToAdd
-      
-      for(int i = 0; i < (int)binDivFactor; i++){
-        theIntegral = theIntegral*exp(-binSize/fRc) + (*(tempPulse+t) / binDivFactor) *exp(-0.5*binSize/fRc)*binSize/fRc;
-        if(t >= numBinsToAdd) *(fOutputPulse+(t-numBinsToAdd)) += theIntegral;
-      }
+  for (int i = 0; i < tempSize; i++){
+    if (i < numBinsToAdd)
+      *(tempPulse+i) = *(fInputPulse+0);
+    else
+      *(tempPulse+i) = *(fInputPulse+(i - numBinsToAdd)); 
+  }
+
+
+  double binDivFactor = GetMinRCToBinRatio()/GetRc() + 1.0;  //this is only useful if the RC is small.
+  double binSize = 1./binDivFactor;
+  double theIntegral = *tempPulse;
+
+  for(int t=0; t < tempSize; t++){
+
+    if(t >= numBinsToAdd) *(fOutputPulse+(t-numBinsToAdd)) = 0.;  //don't care about the first numBinsToAdd
+
+    for(int i = 0; i < (int)binDivFactor; i++){
+      theIntegral = theIntegral*exp(-binSize/fRc) + (*(tempPulse+t) / binDivFactor) *exp(-0.5*binSize/fRc)*binSize/fRc;
+      if(t >= numBinsToAdd) *(fOutputPulse+(t-numBinsToAdd)) += theIntegral;
     }
-    
-    
-  } 
-  catch (out_of_range& e) {
-		cerr << "KSimpleLowPassFilter. exception caught while performing calculation: " << e.what() << endl;
-		cerr << "    stopping calculation";
-		return false;
-	}  
-  
-  
-  
+  }
+
   return true;
 }

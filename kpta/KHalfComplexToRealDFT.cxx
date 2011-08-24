@@ -49,9 +49,14 @@ using namespace std;
 KHalfComplexToRealDFT::KHalfComplexToRealDFT(void)
 {
 	SetName("KHalfComplexToRealDFT");
-  InitializeMembers();
-	
-	
+  InitializeMembers();	
+}
+
+KHalfComplexToRealDFT::KHalfComplexToRealDFT(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KPtaProcessor(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KHalfComplexToRealDFT"); 
+   InitializeMembers();
 }
 
 KHalfComplexToRealDFT::~KHalfComplexToRealDFT(void)

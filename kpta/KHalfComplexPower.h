@@ -18,6 +18,9 @@ class KHalfComplexPower : public KPtaProcessor {
 public:
   //Constructors
   KHalfComplexPower(void);
+  //for the memory-savy programmers
+  KHalfComplexPower(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
   virtual ~KHalfComplexPower(void);
 
 	virtual bool RunProcess(void);

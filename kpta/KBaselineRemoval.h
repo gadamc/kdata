@@ -18,6 +18,10 @@ class KBaselineRemoval : public KPtaProcessor {
 public:
   //Constructors
   KBaselineRemoval(void);
+  
+  //for the memory-savy programmers
+  KBaselineRemoval(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+  
   virtual ~KBaselineRemoval(void);
 	virtual bool RunProcess(void);
 
