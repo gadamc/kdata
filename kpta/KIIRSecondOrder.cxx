@@ -6,7 +6,7 @@
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
-// y[n] = a1y[n-1] + b0x[n] + b1x[n-1]
+// y[n] = a1y[n-1] + a2y[n-2] + b0x[n] + b1x[n-1] + b2x[n-2]
 //
 //
 
