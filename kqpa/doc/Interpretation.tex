@@ -1,0 +1,81 @@
+\section{Interpretation}
+What does this probability density function $g(E_{recoil},Q)$ now describe? \\
+The multivariate normaldistribution in (\ref{multigaus}) describes, how an experimental value
+\begin{gather}
+\vec{r} = \vec{r}_{exp} = \begin{pmatrix} E_{ion} \\ E_{heat} \end{pmatrix}_{exp}
+\end{gather}
+is scattered under the assumption that a certain true value
+\begin{gather}
+\vec{r}_0 = \vec{r}_{true} = \begin{pmatrix} E_{ion} \\ E_{heat} \end{pmatrix}_{true}
+\end{gather}
+is given.
+Thus we obtain the conditional probability density
+\begin{gather}
+f(\vec{r}_{exp} | \vec{r}_{true}) = \frac{1}{2 \pi \det C} \exp \left( - \frac{1}{2} (\vec{r}_{exp} - \vec{r}_{true})^{T} C^{-1} (\vec{r}_{exp} - \vec{r}_{true}) \right) \label{condexptrue}
+\end{gather}
+where the covariance matrix is given by 
+\begin{gather}
+C = \begin{pmatrix} \sigma_{ion}^2 & \sigma_{ion-heat}^2 \\ \sigma_{ion-heat}^2 & \sigma_{heat}^2 \end{pmatrix}
+\end{gather}
+with true uncertainties $\sigma_{ion}$, $\sigma_{heat}$ and covariance $\sigma_{ion-heat}$.
+The more interesting question now is, what statements can be done about the true value $\vec{r}_{true}$, when a certain value $\vec{r}_{exp}$ is measured.
+The reverse conditional probability density can be obtained by using Bayes' theorem:
+\begin{gather}
+h(\vec{r}_{true} | \vec{r}_{exp}) = \frac{f(\vec{r}_{exp} | \vec{r}_{true}) f_{true} (\vec{r}_{true})}{f_{exp} (\vec{r}_{exp})}
+\end{gather}
+If a flat prior
+\begin{gather}
+f_{true}(\vec{r}_{true}) = \mbox{const}
+\end{gather}
+is assumed for all $\vec{r}_{true}$,
+we have 
+\begin{gather}
+h(\vec{r}_{true} | \vec{r}_{exp}) = f(\vec{r}_{exp} | \vec{r}_{true})
+\end{gather}
+, since the posterior 
+\begin{gather}
+f_{exp}(\vec{r}_{exp}) = \mbox{const}
+\end{gather}
+is a fixed parameter in $h(\vec{r}_{true} | \vec{r}_{exp})$,
+which only leads to normalization
+\begin{gather}
+\int_{-\infty}^{\infty} h(\vec{r}_{true} | \vec{r}_{exp}) d \vec{r}_{true} = 1
+\end{gather}
+Now a coordinate transformation 
+\begin{gather}
+\vec{r}_{true} = \begin{pmatrix} E_{ion} \\ E_{heat} \end{pmatrix}_{true} \rightarrow \vec{q}_{true} = \begin{pmatrix} E_{recoil} \\ Q \end{pmatrix}_{true} \\
+h(\vec{r}_{true} | \vec{r}_{exp}) \rightarrow g(\vec{q}_{true} | \vec{r}_{exp}) = g(E_{recoil},Q)
+\end{gather}
+can be done which is derived in section 1. \\
+The probability that the true value $\vec{q}_{true}$ which lead to the measured value $\vec{r}_{exp}$, lies in an area $\Omega$ in the $E_{recoil}$-$Q$-plane, is:
+\begin{gather}
+P(\vec{q}_{true} \in \Omega) = \iint_\Omega g(E_{recoil},Q) d\Omega
+\end{gather}
+\subsection*{Annotations}
+\begin{itemize}
+\item The true covariance matrix $C_{true}$ is depending on the true value $\vec{r}_{true}$ ($\vec{q}_{true}$). Thus $\vec{r}_{true}$ is not normal-distributed in $\begin{pmatrix} E_{ion} \\ E_{heat} \end{pmatrix}_{true}$ in contrast to $\vec{r}_{exp}$ in $\begin{pmatrix} E_{ion} \\ E_{heat} \end{pmatrix}_{exp}$ described by the pdf $f(\vec{r}_{exp} | \vec{r}_{true})$.
+\item The true covariance matrix $C_{true}$ is actually not available and can only be estimated by $C_{exp}$. If the uncertainties $\sigma_{ion,exp}$ and $\sigma_{heat,exp}$ are estimated by linear interpolation between uncertainties $\sigma_{ion,heat,0}$ with $E = 0$ and $\sigma_{ion,heat,calib}$ with $E=E_{calib}$, for heat and ion channels we obtain:
+\begin{gather}
+\sigma(E) = \sqrt{ \sigma_{0}^2 + \frac{E^2}{E_{calib}^2} (\sigma_{calib}^2 - \sigma_{0}^2 )}
+\end{gather}
+and we obtain by error propagation
+\begin{gather}
+\sigma_{\sigma(E)} = \sqrt{ \left( 2 \sigma_{0}^2 \left(1- \frac{E^2}{E_{calib}^2} \right) \right)^2 \frac{\sigma_{\sigma_{0}}^2}{\sigma(E)^2} + \left( \sigma_{calib} \frac{E^2}{E_{calib}^2} \right)^2 \frac{\sigma_{\sigma_{calib}}^2}{\sigma(E)^2} + \left( \frac{E}{E_{calib}^2} \left(\sigma_{calib}^2 - \sigma_{0}^2 \right) \right)^2} \\
+\approx \frac{E}{E_{calib}^2} \left(\sigma_{calib}^2 - \sigma_{0}^2 \right)
+\end{gather}
+With typical values $E_{calib} = 356.0 keV$ for $^{133}Ba$ gamma calibration and $\sigma_{calib}^2 - \sigma_{0} = 1..100 keV$, we obtain:
+\begin{gather}
+\sigma_{\sigma(E)} = 0.(00)0008 E
+\end{gather}
+There might be additional systematic errors due to the interpolation itself, since the uncertainties for arbitrary energies might not be exactly linear interpolable (extrapolable). Calibration with multiple known peaks, could provide more clarification about this dependancy $\sigma(E)$.
+Therefore confidence regions for single events depending on $\sigma_{ion,heat}(E)$ might be larger or smaller than estimated. 
+
+\end{itemize}
+
+
+
+
+
+
+
+
