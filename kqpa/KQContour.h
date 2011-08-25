@@ -20,7 +20,7 @@ using namespace std;
 #ifndef __KQCONTOUR_H__
 #define __KQCONTOUR_H__
 
-class KQContour {
+class KQContour  {
   private:
      TF2* fFunction; // function describing the distribution the histogram is
     // filled with
@@ -37,7 +37,7 @@ class KQContour {
     void RefillHistogram();
     
   public:
-    KQContour(TF2* aFunction,
+    KQContour(TF2* aFunction = 0,
               Double_t aNumBinsX = 1000,
               Double_t aNumBinsY = 1000,
               Double_t aNumEntries = 100000000 );

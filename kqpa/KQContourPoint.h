@@ -106,6 +106,7 @@ class KQContourPoint : public TObject {
     TMarker* GetMarker() const { return fMarker; }
     TH2D* GetHistogram();
     TH2D* GetContourHistogram();
+
     
     
     TF2* GetFunctionClone() const { return (TF2*)(fFunction->Clone()); }

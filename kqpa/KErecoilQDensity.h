@@ -20,6 +20,8 @@
 #include "Math/WrappedMultiTF1.h"
 #include "Math/AdaptiveIntegratorMultiDim.h"
 #include "Math/GSLMCIntegrator.h"
+#include "KQUncertainty.h"
+#include "KNeganovLuke.h"
 #include <iostream>
 using namespace std;
 
@@ -31,6 +33,7 @@ public:
 
    static Double_t SingleEventProbDensity(Double_t *x, Double_t * par);
    static Double_t MultiEventProbDensity(Double_t* x,Double_t* par);
+   static Double_t SingleEventTrueProbDensity(Double_t* x, Double_t* par);
    static Double_t SingleEventMarginalDensityErecoil(Double_t* x,
                                                      Double_t* par);
    static Double_t SingleEventMomentErecoil(Double_t* x,
@@ -46,6 +49,8 @@ public:
                                                              Double_t* par);
    static Double_t MultiEventCummulativeProbDensity(Double_t* x,Double_t* par);
    static Double_t MultiEventProbabilityOfAtLeastOneEvent(Double_t* x,Double_t* par);
+   
+
 
   
  

@@ -34,7 +34,7 @@ class KQBinRecord {
     Double_t GetBinContent() { return fBinContent; }
     friend Bool_t operator<(const KQBinRecord& aBinRecord, 
                             const KQBinRecord& anotherBinRecord);
-    ClassDef(KQBinRecord,0);
+    ClassDef(KQBinRecord,1);
 };
 
 #endif
