@@ -368,6 +368,8 @@ TH2D* KQContourPoint::GetContourHistogram()
   return aContour.GetContourHistogram(fConfidenceLevel);
 }
 
+
+
 void KQContourPoint::SetQvalue(Double_t aQvalue)
 {
   // This method sets the modal value of Q and adjusts the corresponding

@@ -96,6 +96,14 @@ class KQContourPointList : public TObject {
       else
         return fPoints[anIndex];
     }
+    TF2* GetCummulativeProbDensity(const Char_t* aFunctionName = "");
+    TF2* GetProbabilityOfAtLeastOneEvent(
+      const Char_t* aFunctionName = "",
+      Double_t aTolerance = 0.0001);
+    TH1D* GetDistributionOfTrueValues(const Char_t* aHistogramName = "NumTrueValues",
+                                                  TF1* aLowerBoundary = 0,
+                                                  TF1* anUpperBoundary = 0,
+                                                  UInt_t aMonteCarloSize = 10000);
     
     void ReadASCIIFile(const Char_t* aFileName = "",
                        const Char_t* aMode = "QErecoil",
@@ -109,14 +117,7 @@ class KQContourPointList : public TObject {
     void RemovePoint(UInt_t anINdex = 0);
     void ClearPoints();
     void ShowPoints();
-    TF2* GetCummulativeProbDensity(const Char_t* aFunctionName = "");
-    TF2* GetProbabilityOfAtLeastOneEvent(
-      const Char_t* aFunctionName = "",
-      Double_t aTolerance = 0.0001);
-    TH1D* GetDistributionOfTrueValues(const Char_t* aHistogramName = "NumTrueValues",
-                                                  TF1* aLowerBoundary = 0,
-                                                  TF1* anUpperBoundary = 0,
-                                                  UInt_t aMonteCarloSize = 10000);
+
   ClassDef(KQContourPointList,1);
 };
 

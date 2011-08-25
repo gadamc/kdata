@@ -53,7 +53,7 @@ class KBoloConfig {
     void SetSigmaHeatZero(Double_t aSigmaHeatZero) { fSigmaHeatZero=aSigmaHeatZero; }
     void SetEnergyCalibration(Double_t aEnergyCalibration) { fEnergyCalibration=aEnergyCalibration; }
     void SetChannelVoltage(Int_t anIndex,Double_t aVoltage) { fChannelVoltages[anIndex]=aVoltage; }
-  ClassDef(KBoloConfig,0);
+  ClassDef(KBoloConfig,1);
 };
 
 #endif

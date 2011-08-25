@@ -8,12 +8,43 @@
 //
 // Created Friday 1. July 2011
 //
-// A simple class that calculates the probability density for a true 
-// value of (ERecoil,Q) for a specifed experimental value (EIon, EHeat)
+// A simple class that calculates the detector resolution function A, that for a
+// given true event(Erecoil,Q) there is a certain measured value (Erecoil,Q)
+// By applying Bayes' theorem 
+//BEGIN_LATEX
+// g(a_{true} | a_{exp}) = #frac{ A(a_{exp} | a_{true}) f(a_{true})}{h(a_{exp})}
+//END_LATEX
+// and assuming a flat prior
+//BEGIN_LATEX
+// f(a_{true}) = const
+//END_LATEX
+// this function can be interpreted  as the reverse pdf
+//BEGIN_LATEX
+// g(a_{true} | a_{exp}) = A(a_{exp} | a_{true})
+//END_LATEX
+// that there is a certain  true value of (ERecoil,Q) 
+// for a specifed experimental value (EIon, EHeat)
 // (Bayesian probabilty)
+// The posterior
+//BEGIN_LATEX
+// h(a_{exp})
+//END_LATEX
+// is justed a fixed parameter then, which leads to normalization of g.
+//
 // This can be done for a single event as well as for multiple events
 // Additionally marginal distributions with respect to E_recoil and Q
 // are available
+//
+// The user can simply instantiate these functions by calling 
+// TF2 aFunction("aFunctionName",
+//               &KErecoilQDensity::<aMethod>,
+//               anNpx,
+//               Xmin,
+//               Xmax,
+//               anNpy,
+//               Ymin,
+//               Ymax
+//               NumberOfParameters);
 
 
 #include "KErecoilQDensity.h"
@@ -32,13 +63,6 @@ Double_t KErecoilQDensity::SingleEventProbDensity(Double_t *x, Double_t * par)
 {
   //This function represents the propability density g(E_recoil,Q)
   // (documented in $KDATA_ROOT/doc/ERecoilQDistribution.pdf) for a single event
-  // Bayes Theorem is given by 
-  //BEGIN_LATEX
-  // f(a|x) = #frac{f(x|a) #dot f(a)}{f(x)}
-  //END_LATEX
-  // So from a Bayesian point of view with flat prior (f(a) = const)  this
-  // represents the propability density f(a|x) to have a true event in a certain
-  // region in the  (ERecoil,Q)-plane for given experimental data for an event
   //
   // These experimental values are
    // par[0] : mean ion energy
@@ -47,6 +71,9 @@ Double_t KErecoilQDensity::SingleEventProbDensity(Double_t *x, Double_t * par)
   // par[3] : sigma heat
   // par[4] : sigma ion heat
   // par[5] : voltage bias/ epsilon_gamma
+  //
+  // x[0]: recoil energy
+  // x[1]: Q value
   
   Double_t det = par[2]*par[2]*par[3]*par[3] - par[4]*par[4]*par[4]*par[4];
   Double_t c1 = par[3]*par[3]/det;
@@ -111,15 +138,62 @@ Double_t KErecoilQDensity::MultiEventProbDensity(Double_t* x,Double_t* par)
   return result;
 }
 
+Double_t KErecoilQDensity::SingleEventTrueProbDensity(Double_t* x,
+                                                      Double_t* par)
+{
+  // This function represents f(a|x)
+  // Bayes Theorem is given by 
+  //BEGIN_LATEX
+  // f(a|x) = #frac{f(x|a) #dot f(a)}{f(x)}
+  //END_LATEX
+  // So from a Bayesian point of view with flat prior (f(a) = const)  this
+  // represents the propability density f(a|x) to have a true event in a certain
+  // region in the  (ERecoil,Q)-plane for given experimental data for an event
+  // The peculiarity about this function is that the uncertainties sigma ion and
+  // sigma heat are dynamic since the uncertainties depend on the true value a
+  // The uncertainties are linearly interpolated between uncertainties on zero
+  // level and calibration level (by KQUncertainty::GetChannelUncertainty())
+  //
+  // The parameters are
+  // par[0]: calibration energy
+  // par[1]: mean ion energy
+  // par[2]: sigma ion on zero level
+  // par[3]: sigma ion on calibration level
+  // par[4]: mean heat energy
+  // par[5]: sigma heat on zero level
+  // par[6]: sigma heat on calibration level
+  // par[7] voltage bis/ epsilon_gamma
+  //
+  // x[0]: recoil energy
+  // x[1]: Q value
+  
+  Double_t anEnergyIon, anEnergyHeat;
+  KNeganovLuke::GetIonAndHeatEnergy(anEnergyIon,anEnergyHeat,
+                                    x[1],x[0],
+                                    par[7],1);
+  Double_t UncerIon = KQUncertainty::GetChannelUncertainty(anEnergyIon,
+                                                           par[2],
+                                                           par[3],
+                                                           par[0]);
+  Double_t UncerHeat = KQUncertainty::GetChannelUncertainty(anEnergyHeat,
+                                                            par[2],
+                                                            par[3],
+                                                            par[0]);
+  Double_t n = anEnergyIon-par[1];
+  Double_t m = anEnergyHeat-par[4];
+  Double_t a = TMath::Abs(x[0])/2/TMath::Pi()/UncerIon/UncerHeat
+               /(1+par[7]);
+  Double_t result = a*TMath::Exp(-0.5*(n*n/UncerIon/UncerIon + m*m/UncerHeat/UncerHeat));
+  return result;
+  
+}
+
 Double_t KErecoilQDensity::SingleEventMarginalDensityErecoil(Double_t *x,
                                                              Double_t* par)
 {
   // This function represents the marginal distribution g(E_recoil) for a single
   // event, which is the integral of g(E_recoil,Q) over Q from -infinity to
   // infinity
-  // From a Bayesian point of view it represents the propability density to 
-  // obtain a certain true value of the recoil energy for arbitrary Q value
-  // and given experimental data for an event
   //
   // These experimental values are
    // par[0] : mean ion energy

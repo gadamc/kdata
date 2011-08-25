@@ -39,7 +39,7 @@ class KRun12Temp {
     TTree* GetTree() { return fTree; }
 
 
-  ClassDef(KRun12Temp,0);
+  ClassDef(KRun12Temp,1);
 };
 
 #endif
