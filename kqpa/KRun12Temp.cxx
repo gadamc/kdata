@@ -19,7 +19,6 @@ ClassImp(KRun12Temp);
 KRun12Temp::KRun12Temp(const Char_t* aFileName)
 {
   fFileName = aFileName;
-  ReadCalibrationFile(aFileName);
 }
 
 Bool_t KRun12Temp::ReadCalibrationFile(const Char_t* aFileName)

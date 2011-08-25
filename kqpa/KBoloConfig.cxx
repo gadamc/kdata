@@ -19,11 +19,10 @@
 
 ClassImp(KBoloConfig);
 
-KBoloConfig::KBoloConfig(const Char_t* aBoloName,const Char_t* aFileName)
+KBoloConfig::KBoloConfig(const Char_t* aBoloName,const Char_t* aFileName) :
+fBoloName(aBoloName), fFileName(aFileName)
 {
-
-  fBoloName = aBoloName;
-  fFileName = aFileName;
+  Load(aBoloName,aFileName);
 }
 
 Bool_t KBoloConfig::Load(const Char_t* aBoloName,const Char_t* aFileName) 
@@ -49,6 +48,7 @@ Bool_t KBoloConfig::Load(const Char_t* aBoloName,const Char_t* aFileName)
     fSigmaHeatZero=aConfigFile.GetUncerHeatZero(anIndex);
     fChannelVoltages.clear();
     fChannelVoltages.push_back(aConfigFile.GetVoltageBias(anIndex));
+    return true;
   }
   
   cout << "KBoloConfig::Load(): no file loaded" << endl;
