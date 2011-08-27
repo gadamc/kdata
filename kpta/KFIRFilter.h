@@ -44,10 +44,10 @@ protected:
   template <class T> void SetTheCoefficients(std::vector<T> &coef);
   template <class T> void SetTheCoefficients(const T* coef, unsigned int size);
   
-private:
   double * fCoefficients;
   unsigned int fCoefSize;
-  
+
+private:  
   //private methods
   void InitializeMembers(void);
   

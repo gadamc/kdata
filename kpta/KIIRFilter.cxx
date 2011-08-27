@@ -30,7 +30,8 @@ KIIRFilter::KIIRFilter(double *inPulse, unsigned int inSize, double* outPulse, u
 
 KIIRFilter::~KIIRFilter(void)
 {
-  
+  if(fCoefB) delete [] fCoefB;
+  if(fCoefA) delete [] fCoefA;
 }
 
 void KIIRFilter::SetCoefficients(double* a, unsigned int asize, double* b, unsigned int bsize)
@@ -54,7 +55,6 @@ void KIIRFilter::SetCoefficients(double* a, unsigned int asize, double* b, unsig
 
 void KIIRFilter::InitializeMembers(void)
 {
-  //no local members to initialize
   fCoefA = 0;
   fCoefASize = 0;
   fCoefB = 0;
