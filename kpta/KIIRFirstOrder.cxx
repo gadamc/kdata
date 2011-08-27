@@ -22,7 +22,10 @@ KIIRFirstOrder::KIIRFirstOrder(void)
   InitializeMembers();
   SetCoefA(0);
   SetCoefB(0,0);
+<<<<<<< HEAD
 
+=======
+>>>>>>> fixing first order filter and adding in the iir second order filter. note that these are all direct form 1 implementations!
 }
 
 KIIRFirstOrder::KIIRFirstOrder(double a1, double b0, double b1)
