@@ -39,7 +39,6 @@ KFIRFilter::~KFIRFilter(void)
 
 void KFIRFilter::InitializeMembers(void)
 {
-  //no local members to initialize
   fCoefficients = 0;
   fCoefSize = 0;
 

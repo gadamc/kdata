@@ -33,7 +33,6 @@ KHalfComplexPower::~KHalfComplexPower(void)
 
 void KHalfComplexPower::InitializeMembers(void)
 {
-  //no local members to initialize
   
 
 }
