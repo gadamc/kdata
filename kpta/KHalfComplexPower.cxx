@@ -26,6 +26,13 @@ KHalfComplexPower::KHalfComplexPower(void)
   InitializeMembers();
 }
 
+KHalfComplexPower::KHalfComplexPower(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KPtaProcessor(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KHalfComplexPower"); 
+   InitializeMembers();
+}
+
 KHalfComplexPower::~KHalfComplexPower(void)
 {
 
