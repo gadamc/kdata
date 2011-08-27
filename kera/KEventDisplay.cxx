@@ -1156,29 +1156,34 @@ Bool_t KEventDisplay::SetUpPulses(Bool_t calculatePower)
       fPulseHists[i].SetName(pulse->Channel().c_str());
       
       if(fApplyPulseProcessing) {
-        vector<double> outPulse;
+        double *outPulse;
+        unsigned int outSize;
         
         if(pulse->IsHeat()){
-          fHeatPulseAnalysisChain.SetInputPulse(pulse->Trace());
+          vector<short> pp = pulse->Trace();
+          fHeatPulseAnalysisChain.SetInputPulse(pp);
           fHeatPulseAnalysisChain.RunProcess();
           outPulse = fHeatPulseAnalysisChain.GetOutputPulse();
+          outSize = fHeatPulseAnalysisChain.GetOutputPulseSize();
         }
         else {
-          fIonPulseAnalysisChain.SetInputPulse(pulse->Trace());
+          vector<short> pp = pulse->Trace();
+          fIonPulseAnalysisChain.SetInputPulse(pp);
           fIonPulseAnalysisChain.RunProcess();
           outPulse = fIonPulseAnalysisChain.GetOutputPulse();
+          outSize = fIonPulseAnalysisChain.GetOutputPulseSize();
         }
         
         if(calculatePower){
           fPowerSpectrumChain.SetInputPulse(outPulse);
           fPowerSpectrumChain.RunProcess();
-          outPulse.clear();
           outPulse = fPowerSpectrumChain.GetOutputPulse();
+          outSize = fPowerSpectrumChain.GetOutputPulseSize();
         }
           
-        fPulseHists[i].SetBins(outPulse.size(), 0, outPulse.size());
-        for(UInt_t bin = 1; bin <= outPulse.size(); bin++)
-          fPulseHists[i].SetBinContent(bin, outPulse.at(bin-1)); 
+        fPulseHists[i].SetBins(outSize, 0, outSize);
+        for(UInt_t bin = 1; bin <= outSize; bin++)
+          fPulseHists[i].SetBinContent(bin, outPulse[bin-1]); 
         
       }
       
