@@ -19,6 +19,8 @@ public:
   //Constructors
   KConvolution(void);
   virtual ~KConvolution(void);
+  //for the memory-savy programmers
+  KConvolution(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
   
 	virtual bool RunProcess(void);
 	
@@ -38,8 +40,8 @@ public:
 protected:
   double *fResponse;
   unsigned int fResponseSize;
-  template <class T> void SetTheResponse(std::vector<T> &resp);
-  template <class T> void SetTheResponse(const T* resp, unsigned int size);
+  template <class T> void SetTheResponse(std::vector<T> &resp, bool reverse = false);
+  template <class T> void SetTheResponse(const T* resp, unsigned int size, bool reverse = false);
   
 private:
   //private methods
@@ -49,28 +51,42 @@ private:
  // ClassDef(KConvolution,1);
   
 };
-#endif
 
-template <class T> void KConvolution::SetTheResponse(std::vector<T> &resp)
+
+template <class T> void KConvolution::SetTheResponse(std::vector<T> &resp, bool reverse)
 {
   if (resp.size() != fResponseSize){
     if(fResponse) delete [] fResponse;
     fResponseSize = resp.size();
     fResponse = new double[fResponseSize];
   }
-  for(unsigned int i = 0; i < fResponseSize; i++)
-    *(fResponse+i) = resp[i];
+  
+  if(!reverse)
+    for(unsigned int i = 0; i < fResponseSize; i++)
+      *(fResponse+i) = resp[i];
+
+  else
+    for(unsigned int i = 0; i < fResponseSize; i++)
+      *(fResponse+i) = resp[fResponseSize-1 - i];
 }
 
-template <class T> void KConvolution::SetTheResponse(const T* resp, unsigned int size)
+template <class T> void KConvolution::SetTheResponse(const T* resp, unsigned int size, bool reverse)
 {
   if (size != fResponseSize){
     if(fResponse) delete [] fResponse;
     fResponseSize = size;
     fResponse = new double[fResponseSize];    
   }
-  for(unsigned int i = 0; i < fResponseSize; i++)
-    *(fResponse+i) = resp[i];
+  
+  if(!reverse)
+    for(unsigned int i = 0; i < fResponseSize; i++)
+      *(fResponse+i) = resp[i];
 
+  else
+    for(unsigned int i = 0; i < fResponseSize; i++)
+      *(fResponse+i) = resp[fResponseSize-1 - i];
+      
   //std::copy(resp, resp + size, fResponse);
 }
+
+#endif
