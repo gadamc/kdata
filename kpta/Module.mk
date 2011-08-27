@@ -8,13 +8,12 @@
 # 'kpta' to Modules.mk in the $KDATA_ROOT directory,
 # then type "make" (or gmake) in $KDATA_ROOT.
 #
-# Requirement for ROOT was added back to this library in order to have
-# support for template functions from the CINT and Python.
+# This module is unique in KData because it does not use any of the
+# ROOT libraries. It only requires FFTW. 
 #
 # However, if this restriction is debilitating for development of 
 # this library or for physics reasons, we should reconsider how this
-# is done. In that case, please contact the KData Czar (Adam Cox) 
-# to discuss this. 
+# is done.  
 #
 # Author: Adam Cox 08/19/10
 
@@ -44,7 +43,7 @@ KPTA_DICTH  := $(KPTA_EH:.h=.h+)
 
 KPTA_EXE    := $(patsubst $(KPTA_DIRS)/%.cxx,bin/%,$(KPTA_CXX))
 
-KPTALIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KPTA_LIB))
+KPTALIBS	:= $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KPTA_LIB))
 
 KPTA_DEP    := $(KPTA_O:.o=.d) $(KPTA_EO:.o=.d)
 

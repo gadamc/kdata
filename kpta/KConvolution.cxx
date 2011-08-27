@@ -5,7 +5,7 @@
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
-//
+// y[n] = Sum_k  x[k] * h[n-k]
 // 
 //
 //
@@ -26,11 +26,19 @@ KConvolution::~KConvolution(void)
   
 }
 
+KConvolution::KConvolution(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
+  : KPtaProcessor(inPulse, inSize, outPulse, outsize)
+{
+   SetName("KConvolution"); 
+   InitializeMembers();
+}
+
 
 void KConvolution::InitializeMembers(void)
 {
   
-
+  fResponse = 0;
+  fResponseSize = 0;
 }
 
 bool KConvolution::RunProcess(void)
@@ -45,27 +53,31 @@ bool KConvolution::RunProcess(void)
     return false;
   }
   
-  unsigned int i, j, k;
-
-
-  // start convolution from out[fResponseSize-1] to out[dataSize-1] (last)
-  for(i = fResponseSize-1; i < fOutputSize; ++i)
-  {
-      *(fOutputPulse+i) = 0;                             // init to 0 
-
-      for(j = i, k = 0; k < fResponseSize; --j, ++k)
-          *(fOutputPulse+i) += *(fInputPulse+j) *  *(fResponse+k);
+  double* inptr = (fResponseSize > fInputSize) ? fResponse : fInputPulse; // swap input and coefficients in case that the number of coefficients is greater than the pulse lenth
+  double* resp = (fResponseSize > fInputSize) ? fInputPulse : fResponse; // to ensure that the following for loops do not break
+  unsigned int respSize = (fResponseSize > fInputSize) ? fInputSize : fResponseSize;
+  double* outptr = fOutputPulse;
+  memset(outptr, 0, fOutputSize*sizeof(double)); //make sure the thing is empty. 
+  unsigned int i, ii; i = ii = 0;
+  
+  for( ; i < respSize; i++){
+    ii = 0;
+    for( ; ii <= i; ii++)
+      *outptr += *(resp+ii) * *(inptr - ii);
+    
+    inptr++;
+    outptr++;
   }
-
-  // convolution from fOutputPulse[0] to fOutputPulse[fResponseSize-2]
-  for(i = 0; i < fResponseSize - 1; ++i)
-  {
-      *(fOutputPulse+i) = 0;                             // init to 0 
-
-      for(j = i, k = 0; j >= 0; --j, ++k)
-          *(fOutputPulse+i) += *(fInputPulse+j) *  *(fResponse+k);
+  
+  for( ; i < fOutputSize; i++){ 
+    ii = 0;
+    for( ; ii < respSize; ii++)
+      *outptr += *(resp+ii) * *(inptr - ii);
+    
+    inptr++;
+    outptr++;
   }
-
+  
   return true;
 
 }
