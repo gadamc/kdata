@@ -22,6 +22,7 @@ KIIRFirstOrder::KIIRFirstOrder(void)
   InitializeMembers();
   SetCoefA(0);
   SetCoefB(0,0);
+
 }
 
 KIIRFirstOrder::KIIRFirstOrder(double a1, double b0, double b1)
