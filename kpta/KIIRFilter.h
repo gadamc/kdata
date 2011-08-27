@@ -26,18 +26,12 @@ public:
 	virtual bool RunProcess(void) = 0;
 	
   void SetCoefficients(double* a, unsigned int asize, double* b, unsigned int bsize);
-<<<<<<< HEAD
 
-=======
->>>>>>> fixing first order filter and adding in the iir second order filter. note that these are all direct form 1 implementations!
   virtual unsigned int GetCoefASize(void) {return fCoefASize;}
   virtual unsigned int GetCoefBSize(void) {return fCoefBSize;}
   virtual double* GetCoefA(void) {return fCoefA;}
   virtual double* GetCoefB(void) {return fCoefB;}
-<<<<<<< HEAD
-  
-=======
->>>>>>> fixing first order filter and adding in the iir second order filter. note that these are all direct form 1 implementations!
+
 protected:
   double *fCoefA;
   unsigned int fCoefASize;
