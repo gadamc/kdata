@@ -21,15 +21,15 @@ class KPulseAnalysisRecord : public KSubRecord {
 public:
   //Constructors
   KPulseAnalysisRecord(void);
-	KPulseAnalysisRecord(const KPulseAnalysisRecord &aRec);
-	KPulseAnalysisRecord& operator=(const KPulseAnalysisRecord &aRec);
+  KPulseAnalysisRecord(const KPulseAnalysisRecord &aRec);
+  KPulseAnalysisRecord& operator=(const KPulseAnalysisRecord &aRec);
   virtual ~KPulseAnalysisRecord(void);
-	virtual void Clear(Option_t *anOpt = "C");
-	Bool_t IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KPulseAnalysisRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KPulseAnalysisRecord &aRec) const { return !(*this==aRec); }
-	virtual void Compact(void);
-	
+  virtual void Clear(Option_t *anOpt = "C");
+  Bool_t IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPrint = false) const;
+  Bool_t operator==(const KPulseAnalysisRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KPulseAnalysisRecord &aRec) const { return !(*this==aRec); }
+  virtual void Compact(void);
+  
   virtual Double32_t GetAmp(void) const { return fAmp;}
   virtual const char* GetCalculationType(void) const { return fCalcType.c_str();}
   virtual Double32_t GetPeakPosition(void) const { return fPeakPosition;}
@@ -51,13 +51,13 @@ public:
   virtual void SetPulseWidth(Double32_t aval) {  fPulseWidth =  aval;}
   
   KAmpBolometerRecord* GetBolometerRecord(void) const {return (KAmpBolometerRecord*)fBolometerRecord.GetObject();}
-	KAmpBoloPulseRecord* GetBoloPulseRecord(void) const {return (KAmpBoloPulseRecord*)fBoloPulseRecord.GetObject();}
-	
-	void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;	}
-	void SetBoloPulseRecord(KAmpBoloPulseRecord *aRec) {fBoloPulseRecord = aRec;	}
-	
-	/*
-	enum kPulseAmpCalculatorType {
+  KAmpBoloPulseRecord* GetBoloPulseRecord(void) const {return (KAmpBoloPulseRecord*)fBoloPulseRecord.GetObject();}
+  
+  void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;	}
+  void SetBoloPulseRecord(KAmpBoloPulseRecord *aRec) {fBoloPulseRecord = aRec;	}
+  
+  /*
+  enum kPulseAmpCalculatorType {
      kButter1 = 1,
      kOptimalFilter = 2,
      kGuardType = 3,
@@ -68,20 +68,20 @@ public:
 private:
 	//private methods
   
-  Double32_t fAmp;
+  Double32_t fAmp;  //size of the estimated pulse height
   std::string fCalcType;  //the name of the method used to calculate the pulse. such as butter20, or optfilter. keep it short. if this takes up too much data, we could pack these into a numerical code.
   Double32_t fPeakPosition;  //in units of the pulse trace sample index.
   Bool_t fIsBaseline;  //if true, this is the estimated amplitude of the baseline
-  Short_t fUnit;  //0 = raw, 1 = keVee, 2 = keVnr
+  Short_t fUnit;  //0 = raw, 1 = keVee, 2 = keVnr, 3 = keV
   Double32_t fChiSq; //goodness-of-fit measure
-  Double32_t fBaselineAmplitudeWidth;
-  Double32_t fRiseTime;  
+  Double32_t fBaselineAmplitudeWidth; //energy resolution at 0 keV. use this to hold the FWHM
+  Double32_t fRiseTime;   //in units of seconds
   
-  TRef fBolometerRecord;
-  TRef fBoloPulseRecord;
+  TRef fBolometerRecord;  //points to the appropriate bolometer record within this event
+  TRef fBoloPulseRecord;  //points to the appropriate bolo pulse record
   
   //always add new member variables to the end of this list - this improves backwards compatibility
-  Double32_t fPulseWidth;
+  Double32_t fPulseWidth;  //in units of seconds
   
   //pulse width
   //best-fit parameter results
@@ -104,9 +104,9 @@ private:
   //This is necessary for backwards compatibility. 
   
   
-	void InitializeMembers(void);
-	void CopyLocalMembers(const KPulseAnalysisRecord &aRec);
-	
+  void InitializeMembers(void);
+  void CopyLocalMembers(const KPulseAnalysisRecord &aRec);
+  
   ClassDef(KPulseAnalysisRecord,1);
 };
 
