@@ -35,7 +35,7 @@ KNeganovLuke::~KNeganovLuke(void)
 {
 }
 
-inline void KNeganovLuke::GetRecoilAndQValue(Double_t &q, Double_t &eRecoil,
+void KNeganovLuke::GetRecoilAndQValue(Double_t &q, Double_t &eRecoil,
                                         Double_t eIon, Double_t eHeat,
                                         Double_t voltBias, Double_t epsilon)
 {
@@ -49,7 +49,7 @@ inline void KNeganovLuke::GetRecoilAndQValue(Double_t &q, Double_t &eRecoil,
   q = eIon/eRecoil;
 }
 
-inline void KNeganovLuke::GetIonAndHeatEnergy(Double_t &eIon, Double_t &eHeat,
+void KNeganovLuke::GetIonAndHeatEnergy(Double_t &eIon, Double_t &eHeat,
                                          Double_t q, Double_t eRecoil,
                                          Double_t voltBias, Double_t epsilon)
 {
