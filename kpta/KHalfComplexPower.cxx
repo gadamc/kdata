@@ -29,8 +29,8 @@ KHalfComplexPower::KHalfComplexPower(void)
 KHalfComplexPower::KHalfComplexPower(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
   : KPtaProcessor(inPulse, inSize, outPulse, outsize)
 {
-   SetName("KHalfComplexPower"); 
-   InitializeMembers();
+  SetName("KHalfComplexPower"); 
+  InitializeMembers();
 }
 
 KHalfComplexPower::~KHalfComplexPower(void)
@@ -40,26 +40,26 @@ KHalfComplexPower::~KHalfComplexPower(void)
 
 void KHalfComplexPower::InitializeMembers(void)
 {
-  
+
 
 }
 
 bool KHalfComplexPower::RunProcess(void)
 {
-	if(fInputSize < 2) return false;
-	  
+  if(fInputSize < 2) return false;
+
   if(fOutputPulse==0 || fOutputSize != 1 + fInputSize/2 ){  //resize if necessary
     delete [] fOutputPulse;
     fOutputPulse = new double[1 + (fInputSize/2)];
     fOutputSize = 1 + fInputSize/2;
   }
-	
+
   *fOutputPulse = pow(*fInputPulse,2); //the first element in the array
-	*(fOutputPulse+(fInputSize/2)) = pow(*(fInputPulse+(fInputSize/2)) ,2);
-		
-	for (unsigned int k=1; k<fInputSize/2; k++) 
-		*(fOutputPulse+k) = pow(*(fInputPulse+k),2) + pow(*(fInputPulse+(fInputSize-k)),2);
-		
+  *(fOutputPulse+(fInputSize/2)) = pow(*(fInputPulse+(fInputSize/2)) ,2);
+
+  for (unsigned int k=1; k<fInputSize/2; k++) 
+    *(fOutputPulse+k) = pow(*(fInputPulse+k),2) + pow(*(fInputPulse+(fInputSize-k)),2);
+
   return true;
 
 }

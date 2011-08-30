@@ -11,7 +11,7 @@
 // The output pulse is in half-complex array format:
 // real and imaginary parts for a transform of size n stored as 
 //   (r0, r1, r2, ..., rn/2, i(n+1)/2-1, ..., i2, i1)
-// It uses the fftw3 libraries to calculate the transformation, useing
+// It uses the fftw3 libraries to calculate the transformation, using
 // the r2r transformation 'plans'. 
 // http://www.fftw.org/fftw3_doc/More-DFTs-of-Real-Data.html#More-DFTs-of-Real-Data
 //
