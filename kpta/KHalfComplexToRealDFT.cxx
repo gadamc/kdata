@@ -57,6 +57,7 @@ KHalfComplexToRealDFT::KHalfComplexToRealDFT(double *inPulse, unsigned int inSiz
 {
    SetName("KHalfComplexToRealDFT"); 
    InitializeMembers();
+   SetFFTWPlan();
 }
 
 KHalfComplexToRealDFT::~KHalfComplexToRealDFT(void)

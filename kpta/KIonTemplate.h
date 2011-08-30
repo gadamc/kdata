@@ -12,7 +12,7 @@
 
 #include "KPulseTemplate.h"
 
-class KIonTemplate : public KPulseTemplate  { 
+class KIonTemplate  : public KPulseTemplate { 
 
 public:
   //Constructors

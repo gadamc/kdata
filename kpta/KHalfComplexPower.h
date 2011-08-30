@@ -23,8 +23,8 @@ public:
   
   virtual ~KHalfComplexPower(void);
 
-	virtual bool RunProcess(void);
-	
+  virtual bool RunProcess(void);
+  
   //getters
 
   //setters
