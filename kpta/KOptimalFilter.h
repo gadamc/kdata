@@ -35,6 +35,7 @@ public:
   virtual double* GetOptimalFilter(void){return fOptFilter;}
   virtual unsigned int GetOptimalFilterSize(void){return fOptFilterSize;}
   
+  virtual void SetToRecalculate(void){fRecalculate= true;}
 	
   virtual void SetNoiseSpectrum(std::vector<double> &r){SetTheNoiseSpectrum(r);}
   virtual void SetNoiseSpectrum(std::vector<float> &r){SetTheNoiseSpectrum(r);}

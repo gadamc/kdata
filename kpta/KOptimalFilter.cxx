@@ -126,9 +126,9 @@ bool KOptimalFilter::BuildFilter(void)
     fOptFilterAndSignal = new double[fOptFilterAndSignalSize];
       
   }
-  double *templatePower = new double[fTemplateDFTSize/2];
+  double *templatePower = new double[fTemplateDFTSize/2 + 1];
   
-  fHcPower = new KHalfComplexPower(fTemplateDFT, fTemplateDFTSize, templatePower, fTemplateDFTSize/2);
+  fHcPower = new KHalfComplexPower(fTemplateDFT, fTemplateDFTSize, templatePower, fTemplateDFTSize/2 + 1);
   fHcPower->RunProcess();
   
   // the optimal filter has a length of n elements. the first n/2 + 1 are the real parts
@@ -149,8 +149,9 @@ bool KOptimalFilter::BuildFilter(void)
   //first calculate the denominator of the optimal filter
   double denom = 0;
   for (unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-    denom += *(templatePower+i) / *(fNoiseSpectrum+1);
+    denom += *(templatePower+i) / *(fNoiseSpectrum+i);
     
+  cout << "denominator " << denom << endl;
   //now caluclate the real parts of the optimal filter
   for(unsigned int i = 0; i <= fOptFilterSize/2; i++){
     *(fOptFilter+i) = *(fTemplateDFT+i) / (denom * *(fNoiseSpectrum+i));
