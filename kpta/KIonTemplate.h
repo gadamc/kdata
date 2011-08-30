@@ -10,8 +10,9 @@
 #ifndef __KIONTEMPLATE_H__
 #define __KIONTEMPLATE_H__
 
+#include "KPulseTemplate.h"
 
-class KIonTemplate  { 
+class KIonTemplate : public KPulseTemplate  { 
 
 public:
   //Constructors
@@ -20,7 +21,7 @@ public:
   
   void SetParams(double p0, double p1, double p2, double p3, double p4);
   double GetParams(unsigned int i){return (i < 5) ? fParams[i] : -1;}
-  double Get(double time);
+  virtual double Get(double time);
   
 private:
   double fParams[5];  //there are five parameters in the current ion template function

@@ -10,8 +10,9 @@
 #ifndef __KHEATTEMPLATE_H__
 #define __KHEATTEMPLATE_H__
 
+#include "KPulseTemplate.h"
 
-class KHeatTemplate  { 
+class KHeatTemplate : public KPulseTemplate { 
 
 public:
   //Constructors
@@ -21,7 +22,7 @@ public:
   void SetParams(double p0, double p1, double p2, double p3, double p4,
                   double p5, double p6, double p7);
   double GetParams(unsigned int i){return (i < 8) ? fParams[i] : -1;}
-  double Get(double time);
+  virtual double Get(double time);
   
 private:
   double fParams[8];  //there are five parameters in the current ion template function
