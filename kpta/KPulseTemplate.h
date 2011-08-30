@@ -14,6 +14,9 @@
 class KPulseTemplate  { 
 
 public:
+  //Constructors
+  KPulseTemplate(void);
+  virtual ~KPulseTemplate(void);
   
   virtual double Get(double time) = 0;
 
