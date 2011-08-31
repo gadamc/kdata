@@ -13,6 +13,7 @@
 #include <stdexcept> 
 #include <iostream>
 #include <vector>
+#include <string.h>
 //#include "Rtypes.h"
  
 class KPtaProcessor  { 

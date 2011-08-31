@@ -12,6 +12,7 @@
 #define __KCONVOLUTION_H__
 
 #include "KPtaProcessor.h"
+#include <string.h>
 
 class KConvolution : public KPtaProcessor { 
   
