@@ -12,6 +12,7 @@
 
 #include "KConvolution.h"
 #include <iostream>
+
 using namespace std;
 //ClassImp(KConvolution);
 

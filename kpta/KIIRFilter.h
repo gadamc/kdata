@@ -12,6 +12,7 @@
 #define __KIIRFILTER_H__
 
 #include "KPtaProcessor.h"
+#include <string.h>
 
 class KIIRFilter : public KPtaProcessor { 
   
