@@ -66,7 +66,9 @@ void KRealToHalfComplexDFT::InitializeMembers(void)
 
 bool KRealToHalfComplexDFT::RunProcess(void)
 {
-  return CalculateFFT();
+  if(CalculateFFT()) 		
+	return Normalize();
+  else return false;
 
 }
 void KRealToHalfComplexDFT::SetFFTWPlan(void)
