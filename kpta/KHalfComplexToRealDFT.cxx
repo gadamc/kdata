@@ -86,10 +86,7 @@ void KHalfComplexToRealDFT::InitializeMembers(void)
   
 bool KHalfComplexToRealDFT::RunProcess(void)
 {
-	if(CalculateFFT()) 		
-		return Normalize();
-	
-	else return false;
+	return CalculateFFT();
 }
 
 bool KHalfComplexToRealDFT::Normalize(void)
