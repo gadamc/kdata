@@ -12,13 +12,13 @@
 // 
 // The optimal filter built from these two inputs will be a half-complex array of size N.
 //
-// To use this class, the input pulse will be the all-real input pulse (after baseline subtraction
+// To use this class, the input pulse will be DFT (in half-complex format of size N) of 
+// the all-real input pulse (after baseline subtraction
 // and pattern removal) and the output "pulse" will be an array of length N that is the pulse amplitude
 // as a function of pulse start times. The maximum value in this array is the optimal filter estimate
 // of the amplitude of the pulse and the element of the output array where this occurs is the estimate
 // of the pulse start time.
 //
-// The InputPulse also must be in half-comlex format of size N
 //
 
 
@@ -127,7 +127,7 @@ bool KOptimalFilter::BuildFilter(void)
       
   }
   double *templatePower = new double[fTemplateDFTSize/2 + 1];
-  
+
   fHcPower = new KHalfComplexPower(fTemplateDFT, fTemplateDFTSize, templatePower, fTemplateDFTSize/2 + 1);
   fHcPower->RunProcess();
   
