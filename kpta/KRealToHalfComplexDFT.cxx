@@ -15,6 +15,7 @@
 // the r2r transformation 'plans'. 
 // http://www.fftw.org/fftw3_doc/More-DFTs-of-Real-Data.html#More-DFTs-of-Real-Data
 //
+// The output array is normalized by 1/N
 //
 // To use this processor
 // 1. SetInputPulse(vector<double> aPulse); // or vector of floats, shorts, or ints. 
@@ -43,15 +44,15 @@ using namespace std;
 
 KRealToHalfComplexDFT::KRealToHalfComplexDFT(void)
 {
-	SetName("KRealToHalfComplexDFT");
+  SetName("KRealToHalfComplexDFT");
   InitializeMembers();
 }
 
 KRealToHalfComplexDFT::KRealToHalfComplexDFT(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
   : KHalfComplexToRealDFT(inPulse, inSize, outPulse, outsize)
 {
-   SetName("KRealToHalfComplexDFT"); 
-   InitializeMembers();
+  SetName("KRealToHalfComplexDFT"); 
+  InitializeMembers();
 }
 
 KRealToHalfComplexDFT::~KRealToHalfComplexDFT(void)
@@ -66,21 +67,21 @@ void KRealToHalfComplexDFT::InitializeMembers(void)
 
 bool KRealToHalfComplexDFT::RunProcess(void)
 {
-  if(CalculateFFT()) 		
-	return Normalize();
+  if(CalculateFFT())
+    return Normalize();
   else return false;
 
 }
 void KRealToHalfComplexDFT::SetFFTWPlan(void)
 {
-	//This will erase the contents of fIn_fft and fOut_fft. So make sure that these
-	//arrays are filled with their initial values AFTER this method is called. 
-	
-	if(fInputPulse  && fOutputPulse )
-		fPlan = (void*)fftw_plan_r2r_1d( (int)fInputSize, fInputPulse, fOutputPulse, FFTW_R2HC, MapFlag());
-	else 
-		cerr << "KRealToHalfComplexDFT::SetFFTWPlan. Arrays are empty." << endl;
-	
+  //This will erase the contents of fIn_fft and fOut_fft. So make sure that these
+  //arrays are filled with their initial values AFTER this method is called. 
+
+  if(fInputPulse  && fOutputPulse )
+    fPlan = (void*)fftw_plan_r2r_1d( (int)fInputSize, fInputPulse, fOutputPulse, FFTW_R2HC, MapFlag());
+  else 
+    cerr << "KRealToHalfComplexDFT::SetFFTWPlan. Arrays are empty." << endl;
+
 }
 
 

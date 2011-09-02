@@ -15,7 +15,6 @@
 // the r2r transformation 'plans'. 
 // http://www.fftw.org/fftw3_doc/More-DFTs-of-Real-Data.html#More-DFTs-of-Real-Data
 //
-// However, there is a difference in this class compared to r2r: The output array is "normalized" by 1/N
 //
 // BEGIN_LATEX
 // #scale[1.5]{Y_{k} = #frac{1}{N} \sum_{j=0}^{n-1} X_{j} e^{2 #pi j k #sqrt{-1}/n}}
@@ -48,74 +47,75 @@ using namespace std;
 
 KHalfComplexToRealDFT::KHalfComplexToRealDFT(void)
 {
-	SetName("KHalfComplexToRealDFT");
+  SetName("KHalfComplexToRealDFT");
   InitializeMembers();	
 }
 
 KHalfComplexToRealDFT::KHalfComplexToRealDFT(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
   : KPtaProcessor(inPulse, inSize, outPulse, outsize)
 {
-   SetName("KHalfComplexToRealDFT"); 
-   InitializeMembers();
-   SetFFTWPlan();
+  SetName("KHalfComplexToRealDFT"); 
+  InitializeMembers();
+  SetFFTWPlan();
 }
 
 KHalfComplexToRealDFT::~KHalfComplexToRealDFT(void)
 {
   //since using fftw, destroy the pulses here with fftw_free
   //see the fftw documentation for why this is done
-	if(fInputPulse != 0){
-		fftw_free(fInputPulse);
-		fInputPulse = 0;
+  if(fInputPulse != 0){
+    fftw_free(fInputPulse);
+    fInputPulse = 0;
     fInputSize = 0;
-	}
-	if(fOutputPulse != 0){
-		fftw_free(fOutputPulse);
-		fOutputPulse = 0;
+  }
+  if(fOutputPulse != 0){
+    fftw_free(fOutputPulse);
+    fOutputPulse = 0;
     fOutputSize = 0;
-	}
-	
-	fftw_destroy_plan((fftw_plan)fPlan);
-	
+  }
+
+  fftw_destroy_plan((fftw_plan)fPlan);
+
 }
 
 void KHalfComplexToRealDFT::InitializeMembers(void)
 {
-	fPlan = 0;
+  fPlan = 0;
 }
-  
+
 bool KHalfComplexToRealDFT::RunProcess(void)
 {
-	return CalculateFFT();
+  return CalculateFFT();
+
 }
 
 bool KHalfComplexToRealDFT::Normalize(void)
 {
   //copies the normalized real array to the fOutputPulse.
-  
-	for(unsigned int i = 0; i < fOutputSize; i++)
+
+  for(unsigned int i = 0; i < fOutputSize; i++)
     *(fOutputPulse+i) = *(fOutputPulse+i)/fOutputSize;  // this IS NORMALIZED
-		
-	return true;
-	
+
+  return true;
+
 }
 
 bool KHalfComplexToRealDFT::CalculateFFT(void)
 {
-  
-	if(fInputPulse == 0 || fOutputPulse == 0) {
-		cerr << "KHalfComplexToRealDFT::CalculateFFT. input and output arrays have not been set." << endl;
-		return false;
-	}
-	
-	if(fPlan)
-		fftw_execute((fftw_plan)fPlan);
-	else {
-		cerr << "KHalfComplexToRealDFT::CalculateFFT. The plan hasn't been initialized" << endl;
-		return false;
-	}
-	
-	return true;
+
+  if(fInputPulse == 0 || fOutputPulse == 0) {
+    cerr << "KHalfComplexToRealDFT::CalculateFFT. input and output arrays have not been set." << endl;
+    return false;
+  }
+
+  if(fPlan)
+    fftw_execute((fftw_plan)fPlan);
+  else {
+    cerr << "KHalfComplexToRealDFT::CalculateFFT. The plan hasn't been initialized" << endl;
+    return false;
+  }
+
+  return true;
 }
 
 
@@ -123,75 +123,75 @@ void KHalfComplexToRealDFT::AllocateArrays(unsigned int size)
 {
   //allocate memory for the input and output arrays. but use the fftw_malloc function
   //see the fftw documentation for why this is done
-  
-	if(fInputPulse)	fftw_free(fInputPulse);
-	if(fOutputPulse) fftw_free(fOutputPulse);	
+
+  if(fInputPulse)	fftw_free(fInputPulse);
+  if(fOutputPulse) fftw_free(fOutputPulse);	
   fInputSize = fOutputSize = size;
-  
-	fInputPulse = (double*)fftw_malloc(sizeof(double)*fInputSize);
-	fOutputPulse = (double*)fftw_malloc(sizeof(double)*fInputSize);
-	
-	SetFFTWPlan();  //reset the fftw plan with the new arrays. 
+
+  fInputPulse = (double*)fftw_malloc(sizeof(double)*fInputSize);
+  fOutputPulse = (double*)fftw_malloc(sizeof(double)*fInputSize);
+
+  SetFFTWPlan();  //reset the fftw plan with the new arrays. 
 }
 
 
 void KHalfComplexToRealDFT::SetFFTWPlan(void)
 {
-	//This will erase the contents of fIn_fft and fOut_fft. So make sure that these
-	//arrays are filled with their initial values AFTER this method is called. 
-	
-	if(fInputPulse  && fOutputPulse )
-		fPlan = (void*)fftw_plan_r2r_1d( (int)fInputSize, fInputPulse, fOutputPulse, FFTW_HC2R, MapFlag());
-	else 
-		cerr << "KHalfComplexToRealDFT::SetFFTWPlan. Arrays are empty." << endl;
-	
-	
+  //This will erase the contents of fIn_fft and fOut_fft. So make sure that these
+  //arrays are filled with their initial values AFTER this method is called. 
+
+  if(fInputPulse  && fOutputPulse )
+    fPlan = (void*)fftw_plan_r2r_1d( (int)fInputSize, fInputPulse, fOutputPulse, FFTW_HC2R, MapFlag());
+  else 
+    cerr << "KHalfComplexToRealDFT::SetFFTWPlan. Arrays are empty." << endl;
+
+
 }
 
 void KHalfComplexToRealDFT::SetFFTWFlag(const char* aFlag)
 {
-	//allowed options
-	//"ES" == FFTW_ESTIMATE
-	//"M" == FFTW_MEASURE
-	//"P" == FFTW_PATIENT
-	//"EX" == FFTW_EXHAUSTIVE
-	//
-	// These flags tell FFTW how much it should look for the very best
-	// algorithm to make the caluclation of the DFT. ES has the lowest
-	// overhead for searching for an algorithm, but the choice it makes
-	// may be suboptimal. For repeated use of an instance of this object
-	// FFTW_MEASURE is preferred, which is the default value.
-	//
-	
-	if(aFlag != 0)
-		fFFTWFlag = aFlag;
-	else fFFTWFlag = "M";
-	
-	if(fFFTWFlag != "ES" && fFFTWFlag != "M" && fFFTWFlag != "P" && fFFTWFlag != "EX"){
-		cerr << "KHalfComplexToRealDFT::SetOption. Invalid option: " << fFFTWFlag << endl;
-		cerr << "    setting option to default value of 'M' "  << endl;
-		fFFTWFlag = "M";
-	}
-	
+  //allowed options
+  //"ES" == FFTW_ESTIMATE
+  //"M" == FFTW_MEASURE
+  //"P" == FFTW_PATIENT
+  //"EX" == FFTW_EXHAUSTIVE
+  //
+  // These flags tell FFTW how much it should look for the very best
+  // algorithm to make the caluclation of the DFT. ES has the lowest
+  // overhead for searching for an algorithm, but the choice it makes
+  // may be suboptimal. For repeated use of an instance of this object
+  // FFTW_MEASURE is preferred, which is the default value.
+  //
+
+  if(aFlag != 0)
+    fFFTWFlag = aFlag;
+  else fFFTWFlag = "M";
+
+  if(fFFTWFlag != "ES" && fFFTWFlag != "M" && fFFTWFlag != "P" && fFFTWFlag != "EX"){
+    cerr << "KHalfComplexToRealDFT::SetOption. Invalid option: " << fFFTWFlag << endl;
+    cerr << "    setting option to default value of 'M' "  << endl;
+    fFFTWFlag = "M";
+  }
+
 }
 
 unsigned int KHalfComplexToRealDFT::MapFlag(void)
 {
-	//allowed options
-	//"ES" == FFTW_ESTIMATE
-	//"M" == FFTW_MEASURE
-	//"P" == FFTW_PATIENT
-	//"EX" == FFTW_EXHAUSTIVE
-	
-	if(fFFTWFlag == "ES")
-		return FFTW_ESTIMATE;
-	if(fFFTWFlag == "M")
-		return FFTW_MEASURE;
-	if(fFFTWFlag == "P")
-		return FFTW_PATIENT;
-	if(fFFTWFlag == "EX")
-		return FFTW_EXHAUSTIVE;
-	
-	return FFTW_ESTIMATE;
+  //allowed options
+  //"ES" == FFTW_ESTIMATE
+  //"M" == FFTW_MEASURE
+  //"P" == FFTW_PATIENT
+  //"EX" == FFTW_EXHAUSTIVE
+
+  if(fFFTWFlag == "ES")
+    return FFTW_ESTIMATE;
+  if(fFFTWFlag == "M")
+    return FFTW_MEASURE;
+  if(fFFTWFlag == "P")
+    return FFTW_PATIENT;
+  if(fFFTWFlag == "EX")
+    return FFTW_EXHAUSTIVE;
+
+  return FFTW_ESTIMATE;
 }
 
