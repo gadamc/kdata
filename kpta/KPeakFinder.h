@@ -12,7 +12,7 @@
 #define __KPEAKFINDER_H__
 
 #include "KPtaProcessor.h"
-#include <vector.h>
+#include <vector>
 
 class KPeakFinder : public KPtaProcessor { 
   
