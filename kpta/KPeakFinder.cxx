@@ -16,7 +16,9 @@
 #include "KPeakFinder.h"
 #include "KRootMeanSquare.h"
 #include <cmath>
+#include <iostream>
 
+using namespace std;
 
 KPeakFinder::KPeakFinder(void)
 {
