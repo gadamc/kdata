@@ -29,6 +29,9 @@ def addDocsFromView(vr, procname):
     doc = db.get(row['id'])
     procdict = dict()
     if procname == 'proc0':
+      if doc.has_key(procname):
+        print 'cannot add %s record to document because it already has one', % procname
+        continue
       procdict['processname'] = 'rootifyAndCopyToSps'
       procdict['file'] = '/sps/edelweiss/kdata/data/current/raw/' + os.path.basename(doc['file']) + '.root'
       procdict['hostname'] = 'ccali.in2p3.fr'
@@ -39,8 +42,8 @@ def addDocsFromView(vr, procname):
       print 'only supporting proc0'
       sys.exit(-1)
     
-    doc['status'] = 'good'
-    doc[procname] = procdict
+    if db.doc_exist(doc['_id']):
+      doc['_rev'] = db.get_rev(doc['_id'])
     db.save_doc(doc)
 
   
@@ -58,7 +61,20 @@ def addProcToRangeOfRuns(uri, dbname, procname, startrun, endrun):
   addDocsFromView(vr, procname)
   
 def main(*args):
-  
+  '''
+    This script will add a "proc" key to a database run document.  You can give this script
+    a single run number, or a range of runs numbers. (For now, it will remove the proc from ALL partition files within
+    a single run. 
+    
+    example:
+    ./addProc https://edwdbuser:password@edwdbik.fzk.de:6984 edwdb proc1 lg23b002
+    
+    ./addProc https://edwdbuser:password@edwdbik.fzk.de:6984 edwdb proc1 lg23b002  lh18c005
+    
+    In this file, the addDocsFromView function needs to directly define what will be added to the document
+    Currently, you'll this function only supports 'proc0', but you should explicitly check above because
+    not everybody documents their code changes! :)
+  '''
   
   if len(args) < 4:
     return Done

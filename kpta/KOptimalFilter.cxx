@@ -38,7 +38,16 @@ KOptimalFilter::KOptimalFilter(void)
 
 KOptimalFilter::~KOptimalFilter(void)
 {
+  //
   
+  //need to destroy your stuff!
+  if(fNoiseSpectrum) delete [] fNoiseSpectrum;
+  if(fTemplateDFT) delete [] fTemplateDFT;
+  if(fOptFilter) delete [] fOptFilter;
+  if(fOptFilterAndSignal) delete [] fOptFilterAndSignal;
+  if(fTemplatePower) delete [] fTemplatePower;
+  if(fHc2r) delete fHc2r;
+  if(fHcPower) delete fHcPower;
 }
 
 KOptimalFilter::KOptimalFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
@@ -56,13 +65,17 @@ void KOptimalFilter::InitializeMembers(void)
   fTemplateDFT = 0;
   fOptFilter = 0;
   fOptFilterAndSignal = 0;
+  fTemplatePower = 0;
   
   fNoiseSpectrumSize = 0;
   fTemplateDFTSize = 0;
   fOptFilterSize = 0;
   fOptFilterAndSignalSize = 0;
-  
+  fTemplatePowerSize = 0;
   fRecalculate = true;
+  
+  fHc2r = new KHalfComplexToRealDFT();
+  fHcPower = new KHalfComplexPower();
   
 }
 
@@ -83,20 +96,8 @@ bool KOptimalFilter::RunProcess(void)
       return false;
   }
   
-  if(fOptFilterAndSignal == 0){
-    cerr << "fOptFilterAndSignal is not allocated." << endl;
-    return false;
-  }
-  
-  if(fOptFilter == 0){
-    cerr << "fOptFilter is not allocated." << endl;
-    return false;
-  }
-  
   for(unsigned int i = 0; i < fOptFilterAndSignalSize; i++)
     *(fOptFilterAndSignal+i) = *(fOptFilter+i) * *(fInputPulse+i);
-  
-  fHc2r = new KHalfComplexToRealDFT(fOptFilterAndSignal, fOptFilterAndSignalSize, fOutputPulse, fOutputSize);
   
   return fHc2r->RunProcess();
 
@@ -104,7 +105,6 @@ bool KOptimalFilter::RunProcess(void)
 
 bool KOptimalFilter::BuildFilter(void)
 {
-  //this can definitely be optimized - too many new and delete calls
   
   if(!fRecalculate)
     return true;
@@ -114,6 +114,8 @@ bool KOptimalFilter::BuildFilter(void)
     return false;
   }
   
+  //if the size changes, need to reallocate memory and reset 
+  //the appropriate pointers. 
   if(fOptFilterSize != fTemplateDFTSize){
     if(fOptFilter)  delete [] fOptFilter;
     fOptFilterSize= fTemplateDFTSize;
@@ -125,10 +127,20 @@ bool KOptimalFilter::BuildFilter(void)
     fOptFilterAndSignalSize = fTemplateDFTSize;
     fOptFilterAndSignal = new double[fOptFilterAndSignalSize];
       
-  }
-  double *templatePower = new double[fTemplateDFTSize/2 + 1];
+    if(fTemplatePower) delete [] fTemplatePower;
+    fTemplatePowerSize = fTemplateDFTSize/2 + 1;
+    fTemplatePower = new double[fTemplatePowerSize];
+    
+    fHcPower->SetInputPulse(fTemplateDFT);
+    fHcPower->SetInputPulseSize(fTemplateDFTSize);
+    fHcPower->SetOutputPulse(fTemplatePower);
+    fHcPower->SetOutputPulseSize(fTemplatePowerSize);
+    
+    fHc2r->SetInputPulse(fOptFilterAndSignal);
+    fHc2r->SetInputPulseSize(fOptFilterAndSignalSize); 
 
-  fHcPower = new KHalfComplexPower(fTemplateDFT, fTemplateDFTSize, templatePower, fTemplateDFTSize/2 + 1);
+  }
+
   fHcPower->RunProcess();
   
   // the optimal filter has a length of n elements. the first n/2 + 1 are the real parts
@@ -149,7 +161,7 @@ bool KOptimalFilter::BuildFilter(void)
   //first calculate the denominator of the optimal filter
   double denom = 0;
   for (unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-    denom += *(templatePower+i) / *(fNoiseSpectrum+i);
+    denom += *(fTemplatePower+i) / *(fNoiseSpectrum+i);
     
   cout << "denominator " << denom << endl;
   //now caluclate the real parts of the optimal filter
@@ -165,4 +177,16 @@ bool KOptimalFilter::BuildFilter(void)
   
   fRecalculate = false;
   return true;
+}
+
+void KOptimalFilter::SetOutputPulseSize(unsigned int s)
+{
+  fOutputSize = s;
+  fHc2r->SetInputPulseSize(fOutputSize); 
+}
+
+void KOptimalFilter::SetOutputPulse(double *aPulse)
+{
+  fOutputPulse = aPulse;
+  fHc2r->SetOutputPulse(aPulse);
 }

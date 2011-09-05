@@ -16,9 +16,9 @@
 
 #include "KHalfComplexPower.h"
 #include <cmath>
+#include <iostream>
 
-//ClassImp(KHalfComplexPower);
-
+using namespace std;
 
 KHalfComplexPower::KHalfComplexPower(void)
 {
@@ -46,6 +46,11 @@ void KHalfComplexPower::InitializeMembers(void)
 
 bool KHalfComplexPower::RunProcess(void)
 {
+  if(fInputPulse == 0 || fOutputPulse == 0) {
+    cerr << "KHalfComplexPower::RunProcess. input and output arrays have not been set." << endl;
+    return false;
+  }
+
   if(fInputSize < 2) return false;
 
   if(fOutputPulse==0 || fOutputSize != 1 + fInputSize/2 ){  //resize if necessary

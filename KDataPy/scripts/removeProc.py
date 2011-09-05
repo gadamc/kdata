@@ -34,8 +34,13 @@ def deleteProcFromListOfRuns(uri, dbname, procname, startrun, endrun):
 def main(*args):
   '''
     This script will remove a "proc" key from a database run document.  You can give this script
-    a single run, or a list of runs. (For now, it will remove the proc from ALL partition files within
+    a single run number, or a range of runs numbers. (For now, it will remove the proc from ALL partition files within
     a single run. 
+    
+    example:
+    ./removeProc https://edwdbuser:password@edwdbik.fzk.de:6984 edwdb proc1 lg23b002
+    
+    ./removeProc https://edwdbuser:password@edwdbik.fzk.de:6984 edwdb proc1 lg23b002  lh18c005
   '''
   if len(args) < 4:
     return Done
