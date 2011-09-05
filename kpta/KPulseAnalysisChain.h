@@ -21,24 +21,25 @@ public:
   KPulseAnalysisChain(void);
   virtual ~KPulseAnalysisChain(void);
   //virtual void Clear(Option_t *opt = "C");
-	virtual bool RunProcess(void);
-	virtual void AddProcessor(KPtaProcessor *p);
-	virtual void AddProcessorAt(KPtaProcessor *p, unsigned int index);
-	virtual void DeleteProcessors(void);
+  virtual bool RunProcess(void);
+  virtual bool RunProcess(bool smartMemory);
+  virtual void AddProcessor(KPtaProcessor *p);
+  virtual void AddProcessorAt(KPtaProcessor *p, unsigned int index);
+  virtual void DeleteProcessors(void);
   virtual void SetIsOwner(bool anOpt = true);
-  
+
   KPtaProcessor* GetProcessor(unsigned int i) { return fProcessorList.at(i);}
   virtual void SetMyOutputPulse(const double* p, unsigned int s);
-  
+
 private:
-	std::vector<KPtaProcessor*> fProcessorList;
+  std::vector<KPtaProcessor*> fProcessorList;
   bool fIsOwner; 
   //private methods
   void InitializeMembers(void);
-  
-  
+
+
   //ClassDef(KPulseAnalysisChain,1);
-  
+
 };
 
 //

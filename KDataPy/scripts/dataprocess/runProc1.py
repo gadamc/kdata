@@ -4,7 +4,7 @@ from DBProcess import *
 import os, sys, tempfile, shutil, datetime
 import rootifySambaData as rt
 import scpToSps as scp
-import calculateAveNoise as can
+import calculateAmplitudes as can
 
 def runProcess(*args, **kwargs):
   
@@ -12,7 +12,8 @@ def runProcess(*args, **kwargs):
     print 'takes just one argument... the file name.'
     sys.exit(-1)
 
-  return can.main(args[0]['proc0']['file'])
+  #
+  return can.main(args[0]['proc0']['file'], newfileName)
   
   
 def processOne(doc):

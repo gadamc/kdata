@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import numpy as np
 from couchdbkit import Server, Database
 
 def getConfiguration(configDoc):
@@ -21,25 +20,11 @@ def main(*argv):
   argv[2] == (optional) the couchdb database document that provides configuration options
   to this program. otherwise, a default configuration is used. 
   '''
-  fin = KDataReader(argv[0])
-  fout = KDataWriter(argv[1], 'KAmpEvent')
-  ein = fin.GetEvent()
-  eout = fin.GetEvent()
-   
-  configArg = None
-  if len(argv) >= 3:
-    configArg = argv[2]
   
-  config = getConfiguration(configArg)
-  
-  pulseIonA = np.zeros(8196)
-  pulseIonB = np.zeros(8196)
-
-  pulseHeatA = np.zeros(512)
-  pulseHeatB = np.zeros(512)
-
-
-  
+  #Now, this routine will then call a precompiled executable passing in the configuration values.
+  #This is because memory management can be done better (and more easily for the details that we
+  #require for as fast as possible calculation) in C/C++
+    
 
 if __name__ == '__main__':
   main(*sys.argv[1:])
