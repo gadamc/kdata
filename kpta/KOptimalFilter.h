@@ -3,7 +3,7 @@
 // KOptimalFilter.h
 // Author: Adam Cox <mailto:adam.cox@kit.edu>
 //
-// *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved
+// *Copyright 2011 Karlsruhe Inst. of Technology. All Rights Reserved
 //
 //
 
@@ -25,10 +25,10 @@ public:
   //for the memory-savy programmers
   KOptimalFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
   
-	virtual bool RunProcess(void);
+  virtual bool RunProcess(void);
   virtual bool BuildFilter(void);
   
-	virtual double* GetNoiseSpectrum(void){return fNoiseSpectrum;}
+  virtual double* GetNoiseSpectrum(void){return fNoiseSpectrum;}
   virtual unsigned int GetNoiseSpectrumSize(void){return fNoiseSpectrumSize;}
   virtual double* GetTemplateDFT(void){return fTemplateDFT;}
   virtual unsigned int GetTemplateDFTSize(void){return fTemplateDFTSize;}
@@ -36,7 +36,7 @@ public:
   virtual unsigned int GetOptimalFilterSize(void){return fOptFilterSize;}
   
   virtual void SetToRecalculate(void){fRecalculate= true;}
-	
+  
   virtual void SetNoiseSpectrum(std::vector<double> &r){SetTheNoiseSpectrum(r);}
   virtual void SetNoiseSpectrum(std::vector<float> &r){SetTheNoiseSpectrum(r);}
   virtual void SetNoiseSpectrum(std::vector<int> &r){SetTheNoiseSpectrum(r);}
@@ -58,8 +58,9 @@ public:
   virtual void SetTemplateDFT(const int* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
   virtual void SetTemplateDFT(const short* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
   
+  virtual void SetOutputPulse(double *aPulse);
+  virtual void SetOutputPulseSize(unsigned int s);
   
-	
 protected:
   double *fNoiseSpectrum;
   unsigned int fNoiseSpectrumSize;
@@ -77,6 +78,9 @@ protected:
   
   double *fOptFilterAndSignal;
   unsigned int fOptFilterAndSignalSize;
+  
+  double *fTemplatePower;
+  unsigned int fTemplatePowerSize;
   
   KHalfComplexToRealDFT *fHc2r;
   KHalfComplexPower *fHcPower;
