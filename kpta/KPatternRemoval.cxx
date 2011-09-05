@@ -20,15 +20,15 @@ using namespace std;
 
 KPatternRemoval::KPatternRemoval(void)
 {
-	SetName("KPatternRemoval");
+  SetName("KPatternRemoval");
   InitializeMembers();
 }
 
 KPatternRemoval::KPatternRemoval(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
   : KPtaProcessor(inPulse, inSize, outPulse, outsize)
 {
-   SetName("KPatternRemoval"); 
-   InitializeMembers();
+  SetName("KPatternRemoval"); 
+  InitializeMembers();
 }
 
 KPatternRemoval::~KPatternRemoval(void)
@@ -46,12 +46,12 @@ void KPatternRemoval::InitializeMembers(void)
   //default pattern length = 100 points
   //default baseline start is point 0
   //default baseline stop is 20*pattern length (2000 points)
-  
 
-	fPatternLength = 200; //default pattern length size;
-	fBaselineStart = 0;
-	fBaselineStop = fPatternLength*20; //4000 points -  standard ion pulse of length 8192 pts
-	fPattern = new double[fPatternLength];
+
+  fPatternLength = 200; //default pattern length size;
+  fBaselineStart = 0;
+  fBaselineStop = fPatternLength*20; //4000 points -  standard ion pulse of length 8192 pts
+  fPattern = new double[fPatternLength];
   fUseExternalPattern = false;
 }
 
@@ -69,62 +69,24 @@ bool KPatternRemoval::RunProcess(void)
   //
   // RunProcess(aPattern);
   //
-  
+
   //cout << "Run Process: " << GetName() << endl;
 
   if (fUseExternalPattern) 
     return SubtractPattern();
-    
+
   else return (CalculatePattern() ? SubtractPattern() : false);
  /* 
-	if(CalculatePattern())
-    return SubtractPattern();
-  else 
-    return false;
-  */
-  
-}
+ if(CalculatePattern())
+ return SubtractPattern();
+ else 
+ return false;
+ */
 
-template<class T> bool KPatternRemoval::RunProcess(std::vector<T> &aPattern)
-{
-  //Subtracts aPattern from the input pulse and assigns the result to the output pulse.
-  
-  return (SetPattern(aPattern) ? SubtractPattern() : false);
-  
-  /*
-  if(SetPattern(aPattern))
-    return SubtractPattern();
-  else
-    return false;
-  */
 }
 
 
-template<class T> bool KPatternRemoval::SetPattern(std::vector<T> &aPattern)
-{
-  //sets the pattern and sets fUseExternalPattern to true if
-  //the memory for the pattern is properly allocated.
-  //otherwise, fUseExternalPattern is not changed. 
-  //
-  //If this methods returns true, then
-  //this means, the following are equivalent.
-  // SetPattern(aPattern);
-  // RunProcess();
-  //
-  // and
-  //
-  // RunProcess(aPattern);
-  //
-  
-	if(SetPatternLength(aPattern.size()))
-    return false;
-	
-	for(unsigned int i = 0; i < fPatternLength; i++){
-			*(fPattern+i) = aPattern.at(i);
-	}
-  fUseExternalPattern;
-	return true;
-}
+
 
 bool KPatternRemoval::CalculatePattern(void)
 {
@@ -135,7 +97,7 @@ bool KPatternRemoval::CalculatePattern(void)
   //then this returns false. Otherwise, it calculates the number of full
   //patterns available in the range (numPatterns) and then calculates the average pattern
   //between fBaselineStart and fBaselineStart+numPatterns*fPatternLength. 
-  
+
   if(fPattern == 0){
     cerr << "Pattern pointer not allocated" << endl;
     return false;
@@ -145,25 +107,25 @@ bool KPatternRemoval::CalculatePattern(void)
     return false;
   }
   memset(fPattern, 0, fPatternLength*sizeof(double));
-	
-	// count the number of full patterns that can fit in the range fBaselineStart:fBaselineStop
-	// and force the routine to only consider full patterns.
-	unsigned int numPatterns = (unsigned int)floor((fBaselineStop - fBaselineStart + 0.5)/(double)(fPatternLength));
-	
-	if(numPatterns < 1) return false; 
-	
-	unsigned int patternCount = 0;
+
+  // count the number of full patterns that can fit in the range fBaselineStart:fBaselineStop
+  // and force the routine to only consider full patterns.
+  unsigned int numPatterns = (unsigned int)floor((fBaselineStop - fBaselineStart + 0.5)/(double)(fPatternLength));
+
+  if(numPatterns < 1) return false; 
+
+  unsigned int patternCount = 0;
   unsigned int maxPosition = fBaselineStart + numPatterns*fPatternLength ;
 
-	for(unsigned int i = fBaselineStart; i < maxPosition; i++){
-		if(patternCount == fPatternLength)
-			patternCount = 0;
-		
-		*(fPattern+patternCount) += *(fInputPulse+i)/numPatterns;
+  for(unsigned int i = fBaselineStart; i < maxPosition; i++){
+    if(patternCount == fPatternLength)
+      patternCount = 0;
+
+    *(fPattern+patternCount) += *(fInputPulse+i)/numPatterns;
     patternCount++;
-	}
-	
-	return true;
+  }
+
+  return true;
 }
 
 bool KPatternRemoval::SubtractPattern(void)
@@ -174,36 +136,43 @@ bool KPatternRemoval::SubtractPattern(void)
   //If fPatternLength is set to zero, the input pulse is copied to the output pulse.
   //This could be useful when dealing with heat pulses (where there should be no pattern)
   //but this processor is part of a KPulseAnalysisChain and you just want to set 
-  
+
   if (fPatternLength == 0) {
-     memcpy(fOutputPulse,fInputPulse, (fOutputSize >= fInputSize) ? fInputSize*sizeof(double) : fOutputSize*sizeof(double) );
-     return true;  
-   } //return true in case pattern size is zero. 
+    memcpy(fOutputPulse,fInputPulse, (fOutputSize >= fInputSize) ? fInputSize*sizeof(double) : fOutputSize*sizeof(double) );
+    return true;  
+  } //return true in case pattern size is zero. 
      //this could be the case when dealing with 
      //heat pulses, but one wants to keep using the
      //same pulse chain processor, but sets the pattern length 
      //to zero.
-	
-	if(fInputPulse == 0 || fOutputPulse == 0) {
+
+  if(fInputPulse == 0 || fOutputPulse == 0) {
     cerr << "input and output pulses are not allocated." << endl;
     return false;
   }
-  
+
   if(fPattern == 0) {
     cerr << "fPattern is not allocated." << endl;
     return false;
   }
-  
-  unsigned int patternCount = 0;
-	for(unsigned int i = 0; i < fOutputSize; i++){
-		if(patternCount == fPatternLength)
-			patternCount = 0;
-		
-		*(fOutputPulse+i) = *(fInputPulse+i) - *(fPattern + patternCount++);
-		
-	}
 
-	return true;
+  unsigned int patternCount = 0;
+  for(unsigned int i = 0; i < fOutputSize; i++){
+    if(patternCount == fPatternLength)
+      patternCount = 0;
+
+    *(fOutputPulse+i) = *(fInputPulse+i) - *(fPattern + patternCount++);
+
+  }
+
+  return true;
+}
+
+void KPatternRemoval::SubtractPattern(unsigned int i, unsigned int patternPos)
+{
+  //you must make sure that i and patternPos are not out of bounds.
+  
+  *(fOutputPulse+i) = *(fInputPulse+i) - *(fPattern + patternPos);
 }
 
 
@@ -212,14 +181,14 @@ void KPatternRemoval::SetBaselineStart(unsigned int aVal)
 { 
   //set's the absolute start point for defining where the average
   //pattern is calculated.
-  
-	if(aVal > fBaselineStop || aVal > fInputSize){
-		cerr << "KPatternRemoval::SetBaselineStart. Out of range: " << aVal << endl;
-		cerr << "   baseline start value unchanged: " << fBaselineStart << endl;
-		cerr << "   baseline stop value is : " << fBaselineStop	<< endl;
-		cerr << "   pulse size is : " << fInputSize << endl;
-	}
-	else fBaselineStart = aVal;
+
+  if(aVal > fBaselineStop || aVal > fInputSize){
+    cerr << "KPatternRemoval::SetBaselineStart. Out of range: " << aVal << endl;
+    cerr << "   baseline start value unchanged: " << fBaselineStart << endl;
+    cerr << "   baseline stop value is : " << fBaselineStop	<< endl;
+    cerr << "   pulse size is : " << fInputSize << endl;
+  }
+  else fBaselineStart = aVal;
 
 }
 
@@ -227,14 +196,14 @@ void KPatternRemoval::SetBaselineStop(unsigned int aVal)
 { 
   //set's the absolute stop point for defining where the average
   //pattern is calculated.
-  
-	if(aVal < fBaselineStart  || aVal > fInputSize){
-		cerr << "KPatternRemoval::SetBaselineStop. Out of range: " << aVal << endl;
-		cerr << "   baseline stop value unchanged: " << fBaselineStop << endl;
-		cerr << "   baseline start value is : " << fBaselineStart	<< endl;
-		cerr << "   pulse size is : " << fInputSize << endl;
-	}
-	else fBaselineStop = aVal;
+
+  if(aVal < fBaselineStart  || aVal > fInputSize){
+    cerr << "KPatternRemoval::SetBaselineStop. Out of range: " << aVal << endl;
+    cerr << "   baseline stop value unchanged: " << fBaselineStop << endl;
+    cerr << "   baseline start value is : " << fBaselineStart	<< endl;
+    cerr << "   pulse size is : " << fInputSize << endl;
+  }
+  else fBaselineStop = aVal;
 }
 
 bool KPatternRemoval::SetPatternLength(unsigned int aLength)
@@ -242,7 +211,7 @@ bool KPatternRemoval::SetPatternLength(unsigned int aLength)
   //sets the length of the pattern. This allocates memory and 
   //destroys the previous pattern if aLength is different from the 
   //current pattern length. 
-  
+
   if(aLength != fPatternLength){
     if(fPattern) {
       delete [] fPattern;
