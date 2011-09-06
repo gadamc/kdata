@@ -521,9 +521,109 @@ Double_t KErecoilQDensity::MultiEventProbabilityOfAtLeastOneEvent(Double_t* x,Do
     product *= 1 - ig.Integral(xmin,xmax);
   }
   
-  return 1 - product;
-  
+  return 1 - product; 
 }
+
+vector<Double_t> KErecoilQDensity::ConvoluteProbabilities(vector<Double_t> vectorA,
+                                                          vector<Double_t> vectorB)
+{
+  // This method is the merge routine of
+  // vector<Double_t> KErecoilQDensity::GetDistributionOfMultipleEvents(
+  //                                               vector<Double_t> aVector)
+  // It calculates from two distributions of the number of occured events
+  // from two distinct sets of events represented by the input vectors
+  // the total distribution of all events in both sets.
+  // This is done by summing products of probabilities 
+  //BEGIN_LATEX
+  // a_{i} , b_{j}
+  //END_LATEX
+  // that i events occur in the first set of events and j events occur in the second set
+  // of events
+  // Summing over all combinations with 
+  //BEGIN_LATEX
+  // n = i + j
+  //END_LATEX
+  // then gives the probability, that n events occur in the union of both sets of events:
+  //
+  //BEGIN_LATEX
+  // c_{n} = #sum_{i=0}^{n} a_{i} * b_{n-i}
+  //END_LATEX
+  //
+  // The size of the second vector must be equal or larger than the size of the first vector
+  // for a safe call
+  // This restriction is kept by
+  // vector<Double_t> KErecoilQDensity::GetDistributionOfMultipleEvents(
+  //                                               vector<Double_t> aVector)
+  // since rounding off in the bisection leads to a smaller first vector, otherwise both 
+  // vectors are equal
+  
+  vector<Double_t> result;
+  Double_t sum = 0;
+  for(UInt_t k = 0; k< vectorA.size(); ++k) {
+    sum = 0;
+    for(UInt_t l = 0; l<= k; ++l)
+      sum += vectorA[l]*vectorB[k-l];
+    result.push_back(sum);  
+  }
+  for(UInt_t k = 1; k< vectorB.size(); ++k) {
+    sum = 0;
+    for(UInt_t l = k; l< vectorB.size(); ++l)
+      sum += vectorA[vectorA.size()-1-l+k]*vectorB[l];
+    result.push_back(sum);
+  }
+  return result;  
+}
+
+vector<Double_t> KErecoilQDensity::GetDistributionOfMultipleEvents(vector<Double_t> aVector)
+{
+  // This method calculates the distribution of the number of occured events from
+  // a set of distinct events with different probabilities p_i given in the input vector
+  // "aVector".
+  // This is done by a divide and conquer approach similar to Merge sort.
+  // The input vector is bisected and this method called for both parts.
+  // The return values of this calls then represent the distributions for both subsets
+  // of events, which are merged by calling 
+  // vector<Double_t> KErecoilQDensity::ConvoluteProbabilities(vector<Double_t> vectorA,
+  //                                                           vector<Double_t> vectorB)
+  // The returned vector is then the distribution of the total set of events.
+  // The recursive calls end when the vector size equals one, which means the input vector
+  // represents only one event. In this case a vector with (1-p , p), where p is the
+  // single entry in the input vector, is returned
+  vector<Double_t> sublistA;
+  vector<Double_t> sublistB;
+  if(aVector.size()>1)
+  {
+    for(UInt_t k = 0; k< aVector.size()/2; ++k)
+      sublistA.push_back(aVector[k]);
+    for(UInt_t k = aVector.size()/2; k< aVector.size(); ++k)
+      sublistB.push_back(aVector[k]);
+    sublistA = GetDistributionOfMultipleEvents(sublistA);
+    sublistB = GetDistributionOfMultipleEvents(sublistB);
+    return ConvoluteProbabilities(sublistA,sublistB);
+  }
+  sublistA.push_back(1-aVector[0]);
+  sublistA.push_back(aVector[0]);
+  return sublistA;
+}
+
+Double_t* KErecoilQDensity::GetDistributionOfMultipleEvents(UInt_t aSize,
+                                                            Double_t* aVector)
+{
+  // This method calls the vector<Double_t> version and converts between vector<Double_t> 
+  // and Double_t* vectors
+  vector<Double_t> input;
+  for(UInt_t k = 0; k< aSize; ++k)
+    input.push_back(aVector[k]);
+  
+  vector<Double_t> result = GetDistributionOfMultipleEvents(input);
+  
+  Double_t* res = new Double_t[aSize+1];
+  for(UInt_t k = 0; k< aSize+1; ++k)
+    res[k] = result[k];
+  return res;
+}
+
+
 
 
 
