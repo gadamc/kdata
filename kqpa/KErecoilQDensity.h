@@ -50,6 +50,11 @@ public:
    static Double_t MultiEventCummulativeProbDensity(Double_t* x,Double_t* par);
    static Double_t MultiEventProbabilityOfAtLeastOneEvent(Double_t* x,Double_t* par);
    
+   static vector<Double_t> ConvoluteProbabilities(vector<Double_t> vectorA,
+                                              vector<Double_t> vectorB);
+   static vector<Double_t> GetDistributionOfMultipleEvents(vector<Double_t> aVector);
+   static Double_t* GetDistributionOfMultipleEvents(UInt_t aSize, Double_t* aVector);
+   
 
 
   
