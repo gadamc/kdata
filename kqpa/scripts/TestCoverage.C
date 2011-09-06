@@ -53,7 +53,7 @@ void GetBoloConfig(const Char_t* aDetectorName)
 
 void TestCoverage(const Char_t* aFileName,
                   const Char_t* aDetectorName,
-                  Int_t aMonteCarloSize,
+                  Long64_t aMonteCarloSize,
                   Double_t anEnergyMin,
                   Double_t anEnergyMax,
                   Double_t anEnergyRecoil,

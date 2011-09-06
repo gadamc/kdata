@@ -151,6 +151,8 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         if(aFunction) {
           if(aPoint->CutsALine(aFunction))                                    
             fPoints.push_back(aPoint);
+	  else
+	    delete aPoint;
         }
         else
           fPoints.push_back(aPoint);
@@ -353,7 +355,9 @@ TF2* KQContourPointList::GetProbabilityOfAtLeastOneEvent(
 TH1D* KQContourPointList::GetDistributionOfTrueValues(const Char_t* aHistogramName,
                                                   TF1* aLowerBoundary,
                                                   TF1* anUpperBoundary,
-                                                  UInt_t aMonteCarloSize)
+                                                  UInt_t aMonteCarloSize,
+						  Int_t aNumElements
+ 						    )
 {
   //This method returns a histogram showing the distribution of the number of 
   // true events within an area between boundary values given by
@@ -370,13 +374,15 @@ TH1D* KQContourPointList::GetDistributionOfTrueValues(const Char_t* aHistogramNa
                           "Distribution of number of true events in a specified area"
                           "for this KQContouPointList",
                           fPoints.size()+1,
-                          0,
-                          fPoints.size());
+                          -0.5,
+                          fPoints.size()+0.5);
   
   Int_t aTrueEventCounter = 0;
   Double_t anEnergyRecoil =0;
   Double_t aQvalue = 0;
   Int_t aFunctionFlag = -1;
+  if(aNumElements == -1)
+    aNumElements = fPoints.size();
   
   if(aLowerBoundary&&anUpperBoundary)
     aFunctionFlag = 0;
@@ -390,7 +396,8 @@ TH1D* KQContourPointList::GetDistributionOfTrueValues(const Char_t* aHistogramNa
   {
       cout << "iteration " << k << endl;
     aTrueEventCounter = 0;
-    for(UInt_t l = 0; l<fPoints.size(); ++l) {
+    for(UInt_t l = 0; l<aNumElements; ++l) {
+      cout << "point " << l << endl;
       this->GetElement(l)->GetFunction()->GetRandom2(anEnergyRecoil,aQvalue);
       switch(aFunctionFlag) {
         case 0: 

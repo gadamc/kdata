@@ -103,7 +103,9 @@ class KQContourPointList : public TObject {
     TH1D* GetDistributionOfTrueValues(const Char_t* aHistogramName = "NumTrueValues",
                                                   TF1* aLowerBoundary = 0,
                                                   TF1* anUpperBoundary = 0,
-                                                  UInt_t aMonteCarloSize = 10000);
+                                                  UInt_t aMonteCarloSize = 10000,
+						  Int_t aNumElements = -1
+ 				    );
     
     void ReadASCIIFile(const Char_t* aFileName = "",
                        const Char_t* aMode = "QErecoil",
