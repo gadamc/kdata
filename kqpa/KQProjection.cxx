@@ -216,6 +216,7 @@ Bool_t KQProjection::MakeHistogram()
   if(!fIsDataRead)
     ReadData(fEnergyRecoilMin,fEnergyRecoilMax);
   
+  fHistogram->Reset();
   for(UInt_t k = 0; k< fData.size(); ++k)
     fHistogram->Fill(fData[k].GetEnergyRecoil(),fData[k].GetQvalue());
 }

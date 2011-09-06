@@ -45,6 +45,9 @@
 //               Ymin,
 //               Ymax
 //               NumberOfParameters);
+//
+// These static member functions are also used by the classes KQContourPoint
+// and KQContourPointList
 
 
 #include "KErecoilQDensity.h"

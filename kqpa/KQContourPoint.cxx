@@ -93,6 +93,7 @@ KQContourPoint::KQContourPoint(const KQContourPoint& anotherPoint)
     this->fEpsilon = anotherPoint.fEpsilon;
     this->fConfidenceLevel = anotherPoint.fConfidenceLevel;
     this->fConfidenceLevelError = anotherPoint.fConfidenceLevelError;
+    this->fConfidenceFunctionValue = anotherPoint.fConfidenceFunctionValue;
     if(anotherPoint.fFunction)
       this->fFunction = new TF2(*(anotherPoint.fFunction));
     else
@@ -116,12 +117,16 @@ KQContourPoint::~KQContourPoint()
       delete this->fMarker;
       this->fMarker = 0;
   }
+  if(fPreviousVersion) {
+    delete fPreviousVersion;
+    fPreviousVersion = 0;
+  }
 }
 
 void KQContourPoint::SetFunction()
 {
      // This method resets the function due to parameter  changes 
-     
+    
   if(fFunction)
   {
     delete fFunction;
