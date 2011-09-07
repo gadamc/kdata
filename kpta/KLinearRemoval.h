@@ -25,17 +25,22 @@ public:
   virtual ~KLinearRemoval(void);
   virtual bool RunProcess(void);
 
-  double CalculateSlope(void);
-  virtual bool Subtract(double aSlope);
-  virtual void Subtract(double aSlope, unsigned int i);
+  virtual bool CalculateLine(void);
+  virtual bool Subtract(void);
+  virtual void Subtract(double aSlope, double aOffset, unsigned int i);
   
-  double GetBaselineStop(void) const {return fBaselineStop;}
+  virtual double GetBaselineStop(void) const {return fBaselineStop;}
   virtual void SetBaselineStop(double aVal) {fBaselineStop = aVal;}
-
+  virtual void SetSlope(double slope){fSlope = slope;}
+  virtual void SetOffset(double offset){fOffset = offset;}
+  virtual double GetSlope(void) const {return fSlope;}
+  virtual double GetOffset(void) const {return fOffset;}
+  
 private:
 
   double fBaselineStop; //stoping position of region to be averaged for line subtraction, in percent of the total pulse length
-  double fSlope;  //slope of the line. the intercept is the first element of the input pulse
+  double fSlope;  //calculated slope of the line. 
+  double fOffset;  //calculated offset
   
   //private methods
   void InitializeMembers(void);
