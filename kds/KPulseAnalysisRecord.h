@@ -39,6 +39,8 @@ public:
   virtual Double32_t GetBaselineAmplitudeWidth(void) const { return fBaselineAmplitudeWidth;}
   virtual Double32_t GetRisetime(void) const { return fRiseTime;}
   virtual Double32_t GetPulseWidth(void) const { return fPulseWidth;}
+  virtual Double32_t GetSlopeRemoved(void) const {return fSlopeRemoved;}
+  virtual Double32_t GetBaselineRemoved(void) const {return fBaselineRemoved;}
 
   virtual void SetAmp(Double32_t aVal) {  fAmp = aVal;}
   virtual void SetCalculationType(const char* atype) {  fCalcType = atype;}
@@ -49,12 +51,14 @@ public:
   virtual void SetBaselineAmplitudeWidth(Double32_t aval) {  fBaselineAmplitudeWidth =  aval;}
   virtual void SetRisetime(Double32_t aval) {  fRiseTime =  aval;}
   virtual void SetPulseWidth(Double32_t aval) {  fPulseWidth =  aval;}
+  virtual void SetSlopeRemoved(Double32_t aval) {  fSlopeRemoved =  aval;}
+  virtual void SetBaselineRemoved(Double32_t aval) {  fBaselineRemoved =  aval;}
   
   KAmpBolometerRecord* GetBolometerRecord(void) const {return (KAmpBolometerRecord*)fBolometerRecord.GetObject();}
   KAmpBoloPulseRecord* GetBoloPulseRecord(void) const {return (KAmpBoloPulseRecord*)fBoloPulseRecord.GetObject();}
   
-  void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;	}
-  void SetBoloPulseRecord(KAmpBoloPulseRecord *aRec) {fBoloPulseRecord = aRec;	}
+  void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;}
+  void SetBoloPulseRecord(KAmpBoloPulseRecord *aRec) {fBoloPulseRecord = aRec;}
   
   /*
   enum kPulseAmpCalculatorType {
@@ -72,7 +76,7 @@ private:
   std::string fCalcType;  //the name of the method used to calculate the pulse. such as butter20, or optfilter. keep it short. if this takes up too much data, we could pack these into a numerical code.
   Double32_t fPeakPosition;  //in units of the pulse trace sample index.
   Bool_t fIsBaseline;  //if true, this is the estimated amplitude of the baseline
-  Short_t fUnit;  //0 = raw, 1 = keVee, 2 = keVnr, 3 = keV
+  Short_t fUnit;  //0 = raw, 1 = keVee, 2 = keV
   Double32_t fChiSq; //goodness-of-fit measure
   Double32_t fBaselineAmplitudeWidth; //energy resolution at 0 keV. use this to hold the FWHM
   Double32_t fRiseTime;   //in units of seconds
@@ -82,7 +86,9 @@ private:
   
   //always add new member variables to the end of this list - this improves backwards compatibility
   Double32_t fPulseWidth;  //in units of seconds
-  
+  Double32_t fBaselineRemoved; //amplitude of the baseline that was corrected in the analysis
+  Double32_t fSlopeRemoved; //amplitude of the slope that was removed (=0 exactly if linear removal was not performed)
+ 
   //pulse width
   //best-fit parameter results
   //shit... there are tons of other things that one may want to record. tons? or just a few?
