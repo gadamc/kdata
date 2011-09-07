@@ -12,7 +12,9 @@
 
 
 #include "KLinearRemoval.h"
+#include <iostream>
 
+using namespace std;
 //ClassImp(KLinearRemoval);
 
 KLinearRemoval::KLinearRemoval(void)
@@ -39,62 +41,76 @@ void KLinearRemoval::InitializeMembers(void)
 
   fBaselineStop = 0.40;
   fSlope = 0;
+  fOffset = 0;
 }
 
 bool KLinearRemoval::RunProcess(void)
 {
   //cout << "Run Process: " << GetName() << endl;
-  double theAve = CalculateSlope();
-  if(theAve > -99999)
-    return Subtract(theAve);
+
+  return CalculateLine() ? Subtract() : false;
+  
+  /*
+  if(CalculateLine())
+    return Subtract();
   else {
     //fOutputPulse = fInputPulse;
     return false;
-  }
+  }*/
 
 }
 
-double KLinearRemoval::CalculateSlope(void)
+bool KLinearRemoval::CalculateLine(void)
 {
   //calculates the slope of the line from the start of the pulse
   //to the stop point, set by fBaselineStop. (The offset of the line
   //will always be the first element of the pulse.) The slope is calculated
   //by linear regression
   
-  if(fInputSize < 1) return -99999;
-  if(fBaselineStop < 0) return -99999;
-  if(fBaselineStop > 1.0) return -99999;
+  if(fInputSize < 1) return false;
+  if(fBaselineStop < 0) return false;
+  if(fBaselineStop > 1.0) return false;
 
-  unsigned int size = fBaselineStop*fInputSize;
+  unsigned int size = (fBaselineStop*fInputSize);
   double xy(0), y(0);
-  
-  for(unsigned int i = 0; i < size; i++){
+  //double x(0), xx(0);
+  for(unsigned int i = 0; i< size; i++){
     xy += *(fInputPulse+i) * i;
     y += *(fInputPulse+i);
+    //x += i;
+    //xx += i*i;
   }
+  //standard calculation
+  //fSlope = (size*xy - x*y) / (size*xx - x*x);
+  //fOffset = (xx*y - x*xy) / (size*xx - x*x);
   
-  fSlope = (xy - (size-1) * y/2.) / (size*size*size/12. + size*size - 13.*size/12.);  
+  //fast calculation
+  double Sii = ((double)size*(double)size*(double)size/3.) - ((double)size*(double)size/2.) + ((double)size/6.);
+  double Si = size*(size - 1) / 2.;
+  double denom = size*Sii - (Si*Si);
+  fSlope =  (size*xy - Si * y) / denom;
+  fOffset =  ( Sii*y - Si*xy ) / denom;
   
-  return fSlope;
+  return true;
 }
 
-void KLinearRemoval::Subtract(double aSlope, unsigned int i)
+void KLinearRemoval::Subtract(double aSlope, double aOffset, unsigned int i)
 {
   //This subtracts fInputPulse a line calculated
   //as output_i = aSlope * i - offset 
   //where offset is the first element of fInputPulse
   
-  *(fOutputPulse+i) -= aSlope * i - *(fInputPulse);
+  *(fOutputPulse+i) = *(fInputPulse) - (aSlope * i + aOffset);
 }
 
-bool KLinearRemoval::Subtract(double aSlope)
+bool KLinearRemoval::Subtract(void)
 {
   //This subtracts fInputPulse a line calculated
   //as output_i = aSlope * i - offset for all i in the pulse
   //where offset is the first element of fInputPulse
 
   for(unsigned int i = 0; i < fInputSize; i++)
-    *(fOutputPulse+i) -= aSlope * i - *(fInputPulse);
+    *(fOutputPulse+i) = *(fInputPulse+i) - (fSlope * i + fOffset);
 
   return true;
 }

@@ -29,6 +29,7 @@ public:
   virtual void SetIsOwner(bool anOpt = true);
 
   KPtaProcessor* GetProcessor(unsigned int i) { return fProcessorList.at(i);}
+  virtual unsigned int GetNumProcessors(void) const {return fProcessorList.size();}
   virtual void SetMyOutputPulse(const double* p, unsigned int s);
 
 private:
