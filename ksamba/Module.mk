@@ -65,7 +65,7 @@ ifneq ($(KSAMBA_EO),)
 ALLLIBS      += $(KSAMBA_LIB)
 endif
 ALLEXECS     += $(KSAMBA_EXE)
-
+ALLKDATALIBS += $(KSAMBALIBS)
 
 # include all dependency files
 INCLUDEFILES += $(KSAMBA_DEP)

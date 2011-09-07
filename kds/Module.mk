@@ -83,6 +83,7 @@ ifneq ($(KDS_EO),)
 ALLLIBS      += $(KDS_LIB)
 endif
 ALLEXECS     += $(KDS_EXE)
+ALLKDATALIBS += $(KDSLIBS)
 
 
 # include all dependency files

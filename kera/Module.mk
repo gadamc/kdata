@@ -91,6 +91,7 @@ ifneq ($(KERA_EO),)
 ALLLIBS      += $(KERA_LIB)
 endif
 ALLEXECS     += $(KERA_EXE)
+ALLKDATALIBS += $(KERALIBS)
 
 # include all dependency files
 INCLUDEFILES += $(KERA_DEP)

@@ -76,6 +76,7 @@ ifneq ($(KEB_EO),)
 ALLLIBS      += $(KEB_LIB)
 endif
 ALLEXECS     += $(KEB_EXE)
+ALLKDATALIBS += $(KEBLIBS)
 
 
 
