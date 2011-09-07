@@ -12,9 +12,14 @@
 #include "KRawBoloPulseRecord.h"
 #include "KAmpBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
+#include "KSambaRecord.h"
 #include "KIIRFirstOrder.h"
 #include "KPulseAnalysisChain.h"
+#include "KCurl.h"
+#include "KJson.h"
+#include <string>
 
+using namespace std;
 //this is a series of functions that take a raw KData file and process each pulse
 //and create an 'amp' KData file. each process is defined and coded here using
 //the classes available in kpta. 
@@ -75,7 +80,8 @@ void copyBasicData(KAmpBoloPulseRecord* pAmp, KRawBoloPulseRecord* pRaw)
   pAmp->SetCorrTrngl(pRaw->GetCorrTrngl());
   pAmp->SetAmplModul(pRaw->GetAmplModul());
   pAmp->SetIsHeatPulse(pRaw->GetIsHeatPulse());
-
+  pAmp->SetPulseLength(pRaw->GetPulseLength());
+  pAmp->SetCorrPied(pRaw->GetCorrPied());
 }
 
 
@@ -113,7 +119,7 @@ void runHeatAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerReco
     rec->SetSlopeRemoved(lin->GetSlope());
     
     //get the amplitude of the baseline
-    peak = 75;
+    peak = 50;
     maxValue = *(last->GetOutputPulse()+peak);
     rec = ee->AddPulseAnalysisRecord();
     rec->SetBolometerRecord(boloAmp); //link TRef
@@ -130,6 +136,7 @@ void runHeatAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerReco
     
     
   }
+  else cout << "heat 1 processor failed" << endl;
   
 }
 
@@ -187,6 +194,7 @@ void runIonAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerRecor
     rec->SetSlopeRemoved(lin->GetSlope());
     
   }
+  else cout << "ion 1 processor failed" << endl;
   
 }
 
@@ -197,6 +205,10 @@ int main(int /*argc*/, char* argv[]){
   KRawEvent *e = (KRawEvent *)f.GetEvent();
 
 
+  KCurl c;
+  c.Get("https://localhost:6984/analysis/run13_templatepulse_centre_FID804AB");
+  string json = c.GetReturn()
+  KJson *doc = KJson::Parse(json.data());
   //set up some memory location for data processing
   unsigned int heatSize = 512;
   unsigned int ionSize = 8196;
@@ -242,17 +254,19 @@ int main(int /*argc*/, char* argv[]){
   //this isn't going to be the MOST efficient way, however, because some processes
   //will be repeated, such as the linear removal process, for example. 
   
-  
+  int numEvents = 1000;
+  //int numEvents = f.GetEntries();
   //will need to loop through the data here in order to build up the noise power spectrum
   //to be used in the optimal filter
-  
-  
+  for(int i = 0; i < numEvents; i++){
+    
+    
+  }
   
   //loop through the data, copying the raw information that is needed
   //for the amp-level data, and then applying the various analysis processing chains
   //that are defined above.
-  
-  for(int i = 0; i < f.GetEntries(); i++){
+  for(int i = 0; i < numEvents; i++){
     f.GetEntry(i);
     ee->Clear("C");
     if(i % 100 == 0) cout << "entry " << i << endl;
@@ -273,8 +287,20 @@ int main(int /*argc*/, char* argv[]){
 
       //copy the samba DAQ record and set the TRef
       KRawSambaRecord *samRaw = (KRawSambaRecord *)boloRaw->GetSambaRecord();
-      KRawSambaRecord *samAmp = ee->AddSamba();
-      *samAmp = *samRaw; //copy the data
+      //check to see if we already have this samba
+      KRawSambaRecord *samAmp = 0;
+      for(int ss = 0; ss < ee->GetNumSambas(); ss++){
+        if(*(KRawSambaRecord *)ee->GetSamba(ss) == *samRaw) { //compare the samba records
+          samAmp = (KRawSambaRecord *)ee->GetSamba(ss); //if they are equal, we've found a match
+          break;  //stop the loop
+          } 
+      }
+      
+      if(samAmp == 0){ //if we didn't find a samba match, make a new one.
+        samAmp = ee->AddSamba();
+        *samAmp = *samRaw; //copy the data
+      }
+      
       boloAmp->SetSambaRecord(samAmp); //set the TRef
 
 
