@@ -58,6 +58,7 @@ ifneq ($(KPTA_EO),)
 ALLLIBS      += $(KPTA_LIB)
 endif
 ALLEXECS     += $(KPTA_EXE)
+ALLKDATALIBS += $(KPTALIBS)
 
 
 

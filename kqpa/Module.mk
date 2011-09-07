@@ -91,6 +91,7 @@ ifneq ($(KQPA_EO),)
 ALLLIBS      += $(KQPA_LIB)
 endif
 ALLEXECS     += $(KQPA_EXE)
+ALLKDATALIBS += $(KQPALIBS)
 
 # include all dependency files
 INCLUDEFILES += $(KQPA_DEP)

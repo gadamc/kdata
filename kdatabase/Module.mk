@@ -90,6 +90,7 @@ ifneq ($(KDATABASE_EO),)
 ALLLIBS      += $(KDATABASE_LIB)
 endif
 ALLEXECS     += $(KDATABASE_EXE)
+ALLKDATALIBS += $(KDATABASELIBS)
 
 # include all dependency files
 INCLUDEFILES += $(KDATABASE_DEP)

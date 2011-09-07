@@ -120,6 +120,8 @@ ERA_LIB := $(LPATH)/libEra.$(SOEXT)
 ERALIBS	   := $(KDATALIBDIRS) $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(ERA_LIB))
 ERAINCS  :=  $(ERADIR)
 
+ALLKDATALIBS += $(ERALIBS)
+
 ##### Utilities #####
 
 ROOTCINT       := $(ROOTSYS)/bin/rootcint
@@ -198,6 +200,7 @@ all:            kdataexecs
 #  in the link rules for each module)
 -include $(patsubst %,%/Module_libs.mk,$(MODULES))
 -include $(patsubst %,%/Module.mk,$(MODULES))
+-include $(KDATA_ROOT)/programs/Module.mk
 
 -include MyRules.mk            # allow local rules
 
@@ -213,7 +216,7 @@ libs:           kdatalibs
 	@echo Done making libs
 
 
-kdatalibs:       $(ALLLIBS)
+kdatalibs:       $(ALLLIBS) 
 
 # the executables depend on the libraries being built first
 kdataexecs:      kdatalibs $(ALLEXECS)
@@ -278,6 +281,7 @@ showbuild:
 	@echo ""
 	@echo "MODULES            = $(MODULES)"
 	@echo "ALLLIBS            = $(ALLLIBS)"
+	@echo "ALLKDATALIBS"      = $(ALLKDATALIBS)
 	@echo "ALLEXECS           = $(ALLEXECS)"
 	@echo ""
 	@echo "ARCH               = $(ARCH)"

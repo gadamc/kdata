@@ -69,6 +69,7 @@ ifneq ($(KTMP_EO),)
 ALLLIBS      += $(KTMP_LIB)
 endif
 ALLEXECS     += $(KTMP_EXE)
+ALLKDATALIBS += $(KTMPLIBS)
 
 KTMP_XTRALIBS := $(KDSLIBS) $(KPTALIBS)
 
