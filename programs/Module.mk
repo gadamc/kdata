@@ -21,7 +21,7 @@ ALLEXECS     += $(KPROG_EXE)
 
 # rule for compiling our source files
 $(KPROG_DIRS)/%.o:    $(KPROG_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KPROG_FLAGS) $(ROOTINCS) $(FFTWINCS) $(CURLINCS) $(ERAINCS) -o $@ -c $< 
+	$(CXX) $(OPT) $(KPROG_FLAGS) $(ROOTINCS) $(FFTWINCS) $(CURLINCS) -I$(ERAINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KPROG_DIRS)/%.o $(KDATAED_LIB) 

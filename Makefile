@@ -118,7 +118,7 @@ endif
 #special paths to the local ERA libraries. Needed for modules that depend upon ERA. 
 ERA_LIB := $(LPATH)/libEra.$(SOEXT)
 ERALIBS	   := $(KDATALIBDIRS) $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(ERA_LIB))
-ERAINCS  :=  -I$(ERADIR)
+ERAINCS  :=  $(ERADIR)
 
 ALLKDATALIBS += $(ERALIBS)
 
