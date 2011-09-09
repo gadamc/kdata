@@ -184,11 +184,12 @@ bool KOptimalFilter::BuildFilter(void)
 void KOptimalFilter::SetOutputPulseSize(unsigned int s)
 {
   fOutputSize = s;
-  fHc2r->SetInputPulseSize(fOutputSize); 
+  fHc2r->SetOutputPulseSize(fOutputSize); 
 }
 
 void KOptimalFilter::SetOutputPulse(double *aPulse)
 {
   fOutputPulse = aPulse;
   fHc2r->SetOutputPulse(aPulse);
+  fHc2r->SetFFTWPlan();
 }
