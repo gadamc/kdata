@@ -26,7 +26,7 @@ public:
 
   virtual bool RunProcess(void);
 
-  void SetTukeyWindow(double alpha);
+	virtual void SetCoefficients(const double *coef, unsigned int coefSize);
 
   virtual double* GetCoefficients(void) {return fCoef;}
   virtual unsigned int GetCoefSize(void) {return fCoefSize;}
