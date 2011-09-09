@@ -16,6 +16,8 @@
 #include "KAmpBolometerRecord.h"
 #include "KAmpBoloPulseRecord.h"
 
+#define KPULSEANARECORD_EXTRA_SIZE 25
+
 class KPulseAnalysisRecord : public KSubRecord { 
 
 public:
@@ -88,22 +90,9 @@ private:
   Double32_t fPulseWidth;  //in units of seconds
   Double32_t fBaselineRemoved; //amplitude of the baseline that was corrected in the analysis
   Double32_t fSlopeRemoved; //amplitude of the slope that was removed (=0 exactly if linear removal was not performed)
- 
-  //pulse width
-  //best-fit parameter results
-  //shit... there are tons of other things that one may want to record. tons? or just a few?
-  //or do we limit ourselves here and say 'anything else that you may want to calculate', you're on your
-  //own, but you should try to do it in a "KData" way. At the very least, make a TTree that can be friended
-  //to the raw KData. Given the electronics, how many different pulse shape parameters will there be? 
-  //Perhaps in Eureca this could change since the TES measure fast signals, which do require a pulse shape
-  //analysis
-  //
-  //or we just grow this class as needed to hold the data. Sure, we may end up storing some bytes of useless data
-  //if a particular method doesn't calculate every member variable of this class. But overall, the data stored in 
-  //these files is still going to be significantly smaller than the raw pulse records. 
-  //
-  //it doesn't have to be perfect - it just has to work and provide easy access for analysis groups.
-  //
+  Double32_t fExtra[KPULSEANARECORD_EXTRA_SIZE];  //this array holds 25 floating-point numbers for the different calculations to fill as desired.
+                                                  //this is a static sized array so that ALL values are accessible from TTree::Draw and Scan
+  
   //WARNING: just remember, that if you modifiy this class and add or remove variables, each time you 
   //make a change, you must increase the version number of this class
   //found in the ClassDef macro below before you record data to disk with that change. 
