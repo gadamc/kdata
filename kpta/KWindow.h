@@ -15,17 +15,17 @@
 #include <string.h>
 
 class KWindow : public KPtaProcessor { 
-  
+
 public:
   //Constructors
   KWindow(void);
   //for the memory-savy programmers
   KWindow(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
-  
+
   virtual ~KWindow(void);
-  
-	virtual bool RunProcess(void);
-	
+
+  virtual bool RunProcess(void);
+
   void SetTukeyWindow(double alpha);
 
   virtual double* GetCoefficients(void) {return fCoef;}
@@ -34,13 +34,13 @@ public:
 protected:
   double *fCoef;
   unsigned int fCoefSize;
-    
+
 private:
   //private methods
   void InitializeMembers(void);
-  
+
  // ClassDef(KWindow,1);
-  
+
 };
 
 

@@ -27,8 +27,8 @@ KWindow::KWindow(void)
 KWindow::KWindow(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
   : KPtaProcessor(inPulse, inSize, outPulse, outsize)
 {
-   SetName("KWindow"); 
-   InitializeMembers();
+  SetName("KWindow"); 
+  InitializeMembers();
 }
 
 KWindow::~KWindow(void)
@@ -44,15 +44,15 @@ void KWindow::SetTukeyWindow(double alpha)
     fCoef = new double[fCoefSize];
   }
   if(fCoefSize != 0){
-		double  temp = alpha*(fCoefSize-1)/2.0;
-		for(int i = 0; i < (int) temp; i++)
-			*(fCoef+i) = 0.5 + 0.5*cos(3.14159265358979*((i/(double)temp) - 1));
-		for(unsigned int i = (unsigned int) temp; i < (unsigned int) (fCoefSize-temp); i++)
-			*(fCoef+i) = 1.0;
-		for(unsigned int i = (unsigned int) (fCoefSize-temp); i < fCoefSize; i++)
-			*(fCoef+i) = 0.5 + 0.5*cos(3.14159265358979*((i/(double) temp) - 2.0/alpha - 1));		
-	}
-  
+    double  temp = alpha*(fCoefSize-1)/2.0;
+    for(int i = 0; i < (int) temp; i++)
+      *(fCoef+i) = 0.5 + 0.5*cos(3.14159265358979*((i/(double)temp) - 1));
+    for(unsigned int i = (unsigned int) temp; i < (unsigned int) (fCoefSize-temp); i++)
+      *(fCoef+i) = 1.0;
+    for(unsigned int i = (unsigned int) (fCoefSize-temp); i < fCoefSize; i++)
+      *(fCoef+i) = 0.5 + 0.5*cos(3.14159265358979*((i/(double) temp) - 2.0/alpha - 1));		
+  }
+
 }
 
 bool KWindow::RunProcess(void)
@@ -61,19 +61,19 @@ bool KWindow::RunProcess(void)
     cerr << "input and output pulses are not allocated." << endl;
     return false;
   }
-  
+
   if(fCoefSize == 0){
-		cerr<<"window coefficients are not set"<<endl;
-		return false;
-	}
+    cerr<<"window coefficients are not set"<<endl;
+    return false;
+  }
   //clear the output pulse
   memset(fOutputPulse, 0, fInputSize*sizeof(double));
 
   fOutputSize = fInputSize;
-    
+
   for(unsigned int i = 0 ; i < fOutputSize; i++)
     *(fOutputPulse+i) =  *(fInputPulse+i) * *(fCoef+i); 
- 
+
   return true;
 }
 
@@ -83,7 +83,7 @@ void KWindow::InitializeMembers(void)
 {
   fCoef = 0;
   fCoefSize = 0;
-  
+
 }
 
 
