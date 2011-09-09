@@ -61,6 +61,8 @@ public:
   virtual void SetOutputPulse(double *aPulse);
   virtual void SetOutputPulseSize(unsigned int s);
   
+  
+  
 protected:
   double *fNoiseSpectrum;
   unsigned int fNoiseSpectrumSize;
