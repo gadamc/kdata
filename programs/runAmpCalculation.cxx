@@ -230,7 +230,7 @@ int main(int /*argc*/, char* argv[]){
   for(unsigned int i = 0; i < KJson::GetArraySize(ionpulse); i++)
     ionTemplate.push_back(KJson::GetArrayItem(ionpulse, i)->valuedouble);
     
-    
+
   //set up some memory location for data processing
   unsigned int heatSize = 512;
   unsigned int ionSize = 8196;
@@ -276,8 +276,13 @@ int main(int /*argc*/, char* argv[]){
   //this isn't going to be the MOST efficient way, however, because some processes
   //will be repeated, such as the linear removal process, for example. 
   
+<<<<<<< HEAD
   //int numEvents = 1000;
   int numEvents = f.GetEntries();
+=======
+  int numEvents = 1000;
+  //int numEvents = f.GetEntries();
+>>>>>>> 903907a8a9bb4e213babc7823df08fcb599b2a68
   //will need to loop through the data here in order to build up the noise power spectrum
   //to be used in the optimal filter
   for(int i = 0; i < numEvents; i++){
