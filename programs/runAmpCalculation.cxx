@@ -230,6 +230,7 @@ int main(int /*argc*/, char* argv[]){
   for(unsigned int i = 0; i < KJson::GetArraySize(ionpulse); i++)
     ionTemplate.push_back(KJson::GetArrayItem(ionpulse, i)->valuedouble);
 
+
   //set up some memory location for data processing
   unsigned int heatSize = 512;
   unsigned int ionSize = 8196;
