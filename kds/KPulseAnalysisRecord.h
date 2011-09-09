@@ -93,6 +93,7 @@ private:
   Double32_t fExtra[KPULSEANARECORD_EXTRA_SIZE];  //this array holds 25 floating-point numbers for the different calculations to fill as desired.
                                                   //this is a static sized array so that ALL values are accessible from TTree::Draw and Scan
   
+
   //WARNING: just remember, that if you modifiy this class and add or remove variables, each time you 
   //make a change, you must increase the version number of this class
   //found in the ClassDef macro below before you record data to disk with that change. 
