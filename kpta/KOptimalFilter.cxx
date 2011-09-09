@@ -140,6 +140,7 @@ bool KOptimalFilter::BuildFilter(void)
     fHc2r->SetInputPulseSize(fOptFilterAndSignalSize); 
     fHc2r->SetOutputPulse(fOutputPulse);
     fHc2r->SetOutputPulseSize(fOutputSize);
+    fHc2r->SetFFTWPlan();
   }
 
   fHcPower->RunProcess();
