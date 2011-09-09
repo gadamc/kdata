@@ -65,7 +65,7 @@ class KQDataReader {
     Double_t GetQvalue(UInt_t anIndex) const;
     Double_t GetSigmaIon(UInt_t anIndex) const;
     Double_t GetSigmaHeat(UInt_t anIndex) const;
-    Int_t GetSize() const;
+    unsigned int GetSize() const {return fData.size();}
     
     friend class KQHistogramManager;
 };

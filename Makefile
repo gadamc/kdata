@@ -97,7 +97,7 @@ endif
 
 ROOTINCS       := -I$(ROOTSYS)/include
 XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
-ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
+ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMathMore -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
 ROOTLIBS       += -Wl,-rpath,$(ROOTSYS)/lib
 
 FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../include/fftw -I$(FFTW_DIR)/../include/rfftw
@@ -118,7 +118,7 @@ endif
 #special paths to the local ERA libraries. Needed for modules that depend upon ERA. 
 ERA_LIB := $(LPATH)/libEra.$(SOEXT)
 ERALIBS	   := $(KDATALIBDIRS) $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(ERA_LIB))
-ERAINCS  :=  $(ERADIR)
+ERAINCS  :=  -I$(ERADIR)
 
 ALLKDATALIBS += $(ERALIBS)
 

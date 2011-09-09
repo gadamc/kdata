@@ -236,12 +236,12 @@ class KQDistribution {
                        Double_t aSecondError = 0.01);
     Int_t QtoBin(Double_t aQ);
     Double_t BintoQ(Int_t aBin);
-    Double_t GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh);
-    Int_t GetNDF(Double_t aQlow,Double_t aQhigh,Int_t aNumParameters);
+    //Double_t GetChi2(TH1D* aHistogram,Double_t aQlow,Double_t aQhigh);
+    //Int_t GetNDF(Double_t aQlow,Double_t aQhigh,Int_t aNumParameters);
     
     enum BoundaryType { GAMMALOW, GAMMAHIGH, NEUTRONLOW, NEUTRONHIGH  };
-    void CorrectBoundaries(BoundaryType aBType,Double_t aStep);
-    void RedrawPeaks();
+    //void CorrectBoundaries(BoundaryType aBType,Double_t aStep);
+    //void RedrawPeaks();
     void GetFitParameters(Int_t anIndex);
     Double_t GetGammaMax(TH1D* aHistogram);
     
