@@ -2,6 +2,7 @@
 #include "KDataWriter.h"
 #include "KAmpEvent.h"
 #include "KRawEvent.h"
+#include "KEvent.h"
 #include "KLinearRemoval.h"
 #include "KPatternRemoval.h"
 #include "KFIRFilter.h"
@@ -206,9 +207,30 @@ int main(int /*argc*/, char* argv[]){
 
 
   KCurl c;
-  c.Get("https://localhost:6984/analysis/run13_templatepulse_centre_FID804AB");
-  string json = c.GetReturn()
-  KJson *doc = KJson::Parse(json.data());
+  string json;
+  KJson *doc;
+  KJson *heatpulse;
+  KJson *ionpulse;
+  //get the heat template for chaleur FID804AB. For testing purposes,
+  //we'll use just this template for all heat pulses.
+  c.Get("https://localhost:6984", "/analysis/run13_templatepulse_chaleur_FID804AB");
+  json = c.GetReturn();
+  doc = KJson::Parse(json.data());
+  heatpulse = KJson::GetObjectItem(doc, "pulse");
+  vector<double> heatTemplate;
+  for(unsigned int i = 0; i < KJson::GetArraySize(heatpulse); i++)
+    heatTemplate.push_back(KJson::GetArrayItem(heatpulse, i)->valuedouble);
+  
+  //and use this for all ionization pulses for now. 
+  c.Get("https://localhost:6984", "/analysis/run13_templatepulse_centre_FID804AB");
+  json = c.GetReturn();
+  doc = KJson::Parse(json.data());
+  ionpulse = KJson::GetObjectItem(doc, "pulse");
+  vector<double> ionTemplate;
+  for(unsigned int i = 0; i < KJson::GetArraySize(ionpulse); i++)
+    ionTemplate.push_back(KJson::GetArrayItem(ionpulse, i)->valuedouble);
+    
+    
   //set up some memory location for data processing
   unsigned int heatSize = 512;
   unsigned int ionSize = 8196;
@@ -223,39 +245,39 @@ int main(int /*argc*/, char* argv[]){
   //analysis 1 heat
   KPulseAnalysisChain heatAna1;
   KLinearRemoval *basHeat1 = new KLinearRemoval;
-  KIIRFirstOrder *iirHeat2500_1= new KIIRFirstOrder(-0.85408069,  0.92704034, 0.92704034); //this is a butterworth, high pass filter at 2500 Hz for the 100kHz ion channels and 25 Hz for the 1kHz heat channels. 
+  KIIRFirstOrder *iirHeat5_1= new KIIRFirstOrder(-0.96906742, 0.98453371,  0.98453371); //this is a butterworth, high pass filter at 500 Hz for the 100kHz ion channels and 5 Hz for the 1kHz heat channels. 
     //set up the memory allocation
   basHeat1->SetInputPulse(pulseHeat1); basHeat1->SetInputPulseSize(heatSize);
   basHeat1->SetOutputPulse(pulseHeat1); basHeat1->SetOutputPulseSize(heatSize);
-  iirHeat2500_1->SetInputPulse(pulseHeat1); iirHeat2500_1->SetInputPulseSize(heatSize);
-  iirHeat2500_1->SetOutputPulse(pulseHeat2); iirHeat2500_1->SetOutputPulseSize(heatSize);
+  iirHeat5_1->SetInputPulse(pulseHeat1); iirHeat5_1->SetInputPulseSize(heatSize);
+  iirHeat5_1->SetOutputPulse(pulseHeat2); iirHeat5_1->SetOutputPulseSize(heatSize);
     //add processors to the chain, in order.
   heatAna1.AddProcessor(basHeat1);
-  heatAna1.AddProcessor(iirHeat2500_1);
+  heatAna1.AddProcessor(iirHeat5_1);
   
   //analysis 1 ion.
   KPulseAnalysisChain ionAna1;
   KLinearRemoval *basIon1 = new KLinearRemoval;
   KPatternRemoval *patIon1 = new KPatternRemoval;
-  KIIRFirstOrder *iirIon2500_1= new KIIRFirstOrder(-0.85408069,  0.92704034, 0.92704034); //this is a butterworth, high pass filter at 2500 Hz for the 100kHz ion channels and 25 Hz for the 1kHz heat channels. 
+  KIIRFirstOrder *iirIon500_1= new KIIRFirstOrder(-0.96906742, 0.98453371,  0.98453371); //this is a butterworth, high pass filter at 500 Hz for the 100kHz ion channels and 5 Hz for the 1kHz heat channels. 
     //set up the memory allocation
   basIon1->SetInputPulse(pulseIon1); basIon1->SetInputPulseSize(ionSize);  //notice how basIon1 and patIon1 point to the same memory
   basIon1->SetOutputPulse(pulseIon1); basIon1->SetOutputPulseSize(ionSize); //this is because these processors can be done in-place.
   patIon1->SetInputPulse(pulseIon1); patIon1->SetInputPulseSize(ionSize);  //further optimizations could be included if these processors could be done within the same loop over the pulse
   patIon1->SetOutputPulse(pulseIon1); patIon1->SetOutputPulseSize(ionSize);  
-  iirIon2500_1->SetInputPulse(pulseIon1); iirIon2500_1->SetInputPulseSize(ionSize);
-  iirIon2500_1->SetOutputPulse(pulseIon2); iirIon2500_1->SetOutputPulseSize(ionSize);
+  iirIon500_1->SetInputPulse(pulseIon1); iirIon500_1->SetInputPulseSize(ionSize);
+  iirIon500_1->SetOutputPulse(pulseIon2); iirIon500_1->SetOutputPulseSize(ionSize);
     //add processors to the chain, in order
   ionAna1.AddProcessor(basIon1);
   ionAna1.AddProcessor(patIon1);
-  ionAna1.AddProcessor(iirIon2500_1);
+  ionAna1.AddProcessor(iirIon500_1);
   
   
   //this isn't going to be the MOST efficient way, however, because some processes
   //will be repeated, such as the linear removal process, for example. 
   
-  int numEvents = 1000;
-  //int numEvents = f.GetEntries();
+  //int numEvents = 1000;
+  int numEvents = f.GetEntries();
   //will need to loop through the data here in order to build up the noise power spectrum
   //to be used in the optimal filter
   for(int i = 0; i < numEvents; i++){
@@ -269,6 +291,8 @@ int main(int /*argc*/, char* argv[]){
   for(int i = 0; i < numEvents; i++){
     f.GetEntry(i);
     ee->Clear("C");
+    *(KEvent *)ee = *e; //copy the base-class stuff
+    
     if(i % 100 == 0) cout << "entry " << i << endl;
     
     //normally, one would copy the muon veto system record information,
@@ -323,12 +347,12 @@ int main(int /*argc*/, char* argv[]){
         //now apply the different analysis chains.
         if(pRaw->GetIsHeatPulse()){
           //heat analysis 1
-          runHeatAna1(heatAna1, ee, boloAmp, pAmp, pRaw, "iir1hp25Hz");
+          runHeatAna1(heatAna1, ee, boloAmp, pAmp, pRaw, "iir1hp5Hz");
           
         }
         else{
           //ion analysis 1
-          runIonAna1(ionAna1, ee, boloAmp, pAmp, pRaw, "iir1hp2500Hz");
+          runIonAna1(ionAna1, ee, boloAmp, pAmp, pRaw, "iir1hp500Hz");
         }
         
         
