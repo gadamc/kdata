@@ -58,7 +58,10 @@ bool KWindow::RunProcess(void)
     cerr << "input and output pulses are not allocated." << endl;
     return false;
   }
-  
+  if( fOutputSize != fInputSize) {
+    cerr << "input and output pulses must be of the same size. nothing done. " << endl;
+    return false;
+  }
   if(fCoefSize == 0){
     cerr<<"window coefficients are not set"<<endl;
     return false;
@@ -66,7 +69,7 @@ bool KWindow::RunProcess(void)
   //clear the output pulse
   memset(fOutputPulse, 0, fInputSize*sizeof(double));
   
-  fOutputSize = fInputSize;
+ 
   
   for(unsigned int i = 0 ; i < fOutputSize; i++)
     *(fOutputPulse+i) =  *(fInputPulse+i) * *(fCoef+i); 
