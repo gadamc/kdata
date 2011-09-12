@@ -52,7 +52,7 @@ void KPulseAnalysisRecord::CopyLocalMembers(const KPulseAnalysisRecord &aRec)
   //used by the assignment operator to copy local members (fPulseType and
   //fChanneNumber)
   fAmp = aRec.fAmp;
-  fCalcType = aRec.fCalcType;
+  fName = aRec.fName;
   fPeakPosition = aRec.fPeakPosition; 
   fIsBaseline = aRec.fIsBaseline;
   fUnit = aRec.fUnit;
@@ -102,7 +102,7 @@ void KPulseAnalysisRecord::InitializeMembers(void)
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 
   fAmp = -9999;
-  fCalcType = "";  
+  fName = "";  
   fPeakPosition = -1;
   fIsBaseline = 0;  
   fUnit = -1;  
@@ -141,11 +141,11 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     else
       return false;  
   }
-  if(fCalcType != aRec.fCalcType){
+  if(fName != aRec.fName){
     bIsEqual = false;
     if (bPrint) 
-      cout << "KPulseAnalysisRecord fCalcType Not Equal. " 
-      << fCalcType << " != rhs " << aRec.fCalcType << endl;		
+      cout << "KPulseAnalysisRecord fName Not Equal. " 
+      << fName << " != rhs " << aRec.fName << endl;		
     else
       return false;  
   }

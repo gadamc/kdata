@@ -33,7 +33,7 @@ public:
   virtual void Compact(void);
   
   virtual Double32_t GetAmp(void) const { return fAmp;}
-  virtual const char* GetCalculationType(void) const { return fCalcType.c_str();}
+  virtual const char* GetName(void) const { return fName.c_str();}
   virtual Double32_t GetPeakPosition(void) const { return fPeakPosition;}
   virtual Bool_t IsBaseline(void) const { return fIsBaseline;}
   virtual Short_t GetUnit(void) const {return fUnit;}
@@ -45,7 +45,7 @@ public:
   virtual Double32_t GetBaselineRemoved(void) const {return fBaselineRemoved;}
 
   virtual void SetAmp(Double32_t aVal) {  fAmp = aVal;}
-  virtual void SetCalculationType(const char* atype) {  fCalcType = atype;}
+  virtual void SetName(const char* atype) {  fName = atype;}
   virtual void SetPeakPosition(Double32_t aval) { fPeakPosition = aval;}
   virtual void SetIsBaseline(Bool_t opt = true) {  fIsBaseline = opt;}
   virtual void SetUnit(Short_t aval) { fUnit = aval;}
@@ -66,8 +66,8 @@ public:
   enum kPulseAmpCalculatorType {
      kButter1 = 1,
      kOptimalFilter = 2,
-     kGuardType = 3,
-     kHeatType = 4
+     kWaveletDecomposition = 3
+     ...
    };
    */  //lets first try a string to store the type. this is easiest and most flexible.
    
@@ -75,7 +75,7 @@ private:
 	//private methods
   
   Double32_t fAmp;  //size of the estimated pulse height
-  std::string fCalcType;  //the name of the method used to calculate the pulse. such as butter20, or optfilter. keep it short. if this takes up too much data, we could pack these into a numerical code.
+  std::string fName;  //the name of the method used to estimate the pulse characteristics. This should be a unique name. This name will be used in the database to store a document that describes this estimator.
   Double32_t fPeakPosition;  //in units of the pulse trace sample index.
   Bool_t fIsBaseline;  //if true, this is the estimated amplitude of the baseline
   Short_t fUnit;  //0 = raw, 1 = keVee, 2 = keV
