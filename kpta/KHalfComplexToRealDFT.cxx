@@ -63,15 +63,18 @@ KHalfComplexToRealDFT::~KHalfComplexToRealDFT(void)
 {
   //since using fftw, destroy the pulses here with fftw_free
   //see the fftw documentation for why this is done
-  if(fInputPulse != 0){
-    fftw_free(fInputPulse);
-    fInputPulse = 0;
-    fInputSize = 0;
-  }
-  if(fOutputPulse != 0){
-    fftw_free(fOutputPulse);
-    fOutputPulse = 0;
-    fOutputSize = 0;
+  if(!fDoNotDelete){
+  
+    if(fInputPulse != 0){
+      fftw_free(fInputPulse);
+      fInputPulse = 0;
+      fInputSize = 0;
+    }
+    if(fOutputPulse != 0){
+      fftw_free(fOutputPulse);
+      fOutputPulse = 0;
+      fOutputSize = 0;
+    }
   }
 
   fftw_destroy_plan((fftw_plan)fPlan);
