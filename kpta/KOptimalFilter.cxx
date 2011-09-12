@@ -75,7 +75,9 @@ void KOptimalFilter::InitializeMembers(void)
   fRecalculate = true;
   
   fHc2r = new KHalfComplexToRealDFT();
+  fHc2r->DoNotDeletePulses(true);
   fHcPower = new KHalfComplexPower();
+  fHcPower->DoNotDeletePulses(true);
   
 }
 
