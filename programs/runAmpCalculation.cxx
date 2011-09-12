@@ -44,7 +44,7 @@ void moveSambaData(KAmpEvent *ee, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRec
   pAmp->AddPulseAnalysisRecord(sambarec);
 
   sambarec->SetAmp(pRaw->GetAmplitude());
-  sambarec->SetCalculationType("samba");
+  sambarec->SetName("samba");
   sambarec->SetIsBaseline(false);
   sambarec->SetBaselineAmplitudeWidth(pRaw->GetAmplitudeBaselineNoise());
   sambarec->SetUnit(0);
@@ -55,7 +55,7 @@ void moveSambaData(KAmpEvent *ee, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRec
   pAmp->AddPulseAnalysisRecord(sambarec);
 
   sambarec->SetAmp(pRaw->GetAmplitudeBaseline());
-  sambarec->SetCalculationType("samba");
+  sambarec->SetName("samba");
   sambarec->SetIsBaseline(true);
   sambarec->SetBaselineAmplitudeWidth(pRaw->GetAmplitudeBaselineNoise());
   sambarec->SetUnit(0);
@@ -111,7 +111,7 @@ void runHeatAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerReco
     pAmp->AddPulseAnalysisRecord(rec);
 
     rec->SetAmp(maxValue);
-    rec->SetCalculationType(name);
+    rec->SetName(name);
     rec->SetIsBaseline(false);
     rec->SetPeakPosition(peak);
     rec->SetUnit(0);
@@ -128,7 +128,7 @@ void runHeatAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerReco
     pAmp->AddPulseAnalysisRecord(rec); //link TRef
     
     rec->SetAmp(maxValue);
-    rec->SetCalculationType(name);
+    rec->SetName(name);
     rec->SetIsBaseline(true);
     rec->SetPeakPosition(peak);
     rec->SetUnit(0);
@@ -167,7 +167,7 @@ void runIonAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerRecor
     pAmp->AddPulseAnalysisRecord(rec); //link TRef
 
     rec->SetAmp(maxValue);
-    rec->SetCalculationType(name);
+    rec->SetName(name);
     rec->SetIsBaseline(false);
     rec->SetPeakPosition(peak);
     rec->SetUnit(0);
@@ -187,7 +187,7 @@ void runIonAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerRecor
     pAmp->AddPulseAnalysisRecord(rec); //link TRef
     
     rec->SetAmp(maxValue);
-    rec->SetCalculationType(name);
+    rec->SetName(name);
     rec->SetIsBaseline(true);
     rec->SetPeakPosition(peak);
     rec->SetUnit(0);
