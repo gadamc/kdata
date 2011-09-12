@@ -6,7 +6,7 @@
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
-// y[n] = a1y[n-1] + a2y[n-2] + b0x[n] + b1x[n-1] + b2x[n-2]
+// y[n] = -a1y[n-1] - a2y[n-2] + b0x[n] + b1x[n-1] + b2x[n-2]
 //
 //
 
@@ -79,11 +79,11 @@ bool KIIRSecondOrder::RunProcess(void)
   memset(fOutputPulse, 0, fOutputSize*sizeof(double));
 
   *fOutputPulse =  *fInputPulse * *fCoefB;
-  *(fOutputPulse+1) = *fOutputPulse * *fCoefA + *(fInputPulse+1) * *fCoefB + *fInputPulse * *(fCoefB+1);
+  *(fOutputPulse+1) = -*fOutputPulse * *fCoefA + *(fInputPulse+1) * *fCoefB + *fInputPulse * *(fCoefB+1);
   
   unsigned int i = 2;
   for( ; i < fOutputSize; i++)
-    *(fOutputPulse+i) =  *(fOutputPulse+i-1) * *fCoefA  + *(fOutputPulse+i-2) * *(fCoefA+1)  + *(fInputPulse+i) * *fCoefB +  *(fInputPulse+i-1) *  *(fCoefB+1) +  *(fInputPulse+i-2) *  *(fCoefB+2);
+    *(fOutputPulse+i) =  -*(fOutputPulse+i-1) * *fCoefA  - *(fOutputPulse+i-2) * *(fCoefA+1)  + *(fInputPulse+i) * *fCoefB +  *(fInputPulse+i-1) *  *(fCoefB+1) +  *(fInputPulse+i-2) *  *(fCoefB+2);
  
   return true;
 }

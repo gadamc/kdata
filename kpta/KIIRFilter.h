@@ -24,7 +24,7 @@ public:
   
   virtual ~KIIRFilter(void);
   
-	virtual bool RunProcess(void) = 0;
+	virtual bool RunProcess(void);
 	
   void SetCoefficients(double* a, unsigned int asize, double* b, unsigned int bsize);
 

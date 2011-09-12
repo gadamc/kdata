@@ -6,7 +6,7 @@
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
-// y[n] = a1y[n-1] + b0x[n] + b1x[n-1]
+// y[n] = -a1y[n-1] + b0x[n] + b1x[n-1]
 //
 //
 
@@ -66,7 +66,7 @@ void KIIRFirstOrder::SetCoefB(double b0, double b1)
 
 bool KIIRFirstOrder::RunProcess(void)
 {
-  //y[n] = a1y[n-1] + b0x[n] + b1x[n-1]
+  //y[n] = -a1y[n-1] + b0x[n] + b1x[n-1]
   
   if(fInputPulse == 0 || fOutputPulse == 0) {
     cerr << "input and output pulses are not allocated." << endl;
@@ -80,7 +80,7 @@ bool KIIRFirstOrder::RunProcess(void)
   
   unsigned int i = 1;
   for( ; i < fOutputSize; i++)
-    *(fOutputPulse+i) =  *(fOutputPulse+i-1) * (*fCoefA)  + *(fInputPulse+i) * (*fCoefB) +  *(fInputPulse+i-1) *  (*(fCoefB+1));
+    *(fOutputPulse+i) =  -*(fOutputPulse+i-1) * (*fCoefA)  + *(fInputPulse+i) * (*fCoefB) +  *(fInputPulse+i-1) *  (*(fCoefB+1));
  
   return true;
 }

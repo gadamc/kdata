@@ -6,7 +6,7 @@
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
-// y[n] = a1y[n-1] + a2y[n-2] + a3y[n-3] + a4y[n-4] + b0x[n] + b1x[n-1] + b2x[n-2] + b3x[n-3] + b4x[n-4]
+// y[n] = -a1y[n-1] - a2y[n-2] - a3y[n-3] - a4y[n-4] + b0x[n] + b1x[n-1] + b2x[n-2] + b3x[n-3] + b4x[n-4]
 //
 //
 
@@ -84,20 +84,20 @@ bool KIIRFourthOrder::RunProcess(void)
 
   *fOutputPulse =  *fInputPulse * *fCoefB;
   
-  *(fOutputPulse+1) = *fOutputPulse * *fCoefA + *(fInputPulse+1) * *fCoefB + *fInputPulse * *(fCoefB+1);  
+  *(fOutputPulse+1) = -*fOutputPulse * *fCoefA + *(fInputPulse+1) * *fCoefB + *fInputPulse * *(fCoefB+1);  
   
-  *(fOutputPulse+2) = *(fOutputPulse+1) * *fCoefA + *fOutputPulse * *(fCoefA+1) + *(fInputPulse+2) * *fCoefB 
+  *(fOutputPulse+2) = -*(fOutputPulse+1) * *fCoefA - *fOutputPulse * *(fCoefA+1) + *(fInputPulse+2) * *fCoefB 
                       + *(fInputPulse+1) * *(fCoefB+1) + *fInputPulse * *(fCoefB + 2);
   
-  *(fOutputPulse+3) = *(fOutputPulse+2) * *fCoefA + *(fOutputPulse+1) * *(fCoefA+1) + 
+  *(fOutputPulse+3) = -*(fOutputPulse+2) * *fCoefA - *(fOutputPulse+1) * *(fCoefA+1) - 
                       + *fOutputPulse * *(fCoefA+2) + *(fInputPulse+3) * *fCoefB 
                       + *(fInputPulse+2) * *(fCoefB+1) + *(fInputPulse+1) * *(fCoefB + 2)
                       + *fInputPulse * *fCoefB;
   
   unsigned int i = 4;
   for( ; i < fOutputSize; i++)
-    *(fOutputPulse+i) =  *(fOutputPulse+i-1) * *fCoefA  + *(fOutputPulse+i-2) * *(fCoefA+1) + *(fOutputPulse+i-3) * *(fCoefA+2)
-                        + *(fOutputPulse+i-4) * *(fCoefA+3)
+    *(fOutputPulse+i) =  -*(fOutputPulse+i-1) * *fCoefA  - *(fOutputPulse+i-2) * *(fCoefA+1) - *(fOutputPulse+i-3) * *(fCoefA+2)
+                        - *(fOutputPulse+i-4) * *(fCoefA+3)
                         + *(fInputPulse+i) * *fCoefB +  *(fInputPulse+i-1) *  *(fCoefB+1) +  *(fInputPulse+i-2) *  *(fCoefB+2)
                         + *(fInputPulse+i-3) *  *(fCoefB+3) + *(fInputPulse+i-4) * *(fCoefB+4);
  
