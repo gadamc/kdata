@@ -6,7 +6,7 @@
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
-// y[n] = a1y[n-1] + a2y[n-2] + a3y[n-3] + b0x[n] + b1x[n-1] + b2x[n-2] + b3x[n-3]
+// y[n] = -a1y[n-1] - a2y[n-2] - a3y[n-3] + b0x[n] + b1x[n-1] + b2x[n-2] + b3x[n-3]
 //
 //
 
@@ -69,7 +69,7 @@ void KIIRThirdOrder::SetCoefB(double b0, double b1, double b2, double b3)
 
 bool KIIRThirdOrder::RunProcess(void)
 {
-  //y[n] = a1y[n-1] + a2y[n-2] + a3y[n-3] + b0x[n] + b1x[n-1] + b2x[n-2] + b3x[n-3]
+  //y[n] = -a1y[n-1] - a2y[n-2] - a3y[n-3] + b0x[n] + b1x[n-1] + b2x[n-2] + b3x[n-3]
   
   if(fInputPulse == 0 || fOutputPulse == 0) {
     cerr << "input and output pulses are not allocated." << endl;
@@ -80,13 +80,13 @@ bool KIIRThirdOrder::RunProcess(void)
   memset(fOutputPulse, 0, fOutputSize*sizeof(double));
 
   *fOutputPulse =  *fInputPulse * *fCoefB;
-  *(fOutputPulse+1) = *fOutputPulse * *fCoefA + *(fInputPulse+1) * *fCoefB + *fInputPulse * *(fCoefB+1);  
-  *(fOutputPulse+2) = *(fOutputPulse+1) * *fCoefA + *fOutputPulse * *(fCoefA+1) + *(fInputPulse+2) * *fCoefB 
+  *(fOutputPulse+1) = -*fOutputPulse * *fCoefA + *(fInputPulse+1) * *fCoefB + *fInputPulse * *(fCoefB+1);  
+  *(fOutputPulse+2) = -*(fOutputPulse+1) * *fCoefA - *fOutputPulse * *(fCoefA+1) + *(fInputPulse+2) * *fCoefB 
                       + *(fInputPulse+1) * *(fCoefB+1) + *fInputPulse * *(fCoefB + 2);
   
   unsigned int i = 3;
   for( ; i < fOutputSize; i++)
-    *(fOutputPulse+i) =  *(fOutputPulse+i-1) * *fCoefA  + *(fOutputPulse+i-2) * *(fCoefA+1) + *(fOutputPulse+i-3) * *(fCoefA+2) 
+    *(fOutputPulse+i) =  -*(fOutputPulse+i-1) * *fCoefA  - *(fOutputPulse+i-2) * *(fCoefA+1) - *(fOutputPulse+i-3) * *(fCoefA+2) 
                         + *(fInputPulse+i) * *fCoefB +  *(fInputPulse+i-1) *  *(fCoefB+1) +  *(fInputPulse+i-2) *  *(fCoefB+2)
                         + *(fInputPulse+i-3) *  *(fCoefB+3);
  
