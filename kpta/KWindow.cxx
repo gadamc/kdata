@@ -31,24 +31,23 @@ KWindow::KWindow(double *inPulse, unsigned int inSize, double* outPulse, unsigne
 
 KWindow::~KWindow(void)
 {
-  if(fCoef) delete [] fCoef;
+  if(fWindow) delete [] fWindow;
 }
 
 
-void KWindow::SetCoefficients(const double *coef, unsigned int coefSize){
-  if(coefSize == fInputSize){
-    if(coefSize != fCoefSize){
-      if(fCoef) delete fCoef;
-      fCoefSize = coefSize;
-      fCoef = new double[fCoefSize];
+void KWindow::SetWindow(const double *window, unsigned int windowSize)
+{
+  if(windowSize == fInputSize){
+    if(windowSize != fWindowSize || fWindow == 0){
+      if(fWindow) delete [] fWindow;
+      fWindowSize = windowSize;
+      fWindow = new double[fWindowSize];
     }
-    for(unsigned int i = 0; i < coefSize; i++){
-      *(fCoef+i) = *(coef+i);
-    }
-    fCoefSize = fInputSize;
+    memcpy(fWindow, window, fWindowSize*sizeof(double));
+
   }
   else
-    cerr<<"the number of coefficients should be the same as the input size! nothing done"<<endl;
+    cerr<<"the window size should be the same as the input size! nothing done"<<endl;
   
 }
 
@@ -62,17 +61,13 @@ bool KWindow::RunProcess(void)
     cerr << "input and output pulses must be of the same size. nothing done. " << endl;
     return false;
   }
-  if(fCoefSize == 0){
+  if(fWindowSize == 0){
     cerr<<"window coefficients are not set"<<endl;
     return false;
-  }
-  //clear the output pulse
-  memset(fOutputPulse, 0, fInputSize*sizeof(double));
-  
+  }  
  
-  
   for(unsigned int i = 0 ; i < fOutputSize; i++)
-    *(fOutputPulse+i) =  *(fInputPulse+i) * *(fCoef+i); 
+    *(fOutputPulse+i) =  *(fInputPulse+i) * *(fWindow+i); 
   
   return true;
 }
@@ -81,8 +76,8 @@ bool KWindow::RunProcess(void)
 
 void KWindow::InitializeMembers(void)
 {
-  fCoef = 0;
-  fCoefSize = 0;
+  fWindow = 0;
+  fWindowSize = 0;
   
 }
 

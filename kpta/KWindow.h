@@ -26,14 +26,13 @@ public:
 
   virtual bool RunProcess(void);
 
-	virtual void SetCoefficients(const double *coef, unsigned int coefSize);
-
-  virtual double* GetCoefficients(void) {return fCoef;}
-  virtual unsigned int GetCoefSize(void) {return fCoefSize;}
+	virtual void SetWindow(const double *window, unsigned int windowSize);
+  virtual double* GetWindow(void) {return fWindow;}
+  virtual unsigned int GetWindowSize(void) {return fWindowSize;}
 
 protected:
-  double *fCoef;
-  unsigned int fCoefSize;
+  double *fWindow;
+  unsigned int fWindowSize;
 
 private:
   //private methods
