@@ -54,7 +54,7 @@ double* KWindowDesign::GetTukeyWindow(unsigned int size, double alpha)
 
 double* KWindowDesign::GetBlackmanWindow(unsigned int size, double alpha)
 {
-  //A Blackman window looks a lot like a guassian.
+  //A Blackman window looks a lot like a gaussian.
   //
   //Don't forget - you own the memory pointed to by the returned pointer!
   //
