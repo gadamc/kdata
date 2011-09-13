@@ -19,6 +19,9 @@
 // of the amplitude of the pulse and the element of the output array where this occurs is the estimate
 // of the pulse start time.
 //
+// Another thing to note is that the resulting amplitude estimator as a function of start time is 
+// reduced by a factor of 2 from what it should be. This is because the inverse fourier spectrum transformation is only done
+// on the positive frequencies and not over all frequencies, thus is off by a factor of 2. 
 //
 
 
