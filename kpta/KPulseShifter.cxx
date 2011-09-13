@@ -44,14 +44,14 @@ bool KPulseShifter::RunProcess(void)
     cerr << "input and output pulses must be of the same size. nothing done. " << endl;
     return false;
   }
-   
+  
   for(unsigned int i = 0 ; i < fOutputSize; i++)
     if((i - fPulseShift)>=0)
-			*(fOutputPulse+i) = *(fInputPulse+(i-fPulseShift)%fOutputSize);
-		else
-			*(fOutputPulse+i) = *(fInputPulse+(i-fPulseShift)%fOutputSize+fOutputSize);
-  
-  return true;
+      *(fOutputPulse+i) = *(fInputPulse+(i-fPulseShift)%fOutputSize);
+    else
+      *(fOutputPulse+i) = *(fInputPulse+(i-fPulseShift)%fOutputSize+fOutputSize);
+    
+    return true;
 }
 
 
@@ -59,7 +59,7 @@ bool KPulseShifter::RunProcess(void)
 void KPulseShifter::InitializeMembers(void)
 {
   fPulseShift = 0;
-   
+  
 }
 
 

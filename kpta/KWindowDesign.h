@@ -10,6 +10,7 @@
 
 #ifndef __KWINDOWDESIGN_H__
 #define __KWINDOWDESIGN_H__
+#define PI 3.14159265358979
 
 
 class KWindowDesign {
@@ -18,10 +19,10 @@ public:
 	KWindowDesign(void);
 	virtual ~KWindowDesign(void);
 	
-  static void GetTukeyWindow(double alpha, double* coef, unsigned int size); // Sets "coef" to coefficients of a Tukey window with the parameter "alpha" for "size" Bins
+  static double* GetTukeyWindow(unsigned int size, double alpha = 0.5); // Sets "coef" to coefficients of a Tukey window with the parameter "alpha" for "size" Bins
+  static double* GetBlackmanWindow(unsigned int size,double alpha = 0.16);
   
 private:
-	
 };
 
 
