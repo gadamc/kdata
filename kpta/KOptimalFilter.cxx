@@ -167,7 +167,7 @@ bool KOptimalFilter::BuildFilter(void)
   for (unsigned int i = 0; i < fNoiseSpectrumSize; i++)
     denom += *(fTemplatePower+i) / *(fNoiseSpectrum+i);
     
-  cout << "denominator " << denom << endl;
+  //cout << "denominator " << denom << endl;
   //now caluclate the real parts of the optimal filter
   for(unsigned int i = 0; i <= fOptFilterSize/2; i++){
     *(fOptFilter+i) = *(fTemplateDFT+i) / (denom * *(fNoiseSpectrum+i));
