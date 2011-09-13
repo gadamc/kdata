@@ -100,12 +100,17 @@ class KQContourPointList : public TObject {
     TF2* GetProbabilityOfAtLeastOneEvent(
       const Char_t* aFunctionName = "",
       Double_t aTolerance = 0.0001);
-    TH1D* GetDistributionOfTrueValues(const Char_t* aHistogramName = "NumTrueValues",
-                                                  TF1* aLowerBoundary = 0,
-                                                  TF1* anUpperBoundary = 0,
-                                                  UInt_t aMonteCarloSize = 10000,
-						  Int_t aNumElements = -1
- 				    );
+    TH1D* GetDistributionOfTrueValuesMonteCarlo(const Char_t* aHistogramName = "NumTrueValues",
+                                        TF1* aLowerBoundary = 0,
+                                        TF1* anUpperBoundary = 0,
+                                        UInt_t aMonteCarloSize = 10000,
+                                        Int_t aNumElements = -1);
+    TH1D* GetDistributionOfTrueValuesMergeProb(const Char_t* aHistogramName 
+                                                  = "NumTrueValues",
+                                               TF2* anIndicatorFunction = 0,
+                                               Int_t aNumElements = -1,
+                                               Double_t anIntegrationTolerance = 0.0001);
+    
     
     void ReadASCIIFile(const Char_t* aFileName = "",
                        const Char_t* aMode = "QErecoil",

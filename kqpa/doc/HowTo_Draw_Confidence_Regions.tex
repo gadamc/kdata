@@ -27,8 +27,8 @@ or
 \item Fill the list with points ($Q$, $E_{Recoil}$, $\sigma_{E_{ion}}$ , $\sigma_{E_{heat}}$) or ($E_{ion}$, $E_{heat}$ , $\sigma_{E_{ion}}$, $\sigma_{E_{heat}}$)
 
 \begin{enumerate}
-\item Read an ASCII file in the current working directory with lines of the form \\ <$Q$> <$E_{recoil}$> <$\sigma_{E_{ion}}$> <$\sigma_{E_{heat}}$> for mode "QErecoil" \\
- <$E_{ion}$> <$E_{heat}$> <$\sigma_{E_{ion}}$> <$\sigma_{E_{heat}}$> for mode "IonHeat"
+\item Read an ASCII file in the current working directory with lines of the form \\ <$Q$> <$E_{recoil}$> <$\sigma_{E_{ion}}$> <$\sigma_{E_{heat}}$> <$\sigma_{E_{heat}}$> for mode "QErecoil" \\
+ <$E_{ion}$> <$E_{heat}$> <$\sigma_{E_{ion}}$> <$\sigma_{E_{heat}}$> <$\sigma_{E_{heat}}$> for mode "IonHeat"
 \begin{verbatim} aList.ReadASCIIFile(aFileName); \end{verbatim}
 \item Add events manually
 \begin{verbatim} aList.AddPoint(aQvalue,anEnergyRecoil,aSigmaIon,aSigmaHeat); \end{verbatim} for mode "QErecoil"
@@ -47,6 +47,7 @@ aList.SetQvalueMin(aNewQvalueMin);
 aList.SetEnergyRecoilMax(aNewEnergyRecoilMax);
 aList.SetEnergyRecoilMin(aNewEnergyRecoilMin);
 \end{verbatim}
+If the frame with contours is drawn, the boundaries are then adjusted. \\
 
 The list of points can be cleared by
 \begin{verbatim}
@@ -100,7 +101,7 @@ aNumSigmas (default 10) is the number of sigmas calculated by uncorrelated error
 In case that there might be changes necessary on the empty frame or the contour function, they can directly be retrieved by
 \begin{verbatim}
 TF2* aFunction = aList.GetEmptyFrame();
-TF2* aFunction = anEvent.GetFunction();
+TF2* aFunction = aList.GetElement(<aValidIndex>)->GetFunction();
 \end{verbatim}
 
 

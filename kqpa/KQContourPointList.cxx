@@ -352,12 +352,12 @@ TF2* KQContourPointList::GetProbabilityOfAtLeastOneEvent(
     return aFunction;
 }
 
-TH1D* KQContourPointList::GetDistributionOfTrueValues(const Char_t* aHistogramName,
-                                                  TF1* aLowerBoundary,
-                                                  TF1* anUpperBoundary,
-                                                  UInt_t aMonteCarloSize,
-						  Int_t aNumElements
- 						    )
+TH1D* KQContourPointList::GetDistributionOfTrueValuesMonteCarlo(
+                              const Char_t* aHistogramName,
+                              TF1* aLowerBoundary,
+                              TF1* anUpperBoundary,
+                              UInt_t aMonteCarloSize,
+                              Int_t aNumElements)
 {
   //This method returns a histogram showing the distribution of the number of 
   // true events within an area between boundary values given by
@@ -421,4 +421,75 @@ TH1D* KQContourPointList::GetDistributionOfTrueValues(const Char_t* aHistogramNa
     result->Fill(aTrueEventCounter); 
   }    
   return result;
+}
+
+TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
+                            const Char_t* aHistogramName,
+                            TF2* anIndicatorFunction,
+                            Int_t aNumElements,
+                            Double_t anIntegrationTolerance)
+{
+  // This method returns a histogram showing the distribution of the number of 
+  // true events within an selected area determined by an indicator function
+  // First by integrating the contour functions of single events in the list
+  // over the selected area, the probabilties for the single events to having
+  // occured in this area are calculated. Then this probabilites are merged 
+  // and convoluted pairwise, successivly in blocks of 2, 4, 8, 16 elements
+  // until the full list size is reached
+  // (Double_t* KErecoilQDensity::GetDistributionOfMultipleEvents(
+  //                                 UInt_t aSize, Double_t* aVector))
+  (KErecoilQDensitiy::GetDistributionOfTrueEvents
+  if(aNumElements == -1)
+    aNumElements = fPoints.size();
+  TF2 z("z",
+        &KErecoilQDensity::SingleEventProbDensityWithIndicator,
+        fEnergyRecoilMin,
+        fEnergyRecoilMax,
+        fQvalueMin,
+        fQvalueMax,
+        7);
+  z.SetParameter(0,(Double_t)(Long_t)anIndicatorFunction);
+  ROOT::Math::WrappedMultiTF1 wf1(z);
+  
+  // create the integrator
+  //ROOT::Math::AdaptiveIntegratorMultiDim ig;
+  ROOT::Math::GSLMCIntegrator ig(ROOT::Math::IntegrationMultiDim::kVEGAS);
+  
+  //Set parameters of the integration
+  ig.SetFunction(wf1);
+  ig.SetRelTolerance(anIntegrationTolerance);
+  
+  Double_t xmin[] = { fEnergyRecoilMin, fQvalueMin };
+  Double_t xmax[] = { fEnergyRecoilMax, fQvalueMax };
+  
+  Double_t probabilities[aNumElements];
+  
+  Double_t p[7];
+  p[0] = z.GetParameter(0);
+  for(Int_t k = 0; k<aNumElements; ++k) {
+    p[1] = this->GetElement(k)->GetFunction()->GetParameter(0);
+    p[2] = this->GetElement(k)->GetFunction()->GetParameter(1);
+    p[3] = this->GetElement(k)->GetFunction()->GetParameter(2);
+    p[4] = this->GetElement(k)->GetFunction()->GetParameter(3);
+    p[5] = this->GetElement(k)->GetFunction()->GetParameter(4);
+    p[6] = this->GetElement(k)->GetFunction()->GetParameter(5);
+    
+    wf1.SetParameters(p);
+    probabilities[k] = ig.Integral(xmin,xmax);
+    if(probabilities[k]!=probabilities[k]) // probabilities[k] == nan ?
+      probabilities[k] = 0;
+    cout << "event " << k+1 << " integrated: prob = " << probabilities[k] << endl;
+  }
+  Double_t* distribution = KErecoilQDensity::GetDistributionOfMultipleEvents(
+                                                  aNumElements,
+                                                  probabilities);
+  TH1D* result = new TH1D(aHistogramName,
+                          aHistogramName,
+                          aNumElements+1,
+                          -0.5,
+                          aNumElements+0.5);
+  for(Int_t k = 0; k<aNumElements+1; ++k)
+    result->SetBinContent(k,distribution[k]);
+  
+  return result;                     
 }

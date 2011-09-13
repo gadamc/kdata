@@ -14,9 +14,13 @@
 #include "TF2.h"
 #include "TMath.h"
 #include "TMarker.h"
+#include "Math/WrappedMultiTF1.h"
+#include "Math/AdaptiveIntegratorMultiDim.h"
+#include "Math/GSLMCIntegrator.h"
 #include "KQContour.h"
 #include "KErecoilQDensity.h"
 #include "KLindhard.h"
+
 
 #ifndef __KQCONTOURPOINT_H__
 #define __KQCONTOURPOINT_H__

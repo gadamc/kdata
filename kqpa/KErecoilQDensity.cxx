@@ -64,10 +64,10 @@ KErecoilQDensity::~KErecoilQDensity()
 
 Double_t KErecoilQDensity::SingleEventProbDensity(Double_t *x, Double_t * par)
 {
-  //This function represents the propability density g(E_recoil,Q)
+  //This function represents the likelihood and detector resolution function g(E_recoil,Q)
   // (documented in $KDATA_ROOT/doc/ERecoilQDistribution.pdf) for a single event
   //
-  // These experimental values are
+  // The parameters are
    // par[0] : mean ion energy
   // par[1] :  mean heat energy
   // par[2] :  sigma ion
@@ -87,6 +87,77 @@ Double_t KErecoilQDensity::SingleEventProbDensity(Double_t *x, Double_t * par)
   Double_t a = TMath::Abs(x[0])/2/TMath::Pi()/TMath::Sqrt(det)/(1+par[5]);
   Double_t result = a*TMath::Exp(-0.5*(c1*n*n + c2*m*m - 2*c3*n*m));
   return result;
+  // "TMath::Exp(-0.5 *( [3]^2/([3]^2*[2]^2 - [4]^4) * ( y * x - [0])^2"
+ // "+ [2]^2/([3]^2*[2]^2 - [4]^4) *( (1 + y * [5])/(1 + [5]) * x "
+ // "- [1])^2"
+ // "- 2 * [4]^2/([3]^2*[2]^2 - [4]^4) * ( y * x - [0]) * "
+ // "( (1 + y * [5])/(1 + [5]) * x - [1])))"
+ // "* TMath::Abs(x)/ 2 / TMath::Pi() / TMath::Sqrt([2]^2 * [3]^2 - [4]^4) /"
+ // "(1+[5])"
+}
+
+Double_t KErecoilQDensity::SingleEventProbDensityWithIndicator(Double_t *x, Double_t *par)
+{
+  // This function represents the likelihood and detector resolution function
+  // g(E_recoil,Q) (documented in $KDATA_ROOT/doc/ERecoilQDistribution.pdf)
+  // for a single event
+  //
+  // The difference to the previous method is, that an indicator function 
+  // ind(E_recoil,Q) can be given by the user.
+  // The indicator function is supposed to return 1 if
+  // (E_recoil,Q) is in a selected area, otherwise 0, and can be implemented
+  // by the user.
+  // Then the indicator is entered by casting a TF2* pointer to Double_t, which
+  // is then internally cast back
+  // to a TF2* pointer.
+  // Example:
+  //
+  // TF2 indicator("ind",
+  //               "(y<100&&y>50) ? 1 : 0"); // x = recoil energy, y = Q value
+  // 
+  // TF2 f("f",
+  //       &SingleEventProbDensityWithIndicator,
+  //       fEnergyRecoilMin,
+  //       fEnergyRecoilMax,
+  //       fQvalueMin,
+  //       fQvalueMax,
+  //       7);
+  // f.SetParameter(0,(Double_t)&indicator);
+  // 
+  // If the 0th parameter is set to 0, the indicator function is ignored 
+  // (like always being 1) and the likelihood for given recoil energy and Q value
+  // is directly returned, otherwise the likelihood and the indicator function
+  // are evaluated and their product is returned
+  //
+  // This method is implemented for integrating the likelihood over arbitraryly 
+  // shaped areas in (E_recoil,Q)
+  //
+  // The parameters are
+  // par[0] : pointer to the indicator function (TF2*)
+  // par[1] : mean ion energy
+  // par[2] :  mean heat energy
+  // par[3] :  sigma ion
+  // par[4] : sigma heat
+  // par[5] : sigma ion heat
+  // par[6] : voltage bias/ epsilon_gamma
+  //
+  // x[0]: recoil energy
+  // x[1]: Q value
+  
+  TF2* anIndicatorFunction = (TF2*)(Int_t)par[0];
+  Double_t det = par[3]*par[3]*par[4]*par[4] - par[5]*par[5]*par[5]*par[5];
+  Double_t c1 = par[4]*par[4]/det;
+  Double_t c2 = par[3]*par[3]/det;
+  Double_t c3 = par[5]*par[5]/det;
+  Double_t n = x[0]*x[1]-par[1];
+  Double_t m = (1+x[1]*par[6])/(1+par[6])*x[0]-par[2];
+  Double_t a = TMath::Abs(x[0])/2/TMath::Pi()/TMath::Sqrt(det)/(1+par[6]);
+  Double_t result = a*TMath::Exp(-0.5*(c1*n*n + c2*m*m - 2*c3*n*m));
+  if(anIndicatorFunction)
+    return anIndicatorFunction->Eval(x[0],x[1])*result;
+  else
+    return result;
+  
   // "TMath::Exp(-0.5 *( [3]^2/([3]^2*[2]^2 - [4]^4) * ( y * x - [0])^2"
  // "+ [2]^2/([3]^2*[2]^2 - [4]^4) *( (1 + y * [5])/(1 + [5]) * x "
  // "- [1])^2"

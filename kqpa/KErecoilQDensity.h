@@ -32,6 +32,7 @@ public:
   virtual ~KErecoilQDensity(void);
 
    static Double_t SingleEventProbDensity(Double_t *x, Double_t * par);
+   static Double_t SingleEventProbDensityWithIndicator(Double_t *x, Double_t *par);
    static Double_t MultiEventProbDensity(Double_t* x,Double_t* par);
    static Double_t SingleEventTrueProbDensity(Double_t* x, Double_t* par);
    static Double_t SingleEventMarginalDensityErecoil(Double_t* x,
