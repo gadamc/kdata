@@ -438,7 +438,7 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
   // until the full list size is reached
   // (Double_t* KErecoilQDensity::GetDistributionOfMultipleEvents(
   //                                 UInt_t aSize, Double_t* aVector))
-  (KErecoilQDensitiy::GetDistributionOfTrueEvents
+  //(KErecoilQDensitiy::GetDistributionOfTrueEvents
   if(aNumElements == -1)
     aNumElements = fPoints.size();
   TF2 z("z",
