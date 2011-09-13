@@ -19,8 +19,8 @@ public:
   KWindowDesign(void);
   virtual ~KWindowDesign(void);
 
-  static double* GetTukeyWindow(unsigned int size, double alpha = 0.5); // Sets "coef" to coefficients of a Tukey window with the parameter "alpha" for "size" Bins
-  static double* GetBlackmanWindow(unsigned int size,double alpha = 0.16);
+  static double* GetTukeyWindow(unsigned int size, double alpha = 0.5, int middle = -9999, unsigned int width = 0); 
+  static double* GetBlackmanWindow(unsigned int size,double alpha = 0.16, int middle = -9999, unsigned int width = 0);
 
 private:
 };
