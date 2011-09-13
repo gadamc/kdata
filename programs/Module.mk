@@ -24,7 +24,7 @@ $(KPROG_DIRS)/%.o:    $(KPROG_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KPROG_FLAGS) $(ROOTINCS) $(FFTWINCS) $(CURLINCS) -I$(ERAINCS) -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KPROG_DIRS)/%.o $(KDATAED_LIB) 
+bin/%: $(KPROG_DIRS)/%.o  $(ALLLIBS)
 		@echo "=== Linking $@ ==="
 		$(LD) $(LDFLAGS) -o $@ $< $(ALLKDATALIBS) $(ROOTLIBS) $(SYSLIBS) $(FFTWLIBS) $(CURLLIBS)
                 
