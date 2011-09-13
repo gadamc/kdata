@@ -14,14 +14,14 @@
 
 
 class KWindowDesign {
-  
+
 public:
-	KWindowDesign(void);
-	virtual ~KWindowDesign(void);
-	
+  KWindowDesign(void);
+  virtual ~KWindowDesign(void);
+
   static double* GetTukeyWindow(unsigned int size, double alpha = 0.5); // Sets "coef" to coefficients of a Tukey window with the parameter "alpha" for "size" Bins
   static double* GetBlackmanWindow(unsigned int size,double alpha = 0.16);
-  
+
 private:
 };
 
