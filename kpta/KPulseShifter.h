@@ -15,29 +15,29 @@
 #include <string.h>
 
 class KPulseShifter : public KPtaProcessor { 
-
-public:
-  //Constructors
-  KPulseShifter(void);
-  //for the memory-savy programmers
-  KPulseShifter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
-
-  virtual ~KPulseShifter(void);
-
-  virtual bool RunProcess(void);
-
-	virtual void SetShift(const int shift){ fPulseShift = shift;};
-  virtual int GetShift(void) {return fPulseShift;};
   
-protected:
-  int fPulseShift;
-
-private:
-  //private methods
-  void InitializeMembers(void);
-
- // ClassDef(KPulseShifter,1);
-
+  public:
+    //Constructors
+    KPulseShifter(void);
+    //for the memory-savy programmers
+    KPulseShifter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize);
+    
+    virtual ~KPulseShifter(void);
+    
+    virtual bool RunProcess(void);
+    
+    virtual void SetShift(const int shift){ fPulseShift = shift;};
+    virtual int GetShift(void) {return fPulseShift;};
+    
+  protected:
+    int fPulseShift;
+    
+  private:
+    //private methods
+    void InitializeMembers(void);
+    
+    // ClassDef(KPulseShifter,1);
+    
 };
 
 
