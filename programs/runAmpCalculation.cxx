@@ -25,8 +25,11 @@
 #include "KHalfComplexPower.h"
 #include "KPeakFinder.h"
 #include "KOrderFilter.h"
+#include "KOptimalFilter.h"
+#include "KPulseShifter.h"
 #include <string>
 #include <cstring>
+#include <cmath>
 
 using namespace std;
 //this is a series of functions that take a raw KData file and process each pulse
@@ -93,8 +96,89 @@ void copyBasicData(KAmpBoloPulseRecord* pAmp, KRawBoloPulseRecord* pRaw)
   pAmp->SetCorrPied(pRaw->GetCorrPied());
 }
 
+void runOptimalFilter(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp, 
+                      KRawBoloPulseRecord* pRaw, const char* name, int shift)
+{
+  bool theRet = false;
+  vector<short> pulse = pRaw->GetTrace();
+  //cout << "input pulse" << endl << endl;
+  //cout << "[";
+  //for (unsigned int ii = 0; ii < pulse.size()-1; ii++)
+  //  cout << pulse[ii] << ",";
+  //cout << pulse[pulse.size()-1] << "]" << endl;
+  
+  anaChain.SetInputPulse(pulse);
+  theRet = anaChain.RunProcess();
+  
+  KPtaProcessor *windowed = anaChain.GetProcessor(1);
+  
+  //cout << "linear removed and windowed" << endl << endl;
+  //cout << "[";
+  //for (unsigned int ii = 0; ii < windowed->GetOutputPulseSize()-1; ii++)
+  //  cout << windowed->GetOutputPulse()[ii] << ",";
+  //cout << windowed->GetOutputPulse()[windowed->GetOutputPulseSize()-1] << "]" << endl;
+  
+  KPtaProcessor *last = anaChain.GetProcessor(anaChain.GetNumProcessors()-1);
+  int start, stop;
+  int peak = 0;
+  start = 0; stop = shift*2.5;
+  //cout << endl << "start and stop search positions " << start << " " << stop << endl;
+  //cout << "amplitude estimate " << endl << endl;
+  //cout << "[";
+  if(theRet){
+    
+  
+    
+    double maxValue = fabs(last->GetOutputPulse()[start]);
+    for(int b = start+1; b < stop; b++){
+    //  cout << *(last->GetOutputPulse()+b);
+      //if (b < stop -1) cout << ",";
+      if ( *(last->GetOutputPulse()+b) > maxValue){
+        maxValue = *(last->GetOutputPulse()+b);
+        peak = b;
+      }
+    }
+    //cout << "]" << endl;
+    //cout << maxValue << " " << peak << endl;
+    //now add the pulse analysis record and link the TRefs
+    KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();  //add a new analysis record
+    rec->SetBolometerRecord(boloAmp);
+    rec->SetBoloPulseRecord(pAmp);
+    pAmp->AddPulseAnalysisRecord(rec);
 
-void runHeatAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp, KRawBoloPulseRecord* pRaw, const char* name, bool smartMem = true)
+    rec->SetAmp(maxValue);
+    rec->SetName(name);
+    rec->SetIsBaseline(false);
+    rec->SetPeakPosition(peak);
+    rec->SetUnit(0);
+    KLinearRemoval *lin = (KLinearRemoval *)anaChain.GetProcessor(0);
+    rec->SetBaselineRemoved(lin->GetOffset());
+    rec->SetSlopeRemoved(lin->GetSlope());
+    
+    //get the amplitude of the baseline
+    peak = 50;
+    maxValue = *(last->GetOutputPulse()+peak);
+    //cout << "baseline " << maxValue << " " << peak << endl << endl;
+    rec = ee->AddPulseAnalysisRecord();
+    rec->SetBolometerRecord(boloAmp); //link TRef
+    rec->SetBoloPulseRecord(pAmp); //link TRef
+    pAmp->AddPulseAnalysisRecord(rec); //link TRef
+    
+    rec->SetAmp(maxValue);
+    rec->SetName(name);
+    rec->SetIsBaseline(true);
+    rec->SetPeakPosition(peak);
+    rec->SetUnit(0);
+    rec->SetBaselineRemoved(lin->GetOffset());
+    rec->SetSlopeRemoved(lin->GetSlope());
+    
+  }
+  
+}
+
+
+void runHeatAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp, 
+                  KRawBoloPulseRecord* pRaw, const char* name, bool smartMem = true)
 {
   bool theRet = false;
 
@@ -620,7 +704,7 @@ int main(int /*argc*/, char* argv[]){
   double *avePower = 0;
   int numberOfNoiseEvents = 0;
   KLinearRemoval *npLin = new KLinearRemoval;
-  double *mOptWin = KWindowDesign::GetTukeyWindow(heatSize,0.10);
+  double *mOptWin = KWindowDesign::GetTukeyWindow(heatSize,0.20);
   KWindow *mWinHeat2 = new KWindow;
   mWinHeat2->SetWindow(mOptWin, heatSize);
   delete [] mOptWin; mOptWin = 0;
@@ -659,7 +743,7 @@ int main(int /*argc*/, char* argv[]){
               if(r2hc->RunProcess()){
                 hcp->SetInputPulse(r2hc->GetOutputPulse(), r2hc->GetOutputPulseSize());
                 if(hcp->RunProcess()){
-                  cout << "we have a power spectrum! " << hcp->GetOutputPulse() << " " << hcp->GetOutputPulseSize() << endl;
+                  //cout << "we have a power spectrum! " << hcp->GetOutputPulse() << " " << hcp->GetOutputPulseSize() << endl;
                   if(avePower == 0){
                     avePower = new double[hcp->GetOutputPulseSize()];
                     memset(avePower, 0, hcp->GetOutputPulseSize() * sizeof(double));
@@ -678,10 +762,13 @@ int main(int /*argc*/, char* argv[]){
   for(unsigned int i = 0; i < hcp->GetOutputPulseSize(); i++)
     avePower[i] = avePower[i] / (double)numberOfNoiseEvents;
     
-  //cout << "[";
-  //for(unsigned int i = 0; i < hcp->GetOutputPulseSize(); i++)
-  //  cout << avePower[i] << ",";
-  //cout << "]" << endl;
+  cout << "noise power" << endl << endl;
+  cout << "[";
+  unsigned int jjj = 0;
+  for( ; jjj < hcp->GetOutputPulseSize()-1; jjj++)
+    cout << avePower[jjj] << ",";
+  cout << avePower[jjj];
+  cout << "]" << endl  << endl;
   //return 0;
   
   KCurl c;
@@ -696,31 +783,84 @@ int main(int /*argc*/, char* argv[]){
   doc = KJson::Parse(json.data());
   heatpulse = KJson::GetObjectItem(doc, "pulse");
   vector<double> heatTemplate;
-  for(int i = 0; i < KJson::GetArraySize(heatpulse); i++)
+  double Integral = 0;
+  for(int i = 0; i < KJson::GetArraySize(heatpulse); i++){
     heatTemplate.push_back(KJson::GetArrayItem(heatpulse, i)->valuedouble);
+    Integral += KJson::GetArrayItem(heatpulse, i)->valuedouble;
+  }
+  for(int i = 0; i < KJson::GetArraySize(heatpulse); i++){
+    heatTemplate[i] = -heatTemplate[i]/Integral;
+  }
+  
+  KPulseShifter shift;
+  shift.SetInputPulse(heatTemplate);
+  int artificialShift = -100;
+  shift.SetShift(artificialShift);
+  shift.RunProcess();
+  // for reference - an external check shows that the peak position of
+  // this heat template was originaly at 261
   
   //and use this for all ionization pulses for now. 
-  c.Get("https://edwdbik.fzk.de:6984", "/analysis/run13_templatepulse_centre_FID804AB");
-  json = c.GetReturn();
-  doc = KJson::Parse(json.data());
-  ionpulse = KJson::GetObjectItem(doc, "pulse");
-  vector<double> ionTemplate;
-  for(int i = 0; i < KJson::GetArraySize(ionpulse); i++)
-    ionTemplate.push_back(KJson::GetArrayItem(ionpulse, i)->valuedouble);
+  //c.Get("https://edwdbik.fzk.de:6984", "/analysis/run13_templatepulse_centre_FID804AB");
+  //json = c.GetReturn();
+  //doc = KJson::Parse(json.data());
+  //ionpulse = KJson::GetObjectItem(doc, "pulse");
+  //vector<double> ionTemplate;
+  //for(int i = 0; i < KJson::GetArraySize(ionpulse); i++)
+  //  ionTemplate.push_back(KJson::GetArrayItem(ionpulse, i)->valuedouble);
     
   
   //optimal filter for chaleur FID804AB
   KPulseAnalysisChain heatOptimal;
   KLinearRemoval *optLin = new KLinearRemoval;
-  mOptWin = KWindowDesign::GetTukeyWindow(heatSize,0.10);
+  mOptWin = KWindowDesign::GetTukeyWindow(heatSize,0.20);
   KWindow *mWinHeat = new KWindow;
   mWinHeat->SetWindow(mOptWin, heatSize);
   delete [] mOptWin; mOptWin = 0;
+  
   KOptimalFilter *optFilter = new KOptimalFilter;
-  r2hc->SetInputPulse(heatTemplate);
-  r2hc->RunProcess();
-  optFilter->SetTemplateDFT(r2hc->GetOutputPulse(), r2hc->GetOutputPulseSize());
+  optFilter->AllocateArrays(heatSize);
   optFilter->SetNoiseSpectrum(avePower, hcp->GetOutputPulseSize());
+  mWinHeat->SetInputPulse(shift.GetOutputPulse(), shift.GetOutputPulseSize());
+  mWinHeat->RunProcess();
+  cout << "Shifted, windowed template" << endl << endl;
+  cout << "[";
+  for(unsigned int i = 0; i < mWinHeat->GetOutputPulseSize()-1; i++)
+    cout << mWinHeat->GetOutputPulse()[i] << ",";
+  cout << mWinHeat->GetOutputPulse()[mWinHeat->GetOutputPulseSize()-1];
+  cout << "]" << endl  << endl;
+  
+  r2hc->SetInputPulse(mWinHeat->GetOutputPulse(), mWinHeat->GetOutputPulseSize());
+  r2hc->RunProcess();
+  cout << "Shifted, windowed template Fourier Spectrum" << endl << endl;
+  cout << "[";
+  for(unsigned int i = 0; i < r2hc->GetOutputPulseSize()-1; i++)
+    cout << r2hc->GetOutputPulse()[i] << ",";
+  cout << r2hc->GetOutputPulse()[r2hc->GetOutputPulseSize()-1];
+  cout << "]" << endl  << endl;
+  
+  hcp->SetInputPulse(r2hc->GetOutputPulse(), r2hc->GetOutputPulseSize());
+  hcp->RunProcess();
+  cout << "Shifted, windowed template Power" << endl << endl;
+  cout << "[";
+  for(unsigned int i = 0; i < hcp->GetOutputPulseSize()-1; i++)
+    cout << hcp->GetOutputPulse()[i] << ",";
+  cout << hcp->GetOutputPulse()[hcp->GetOutputPulseSize()-1];
+  cout << "]" << endl  << endl;
+  
+  optFilter->SetTemplateDFT(r2hc->GetOutputPulse(), r2hc->GetOutputPulseSize());
+  cout << optFilter->GetOptimalFilterSize() << endl;
+  optFilter->BuildFilter();
+  
+  hcp->SetInputPulse(optFilter->GetOptimalFilter(), optFilter->GetOptimalFilterSize());
+  hcp->RunProcess();
+  cout << "Optimal Filter Power" << endl << endl;
+  cout << "[";
+  for(unsigned int i = 0; i < hcp->GetOutputPulseSize()-1; i++)
+    cout << hcp->GetOutputPulse()[i] << ",";
+  cout << hcp->GetOutputPulse()[hcp->GetOutputPulseSize()-1];
+  cout << "]" << endl  << endl;
+  
   heatOptimal.AddProcessor(optLin);
   heatOptimal.AddProcessor(mWinHeat);
   heatOptimal.AddProcessor(optFilter);
@@ -783,7 +923,7 @@ int main(int /*argc*/, char* argv[]){
       
       boloAmp->SetSambaRecord(samAmp); //set the TRef
 
-
+      //int a = 0;
       for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
         if(i % 100 == 0) cout << "          pulse " << k;
         KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
@@ -806,6 +946,11 @@ int main(int /*argc*/, char* argv[]){
           runHeatAna1(heatAna1, ee, boloAmp, pAmp, pRaw, "iir1hp5Hz");
           runHeatAna2Pulse(heatAna2Pulse, ee, boloAmp, pAmp, pRaw, "iir4bp5to50HzWindow");
           runHeatAna2Baseline(heatAna2Baseline, ee, boloAmp, pAmp, pRaw, "iir4bp5to50HzWindow");
+          if(strcmp(pRaw->GetChannelName(),"chaleur FID804AB")==0){
+            runOptimalFilter(heatOptimal, ee, boloAmp, pAmp, pRaw, "optimalFilter", -1*artificialShift);
+            //cout << "next " << endl;
+            //cin >> a;
+          }
         }
         else{
           //ion analysis 1

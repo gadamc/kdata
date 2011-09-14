@@ -66,13 +66,13 @@ public:
 protected:
   double *fNoiseSpectrum;
   unsigned int fNoiseSpectrumSize;
-  template <class T> void SetTheNoiseSpectrum(std::vector<T> &resp, bool reverse = false);
-  template <class T> void SetTheNoiseSpectrum(const T* resp, unsigned int size, bool reverse = false);
+  template <class T> void SetTheNoiseSpectrum(std::vector<T> &resp);
+  template <class T> void SetTheNoiseSpectrum(const T* resp, unsigned int size);
   
   double *fTemplateDFT;
   unsigned int fTemplateDFTSize;
-  template <class T> void SetTheTemplateDFT(std::vector<T> &resp, bool reverse = false);
-  template <class T> void SetTheTemplateDFT(const T* resp, unsigned int size, bool reverse = false);
+  template <class T> void SetTheTemplateDFT(std::vector<T> &resp);
+  template <class T> void SetTheTemplateDFT(const T* resp, unsigned int size);
   
   double *fOptFilter;
   unsigned int fOptFilterSize;
@@ -97,7 +97,7 @@ private:
 };
 
 
-template <class T> void KOptimalFilter::SetTheNoiseSpectrum(std::vector<T> &resp, bool reverse)
+template <class T> void KOptimalFilter::SetTheNoiseSpectrum(std::vector<T> &resp)
 {
   if (resp.size() != fNoiseSpectrumSize){
     if(fNoiseSpectrum) delete [] fNoiseSpectrum;
@@ -105,18 +105,13 @@ template <class T> void KOptimalFilter::SetTheNoiseSpectrum(std::vector<T> &resp
     fNoiseSpectrum = new double[fNoiseSpectrumSize];
   }
   
-  if(!reverse)
-    for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-      *(fNoiseSpectrum+i) = resp[i];
-
-  else
-    for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-      *(fNoiseSpectrum+i) = resp[fNoiseSpectrumSize-1 - i];
+  for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
+    *(fNoiseSpectrum+i) = resp[fNoiseSpectrumSize-1 - i];
   
   fRecalculate = true;
 }
 
-template <class T> void KOptimalFilter::SetTheNoiseSpectrum(const T* resp, unsigned int size, bool reverse)
+template <class T> void KOptimalFilter::SetTheNoiseSpectrum(const T* resp, unsigned int size)
 {
   if (size != fNoiseSpectrumSize){
     if(fNoiseSpectrum) delete [] fNoiseSpectrum;
@@ -124,13 +119,8 @@ template <class T> void KOptimalFilter::SetTheNoiseSpectrum(const T* resp, unsig
     fNoiseSpectrum = new double[fNoiseSpectrumSize];    
   }
   
-  if(!reverse)
-    for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-      *(fNoiseSpectrum+i) = resp[i];
-
-  else
-    for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-      *(fNoiseSpectrum+i) = resp[fNoiseSpectrumSize-1 - i];
+  for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
+    *(fNoiseSpectrum+i) = resp[fNoiseSpectrumSize-1 - i];
       
   fRecalculate=true;
   //std::copy(resp, resp + size, fNoiseSpectrum);
@@ -138,7 +128,7 @@ template <class T> void KOptimalFilter::SetTheNoiseSpectrum(const T* resp, unsig
 
 
 
-template <class T> void KOptimalFilter::SetTheTemplateDFT(std::vector<T> &resp, bool reverse)
+template <class T> void KOptimalFilter::SetTheTemplateDFT(std::vector<T> &resp)
 {
   if (resp.size() != fTemplateDFTSize){
     if(fTemplateDFT) delete [] fTemplateDFT;
@@ -146,18 +136,13 @@ template <class T> void KOptimalFilter::SetTheTemplateDFT(std::vector<T> &resp, 
     fTemplateDFT = new double[fTemplateDFTSize];
   }
   
-  if(!reverse)
-    for(unsigned int i = 0; i < fTemplateDFTSize; i++)
-      *(fTemplateDFT+i) = resp[i];
-
-  else
-    for(unsigned int i = 0; i < fTemplateDFTSize; i++)
-      *(fTemplateDFT+i) = resp[fTemplateDFTSize-1 - i];
+  for(unsigned int i = 0; i < fTemplateDFTSize; i++)
+    *(fTemplateDFT+i) = resp[fTemplateDFTSize-1 - i];
 
   fRecalculate=true;
 }
 
-template <class T> void KOptimalFilter::SetTheTemplateDFT(const T* resp, unsigned int size, bool reverse)
+template <class T> void KOptimalFilter::SetTheTemplateDFT(const T* resp, unsigned int size)
 {
   if (size != fTemplateDFTSize){
     if(fTemplateDFT) delete [] fTemplateDFT;
@@ -165,13 +150,9 @@ template <class T> void KOptimalFilter::SetTheTemplateDFT(const T* resp, unsigne
     fTemplateDFT = new double[fTemplateDFTSize];    
   }
   
-  if(!reverse)
-    for(unsigned int i = 0; i < fTemplateDFTSize; i++)
-      *(fTemplateDFT+i) = resp[i];
-
-  else
-    for(unsigned int i = 0; i < fTemplateDFTSize; i++)
-      *(fTemplateDFT+i) = resp[fTemplateDFTSize-1 - i];
+  
+  for(unsigned int i = 0; i < fTemplateDFTSize; i++)
+    *(fTemplateDFT+i) = resp[fTemplateDFTSize-1 - i];
  
   fRecalculate=true;     
   //std::copy(resp, resp + size, fTemplateDFT);

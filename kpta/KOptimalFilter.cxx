@@ -122,6 +122,7 @@ bool KOptimalFilter::BuildFilter(void)
   //if the size changes, need to reallocate memory and reset 
   //the appropriate pointers. 
   if(fOptFilterSize != fTemplateDFTSize){
+    //cout << "optimal filter -- allocating space for filter" << endl;
     if(fOptFilter)  delete [] fOptFilter;
     fOptFilterSize= fTemplateDFTSize;
     fOptFilter = new double[fOptFilterSize];
@@ -143,11 +144,11 @@ bool KOptimalFilter::BuildFilter(void)
     
     fHc2r->SetInputPulse(fOptFilterAndSignal);
     fHc2r->SetInputPulseSize(fOptFilterAndSignalSize); 
-    fHc2r->SetOutputPulse(fOutputPulse);
+    fHc2r->SetOutputPulse(fOutputPulse);  //crap!  there's a bug here when you use the optimal filter in 'out-of-the-box' mode... the output array isn't set until the input array is set... therefore you can't call BuildFilter until you give it a pulse. as a work around, I have made KPtaProcessor::AllocateArrays a public method.
     fHc2r->SetOutputPulseSize(fOutputSize);
     fHc2r->SetFFTWPlan();
   }
-
+  //cout << "running hcpower" << endl;
   fHcPower->RunProcess();
   
   // the optimal filter has a length of n elements. the first n/2 + 1 are the real parts
