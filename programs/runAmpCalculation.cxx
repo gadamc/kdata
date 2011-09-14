@@ -97,7 +97,7 @@ void runHeatAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerReco
   theRet =  anaChain.RunProcess(smartMem); //true says to use smart memory.
   if(theRet){
     int start, stop;
-    int peak;
+    int peak(-1);
     start = 245; stop = 300;
     KPtaProcessor *last = anaChain.GetProcessor(anaChain.GetNumProcessors()-1);
     double maxValue = last->GetOutputPulse()[start];
@@ -152,7 +152,7 @@ void runIonAna1(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometerRecor
   theRet =  anaChain.RunProcess(smartMem); //true says to use smart memory.
   if(theRet){
     int start, stop;
-    int peak;
+    int peak(-1);
     start = 6400; stop = 7000;
     KPtaProcessor *last = anaChain.GetProcessor(anaChain.GetNumProcessors()-1);
     double maxValue = last->GetOutputPulse()[start];
@@ -220,7 +220,7 @@ void runHeatAna2Pulse(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolomete
   theRet =  anaChain.RunProcess(smartMem); //true says to use smart memory.
   if(theRet){
     int start, stop;
-    int peak;
+    int peak(-1);
     start = 245; stop = 300;
     KPtaProcessor *last = anaChain.GetProcessor(anaChain.GetNumProcessors()-1);
     double maxValue = last->GetOutputPulse()[start];
@@ -290,11 +290,11 @@ void runIonAna2Pulse(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolometer
   pRaw->GetTrace(anaChain.GetProcessor(0)->GetInputPulse()); //copies the pulse from the event to our local memory location
   //set pattern removal
   KPatternRemoval *pat = (KPatternRemoval *)anaChain.GetProcessor(1);
-  pat->SetPatternLength(pRaw->GetHeatPulseStampWidth());
+  pat->SetPatternLength((Int_t)pRaw->GetHeatPulseStampWidth());
   theRet =  anaChain.RunProcess(smartMem); //true says to use smart memory.
   if(theRet){
     int start, stop;
-    int peak;
+    int peak(-1);
     start = 6400; stop = 7000;
     KPtaProcessor *last = anaChain.GetProcessor(anaChain.GetNumProcessors()-1);
     double maxValue = last->GetOutputPulse()[start];
@@ -342,7 +342,7 @@ void runIonAna2Baseline(KPulseAnalysisChain &anaChain, KAmpEvent *ee, KAmpBolome
   pRaw->GetTrace(anaChain.GetProcessor(0)->GetInputPulse()); //copies the pulse from the event to our local memory location
   //set pattern removal
   KPatternRemoval *pat = (KPatternRemoval *)anaChain.GetProcessor(1);
-  pat->SetPatternLength(pRaw->GetHeatPulseStampWidth());
+  pat->SetPatternLength((Int_t)pRaw->GetHeatPulseStampWidth());
   
   theRet =  anaChain.RunProcess(smartMem); //true says to use smart memory.
   if(theRet){
