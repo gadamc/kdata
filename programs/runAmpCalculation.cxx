@@ -382,31 +382,6 @@ int main(int /*argc*/, char* argv[]){
   KRawEvent *e = (KRawEvent *)f.GetEvent();
 
 
-  KCurl c;
-  string json;
-  KJson *doc;
-  KJson *heatpulse;
-  KJson *ionpulse;
-  //get the heat template for chaleur FID804AB. For testing purposes,
-  //we'll use just this template for all heat pulses.
-  c.Get("https://edwdbik.fzk.de:6984", "/analysis/run13_templatepulse_chaleur_FID804AB");
-  json = c.GetReturn();
-  doc = KJson::Parse(json.data());
-  heatpulse = KJson::GetObjectItem(doc, "pulse");
-  vector<double> heatTemplate;
-  for(int i = 0; i < KJson::GetArraySize(heatpulse); i++)
-    heatTemplate.push_back(KJson::GetArrayItem(heatpulse, i)->valuedouble);
-  
-  //and use this for all ionization pulses for now. 
-  c.Get("https://edwdbik.fzk.de:6984", "/analysis/run13_templatepulse_centre_FID804AB");
-  json = c.GetReturn();
-  doc = KJson::Parse(json.data());
-  ionpulse = KJson::GetObjectItem(doc, "pulse");
-  vector<double> ionTemplate;
-  for(int i = 0; i < KJson::GetArraySize(ionpulse); i++)
-    ionTemplate.push_back(KJson::GetArrayItem(ionpulse, i)->valuedouble);
-
-
   //set up some memory location for data processing
   unsigned int heatSize = 512;
   unsigned int ionSize = 8196;
@@ -709,6 +684,31 @@ int main(int /*argc*/, char* argv[]){
   //cout << "]" << endl;
   //return 0;
   
+  KCurl c;
+  string json;
+  KJson *doc;
+  KJson *heatpulse;
+  KJson *ionpulse;
+  //get the heat template for chaleur FID804AB. For testing purposes,
+  //we'll use just this template for all heat pulses.
+  c.Get("https://edwdbik.fzk.de:6984", "/analysis/run13_templatepulse_chaleur_FID804AB");
+  json = c.GetReturn();
+  doc = KJson::Parse(json.data());
+  heatpulse = KJson::GetObjectItem(doc, "pulse");
+  vector<double> heatTemplate;
+  for(int i = 0; i < KJson::GetArraySize(heatpulse); i++)
+    heatTemplate.push_back(KJson::GetArrayItem(heatpulse, i)->valuedouble);
+  
+  //and use this for all ionization pulses for now. 
+  c.Get("https://edwdbik.fzk.de:6984", "/analysis/run13_templatepulse_centre_FID804AB");
+  json = c.GetReturn();
+  doc = KJson::Parse(json.data());
+  ionpulse = KJson::GetObjectItem(doc, "pulse");
+  vector<double> ionTemplate;
+  for(int i = 0; i < KJson::GetArraySize(ionpulse); i++)
+    ionTemplate.push_back(KJson::GetArrayItem(ionpulse, i)->valuedouble);
+    
+  
   //optimal filter for chaleur FID804AB
   KPulseAnalysisChain heatOptimal;
   KLinearRemoval *optLin = new KLinearRemoval;
@@ -716,6 +716,14 @@ int main(int /*argc*/, char* argv[]){
   KWindow *mWinHeat = new KWindow;
   mWinHeat->SetWindow(mOptWin, heatSize);
   delete [] mOptWin; mOptWin = 0;
+  KOptimalFilter *optFilter = new KOptimalFilter;
+  r2hc->SetInputPulse(heatTemplate);
+  r2hc->RunProcess();
+  optFilter->SetTemplateDFT(r2hc->GetOutputPulse(), r2hc->GetOutputPulseSize());
+  optFilter->SetNoiseSpectrum(avePower, hcp->GetOutputPulseSize());
+  heatOptimal.AddProcessor(optLin);
+  heatOptimal.AddProcessor(mWinHeat);
+  heatOptimal.AddProcessor(optFilter);
   
   
   
