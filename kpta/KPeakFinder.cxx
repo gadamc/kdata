@@ -72,7 +72,7 @@ bool KPeakFinder::RunProcess(void)
   //no memcpy operation is performed. 
   
   EraseVectors();
-  KRootMeanSquare mrms;
+  KRootMeanSquare mrms;  //this will be SLOW... change this.
   double rms = mrms.GetRms( fInputPulse, 0, fInputSize);
   
   double xweakThresh = fPolarity ? rms*fExtraWeakAmp : -rms*fExtraWeakAmp;

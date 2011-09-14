@@ -38,7 +38,7 @@ public:
   
   virtual unsigned int GetNumExtraWeakPeaks(void) const {return fExtraWeakPeakPositions.size();}
   virtual unsigned int GetNumWeakPeaks(void) const {return fWeakPeakPositions.size();}
-  virtual unsigned int GetNumStrickPeaks(void) const {return fStrictPeakPositions.size();}
+  virtual unsigned int GetNumStrictPeaks(void) const {return fStrictPeakPositions.size();}
   
   virtual unsigned int GetExtraWeakPosition(unsigned int i) const {return fExtraWeakPeakPositions[i];}
   virtual unsigned int GetWeakPosition(unsigned int i) const {return fWeakPeakPositions[i];}

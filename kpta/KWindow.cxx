@@ -37,7 +37,6 @@ KWindow::~KWindow(void)
 
 void KWindow::SetWindow(const double *window, unsigned int windowSize)
 {
-  if(windowSize == fInputSize){
     if(windowSize != fWindowSize || fWindow == 0){
       if(fWindow) delete [] fWindow;
       fWindowSize = windowSize;
@@ -45,10 +44,6 @@ void KWindow::SetWindow(const double *window, unsigned int windowSize)
     }
     memcpy(fWindow, window, fWindowSize*sizeof(double));
 
-  }
-  else
-    cerr<<"the window size should be the same as the input size! nothing done"<<endl;
-  
 }
 
 bool KWindow::RunProcess(void)
@@ -62,9 +57,14 @@ bool KWindow::RunProcess(void)
     return false;
   }
   if(fWindowSize == 0){
-    cerr<<"window coefficients are not set"<<endl;
+    cerr<<"window is not set"<<endl;
     return false;
   }  
+  
+  if(fWindowSize != fOutputSize){
+    cerr<<"window must be the same size as the pulse"<<endl;
+    return false;
+  }
  
   for(unsigned int i = 0 ; i < fOutputSize; i++)
     *(fOutputPulse+i) =  *(fInputPulse+i) * *(fWindow+i); 
