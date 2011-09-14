@@ -21,7 +21,12 @@
 #include "KWindow.h"
 #include "KWindowDesign.h"
 #include "KIIRFourthOrder.h"
+#include "KRealToHalfComplexDFT.h"
+#include "KHalfComplexPower.h"
+#include "KPeakFinder.h"
+#include "KOrderFilter.h"
 #include <string>
+#include <cstring>
 
 using namespace std;
 //this is a series of functions that take a raw KData file and process each pulse
@@ -629,20 +634,104 @@ int main(int /*argc*/, char* argv[]){
   ionAna3Baseline.AddProcessor(winIonBaseline3b);
   ionAna3Baseline.AddProcessor(iirIon50_3b);
   
+  
+  
+  //int numEvents = 1000;
+  int numEvents = f.GetEntries();
+  
+  
+  
+  //build noise power spectrum - just chaleur FID804AB to start with!!!
+  double *avePower = 0;
+  int numberOfNoiseEvents = 0;
+  KLinearRemoval *npLin = new KLinearRemoval;
+  double *mOptWin = KWindowDesign::GetTukeyWindow(heatSize,0.10);
+  KWindow *mWinHeat2 = new KWindow;
+  mWinHeat2->SetWindow(mOptWin, heatSize);
+  delete [] mOptWin; mOptWin = 0;
+  KRealToHalfComplexDFT *r2hc = new KRealToHalfComplexDFT;
+  KHalfComplexPower *hcp = new KHalfComplexPower;
+  KPeakFinder *pfinder = new KPeakFinder;  //era default for heat weak - sensitivity of 4.5 sigma... could change to 5.5 sigma to make sure
+    //strict is 3.5 sigma
+  KOrderFilter *ordr = new KOrderFilter;  //use ERA default of heat weak - order 3  ... strict is order 6
+  pfinder->SetHeatDefault();
+  pfinder->SetPolarity(0);
+  ordr->SetOrder(3);
+  KPulseAnalysisChain heatNoise;
+  heatNoise.AddProcessor(npLin);
+  //heatNoise.AddProcessor(mWinHeat);
+  heatNoise.AddProcessor(ordr);
+  heatNoise.AddProcessor(pfinder);
+  
+  //KLinearRemoval *npLin2 = new KLinearRemoval;
+  //will need to loop through the data here in order to build up the noise power spectrum
+  //to be used in the optimal filter
+  for(int i = 0; i < numEvents; i++){
+    f.GetEntry(i);
+    for(int j = 0; j < e->GetNumBoloPulses(); j++){
+      KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)e->GetBoloPulse(j);
+      if(strcmp(pRaw->GetChannelName(),"chaleur FID804AB") == 0){
+        vector<short> pulse = pRaw->GetTrace();
+        if(pulse.size() > 0){
+          heatNoise.SetInputPulse(pulse);
+          if(heatNoise.RunProcess()){
+            KPeakFinder *pf = (KPeakFinder *)heatNoise.GetProcessor(heatNoise.GetNumProcessors()-1);
+            //cout << "number of peaks: weak, xtraweak, strict  " << pf->GetNumWeakPeaks() << " " << pf->GetNumExtraWeakPeaks() << " " << pf->GetNumStrictPeaks() << endl;
+            if(pf->GetNumExtraWeakPeaks()==0){
+              mWinHeat2->SetInputPulse(npLin->GetOutputPulse(), npLin->GetOutputPulseSize());
+              mWinHeat2->RunProcess();
+              r2hc->SetInputPulse(mWinHeat2->GetOutputPulse(), mWinHeat2->GetOutputPulseSize());  //get this from the window stage
+              if(r2hc->RunProcess()){
+                hcp->SetInputPulse(r2hc->GetOutputPulse(), r2hc->GetOutputPulseSize());
+                if(hcp->RunProcess()){
+                  cout << "we have a power spectrum! " << hcp->GetOutputPulse() << " " << hcp->GetOutputPulseSize() << endl;
+                  if(avePower == 0){
+                    avePower = new double[hcp->GetOutputPulseSize()];
+                    memset(avePower, 0, hcp->GetOutputPulseSize() * sizeof(double));
+                  }
+                  numberOfNoiseEvents++;
+                  for(unsigned int k = 0; k < hcp->GetOutputPulseSize(); k++)
+                    avePower[k] += hcp->GetOutputPulse()[k];
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  for(unsigned int i = 0; i < hcp->GetOutputPulseSize(); i++)
+    avePower[i] = avePower[i] / (double)numberOfNoiseEvents;
+    
+  //cout << "[";
+  //for(unsigned int i = 0; i < hcp->GetOutputPulseSize(); i++)
+  //  cout << avePower[i] << ",";
+  //cout << "]" << endl;
+  //return 0;
+  
+  //optimal filter for chaleur FID804AB
+  KPulseAnalysisChain heatOptimal;
+  KLinearRemoval *optLin = new KLinearRemoval;
+  mOptWin = KWindowDesign::GetTukeyWindow(heatSize,0.10);
+  KWindow *mWinHeat = new KWindow;
+  mWinHeat->SetWindow(mOptWin, heatSize);
+  delete [] mOptWin; mOptWin = 0;
+  
+  
+  
+  
+  
+  
+  
+  
+  
   //this isn't going to be the MOST efficient way, however, because some processes
   //will be repeated, such as the linear removal process, for example. 
   //There is a significant amount of optimization that can eventually be done if we 'map' out 
   //a set of analysis processors, being careful not to re-run any process that we don't need. 
   
-  //int numEvents = 1000;
-  int numEvents = f.GetEntries();
-
-  //will need to loop through the data here in order to build up the noise power spectrum
-  //to be used in the optimal filter
-  //for(int i = 0; i < numEvents; i++){
-  //  
-  //  
-  //}
+  
+  
   
   //loop through the data, copying the raw information that is needed
   //for the amp-level data, and then applying the various analysis processing chains

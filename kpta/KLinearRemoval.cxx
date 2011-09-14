@@ -7,7 +7,12 @@
 //
 // Substracts the baseline level from a pulse.
 // Use SetBaselineStart and SetBaselineStop to set the region of the pulse
-// that is used to calculate the baseline. The default values are 0% and 40%
+// that is used to calculate the baseline. This assumes you are calculating the line from
+// the beginning to the pulse up to some percentage of the full pulse length. By default,
+// the line is calculated up to 40% of the full pulse. This means this object can be used
+// for ion and heat pulses without adjusting any parameters. Of course, since the ion pulses
+// are located closer to the end of the pulse, the fBaselineStop value could be set to a higher value
+// if desired.
 // 
 
 
@@ -65,7 +70,7 @@ bool KLinearRemoval::CalculateLine(void)
   //calculates the slope of the line from the start of the pulse
   //to the stop point, set by fBaselineStop. (The offset of the line
   //will always be the first element of the pulse.) The slope is calculated
-  //by linear regression
+  //by linear regression.
   
   if(fInputSize < 1) return false;
   if(fBaselineStop < 0) return false;
@@ -84,7 +89,7 @@ bool KLinearRemoval::CalculateLine(void)
   //fSlope = (size*xy - x*y) / (size*xx - x*x);
   //fOffset = (xx*y - x*xy) / (size*xx - x*x);
   
-  //fast calculation
+  //fast calculation based upon known series calculations
   double Sii = ((double)size*(double)size*(double)size/3.) - ((double)size*(double)size/2.) + ((double)size/6.);
   double Si = size*(size - 1) / 2.;
   double denom = size*Sii - (Si*Si);
