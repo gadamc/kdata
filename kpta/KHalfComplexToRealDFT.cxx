@@ -143,7 +143,7 @@ void KHalfComplexToRealDFT::SetFFTWPlan(void)
   //This will erase the contents of fIn_fft and fOut_fft. So make sure that these
   //arrays are filled with their initial values AFTER this method is called. 
 
-  if(fInputPulse  && fOutputPulse )
+  if(fInputPulse && fOutputPulse )
     fPlan = (void*)fftw_plan_r2r_1d( (int)fInputSize, fInputPulse, fOutputPulse, FFTW_HC2R, MapFlag());
   else 
     cerr << "KHalfComplexToRealDFT::SetFFTWPlan. Arrays are empty." << endl;
