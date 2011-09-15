@@ -15,6 +15,11 @@
 #include "TMath.h"
 #include "TMarker.h"
 #include "TObjString.h"
+#include "Math/Integrator.h"
+#include "Math/IntegratorMultiDim.h"
+#include "Math/AllIntegrationTypes.h"
+#include "Math/Functor.h"
+#include "Math/GaussIntegrator.h"
 #include "KQContourPoint.h"
 #include <fstream>
 #include <vector>
@@ -109,6 +114,8 @@ class KQContourPointList : public TObject {
                                                   = "NumTrueValues",
                                                TF2* anIndicatorFunction = 0,
                                                Int_t aNumElements = -1,
+                                               ROOT::Math::IntegrationMultiDim::Type anIntegrationMethod 
+                                               = ROOT::Math::IntegrationMultiDim::kVEGAS,
                                                Double_t anIntegrationTolerance = 0.0001);
     
     

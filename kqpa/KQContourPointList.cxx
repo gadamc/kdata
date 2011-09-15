@@ -427,6 +427,7 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
                             const Char_t* aHistogramName,
                             TF2* anIndicatorFunction,
                             Int_t aNumElements,
+			    ROOT::Math::IntegrationMultiDim::Type anIntegrationMethod,
                             Double_t anIntegrationTolerance)
 {
   // This method returns a histogram showing the distribution of the number of 
@@ -438,7 +439,24 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
   // until the full list size is reached
   // (Double_t* KErecoilQDensity::GetDistributionOfMultipleEvents(
   //                                 UInt_t aSize, Double_t* aVector))
-  //(KErecoilQDensitiy::GetDistributionOfTrueEvents
+  //
+  // Available integration routines are
+  //   ROOT::Math::IntegrationMultiDim::kVEGAS (default)
+  //   ROOT::Math::IntegrationMultiDim::kADAPTIVE
+  //   ROOT::Math::IntegrationMultiDim::kPLAIN
+  //   ROOT::Math::IntegrationMultiDim::kMISER
+  //
+  // Example:
+  //
+  // KQContourPointList list;
+  // list.ReadASCIIFile("<anASCIIFile>","QErecoil");
+  // TF2 anIndicator("ind","<condition of area> ? 1 : 0");
+  // TH1D* hist = list.GetDistributionOfTrueValuesMergeProb(
+  //                                 "<aHistogramName>",
+  //                                 &anIndicator,
+  //                                 <aNumberOfElements>,
+  //                                 <anIntegrationTolerance>);
+  
   if(aNumElements == -1)
     aNumElements = fPoints.size();
   TF2 z("z",
@@ -449,11 +467,11 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
         fQvalueMax,
         7);
   z.SetParameter(0,(Double_t)(Long_t)anIndicatorFunction);
-  ROOT::Math::WrappedMultiTF1 wf1(z);
+  ROOT::Math::WrappedMultiTF1 wf1(z,2);
   
   // create the integrator
   //ROOT::Math::AdaptiveIntegratorMultiDim ig;
-  ROOT::Math::GSLMCIntegrator ig(ROOT::Math::IntegrationMultiDim::kVEGAS);
+  ROOT::Math::IntegratorMultiDim ig(anIntegrationMethod);
   
   //Set parameters of the integration
   ig.SetFunction(wf1);
@@ -463,6 +481,7 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
   Double_t xmax[] = { fEnergyRecoilMax, fQvalueMax };
   
   Double_t probabilities[aNumElements];
+  Double_t probabilityErrors[aNumElements];
   
   Double_t p[7];
   p[0] = z.GetParameter(0);
@@ -476,9 +495,11 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
     
     wf1.SetParameters(p);
     probabilities[k] = ig.Integral(xmin,xmax);
+    probabilityErrors[k] = ig.Error();
     if(probabilities[k]!=probabilities[k]) // probabilities[k] == nan ?
       probabilities[k] = 0;
-    cout << "event " << k+1 << " integrated: prob = " << probabilities[k] << endl;
+    cout << "event " << k+1 << " integrated: prob = " << probabilities[k]
+    << " +/- " << ig.Error()<< endl;
   }
   Double_t* distribution = KErecoilQDensity::GetDistributionOfMultipleEvents(
                                                   aNumElements,
@@ -489,7 +510,7 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
                           -0.5,
                           aNumElements+0.5);
   for(Int_t k = 0; k<aNumElements+1; ++k)
-    result->SetBinContent(k,distribution[k]);
+    result->SetBinContent(k+1,distribution[k]);
   
   return result;                     
 }
