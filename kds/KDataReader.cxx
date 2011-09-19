@@ -104,12 +104,12 @@ TFile* KDataReader::OpenFileForReading(const Char_t* name)
     cout << "KDataFileIO - Unable to Open file: " << name << endl;
     return fFile;
   }
-  GetTreePointerInFile(name);
+  GetTreePointerInFile();
 
   return fFile;
 }
 
-void KDataReader::GetTreePointerInFile(const Char_t* name)
+void KDataReader::GetTreePointerInFile(void)
 {
 
   if (fFile == 0){
