@@ -765,7 +765,7 @@ int main(int /*argc*/, char* argv[]){
   cout << "noise power" << endl << endl;
   cout << "[";
   unsigned int jjj = 0;
-  for( ; jjj < hcp->GetOutputPulseSize()-1; jjj++)
+  for( ; avePower != 0 && jjj < hcp->GetOutputPulseSize()-1; jjj++)
     cout << avePower[jjj] << ",";
   cout << avePower[jjj];
   cout << "]" << endl  << endl;
