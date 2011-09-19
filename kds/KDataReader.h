@@ -68,7 +68,6 @@ private:
   Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
   void GetTreePointerInFile(void);
 
-  Bool_t fIsOpen; //true if open, false if not.
  
   ClassDef(KDataReader,2);
 };
