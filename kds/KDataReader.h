@@ -27,7 +27,6 @@ public:
   virtual Bool_t Close(Option_t *opt = "");
 
   virtual KEvent* GetEvent(void);
-  virtual Int_t AddFile(const char* name, Long64_t nentries = TChain::kBigNumber, const char* tname = "");
   virtual Int_t GetCurrentEntryNumber(void) const {return fCurrentEntry;}
   virtual Int_t GetNextEntry(void);
   virtual Int_t GetPreviousEntry(void);
@@ -67,7 +66,7 @@ private:
   TFile* OpenFileForReading(const Char_t* name);
   //Bool_t OpenFile(const Char_t* fileName);
   Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
-  void GetTreePointerInFile(const Char_t* name);
+  void GetTreePointerInFile(void);
 
   Bool_t fIsOpen; //true if open, false if not.
  
