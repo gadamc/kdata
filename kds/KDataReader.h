@@ -1,11 +1,11 @@
 /*
- *  KDataReader.h
- *  KDataStructure
- *
- *  Created by Adam Cox on 4/30/10.
- *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
- *
- */
+*  KDataReader.h
+*  KDataStructure
+*
+*  Created by Adam Cox on 4/30/10.
+*  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+*
+*/
 
 #ifndef __KDataReader_H__
 #define __KDataReader_H__
@@ -19,52 +19,58 @@ class KDataReader : public KDataFileIO {
 
 public:
   //Constructors
-	//KDataReader(const Char_t* fileName);
+  //KDataReader(const Char_t* fileName);
   KDataReader(void);
-	KDataReader(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
+  KDataReader(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
   virtual ~KDataReader(void);
 
-	Bool_t Close(Option_t *opt = "");
-	
-	KEvent* GetEvent(void);
-    Int_t AddFile(const char* name, Long64_t nentries = TChain::kBigNumber, const char* tname = "");
-	Int_t GetCurrentEntryNumber(void) const {return fCurrentEntry;}
-	Int_t GetNextEntry(void);
-	Int_t GetPreviousEntry(void);
-	Int_t GetEntry(Int_t anEntry);
-	Int_t GetEntryWithGSEventNumber(Int_t anEntry);
-	Int_t GetEntries(void) const {return fEntries;}
+  virtual Bool_t Close(Option_t *opt = "");
 
-	
-	TObject* Get(const Char_t* namecycle) const;
-	
-	Int_t GetNextMuonEntry(Int_t anEntry=-1) ;
-	Int_t GetPreviousMuonEntry(Int_t anEntry=-1) ;
-	Int_t GetNextBoloEntry(Int_t anEntry=-1) ;
-	Int_t GetPreviousBoloEntry(Int_t anEntry=-1) ;
-	
-  void SetUseInternalCache(Bool_t bOption = true);
-  
+  virtual KEvent* GetEvent(void);
+  virtual Int_t AddFile(const char* name, Long64_t nentries = TChain::kBigNumber, const char* tname = "");
+  virtual Int_t GetCurrentEntryNumber(void) const {return fCurrentEntry;}
+  virtual Int_t GetNextEntry(void);
+  virtual Int_t GetPreviousEntry(void);
+  virtual Int_t GetEntry(Int_t anEntry);
+  virtual Int_t GetEntryWithGSEventNumber(Int_t anEntry);
+  virtual Int_t GetEntries(void) const {return fEntries;}
+
+
+  virtual TObject* Get(const Char_t* namecycle) const;
+
+  virtual Int_t GetNextMuonEntry(Int_t anEntry=-1) ;
+  virtual Int_t GetPreviousMuonEntry(Int_t anEntry=-1) ;
+  virtual Int_t GetNextBoloEntry(Int_t anEntry=-1) ;
+  virtual Int_t GetPreviousBoloEntry(Int_t anEntry=-1) ;
+
+  virtual void SetUseInternalCache(Bool_t bOption = true);
+
+  virtual void ls(Option_t *opt = "") const;
+  virtual Bool_t cd(const char *path = 0);
+  virtual const char* GetFileName(void) const;
+  virtual const char* GetEventClassName(void) const;
+  virtual TFile* GetTFile(void) const {return fFile;}
+  virtual TTree* GetTTree(void) const {return fTree;}
+
 private:
-		
-	Int_t fCurrentEntry; //current entry number in the tree
-	Int_t fEntries; //number of entries in the tree
-	Bool_t fGSEventIndex; //the global software event number index
-	
-	KEvent *fLocalEvent;
-  //private methods
-  void InitializeMembers(void);
-	Bool_t SetBranchAddress(KEvent **anEvent = 0);
-	//Bool_t OpenFile(const Char_t* fileName);
-	Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
-  
-  Bool_t fIsOpen; //true if open, false if not.
 
+  Int_t fCurrentEntry; //current entry number in the tree
+  Int_t fEntries; //number of entries in the tree
+  Bool_t fGSEventIndex; //the global software event number index
+  TFile *fFile;
+  TTree *fTree;
+  KEvent *fLocalEvent;
+  //private methods
   
-	//discourage / do not allow copy and assignment
-	KDataReader(const KDataReader &aReader);
-	KDataReader& operator=( const KDataReader &aReader );
-	
+  void InitializeMembers(void);
+  Bool_t SetBranchAddress(KEvent **anEvent = 0);
+  TFile* OpenFileForReading(const Char_t* name);
+  //Bool_t OpenFile(const Char_t* fileName);
+  Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent = 0, Bool_t useCache = true);
+  void GetTreePointerInFile(const Char_t* name);
+
+  Bool_t fIsOpen; //true if open, false if not.
+ 
   ClassDef(KDataReader,2);
 };
 

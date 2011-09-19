@@ -20,7 +20,7 @@
 #include <typeinfo>
 #include <iostream>
 #include <string>
-#include "KHLAEvent.h" 
+#include <exception> 
 
 using namespace std;
 
@@ -44,88 +44,131 @@ KDataReader::KDataReader(const Char_t* fileName, KEvent **anEvent, Bool_t useCac
   //
   //This object can open high level files (which hold KHLAEvents)
   //and raw level files (which hold KRawEvents)
-	
-	fLocalEvent = 0;
-	InitializeMembers();
+
+  fLocalEvent = 0;
+  InitializeMembers();
   if(!OpenFile(fileName, anEvent, useCache)){
-		cout << "KDataReader - Could not open " << fileName << endl;
-	}
+    cout << "KDataReader - Could not open " << fileName << endl;
+  }
 }
 
-
-KDataReader::KDataReader(const KDataReader &/*aWriter*/)
-:KDataFileIO()
-{
-	
-}
-
-KDataReader& KDataReader::operator=( const KDataReader &/*aWriter*/)
-{
-  return *this;
-}
 
 KDataReader::~KDataReader(void)
 {
-  //Close();
+  Close();
 }
 
 void KDataReader::InitializeMembers(void)
 {
   //
-  
+
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-	fCurrentEntry = 0;
-	fEntries = 0;
-	fGSEventIndex=0;
+  fCurrentEntry = 0;
+  fEntries = 0;
+  fGSEventIndex=0;
   fIsOpen = false;
 }
-
-
-
 
 
 Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t useCache)
 {
   //closes any file that is already open and then opens fileName.
   //returns true if successful. 
-  
-	if(fIsOpen == true)
+
+  if(fIsOpen == true)
     Close();  //close the file, if one is already open. 
-	OpenFileForReading(fileName);
-	Bool_t theRet = false;
-  
-	if(fFile != 0){
-    if(fChain != 0){
-			if(SetBranchAddress(anEvent)){
+  OpenFileForReading(fileName);
+  Bool_t theRet = false;
+
+  if(fFile != 0){
+    if(fTree != 0){
+      if(SetBranchAddress(anEvent)){
         SetUseInternalCache(useCache);
-				if(GetEntry(0) > 0)
-					fEntries = fChain->GetEntries();
+        if(GetEntry(0) > 0)
+          fEntries = fTree->GetEntries();
         theRet = true;
         fIsOpen = true;
-			}
-		}
-	}
-  
-	return theRet;
+      }
+    }
+  }
+
+  return theRet;
 }
+
+TFile* KDataReader::OpenFileForReading(const Char_t* name)
+{
+
+  fFile = TFile::Open(name, "read");
+  if (fFile == 0){
+    cout << "KDataFileIO - Unable to Open file: " << name << endl;
+    return fFile;
+  }
+  GetTreePointerInFile(name);
+
+  return fFile;
+}
+
+void KDataReader::GetTreePointerInFile(const Char_t* name)
+{
+
+  if (fFile == 0){
+    cout << "KDataFileIO - File Pointer is NULL" << endl;
+    return;
+  }
+
+  fFile->cd();
+  fTree = (TTree *)fFile->Get(GetTreeName().c_str());
+
+}
+
 
 Bool_t KDataReader::Close(Option_t *opt)
 {
   //close the file with option opt. See TFile::Close(Option_t*)
-  if(fIsOpen == false)
-    return true;  // you've already closed it.
-  
-	if(fLocalEvent!=0) {
-		KEventFactory::DeleteEvent(fLocalEvent);
-		fLocalEvent = 0;
-	}
-  
-  
-  fIsOpen = !KDataFileIO::Close(opt);
-  
+
+  //because ROOT is crazy, I have to make a try block
+  try{
+
+    if( dynamic_cast<TFile*>(fFile) != 0) {
+
+      if(fIsOpen == false)
+        return true;  // you've already closed it.
+
+      if(fLocalEvent!=0) {
+        KEventFactory::DeleteEvent(fLocalEvent);
+        fLocalEvent = 0;
+      }
+
+      if(fFile == 0){
+        fTree=0; //the tree should have been deleted
+        fIsOpen = false;
+        return true;
+      }
+
+      if(fFile->IsOpen())
+        fFile->Close(opt);
+
+      if (fFile->IsOpen()) {
+        return false;
+    //return false if we couldn't close the file.
+      }
+      else {
+        delete fFile; 
+        fFile = 0;
+        fTree= 0; //the chain is deleted by the TFile
+      }
+
+      fIsOpen = false;
+
+      return !fIsOpen;
+    }
+  }
+  catch (exception& e) {
+    fIsOpen = false;
+    return true;  //assume that ROOT has already trashed it.
+  }
   return !fIsOpen;
-  
 }
 
 void KDataReader::SetUseInternalCache(Bool_t option)
@@ -140,64 +183,41 @@ void KDataReader::SetUseInternalCache(Bool_t option)
   //If you've previously called this method with option = true, then
   //all branches in the tree are added to the cache.
   //
-  
-  if(option && fChain != 0){
-    fChain->SetCacheSize(20000000);
-    fChain->AddBranchToCache("*", true);
-  }
-  /*else {
-   cerr << "KDataReader::SetUseInternalCache. There's no way of undoing this." << endl;
-   cerr << "  If you've previously called this method with option = true, then" << endl;
-   cerr << "  all branches in the tree are added to the cache." << endl; 
-   }*/
-}
 
-Int_t KDataReader::AddFile(const char* name, Long64_t nentries , const char* tname )
-{
-  //Add file to the TChain
-  Int_t returnVal = 0;
-  
-  if (fChain == 0 || fTree == 0 || fFile == 0) {  //a bit hacky...
-    if(!OpenFile(name, 0, true)){
-      cout << "KDataReader - Could not open " << name << endl;
-      returnVal = 0;
-    }
-    else 
-      returnVal = 1;
-
+  if(option && fTree != 0){
+    fTree->SetCacheSize(20000000);
+    fTree->AddBranchToCache("*", true);
   }
-  else {
-    returnVal = fChain->AddFile(name, nentries, tname);
-    fEntries = fChain->GetEntries();
-  }
-  
-  return returnVal;
-  
+  //else 
+  //cerr << "KDataReader::SetUseInternalCache. There's no way of undoing this." << endl;
+  //cerr << "  If you've previously called this method with option = true, then" << endl;
+  //cerr << "  all branches in the tree are added to the cache." << endl; 
+  //
 }
 
 
 Bool_t KDataReader::SetBranchAddress(KEvent **anEvent)
 {
   //set the branch address to anEvent.
-  
-	if(fChain == 0) return false;
-	
-	if(anEvent == 0){ 
-		TBranchElement *fBranch = (TBranchElement *)fChain->GetBranch(GetBranchName().c_str());
-		if(fBranch == 0) return false;
-		
-		fLocalEvent = KEventFactory::NewEvent(fBranch->GetClassName());
-		if(fLocalEvent != 0) {
-			fChain->SetBranchAddress(GetBranchName().c_str(), &fLocalEvent);
+
+  if(fTree == 0) return false;
+
+  if(anEvent == 0){ 
+    TBranchElement *fBranch = (TBranchElement *)fTree->GetBranch(GetBranchName().c_str());
+    if(fBranch == 0) return false;
+
+    fLocalEvent = KEventFactory::NewEvent(fBranch->GetClassName());
+    if(fLocalEvent != 0) {
+      fTree->SetBranchAddress(GetBranchName().c_str(), &fLocalEvent);
     }
     else 
-			return false; 
-	}
-	else 
-		fChain->SetBranchAddress(GetBranchName().c_str(), anEvent);
-	
-	return true;
-	
+      return false; 
+  }
+  else 
+    fTree->SetBranchAddress(GetBranchName().c_str(), anEvent);
+
+  return true;
+
 }
 
 KEvent* KDataReader::GetEvent(void)
@@ -211,90 +231,127 @@ KEvent* KDataReader::GetEvent(void)
   //KDataReader myFile("/path/to/myKHLADataFile.root");
   //KHLAEvent *e = (KHLAEvent *)myFile.GetEvent();
   //
-  
-  
-	KEvent* event = 0;
-	if(fChain !=0){
-		if(!fChain->IsZombie())
-		{
-			TBranchElement *fB = (TBranchElement *)fChain->GetBranch(GetBranchName().c_str());
-			event = (KEvent *)fB->GetObject();
-		}
-	}
-	
-	return event;
+
+
+  KEvent* event = 0;
+  if(fTree !=0){
+    if(!fTree->IsZombie())
+    {
+      TBranchElement *fB = (TBranchElement *)fTree->GetBranch(GetBranchName().c_str());
+      event = (KEvent *)fB->GetObject();
+    }
+  }
+
+  return event;
 }
 
 Int_t KDataReader::GetNextEntry(void)
 {
   //Loads the event with data from the next entry in the tree
   //returns the size of the event in bytes.
-  
-	return GetEntry(fCurrentEntry+1);
+
+  return GetEntry(fCurrentEntry+1);
 }
 
 Int_t KDataReader::GetPreviousEntry(void)
 {
   //Loads the event with data from the previous entry in the tree
   //returns the size of the event in bytes.
-  
-	return  GetEntry(fCurrentEntry-1);
+
+  return  GetEntry(fCurrentEntry-1);
 }
 
 Int_t KDataReader::GetEntry(Int_t anEntry)
 {
-	//will load Entry number 'anEntry' and 
-	//if successful, will set the fCurrentEntry value to
-	//anEntry.
-	
-	Int_t theRet = -1;
-	if(fChain == 0) {
-		fCurrentEntry = 0;
-		return -1;
-	}
-	else {
-		fChain->GetCurrentFile()->cd();  //make sure we are in the right directory
-		theRet = fChain->GetEntry(anEntry);
-		if(theRet > 0) 
-			fCurrentEntry = anEntry;
-		
-		return theRet;
-	}
+  //will load Entry number 'anEntry' and 
+  //if successful, will set the fCurrentEntry value to
+  //anEntry.
+
+  Int_t theRet = -1;
+  if(fTree == 0) {
+    fCurrentEntry = 0;
+    return -1;
+  }
+  else {
+    fTree->GetCurrentFile()->cd();  //make sure we are in the right directory
+    theRet = fTree->GetEntry(anEntry);
+    if(theRet > 0) 
+      fCurrentEntry = anEntry;
+
+    return theRet;
+  }
 }
 
 Int_t KDataReader::GetEntryWithGSEventNumber(Int_t anEntry)
 {
   //will load (if possible) Entry cooresponding to GSEventNumber'anEntry' and 
-	//if successful, will set the fCurrentEntry value to
-	//anEntry. Otherwise returnvalue should be -1.
-  
-	if(fGSEventIndex==0){
-		cout << "Building index..." << endl;
-		fChain->BuildIndex("fGSEventNumber");
-		fGSEventIndex=1;
-	}
-	
-	Int_t theRet = -1;
-	if(fChain == 0) {
-		fCurrentEntry = 0;
-		return -1;
-	}
-	else {
-		theRet = fChain->GetEntryWithIndex(anEntry);
-		if(theRet > 0) 
-      fCurrentEntry = fChain->GetEntryNumberWithIndex(anEntry);
-		
-		return theRet;
-	}
+  //if successful, will set the fCurrentEntry value to
+  //anEntry. Otherwise returnvalue should be -1.
+
+  if(fGSEventIndex==0){
+    cout << "Building index..." << endl;
+    fTree->BuildIndex("fGSEventNumber");
+    fGSEventIndex=1;
+  }
+
+  Int_t theRet = -1;
+  if(fTree == 0) {
+    fCurrentEntry = 0;
+    return -1;
+  }
+  else {
+    theRet = fTree->GetEntryWithIndex(anEntry);
+    if(theRet > 0) 
+      fCurrentEntry = fTree->GetEntryNumberWithIndex(anEntry);
+
+    return theRet;
+  }
 }
 
 TObject* KDataReader::Get(const Char_t* namecycle) const
 {
   //this simply calls TFile::Get and returns an object found in the file.
-	if(fFile != 0){
-		return fFile->Get(namecycle);
-	}
-	else return 0;
+  if(fFile != 0){
+    return fFile->Get(namecycle);
+  }
+  else return 0;
+}
+
+const char* KDataReader::GetEventClassName(void) const
+{
+  if(fTree != 0){
+    TBranchElement *branch = (TBranchElement *)fTree->GetBranch(GetBranchName().c_str());
+    if(branch != 0)
+      return branch->GetClassName();
+
+    else return "";
+  }
+  else return "";
+}
+
+const char* KDataReader::GetFileName(void) const
+{
+  if (fFile != 0) {
+    return fFile->GetName();
+  }
+  else return "";
+
+}
+
+void KDataReader::ls(Option_t *anOpt) const
+{
+  if(fFile != 0){
+    fFile->ls(anOpt);
+  }
+
+}
+
+Bool_t KDataReader::cd(const char *path)
+{
+  if(fFile != 0){
+    return fFile->cd(path);
+  }
+  else return false;
 }
 
 Int_t KDataReader::GetNextMuonEntry(Int_t anEntry) 
@@ -306,25 +363,25 @@ Int_t KDataReader::GetNextMuonEntry(Int_t anEntry)
   //events are found.
   //if anEntry !=0, it will search for the next muon entry after anEntry
   //
-  //currently, this only works for KHLAEvents because KRawEvents have yet to be
-  //defined. 
+
+
+  Int_t size=0;
+  KEvent* e = GetEvent();
   
-  
-	Int_t size=0;
-	KHLAEvent* e=0;
-	e = dynamic_cast<KHLAEvent*>(GetEvent());
-	if(e==0)return -1;
-	
-	if(anEntry<0){
-		size=GetNextEntry();
-	}
-	else{
-		size=GetEntry(anEntry+1);
-	}
-	while(size>0 && e->GetNumMuonModules()==0){
+  if(e==0)return -1;
+
+  if(anEntry<0){
     size=GetNextEntry();
-	}
-	return size;
+  }
+  else{
+    size=GetEntry(anEntry+1);
+  }
+  
+  while(size>0 && e->GetNumMuonModules()==0){
+    size=GetNextEntry();
+  }
+  
+  return size;
 }
 
 Int_t KDataReader::GetPreviousMuonEntry(Int_t anEntry) 
@@ -336,22 +393,24 @@ Int_t KDataReader::GetPreviousMuonEntry(Int_t anEntry)
   //events are found.
   //if anEntry !=0, it will search for the previous muon entry before anEntry
   //
-  //currently, this only works for KHLAEvents because KRawEvents have yet to be
-  //defined. 
+
+
+
+  Int_t size=0;
+  KEvent* e = GetEvent();
   
+  if(e==0) return -1;
   
-	Int_t size=0;
-	KHLAEvent* e=0;
-	e = dynamic_cast<KHLAEvent*>(GetEvent());
-	if(e==0)return -1;
-	if(anEntry<0)
-		size=GetPreviousEntry();
-	else
-		size=GetEntry(anEntry-1);
-	while(size>0 && e->GetNumMuonModules()==0){
+  if(anEntry<0)
     size=GetPreviousEntry();
-	}
-	return size;
+  else
+    size=GetEntry(anEntry-1);
+  
+  while(size>0 && e->GetNumMuonModules()==0){
+    size=GetPreviousEntry();
+  }
+  
+  return size;
 }
 
 Int_t KDataReader::GetNextBoloEntry(Int_t anEntry) 
@@ -363,22 +422,23 @@ Int_t KDataReader::GetNextBoloEntry(Int_t anEntry)
   //events are found.
   //if anEntry !=0, it will search for the next bolometer entry after anEntry
   //
-  //currently, this only works for KHLAEvents because KRawEvents have yet to be
-  //defined. 
   
+
+  Int_t size=0;
+  KEvent* e = GetEvent();
   
-	Int_t size=0;
-	KHLAEvent* e=0;
-	e = dynamic_cast<KHLAEvent*>(GetEvent());
-	if(e==0)return -1;
-	if(anEntry<0)
-		size=GetNextEntry();
-	else
-		size=GetEntry(anEntry+1);
-	while(size>0 && e->GetNumBolos()==0){
+  if(e==0) return -1;
+  
+  if(anEntry<0)
     size=GetNextEntry();
-	}
-	return size;
+  else
+    size=GetEntry(anEntry+1);
+    
+  while(size>0 && e->GetNumBolos()==0){
+    size=GetNextEntry();
+  }
+  
+  return size;
 }
 
 Int_t KDataReader::GetPreviousBoloEntry(Int_t anEntry) 
@@ -390,19 +450,20 @@ Int_t KDataReader::GetPreviousBoloEntry(Int_t anEntry)
   //events are found.
   //if anEntry !=0, it will search for the previous bolometer entry before anEntry
   //
-  //currently, this only works for KHLAEvents because KRawEvents have yet to be
-  //defined. 
+
+  Int_t size=0;
+  KEvent* e = GetEvent();
   
-	Int_t size=0;
-	KHLAEvent* e=0;
-	e = dynamic_cast<KHLAEvent*>(GetEvent());
-	if(e==0)return -1;
-	if(anEntry<0)
-		size=GetPreviousEntry();
-	else
-		size=GetEntry(anEntry-1);
-	while(size>0 && e->GetNumBolos()==0){
+  if(e==0) return -1;
+  
+  if(anEntry<0)
     size=GetPreviousEntry();
-	}
-	return size;
+  else
+    size=GetEntry(anEntry-1);
+  
+  while(size>0 && e->GetNumBolos()==0){
+    size=GetPreviousEntry();
+  }
+  
+  return size;
 }

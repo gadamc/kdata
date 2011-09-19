@@ -1,11 +1,11 @@
 /*
- *  KDataWriter.h
- *  KDataStorage
- *
- *  Created by Adam Cox on 4/6/10.
- *  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
- *
- */
+*  KDataWriter.h
+*  KDataStorage
+*
+*  Created by Adam Cox on 4/6/10.
+*  Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+*
+*/
 
 #ifndef __KDataWriter_H__
 #define __KDataWriter_H__
@@ -21,57 +21,52 @@ class KDataWriter : public KDataFileIO {
 
 public:
   //Constructors -- Use these preferred ways of using this class
-	//In this way, you don't own the KEvent memory and don't have 
-	//to worry about cleaning up. ROOT does this for you.
-	//But you can use the GetEvent method below to get a pointer
-	//to the event class.
+  //In this way, you don't own the KEvent memory and don't have 
+  //to worry about cleaning up. ROOT does this for you.
+  //But you can use the GetEvent method below to get a pointer
+  //to the event class.
   KDataWriter(void);
-	KDataWriter(const Char_t* filename, const Char_t* eventType = KHLAEvent::GetClassName(), 
-								const Char_t* mode = "recreate");
-	Bool_t OpenFile(const Char_t* fileName, const Char_t* eventType = KHLAEvent::GetClassName(),
-									const Char_t* mode = "recreate");
-	
-	
-	//Use these constructors/methods if you own the KEvent object
-	//and you are responsible for cleaning up.
-	KDataWriter(const Char_t* fileName, KEvent **anEvent,  
-							const Char_t* mode = "recreate"); 
-	Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent,
-									const Char_t* mode = "recreate");
-	
-	virtual ~KDataWriter(void);
+  KDataWriter(const Char_t* filename, const Char_t* eventType = KHLAEvent::GetClassName(), 
+    const Char_t* mode = "recreate");
+  virtual Bool_t OpenFile(const Char_t* fileName, const Char_t* eventType = KHLAEvent::GetClassName(),
+    const Char_t* mode = "recreate");
+  virtual ~KDataWriter(void);
 
-	KEvent* GetEvent(void);
-	Int_t Fill(void); 
-	Int_t Write(const Char_t* name = 0, Int_t option = TObject::kWriteDelete, Int_t bufsize = 0);
-	Bool_t Close(Option_t *opt = "");
-	Bool_t IsReady(void) const;
-	
-	//some methods that call TTree methods of the same name.
-	TTree* CloneTree(TTree *treeIn, Long64_t nentries = -1, Option_t* option = "");
-	TTree* ConcatenateTrees(TList* li, Option_t *anOpt = "");
-	
-	//some methods that call TFile methods of the same name.
-	
-	
+  //Use these constructors/methods if you own the KEvent object
+  //and you are responsible for cleaning up.
+  KDataWriter(const Char_t* fileName, KEvent **anEvent,  
+    const Char_t* mode = "recreate"); 
+  virtual Bool_t OpenFile(const Char_t* fileName, KEvent **anEvent,
+    const Char_t* mode = "recreate");
+
+  virtual KEvent* GetEvent(void);
+  virtual Int_t Fill(void); 
+  virtual Int_t Write(const Char_t* name = 0, Int_t option = TObject::kWriteDelete, Int_t bufsize = 0);
+  virtual Bool_t Close(Option_t *opt = "");
+  virtual TFile* GetTFile(void) const {return fFile;}
+  virtual TTree* GetTTree(void) const {return fTree;}
+  virtual void ls(Option_t *opt = "") const;
+  virtual Bool_t cd(const char *path = 0);
+  virtual const char* GetFileName(void) const;
+  virtual const char* GetEventClassName(void) const;
+  virtual Bool_t IsReady(void) const;
+  virtual Int_t GetEntries(void) const{if(IsReady()) return fTree->GetEntries(); else return -1;};
+ 
 private:
-	
-	Bool_t bIsReady; //true if ready, false if not.
-	TBranchElement *fEventBranch;
-	KEvent *fLocalEvent;
-	
-  //private methods
-  //void Reset(void);
-	//void SetRunConstants(Int_t aBigRunNumber = 0);
-	Bool_t SetTreeBranch(KEvent** event);
-	Bool_t SetTreeBranch(const Char_t* eventType);
 
-	//forbid copy constructor and assignment operator for this class.
-	//maybe one day implement a reasonable copy constructor and assignment operator
-	//so long as you make sure to create a new file rather than write to an existing open file
-	KDataWriter(const KDataWriter &aWriter);
-	KDataWriter& operator=( const KDataWriter &aWriter);
-	
+  //Bool_t bIsReady; //true if ready, false if not.
+  TBranchElement *fEventBranch;
+  KEvent *fLocalEvent;
+  TFile *fFile;
+  TTree *fTree;
+  
+  
+  Bool_t SetTreeBranch(KEvent** event);
+ 
+  TFile* OpenFileForWriting(const Char_t* name, const Char_t* option = "recreate", 
+    const Char_t* title = "");
+  void CreateTree(void);
+  
   ClassDef(KDataWriter,2);
 };
 
