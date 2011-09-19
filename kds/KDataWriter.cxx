@@ -300,9 +300,11 @@ Int_t KDataWriter::Write(const Char_t *name, Int_t option, Int_t bufsize)
 Bool_t KDataWriter::Close(Option_t * opt)
 {
   //closes the file.
-  cout << "start "<< fFile << endl;
-  cout << "this " << this << endl;
   if(fFile==0) return true;
+  
+  if (!fFile->TestBit(TObject::kNotDeleted)) {
+    return true;
+  }
   
   fFile->Close(opt);  //does this take care of all of the memory?? or must I delete something???
   if(fFile->IsOpen() == 0){

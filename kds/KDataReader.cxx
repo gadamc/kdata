@@ -67,17 +67,20 @@ void KDataReader::InitializeMembers(void)
   fCurrentEntry = 0;
   fEntries = 0;
   fGSEventIndex=0;
-  fIsOpen = false;
 }
 
 
-Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t useCache)
+Bool_t KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t useCache)
 {
   //closes any file that is already open and then opens fileName.
+  //Also, the pointer to the event returned by GetEvent could change after calling this method,
+  //so its best to call GetEvent again before you try to access the event data.
   //returns true if successful. 
 
-  if(fIsOpen == true)
+  if(fFile != 0){
     Close();  //close the file, if one is already open. 
+  }
+    
   OpenFileForReading(fileName);
   Bool_t theRet = false;
 
@@ -88,7 +91,6 @@ Bool_t  KDataReader::OpenFile(const Char_t* fileName, KEvent **anEvent, Bool_t u
         if(GetEntry(0) > 0)
           fEntries = fTree->GetEntries();
         theRet = true;
-        fIsOpen = true;
       }
     }
   }
@@ -127,48 +129,46 @@ Bool_t KDataReader::Close(Option_t *opt)
 {
   //close the file with option opt. See TFile::Close(Option_t*)
 
-  //because ROOT is crazy, I have to make a try block
-  try{
+  if(fFile == 0){
+    fTree=0; //the tree should have been deleted
+    
+    if(fLocalEvent!=0) {
+      delete fLocalEvent;
+      fLocalEvent = 0;
+    }
+    
+    return true;
+  }
 
-    if( dynamic_cast<TFile*>(fFile) != 0) {
+  if (!fFile->TestBit(TObject::kNotDeleted)) {
+    
+    if(fLocalEvent!=0) {
+      delete fLocalEvent;
+      fLocalEvent = 0;
+    }
+    
+    return true;
+  }
 
-      if(fIsOpen == false)
-        return true;  // you've already closed it.
+  if(fFile->IsOpen())
+    fFile->Close(opt);
 
-      if(fLocalEvent!=0) {
-        KEventFactory::DeleteEvent(fLocalEvent);
-        fLocalEvent = 0;
-      }
-
-      if(fFile == 0){
-        fTree=0; //the tree should have been deleted
-        fIsOpen = false;
-        return true;
-      }
-
-      if(fFile->IsOpen())
-        fFile->Close(opt);
-
-      if (fFile->IsOpen()) {
-        return false;
+  if (fFile->IsOpen()) {
+    return false;
     //return false if we couldn't close the file.
-      }
-      else {
-        delete fFile; 
-        fFile = 0;
-        fTree= 0; //the chain is deleted by the TFile
-      }
-
-      fIsOpen = false;
-
-      return !fIsOpen;
+  }
+  else {
+    delete fFile; 
+    fFile = 0;
+    fTree= 0; //the chain is deleted by the TFile
+    if(fLocalEvent!=0) {
+      delete fLocalEvent;
+      fLocalEvent = 0;
     }
   }
-  catch (exception& e) {
-    fIsOpen = false;
-    return true;  //assume that ROOT has already trashed it.
-  }
-  return !fIsOpen;
+
+  return true;
+
 }
 
 void KDataReader::SetUseInternalCache(Bool_t option)
