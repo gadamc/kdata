@@ -14,7 +14,6 @@
 //
 
 #include "KPeakFinder.h"
-#include "KRootMeanSquare.h"
 #include <cmath>
 #include <iostream>
 
@@ -72,8 +71,7 @@ bool KPeakFinder::RunProcess(void)
   //no memcpy operation is performed. 
   
   EraseVectors();
-  KRootMeanSquare mrms;  //this will be SLOW... change this.
-  double rms = mrms.GetRms( fInputPulse, 0, fInputSize);
+  double rms = fRms.GetRms( fInputPulse, 0, fInputSize);
   
   double xweakThresh = fPolarity ? rms*fExtraWeakAmp : -rms*fExtraWeakAmp;
   double weakThresh = fPolarity ? rms*fWeakAmp : -rms*fWeakAmp;
