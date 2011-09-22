@@ -28,7 +28,6 @@ ClassImp(KDataReader);
 
 KDataReader::KDataReader(void)
 {
-  fLocalEvent = 0;
   InitializeMembers();
 }
 
@@ -45,7 +44,6 @@ KDataReader::KDataReader(const Char_t* fileName, KEvent **anEvent, Bool_t useCac
   //This object can open high level files (which hold KHLAEvents)
   //and raw level files (which hold KRawEvents)
 
-  fLocalEvent = 0;
   InitializeMembers();
   if(!OpenFile(fileName, anEvent, useCache)){
     cout << "KDataReader - Could not open " << fileName << endl;
@@ -67,6 +65,10 @@ void KDataReader::InitializeMembers(void)
   fCurrentEntry = 0;
   fEntries = 0;
   fGSEventIndex=0;
+  fFile = 0;
+  fTree = 0;
+  fLocalEvent = 0;
+  
 }
 
 

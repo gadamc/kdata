@@ -46,7 +46,7 @@ KAMPING_DH     := $(KAMPING_DC:.C=.h)
 
 KAMPING_H      := $(filter-out $(KAMPING_LH) $(KAMPING_DH),$(wildcard $(KAMPING_DIRI)/*.h))
 KAMPING_ECXX   := $(wildcard $(KAMPING_DIRS)/K*.cxx)
-KAMPING_CXX    := $(filter-out $(KAMPING_ECXX) $(KAMPING_DIRS)/runKamp.cxx, $(wildcard $(KAMPING_DIRS)/*.cxx))
+KAMPING_CXX    := $(filter-out $(KAMPING_ECXX), $(wildcard $(KAMPING_DIRS)/*.cxx))
 KAMPING_O      := $(KAMPING_CXX:.cxx=.o)
 KAMPING_EO     := $(KAMPING_ECXX:.cxx=.o)
 KAMPING_EH     := $(KAMPING_ECXX:.cxx=.h)
@@ -92,7 +92,7 @@ $(KAMPING_DIRS)/%.o:    $(KAMPING_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KAMPING_FLAGS) $(ROOTINCS)  -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KAMPING_DIRS)/%.o $(KDATAED_LIB) 
+bin/%: $(KAMPING_DIRS)/%.o $(KDATAED_LIB) $(KAMPINGLIBS) $(KAMPING_XTRALIBS)
 		@echo "=== Linking $@ ==="
 		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KAMPINGLIBS) $(KAMPING_XTRALIBS)
                 
