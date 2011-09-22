@@ -3,9 +3,6 @@
 #include "KAmpEvent.h"
 #include "KRawEvent.h"
 #include "KEvent.h"
-#include "KLinearRemoval.h"
-#include "KPatternRemoval.h"
-#include "KFIRFilter.h"
 #include "KRawMuonVetoSysRecord.h"
 #include "KRawBolometerRecord.h"
 #include "KAmpBolometerRecord.h"
@@ -14,19 +11,9 @@
 #include "KAmpBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
 #include "KSambaRecord.h"
-#include "KIIRFirstOrder.h"
-#include "KPulseAnalysisChain.h"
-#include "KCurl.h"
-#include "KJson.h"
-#include "KWindow.h"
-#include "KWindowDesign.h"
-#include "KIIRFourthOrder.h"
-#include "KRealToHalfComplexDFT.h"
-#include "KHalfComplexPower.h"
-#include "KPeakFinder.h"
-#include "KOrderFilter.h"
-#include "KOptimalFilter.h"
-#include "KPulseShifter.h"
+
+#include "KBackyardKampSite.h"
+
 #include <string>
 #include <cstring>
 #include <cmath>
@@ -101,8 +88,7 @@ int main(int /*argc*/, char* argv[]){
   //double* pulseHeat1 = new double[heatSize];
   //double* pulseHeat2 = new double[heatSize];
  
-  KAmpModane mModaneSite;  
-  KAmpKarlruhe mKarlruheSite;
+  KBackyardKampSite mBackYard;  
   
   int numEvents = f.GetEntries();
   
@@ -113,14 +99,14 @@ int main(int /*argc*/, char* argv[]){
   //KLinearRemoval *npLin2 = new KLinearRemoval;
   //will need to loop through the data here in order to build up the noise power spectrum
   //to be used in the optimal filter
-  for(int i = 0; i < numEvents; i++){
-    f.GetEntry(i);
-    for(int j = 0; j < e->GetNumBoloPulses(); j++){
-      KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)e->GetBoloPulse(j);
-      mKarlruheSite.ScoutKampSite(pRaw, e);
-      }
-    }
-  }
+  //for(int i = 0; i < numEvents; i++){
+  //  f.GetEntry(i);
+  //  for(int j = 0; j < e->GetNumBoloPulses(); j++){
+  //    KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)e->GetBoloPulse(j);
+  //    mKarlruheSite.ScoutKampSite(pRaw, e);
+  //    }
+  //  }
+  //}
   
   
   //loop through the data, copying the raw information that is needed
@@ -181,8 +167,7 @@ int main(int /*argc*/, char* argv[]){
         copyBasicData(pAmp, pRaw); //copy basic data
         moveSambaData(ee, boloAmp, pAmp, pRaw); //move the samba analysis to a pulse analysis record
         
-        mKarlruheSite.RunKampSite(boloAmp, pRaw, pAmp, ee);
-        mModaneSite.RunKampSites(boloAmp, pRaw, pAmp, ee);
+        mBackYard.RunKampSite(ee, boloAmp, pAmp, pRaw);
         
       }//for pulse loop
       
