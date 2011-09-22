@@ -102,7 +102,7 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
     if(fLinRemovalHeat.RunProcess()){
       if(fPeakFindHeat.RunProcess()){
         double maxAmp = 99999.;
-        unsigned int peakPos = -1;
+        int peakPos = -1;
         for(unsigned int i = 0; i < fPeakFindHeat.GetNumExtraWeakPeaks(); i++){
           if (*(fPeakFindHeat.GetOutputPulse()+fPeakFindHeat.GetExtraWeakPosition(i)) < maxAmp){
             maxAmp =  *(fPeakFindHeat.GetOutputPulse()+fPeakFindHeat.GetExtraWeakPosition(i));
@@ -128,7 +128,7 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
         if(fPeakFindHeat.RunProcess()){
           
           double maxAmp = 99999.;
-          unsigned int peakPos = -1;
+          int peakPos = -1;
           
           if(fPeakFindIon.GetPolarity() == 0){
             for(unsigned int i = 0; i < fPeakFindHeat.GetNumExtraWeakPeaks(); i++){
