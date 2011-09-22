@@ -11,6 +11,10 @@
 #define __KAMPER_H_
 
 #include "Rtypes.h"
+#include <string>
+
+class KRawBoloPulseRecord;
+class KPulseAnalysisRecord;
 
 class KAmper {
 
@@ -18,11 +22,12 @@ public:
   KAmper(void);
   virtual ~KAmper(void);
   
-  virtual Bool_t MakeKamp(void) = 0;
-
+  virtual Bool_t MakeKamp(KRawBoloPulseRecord * ampBolo, KPulseAnalysisRecord *rec) = 0;
+  virtual void SetName(const char* name){fName = name;}
+  virtual const char* GetName(void){return fName.c_str();}
+  
 private:
-
-  ClassDef(KAmper, 1);
+  std::string fName;
 };
 
 

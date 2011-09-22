@@ -12,6 +12,7 @@
 #define __KPEAKFINDER_H__
 
 #include "KPtaProcessor.h"
+#include "KRootMeanSquare.h"
 #include <vector>
 
 class KPeakFinder : public KPtaProcessor { 
@@ -57,6 +58,9 @@ protected:
   std::vector<unsigned int> fExtraWeakPeakPositions;
   std::vector<unsigned int> fWeakPeakPositions;
   std::vector<unsigned int> fStrictPeakPositions;
+  
+  KRootMeanSquare fRms;  
+  
   
   virtual void EraseVectors(void);
   

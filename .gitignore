@@ -2,6 +2,7 @@
 tmtags
 *.so
 test*.C
+*.root
 
 # /
 /build
