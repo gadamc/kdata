@@ -15,6 +15,7 @@
 #include "KLinearRemoval.h"
 #include "KPatternRemoval.h"
 #include "KPeakFinder.h"
+#include "KIIRFourthOrder.h"
 #include <string>
 
 
@@ -33,12 +34,16 @@ private:
 
   KLinearRemoval fLinRemovalHeat;
   KLinearRemoval fLinRemovalIon;
+  KIIRFourthOrder fIir4Heat;
+  KIIRFourthOrder fIir4Ion;
   KPatternRemoval fPatRemoval;
   KPeakFinder fPeakFindHeat;
   KPeakFinder fPeakFindIon;
 
   Double_t* fHeatPulse;
   Double_t* fIonPulse;
+  Double_t* fHeatPulse2;
+  Double_t* fIonPulse2;
   UInt_t fHeatPulseSize;
   UInt_t fIonPulseSize;
   
