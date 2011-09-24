@@ -17,14 +17,23 @@
 
 ClassImp(KSimpleKamper1);
 
-KSimpleKamper1::KSimpleKamper1(void)
+KSimpleKamper1::KSimpleKamper1(void) : 
+  //bandpass iir filter between 0.001 and 0.01 of the nyquist frequncy
+  //for heat signals, the nyquist frequency is typically 500 Hz
+  //for ion signals, its is 50 kHz. 
+  // so the bandpass for heat (ion) is between 0.5 (50) and 5 (500) Hz
+fIir4Heat(-3.95982379,  5.88045441, -3.88143355,  0.96080294, 0.00019593,  0.        , -0.00039186,  0.        ,  0.00019593),
+fIir4Ion(-3.95982379,  5.88045441, -3.88143355,  0.96080294, 0.00019593,  0.        , -0.00039186,  0.        ,  0.00019593)
 {
   
   SetName("KSimpleKamper1");
   fHeatPulseSize = 512;
   fIonPulseSize = 8196;
   fHeatPulse = new double[fHeatPulseSize];
+  fHeatPulse2 = new double[fHeatPulseSize];
   fIonPulse =  new double[fIonPulseSize];
+  fIonPulse2 =  new double[fIonPulseSize];
+
   SetHeatPointers();
   SetIonPointers();
   fPeakFindHeat.SetHeatDefault();
@@ -46,9 +55,14 @@ void KSimpleKamper1::SetHeatPointers()
   fLinRemovalHeat.SetOutputPulse(fHeatPulse); //this calculation can be done in-place;
   fLinRemovalHeat.SetOutputPulseSize(fHeatPulseSize);
  
-  fPeakFindHeat.SetInputPulse(fHeatPulse);
+  fIir4Heat.SetInputPulse(fHeatPulse);
+  fIir4Heat.SetInputPulseSize(fHeatPulseSize);
+  fIir4Heat.SetOutputPulse(fHeatPulse2);
+  fIir4Heat.SetOutputPulseSize(fHeatPulseSize);
+ 
+  fPeakFindHeat.SetInputPulse(fHeatPulse2);
   fPeakFindHeat.SetInputPulseSize(fHeatPulseSize);
-  fPeakFindHeat.SetOutputPulse(fHeatPulse);
+  fPeakFindHeat.SetOutputPulse(fHeatPulse2);
   fPeakFindHeat.SetOutputPulseSize(fHeatPulseSize);
 }
 
@@ -64,9 +78,14 @@ void KSimpleKamper1::SetIonPointers()
   fPatRemoval.SetOutputPulse(fIonPulse);
   fPatRemoval.SetOutputPulseSize(fIonPulseSize);
   
-  fPeakFindIon.SetInputPulse(fIonPulse);
+  fIir4Ion.SetInputPulse(fIonPulse);
+  fIir4Ion.SetInputPulseSize(fIonPulseSize);
+  fIir4Ion.SetOutputPulse(fIonPulse2);
+  fIir4Ion.SetOutputPulseSize(fIonPulseSize);
+  
+  fPeakFindIon.SetInputPulse(fIonPulse2);
   fPeakFindIon.SetInputPulseSize(fIonPulseSize);
-  fPeakFindIon.SetOutputPulse(fIonPulse);
+  fPeakFindIon.SetOutputPulse(fIonPulse2);
   fPeakFindIon.SetOutputPulseSize(fIonPulseSize);
 }
 
@@ -78,6 +97,7 @@ void KSimpleKamper1::CheckMemory(KRawBoloPulseRecord *pRec)
       delete [] fHeatPulse;
       fHeatPulseSize = pRec->GetPulseLength();
       fHeatPulse = new double[fHeatPulseSize];
+      fHeatPulse2 = new double[fHeatPulseSize];
       SetHeatPointers();
     }
   }
@@ -86,6 +106,7 @@ void KSimpleKamper1::CheckMemory(KRawBoloPulseRecord *pRec)
       delete [] fIonPulse;
       fIonPulseSize = pRec->GetPulseLength();
       fIonPulse = new double[fIonPulseSize];
+      fIonPulse2 = new double[fIonPulseSize];
       SetIonPointers();
     }
   }
@@ -100,24 +121,27 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
   if(pRec->GetIsHeatPulse()){
     pRec->GetTrace(fHeatPulse);
     if(fLinRemovalHeat.RunProcess()){
-      if(fPeakFindHeat.RunProcess()){
-        double maxAmp = 99999.;
-        int peakPos = -1;
-        for(unsigned int i = 0; i < fPeakFindHeat.GetNumExtraWeakPeaks(); i++){
-          if (*(fPeakFindHeat.GetOutputPulse()+fPeakFindHeat.GetExtraWeakPosition(i)) < maxAmp){
-            maxAmp =  *(fPeakFindHeat.GetOutputPulse()+fPeakFindHeat.GetExtraWeakPosition(i));
-            peakPos = fPeakFindHeat.GetExtraWeakPosition(i);
+      if(fIir4Heat.RunProcess()){
+        if(fPeakFindHeat.RunProcess()){
+          double maxAmp = 99999.;
+          int peakPos = -1;
+          for(unsigned int i = 0; i < fPeakFindHeat.GetNumExtraWeakPeaks(); i++){
+            if (*(fPeakFindHeat.GetOutputPulse()+fPeakFindHeat.GetExtraWeakPosition(i)) < maxAmp){
+              maxAmp =  *(fPeakFindHeat.GetOutputPulse()+fPeakFindHeat.GetExtraWeakPosition(i));
+              peakPos = fPeakFindHeat.GetExtraWeakPosition(i);
+            }
           }
+          rec->SetAmp(maxAmp);
+          rec->SetPeakPosition(peakPos); 
+          rec->SetIsBaseline(false); 
+          rec->SetName(GetName());
+          rec->SetUnit(0);
+          rec->SetBaselineRemoved(fLinRemovalHeat.GetOffset());
+          rec->SetSlopeRemoved(fLinRemovalHeat.GetSlope());
         }
-        rec->SetAmp(maxAmp);
-        rec->SetPeakPosition(peakPos); 
-        rec->SetIsBaseline(false); 
-        rec->SetName(GetName());
-        rec->SetUnit(0);
-        rec->SetBaselineRemoved(fLinRemovalHeat.GetOffset());
-        rec->SetSlopeRemoved(fLinRemovalHeat.GetSlope());
-      }
-      else {cerr << "ksimplekamper1 - peak find heat fail." << endl; return false;}
+        else {cerr << "ksimplekamper1 - peak find heat fail." << endl; return false;}
+      } 
+      else {cerr << "ksimplekamper1 - iir filter heat fail." << endl; return false;}
     }
     else {cerr << "ksimplekamper1 - linear removal heat fail." << endl; return false;}
     
@@ -130,38 +154,41 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
     
     if(fLinRemovalIon.RunProcess()){
       if(fPatRemoval.RunProcess()){
-        if(fPeakFindIon.RunProcess()){
-          
-          double maxAmp = 99999.;
-          int peakPos = -1;
-          
-          if(fPeakFindIon.GetPolarity() == 0){
-            for(unsigned int i = 0; i < fPeakFindIon.GetNumExtraWeakPeaks(); i++){
-              if (*(fPeakFindIon.GetOutputPulse()+fPeakFindIon.GetExtraWeakPosition(i)) < maxAmp){
-                maxAmp =  *(fPeakFindIon.GetOutputPulse()+fPeakFindIon.GetExtraWeakPosition(i));
-                peakPos = fPeakFindIon.GetExtraWeakPosition(i);
+        if(fIir4Ion.RunProcess()){
+          if(fPeakFindIon.RunProcess()){
+
+            double maxAmp = 99999.;
+            int peakPos = -1;
+
+            if(fPeakFindIon.GetPolarity() == 0){
+              for(unsigned int i = 0; i < fPeakFindIon.GetNumExtraWeakPeaks(); i++){
+                if (*(fPeakFindIon.GetOutputPulse()+fPeakFindIon.GetExtraWeakPosition(i)) < maxAmp){
+                  maxAmp =  *(fPeakFindIon.GetOutputPulse()+fPeakFindIon.GetExtraWeakPosition(i));
+                  peakPos = fPeakFindIon.GetExtraWeakPosition(i);
+                }
               }
             }
-          }
-          else {
-            maxAmp = -99999.;
-            for(unsigned int i = 0; i < fPeakFindIon.GetNumExtraWeakPeaks(); i++){
-              if (*(fPeakFindIon.GetOutputPulse()+fPeakFindIon.GetExtraWeakPosition(i)) > maxAmp){
-                maxAmp = *(fPeakFindIon.GetOutputPulse()+fPeakFindIon.GetExtraWeakPosition(i));
-                peakPos = fPeakFindIon.GetExtraWeakPosition(i);
+            else {
+              maxAmp = -99999.;
+              for(unsigned int i = 0; i < fPeakFindIon.GetNumExtraWeakPeaks(); i++){
+                if (*(fPeakFindIon.GetOutputPulse()+fPeakFindIon.GetExtraWeakPosition(i)) > maxAmp){
+                  maxAmp = *(fPeakFindIon.GetOutputPulse()+fPeakFindIon.GetExtraWeakPosition(i));
+                  peakPos = fPeakFindIon.GetExtraWeakPosition(i);
+                }
               }
             }
+
+            rec->SetAmp(maxAmp);
+            rec->SetPeakPosition(peakPos);  
+            rec->SetIsBaseline(false); 
+            rec->SetName(GetName());
+            rec->SetUnit(0);
+            rec->SetBaselineRemoved(fLinRemovalIon.GetOffset());
+            rec->SetSlopeRemoved(fLinRemovalIon.GetSlope());
           }
-          
-          rec->SetAmp(maxAmp);
-          rec->SetPeakPosition(peakPos);  
-          rec->SetIsBaseline(false); 
-          rec->SetName(GetName());
-          rec->SetUnit(0);
-          rec->SetBaselineRemoved(fLinRemovalIon.GetOffset());
-          rec->SetSlopeRemoved(fLinRemovalIon.GetSlope());
+          else {cerr << "ksimplekamper1 - peak find ion fail." << endl; return false;}
         }
-        else {cerr << "ksimplekamper1 - peak find ion fail." << endl; return false;}
+        else {cerr << "ksimplekamper1 - iir filter ion fail." << endl; return false;}
       }
       else {cerr << "ksimplekamper1 - pattern removal ion fail." << endl; return false;}
     }

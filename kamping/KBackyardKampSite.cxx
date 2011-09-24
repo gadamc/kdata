@@ -29,8 +29,6 @@ KBackyardKampSite::~KBackyardKampSite(void)
 
 }
 
-
-
 Bool_t KBackyardKampSite::RunKampSite(KAmpEvent *ee, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp, KRawBoloPulseRecord* pRaw)
 {
   // This KampSite uses the KSimpleKamper1 to estimate the peak position and amplitude of the pulse. 
@@ -40,15 +38,13 @@ Bool_t KBackyardKampSite::RunKampSite(KAmpEvent *ee, KAmpBolometerRecord *boloAm
   // 
   
   KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
-  //as a KampSite - if you want to create a valid KAmpEvent, you MUST set the TRef links.
-  //
-  rec->SetBolometerRecord(boloAmp);  
-  rec->SetBoloPulseRecord(pAmp); 
-  pAmp->AddPulseAnalysisRecord(rec); 
+  
+  SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
   
   //use the KSimpleKamper to fill the KPulseAnalysisRecord
   fSimpKamp1.MakeKamp(pRaw, rec);
   
+  return true;
 }  
 
 Bool_t KBackyardKampSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e)

@@ -155,9 +155,7 @@ int main(int /*argc*/, char* argv[]){
         if(i % 100 == 0) cout << "          pulse " << k;
         KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
 
-        if(pRaw->GetPulseLength() == 0)
-          continue;  //apparently, sometimes there are events where there is no pulse data!
-
+      
         //for each pulse record, we add a bolo amp pulse record
         KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse();
         boloAmp->AddPulseRecord(pAmp); //link the TRef

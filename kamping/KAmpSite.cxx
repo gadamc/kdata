@@ -19,6 +19,10 @@
 
 #include "KAmpSite.h"
 
+#include "KAmpEvent.h"
+#include "KAmpBolometerRecord.h"
+#include "KAmpBoloPulseRecord.h"
+#include "KPulseAnalysisRecord.h"
 
 KAmpSite::KAmpSite(void)
 {
@@ -28,4 +32,13 @@ KAmpSite::KAmpSite(void)
 KAmpSite::~KAmpSite(void)
 {
 
+}
+
+void KAmpSite::SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp)
+{
+  //as a KampSite - you want to create a valid KAmpEvent, so you MUST set the TRef links.
+  //
+  rec->SetBolometerRecord(boloAmp);  
+  rec->SetBoloPulseRecord(pAmp); 
+  pAmp->AddPulseAnalysisRecord(rec);
 }

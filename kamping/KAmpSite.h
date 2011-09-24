@@ -17,6 +17,7 @@ class KRawEvent;
 class KAmpBolometerRecord;
 class KAmpBoloPulseRecord;
 class KRawBoloPulseRecord;
+class KPulseAnalysisRecord;
 
 class KAmpSite {
 
@@ -28,6 +29,7 @@ public:
                         KRawBoloPulseRecord* pRaw) = 0;      //this runs the data processing on each event. 
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e) = 0;  //should call this method first. Use this to scan through data to estimate noise...etc..
 
+  virtual void SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp);
 private:
 
 };
