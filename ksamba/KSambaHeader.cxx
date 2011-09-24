@@ -9,6 +9,7 @@
 
 
 #include "KSambaHeader.h"
+#include <cstring>
 
 ClassImp(KSambaHeader);
 

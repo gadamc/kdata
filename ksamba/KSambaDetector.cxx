@@ -9,6 +9,7 @@
 
 
 #include "KSambaDetector.h"
+#include <cstring>
 
 ClassImp(KSambaDetector);
 
