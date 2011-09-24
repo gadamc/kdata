@@ -17,7 +17,6 @@
 #include "KCurl.h"
 #include <curl/curl.h>
 
-
 ClassImp(KCurl);
 
 KCurl::KCurl(void)
