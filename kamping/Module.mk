@@ -92,7 +92,7 @@ $(KAMPING_DIRS)/%.o:    $(KAMPING_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KAMPING_FLAGS) $(ROOTINCS)  -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KAMPING_DIRS)/%.o $(KDATAED_LIB) $(KAMPINGLIBS) $(KAMPING_XTRALIBS)
+bin/%: $(KAMPING_DIRS)/%.o $(KDATAED_LIB)
 		@echo "=== Linking $@ ==="
 		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KAMPINGLIBS) $(KAMPING_XTRALIBS)
                 
