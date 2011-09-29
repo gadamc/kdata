@@ -165,11 +165,6 @@ double* KRingBuffer::GetDeviationValues(void)
 
 void KRingBuffer::AllocateArrays(unsigned int size)
 {
-  if(fInputPulse) delete [] fInputPulse;
-  if(fOutputPulse) delete [] fOutputPulse;
-  fInputPulse = new double[ size ];
-  fOutputPulse = new double[ size ];
-  memset(fOutputPulse, 0, size*sizeof(double));
-  fInputSize = fOutputSize = size;
+  KPtaProcessor::AllocateArrays(size);
   Reset();  
 }
