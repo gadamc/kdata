@@ -173,15 +173,18 @@ bool KOptimalFilter::BuildFilter(void)
     
   //cout << "denominator " << denom << endl;
   //now caluclate the real parts of the optimal filter
-  for(unsigned int i = 0; i <= fOptFilterSize/2; i++){
-    *(fOptFilter+i) = *(fTemplateDFT+i) / (denom * *(fNoiseSpectrum+i));
-  }
+  for(unsigned int i = 0; i <= fOptFilterSize/2; i++)
+    *(fOptFilter+i) =  *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+i));
+    
+    
   
+    
   //then the imaginary parts. make sure to use the correct index in the noise spectrum
   unsigned int j = 1;
   for(unsigned int i = fOptFilterSize-1; i > fOptFilterSize/2; i--)
     *(fOptFilter+i) = -1* *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+(j++)));
-
+  
+  
   
   fRecalculate = false;
   return true;
