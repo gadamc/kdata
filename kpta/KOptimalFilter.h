@@ -106,7 +106,7 @@ template <class T> void KOptimalFilter::SetTheNoiseSpectrum(std::vector<T> &resp
   }
   
   for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-    *(fNoiseSpectrum+i) = resp[fNoiseSpectrumSize-1 - i];
+    *(fNoiseSpectrum+i) = resp[i];
   
   fRecalculate = true;
 }
@@ -120,7 +120,7 @@ template <class T> void KOptimalFilter::SetTheNoiseSpectrum(const T* resp, unsig
   }
   
   for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-    *(fNoiseSpectrum+i) = resp[fNoiseSpectrumSize-1 - i];
+    *(fNoiseSpectrum+i) = resp[i];
       
   fRecalculate=true;
   //std::copy(resp, resp + size, fNoiseSpectrum);
@@ -137,7 +137,7 @@ template <class T> void KOptimalFilter::SetTheTemplateDFT(std::vector<T> &resp)
   }
   
   for(unsigned int i = 0; i < fTemplateDFTSize; i++)
-    *(fTemplateDFT+i) = resp[fTemplateDFTSize-1 - i];
+    *(fTemplateDFT+i) = resp[i];
 
   fRecalculate=true;
 }
@@ -152,7 +152,7 @@ template <class T> void KOptimalFilter::SetTheTemplateDFT(const T* resp, unsigne
   
   
   for(unsigned int i = 0; i < fTemplateDFTSize; i++)
-    *(fTemplateDFT+i) = resp[fTemplateDFTSize-1 - i];
+    *(fTemplateDFT+i) = resp[i];
  
   fRecalculate=true;     
   //std::copy(resp, resp + size, fTemplateDFT);
