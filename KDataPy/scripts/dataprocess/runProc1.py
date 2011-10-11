@@ -53,7 +53,7 @@ def setupProc(server, database, function):
 def main(*argv):
   '''
   argv[0] is the server (http://127.0.0.1:5984)
-  argv[1] is the database (edwdb)
+  argv[1] is the database (datadb)
   '''
   
   #create a DBProcess instance, which will assist in uploading the proc

@@ -53,8 +53,7 @@ Int_t KCurl::Get(const char* url, const char* item, const char* opt)
   // url = https://edwdbik.fzk.de:6984 (the database is readable by all, but you must use a username/password to write)
   // item = (a docid, a view, or even _all_docs). 
   //     If you are accessing a database, your item should look something like
-  //     "databasename/item", where "edwdb" is the standard database name
-  //     and item is the docid, view, _all_docs, etc....
+  //     "databasename/item"
   //     see the couchdb documentation
   //
   // opt is a string of characters separated by a space (' ') and preceded with a dash ('-') 
@@ -134,8 +133,7 @@ Int_t KCurl::Put(const char* url, const char* item, const char* thedoc, const ch
   // url = https://edwdbik.fzk.de:6984 (the database is readable by all, but you must use a username/password to write)
   // item = (a docid, a view, or even _all_docs). 
   //     If you are putting a file on the database, your item should look something like
-  //     "databasename/docid", where "edwdb" is the standard database name
-  //     and item is the docid.
+  //     "databasename/docid".
   //     If you are trying to create a new database, your item should be
   //     "databasename" and the "thedoc" should be a NULL pointer.
   //     see the couchdb documentation
