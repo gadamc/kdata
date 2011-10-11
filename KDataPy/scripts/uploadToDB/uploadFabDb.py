@@ -250,7 +250,10 @@ def uploadFile(fname, uri, dbname):
 if __name__=='__main__':
   dir = sys.argv[1]
   uri = sys.argv[2]
-  dbname = sys.argv[3]
+  
+  dbname = 'fabdb'
+  if len(sys.argv) >= 4:
+    dbname = sys.argv[3]
   
   uploadFile(dir, uri, dbname)
   
