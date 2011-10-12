@@ -5,7 +5,7 @@
 //
 // Author: Adam Cox <mailto:adam.cox@ik.fzk.de>
 //
-// * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+// * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
 // This is the main Event class for Raw level analysis. One typically
 // begins all analysis by getting a pointer to this object from 

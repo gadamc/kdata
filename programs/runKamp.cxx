@@ -30,7 +30,7 @@ int main(int /*argc*/, char* argv[]){
   
   int numEvents = f.GetEntries();
   
-  //Run through the the raw data and pass it to the 
+  //loop through the raw data and pass it to the 
   //kampsites so they may KAmpSite::ScoutKampSite()
   
   //will need to loop through the data here in order to build up the noise power spectrum
@@ -50,11 +50,13 @@ int main(int /*argc*/, char* argv[]){
   
   for(int i = 0; i < numEvents; i++){
     f.GetEntry(i);
+    
     ee->Clear("C");
     *(KEvent *)ee = *e; //copy the base-class stuff
     
     if(i % 100 == 0) cout << "entry " << i << endl;
     
+    //copy the muon veto system record information
     KRawMuonVetoSysRecord *muonRaw = (KRawMuonVetoSysRecord *)e->GetMuonVetoSystemRecord();
     KRawMuonVetoSysRecord *muonAmp = (KRawMuonVetoSysRecord *)ee->GetMuonVetoSystemRecord();
     *muonAmp = *muonRaw;
@@ -65,15 +67,9 @@ int main(int /*argc*/, char* argv[]){
       KAmpBolometerRecord *boloAmp = ee->AddBolo(boloRaw);
       
 
-      for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
-        if(i % 100 == 0) cout << "          pulse " << k;
-        KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
-        KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp); //for each pulse record, we add a bolo amp pulse record
-        
-        
-        mBackYard.RunKampSite(ee, boloAmp, pAmp, pRaw);
-        
-      }
+      mBackYard.RunKampSite(boloRaw, boloAmp, ee);
+
+      
       if(i %100 == 0) cout << endl;
     }
     

@@ -25,8 +25,7 @@ public:
   KBackyardKampSite(void);
   virtual ~KBackyardKampSite(void);
   
-  virtual Bool_t RunKampSite(KAmpEvent *ee, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp, 
-                        KRawBoloPulseRecord* pRaw);      //this runs the data processing on each event. 
+  virtual Bool_t RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee); //this runs the data processing on each event. 
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e);  //should call this method first. Use this to scan through data to estimate noise...etc..
 
 private:
