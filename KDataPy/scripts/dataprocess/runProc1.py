@@ -3,8 +3,6 @@
 from DBProcess import *
 import os, sys, tempfile, shutil, datetime
 import rootifySambaData as rt
-import scpToSps as scp
-import calculateAmplitudes as can
 
 def runProcess(*args, **kwargs):
   
@@ -13,7 +11,7 @@ def runProcess(*args, **kwargs):
     sys.exit(-1)
 
   #
-  return can.main(args[0]['proc0']['file'], newfileName)
+  return rt.main(args[0]['proc0']['file'], newfileName)
   
   
 def processOne(doc):
@@ -54,6 +52,8 @@ def main(*argv):
   '''
   argv[0] is the server (http://127.0.0.1:5984)
   argv[1] is the database (datadb)
+  
+  process 1 - converts the raw Samba data files into Kdata ROOT files.
   '''
   
   #create a DBProcess instance, which will assist in uploading the proc

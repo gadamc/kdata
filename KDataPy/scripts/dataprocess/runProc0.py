@@ -2,34 +2,17 @@
 
 from DBProcess import *
 import os, sys, tempfile, shutil, datetime
-import rootifySambaData as rt
 import scpToSps as scp
 
-def rootifyAndScp(*args, **kwargs):
+def scpToLyon(*args, **kwargs):
   
   if len(args) > 1:
     print 'takes just one argument... the file name.'
     sys.exit(-1)
     
-  tempDir = tempfile.mkdtemp()
-  print 'creating temporary directory', tempDir
-  outputFile = os.path.join(tempDir, os.path.basename(args[0]) + '.root') 
-  
-  #rootify the File into a KData File!
-  print 'calling rootification and producing', outputFile
-  theReturn = rt.convertfile(args[0], outputFile)
-
-  if theReturn != outputFile:
-    print 'something crazy happened with rootification'
-    sys.exit(-1)
-    
   #now send it via secure copy!
   print 'calling secure copy'
-  scpRet = scp.sendBoloData(outputFile)
-  
-  #clean up
-  print 'removing temporary directory', tempDir
-  shutil.rmtree(tempDir)
+  scpRet = scp.sendBoloData(os.path.basename(args[0]))
   
   return scpRet
   
@@ -42,7 +25,7 @@ def main(*argv):
   
   #create a DBProcess instance, which will assist in uploading the proc
   #document to the database
-  myProc = DBProcess(argv[0], argv[1], rootifyAndScp)
+  myProc = DBProcess(argv[0], argv[1], scpToLyon)
   
   vr = myProc.view('proc/proc0', reduce=False)
   
@@ -58,7 +41,7 @@ def main(*argv):
       #add a few more items to the document
       dd = datetime.datetime.utcnow()
       procDict['date'] = {'year':dd.year, 'month':dd.month, 'day':dd.day, 'hour':dd.hour, 'minute':dd.minute, 'second':dd.second, 'microsecond':dd.microsecond} 
-      procDict['processname'] = 'rootifyAndCopyToSps'
+      procDict['processname'] = 'copySambaFileToSps'
       
       if len(procDict['scpErrs']) > 0:
         doc['status'] = 'bad'
