@@ -28,7 +28,7 @@ int main (int /*argc*/, char** argv)
   //      "fabdb/detector_FID402"
   //
   //         or
-  //      "edwdb/_design/proc/_view/proc0?reduce=false&include_docs=true"
+  //      "datadb/_design/proc/_view/proc0?reduce=false&include_docs=true"
   
   KCurl c;
   char myurl[1000];

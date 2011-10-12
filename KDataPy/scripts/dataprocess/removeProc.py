@@ -38,9 +38,9 @@ def main(*args):
     a single run. 
     
     example:
-    ./removeProc https://edwdbuser:password@edwdbik.fzk.de:6984 edwdb proc1 lg23b002
+    ./removeProc https://edwdbuser:password@edwdbik.fzk.de:6984 datadb proc1 lg23b002
     
-    ./removeProc https://edwdbuser:password@edwdbik.fzk.de:6984 edwdb proc1 lg23b002  lh18c005
+    ./removeProc https://edwdbuser:password@edwdbik.fzk.de:6984 datadb proc1 lg23b002  lh18c005
   '''
   if len(args) < 4:
     return Done
