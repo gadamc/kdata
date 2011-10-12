@@ -144,7 +144,10 @@ def uploadFile(fname, uri, dbname):
 if __name__=='__main__':
   csvfile = sys.argv[1]
   uri = sys.argv[2]
-  dbname = sys.argv[3]
+  
+  dbname = 'muonvetohardwaremap'
+  if len(sys.argv) >= 4:
+    dbname = sys.argv[3]
   
   uploadFile(csvfile, uri, dbname)
   
