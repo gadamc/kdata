@@ -67,9 +67,9 @@ def main(*args):
     a single run. 
     
     example:
-    ./addProc https://edwdbuser:password@edwdbik.fzk.de:6984 edwdb proc1 lg23b002
+    ./addProc https://edwdbuser:password@edwdbik.fzk.de:6984 datadb proc1 lg23b002
     
-    ./addProc https://edwdbuser:password@edwdbik.fzk.de:6984 edwdb proc1 lg23b002  lh18c005
+    ./addProc https://edwdbuser:password@edwdbik.fzk.de:6984 datadb proc1 lg23b002  lh18c005
     
     In this file, the addDocsFromView function needs to directly define what will be added to the document
     Currently, you'll this function only supports 'proc0', but you should explicitly check above because
