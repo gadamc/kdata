@@ -10,6 +10,10 @@ import time, sys, subprocess, math, os, datetime
 # parseDoc
 def parseDoc(doc):
     for k,v in doc.items():
+        #strips off any spaces found in the keys.
+        del doc[k]
+        k = k.strip(' ')
+        doc[k] = v  
         if (isinstance(v,str)):
             #print k, v, v.isdigit()
             # #see if this string is really an int or a float
