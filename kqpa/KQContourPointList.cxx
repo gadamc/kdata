@@ -157,7 +157,8 @@ void KQContourPointList::ReadASCIIFile(const Char_t* aFileName,
         else
           fPoints.push_back(aPoint);
           
-        cout << "... event " << fPoints.size() << " processed" << endl;
+        if (fPoints.size() % 1000 == 0)
+          cout << "... event " << fPoints.size() << " processed" << endl;
       }
       else
     if(fMode=="IonHeat")
@@ -511,6 +512,8 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(
                           aNumElements+0.5);
   for(Int_t k = 0; k<aNumElements+1; ++k)
     result->SetBinContent(k+1,distribution[k]);
+  
+  if(distribution != 0) delete [] distribution;
   
   return result;                     
 }
