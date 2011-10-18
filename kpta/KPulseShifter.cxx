@@ -6,7 +6,11 @@
 // *Copyright 2011 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
-// KPulseShifter class can be used to cyclically shift a pulse to left (negative shift value) or to the right (positive shift value)
+// KPulseShifter class can be used to shift a pulse to left (negative shift value) or to the right (positive shift value)
+// There are three modes available: 
+//      Mode 0 = unknown samples at the edge are filled with the first/last value of the pulses
+//      Mode 1 = cyclically shifting
+//      Mode 2 = unknown samples at the edge are filled with zeros
 
 #include "KPulseShifter.h"
 #include <cmath>
