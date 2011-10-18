@@ -28,9 +28,12 @@ class KPulseShifter : public KPtaProcessor {
     
     virtual void SetShift(const int shift){ fPulseShift = shift;};
     virtual int GetShift(void) {return fPulseShift;};
+    virtual void SetMode(const unsigned int mode){ fMode = mode;};
+    virtual unsigned int GetMode(void) {return fMode;};
     
   protected:
     int fPulseShift;
+    unsigned int fMode; // 0: fill with first/last value; 1: cyclical shift (default mode) 2: fill with zeros
     
   private:
     //private methods
