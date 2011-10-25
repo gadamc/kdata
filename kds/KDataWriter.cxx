@@ -31,6 +31,10 @@
 #include <iostream>
 #include "TClass.h"
 #include "TCut.h"
+#include "TList.h"
+#include "KDataProcessingInfo.h"
+#include "TSystem.h"
+#include "TTimeStamp.h"
 
 using namespace std;
 
@@ -156,7 +160,21 @@ void KDataWriter::CreateTree(void)
   fTree = new TTree(GetTreeName().c_str(), GetTreeTitle().c_str());
 
   if(fTree->IsZombie())
-    cout << "KDataWriter::CreateTree fTree is Zombie" << endl;  
+    cout << "KDataWriter::CreateTree fTree is Zombie" << endl;
+  else{
+    TList *myUserInfo = fTree->GetUserInfo();
+    KDataProcessingInfo * mNewProcInfo = new KDataProcessingInfo;
+    mNewProcInfo->SetSVNRev( gSystem->GetFromPipe("svnversion $KDATA_ROOT/").Data());
+    mNewProcInfo->SetHostName( gSystem->GetFromPipe("hostname").Data());
+    mNewProcInfo->SetHostInfo( gSystem->GetFromPipe("uname -a").Data());
+    mNewProcInfo->SetUserInfo( (gSystem->GetUserInfo()->fUser).Data() );
+    TTimeStamp fNow;
+    mNewProcInfo->SetStartTimeOfProcess(fNow);
+    if(myUserInfo->GetEntries() > 0){
+      mNewProcInfo->SetPrevProcInfo( *(KDataProcessingInfo *)(myUserInfo->At( myUserInfo->GetEntries()-1 )) );
+    }
+    myUserInfo->Add(mNewProcInfo);
+  }  
 }
 
 Bool_t KDataWriter::SetTreeBranch(KEvent **anEvent)

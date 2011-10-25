@@ -9,8 +9,11 @@ import time, sys, subprocess, math, os, datetime, string, copy
 # taken from the Python website in order to handle unicode, which is need in order to properly
 # deal with different kinds of characters
 import csv, codecs, cStringIO
-
-  
+      
+# #connect to the db
+global theServer
+global db
+ 
 def UnicodeDictReader(str_data, encoding, **kwargs):
     csv_reader = csv.DictReader(str_data, **kwargs)
     # Decode the keys once
@@ -194,23 +197,41 @@ def readNtdFile(ntdfile):
   return docs
 
 #______________
-def uploadFile(fname, uri, dbname):
+def uploadData(fname, uri, dbname):
      
   print 'Upload contents of %s to %s/%s' % (fname, uri, dbname)
   
-  # #connect to the db
-  theServer = Server(uri)
-  db = theServer[dbname]
-  print uri, dbname
   
-  crystalfile = open(os.path.join(dir, 'T-Crystals.txt'), 'r')
-  detectorfile = open(os.path.join(dir, 'T- Detectors.txt'), 'r')
-  gluedntdfile = open(os.path.join(dir, 'T-Glued NTD choice and characteristics.txt',), 'r')
-  ntdfile = open(os.path.join(dir, 'T-NTD.txt',), 'r')
-  runfile = open(os.path.join(dir, 'T-RUN.txt',), 'r')
-
-
-  detectordocs = readDetectorFile( detectorfile )  
+  crystalfile = open(os.path.join(dir, 'O-Crystals.txt'), 'r')   
+  assemblyfile = open(os.path.join(dir, 'O-Detectors assembling.txt'), 'r')
+  holderfile = open(os.path.join(dir, 'O-Holders.txt'), 'r')   
+  ntdfile = open(os.path.join(dir, 'O-NTD.txt'), 'r') 
+  capsfile = open(os.path.join(dir, 'O-Caps.txt'), 'r')
+  runconditionsfile = open(os.path.join(dir, 'R-RUN conditions.txt'), 'r')                                                             
+  runinfofile = open(os.path.join(dir, 'R-Run info.txt'), 'r') 
+  glueactions = open(os.path.join(dir, 'A-NTD Gluing choice and characteristics.txt'), 'r')
+  lsmactions = open(os.path.join(dir, 'A-Actions LSM.txt'), 'r')
+  capaction = open(os.path.join(dir, 'A-Caps fixing.txt'), 'r')
+  copperfile = open(os.path.join(dir, 'M-Copper.txt'), 'r')
+  kaptonfile = open(os.path.join(dir, 'M-Kapton.txt'), 'r')
+  teflonfile = open(os.path.join(dir, 'M-Teflon.txt'), 'r')
+                                      
+  uploadCrystalFile(crystalfile)
+  uploadAssemblyFile(assemplyfile)
+  uploadholderfile(holderfile)
+  uploadNtdFile(ntdfile)
+  uploadCapsFile(capsfile)
+  uploadRunConditions(runconditionsfile)
+  uploadRunInfo(runinfofile)
+  uploadGlueActions(glueactions)
+  uploadLsmActions(lsmactions)
+  uploadCapsActions(capaction)
+  uploadCopper(copperfile)
+  uploadKapton(kaptonfile)
+  uploadTeflon(teflonfile)
+  
+  detectordocs = createDetectorDocs()
+  
   addCrystalFile(crystalfile, detectordocs)
   addGluedNtdFile(gluedntdfile, detectordocs)
   addRunFile(runfile, detectordocs)
@@ -250,12 +271,19 @@ def uploadFile(fname, uri, dbname):
 if __name__=='__main__':
   dir = sys.argv[1]
   uri = sys.argv[2]
-  
-  dbname = 'fabdb'
+  dbname = 'fabdb' 
+  # #connect to the db
+  global theServer
+  global db 
+  # #connect to the db
+  theServer = Server(uri)
+  db = theServer[dbname]
+  print uri, dbname
+   
   if len(sys.argv) >= 4:
     dbname = sys.argv[3]
   
-  uploadFile(dir, uri, dbname)
+  uploadData(dir, uri, dbname)
   
 
 

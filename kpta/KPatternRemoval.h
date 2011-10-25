@@ -83,7 +83,7 @@ template<class T> bool KPatternRemoval::SetPattern(std::vector<T> &aPattern)
   for(unsigned int i = 0; i < fPatternLength; i++){
     *(fPattern+i) = aPattern.at(i);
   }
-  fUseExternalPattern;
+  fUseExternalPattern = true;
   return true;
 }
 

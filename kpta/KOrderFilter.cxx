@@ -29,6 +29,8 @@ KOrderFilter::KOrderFilter(void)
   SetName("KOrderFilter");
   InitializeMembers();
   fOrder = 0;
+  fSetInitOutputValue = false;
+  fInitOutputValue = 0;
 }
 
 KOrderFilter::KOrderFilter(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
@@ -37,6 +39,8 @@ KOrderFilter::KOrderFilter(double *inPulse, unsigned int inSize, double* outPuls
    SetName("KOrderFilter"); 
    InitializeMembers();
    fOrder = 0;
+   fSetInitOutputValue = false;
+   fInitOutputValue = 0;
 }
 
 KOrderFilter::~KOrderFilter(void)
@@ -65,9 +69,14 @@ bool KOrderFilter::RunProcess(void)
        
     return true;
   }
-    
-  if(fOutputPulse != fInputPulse)  //don't copy if running this processor "in-place"
-    memcpy(fOutputPulse, fInputPulse, fOrder * sizeof(double));
+  
+  if(!fSetInitOutputValue){
+    if(fOutputPulse != fInputPulse)  //don't copy if running this processor "in-place"
+      memcpy(fOutputPulse, fInputPulse, fOrder * sizeof(double));
+  }
+  else {
+    memset(fOutputPulse, fInitOutputValue, fOrder * sizeof(double));
+  }
   
   for(unsigned int n = fOrder; n < fOutputSize; n++)
     *(fOutputPulse+n) = *(fInputPulse+n) + *(fInputPulse+n-fOrder);

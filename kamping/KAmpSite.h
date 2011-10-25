@@ -11,6 +11,7 @@
 #define __KAMPSITE_H_
 
 #include "Rtypes.h"
+#include <string>
 
 class KAmpEvent;
 class KRawEvent;
@@ -30,8 +31,11 @@ public:
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e) = 0;  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void) = 0;
   virtual void SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp);
-private:
+  const std::string& GetName(void) const {return fName;}
+  
+protected:
 
+  std::string fName;
 };
 
 

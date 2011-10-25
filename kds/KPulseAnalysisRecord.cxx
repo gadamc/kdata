@@ -249,3 +249,21 @@ void KPulseAnalysisRecord::Compact(void)
 
   KSubRecord::Compact();
 }
+
+void KPulseAnalysisRecord::SetExtra(Double32_t aVal, UInt_t index)
+{
+  if (index < KPULSEANARECORD_EXTRA_SIZE)
+    fExtra[index] = aVal;
+}
+
+Double32_t KPulseAnalysisRecord::GetExtra(UInt_t index) const
+{
+  if (index < KPULSEANARECORD_EXTRA_SIZE)
+    return fExtra[index];
+    
+  else return -99999.;
+}
+
+
+
+

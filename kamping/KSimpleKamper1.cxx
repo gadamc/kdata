@@ -46,6 +46,8 @@ KSimpleKamper1::~KSimpleKamper1(void)
 {
   if(fHeatPulse) delete [] fHeatPulse;
   if(fIonPulse) delete [] fIonPulse;
+  if(fHeatPulse2) delete [] fHeatPulse2;
+  if(fIonPulse2) delete [] fIonPulse2;
 }
 
 void KSimpleKamper1::SetHeatPointers()
@@ -94,7 +96,8 @@ void KSimpleKamper1::CheckMemory(KRawBoloPulseRecord *pRec)
 {
   if(pRec->GetIsHeatPulse()){
     if(pRec->GetPulseLength() != fHeatPulseSize) {
-      delete [] fHeatPulse;
+      if(fHeatPulse) delete [] fHeatPulse;
+      if(fHeatPulse2) delete [] fHeatPulse2;
       fHeatPulseSize = pRec->GetPulseLength();
       fHeatPulse = new double[fHeatPulseSize];
       fHeatPulse2 = new double[fHeatPulseSize];
@@ -103,7 +106,8 @@ void KSimpleKamper1::CheckMemory(KRawBoloPulseRecord *pRec)
   }
   else{
     if(pRec->GetPulseLength() != fIonPulseSize) {
-      delete [] fIonPulse;
+      if(fIonPulse) delete [] fIonPulse;
+      if(fIonPulse2) delete [] fIonPulse2;
       fIonPulseSize = pRec->GetPulseLength();
       fIonPulse = new double[fIonPulseSize];
       fIonPulse2 = new double[fIonPulseSize];
@@ -114,7 +118,9 @@ void KSimpleKamper1::CheckMemory(KRawBoloPulseRecord *pRec)
 
 Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
 {
-  
+  if(pRec->GetPulseLength() == 0)
+    return true;
+    
   CheckMemory(pRec);
   
   //do heat pulse analysis

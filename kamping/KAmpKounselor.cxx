@@ -18,6 +18,7 @@
 #include "KRawBoloPulseRecord.h"
 #include "KAmpBoloPulseRecord.h"
 #include "KAmpSite.h"
+#include "KDataProcessingInfo.h"
 
 using namespace std;
 
@@ -46,6 +47,8 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
  
   int numEvents = f.GetEntries();
   
+  KDataProcessingInfo *mNewInfo = (KDataProcessingInfo *)(ff.GetTTree()->GetUserInfo()->Last());
+  mNewInfo->AddModule("KAmpKounselor");
   
   //check to see if any of the KAmpSites that are managed by this KAmpKounselor need
   //to "scout" their kampsite. For sure, a KAmpSite that employs an Optimal Filter
@@ -53,6 +56,7 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
   vector<KAmpSite *>::iterator it;
   Bool_t bNeedScouting = false;
   for( it = fKampSites.begin(); it < fKampSites.end(); it++){
+    mNewInfo->AddCommand( (*it)->GetName());
     if ( (*it)->NeedScout()){
       bNeedScouting = true;
       break;
@@ -92,7 +96,7 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
 
     for(int j = 0; j < e->GetNumBolos(); j++){
 
-      KRawBolometerRecord *boloRaw = (KRawBolometerRecord *)e->GetBolo(j);
+      KRawBolometerRecord *boloRaw = (KRawBolometerRecord *)e->GetBolo(j);      
       KAmpBolometerRecord *boloAmp = ee->AddBolo(boloRaw);
       
       for( it = fKampSites.begin(); it < fKampSites.end(); it++){
