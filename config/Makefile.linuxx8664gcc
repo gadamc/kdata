@@ -9,7 +9,7 @@
 ##### Changes to C++ compiler flags #####
 
 # change compiler options (ROOT default for linux is -O)
-OPT            :=  -g -02
+OPT            :=  -g -O3
 
 # add KDATA-specific compiler switches for this platform
 KDATA_FLAGS     := 
