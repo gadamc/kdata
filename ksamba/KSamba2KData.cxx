@@ -32,6 +32,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
+#include "KDataProcessingInfo.h"
 
 
 ClassImp(KSamba2KData);
@@ -106,7 +107,11 @@ Bool_t  KSamba2KData::ConvertFile(void)
     cout << "Open Kdata File Fail." << endl;
     return false;
   }
-    
+  
+  KDataProcessingInfo *info = (KDataProcessingInfo *)(fKdataOutput.GetTTree()->GetUserInfo()->Last());
+  info->AddModule("ksamba");
+  info->AddCommand("KSamba2KData::ConvertFile");
+   
   if(!CheckStartOfSambaFile()){
     cout << "Check Start of Samba File Fail." << endl;
     return false;
@@ -1183,6 +1188,7 @@ Bool_t KSamba2KData::OpenKdataFile(void)
 {
   fKdataOutput.Close(); //make sure we've closed the file.
   return fKdataOutput.OpenFile(fKdataFileName.c_str(), KRawEvent::GetClassName());
+
 }
 
 

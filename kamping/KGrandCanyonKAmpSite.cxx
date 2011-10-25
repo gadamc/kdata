@@ -1,5 +1,5 @@
 //
-// KBackyardKampSite.cxx  
+// KGrandCanyonKAmpSite.cxx  
 // KDataStructure
 //
 // Created by Adam Cox
@@ -10,7 +10,7 @@
 // You can see in the RunKampSite method that this KampSite adds a KPulseAnalysisRecord to the KAmpEvent
 // and passes it to the KSimpleKamper1 to fill its data. It also sets the TRef links. 
 
-#include "KBackyardKampSite.h"
+#include "KGrandCanyonKAmpSite.h"
 
 #include "KAmpEvent.h"
 #include "KRawEvent.h"
@@ -20,18 +20,18 @@
 #include "KRawBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
 
-
-KBackyardKampSite::KBackyardKampSite(void)
+KGrandCanyonKAmpSite::KGrandCanyonKAmpSite(void)
 {
-  fName = "KBackyardKampSite";
+  fName = "KGrandCanyonKAmpSite";
+  
 }
 
-KBackyardKampSite::~KBackyardKampSite(void)
+KGrandCanyonKAmpSite::~KGrandCanyonKAmpSite(void)
 {
 
 }
 
-Bool_t KBackyardKampSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee)
+Bool_t KGrandCanyonKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee)
 {
   // This KampSite uses the KSimpleKamper1 to estimate the peak position and amplitude of the pulses in a bolometer record. 
   // It does nothing fancy at the moment and serves as a nice example. 
@@ -47,7 +47,14 @@ Bool_t KBackyardKampSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     //use the KSimpleKamper to fill the KPulseAnalysisRecord
     KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    fSimpKamp1.MakeKamp(pRaw, rec);
+    fTrapKamp.MakeKamp(pRaw, rec);
+    
+    //create a new KPulseAnalysisRecord to store the results from 
+    //KTrapezoidalKamper::MakeBaseKamp, which will estimate the amplitude
+    //of the baseline. 
+    KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
+    SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
+    fTrapKamp.MakeBaseKamp(pRaw, recBase);
     
     //if there were more kampers in your kampsite, you could use them to estimate pulse amplitudes
     //and pack the results into appropriate KPulseAnalysisRecords
@@ -65,7 +72,7 @@ Bool_t KBackyardKampSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
   return true;
 }  
 
-Bool_t KBackyardKampSite::ScoutKampSite(KRawBoloPulseRecord* /*pRaw*/, KRawEvent* /*e*/)
+Bool_t KGrandCanyonKAmpSite::ScoutKampSite(KRawBoloPulseRecord* /*pRaw*/, KRawEvent* /*e*/)
 {
   //just returns true;  no scouting required -- its my freakin' backyard!
   return true;

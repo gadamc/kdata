@@ -23,11 +23,17 @@ public:
   
   virtual void SetOrder(unsigned int a){fOrder = a;}  
   virtual unsigned int GetOrder(void) const {return fOrder;}
+  virtual void SetInitOutputValue(double a){fInitOutputValue = a; fSetInitOutputValue = true;}
+  virtual double GetInitOutputValue(void){return fInitOutputValue;}
+  virtual bool IsSetInitOutputValue(void){return fSetInitOutputValue;}
+  virtual void SetUseInitOutputValue(bool a){fSetInitOutputValue = a;}
   
   virtual bool RunProcess(void);
   
 private:
   unsigned int fOrder;
+  double fInitOutputValue;
+  bool fSetInitOutputValue;
   //private methods
   void InitializeMembers(void);
     

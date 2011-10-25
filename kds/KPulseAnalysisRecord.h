@@ -43,7 +43,8 @@ public:
   virtual Double32_t GetPulseWidth(void) const { return fPulseWidth;}
   virtual Double32_t GetSlopeRemoved(void) const {return fSlopeRemoved;}
   virtual Double32_t GetBaselineRemoved(void) const {return fBaselineRemoved;}
-
+  virtual Double32_t GetExtra(UInt_t i) const;
+  
   virtual void SetAmp(Double32_t aVal) {  fAmp = aVal;}
   virtual void SetName(const char* atype) {  fName = atype;}
   virtual void SetPeakPosition(Double32_t aval) { fPeakPosition = aval;}
@@ -55,6 +56,7 @@ public:
   virtual void SetPulseWidth(Double32_t aval) {  fPulseWidth =  aval;}
   virtual void SetSlopeRemoved(Double32_t aval) {  fSlopeRemoved =  aval;}
   virtual void SetBaselineRemoved(Double32_t aval) {  fBaselineRemoved =  aval;}
+  virtual void SetExtra(Double32_t aVal, UInt_t index);
   
   KAmpBolometerRecord* GetBolometerRecord(void) const {return (KAmpBolometerRecord*)fBolometerRecord.GetObject();}
   KAmpBoloPulseRecord* GetBoloPulseRecord(void) const {return (KAmpBoloPulseRecord*)fBoloPulseRecord.GetObject();}

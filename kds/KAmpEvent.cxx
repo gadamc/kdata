@@ -602,27 +602,29 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolo
   
   //move the samba data into a pulse analysis record. 
   KPulseAnalysisRecord *sambarec = AddPulseAnalysisRecord(); 
-  sambarec->SetBolometerRecord(boloAmp);  //link the TRefs in the different objects. This is important
-  sambarec->SetBoloPulseRecord(pAmp);
-  pAmp->AddPulseAnalysisRecord(sambarec);
-
+  
   sambarec->SetAmp(pRaw->GetAmplitude());
   sambarec->SetName("samba");
   sambarec->SetIsBaseline(false);
   sambarec->SetBaselineAmplitudeWidth(pRaw->GetAmplitudeBaselineNoise());
   sambarec->SetUnit(0);
-
-  sambarec = AddPulseAnalysisRecord(); //add a new analysis record
-  sambarec->SetBolometerRecord(boloAmp); //make the proper TRef links
+  
+  sambarec->SetBolometerRecord(boloAmp);  //link the TRefs in the different objects. This is important
   sambarec->SetBoloPulseRecord(pAmp);
   pAmp->AddPulseAnalysisRecord(sambarec);
-
-  sambarec->SetAmp(pRaw->GetAmplitudeBaseline());
-  sambarec->SetName("samba");
-  sambarec->SetIsBaseline(true);
-  sambarec->SetBaselineAmplitudeWidth(pRaw->GetAmplitudeBaselineNoise());
-  sambarec->SetUnit(0);
   
+  
+  KPulseAnalysisRecord *sambarecBaseline = AddPulseAnalysisRecord(); //add a new analysis record
+
+  sambarecBaseline->SetAmp(pRaw->GetAmplitudeBaseline());
+  sambarecBaseline->SetName("samba");
+  sambarecBaseline->SetIsBaseline(true);
+  sambarecBaseline->SetBaselineAmplitudeWidth(pRaw->GetAmplitudeBaselineNoise());
+  sambarecBaseline->SetUnit(0);
+  
+  sambarecBaseline->SetBolometerRecord(boloAmp); //make the proper TRef links
+  sambarecBaseline->SetBoloPulseRecord(pAmp);
+  pAmp->AddPulseAnalysisRecord(sambarecBaseline);
   
   return pAmp;
 }
