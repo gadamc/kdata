@@ -149,39 +149,39 @@ private:
 	 */
 	
   //a user can determine the number of these records in the event.
-	//1) - from a root script that calls Event::GetNumSamba, etc...
-	//2) - from the TTree selections of
-	//         @fSamba.GetEntriesFast()>0
-	//         @fBolo.GetEntriesFast()>0
-	//         @fBoloPulse.GetEntriesFast()>0
-	//         @fMuModlue.GetEntriesFast()>0
-	// For example root [0] TFile f("KDataRunFile.root");
-	//             root [1] t->Scan("*","@fBolo.GetEntriesFast()==1");
-	// selects all of the events where there is only one bolometer
-	// with a record in the event. This doesn't guarantee
-	// that only one Bolometer in the event has a real physics event
-	// it only tells you the number of records in the data structure
-  
-  
+  //1) - from a root script that calls Event::GetNumSamba, etc...
+  //2) - from the TTree selections of
+  //         @fSamba.GetEntriesFast()>0
+  //         @fBolo.GetEntriesFast()>0
+  //         @fBoloPulse.GetEntriesFast()>0
+  //         @fMuModlue.GetEntriesFast()>0
+  // For example root [0] TFile f("KDataRunFile.root");
+  //             root [1] t->Scan("*","@fBolo.GetEntriesFast()==1");
+  // selects all of the events where there is only one bolometer
+  // with a record in the event. This doesn't guarantee
+  // that only one Bolometer in the event has a real physics event
+  // it only tells you the number of records in the data structure
+
+
   Int_t fRunNumber; //big Run number. the small run number is found in the Bolometer data record
-	Double_t fRunStartTime;  //begining of the Big Run 
-	Double_t fRunEndTime; //end of the Big Run
+  Double_t fRunStartTime;  //begining of the Big Run 
+  Double_t fRunEndTime; //end of the Big Run
   Int_t fGSEventNumber; //Global Software Event Number. starts from 1 with each new Run
-  
-	//private methods
-	void CreateArrays(void);
-	void InitializeMembers(void);
-	
-	
+
+  //private methods
+  void CreateArrays(void);
+  void InitializeMembers(void);
+
+
   template<class T> T* AddSubRecord(TClonesArray *mArray);
   void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
   void ClearArray(Option_t *anOpt, TClonesArray *mArray);
-  
-  
-	UInt_t GetLargestUniqueIDNumber(void);
-  
-	
-	ClassDef(KHLAEvent ,4);
+
+
+  UInt_t GetLargestUniqueIDNumber(void);
+
+
+ClassDef(KHLAEvent ,4);
 };
 
 
