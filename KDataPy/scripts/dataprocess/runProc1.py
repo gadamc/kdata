@@ -52,7 +52,7 @@ def main(*argv):
   '''
   argv[0] is the server (http://127.0.0.1:5984)
   argv[1] is the database (datadb)
-  
+
   process 1 - converts the raw Samba data files into Kdata ROOT files.
   '''
   
