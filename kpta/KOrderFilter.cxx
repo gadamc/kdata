@@ -79,7 +79,7 @@ bool KOrderFilter::RunProcess(void)
   }
   
   for(unsigned int n = fOrder; n < fOutputSize; n++)
-    *(fOutputPulse+n) = *(fInputPulse+n) + *(fInputPulse+n-fOrder);
+    *(fOutputPulse+n) = *(fInputPulse+n) - *(fInputPulse+n-fOrder);
     
   return true;
 }
