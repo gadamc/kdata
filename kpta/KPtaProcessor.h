@@ -35,7 +35,7 @@ public:
   virtual void SetInputPulse(std::vector<float> &aPulse){SetTheInputPulse(aPulse);}
   virtual void SetInputPulse(std::vector<int> &aPulse){SetTheInputPulse(aPulse);}
   virtual void SetInputPulse(std::vector<short> &aPulse){SetTheInputPulse(aPulse);}
-
+  
   virtual void SetInputPulse(const double* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
   virtual void SetInputPulse(const float* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
   virtual void SetInputPulse(const int* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}

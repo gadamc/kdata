@@ -102,7 +102,7 @@ void KPulseAnalysisRecord::InitializeMembers(void)
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 
   fAmp = -9999;
-  fName = "";  
+  fName.resize(0);  
   fPeakPosition = -1;
   fIsBaseline = 0;  
   fUnit = -1;  

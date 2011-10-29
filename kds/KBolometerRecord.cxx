@@ -95,7 +95,7 @@ void KBolometerRecord::InitializeMembers(void)
   
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-  fDetectorName = "";
+  fDetectorName.resize(0);
   fMass = 0;
 	
 }
