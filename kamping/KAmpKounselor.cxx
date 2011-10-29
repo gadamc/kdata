@@ -98,7 +98,7 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
     *muonAmp = *muonRaw;
 
     for(int j = 0; j < e->GetNumBolos(); j++){
-      cout << j << endl;
+      
       KRawBolometerRecord *boloRaw = (KRawBolometerRecord *)e->GetBolo(j);      
       KAmpBolometerRecord *boloAmp = ee->AddBolo(boloRaw);
       

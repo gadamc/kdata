@@ -36,7 +36,7 @@ KTrapezoidalKamper::KTrapezoidalKamper(void)
 
   SetName("KTrapezoidalKamper");
   fHeatPulseSize = 512;
-  fIonPulseSize = 8196;
+  fIonPulseSize = 8192;
   fHeatPulse = new double[fHeatPulseSize];
   fHeatPulse2 = new double[fHeatPulseSize];
   fIonPulse =  new double[fIonPulseSize];
@@ -46,8 +46,7 @@ KTrapezoidalKamper::KTrapezoidalKamper(void)
   fOrderPulseIon1 = new double[fIonPulseSize];
   fOrderPulseIon2 = new double[fIonPulseSize];
 
-  SetHeatPointers();
-  SetIonPointers();
+  
   fTrapHeatTime.SetParams(50., 3, 20);
   fTrapHeatAmplitude.SetParams(50., 10, 50);
   fPeakPositionResultHeatSize = fHeatPulseSize - 2*fTrapHeatTime.GetRiseTime() - fTrapHeatTime.GetFlatTopWidth();
@@ -68,6 +67,9 @@ KTrapezoidalKamper::KTrapezoidalKamper(void)
   fOrderFilter1Ion.SetInitOutputValue(0.0);
   fOrderFilter2Ion.SetInitOutputValue(0.0);
 
+  SetHeatPointers();
+  SetIonPointers();
+  
   //fDebugMode = false;
   //fDebugResults.clear();
   //fDebugSteps.clear();
@@ -172,7 +174,7 @@ void KTrapezoidalKamper::CheckMemory(KRawBoloPulseRecord *pRec)
     }
   }
   else{
-    if(pRec->GetPulseLength() != fIonPulseSize) {
+    if(pRec->GetPulseLength() != fIonPulseSize) {      
       delete [] fIonPulse;
       delete [] fIonPulse2;
       delete [] fOrderPulseIon1;
@@ -250,7 +252,7 @@ Bool_t KTrapezoidalKamper::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRe
           //  FillKamperDebugResults(fTrapHeatAmplitude);
 
           rec->SetAmp(GetMean(maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
-            fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize()) );
+            fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
           rec->SetPeakPosition(maxPeakPos);
           rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
           //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
@@ -309,7 +311,7 @@ Bool_t KTrapezoidalKamper::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRe
               //  FillKamperDebugResults(fTrapIonAmplitude);
 
               rec->SetAmp(GetMean(maxPeakPos + fTrapIonAmplitude.GetRiseTime(), maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
-                fTrapIonAmplitude.GetFlatTopWidth()/2., fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize()) );
+                fTrapIonAmplitude.GetFlatTopWidth()/2., fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
               rec->SetPeakPosition(maxPeakPos);
               rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
               //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
@@ -379,7 +381,7 @@ Bool_t KTrapezoidalKamper::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalys
           //  FillKamperDebugResults(fTrapHeatAmplitude);
 
           rec->SetAmp(GetMean(maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
-            fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize()) );
+            fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
           rec->SetPeakPosition(maxPeakPos);
           rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
           //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
@@ -434,7 +436,7 @@ Bool_t KTrapezoidalKamper::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalys
               //  FillKamperDebugResults(fTrapIonAmplitude);
 
               rec->SetAmp(GetMean(maxPeakPos + fTrapIonAmplitude.GetRiseTime(), maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
-                fTrapIonAmplitude.GetFlatTopWidth()/2., fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize()) );
+                fTrapIonAmplitude.GetFlatTopWidth()/2., fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
               rec->SetPeakPosition(maxPeakPos);
               rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
               //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
@@ -460,9 +462,9 @@ void KTrapezoidalKamper::FindPeaks(unsigned int secondOrderPulseLength, double* 
   for(unsigned int i = 0; i < resultSize; i++){
     if ((secondOrderPulse[i]<amp) && (secondOrderPulse[i+riseTime]>-amp) && (secondOrderPulse[i+riseTime+flatTopTime]>-amp) 
       && (secondOrderPulse[i+2*riseTime+flatTopTime]<amp))
-      result[i+riseTime] = secondOrderPulse[i+riseTime];  
+      result[i] = secondOrderPulse[i+riseTime];  
     else  
-      result[i+riseTime] = 0.;
+      result[i] = 0.;
   }
 } 
 
@@ -476,7 +478,7 @@ unsigned int KTrapezoidalKamper::FindMaxPeak(unsigned int secondOrderPulseLength
   double maxValue = 0;
   unsigned int maxPos = 0;
 
-  for(unsigned int i = 0; i < resultSize && i < trapOutSize; i++){
+  for(unsigned int i = 0; i < resultSize && i < trapOutSize-(riseTime+flatTopTime); i++){
     if( TMath::Abs(result[i] * trapOut[i+riseTime+flatTopTime]) > maxValue){
       maxValue = TMath::Abs(result[i] * trapOut[i+riseTime+flatTopTime]);
       maxPos = i;
@@ -486,7 +488,7 @@ unsigned int KTrapezoidalKamper::FindMaxPeak(unsigned int secondOrderPulseLength
   return maxPos;
 }
 
-double KTrapezoidalKamper::GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength)
+double KTrapezoidalKamper::GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity)
 {
   double mean = 0;
   unsigned int i = first;
@@ -494,7 +496,7 @@ double KTrapezoidalKamper::GetMean(unsigned int first, unsigned int last, double
   for( ; i < last+1 && i < pulseLength; i++)
     mean += pulse[i];
 
-  return (i > first) ? mean/(i-first) : -99999;
+  return (i > first) ? mean/(i-first) : -1*polarity*99999;
 }
 // 
 // void KTrapezoidalKamper::FillKamperDebugResults(KPtaProcessor &mProcessor)

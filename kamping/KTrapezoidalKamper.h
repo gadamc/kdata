@@ -12,14 +12,12 @@
 #define __KTRAPEZOIDALKAMPER_H_
 
 #include "KAmper.h"
-#include "Rtypes.h"
 #include "KBaselineRemoval.h"
 #include "KPatternRemoval.h"
 #include "KTrapezoidalFilter.h"
 #include "KOrderFilter.h"
 #include "KRootMeanSquare.h"
 #include <string>
-#include "KPtaProcessor.h"
 #include <vector>
 
 class KTrapezoidalKamper : KAmper {
@@ -89,7 +87,7 @@ private:
   unsigned int FindMaxPeak(unsigned int secondOrderPulseLength, double* secondOrderPulse, unsigned int riseTime, 
     unsigned int flatTopTime, double* result, unsigned int resultSize, double* trapOut, unsigned int trapOutSize, int polarity);
     
-  double GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength);
+  double GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity);
   //void FillKamperDebugResults(KPtaProcessor &mProcessor);
 }; 
 

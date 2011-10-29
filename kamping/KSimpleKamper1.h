@@ -11,8 +11,7 @@
 #define __KSIMPLEKAMPER1_H_
 
 #include "KAmper.h"
-#include "Rtypes.h"
-#include "KLinearRemoval.h"
+#include "KBaselineRemoval.h"
 #include "KPatternRemoval.h"
 #include "KPeakFinder.h"
 #include "KIIRFourthOrder.h"
@@ -32,8 +31,8 @@ public:
 private:
   std::string fName;
 
-  KLinearRemoval fLinRemovalHeat;
-  KLinearRemoval fLinRemovalIon;
+  KBaselineRemoval fLinRemovalHeat;
+  KBaselineRemoval fLinRemovalIon;
   KIIRFourthOrder fIir4Heat;
   KIIRFourthOrder fIir4Ion;
   KPatternRemoval fPatRemoval;

@@ -11,7 +11,7 @@
 #define __KGRANDCANYONKAMPSITE_H_
 
 #include "KAmpSite.h"
-#include "KTrapezoidalKamper.h"
+#include "KTrapKamperProto.h"
 //#include "KOptimalKamper.h"
 
 class KAmpEvent;
@@ -31,7 +31,7 @@ public:
   virtual Bool_t NeedScout(void){ return false;}
   
 private:
-  KTrapezoidalKamper fTrapKamp;
+  KTrapKamperProto fTrapKamp;
   //KOptimalKamper fOptKamp;
   
 };

@@ -10,11 +10,11 @@
 #define __KPULSEANALYSISRECORD_H__
 
 #include "KSubRecord.h"
-#include <string>
 #include "TRef.h"
 
 #include "KAmpBolometerRecord.h"
 #include "KAmpBoloPulseRecord.h"
+#include <string>
 
 #define KPULSEANARECORD_EXTRA_SIZE 25
 
