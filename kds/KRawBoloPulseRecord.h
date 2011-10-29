@@ -38,7 +38,7 @@ public:
   
   const char* GetChannelName(void) const {return fChannelName.c_str();  }
   UInt_t GetPulseTimeWidth(void) const {return fPulseTimeWidth;  }
-  vector<Short_t> GetTrace(void) const {return fTrace;  }
+  const vector<Short_t>& GetTrace(void) const {return fTrace;  }
   void GetTrace(double *p){CopyTraceToMem(p);}
   void GetTrace(float *p){CopyTraceToMem(p);}
   void GetTrace(int *p){CopyTraceToMem(p);}

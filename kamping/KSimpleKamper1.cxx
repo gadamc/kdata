@@ -9,13 +9,13 @@
 
 #include "KSimpleKamper1.h"
 
-#include "KLinearRemoval.h"
+#include "KBaselineRemoval.h"
 #include "KPatternRemoval.h"
 #include "KPeakFinder.h"
 #include "KRawBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
 
-ClassImp(KSimpleKamper1);
+//ClassImp(KSimpleKamper1);
 
 KSimpleKamper1::KSimpleKamper1(void) : 
   //bandpass iir filter between 0.001 and 0.01 of the nyquist frequncy
@@ -142,8 +142,8 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
           rec->SetIsBaseline(false); 
           rec->SetName(GetName());
           rec->SetUnit(0);
-          rec->SetBaselineRemoved(fLinRemovalHeat.GetOffset());
-          rec->SetSlopeRemoved(fLinRemovalHeat.GetSlope());
+          rec->SetBaselineRemoved(fLinRemovalHeat.GetBaselineOffset());
+          //rec->SetSlopeRemoved(fLinRemovalHeat.GetSlope());
         }
         else {cerr << "ksimplekamper1 - peak find heat fail." << endl; return false;}
       } 
@@ -189,8 +189,8 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
             rec->SetIsBaseline(false); 
             rec->SetName(GetName());
             rec->SetUnit(0);
-            rec->SetBaselineRemoved(fLinRemovalIon.GetOffset());
-            rec->SetSlopeRemoved(fLinRemovalIon.GetSlope());
+            rec->SetBaselineRemoved(fLinRemovalIon.GetBaselineOffset());
+            //rec->SetSlopeRemoved(fLinRemovalIon.GetSlope());
           }
           else {cerr << "ksimplekamper1 - peak find ion fail." << endl; return false;}
         }
