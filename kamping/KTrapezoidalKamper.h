@@ -32,13 +32,18 @@ public:
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
   
+  //virtual void SetDebugMode(Bool_t mode = true){fDebugMode = mode;}
+  //virtual Bool_t IsDebugMode(void){ return fDebugMode;}
   
-  //KLinearRemoval* GetHeatLinearRemoval(void){return &fLinRemovalHeat;}
+  //virtual std::vector< std::vector<double> >& GetDebugResults(void){return fDebugResults;}
+  //virtual std::vector< std::string >& GetDebugSteps(void){return fDebugSteps;}
+  
 private:
   std::string fName;
-
-  KLinearRemoval fLinRemovalHeat;
-  KLinearRemoval fLinRemovalIon;
+  //Bool_t fDebugMode;
+  
+  KBaselineRemoval fBaseRemovalHeat;
+  KBaselineRemoval fBaseRemovalIon;
   KPatternRemoval fPatRemoval;
   KRootMeanSquare fRms;
   
@@ -68,16 +73,19 @@ private:
   double* fPeakPositionResultIon;
   unsigned int fPeakPositionResultHeatSize;
   unsigned int fPeakPositionResultIonSize;
+    
+  //std::vector< std::vector<double> > fDebugResults;
+  //std::vector< std::string > fDebugSteps;
   
   void SetHeatPointers();
   void SetIonPointers();
   void CheckMemory(KRawBoloPulseRecord *pRec);
                                                
   void FindPeaks(unsigned int secondOrderPulseLength, double* secondOrderPulse, unsigned int riseTime, unsigned int flatTopTime,
-    double* result, unsigned int resultSize);
+    double* result, unsigned int resultSize, int polarity);
     
   unsigned int FindMaxPeak(unsigned int secondOrderPulseLength, double* secondOrderPulse, unsigned int riseTime, 
-    unsigned int flatTopTime, double* result, unsigned int resultSize, double* trapOut, unsigned int trapOutSize);
+    unsigned int flatTopTime, double* result, unsigned int resultSize, double* trapOut, unsigned int trapOutSize, int polarity);
     
   double GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity);
   //void FillKamperDebugResults(KPtaProcessor &mProcessor);

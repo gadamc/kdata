@@ -22,8 +22,8 @@
 
 KGrandCanyonKAmpSite::KGrandCanyonKAmpSite(void)
 {
-  fName = "KGrandCanyonKAmpSite";
-  
+  SetName("KGrandCanyonKAmpSite");
+  //fTrapKamp.SetDebugMode();
 }
 
 KGrandCanyonKAmpSite::~KGrandCanyonKAmpSite(void)
