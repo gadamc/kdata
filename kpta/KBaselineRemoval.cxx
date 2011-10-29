@@ -55,7 +55,7 @@ bool KBaselineRemoval::RunProcess(void)
 
 }
 
-double KBaselineRemoval::CalculateAverage(void) const
+double KBaselineRemoval::CalculateAverage(void)
 {
 
   if(fInputSize < 1) return -99999;
@@ -63,15 +63,16 @@ double KBaselineRemoval::CalculateAverage(void) const
   if(fBaselineStart > 1.0 || fBaselineStop > 1.0) return -99999;
   if(fBaselineStart >= fBaselineStop) return -99999;
 
-  double theAve = 0;
+  fBaseline = 0;
 
   double stop = fBaselineStop*fInputSize;
   unsigned int start = fBaselineStart*fInputSize;
   unsigned int i = start;
   for( ; i < stop; i++){
-    theAve += *(fInputPulse+i);
+    fBaseline += *(fInputPulse+i);
   }
-  return theAve/double(i-start);
+  fBaseline = (i > start) ? fBaseline/double(i-start) : -99999;
+  return fBaseline;
 }
 
 void KBaselineRemoval::Subtract(double aVal, unsigned int i)

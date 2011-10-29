@@ -99,11 +99,11 @@ bool KPatternRemoval::CalculatePattern(void)
   //between fBaselineStart and fBaselineStart+numPatterns*fPatternLength. 
 
   if(fPattern == 0){
-    cerr << "Pattern pointer not allocated" << endl;
+    cout << "Pattern pointer not allocated" << endl;
     return false;
   }
   if(fInputPulse == 0 || fOutputPulse == 0) {
-    cerr << "input and output pulses are not allocated." << endl;
+    cout << "input and output pulses are not allocated." << endl;
     return false;
   }
   memset(fPattern, 0, fPatternLength*sizeof(double));
@@ -112,8 +112,11 @@ bool KPatternRemoval::CalculatePattern(void)
   // and force the routine to only consider full patterns.
   unsigned int numPatterns = (unsigned int)floor((fBaselineStop - fBaselineStart + 0.5)/(double)(fPatternLength));
 
-  if(numPatterns < 1) return false; 
-
+  if(numPatterns < 1) {
+    cout << "number of patters is less than 1" << endl;
+    return false; 
+  }
+  
   unsigned int patternCount = 0;
   unsigned int maxPosition = fBaselineStart + numPatterns*fPatternLength ;
 
@@ -138,6 +141,7 @@ bool KPatternRemoval::SubtractPattern(void)
   //but this processor is part of a KPulseAnalysisChain and you just want to set 
 
   if (fPatternLength == 0) {
+    cout << "pattern length is zero" << endl;
     memcpy(fOutputPulse,fInputPulse, (fOutputSize >= fInputSize) ? fInputSize*sizeof(double) : fOutputSize*sizeof(double) );
     return true;  
   } //return true in case pattern size is zero. 
@@ -147,12 +151,12 @@ bool KPatternRemoval::SubtractPattern(void)
      //to zero.
 
   if(fInputPulse == 0 || fOutputPulse == 0) {
-    cerr << "input and output pulses are not allocated." << endl;
+    cout << "input and output pulses are not allocated." << endl;
     return false;
   }
 
   if(fPattern == 0) {
-    cerr << "fPattern is not allocated." << endl;
+    cout << "fPattern is not allocated." << endl;
     return false;
   }
 

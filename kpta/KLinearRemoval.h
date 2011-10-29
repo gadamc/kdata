@@ -36,6 +36,8 @@ public:
   virtual double GetSlope(void) const {return fSlope;}
   virtual double GetOffset(void) const {return fOffset;}
   
+  virtual void SetDefaultSettings(void);
+  
 private:
 
   double fBaselineStop; //stoping position of region to be averaged for line subtraction, in percent of the total pulse length

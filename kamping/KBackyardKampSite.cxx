@@ -23,7 +23,7 @@
 
 KBackyardKampSite::KBackyardKampSite(void)
 {
-  fName = "KBackyardKampSite";
+  SetName("KBackyardKampSite");
 }
 
 KBackyardKampSite::~KBackyardKampSite(void)

@@ -25,21 +25,24 @@ public:
   virtual ~KBaselineRemoval(void);
   virtual bool RunProcess(void);
 
-  double CalculateAverage(void) const;
+  virtual double CalculateAverage(void);
   virtual bool Subtract(double aVal);
   virtual void Subtract(double aVal, unsigned int i);
   
-  double GetBaselineStart(void) const {return fBaselineStart;}
-  double GetBaselineStop(void) const {return fBaselineStop;}
+  virtual double GetBaselineStart(void) const {return fBaselineStart;}
+  virtual double GetBaselineStop(void) const {return fBaselineStop;}
 
   virtual void SetBaselineStart(double aVal) {fBaselineStart = aVal;}
   virtual void SetBaselineStop(double aVal) {fBaselineStop = aVal;}
 
+  virtual double GetBaselineOffset(void) const {return fBaseline;}
 private:
 
   double fBaselineStart;  //starting position of region to be averaged for baseline subtraction, in percent of the total pulse length
   double fBaselineStop; //stoping position of region to be averaged for baseline subtraction, in percent of the total pulse length
 
+  double fBaseline;
+  
   //private methods
   void InitializeMembers(void);
 

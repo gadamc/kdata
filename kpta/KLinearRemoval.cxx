@@ -49,6 +49,13 @@ void KLinearRemoval::InitializeMembers(void)
   fOffset = 0;
 }
 
+ 
+void KLinearRemoval::SetDefaultSettings(void)
+{
+  fBaselineStop = 0.40;
+}
+
+
 bool KLinearRemoval::RunProcess(void)
 {
   //cout << "Run Process: " << GetName() << endl;
