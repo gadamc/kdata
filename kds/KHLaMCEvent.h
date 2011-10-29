@@ -11,10 +11,10 @@
 #define __KHLAMCEVENT_H__
 
 #include "KEvent.h"
+#include "TClonesArray.h" 
 
 //class TObject;
 //class KEventFactory;
-class TClonesArray; 
 class KMCBolometerRecord;
 
 class KHLaMCEvent : public KEvent {         
