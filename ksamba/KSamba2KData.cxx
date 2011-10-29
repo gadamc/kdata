@@ -108,10 +108,10 @@ Bool_t  KSamba2KData::ConvertFile(void)
     return false;
   }
   
-  KDataProcessingInfo *info = (KDataProcessingInfo *)(fKdataOutput.GetTTree()->GetUserInfo()->Last());
+  /*KDataProcessingInfo *info = (KDataProcessingInfo *)(fKdataOutput.GetTTree()->GetUserInfo()->Last());
   info->AddModule("ksamba");
   info->AddCommand("KSamba2KData::ConvertFile");
-   
+  */
   if(!CheckStartOfSambaFile()){
     cout << "Check Start of Samba File Fail." << endl;
     return false;
@@ -449,6 +449,44 @@ Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
     else if(fSambaFileLine.BeginsWith("Bolo.d3") ) {
       TObjArray *larr = fSambaFileLine.Tokenize("=#");
       chan->SetDiviseurD3( GetIntegerFromTokenizedStringResult(larr, 1) );
+      delete larr;
+    }  
+    else if(fSambaFileLine.BeginsWith("Bolo.modulation") ) {  //support old Samba header
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      chan->SetDiviseurD2( GetIntegerFromTokenizedStringResult(larr, 1) );
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.synchronization") ) { //support old Samba header
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      chan->SetDiviseurD3( GetIntegerFromTokenizedStringResult(larr, 1) );
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.ampl.modul") ) {  //support old Samba header
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      TString val = GetStringFromTokenizedStringResult(larr, 1);
+      if (val == "indetermine" || val == "inconnu") chan->SetAmplModul(-9999);
+      else chan->SetAmplModul(val.Atof());
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.comp.modul") ) {  //support old Samba header
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      TString val = GetStringFromTokenizedStringResult(larr, 1);
+      if (val == "indetermine" || val == "inconnu") chan->SetCompModul(-9999);
+      else chan->SetCompModul(val.Atof());
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.comp.trngl") ) {  //support old Samba header
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      TString val = GetStringFromTokenizedStringResult(larr, 1);
+      if (val == "indetermine" || val == "inconnu") chan->SetCorrTrngl(-9999);
+      else chan->SetCorrTrngl(val.Atof());
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.comp.pied") ) {  //support old Samba header
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      TString val = GetStringFromTokenizedStringResult(larr, 1);
+      if (val == "indetermine" || val == "inconnu") chan->SetCorrPied(-9999);
+      else chan->SetCorrPied(val.Atof());
       delete larr;
     }
     else if(fSambaFileLine.BeginsWith("Bolo.reglages")){
