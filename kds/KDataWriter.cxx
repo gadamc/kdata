@@ -162,7 +162,7 @@ void KDataWriter::CreateTree(void)
   if(fTree->IsZombie())
     cout << "KDataWriter::CreateTree fTree is Zombie" << endl;
   else{
-    TList *myUserInfo = fTree->GetUserInfo();
+    /*TList *myUserInfo = fTree->GetUserInfo();
     KDataProcessingInfo * mNewProcInfo = new KDataProcessingInfo;
     mNewProcInfo->SetSVNRev( gSystem->GetFromPipe("svnversion $KDATA_ROOT/").Data());
     mNewProcInfo->SetHostName( gSystem->GetFromPipe("hostname").Data());
@@ -173,7 +173,7 @@ void KDataWriter::CreateTree(void)
     if(myUserInfo->GetEntries() > 0){
       mNewProcInfo->SetPrevProcInfo( *(KDataProcessingInfo *)(myUserInfo->At( myUserInfo->GetEntries()-1 )) );
     }
-    myUserInfo->Add(mNewProcInfo);
+    myUserInfo->Add(mNewProcInfo);*/
   }  
 }
 

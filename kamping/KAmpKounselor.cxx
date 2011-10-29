@@ -19,6 +19,7 @@
 #include "KAmpBoloPulseRecord.h"
 #include "KAmpSite.h"
 #include "KDataProcessingInfo.h"
+#include <iostream>
 
 using namespace std;
 
@@ -44,11 +45,13 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
   KDataWriter ff(outputAmpKDataFile,"KAmpEvent");
   KAmpEvent *ee = (KAmpEvent *)ff.GetEvent();
   KRawEvent *e = (KRawEvent *)f.GetEvent();
- 
-  int numEvents = f.GetEntries();
   
+  f.cd();
+  int numEvents = f.GetEntries();
+  /*
   KDataProcessingInfo *mNewInfo = (KDataProcessingInfo *)(ff.GetTTree()->GetUserInfo()->Last());
   mNewInfo->AddModule("KAmpKounselor");
+  */
   
   //check to see if any of the KAmpSites that are managed by this KAmpKounselor need
   //to "scout" their kampsite. For sure, a KAmpSite that employs an Optimal Filter
@@ -56,7 +59,7 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
   vector<KAmpSite *>::iterator it;
   Bool_t bNeedScouting = false;
   for( it = fKampSites.begin(); it < fKampSites.end(); it++){
-    mNewInfo->AddCommand( (*it)->GetName());
+    //mNewInfo->AddCommand( (*it)->GetName());
     if ( (*it)->NeedScout()){
       bNeedScouting = true;
       break;
@@ -83,11 +86,11 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
   
   //loop through the data, passing data to the KAmpSites in order to calculate
   //pulse amplitudes.
-  for(int i = 0; i < numEvents; i++){
-    f.GetEntry(i);
+  for(int ii = 0; ii < numEvents; ii++){
+    f.GetEntry(ii);
     
     ee->Clear("C");
-    *(KEvent *)ee = *e; //copy the base-class stuff
+    *(KEvent *)ee = *(KEvent *)e; //copy the base-class stuff
         
     //copy the muon veto system record information
     KRawMuonVetoSysRecord *muonRaw = (KRawMuonVetoSysRecord *)e->GetMuonVetoSystemRecord();
@@ -95,7 +98,7 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
     *muonAmp = *muonRaw;
 
     for(int j = 0; j < e->GetNumBolos(); j++){
-
+      
       KRawBolometerRecord *boloRaw = (KRawBolometerRecord *)e->GetBolo(j);      
       KAmpBolometerRecord *boloAmp = ee->AddBolo(boloRaw);
       

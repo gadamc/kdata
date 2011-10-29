@@ -108,6 +108,9 @@ private:
   ClassDef(KAmpEvent ,1);
 };
 
-
+template<class T> T* KAmpEvent::AddSubRecord(TClonesArray *mArray)
+{
+  return static_cast<T* >(static_cast<KClonesArray *>(mArray)->GetNewOrCleanedObject( mArray->GetEntriesFast() ) );
+}
 
 #endif // __KAMPEVENT_H__

@@ -32,7 +32,7 @@ TObject *&KClonesArray::operator[](Int_t idx)
     mustZero = true;
   }
   TObject *&temp = TClonesArray::operator[](idx);
-  if ( temp && mustZero ) memset(temp, 0, fClass->Size());
+  if ( temp && mustZero ) memset((void *)temp, 0, fClass->Size());
   return temp;
 }
 

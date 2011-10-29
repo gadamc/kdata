@@ -21,7 +21,7 @@ class KRawBolometerRecord;
 class KRawBoloPulseRecord;
 class KPulseAnalysisRecord;
 
-class KAmpSite {
+class KAmpSite  {
 
 public:
   KAmpSite(void);
@@ -31,7 +31,8 @@ public:
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e) = 0;  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void) = 0;
   virtual void SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp);
-  const std::string& GetName(void) const {return fName;}
+  const char * GetName(void) const {return fName.c_str();}
+  virtual void SetName(const char* name){fName = name;}
   
 protected:
 

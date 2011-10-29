@@ -482,10 +482,7 @@ void KAmpEvent::CreateArrays(void)
 
 }
 
-template<class T> T* KAmpEvent::AddSubRecord(TClonesArray *mArray)
-{
-  return static_cast<T* >(static_cast<KClonesArray *>(mArray)->GetNewOrCleanedObject( mArray->GetEntriesFast() ) );
-}
+
 
 void KAmpEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
 {

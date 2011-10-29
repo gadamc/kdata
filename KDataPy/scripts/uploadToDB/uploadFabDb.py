@@ -271,6 +271,7 @@ def uploadData(fname, uri, dbname):
 if __name__=='__main__':
   dir = sys.argv[1]
   uri = sys.argv[2]
+<<<<<<< HEAD
   dbname = 'fabdb' 
   # #connect to the db
   global theServer
@@ -280,6 +281,10 @@ if __name__=='__main__':
   db = theServer[dbname]
   print uri, dbname
    
+=======
+  
+  dbname = 'fabdb'
+>>>>>>> 361126b0de0cfb74ce86854aa84e76c9f11af625
   if len(sys.argv) >= 4:
     dbname = sys.argv[3]
   
