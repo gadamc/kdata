@@ -163,22 +163,22 @@ are the same accross the different "levels".
   // it only tells you the number of records in the data structure
 
 
-  Int_t fRunNumber; //big Run number. the small run number is found in the Bolometer data record
-  Double_t fRunStartTime;  //begining of the Big Run 
-  Double_t fRunEndTime; //end of the Big Run
-  Int_t fGSEventNumber; //Global Software Event Number. starts from 1 with each new Run
+Int_t fRunNumber; //big Run number. the small run number is found in the Bolometer data record
+Double_t fRunStartTime;  //begining of the Big Run 
+Double_t fRunEndTime; //end of the Big Run
+Int_t fGSEventNumber; //Global Software Event Number. starts from 1 with each new Run
 
   //private methods
-  void CreateArrays(void);
-  void InitializeMembers(void);
+void CreateArrays(void);
+void InitializeMembers(void);
 
 
   template<class T> T* AddSubRecord(TClonesArray *mArray);
-  void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
-  void ClearArray(Option_t *anOpt, TClonesArray *mArray);
+void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
+void ClearArray(Option_t *anOpt, TClonesArray *mArray);
 
 
-  UInt_t GetLargestUniqueIDNumber(void);
+UInt_t GetLargestUniqueIDNumber(void);
 
 
 ClassDef(KHLAEvent ,4);
