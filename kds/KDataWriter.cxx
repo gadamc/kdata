@@ -11,7 +11,7 @@
 // an instance of this class, get a pointer to an event object, set the 
 // various data parameters in the KEvent and then call KDataWriter::Fill
 // to add the event to an output tree. This file creates an KData file with
-// trees filled with KHLAEvents, KRawEvents and KHLaMCEvents.
+// trees filled with KHLAEvents, KRawEvents.
 //
 // This class automatically assume that we're going to use TRefs, by calling
 // TTree::BranchRef when opening the file. 
@@ -24,7 +24,6 @@
 #include "KEvent.h"
 #include "KRawEvent.h"
 #include "KHLAEvent.h"
-#include "KHLaMCEvent.h"
 #include "KAmpEvent.h"
 #include <typeinfo>
 #include <exception> 
@@ -202,12 +201,6 @@ Bool_t KDataWriter::SetTreeBranch(KEvent **anEvent)
             //cout << "trying to create a Branch and cast it as TBrachElement*" << endl;
       fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KRawEvent::GetClassName(), anEvent, 512000, 99));
       //cout << "dynamic_cast worked" << endl;
-    }
-    else if( dynamic_cast<KHLaMCEvent*>(*anEvent) !=0 ) {
-      //cout << typeid(*hlaEv).name() << endl;
-      //cout << hlaEv << " " << anEvent << endl;
-      fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KHLaMCEvent::GetClassName(), anEvent, 512000, 99));
-
     }
     else if( dynamic_cast<KAmpEvent*>(*anEvent) !=0 ) {
       //cout << typeid(*hlaEv).name() << endl;

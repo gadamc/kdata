@@ -29,15 +29,11 @@
 //
 // KDS Developer's Note: If you want the KDataReader and KDataWriter classes
 // to recognize your KEvent-based class, after you derive from KEvent, 
-// you must implement your class here. The KHLaMCEvent class (along with 
-// KHLAEvent and KRawEvent) is an example of this. 
-// The KDataReader and KDataWriter use this class to generate 
-// instances of objects needed for reading and writing the data. 
+// you must implement your class here. 
 
 #include "KEventFactory.h"
 #include "KHLAEvent.h"
 #include "KRawEvent.h"
-#include "KHLaMCEvent.h"
 #include "KAmpEvent.h"
 #include "TClass.h"
 //#include "KMCEvent.h"
@@ -71,135 +67,117 @@ KEvent* KEventFactory::NewEvent(const Char_t* type)
   //
   //you own the memory pointed to by this pointer, so you must delete it.
   //
-  
-	KEvent *event = 0;
-	string sType = type;
-	if(sType.compare(KHLAEvent::GetClassName())==0){
-		event = new KHLAEvent;
-		if(event != 0) BuildEvent(event);
-	}
-	else if(sType.compare(KRawEvent::GetClassName())==0){
-		event = new KRawEvent;
-		if(event != 0) BuildEvent(event);
-	}
-	else if(sType.compare(KHLaMCEvent::GetClassName())==0){
-		event = new KHLaMCEvent;
-		if(event != 0) BuildEvent(event);
-	}
-	else if(sType.compare(KAmpEvent::GetClassName())==0){
-		event = new KAmpEvent;
-		if(event != 0) BuildEvent(event);
-	}
-	/*
-	 else if(sType.compare("MC") == 0){
-	 event = new KMCEvent;
-	 //do any other initialization stuff here, if needed in the future
-	 }
-	 */
-	else {
-		cout << "KEventFactory::NewEvent. Invalid event type: " << type << endl;
-	}
 
-	return event;
+  KEvent *event = 0;
+  string sType = type;
+  if(sType.compare(KHLAEvent::GetClassName())==0){
+    event = new KHLAEvent;
+    if(event != 0) BuildEvent(event);
+  }
+  else if(sType.compare(KRawEvent::GetClassName())==0){
+    event = new KRawEvent;
+    if(event != 0) BuildEvent(event);
+  }
+  else if(sType.compare(KAmpEvent::GetClassName())==0){
+    event = new KAmpEvent;
+    if(event != 0) BuildEvent(event);
+  }
+  /*
+  else if(sType.compare("MC") == 0){
+  event = new KMCEvent;
+  //do any other initialization stuff here, if needed in the future
+  }
+  */
+  else {
+    cout << "KEventFactory::NewEvent. Invalid event type: " << type << endl;
+  }
+
+  return event;
 }
 
 KHLAEvent* KEventFactory::NewHLAEvent(void)
 {
-	//returns a pointer to an KHLAEvent object. You own the memory, so
-	//you must delete it.
-	
-	return dynamic_cast<KHLAEvent*>(NewEvent(KHLAEvent::GetClassName()));
+  //returns a pointer to an KHLAEvent object. You own the memory, so
+  //you must delete it.
+
+  return dynamic_cast<KHLAEvent*>(NewEvent(KHLAEvent::GetClassName()));
 }
 
 KRawEvent* KEventFactory::NewRawEvent(void)
 {
-	//returns a pointer to an KRawEvent object. You own the memory, so
-	//you must delete it.
-	
-	return dynamic_cast<KRawEvent*>(NewEvent(KRawEvent::GetClassName()));
-}
+  //returns a pointer to an KRawEvent object. You own the memory, so
+  //you must delete it.
 
-KHLaMCEvent* KEventFactory::NewHLaMCEvent(void)
-{
-	//returns a pointer to an KHLaMCEvent object. You own the memory, so
-	//you must delete it.
-	
-	return dynamic_cast<KHLaMCEvent*>(NewEvent(KHLaMCEvent::GetClassName()));
+  return dynamic_cast<KRawEvent*>(NewEvent(KRawEvent::GetClassName()));
 }
 
 KAmpEvent* KEventFactory::NewAmpEvent(void)
 {
-	//returns a pointer to a KAmpEvent object. You own the memory, so
-	//you must delete it.
-	
-	return dynamic_cast<KAmpEvent*>(NewEvent(KAmpEvent::GetClassName()));
+  //returns a pointer to a KAmpEvent object. You own the memory, so
+  //you must delete it.
+
+  return dynamic_cast<KAmpEvent*>(NewEvent(KAmpEvent::GetClassName()));
 }
 
 Bool_t KEventFactory::DeleteEvent(KEvent *event)
 {
-	//can use this method to delete objects if you like. This might be 
-	//useful in the future if the objects become more complicated.
-	
-	//returns true if it successfully deletes the object.
-	if(event == 0) return true;
-	
-	//could check for event type and perform type specific cleanup if necessary
-	
+  //can use this method to delete objects if you like. This might be 
+  //useful in the future if the objects become more complicated.
+
+  //returns true if it successfully deletes the object.
+  if(event == 0) return true;
+
+  //could check for event type and perform type specific cleanup if necessary
+
   event->Clear("C"); // make sure that we clear out the event's TClonesArrays.
-	delete event; 
-	event = 0; //why doesn't this set event to zero outside of this method? stupid scope
-	
-	return true;
+  delete event; 
+  event = 0; //why doesn't this set event to zero outside of this method? stupid scope
+
+  return true;
 }
 
 KEvent* KEventFactory::NewEvent(const KEvent* event)
 {
-	//make a new Event object, but copy it from an already existing event.
-	//This method checks which type of KEvent you passed in,
-	//then creates a new Event of that type and returns a pointer. The return
-	//here is KEvent, but you can cast that pointer to whatever
-	//KEvent-derived object type you really have (KRawEvent, or KHLAEvent). 
-	
-	//have to check the type, then call that type's copy constructur and 
-	//return the pointer. 
-	
-	KEvent *mNewEvent = 0;
-	
-	if(event == 0) return mNewEvent; 
-	
+  //make a new Event object, but copy it from an already existing event.
+  //This method checks which type of KEvent you passed in,
+  //then creates a new Event of that type and returns a pointer. The return
+  //here is KEvent, but you can cast that pointer to whatever
+  //KEvent-derived object type you really have (KRawEvent, or KHLAEvent). 
+
+  //have to check the type, then call that type's copy constructur and 
+  //return the pointer. 
+
+  KEvent *mNewEvent = 0;
+
+  if(event == 0) return mNewEvent; 
+
   mNewEvent = NewEvent(event->GetClassName());
-	return mNewEvent;
-	
+  return mNewEvent;
+
 }
 
 void KEventFactory::BuildEvent(KEvent *event)
 {
-	if(const KHLAEvent *mHLAEvent = dynamic_cast<const KHLAEvent*>(event)){
-		//do whatever is needed. nothing for now. 
-		if(mHLAEvent){
-			//do stuff. 
-		}
-	}
-	
-	else if(const KRawEvent *mRawEvent = dynamic_cast<const KRawEvent*>(event)){
-		//do whatever is needed. nothing for now.
-		if(mRawEvent){
-			//do stuff. 
-		}
-	}
-	else if(const KHLaMCEvent *mHLaMCEvent = dynamic_cast<const KHLaMCEvent*>(event)){
-		//do whatever is needed. nothing for now. 
-		if(mHLaMCEvent){
-			//do stuff. 
-		}
-	}
-	else if(const KAmpEvent *mAmpEvent = dynamic_cast<const KAmpEvent*>(event)){
-		//do whatever is needed. nothing for now. 
-		if(mAmpEvent){
-			//do stuff. 
-		}
-	}
-	else {
-		//cout << "KEventFactory::NewEvent: Cannot create a new Event of this type" << endl;
-	}
+  if(const KHLAEvent *mHLAEvent = dynamic_cast<const KHLAEvent*>(event)){
+    //do whatever is needed. nothing for now. 
+    if(mHLAEvent){
+      //do stuff. 
+    }
+  }
+
+  else if(const KRawEvent *mRawEvent = dynamic_cast<const KRawEvent*>(event)){
+    //do whatever is needed. nothing for now.
+    if(mRawEvent){
+      //do stuff. 
+    }
+  }
+  else if(const KAmpEvent *mAmpEvent = dynamic_cast<const KAmpEvent*>(event)){
+    //do whatever is needed. nothing for now. 
+    if(mAmpEvent){
+      //do stuff. 
+    }
+  }
+  else {
+    //cout << "KEventFactory::NewEvent: Cannot create a new Event of this type" << endl;
+  }
 }
