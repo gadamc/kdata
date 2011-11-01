@@ -25,11 +25,16 @@ public:
   KTrapKamperProto(void);
   virtual ~KTrapKamperProto(void);
   
-  virtual Bool_t MakeKamp(KRawBoloPulseRecord * ampBolo, KPulseAnalysisRecord *rec);
-  virtual Bool_t MakeBaseKamp(KRawBoloPulseRecord * ampBolo, KPulseAnalysisRecord *rec);
+  virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
+  virtual Bool_t MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
   
+  virtual KTrapezoidalFilter* GetTrapHeatTime(void){return &fTrapHeatTime;}
+  virtual KTrapezoidalFilter* GetTrapHeatAmplitude(void){return &fTrapHeatAmplitude;}
+  virtual KTrapezoidalFilter* GetTrapIonTime(void){return &fTrapIonTime;}
+  virtual KTrapezoidalFilter* GetTrapIonAmplitude(void){return &fTrapIonAmplitude;}
+
 private:
   std::string fName;
   std::vector<double> fPeakPositionResult;
