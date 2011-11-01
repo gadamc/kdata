@@ -97,7 +97,7 @@ endif
 
 ROOTINCS       := -I$(ROOTSYS)/include
 XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
-ROOTLIBS       := -lRootExtensions $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMathMore -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
+ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMathMore -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
 ROOTLIBS       += -Wl,-rpath,$(ROOTSYS)/lib
 
 FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../include/fftw -I$(FFTW_DIR)/../include/rfftw
