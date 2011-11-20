@@ -218,12 +218,12 @@ Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysis
 void KTrapKamperProto::FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrapezoidalFilter* trap, int polarity)
 {
   //polarity is the expected direction of the pulse. -1 for negative-going pulse and +1 for positive going.
-  double *secondOrderPulse = fOrderFilter->GetOutputPulse();
-  unsigned int secondOrderPulseSize = fOrderFilter->GetOutputPulseSize();
+  double *secondOrderPulse = fOrderFilter.GetOutputPulse();
+  unsigned int secondOrderPulseSize = fOrderFilter.GetOutputPulseSize();
   unsigned int riseTime = trap->GetRiseTime();
-  unsigned int flatTopeTime = trap->GetFlatTopWidth();
+  unsigned int flatTopTime = trap->GetFlatTopWidth();
   
-  double amp = polarity* 1.*fRms.GetRms(secondOrderPulse, secondOrderPulseSize);
+  double amp = polarity* 1.*fRms.GetRms(secondOrderPulse, 0, secondOrderPulseSize);
   
   unsigned int resultSize = secondOrderPulseSize - 2*riseTime- flatTopTime;
   
@@ -231,7 +231,7 @@ void KTrapKamperProto::FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrape
     for(unsigned int i = 0; i < resultSize; i++){
       if ((secondOrderPulse[i]<amp) && (secondOrderPulse[i+riseTime]>-amp) && (secondOrderPulse[i+riseTime+flatTopTime]>-amp) 
         && (secondOrderPulse[i+2*riseTime+flatTopTime]<amp))
-        fPeakPositionResult.at(i) += trap->GetOutputPulse()[i+riseTime+flatTopTime/2] * secondOrderPulse[i+riseTime]);  
+        fPeakPositionResult.at(i) += trap->GetOutputPulse()[i+riseTime+flatTopTime/2] * secondOrderPulse[i+riseTime];  
       else  
         fPeakPositionResult.at(i) += 0.;
     }
@@ -270,20 +270,25 @@ double KTrapKamperProto::GetMean(unsigned int first, unsigned int last, double *
   return (i > first) ? mean/(i-first) : -1*polarity*99999;
 }
 
-virtual KTrapezoidalFilter* AddTrapIonTime(double decay, unsigned int rise, unsigned int flat)
+KTrapezoidalFilter* KTrapKamperProto::AddTrapIonTime(double decay, unsigned int rise, unsigned int flat)
 {
-  KTrapezoidalFilter* n = new KTrapezoidalFilter;
-  n.SetParams(decay, rise, flat);
-  fTrapIonTime.push_back(n);  
+  return AddTrapTime(fTrapIonTime, decay, rise, flat);
+  
 } 
 
-virtual KTrapezoidalFilter* AddTrapHeatTime(double decay, unsigned int rise, unsigned int flat)
+KTrapezoidalFilter* KTrapKamperProto::AddTrapHeatTime(double decay, unsigned int rise, unsigned int flat)
 {
-  KTrapezoidalFilter* n = new KTrapezoidalFilter;
-  n.SetParams(decay, rise, flat);
-  fTrapHeatTime.push_back(n);
+  return AddTrapTime(fTrapHeatTime, decay, rise, flat);
+
 } 
 
+KTrapezoidalFilter* KTrapKamperProto::AddTrapTime(vector<KTrapezoidalFilter *>& trapVec, double decay, unsigned int rise, unsigned int flat)
+{
+  KTrapezoidalFilter* n = new KTrapezoidalFilter;
+  n->SetParams(decay, rise, flat);
+  trapVec.push_back(n);
+  return n;
+}
 
 double KTrapKamperProto::RunHeatPulseStartTime(void)
 {
@@ -295,7 +300,7 @@ double KTrapKamperProto::RunIonPulseStartTime(int polarity)
   return RunPulseStartTime(fTrapIonTime, fOrderFilter1Ion, fOrderFilter2Ion, fBaseRemovalIon, polarity);   
 }
 
-double KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter1& ord1, KOrderFilter1& ord2, KPtaProcessor& fromProcessor, int polarity)
+double KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter& ord1, KOrderFilter& ord2, KPtaProcessor& fromProcessor, int polarity)
 {
   
   vector<KTrapezoidalFilter* >::iterator it;
@@ -325,7 +330,7 @@ double KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec
         FillPeakPositionResult(ord2, (*it), polarity);
       }
       catch (out_of_range& oor) {
-        return 0.0
+        return 0.0;
       }
       
     }
