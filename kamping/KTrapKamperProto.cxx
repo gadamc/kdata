@@ -94,7 +94,7 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
       if(fTrapHeatAmplitude.RunProcess()){
 
         rec->SetAmp(GetMean(maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
-            fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
+            fTrapHeatAmplitude.GetFlatTopWidth()/2, fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
         rec->SetPeakPosition(maxPeakPos);
         rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
         //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
@@ -110,11 +110,11 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
     rec->SetExtra(fTrapIonAmplitude.GetFlatTopWidth(), 2);
 
     fPatRemoval.SetInputPulse((std::vector<short> &)pRec->GetTrace());
-    fPatRemoval.SetPatternLength(pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
+    fPatRemoval.SetPatternLength(1*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
 
     if( fPatRemoval.RunProcess()){
 
-      fPatRemoval.SetPatternLength(2.*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
+      fPatRemoval.SetPatternLength(2*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
       if( fPatRemoval.RunProcess()){
         
         fBaseRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
@@ -126,7 +126,7 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
           if(fTrapIonAmplitude.RunProcess()){
 
             rec->SetAmp(GetMean(maxPeakPos + fTrapIonAmplitude.GetRiseTime(), maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
-                fTrapIonAmplitude.GetFlatTopWidth()/2., fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
+                fTrapIonAmplitude.GetFlatTopWidth()/2, fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
             rec->SetPeakPosition(maxPeakPos);
             rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
             //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
@@ -168,7 +168,7 @@ Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysis
       if(fTrapHeatAmplitude.RunProcess()){
 
         rec->SetAmp(GetMean(maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
-            fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
+            fTrapHeatAmplitude.GetFlatTopWidth()/2, fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
         rec->SetPeakPosition(maxPeakPos);
         rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
         //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
@@ -185,11 +185,11 @@ Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysis
     
 
     fPatRemoval.SetInputPulse((std::vector<short> &)pRec->GetTrace());
-    fPatRemoval.SetPatternLength(pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
+    fPatRemoval.SetPatternLength(1*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
 
     if( fPatRemoval.RunProcess()){
 
-      fPatRemoval.SetPatternLength(2.*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
+      fPatRemoval.SetPatternLength(2*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
       if( fPatRemoval.RunProcess()){
         
         fBaseRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
@@ -201,7 +201,7 @@ Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysis
           if(fTrapIonAmplitude.RunProcess()){
 
             rec->SetAmp(GetMean(maxPeakPos + fTrapIonAmplitude.GetRiseTime(), maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
-                fTrapIonAmplitude.GetFlatTopWidth()/2., fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
+                fTrapIonAmplitude.GetFlatTopWidth()/2, fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
             rec->SetPeakPosition(maxPeakPos);
             rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
             //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
@@ -290,17 +290,17 @@ KTrapezoidalFilter* KTrapKamperProto::AddTrapTime(vector<KTrapezoidalFilter *>& 
   return n;
 }
 
-double KTrapKamperProto::RunHeatPulseStartTime(void)
+unsigned int KTrapKamperProto::RunHeatPulseStartTime(void)
 {
   return RunPulseStartTime(fTrapHeatTime, fOrderFilter1Heat, fOrderFilter2Heat, fBaseRemovalHeat, -1);
 }
 
-double KTrapKamperProto::RunIonPulseStartTime(int polarity)
+unsigned int KTrapKamperProto::RunIonPulseStartTime(int polarity)
 {
   return RunPulseStartTime(fTrapIonTime, fOrderFilter1Ion, fOrderFilter2Ion, fBaseRemovalIon, polarity);   
 }
 
-double KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter& ord1, KOrderFilter& ord2, KPtaProcessor& fromProcessor, int polarity)
+unsigned int KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter& ord1, KOrderFilter& ord2, KPtaProcessor& fromProcessor, int polarity)
 {
   
   vector<KTrapezoidalFilter* >::iterator it;
