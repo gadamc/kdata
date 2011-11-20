@@ -71,11 +71,13 @@ private:
     
   double GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity);
   
-  double RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter1& ord1, KOrderFilter1& ord2, 
+  double RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter& ord1, KOrderFilter& ord2, 
     KPtaProcessor& fromProcessor, int polarity);
   double RunIonPulseStartTime(int polarity);
   double RunHeatPulseStartTime(void);
   
+  virtual KTrapezoidalFilter* AddTrapTime(vector<KTrapezoidalFilter *>& trapVec, double decay, 
+                                unsigned int rise, unsigned int flat);
   
   
   
