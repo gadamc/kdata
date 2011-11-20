@@ -464,28 +464,28 @@ Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
     else if(fSambaFileLine.BeginsWith("Bolo.ampl.modul") ) {  //support old Samba header
       TObjArray *larr = fSambaFileLine.Tokenize("=#");
       TString val = GetStringFromTokenizedStringResult(larr, 1);
-      if (val == "indetermine" || val == "inconnu") chan->SetAmplModul(-9999);
+      if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetAmplModul(-9999);
       else chan->SetAmplModul(val.Atof());
       delete larr;
     }
     else if(fSambaFileLine.BeginsWith("Bolo.comp.modul") ) {  //support old Samba header
       TObjArray *larr = fSambaFileLine.Tokenize("=#");
       TString val = GetStringFromTokenizedStringResult(larr, 1);
-      if (val == "indetermine" || val == "inconnu") chan->SetCompModul(-9999);
+      if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
       else chan->SetCompModul(val.Atof());
       delete larr;
     }
     else if(fSambaFileLine.BeginsWith("Bolo.comp.trngl") ) {  //support old Samba header
       TObjArray *larr = fSambaFileLine.Tokenize("=#");
       TString val = GetStringFromTokenizedStringResult(larr, 1);
-      if (val == "indetermine" || val == "inconnu") chan->SetCorrTrngl(-9999);
+      if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrTrngl(-9999);
       else chan->SetCorrTrngl(val.Atof());
       delete larr;
     }
     else if(fSambaFileLine.BeginsWith("Bolo.comp.pied") ) {  //support old Samba header
       TObjArray *larr = fSambaFileLine.Tokenize("=#");
       TString val = GetStringFromTokenizedStringResult(larr, 1);
-      if (val == "indetermine" || val == "inconnu") chan->SetCorrPied(-9999);
+      if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrPied(-9999);
       else chan->SetCorrPied(val.Atof());
       delete larr;
     }
@@ -494,53 +494,54 @@ Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
       fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
       
       while (foundGoodKey){  //see below. i return when i get to the end. 
-
         TObjArray *regarr = fSambaFileLine.Tokenize("{}");  
         TString regSub = GetStringFromTokenizedStringResult(regarr, 1);
         //cout << regSub.Data() << endl;
         TObjArray *regSubArr = regSub.Tokenize(":=");
         TString key = GetStringFromTokenizedStringResult(regSubArr, 0);
-        TString val = GetStringFromTokenizedStringResult(regSubArr, 1);
+        TString val = "indetermine";
+        if (regSubArr->GetEntries() > 1) val = GetStringFromTokenizedStringResult(regSubArr, 1);
+        
         delete regarr;
         delete regSubArr;
         
         if(key == "polar-centre") {
-          if (val == "indetermine" || val == "inconnu") chan->SetPolarCentre(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetPolarCentre(-9999);
           else chan->SetPolarCentre(val.Atof());
         }
         else if(key == "polar-garde" ) {
-          if (val == "indetermine" || val == "inconnu") chan->SetPolarGarde(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetPolarGarde(-9999);
           else chan->SetPolarGarde(val.Atof());
         }
         else if(key == "gain-centre" ) {
-          if (val == "indetermine" || val == "inconnu") chan->SetGainCentre(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainCentre(-9999);
           else chan->SetGainCentre(val.Atof());
         }
         else if(key == "gain-chaleur" ) {
-          if (val == "indetermine" || val == "inconnu") chan->SetGainCentre(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainCentre(-9999);
           else chan->SetGainChaleur(val.Atof());
         }
         else if(key == "gain-garde" ) {
-          if (val == "indetermine" || val == "inconnu") chan->SetGainGarde(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainGarde(-9999);
           else chan->SetGainGarde(val.Atof());
         }
         else if(key == "polar-fet" ) {
           chan->SetPolarFet(val.Data());
         }
         else if(key == "corr-pied" ) {
-          if (val == "indetermine" || val == "inconnu") chan->SetCorrPied(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrPied(-9999);
           else chan->SetCorrPied(val.Atof());
         }
         else if(key == "comp-modul" ) {
-          if (val == "indetermine" || val == "inconnu") chan->SetCompModul(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
           else chan->SetCompModul(val.Atof());
         }
         else if(key == "corr-trngl" ) {
-          if (val == "indetermine" || val == "inconnu") chan->SetCorrTrngl(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrTrngl(-9999);
           else chan->SetCorrTrngl(val.Atof());
         }
         else if(key == "ampl-modul" ) {
-          if (val == "indetermine" || val == "inconnu") chan->SetAmplModul(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetAmplModul(-9999);
           else chan->SetAmplModul(val.Atof());
         }
         else if(key == "d2" ) {

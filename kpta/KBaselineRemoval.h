@@ -25,7 +25,7 @@ public:
   virtual ~KBaselineRemoval(void);
   virtual bool RunProcess(void);
 
-  virtual double CalculateAverage(void);
+  virtual bool CalculateAverage(void);
   virtual bool Subtract(double aVal);
   virtual void Subtract(double aVal, unsigned int i);
   
@@ -42,7 +42,7 @@ private:
   double fBaselineStop; //stoping position of region to be averaged for baseline subtraction, in percent of the total pulse length
 
   double fBaseline;
-  
+   
   //private methods
   void InitializeMembers(void);
 

@@ -10,7 +10,7 @@
 // that is used to calculate the baseline. The default values are 0% and 40%
 // 
 
-
+#include <iostream>
 #include "KBaselineRemoval.h"
 
 //ClassImp(KBaselineRemoval);
@@ -45,9 +45,8 @@ void KBaselineRemoval::InitializeMembers(void)
 bool KBaselineRemoval::RunProcess(void)
 {
   //cout << "Run Process: " << GetName() << endl;
-  double theAve = CalculateAverage();
-  if(theAve > -99999)
-    return Subtract(theAve);
+  if(CalculateAverage())
+    return Subtract(fBaseline);
   else {
     //fOutputPulse = fInputPulse;
     return false;
@@ -55,24 +54,29 @@ bool KBaselineRemoval::RunProcess(void)
 
 }
 
-double KBaselineRemoval::CalculateAverage(void)
+bool KBaselineRemoval::CalculateAverage(void)
 {
-
-  if(fInputSize < 1) return -99999;
-  if(fBaselineStart < 0 || fBaselineStop < 0) return -99999;
-  if(fBaselineStart > 1.0 || fBaselineStop > 1.0) return -99999;
-  if(fBaselineStart >= fBaselineStop) return -99999;
 
   fBaseline = 0;
 
+  if(fInputSize < 1) 
+    {std::cerr << "KBaselineRemoval returning false. fInputSize: " << fInputSize << std::endl; return false;}
+  if(fBaselineStart < 0 || fBaselineStop < 0) 
+    {std::cerr << "KBaselineRemoval returning false. fBaselineStart/fBaselineStop: " << fBaselineStart << "/" <<  fBaselineStop << std::endl; return false;}
+  if(fBaselineStart > 1.0 || fBaselineStop > 1.0) 
+    {std::cerr << "KBaselineRemoval returning false. fBaselineStart/fBaselineStop: " << fBaselineStart << "/" <<  fBaselineStop << std::endl; return false;}
+  if(fBaselineStart >= fBaselineStop)
+    {std::cerr << "KBaselineRemoval returning false. fBaselineStart/fBaselineStop: " << fBaselineStart << "/" <<  fBaselineStop << std::endl; return false;}
+ 
   double stop = fBaselineStop*fInputSize;
   unsigned int start = fBaselineStart*fInputSize;
   unsigned int i = start;
   for( ; i < stop; i++){
     fBaseline += *(fInputPulse+i);
   }
-  fBaseline = (i > start) ? fBaseline/double(i-start) : -99999;
-  return fBaseline;
+  
+  fBaseline = fBaseline/double(i-start);
+  
 }
 
 void KBaselineRemoval::Subtract(double aVal, unsigned int i)

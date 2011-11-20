@@ -13,6 +13,9 @@
 #include "KAmpSite.h"
 #include "KTrapKamperProto.h"
 //#include "KOptimalKamper.h"
+#include <vector>
+#include <string>
+#include <map>
 
 class KAmpEvent;
 class KRawEvent;
@@ -31,7 +34,12 @@ public:
   virtual Bool_t NeedScout(void){ return false;}
   
 private:
+  
   KTrapKamperProto fTrapKamp;
+  
+  //KTrapKamperProto* fTrapKampHeat;
+  //std::map<std::string, KTrapKamperProto *> fIonTraps;
+  
   //KOptimalKamper fOptKamp;
   
 };
