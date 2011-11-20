@@ -313,7 +313,7 @@ unsigned int KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& t
     if( !(*it)->RunProcess() ){
       cerr << "KTrapKamperProto::RunPulseStartTime. A KTrapezoidal Filter Failed (decay, rise, flat): " 
         << (*it)->GetDecayTimeConstant() << "," << (*it)->GetRiseTime() << "," << (*it)->GetFlatTopWidth() << endl;
-      return 0.0;
+      return 0;
     }
     else{
       
@@ -330,7 +330,7 @@ unsigned int KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& t
         FillPeakPositionResult(ord2, (*it), polarity);
       }
       catch (out_of_range& oor) {
-        return 0.0;
+        return 0;
       }
       
     }
