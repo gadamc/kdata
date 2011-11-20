@@ -14,12 +14,9 @@
 //
 //  fExtra Index  |  Description of value
 //  ---------------------------------------
-//  0              Trapezoidal Filter for Pulse Time - decay slope
-//  1              Trapezoidal Filter for Pulse Time - rise time
-//  2              Trapezoidal Filter for Pulse Time - flat top width
-//  3              Trapezoidal Filter for Pulse Amplitude - decay slope
-//  4              Trapezoidal Filter for Pulse Amplitude - rise time
-//  5              Trapezoidal Filter for Pulse Amplitude - flat top width
+//  0              Trapezoidal Filter for Pulse Amplitude - decay slope
+//  1              Trapezoidal Filter for Pulse Amplitude - rise time
+//  2              Trapezoidal Filter for Pulse Amplitude - flat top width
 
 #include "KTrapKamperProto.h"
 
@@ -29,6 +26,9 @@
 #include "KRawBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
 
+#include <stdexcept>
+
+
 using namespace std;
 
 KTrapKamperProto::KTrapKamperProto(void)
@@ -36,10 +36,16 @@ KTrapKamperProto::KTrapKamperProto(void)
 
   SetName("KTrapKamperProto");
   
-  fTrapHeatTime.SetParams(50., 3, 20);
+  AddTrapHeatTime(50., 3, 0);
+  AddTrapHeatTime(50., 5, 0);
+  AddTrapHeatTime(50., 7, 0);
+  
   fTrapHeatAmplitude.SetParams(50., 10, 50);
 
-  fTrapIonTime.SetParams(1100., 3, 20);
+  AddTrapIonTime(1100., 3, 0);
+  AddTrapIonTime(1100., 5, 0);
+  AddTrapIonTime(1100., 7, 0);
+  
   fTrapIonAmplitude.SetParams(1100., 100, 100);
 
   fOrderFilter1Heat.SetOrder(1);
@@ -74,53 +80,34 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
   if(pRec->GetIsHeatPulse()){
     //record the settings of the trapezoidal filters in the pulseAnalysisRecord.  This MUST be documented
     //at the beginning of this class.
-    rec->SetExtra(fTrapHeatTime.GetDecayTimeConstant(), 0);
-    rec->SetExtra(fTrapHeatTime.GetRiseTime(), 1);
-    rec->SetExtra(fTrapHeatTime.GetFlatTopWidth(), 2);
-    rec->SetExtra(fTrapHeatAmplitude.GetDecayTimeConstant(), 3);
-    rec->SetExtra(fTrapHeatAmplitude.GetRiseTime() ,4);
-    rec->SetExtra(fTrapHeatAmplitude.GetFlatTopWidth(), 5);
+    rec->SetExtra(fTrapHeatAmplitude.GetDecayTimeConstant(), 0);
+    rec->SetExtra(fTrapHeatAmplitude.GetRiseTime() ,1);
+    rec->SetExtra(fTrapHeatAmplitude.GetFlatTopWidth(), 2);
 
     fBaseRemovalHeat.SetInputPulse( (std::vector<short> &)pRec->GetTrace());
 
     if(fBaseRemovalHeat.RunProcess()){
       
-      fTrapHeatTime.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
-      if(fTrapHeatTime.RunProcess()){
-
-        //using the "OrderFilter" to calculate the second derivative (is there a faster way?)
-        fOrderFilter1Heat.SetInputPulse(fTrapHeatTime.GetOutputPulse(), fTrapHeatTime.GetOutputPulseSize());
-        fOrderFilter1Heat.RunProcess();
+      maxPeakPos = RunHeatPulseStartTime();
         
-        fOrderFilter2Heat.SetInputPulse(fOrderFilter1Heat.GetOutputPulse(), fOrderFilter1Heat.GetOutputPulseSize());
-        fOrderFilter2Heat.RunProcess();
-       
+      fTrapHeatAmplitude.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
+      if(fTrapHeatAmplitude.RunProcess()){
 
-        maxPeakPos = FindMaxPeak(fOrderFilter2Heat.GetOutputPulseSize(), fOrderFilter2Heat.GetOutputPulse(),
-          fTrapHeatTime.GetRiseTime(), fTrapHeatTime.GetFlatTopWidth(), fTrapHeatTime.GetOutputPulse(), fTrapHeatTime.GetOutputPulseSize(), -1);
-        
-        fTrapHeatAmplitude.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
-        if(fTrapHeatAmplitude.RunProcess()){
-
-          rec->SetAmp(GetMean(maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
+        rec->SetAmp(GetMean(maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
             fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
-          rec->SetPeakPosition(maxPeakPos);
-          rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
-          //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
+        rec->SetPeakPosition(maxPeakPos);
+        rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
+        //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
           
-        } else {cout << "fTrapHeatAmplitude  fail" << endl; return false;}
-      } else {cout << "fTrapHeatTime  fail" << endl; return false;}  
+      } else {cout << "fTrapHeatAmplitude  fail" << endl; return false;}
     }  else {cout << "fBaseRemovalHeat  fail" << endl; return false;}
   }
 
   //do ion pulse analysis
   else{
-    rec->SetExtra(fTrapIonTime.GetDecayTimeConstant(), 0);
-    rec->SetExtra(fTrapIonTime.GetRiseTime(), 1);
-    rec->SetExtra(fTrapIonTime.GetFlatTopWidth(), 2);
-    rec->SetExtra(fTrapIonAmplitude.GetDecayTimeConstant(), 3);
-    rec->SetExtra(fTrapIonAmplitude.GetRiseTime(), 4);
-    rec->SetExtra(fTrapIonAmplitude.GetFlatTopWidth(), 5);
+    rec->SetExtra(fTrapIonAmplitude.GetDecayTimeConstant(), 0);
+    rec->SetExtra(fTrapIonAmplitude.GetRiseTime(), 1);
+    rec->SetExtra(fTrapIonAmplitude.GetFlatTopWidth(), 2);
 
     fPatRemoval.SetInputPulse((std::vector<short> &)pRec->GetTrace());
     fPatRemoval.SetPatternLength(pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
@@ -133,30 +120,17 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
         fBaseRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
         if(fBaseRemovalIon.RunProcess()){
 
-          fTrapIonTime.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
-          if(fTrapIonTime.RunProcess()){
-
-            //using the "OrderFilter" to calculate the second derivative (is there a faster way?)
-            fOrderFilter1Ion.SetInputPulse(fTrapIonTime.GetOutputPulse(), fTrapIonTime.GetOutputPulseSize());
-            fOrderFilter1Ion.RunProcess();
+          maxPeakPos = RunIonPulseStartTime(pRec->GetPolarity() > 0 ? -1 : 1);
             
-            fOrderFilter2Ion.SetInputPulse(fOrderFilter1Ion.GetOutputPulse(), fOrderFilter1Ion.GetOutputPulseSize());
-            fOrderFilter2Ion.RunProcess();
+          fTrapIonAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
+          if(fTrapIonAmplitude.RunProcess()){
 
-            maxPeakPos = FindMaxPeak(fOrderFilter2Ion.GetOutputPulseSize(), fOrderFilter2Ion.GetOutputPulse(),
-              fTrapIonTime.GetRiseTime(), fTrapIonTime.GetFlatTopWidth(),fTrapIonTime.GetOutputPulse(), 
-              fTrapIonTime.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1);
-              
-            fTrapIonAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
-            if(fTrapIonAmplitude.RunProcess()){
-
-              rec->SetAmp(GetMean(maxPeakPos + fTrapIonAmplitude.GetRiseTime(), maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
+            rec->SetAmp(GetMean(maxPeakPos + fTrapIonAmplitude.GetRiseTime(), maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
                 fTrapIonAmplitude.GetFlatTopWidth()/2., fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
-              rec->SetPeakPosition(maxPeakPos);
-              rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
-              //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
-            } else {cout << "fTrapIonAmplitude  fail" << endl; return false;}
-          } else {cout << "fTrapIonTime  fail" << endl; return false;}
+            rec->SetPeakPosition(maxPeakPos);
+            rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
+            //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
+          } else {cout << "fTrapIonAmplitude  fail" << endl; return false;}
         } else {cout << "fBaseRemovalIon  fail" << endl; return false;}
       } else {cout << "fPatRemoval  fail" << endl; return false;}
     } else {cout << "fPatRemoval  fail" << endl; return false;}
@@ -180,52 +154,35 @@ Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysis
   if(pRec->GetIsHeatPulse()){
     //record the settings of the trapezoidal filters in the pulseAnalysisRecord.  This MUST be documented
     //at the beginning of this class.
-    rec->SetExtra(fTrapHeatTime.GetDecayTimeConstant(), 0);
-    rec->SetExtra(fTrapHeatTime.GetRiseTime(), 1);
-    rec->SetExtra(fTrapHeatTime.GetFlatTopWidth(), 2);
-    rec->SetExtra(fTrapHeatAmplitude.GetDecayTimeConstant(), 3);
-    rec->SetExtra(fTrapHeatAmplitude.GetRiseTime() ,4);
-    rec->SetExtra(fTrapHeatAmplitude.GetFlatTopWidth(), 5);
+    rec->SetExtra(fTrapHeatAmplitude.GetDecayTimeConstant(), 0);
+    rec->SetExtra(fTrapHeatAmplitude.GetRiseTime() ,1);
+    rec->SetExtra(fTrapHeatAmplitude.GetFlatTopWidth(), 2);
 
     fBaseRemovalHeat.SetInputPulse( (std::vector<short> &)pRec->GetTrace());
 
     if(fBaseRemovalHeat.RunProcess()){
-      
-      fTrapHeatTime.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
-      if(fTrapHeatTime.RunProcess()){
-
-        //using the "OrderFilter" to calculate the second derivative (is there a faster way?)
-        fOrderFilter1Heat.SetInputPulse(fTrapHeatTime.GetOutputPulse(), fTrapHeatTime.GetOutputPulseSize());
-        fOrderFilter1Heat.RunProcess();
-        
-        fOrderFilter2Heat.SetInputPulse(fOrderFilter1Heat.GetOutputPulse(), fOrderFilter1Heat.GetOutputPulseSize());
-        fOrderFilter2Heat.RunProcess();
-       
-
-        maxPeakPos = 0;
-        
-        fTrapHeatAmplitude.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
-        if(fTrapHeatAmplitude.RunProcess()){
-
-          rec->SetAmp(GetMean(maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
-            fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
-          rec->SetPeakPosition(maxPeakPos);
-          rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
-          //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
           
-        } else {cout << "fTrapHeatAmplitude  fail" << endl; return false;}
-      } else {cout << "fTrapHeatTime  fail" << endl; return false;}  
+      maxPeakPos = 0;
+        
+      fTrapHeatAmplitude.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
+      if(fTrapHeatAmplitude.RunProcess()){
+
+        rec->SetAmp(GetMean(maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
+            fTrapHeatAmplitude.GetFlatTopWidth()/2., fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
+        rec->SetPeakPosition(maxPeakPos);
+        rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
+        //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
+          
+      } else {cout << "fTrapHeatAmplitude  fail" << endl; return false;}
     }  else {cout << "fBaseRemovalHeat  fail" << endl; return false;}
   }
 
   //do ion pulse analysis
   else{
-    rec->SetExtra(fTrapIonTime.GetDecayTimeConstant(), 0);
-    rec->SetExtra(fTrapIonTime.GetRiseTime(), 1);
-    rec->SetExtra(fTrapIonTime.GetFlatTopWidth(), 2);
-    rec->SetExtra(fTrapIonAmplitude.GetDecayTimeConstant(), 3);
-    rec->SetExtra(fTrapIonAmplitude.GetRiseTime(), 4);
-    rec->SetExtra(fTrapIonAmplitude.GetFlatTopWidth(), 5);
+    rec->SetExtra(fTrapIonAmplitude.GetDecayTimeConstant(), 0);
+    rec->SetExtra(fTrapIonAmplitude.GetRiseTime(), 1);
+    rec->SetExtra(fTrapIonAmplitude.GetFlatTopWidth(), 2);
+    
 
     fPatRemoval.SetInputPulse((std::vector<short> &)pRec->GetTrace());
     fPatRemoval.SetPatternLength(pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
@@ -238,28 +195,17 @@ Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysis
         fBaseRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
         if(fBaseRemovalIon.RunProcess()){
 
-          fTrapIonTime.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
-          if(fTrapIonTime.RunProcess()){
-
-            //using the "OrderFilter" to calculate the second derivative (is there a faster way?)
-            fOrderFilter1Ion.SetInputPulse(fTrapIonTime.GetOutputPulse(), fTrapIonTime.GetOutputPulseSize());
-            fOrderFilter1Ion.RunProcess();
+          maxPeakPos = 0;
             
-            fOrderFilter2Ion.SetInputPulse(fOrderFilter1Ion.GetOutputPulse(), fOrderFilter1Ion.GetOutputPulseSize());
-            fOrderFilter2Ion.RunProcess();
+          fTrapIonAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
+          if(fTrapIonAmplitude.RunProcess()){
 
-            maxPeakPos = 0;
-            
-            fTrapIonAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
-            if(fTrapIonAmplitude.RunProcess()){
-
-              rec->SetAmp(GetMean(maxPeakPos + fTrapIonAmplitude.GetRiseTime(), maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
+            rec->SetAmp(GetMean(maxPeakPos + fTrapIonAmplitude.GetRiseTime(), maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
                 fTrapIonAmplitude.GetFlatTopWidth()/2., fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
-              rec->SetPeakPosition(maxPeakPos);
-              rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
-              //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
-            } else {cout << "fTrapIonAmplitude  fail" << endl; return false;}
-          } else {cout << "fTrapIonTime  fail" << endl; return false;}
+            rec->SetPeakPosition(maxPeakPos);
+            rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
+            //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
+          } else {cout << "fTrapIonAmplitude  fail" << endl; return false;}
         } else {cout << "fBaseRemovalIon  fail" << endl; return false;}
       } else {cout << "fPatRemoval  fail" << endl; return false;}
     } else {cout << "fPatRemoval  fail" << endl; return false;}
@@ -269,38 +215,43 @@ Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysis
   return true;
 }
 
-void KTrapKamperProto::FindPeaks(unsigned int secondOrderPulseLength, double* secondOrderPulse, unsigned int riseTime, 
-  unsigned int flatTopTime, int polarity)
+void KTrapKamperProto::FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrapezoidalFilter* trap, int polarity)
 {
   //polarity is the expected direction of the pulse. -1 for negative-going pulse and +1 for positive going.
+  double *secondOrderPulse = fOrderFilter->GetOutputPulse();
+  unsigned int secondOrderPulseSize = fOrderFilter->GetOutputPulseSize();
+  unsigned int riseTime = trap->GetRiseTime();
+  unsigned int flatTopeTime = trap->GetFlatTopWidth();
   
-  double amp = polarity* 1.*fRms.GetRms(secondOrderPulse, 0, secondOrderPulseLength);
-  fPeakPositionResult.resize(0);
+  double amp = polarity* 1.*fRms.GetRms(secondOrderPulse, secondOrderPulseSize);
   
-  unsigned int resultSize = secondOrderPulseLength - 2*riseTime- flatTopTime;
+  unsigned int resultSize = secondOrderPulseSize - 2*riseTime- flatTopTime;
   
-  for(unsigned int i = 0; i < resultSize; i++){
-    if ((secondOrderPulse[i]<amp) && (secondOrderPulse[i+riseTime]>-amp) && (secondOrderPulse[i+riseTime+flatTopTime]>-amp) 
-      && (secondOrderPulse[i+2*riseTime+flatTopTime]<amp))
-      fPeakPositionResult.push_back(secondOrderPulse[i+riseTime]);  
-    else  
-      fPeakPositionResult.push_back(0.);
+  try{
+    for(unsigned int i = 0; i < resultSize; i++){
+      if ((secondOrderPulse[i]<amp) && (secondOrderPulse[i+riseTime]>-amp) && (secondOrderPulse[i+riseTime+flatTopTime]>-amp) 
+        && (secondOrderPulse[i+2*riseTime+flatTopTime]<amp))
+        fPeakPositionResult.at(i) += trap->GetOutputPulse()[i+riseTime+flatTopTime/2] * secondOrderPulse[i+riseTime]);  
+      else  
+        fPeakPositionResult.at(i) += 0.;
+    }
+  }
+  catch (out_of_range& oor) {
+    cerr << "Out of Range error: " << oor.what() << endl;
+    throw oor;
   }
 } 
 
-unsigned int KTrapKamperProto::FindMaxPeak(unsigned int secondOrderPulseLength, double* secondOrderPulse, unsigned int riseTime, 
-  unsigned int flatTopTime, double* trapOut, unsigned int trapOutSize, int polarity)
+unsigned int KTrapKamperProto::FindMaxPeak(vector<double>& pulse, unsigned int maxPosition)
 {
-  //polarity is the expected direction of the pulse. -1 for negative-going pulse and +1 for positive going.
-  
-  FindPeaks(secondOrderPulseLength, secondOrderPulse, riseTime, flatTopTime, polarity);
 
+  
   double maxValue = 0;
   unsigned int maxPos = 0;
 
-  for(unsigned int i = 0; i < fPeakPositionResult.size() && i < trapOutSize-(riseTime+flatTopTime); i++){
-    if( TMath::Abs(fPeakPositionResult[i] * trapOut[i+riseTime+flatTopTime]) > maxValue){
-      maxValue = TMath::Abs(fPeakPositionResult[i] * trapOut[i+riseTime+flatTopTime]);
+  for(unsigned int i = 0; i < pulse.size() && i < maxPosition; i++){
+    if( TMath::Abs(pulse[i]) > maxValue){
+      maxValue = TMath::Abs(pulse[i]);
       maxPos = i;
     }
   }
@@ -317,5 +268,71 @@ double KTrapKamperProto::GetMean(unsigned int first, unsigned int last, double *
     mean += pulse[i];
 
   return (i > first) ? mean/(i-first) : -1*polarity*99999;
+}
+
+virtual KTrapezoidalFilter* AddTrapIonTime(double decay, unsigned int rise, unsigned int flat)
+{
+  KTrapezoidalFilter* n = new KTrapezoidalFilter;
+  n.SetParams(decay, rise, flat);
+  fTrapIonTime.push_back(n);  
+} 
+
+virtual KTrapezoidalFilter* AddTrapHeatTime(double decay, unsigned int rise, unsigned int flat)
+{
+  KTrapezoidalFilter* n = new KTrapezoidalFilter;
+  n.SetParams(decay, rise, flat);
+  fTrapHeatTime.push_back(n);
+} 
+
+
+double KTrapKamperProto::RunHeatPulseStartTime(void)
+{
+  return RunPulseStartTime(fTrapHeatTime, fOrderFilter1Heat, fOrderFilter2Heat, fBaseRemovalHeat, -1);
+}
+
+double KTrapKamperProto::RunIonPulseStartTime(int polarity)
+{
+  return RunPulseStartTime(fTrapIonTime, fOrderFilter1Ion, fOrderFilter2Ion, fBaseRemovalIon, polarity);   
+}
+
+double KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter1& ord1, KOrderFilter1& ord2, KPtaProcessor& fromProcessor, int polarity)
+{
+  
+  vector<KTrapezoidalFilter* >::iterator it;
+  fPeakPositionResult.clear();
+  fPeakPositionResult.resize(fromProcessor.GetOutputPulseSize());
+  unsigned int maxPeakSize = fPeakPositionResult.size();
+  
+  for( it = trapVec.begin(); it < trapVec.end(); it++){
+    (*it)->SetInputPulse(fromProcessor.GetOutputPulse(), fromProcessor.GetOutputPulseSize());
+    if( !(*it)->RunProcess() ){
+      cerr << "KTrapKamperProto::RunPulseStartTime. A KTrapezoidal Filter Failed (decay, rise, flat): " 
+        << (*it)->GetDecayTimeConstant() << "," << (*it)->GetRiseTime() << "," << (*it)->GetFlatTopWidth() << endl;
+      return 0.0;
+    }
+    else{
+      
+      if (maxPeakSize > (*it)->GetOutputPulseSize() - (*it)->GetRiseTime() - (*it)->GetFlatTopWidth())
+        maxPeakSize = (*it)->GetOutputPulseSize() - (*it)->GetRiseTime() - (*it)->GetFlatTopWidth();
+       
+      //using the "OrderFilter" to calculate the second derivative (there could be a faster way)
+      ord1.SetInputPulse((*it)->GetOutputPulse(), (*it)->GetOutputPulseSize());
+      ord1.RunProcess();
+
+      ord2.SetInputPulse(ord1.GetOutputPulse(), ord1.GetOutputPulseSize());
+      ord2.RunProcess();
+      try{
+        FillPeakPositionResult(ord2, (*it), polarity);
+      }
+      catch (out_of_range& oor) {
+        return 0.0
+      }
+      
+    }
+  }
+  
+  
+  return FindMaxPeak(fPeakPositionResult, maxPeakSize);
+    
 }
 
