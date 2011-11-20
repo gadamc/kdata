@@ -7,10 +7,7 @@
 //
 // * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
 //
-// The HLA class for Single Bolo Sub Records. It stores a significant amount
-// of information for each recorded bolometer event. It contains all of the
-// calculated values from the ERA processing. See the descriptions below
-// of each of the parameters.
+// The Raw-tier class for Single Bolo Sub Records. 
 //
 
 #include "KRawBolometerRecord.h"
