@@ -26,14 +26,13 @@ public:
   virtual ~KTrapKamperProto(void);
   
   virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
+  virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec, double fixPeakPosition);
   virtual Bool_t MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
-  
-  virtual KTrapezoidalFilter* GetTrapHeatTime(Int_t i){return fTrapHeatTime[i];}
-  virtual unsigned int GetNumTrapHeatTime(void){return fTrapHeatTime.size();}
-  virtual KTrapezoidalFilter* GetTrapIonTime(Int_t i){return fTrapIonTime[i];}
-  virtual unsigned int GetNumTrapIonTime(void){return fTrapIonTime.size();}
+
+  virtual std::vector<KTrapezoidalFilter*>& GetTrapHeatTime( void ){return fTrapHeatTime;}  
+  virtual std::vector<KTrapezoidalFilter*>& GetTrapIonTime( void ){return fTrapIonTime;}
   
   virtual KTrapezoidalFilter* AddTrapHeatTime(double decay, unsigned int rise, unsigned int flat); 
   virtual KTrapezoidalFilter* AddTrapIonTime(double decay, unsigned int rise, unsigned int flat); 
@@ -41,6 +40,15 @@ public:
   virtual KTrapezoidalFilter* GetTrapHeatAmplitude(void){return &fTrapHeatAmplitude;}
   virtual KTrapezoidalFilter* GetTrapIonAmplitude(void){return &fTrapIonAmplitude;}
   
+  virtual KBaselineRemoval* GetBaselineRemovalHeat(void){return &fBaseRemovalHeat;}
+  virtual KBaselineRemoval* GetBaselineRemovalIon(void){return &fBaseRemovalIon;}
+  virtual KPatternRemoval* GetPatternRemoval(void){return &fPatRemoval;}
+  
+  virtual std::vector<double>& GetPeakPositionResult(void){return fPeakPositionResult;}
+
+  virtual double GetPeakPositionSearchAmplifier(void){return fPeakPositionSearchAmplifier;}
+  virtual void SetPeakPositionSearchAmplifier(double aval){ fPeakPositionSearchAmplifier = aval;}
+
   
 private:
   std::string fName;
@@ -64,12 +72,14 @@ private:
   KOrderFilter fOrderFilter1Ion;
   KOrderFilter fOrderFilter2Ion;
   
+  double fPeakPositionSearchAmplifier;
   
   void FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrapezoidalFilter* trap, int polarity);
     
   unsigned int FindMaxPeak(vector<double>& pulse, unsigned int maxPosition);
     
   double GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity);
+  double GetMax(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity);
   
   unsigned int RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter& ord1, KOrderFilter& ord2, 
     KPtaProcessor& fromProcessor, int polarity);

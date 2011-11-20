@@ -42,6 +42,7 @@ public:
   virtual Double32_t GetRisetime(void) const { return fRiseTime;}
   virtual Double32_t GetPulseWidth(void) const { return fPulseWidth;}
   virtual Double32_t GetSlopeRemoved(void) const {return fSlopeRemoved;}
+  virtual Bool_t GetPileUpDetected(void) const {return fPileUpDetected;}
   virtual Double32_t GetBaselineRemoved(void) const {return fBaselineRemoved;}
   virtual Double32_t GetExtra(UInt_t i) const;
   
@@ -56,6 +57,7 @@ public:
   virtual void SetPulseWidth(Double32_t aval) {  fPulseWidth =  aval;}
   virtual void SetSlopeRemoved(Double32_t aval) {  fSlopeRemoved =  aval;}
   virtual void SetBaselineRemoved(Double32_t aval) {  fBaselineRemoved =  aval;}
+  virtual void SetPileUpDetected(Bool_t aVal) { fPileUpDetected = aVal;}
   virtual void SetExtra(Double32_t aVal, UInt_t index);
   
   KAmpBolometerRecord* GetBolometerRecord(void) const {return (KAmpBolometerRecord*)fBolometerRecord.GetObject();}
@@ -92,6 +94,8 @@ private:
   Double32_t fPulseWidth;  //in units of seconds
   Double32_t fBaselineRemoved; //amplitude of the baseline that was corrected in the analysis
   Double32_t fSlopeRemoved; //amplitude of the slope that was removed (=0 exactly if linear removal was not performed)
+  Bool_t fPileUpDetected;  //set to true if a pile up was detected.
+  
   Double32_t fExtra[KPULSEANARECORD_EXTRA_SIZE];  //this array holds 25 floating-point numbers for the different calculations to fill as desired.
                                                   //this is a static sized array so that ALL values are accessible from TTree::Draw and Scan
   
@@ -105,7 +109,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KPulseAnalysisRecord &aRec);
   
-  ClassDef(KPulseAnalysisRecord,1);
+  ClassDef(KPulseAnalysisRecord,2);
 };
 
 

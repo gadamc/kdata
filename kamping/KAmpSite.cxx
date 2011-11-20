@@ -37,8 +37,14 @@ KAmpSite::~KAmpSite(void)
 void KAmpSite::SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp)
 {
   //as a KampSite - you want to create a valid KAmpEvent, so you MUST set the TRef links.
+  //This method simply does the following
   //
+  // rec->SetBolometerRecord(boloAmp);  
+  // rec->SetBoloPulseRecord(pAmp); 
+  // pAmp->AddPulseAnalysisRecord(rec);
+  
   rec->SetBolometerRecord(boloAmp);  
   rec->SetBoloPulseRecord(pAmp); 
   pAmp->AddPulseAnalysisRecord(rec);
+  
 }
