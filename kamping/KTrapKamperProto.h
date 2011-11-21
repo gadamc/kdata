@@ -49,6 +49,10 @@ public:
   virtual double GetPeakPositionSearchAmplifier(void){return fPeakPositionSearchAmplifier;}
   virtual void SetPeakPositionSearchAmplifier(double aval){ fPeakPositionSearchAmplifier = aval;}
 
+  //temporarily public!
+  void FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrapezoidalFilter* trap, int polarity);
+  void ClearPeakPositionResult(void) {fPeakPositionResult.clear();}
+  void ResizePeakPositionResult(unsigned int size){fPeakPositionResult.resize(size);}
   
 private:
   std::string fName;
@@ -74,7 +78,7 @@ private:
   
   double fPeakPositionSearchAmplifier;
   
-  void FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrapezoidalFilter* trap, int polarity);
+  
     
   unsigned int FindMaxPeak(vector<double>& pulse, unsigned int maxPosition);
     

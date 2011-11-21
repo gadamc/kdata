@@ -37,20 +37,20 @@ KTrapKamperProto::KTrapKamperProto(void)
   SetName("KTrapKamperProto");
   
   //its important to use different rise-times here, but keep the same flattop width
-  AddTrapHeatTime(20., 3, 25);
-  AddTrapHeatTime(20., 7, 25);
+  //AddTrapHeatTime(20., 3, 25);
+  //AddTrapHeatTime(20., 7, 25);
   AddTrapHeatTime(20., 15, 25);
-  AddTrapHeatTime(20., 3, 10);
-  AddTrapHeatTime(20., 7, 10);
-  AddTrapHeatTime(20., 15, 10);
+  //AddTrapHeatTime(20., 3, 60);
+  //AddTrapHeatTime(20., 7, 60);
+  AddTrapHeatTime(20., 15, 60);
    
   fTrapHeatAmplitude.SetParams(20., 10, 30);
 
-  AddTrapIonTime(400., 3, 40);
-  AddTrapIonTime(400., 7, 40);
+  //AddTrapIonTime(400., 3, 40);
+  //AddTrapIonTime(400., 7, 40);
   AddTrapIonTime(400., 15, 40);
-  AddTrapIonTime(400., 3, 70);
-  AddTrapIonTime(400., 7, 70);
+  //AddTrapIonTime(400., 3, 70);
+  //AddTrapIonTime(400., 7, 70);
   AddTrapIonTime(400., 15, 70);
   
   fTrapIonAmplitude.SetParams(1000., 50, 100);
