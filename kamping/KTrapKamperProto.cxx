@@ -37,21 +37,21 @@ KTrapKamperProto::KTrapKamperProto(void)
   SetName("KTrapKamperProto");
   
   //its important to use different rise-times here, but keep the same flattop width
-  AddTrapHeatTime(50., 3, 25);
-  AddTrapHeatTime(50., 7, 25);
-  AddTrapHeatTime(50., 15, 25);
-  AddTrapHeatTime(50., 3, 10);
-  AddTrapHeatTime(50., 7, 10);
-  AddTrapHeatTime(50., 15, 10);
+  AddTrapHeatTime(20., 3, 25);
+  AddTrapHeatTime(20., 7, 25);
+  AddTrapHeatTime(20., 15, 25);
+  AddTrapHeatTime(20., 3, 10);
+  AddTrapHeatTime(20., 7, 10);
+  AddTrapHeatTime(20., 15, 10);
    
-  fTrapHeatAmplitude.SetParams(50., 10, 30);
+  fTrapHeatAmplitude.SetParams(20., 10, 30);
 
-  AddTrapIonTime(1100., 3, 40);
-  AddTrapIonTime(1100., 7, 40);
-  AddTrapIonTime(1100., 15, 40);
-  AddTrapIonTime(1100., 3, 70);
-  AddTrapIonTime(1100., 7, 70);
-  AddTrapIonTime(1100., 15, 70);
+  AddTrapIonTime(400., 3, 40);
+  AddTrapIonTime(400., 7, 40);
+  AddTrapIonTime(400., 15, 40);
+  AddTrapIonTime(400., 3, 70);
+  AddTrapIonTime(400., 7, 70);
+  AddTrapIonTime(400., 15, 70);
   
   fTrapIonAmplitude.SetParams(1000., 50, 100);
 
@@ -92,8 +92,12 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
   rec->SetIsBaseline(false); 
   rec->SetName(GetName());
   rec->SetUnit(0);
-  if(pRec->GetPulseLength() == 0) 
-    return true;
+  if(pRec->GetPulseLength() == 0){
+    cerr << "KTrapKamperProto::MakeKamp. Pulse Length is zero." << endl;
+    fPeakPositionResult.clear();
+    return false;
+  }
+    
 
   double maxPeakPos = 0;
 
@@ -156,13 +160,10 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
     fTrapIonAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
     if( !fTrapIonAmplitude.RunProcess())
       {cout << "fTrapIonAmplitude failed" << endl; return false;}
-     
-    int theExpectedPolarity = KPulsePolarityCalculator::GetExpectedPolarity(pRec);
-    cout << "the expected polarity " << theExpectedPolarity << endl;
-           
+                
     rec->SetAmp(GetMean((int)maxPeakPos + fTrapIonAmplitude.GetRiseTime(), (int)maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
       fTrapIonAmplitude.GetFlatTopWidth()/2, fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), 
-       theExpectedPolarity ));
+       KPulsePolarityCalculator::GetExpectedPolarity(pRec) ));
     // rec->SetAmp(GetMax((int)maxPeakPos-1, (int)maxPeakPos-1 + fTrapIonAmplitude.GetRiseTime() + 
     //                 fTrapIonAmplitude.GetFlatTopWidth()/2, fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
     rec->SetPeakPosition(maxPeakPos);
