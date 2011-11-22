@@ -41,18 +41,18 @@ KTrapKamperProto::KTrapKamperProto(void)
   //AddTrapHeatTime(20., 7, 25);
   //AddTrapHeatTime(20., 15, 0);
   //AddTrapHeatTime(25., 3, 0);
-  AddTrapHeatTime(25., 7, 0);
+  //AddTrapHeatTime(25., 7, 0);
   AddTrapHeatTime(25., 17, 0);
-  AddTrapHeatTime(25., 31, 0); 
+  AddTrapHeatTime(25., 29, 0); 
   fTrapHeatAmplitude.SetParams(20., 10, 30);
 
   //AddTrapIonTime(400., 3, 40);
   //AddTrapIonTime(400., 7, 40);
   //AddTrapIonTime(400., 15, 40);
   //AddTrapIonTime(900., 3, 70);
-  AddTrapIonTime(900., 7, 0);
-  AddTrapIonTime(900., 17, 0);
-  AddTrapIonTime(900., 31, 0);
+  //AddTrapIonTime(900., 7, 0);
+  AddTrapIonTime(800., 23, 0);
+  AddTrapIonTime(800., 31, 0);
   
   fTrapIonAmplitude.SetParams(1000., 50, 200);
 
@@ -66,7 +66,7 @@ KTrapKamperProto::KTrapKamperProto(void)
   fOrderFilter1Ion.SetInitOutputValue(0.0);
   fOrderFilter2Ion.SetInitOutputValue(0.0);
 
-  fPeakPositionSearchAmplifier = 4.0;
+  fPeakPositionSearchAmplifier = 2.7;
   
 }
 
@@ -118,11 +118,13 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
     if(fixPeakPosition == -1)
       maxPeakPos = RunHeatPulseStartTime();
     else maxPeakPos = fixPeakPosition;
-        
+    
     fTrapHeatAmplitude.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
     if( !fTrapHeatAmplitude.RunProcess())
       {cout << "fTrapHeatAmplitude failed" << endl; return false;}
 
+    //PileUpDetection(pRec, rec);
+     
     rec->SetAmp(GetMean((int)maxPeakPos + fTrapHeatAmplitude.GetRiseTime(), (int)maxPeakPos + fTrapHeatAmplitude.GetRiseTime() + 
         fTrapHeatAmplitude.GetFlatTopWidth()/2, fTrapHeatAmplitude.GetOutputPulse(), fTrapHeatAmplitude.GetOutputPulseSize(), -1) );
     // rec->SetAmp(GetMax((int)maxPeakPos-1, (int)maxPeakPos-1 + fTrapHeatAmplitude.GetRiseTime() + 
@@ -157,11 +159,13 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
     if(fixPeakPosition == -1)
       maxPeakPos = RunIonPulseStartTime(pRec->GetPolarity() > 0 ? -1 : 1);
     else maxPeakPos = fixPeakPosition;
-          
+      
     fTrapIonAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
     if( !fTrapIonAmplitude.RunProcess())
       {cout << "fTrapIonAmplitude failed" << endl; return false;}
                 
+    //PileUpDetection(pRec, rec);
+    
     rec->SetAmp(GetMean((int)maxPeakPos + fTrapIonAmplitude.GetRiseTime(), (int)maxPeakPos + fTrapIonAmplitude.GetRiseTime() + 
       fTrapIonAmplitude.GetFlatTopWidth()/2, fTrapIonAmplitude.GetOutputPulse(), fTrapIonAmplitude.GetOutputPulseSize(), 
        KPulsePolarityCalculator::GetExpectedPolarity(pRec) ));
@@ -194,14 +198,16 @@ void KTrapKamperProto::FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrape
       if(polarity < 0) {
         if ((secondOrderPulse[i]<amp) && (secondOrderPulse[i+riseTime]>-amp) && (secondOrderPulse[i+riseTime+flatTopTime]>-amp) 
         && (secondOrderPulse[i+2*riseTime+flatTopTime]<amp))
-          fPeakPositionResult.at(i) += trap->GetOutputPulse()[i+riseTime] * secondOrderPulse[i+riseTime];  
+          //fPeakPositionResult.at(i) += trap->GetOutputPulse()[i+riseTime] * secondOrderPulse[i+riseTime];  
+        fPeakPositionResult.at(i) += secondOrderPulse[i+riseTime] * -1.;
         else  
           fPeakPositionResult.at(i) += 0.;
       }
       else {
         if ((secondOrderPulse[i]>amp) && (secondOrderPulse[i+riseTime]<-amp) && (secondOrderPulse[i+riseTime+flatTopTime]<-amp) 
         && (secondOrderPulse[i+2*riseTime+flatTopTime]>amp))
-          fPeakPositionResult.at(i) += trap->GetOutputPulse()[i+riseTime] * secondOrderPulse[i+riseTime];  
+          //fPeakPositionResult.at(i) += trap->GetOutputPulse()[i+riseTime] * secondOrderPulse[i+riseTime];  
+          fPeakPositionResult.at(i) += secondOrderPulse[i+riseTime];  
         else  
           fPeakPositionResult.at(i) += 0.;
       }
@@ -213,21 +219,21 @@ void KTrapKamperProto::FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrape
   }
 } 
 
-unsigned int KTrapKamperProto::FindMaxPeak(vector<double>& pulse, unsigned int maxPosition)
+unsigned int KTrapKamperProto::FindPeak(vector<double>& pulse, unsigned int maxPosition)
 {
-
+  //returns the position of the minimum value point in the pulse
   
-  double maxValue = 0;
-  unsigned int maxPos = 0;
+  double minValue = 0;
+  unsigned int minPos = 0;
 
   for(unsigned int i = 0; i < pulse.size() && i < maxPosition; i++){
-    if( TMath::Abs(pulse[i]) > maxValue){
-      maxValue = TMath::Abs(pulse[i]);
-      maxPos = i;
+    if( pulse[i] < minValue){
+      minValue = pulse[i];
+      minPos = i;
     }
   }
 
-  return maxPos;
+  return minPos;
 }
 
 double KTrapKamperProto::GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity)
@@ -322,8 +328,18 @@ unsigned int KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& t
   }
   
   
-  return FindMaxPeak(fPeakPositionResult, maxPeakSize);
+  return FindPeak(fPeakPositionResult, maxPeakSize);
     
-  //need to add a pile-up detector here..
 }
+// 
+// unsigned int KTrapKamperProto::PileUpDetection(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
+// {
+//   int polarity = KPulsePolarityCalculator::GetExpectedPolarity(pRec);
+//   
+//   unsigned int mPeakBin  = FindPeak(fPeakPositionResult, fPeakPositionResult.size());
+//   if (mPeakBin > 0){
+//     for (unsigned int i = 10; i < fPeakPositionResult.size() && (i < mPeakBin - 10 || i > mPeakBin + 10) ; i++)
+//       
+//   }
+// }
 

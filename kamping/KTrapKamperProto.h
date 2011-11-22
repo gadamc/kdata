@@ -53,6 +53,7 @@ public:
   void FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrapezoidalFilter* trap, int polarity);
   void ClearPeakPositionResult(void) {fPeakPositionResult.clear();}
   void ResizePeakPositionResult(unsigned int size){fPeakPositionResult.resize(size);}
+  //unsigned int PileUpDetection(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec);
   
 private:
   std::string fName;
@@ -80,7 +81,7 @@ private:
   
   
     
-  unsigned int FindMaxPeak(vector<double>& pulse, unsigned int maxPosition);
+  unsigned int FindPeak(vector<double>& pulse, unsigned int maxPosition);
     
   double GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity);
   double GetMax(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity);
