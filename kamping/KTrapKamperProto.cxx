@@ -157,7 +157,7 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
       {cout << "fBaseRemovalIon failed" << endl; return false;}
 
     if(fixPeakPosition == -1)
-      maxPeakPos = RunIonPulseStartTime(pRec->GetPolarity() > 0 ? -1 : 1);
+      maxPeakPos = RunIonPulseStartTime( KPulsePolarityCalculator::GetExpectedPolarity(pRec) );
     else maxPeakPos = fixPeakPosition;
       
     fTrapIonAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
