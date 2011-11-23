@@ -13,6 +13,7 @@
 
 #include "KPtaProcessor.h"
 #include "KTrapezoidalFilter.h"
+#include "KOrderFilter.h"
 #include <string.h>
 #include <vector>
 
@@ -30,18 +31,23 @@ public:
 	
   virtual void SetDecayTimeConstant(double aDecayTimeConstant) {fDecayTimeConstant = aDecayTimeConstant;}
   
-  
   virtual void AddTrapFilter(unsigned int aRiseTime, unsigned int aFlatTopWidth);
 
   virtual double GetDecayTimeConstant(void) {return fDecayTimeConstant;}
-  //virtual int GetPolarity(void) {return fPolarity;}
-  //virtual double GetThreshold(void) {return fThreshold;}
+  
+  //debug:
+  double* GetDerivative(void){return fDerivative;}
+  
 
 protected:
   double fDecayTimeConstant; // decay time constant of the input pulses
 	std::vector<KTrapezoidalFilter* > fTrapFilters;
   
-  
+  //for debugging only:
+  double *fDerivative;
+  KOrderFilter fOrderFilter1;
+  KOrderFilter fOrderFilter2;
+  unsigned int maxWidth;
 private:
   //private methods
   void InitializeMembers(void);
