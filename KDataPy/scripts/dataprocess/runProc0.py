@@ -11,8 +11,9 @@ def scpToLyon(*args, **kwargs):
     sys.exit(-1)
     
   #now send it via secure copy!
-  print 'calling secure copy'
-  scpRet = scp.sendBoloData(os.path.basename(args[0]))
+  print 'calling secure copy', args[0]
+
+  scpRet = scp.sendBoloData(args[0])
   
   return scpRet
   
@@ -30,6 +31,7 @@ def main(*argv):
   vr = myProc.view('proc/proc0', reduce=False)
   
   for row in vr:
+    print row['id']
     doc = myProc.get(row['id'])
     print 'have doc', row['id']
     doc['status'] = 'proc0 in progress'
@@ -53,6 +55,8 @@ def main(*argv):
       myProc.upload(doc)
       
     else:
+      doc['status'] = 'good'
+      myProc.upload(doc)
       print 'the process returned an empty dictionary!'
       sys.exit(-1)
     
