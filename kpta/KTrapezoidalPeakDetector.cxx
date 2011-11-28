@@ -37,6 +37,7 @@ KTrapezoidalPeakDetector::~KTrapezoidalPeakDetector(void)
       delete (*it);
   //debug
   if(fDerivative) delete [] fDerivative;
+  if(fCorrelation) delete [] fCorrelation;
 }
 
 
@@ -48,6 +49,7 @@ void KTrapezoidalPeakDetector::InitializeMembers(void)
   fOrderFilter2.SetOrder(1);
   fOrderFilter1.SetInitOutputValue(0.0);
   maxWidth = 0;
+  fThreshold = 0.95;
   
 }
 
@@ -85,13 +87,14 @@ bool KTrapezoidalPeakDetector::RunProcess(void)
   memset(fOutputPulse, 0, fOutputSize*sizeof(double));
   
 	vector<KTrapezoidalFilter* >::iterator it;
-	double *sqsumDerivative = new double[fOutputSize];
-	memset(sqsumDerivative, 0, fOutputSize*sizeof(double));
-	double *sqsumPattern = new double[fOutputSize];
-	memset(sqsumPattern, 0, fOutputSize*sizeof(double));
+	
 	unsigned int rise;
   unsigned int flat;
-  
+  fDerivative = new double[fOutputSize];
+  fCorrelation = new double[fOutputSize];
+  double *sqsumDerivative = new double[fOutputSize];
+  double sqsumPattern;
+  double denom = 0.0;
 	for(it = fTrapFilters.begin(); it< fTrapFilters.end(); it++){
 		rise = (*it)->GetRiseTime();
 		flat = (*it)->GetFlatTopWidth();
@@ -102,16 +105,19 @@ bool KTrapezoidalPeakDetector::RunProcess(void)
 				<< rise << "," << flat << ")" << endl;
 			// clean up
 			if(sqsumDerivative) delete [] sqsumDerivative;
-			if(sqsumPattern) delete [] sqsumPattern;
 			return false;
 		}
 		
 		// calculate the second derivative
 		//double *fDerivative = new double[fOutputSize];
     // debug:
-    fDerivative = new double[fOutputSize];
+    
     
 		memset(fDerivative, 0, fOutputSize*sizeof(double));
+    memset(fCorrelation, 0, fOutputSize*sizeof(double));
+    memset(sqsumDerivative, 0, fOutputSize*sizeof(double));
+    
+    
     
     fOrderFilter1.SetInputPulse((*it)->GetOutputPulse(),(*it)->GetOutputPulseSize());
     fOrderFilter1.RunProcess();
@@ -133,28 +139,39 @@ bool KTrapezoidalPeakDetector::RunProcess(void)
 		// calculate the correlation in the second derivative
 		for(unsigned int n = maxWidth; n < fOutputSize-maxWidth; n++){
 			// first peak in the pattern is the same for all filters, so it should contribute to the sum only once!
+      sqsumPattern = 0.;
 			if( it == fTrapFilters.begin() ){
-				*(fOutputPulse + n) += *(fDerivative + n)*1.0;
+				*(fCorrelation + n) += *(fDerivative + n)*1.0;
 				*(sqsumDerivative + n) += *(fDerivative + n) * (*(fDerivative + n));
-				*(sqsumPattern + n) += 1.0;
+				sqsumPattern += 1.0;
 			}
 			if( flat == 0 ){
-				*(fOutputPulse + n) += *(fDerivative + n + rise)*(-2.0);
+				*(fCorrelation + n) += *(fDerivative + n + rise)*(-2.0);
 				*(sqsumDerivative + n) += *(fDerivative + n + rise) * (*(fDerivative + n + rise));
-				*(sqsumPattern + n) += 4.0;				
+				sqsumPattern += 4.0;				
 			}
 			else{
-				*(fOutputPulse + n) += *(fDerivative + n + rise)*(-1.0);
+				*(fCorrelation + n) += *(fDerivative + n + rise)*(-1.0);
 				*(sqsumDerivative + n) += *(fDerivative + n + rise) * (*(fDerivative + n + rise));
-				*(fOutputPulse + n) += *(fDerivative + n + rise + flat)*(-1.0);
+				*(fCorrelation + n) += *(fDerivative + n + rise + flat)*(-1.0);
 				*(sqsumDerivative + n) += *(fDerivative + n + rise + flat) * (*(fDerivative + n + rise +flat));
-				*(sqsumPattern + n) += 2.0;				
+				sqsumPattern += 2.0;				
 			}
-			*(fOutputPulse + n) += *(fDerivative + n + 2*rise + flat)*(1.0);
+			*(fCorrelation + n) += *(fDerivative + n + 2*rise + flat)*(1.0);
 			*(sqsumDerivative + n) += *(fDerivative + n + 2*rise + flat) * (*(fDerivative + n + 2*rise +flat));
-			*(sqsumPattern + n) += 1.0;
+			sqsumPattern += 1.0;
 		}
 		
+		denom = 0.0;
+    //cout << " sqsumPattern: " << sqsumPattern << endl;
+    for(unsigned int n = maxWidth; n < fOutputSize-maxWidth; n++){
+      denom = sqrt(*(sqsumDerivative + n) * sqsumPattern);
+      if( (denom > 0.05) && abs(*(fCorrelation+n))> 0.01){
+        *(fCorrelation + n) /= denom;
+        if( abs(*(fCorrelation + n)) > fThreshold)
+          *(fOutputPulse + n) += *(fCorrelation + n);
+      }
+    }
 		// clean up
     //debug
 		//if(fDerivative) delete [] fDerivative;
@@ -162,18 +179,13 @@ bool KTrapezoidalPeakDetector::RunProcess(void)
 	
 	
 	//normalize the correlation coefficient
-	double denom = 0.0;
-	for(unsigned int n = maxWidth; n < fOutputSize-maxWidth; n++){
-		denom = sqrt(*(sqsumDerivative + n) * (*(sqsumPattern + n)));
-    if( (denom > 0.05) && abs(*(fOutputPulse+n))> 0.01)
-      *(fOutputPulse + n) = *(fOutputPulse + n)/denom;
-    else
-      *(fOutputPulse + n) = 0.0;
-	}
+  //cout << " fTrapFilters.size(): "<< fTrapFilters.size() << endl;
+	for(unsigned int n = maxWidth; n < fOutputSize-maxWidth; n++)
+    *(fOutputPulse + n) /= fTrapFilters.size();
+      
 	
 	// clean up
 	if(sqsumDerivative) delete [] sqsumDerivative;
-	if(sqsumPattern) delete [] sqsumPattern;
 	
   return true;
 }
