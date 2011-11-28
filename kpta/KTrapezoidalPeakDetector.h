@@ -30,6 +30,7 @@ public:
 	virtual bool RunProcess(void);
 	
   virtual void SetDecayTimeConstant(double aDecayTimeConstant) {fDecayTimeConstant = aDecayTimeConstant;}
+  virtual void SetThreshold(double aThreshold) {fThreshold = aThreshold;}
   
   virtual void AddTrapFilter(unsigned int aRiseTime, unsigned int aFlatTopWidth);
 
@@ -45,9 +46,11 @@ protected:
   
   //for debugging only:
   double *fDerivative;
+  double *fCorrelation;
   KOrderFilter fOrderFilter1;
   KOrderFilter fOrderFilter2;
   unsigned int maxWidth;
+  double fThreshold;
 private:
   //private methods
   void InitializeMembers(void);
