@@ -64,6 +64,7 @@ bool KTrapezoidalFilter::RunProcess(void)
   }
   if(fDecayTimeConstant == 0.0 || fRiseTime == 0){
     cerr << "filter parameters do not have valid values. " <<endl;
+    return false;
   }
   
   //clear the output pulse
