@@ -72,10 +72,10 @@ public:
   Bool_t CloseKdataFile(void);
   Bool_t AddDetectorInfo(KSambaDetector *detector);
   Bool_t AddDetectorInfo(const char* detname);
-  Bool_t AddDetectorInfoPre920(KSambaDetector *detector);
-  Bool_t AddDetectorInfoPost920(KSambaDetector *detector);
+  Bool_t AddDetectorInfoPre919(KSambaDetector *detector);
+  Bool_t AddDetectorInfoPost919(KSambaDetector *detector);
   
-  void AddChannelToDetectorWithNamePost920(const char*, TString, KSambaDetector*);
+  void AddChannelToDetectorWithNamePost919(const char*, TString, KSambaDetector*);
   
   void ReadSambaRecordLine(KRawSambaRecord *samba, TString &aLine, UInt_t &gigaStamp, UInt_t &smallStamp);
   void AddPulseInformationFromHeader(KRawBoloPulseRecord *p);
