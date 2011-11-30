@@ -7,7 +7,7 @@ import rootifySambaData as rt
 def runProcess(*args, **kwargs):
   
   if len(args) > 1:
-    print 'takes just one argument... the file name.'
+    print 'takes just one argument... the database document.'
     sys.exit(-1)
 
   #
@@ -50,10 +50,13 @@ def setupProc(server, database, function):
   
 def main(*argv):
   '''
-  argv[0] is the server (http://127.0.0.1:5984)
+  argv[0] is the couchdb server (http://127.0.0.1:5984)
   argv[1] is the database (datadb)
+  argv[2] is either 'all' or 'single'
 
   process 1 - converts the raw Samba data files into Kdata ROOT files.
+  This script is meant to be run on ccage.in2p3.fr with access to the /sps/edelweis directory
+  because that is where we expect the data files to be located.
   '''
   
   #create a DBProcess instance, which will assist in uploading the proc
@@ -61,8 +64,22 @@ def main(*argv):
   global myProc
   myProc = setupProc(argv[0], argv[1], runProcess)
   
-  vr = myProc.view('proc/proc1', reduce=False)
-  
+  optAll = 'all'
+  if(len(argv) > 2): 
+    if(argv[2] == 'all' or argv[2] == 'single'):
+      optAll = argv[2]
+    else:
+      print 'invalid argv[2] option'
+      sys.exit(-1)
+
+  if(optAll == 'all'):
+    vr = myProc.view('proc/proc1', reduce=False)
+  elif(optAll == 'single'):
+    vr = myProc.view('proc/proc1', reduce=False, limit = 1)
+  else:
+    print 'how did i get here?'
+    sys.exit(-1)
+
   for row in vr:
     doc = myProc.get(row['id'])
     (doc, result) = processOne(doc)
