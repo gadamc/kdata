@@ -106,7 +106,7 @@ private:
   Double32_t fPulseRiseTime;
   Int_t fFilterSize;
   UInt_t fPulseLength;
-  Double32_t fHeatPulseStampWidth;  //size of the heat pulse for this bolometer in stamps (same as D2 in Samba)
+  Double32_t fHeatPulseStampWidth;  //heat pulse only - size of the heat sample size for this bolometer in stamps (same as D2 in Samba) 
   Int_t fCryoPosition;
   string fPolarFet;
   

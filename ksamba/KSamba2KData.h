@@ -72,6 +72,11 @@ public:
   Bool_t CloseKdataFile(void);
   Bool_t AddDetectorInfo(KSambaDetector *detector);
   Bool_t AddDetectorInfo(const char* detname);
+  Bool_t AddDetectorInfoPre920(KSambaDetector *detector);
+  Bool_t AddDetectorInfoPost920(KSambaDetector *detector);
+  
+  void AddChannelToDetectorWithNamePost920(const char*, TString, KSambaDetector*);
+  
   void ReadSambaRecordLine(KRawSambaRecord *samba, TString &aLine, UInt_t &gigaStamp, UInt_t &smallStamp);
   void AddPulseInformationFromHeader(KRawBoloPulseRecord *p);
   void AddSambaInformationFromHeader(KRawSambaRecord* samba);
@@ -82,6 +87,12 @@ public:
   Long64_t GetLongIntFromTokenizedStringResult(TObjArray *arr, Int_t index);
   Double_t GetFloatFromTokenizedStringResult(TObjArray *arr, Int_t index);
 
+  Int_t GetMajorVersion(void);
+  Int_t GetMinorVersion(void);
+  Int_t GetSubVersion(void);
+  Int_t GetReleaseIndex(Int_t i);
+  
+  
   ClassDef(KSamba2KData,1);
 
 };
