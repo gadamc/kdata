@@ -36,7 +36,7 @@ def send(item, path):
   
   theRet['scpcommand'] = command
   theRet['file'] = spspath
-  theRet['hostname'] = 'ccali.in2p3.fr'
+  theRet['hostname'] = 'ccage.in2p3.fr'
   theRet['localuname'] = os.uname()
   theRet['scpErrs'] = list()
   
@@ -59,7 +59,7 @@ def send(item, path):
   return theRet
   
 
-def sendBoloData(item, path = 'kdata/data/current/raw/'):
+def sendBoloData(item, path = 'kdata/data/raw/'):
   if os.path.isfile(item):
     return send(item,path) 
   else:
