@@ -20,6 +20,10 @@ def main(*argv):
   scriptOut = os.path.join(scriptDir, 'qsubout')
   
   for row in vr:
+    doc = db[row['id']]
+    doc['status'] = 'proc1 queued'
+    db.save_doc(doc)
+    
     command = 'qsub -P P_edelweis -b y -o %s -e %s -l sps=1 -l vmem=3G -l fsize=4096M  %s %s %s %s' % (scriptOut, scriptOut, script, argv[0], argv[1], row['id']) 
   
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,)
