@@ -326,7 +326,7 @@ const char* KSamba2KData::GetDetectorName(const char* line)
   TString sub = GetStringFromTokenizedStringResult(arr, 2);
   delete arr;
    
-  if(GetMajorVersion() >= 9 && GetMinorVersion() >= 20){
+  if(GetMajorVersion() >= 9 && GetMinorVersion() >= 19){
     return sub.Data();
   }
   else{
@@ -346,16 +346,16 @@ const char* KSamba2KData::GetDetectorName(const char* line)
 Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
 {
   
-  if(GetMajorVersion() >= 9 && GetMinorVersion() >= 20){
-    return AddDetectorInfoPost920(detector);
+  if(GetMajorVersion() >= 9 && GetMinorVersion() >= 19){
+    return AddDetectorInfoPost919(detector);
   }
   else{
-    return AddDetectorInfoPre920(detector);
+    return AddDetectorInfoPre919(detector);
   }
   
 }
 
-Bool_t KSamba2KData::AddDetectorInfoPost920(KSambaDetector *detector)
+Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
 {
   string startOfChannelConfig = "* Voie";
   string startOfRun = "# ===== Entete de run ====="; 
@@ -371,23 +371,23 @@ Bool_t KSamba2KData::AddDetectorInfoPost920(KSambaDetector *detector)
     
   if(bolo.BeginsWith("Gc")){
     if (bolo.EqualTo("Gc1")){
-      AddChannelToDetectorWithNamePost920(0, bolo, detector);
+      AddChannelToDetectorWithNamePost919(0, bolo, detector);
     }
     else{
-      AddChannelToDetectorWithNamePost920("chalA", bolo, detector);
-      AddChannelToDetectorWithNamePost920("chalB", bolo, detector);
+      AddChannelToDetectorWithNamePost919("chalA", bolo, detector);
+      AddChannelToDetectorWithNamePost919("chalB", bolo, detector);
     }
   }
   else if (bolo.BeginsWith("FID") || bolo.BeginsWith("ID")){
-    AddChannelToDetectorWithNamePost920("chalA", bolo, detector);
-    AddChannelToDetectorWithNamePost920("chalB", bolo, detector);
-    AddChannelToDetectorWithNamePost920("ionisA", bolo, detector);
-    AddChannelToDetectorWithNamePost920("ionisB", bolo, detector);
-    AddChannelToDetectorWithNamePost920("ionisC", bolo, detector);
-    AddChannelToDetectorWithNamePost920("ionisD", bolo, detector);
+    AddChannelToDetectorWithNamePost919("chalA", bolo, detector);
+    AddChannelToDetectorWithNamePost919("chalB", bolo, detector);
+    AddChannelToDetectorWithNamePost919("ionisA", bolo, detector);
+    AddChannelToDetectorWithNamePost919("ionisB", bolo, detector);
+    AddChannelToDetectorWithNamePost919("ionisC", bolo, detector);
+    AddChannelToDetectorWithNamePost919("ionisD", bolo, detector);
     if(bolo.BeginsWith("ID")){
-      AddChannelToDetectorWithNamePost920("ionisG", bolo, detector);
-      AddChannelToDetectorWithNamePost920("ionisH", bolo, detector);
+      AddChannelToDetectorWithNamePost919("ionisG", bolo, detector);
+      AddChannelToDetectorWithNamePost919("ionisH", bolo, detector);
     }
   } 
   
@@ -632,7 +632,7 @@ Bool_t KSamba2KData::AddDetectorInfoPost920(KSambaDetector *detector)
   return !fSambaFileStream.eof(); 
 }
 
-void KSamba2KData::AddChannelToDetectorWithNamePost920(const char* prefix, TString bolo, KSambaDetector *detector)
+void KSamba2KData::AddChannelToDetectorWithNamePost919(const char* prefix, TString bolo, KSambaDetector *detector)
 {
   KSambaDetectorChannel *chan = detector->AddChannel();
   TString cName;
@@ -645,7 +645,7 @@ void KSamba2KData::AddChannelToDetectorWithNamePost920(const char* prefix, TStri
   cout << "    Adding channel: " << cName.Data() << " to " << detector->GetName() << " configuration list." << endl;
 }
 
-Bool_t KSamba2KData::AddDetectorInfoPre920(KSambaDetector *detector)
+Bool_t KSamba2KData::AddDetectorInfoPre919(KSambaDetector *detector)
 {
   string startOfChannelConfig = "* Voie";
   string startOfRun = "# ===== Entete de run ====="; 
@@ -1222,7 +1222,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
           TString sub, detector;
           
           // make changes here for new samba version
-          if(GetMajorVersion() >= 9 && GetMinorVersion() >= 20){
+          if(GetMajorVersion() >= 9 && GetMinorVersion() >= 19){
             //this works for all channels, it seems
             sub = GetStringFromTokenizedStringResult(arr, arr->GetEntries()-1);
             detector = sub.Strip(TString::kBoth,'"');   //strip off the quotes
@@ -1473,7 +1473,7 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
       //cout << "pulse channel name from pulse: " << pulseChannelName.Data() << endl;
       
       TString chanName;
-      if(GetMajorVersion() >= 9 && GetMinorVersion() >= 20){
+      if(GetMajorVersion() >= 9 && GetMinorVersion() >= 19){
         chanName = pulseChannelName.Strip(TString::kBoth,'"'); //need to strip off any quotes in the case of Gc1
         
       }
