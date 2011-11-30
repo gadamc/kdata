@@ -12,10 +12,10 @@ def getSambaFilePattern():
   return '[d-n][a-m][0-9][0-9][a-z][0-9][0-9][0-9]_[0-9][0-9][0-9]'
 
 def convertfile(input, output):
-'''
-  converts input samba file into output kdata file. If successful, this returns the 'output',
-  otherwise it returns an empty string ( '' )
-'''
+  '''
+    converts input samba file into output kdata file. If successful, this returns the 'output',
+    otherwise it returns an empty string ( '' )
+  '''
   if os.path.isfile(input) and os.path.isdir(output)==False:
     c = KSamba2KData(input, output)
     if c.ConvertFile():
