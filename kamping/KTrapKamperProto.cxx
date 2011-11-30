@@ -94,7 +94,7 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
   rec->SetName(GetName());
   rec->SetUnit(0);
   if(pRec->GetPulseLength() == 0){
-    cerr << "KTrapKamperProto::MakeKamp. Pulse Length is zero." << endl;
+    //cerr << "KTrapKamperProto::MakeKamp. Pulse Length is zero." << endl;
     fPeakPositionResult.clear();
     return false;
   }
