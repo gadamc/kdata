@@ -28,4 +28,4 @@ def main(*argv):
       print val
       
 if __name__ == '__main__':
-  return main(*sys.argv[1:])
+   main(*sys.argv[1:])
