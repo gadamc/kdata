@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from DBProcess import *
-import os, sys, tempfile, shutil, datetime
+import os, sys, tempfile, shutil, datetime, copy
 import rootifySambaData as rt
 
 def runProcess(*args, **kwargs):
@@ -36,9 +36,10 @@ def processOne(doc):
   
   #this step will add the procDict dictionary to the 
   #database document and then upload it to the DB
-  doc['proc1'] = procDict
+  doc['proc1'] = copy.deepcopy(procDict)
   
   if procDict.has_key('file'):
+    doc['status'] = 'good'
     return (doc, True)
   else:
     print 'the process returned an empty dictionary!'
