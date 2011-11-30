@@ -581,7 +581,7 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolo
   
   //copy the relevant information from the raw bolo pulse record to the amp pulse record.
   //one day, if i can get some template classes defined, this stuff could be more automatic. 
-  //its certainly not very pretty.
+  //its certainly not very pretty. This should all be put in the base-class... 
   pAmp->SetChannelName(pRaw->GetChannelName());
   pAmp->SetPulseTimeWidth(pRaw->GetPulseTimeWidth());
   pAmp->SetPretriggerSize(pRaw->GetPretriggerSize());
