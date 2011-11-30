@@ -9,13 +9,13 @@ def main(*argv):
   db = s[argv[1]]
 
   if len(argv) > 3:
-    vr = db.view('proc/proc1', reduce=False, limit = int(argv[3]) )
+    vr = db.view('proc/proc2', reduce=False, limit = int(argv[3]) )
   else:
-    vr = db.view('proc/proc1', reduce=False)
+    vr = db.view('proc/proc2', reduce=False)
   
   
   scriptDir = argv[2]
-  script = '$KDATA_ROOT/lib/KDataPy/scripts/dataprocess/runProc1.py'
+  script = '$KDATA_ROOT/lib/KDataPy/scripts/dataprocess/runProc2.py'
 
   scriptOut = os.path.join(scriptDir, 'qsubout')
   
