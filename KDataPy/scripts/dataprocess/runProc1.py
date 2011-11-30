@@ -33,6 +33,8 @@ def processOne(doc):
   dd = datetime.datetime.utcnow()
   procDict['date'] = {'year':dd.year, 'month':dd.month, 'day':dd.day, 'hour':dd.hour, 'minute':dd.minute, 'second':dd.second, 'microsecond':dd.microsecond} 
   procDict['processname'] = 'samba2kdata'
+  procDict['hostname'] = doc['proc0']['hostname'] 
+  procDict['localuname'] = os.uname()
   
   #this step will add the procDict dictionary to the 
   #database document and then upload it to the DB

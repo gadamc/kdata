@@ -4,7 +4,7 @@
   This script converts the raw Samba files into raw KData files. 
   
 '''
-from ROOT import KSamba2KData
+from ROOT import KSamba2KData, TROOT
 
 import os, sys, glob
 
@@ -16,7 +16,7 @@ def convertfile(input, output):
     converts input samba file into output kdata file. If successful, this returns the 'output',
     otherwise it returns an empty string ( '' )
   '''
-  gSystem.SetBatch(True)
+  gROOT.SetBatch(True)
   
   if os.path.isfile(input) and os.path.isdir(output)==False:
     c = KSamba2KData(input, output)
