@@ -26,6 +26,7 @@
 #include "KRawBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
 #include "KPulsePolarityCalculator.h"
+#include "KRawBolometerRecord.h"
 
 #include <stdexcept>
 
@@ -68,6 +69,7 @@ KTrapKamperProto::KTrapKamperProto(void)
 
   fPeakPositionSearchAmplifier = 2.7;
   
+  fHeatPulseStampWidths.reserve(6);
 }
 
 KTrapKamperProto::~KTrapKamperProto(void)
@@ -143,14 +145,22 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
     rec->SetExtra(fTrapIonAmplitude.GetFlatTopWidth(), 2);
 
     fPatRemoval.SetInputPulse((std::vector<short> &)pRec->GetTrace());
-    fPatRemoval.SetPatternLength(1*pRec->GetHeatPulseStampWidth()); 
-    if( !fPatRemoval.RunProcess())
-      {cout << "fPatRemoval failed" << endl; return false;}
-
+    
+    GetHeatPulseStampWidths(pRec); //this fills a local vector<double>
+    for(unsigned int h = 0; fHeatPulseStampWidths.size(); h++){
+      fPatRemoval.SetPatternLength(1*fHeatPulseStampWidths.at(h)); 
+      if( !fPatRemoval.RunProcess())
+        {cout << "fPatRemoval failed" << endl; return false;}
+    }
+    
     fPatRemoval.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
-    fPatRemoval.SetPatternLength(2*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
-    if( !fPatRemoval.RunProcess())
-      {cout << "fPatRemoval failed" << endl; return false;}
+    
+    for(unsigned int h = 0; fHeatPulseStampWidths.size(); h++){  //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
+      fPatRemoval.SetPatternLength(2*fHeatPulseStampWidths.at(h)); 
+      if( !fPatRemoval.RunProcess())
+        {cout << "fPatRemoval failed" << endl; return false;}
+    }
+    
         
     fBaseRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
     if( !fBaseRemovalIon.RunProcess())
@@ -331,6 +341,37 @@ unsigned int KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& t
   return FindPeak(fPeakPositionResult, maxPeakSize);
     
 }
+
+std::vector<int>& KTrapKamperProto::GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec)
+{
+  KRawBolometerRecord *bolo = pRec->GetBolometerRecord();
+  unsigned int counter = 0;
+  fHeatPulseStampWidths.clear();
+  
+  for(int i = 0; i < bolo->GetNumPulseRecords(); i++){
+    KRawBoloPulseRecord *p = bolo->GetPulseRecord(i);
+    if(p->GetIsHeatPulse()){
+      counter++;
+      bool addValue = true;
+      //search through the vector to find out if this stamp width is unique
+      for(unsigned int j = 0; j < fHeatPulseStampWidths.size(); j++){
+        if(fHeatPulseStampWidths.at(j) == (int)(p->GetHeatPulseStampWidth()) )
+          addValue = false;
+      }
+      
+      if(addValue){
+        if(fHeatPulseStampWidths.size() < counter)
+          fHeatPulseStampWidths.push_back( (int)(p->GetHeatPulseStampWidth()) );
+        else
+          fHeatPulseStampWidths.at(counter) = (int)(p->GetHeatPulseStampWidth()) ;
+      }
+  
+    }
+  }
+  return fHeatPulseStampWidths;
+}
+
+
 // 
 // unsigned int KTrapKamperProto::PileUpDetection(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
 // {

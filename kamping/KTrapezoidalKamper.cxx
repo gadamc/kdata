@@ -273,11 +273,14 @@ Bool_t KTrapezoidalKamper::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRe
 
     pRec->GetTrace(fIonPulse);
 
+    //break me - need to do something different to get the heat pulse width
     fPatRemoval.SetPatternLength(pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
 
     if( fPatRemoval.RunProcess()){
       //if (IsDebugMode()) 
       //  FillKamperDebugResults(fPatRemoval);
+
+      //break me - need to do something different to get the heat pulse width
 
       fPatRemoval.SetPatternLength(2.*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
       if( fPatRemoval.RunProcess()){
@@ -399,11 +402,15 @@ Bool_t KTrapezoidalKamper::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalys
 
     pRec->GetTrace(fIonPulse);
 
+    
 
+    //break me - need to do something different to get the heat pulse width
     fPatRemoval.SetPatternLength(pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
     if( fPatRemoval.RunProcess()){
       //if (IsDebugMode()) 
       //  FillKamperDebugResults(fPatRemoval);
+
+      //break me - need to do something different to get the heat pulse width
 
       fPatRemoval.SetPatternLength(2.*pRec->GetHeatPulseStampWidth()); //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
       if( fPatRemoval.RunProcess()){

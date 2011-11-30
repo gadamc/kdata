@@ -6,7 +6,7 @@
 ##### Changes to C++ compiler flags #####
 
 # change compiler options (ROOT default for linux is -O)
-OPT            := -g 
+OPT            += -g
 CXX            := g++
 CC             := gcc
 LD             := g++

@@ -55,9 +55,12 @@ public:
   void ResizePeakPositionResult(unsigned int size){fPeakPositionResult.resize(size);}
   //unsigned int PileUpDetection(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec);
   
+  std::vector<int>& GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
+  
 private:
   std::string fName;
   std::vector<double> fPeakPositionResult;
+  std::vector<int> fHeatPulseStampWidths;
   
   std::vector<KTrapezoidalFilter* > fTrapIonTime;
   std::vector<KTrapezoidalFilter* > fTrapHeatTime;
