@@ -12,7 +12,7 @@ def runProcess(*args, **kwargs):
 
   #
   newFileName = args[0]['proc0']['file'] + '.root'
-  outFile = rt.convertfile(args[0]['proc0']['file'], newfileName)
+  outFile = rt.convertfile(args[0]['proc0']['file'], newFileName)
   processdoc = {}
   
   if outFile != '':
