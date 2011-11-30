@@ -315,23 +315,337 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
 
 const char* KSamba2KData::GetDetectorName(const char* line)
 {
+  //This expectes that line == * Detecteur (F)IDAB or 
+  // * Detecteur Gc
+  //
+  // or in samba versions 9.20 and greater
+  // * Detecteur "Name"  where Name = is the actual detector name - no parsing required.
+  
   TString sline = line;
   TObjArray *arr = sline.Tokenize(" ");
   TString sub = GetStringFromTokenizedStringResult(arr, 2);
   delete arr;
+   
+  if(GetMajorVersion() >= 9 && GetMinorVersion() >= 20){
+    return sub.Data();
+  }
+  else{
+    TString detector;
+    if (sub.BeginsWith("FID") || sub.BeginsWith("ID")){
+      detector = sub(0, sub.Length()-2);  //I make assumptions about the structure of the Samba data
+    }
+    else if (sub.BeginsWith("Gc")){
+      detector = sub(0,3);
+    }
+    return detector.Data();
+  }
   
-  TString detector;
-  if (sub.BeginsWith("FID") || sub.BeginsWith("ID")){
-    detector = sub(0, sub.Length()-2);  //I make assumptions about the structure of the Samba data
-  }
-  else if (sub.BeginsWith("Gc")){
-    detector = sub(0,3);
-  }
-  return detector.Data();
+  
 }
 
-
 Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
+{
+  
+  if(GetMajorVersion() >= 9 && GetMinorVersion() >= 20){
+    return AddDetectorInfoPost920(detector);
+  }
+  else{
+    return AddDetectorInfoPre920(detector);
+  }
+  
+}
+
+Bool_t KSamba2KData::AddDetectorInfoPost920(KSambaDetector *detector)
+{
+  string startOfChannelConfig = "* Voie";
+  string startOfRun = "# ===== Entete de run ====="; 
+  string endOfDetecorHeader = "* ----------" ; 
+  
+  TString bolo = GetDetectorName(fSambaFileLine.Data());
+  
+  if(bolo != detector->GetName()){
+    cerr << "KSamba2KData::AddDetectorInfo. Mismatch!"<< endl;
+    cerr << bolo.Data() << " != " << detector->GetName() << endl;
+    return false; //this should be really really impossible. like, more impossible than normal.
+  }
+    
+  if(bolo.BeginsWith("Gc")){
+    if (bolo.EqualTo("Gc1")){
+      AddChannelToDetectorWithNamePost920(0, bolo, detector);
+    }
+    else{
+      AddChannelToDetectorWithNamePost920("chalA", bolo, detector);
+      AddChannelToDetectorWithNamePost920("chalB", bolo, detector);
+    }
+  }
+  else if (bolo.BeginsWith("FID") || bolo.BeginsWith("ID")){
+    AddChannelToDetectorWithNamePost920("chalA", bolo, detector);
+    AddChannelToDetectorWithNamePost920("chalB", bolo, detector);
+    AddChannelToDetectorWithNamePost920("ionisA", bolo, detector);
+    AddChannelToDetectorWithNamePost920("ionisB", bolo, detector);
+    AddChannelToDetectorWithNamePost920("ionisC", bolo, detector);
+    AddChannelToDetectorWithNamePost920("ionisD", bolo, detector);
+    if(bolo.BeginsWith("ID")){
+      AddChannelToDetectorWithNamePost920("ionisG", bolo, detector);
+      AddChannelToDetectorWithNamePost920("ionisH", bolo, detector);
+    }
+  } 
+  
+  while (!fSambaFileLine.BeginsWith(endOfDetecorHeader) && !fSambaFileStream.eof()){
+    
+    if(fSambaFileLine.BeginsWith("Bolo.etat") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      for(UInt_t i = 0; i < detector->GetChannelListSize(); i++){
+        KSambaDetectorChannel* chan = detector->GetChannelFromList(i);
+        chan->SetState( GetStringFromTokenizedStringResult(larr, 1)  );
+      }
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.position") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      int x;
+      std::stringstream ss;
+      ss << std::hex << GetStringFromTokenizedStringResult(larr, 1).Data(); 
+      ss >> x;
+      for(UInt_t i = 0; i < detector->GetChannelListSize(); i++){
+        KSambaDetectorChannel* chan = detector->GetChannelFromList(i);
+        chan->SetPosition( x );
+      }
+      
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.masse") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      for(UInt_t i = 0; i < detector->GetChannelListSize(); i++){
+        KSambaDetectorChannel* chan = detector->GetChannelFromList(i);
+        chan->SetMass( GetFloatFromTokenizedStringResult(larr, 1) );
+      }
+      
+      delete larr;
+    }
+    else if(fSambaFileLine.BeginsWith("Bolo.hote") ) {
+      TObjArray *larr = fSambaFileLine.Tokenize("=#");
+      for(UInt_t i = 0; i < detector->GetChannelListSize(); i++){
+        KSambaDetectorChannel* chan = detector->GetChannelFromList(i);
+        chan->SetMac( GetStringFromTokenizedStringResult(larr, 1) );
+      }
+      
+      delete larr;
+    }
+    
+    
+    else if(fSambaFileLine.BeginsWith("Bolo.reglages")){
+      Bool_t foundGoodKey = true;
+      fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
+      
+      while (foundGoodKey){  //see below. i return when i get to the end. 
+        TObjArray *regarr = fSambaFileLine.Tokenize("{}");  
+        TString regSub = GetStringFromTokenizedStringResult(regarr, 1);
+        //cout << regSub.Data() << endl;
+        TObjArray *regSubArr = regSub.Tokenize(":=");
+        TString key = GetStringFromTokenizedStringResult(regSubArr, 0);
+        TString val = "indetermine";
+        if (regSubArr->GetEntries() > 1) val = GetStringFromTokenizedStringResult(regSubArr, 1);
+        
+        delete regarr;
+        delete regSubArr;
+        
+        if(key.BeginsWith("polar") && !key.BeginsWith("polar-fet") ) {
+          
+          TString cName = "ionis";
+          cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetPolarCentre(-9999);
+          else chan->SetPolarCentre(val.Atof());
+        }
+        
+        
+        else if(key.BeginsWith("gain") &&  !key.BeginsWith("gain-chal") ) {
+          
+          TString cName = "ionis";
+          cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainCentre(-9999);
+          else chan->SetGainCentre(val.Atof());
+        }
+        
+        
+        else if(key.BeginsWith("gain-chal") && !key.EqualTo("gain-chaleur")) {
+          
+          TString cName = "chal";
+          cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainChaleur(-9999);
+          else chan->SetGainChaleur(val.Atof());
+        }
+        
+        
+        else if(key.EqualTo("gain-chaleur") ) {
+          //special Gc1 detector in Run16... or any detector with just one heat.
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainChaleur(-9999);
+          else chan->SetGainChaleur(val.Atof());
+        }
+        
+        
+        else if(key.BeginsWith("polar-fet") ) {
+          if(key.EqualTo("polar-fet")){
+            //special Gc1 with only one heat in Run16... or any detector with just one heat.
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+            chan->SetPolarFet(val.Data());
+          }
+          else if(key.EndsWith("A") || key.EndsWith("B")){
+            TString cName = "chal";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            chan->SetPolarFet(val.Data());
+          }          
+        }
+        
+        else if(key.EqualTo("corr-pied") ) {
+          //seems that in samba version 9.20 this field only exists for detectors with one 
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+          chan->SetPolarFet(val.Data());
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrPied(-9999);
+          else chan->SetCorrPied(val.Atof());
+        }
+        
+        
+        else if(key.BeginsWith("comp-modul") ) {
+          
+          if(key.EqualTo("comp-modul")){
+            //special Gc1 with only one heat in Run16... or any detector with just one heat.
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetCompModul(val.Atof());
+          }
+          else if(key.EndsWith("A") || key.EndsWith("B")){
+            TString cName = "chal";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetCompModul(val.Atof());
+          }
+          
+        }
+        
+        else if(key.BeginsWith("corr-trng") ) {
+          
+          if(key.EqualTo("corr-trng")){
+            //special Gc1 with only one heat in Run16... or any detector with just one heat.
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetCorrTrngl(val.Atof());
+          }
+          else if(key.EndsWith("A") || key.EndsWith("B")){
+            TString cName = "chal";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetCorrTrngl(val.Atof());
+          }
+          
+        }
+        
+        
+        else if(key.BeginsWith("ampl-modul") ) {
+          
+          if(key.EqualTo("ampl-modul")){
+            //special Gc1 with only one heat in Run16... or any detector with just one heat.
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetAmplModul(val.Atof());
+          }
+          else if(key.EndsWith("A") || key.EndsWith("B")){
+            TString cName = "chal";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetAmplModul(val.Atof());
+          }
+          
+        }
+        
+        
+        else if(key.BeginsWith("d2") ) {
+          
+          if(key.EqualTo("d2")){
+            //special Gc1 with only one heat in Run16... or any detector with just one heat.
+            
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetDiviseurD2(val.Atof());
+          }
+          else if(key.EndsWith("A") || key.EndsWith("B")){
+            TString cName = "chal";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetDiviseurD2(val.Atof());
+          }
+          
+          
+          
+        }
+        
+        
+        else if(key.BeginsWith("d3") ) {
+          
+          if(key.EqualTo("d3")){
+            //special Gc1 with only one heat in Run16... or any detector with just one heat.
+            
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetDiviseurD3(val.Atof());
+          }
+          else if(key.EndsWith("A") || key.EndsWith("B")){
+            TString cName = "chal";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetDiviseurD3(val.Atof());
+          }
+        }
+        
+        
+        else  {
+          cerr << "Unknown key Reading Voie header: " << key << endl;
+          //foundGoodKey = false; //just keep reading... Samba is allowed to insert a new key
+        }
+
+        fSambaFileLine.ReadToDelim(fSambaFileStream);
+        
+        if(fSambaFileLine.BeginsWith(")") || fSambaFileStream.eof())
+          return true; // I know this is the last thing in the Detector Header Part. So, I quit when I get to the end.
+      }
+    }
+    
+    fSambaFileLine.ReadToDelim(fSambaFileStream);
+    
+  }
+ 
+  return !fSambaFileStream.eof(); 
+}
+
+void KSamba2KData::AddChannelToDetectorWithNamePost920(const char* prefix, TString bolo, KSambaDetector *detector)
+{
+  KSambaDetectorChannel *chan = detector->AddChannel();
+  TString cName;
+  if(prefix){
+    cName = prefix; cName += " "; cName += bolo;
+  }
+  else
+    cName = bolo;
+  chan->SetName(cName.Data());
+  cout << "    Adding channel: " << cName.Data() << " to " << detector->GetName() << " configuration list." << endl;
+}
+
+Bool_t KSamba2KData::AddDetectorInfoPre920(KSambaDetector *detector)
 {
   string startOfChannelConfig = "* Voie";
   string startOfRun = "# ===== Entete de run ====="; 
@@ -518,7 +832,7 @@ Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
           else chan->SetGainCentre(val.Atof());
         }
         else if(key == "gain-chaleur" ) {
-          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainCentre(-9999);
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainChaleur(-9999);
           else chan->SetGainChaleur(val.Atof());
         }
         else if(key == "gain-garde" ) {
@@ -567,6 +881,7 @@ Bool_t KSamba2KData::AddDetectorInfo(KSambaDetector *detector)
     fSambaFileLine.ReadToDelim(fSambaFileStream);
     
   }
+  
   return !fSambaFileStream.eof();
 }
   
@@ -905,15 +1220,27 @@ Bool_t KSamba2KData::ReadSambaData(void)
          
           TObjArray *arr = subStr.Tokenize(" ");
           TString sub, detector;
-          if(arr->GetEntries() == 4){
-            sub = GetStringFromTokenizedStringResult(arr, 3);
-            detector = sub(0,sub.Length()-3);  //assuming the samba file format always give this! subtract 3 (instead of 2) because of the quotation 
+          
+          // make changes here for new samba version
+          if(GetMajorVersion() >= 9 && GetMinorVersion() >= 20){
+            //this works for all channels, it seems
+            sub = GetStringFromTokenizedStringResult(arr, arr->GetEntries()-1);
+            detector = sub.Strip(TString::kBoth,'"');   //strip off the quotes
+            
           }
-          else if(arr->GetEntries() == 3){
-            sub = GetStringFromTokenizedStringResult(arr, 2);
-            detector = sub(1,sub.Length()-3);  //for Gc detectors. assuming the samba file format always give this! start with string position 1 and subtract 2 (instead of 1) because of the quotation 
+          else{
+            if(arr->GetEntries() == 4){
+              sub = GetStringFromTokenizedStringResult(arr, 3);
+              detector = sub(0,sub.Length()-3);  //assuming the samba file format always give this! subtract 3 (instead of 2) because of the quotation 
+            }
+            else if(arr->GetEntries() == 3){
+              sub = GetStringFromTokenizedStringResult(arr, 2);
+              detector = sub(1,sub.Length()-3);  //for Gc detectors. assuming the samba file format always give this! start with string position 1 and subtract 2 (instead of 1) because of the quotation 
+            }
           }
           delete arr;
+          
+          //need to get the proper string for detector
 
           //cout << "Adding event for " << detector << endl;
           //check to see if bolo already exists in the event, or else, add a new bolometer record. 
@@ -941,6 +1268,9 @@ Bool_t KSamba2KData::ReadSambaData(void)
           //set the pulse name 
           //don't worry about figuring out the exact channel, just record the pulse
           //name as whatever is found inside the quotes after the Voie
+          
+          //i think this should be okay for samba version 9.20 and greater.
+          //this should be the correct channel name.
           arr = subStr.Tokenize("\"");
           pulse->SetChannelName( GetStringFromTokenizedStringResult(arr, 1));
           delete arr;
@@ -1131,6 +1461,8 @@ void KSamba2KData::AddSambaInformationFromHeader(KRawSambaRecord* samba)
 
 void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
 {
+  
+  
   KRawBolometerRecord *b = p->GetBolometerRecord();
   if(b != 0){
     TString detName = b->GetDetectorName();
@@ -1139,24 +1471,31 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
     if(det != 0){
       TString pulseChannelName = p->GetChannelName();
       //cout << "pulse channel name from pulse: " << pulseChannelName.Data() << endl;
+      
       TString chanName;
-      if (detName.BeginsWith("FID") || detName.BeginsWith("ID")) {
-        chanName = pulseChannelName(pulseChannelName.Length()-2,2);  //ASSUME format, the last two letters are always AB, GH, CD or Ch
+      if(GetMajorVersion() >= 9 && GetMinorVersion() >= 20){
+        chanName = pulseChannelName.Strip(TString::kBoth,'"'); //need to strip off any quotes in the case of Gc1
+        
+      }
+      
+      else{
+        if (detName.BeginsWith("FID") || detName.BeginsWith("ID")) {
+          chanName = pulseChannelName(pulseChannelName.Length()-2,2);  //ASSUME format, the last two letters are always AB, GH, CD or Ch
                                                                         //cout << "sub name from pulse: " << chanNameSub.Data() << endl;
-      }
-      else if (detName.BeginsWith("Gc")){
-        chanName = pulseChannelName(pulseChannelName.Length()-1,1);
-      }
-      else {
-        cout << "AddPulseInformationFromHeader. Didn't recognize the bolometer name." << endl;
-        return;
+        }
+        else if (detName.BeginsWith("Gc")){
+          chanName = pulseChannelName(pulseChannelName.Length()-1,1);
+        }
+        else {
+          cout << "AddPulseInformationFromHeader. Didn't recognize the bolometer name." << endl;
+          return;
+        }
       }
       
       KSambaDetectorChannel *chan = det->GetChannelFromList(chanName.Data());
       if(chan != 0){
         p->SetState(chan->GetState());
         p->SetCryoPosition(chan->GetPosition());
-        p->SetPolarFet(chan->GetPolarFet());
         p->SetHeatPulseStampWidth(chan->GetDiviseurD2());
         p->SetIsHeatPulse(0);
         p->SetCorrPied(0); 
@@ -1164,9 +1503,10 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
         p->SetCorrTrngl(0);
         p->SetAmplModul(0);
 
-        if(pulseChannelName.BeginsWith("chaleur") || detName.BeginsWith("Gc")){
+        if(pulseChannelName.BeginsWith("chal") || detName.BeginsWith("Gc")){  //changed 'chaleur' to 'chal' to accommodate samba version >= 9.20
           p->SetIsHeatPulse(1);
           p->SetPolarity(0.0);
+          p->SetPolarFet(chan->GetPolarFet());
           p->SetGain(chan->GetGainChaleur());
           p->SetCorrPied(chan->GetCorrPied()); 
           p->SetCompModul(chan->GetCompModul());
@@ -1180,6 +1520,10 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
         else if(pulseChannelName.BeginsWith("garde")){
           p->SetPolarity(chan->GetPolarGarde());
           p->SetGain(chan->GetGainGarde());
+        }
+        else if (pulseChannelName.BeginsWith("ionis")){ //added for samba version >= 9.20
+          p->SetPolarity(chan->GetPolarCentre());
+          p->SetGain(chan->GetGainCentre());
         }
         
         //set properties for the bolometer associated with this pulse!  
@@ -1228,6 +1572,35 @@ Bool_t KSamba2KData::OpenKdataFile(void)
   fKdataOutput.Close(); //make sure we've closed the file.
   return fKdataOutput.OpenFile(fKdataFileName.c_str(), KRawEvent::GetClassName());
 
+}
+
+Int_t KSamba2KData::GetMajorVersion(void)  
+{
+  return GetReleaseIndex(0);
+}
+
+Int_t KSamba2KData::GetMinorVersion(void) 
+{
+  return GetReleaseIndex(1);
+}
+
+Int_t KSamba2KData::GetSubVersion(void) 
+{
+  return GetReleaseIndex(2);
+}
+
+Int_t KSamba2KData::GetReleaseIndex(Int_t i) 
+{
+  TString currentRelease  = fSambaHeader.GetRelease();
+  TObjArray *arr = currentRelease.Tokenize(".");
+  Int_t theVer = -1;
+  if(arr == 0) return -1;
+  
+  if (arr->GetEntries() > i)
+    theVer =  GetIntegerFromTokenizedStringResult(arr,i);
+  
+  if(arr) delete arr;
+  return theVer;
 }
 
 
