@@ -14,6 +14,8 @@
 
 class KRawBoloPulseRecord;
 class KRawBolometerRecord;
+class KAmpBoloPulseRecord;
+class KAmpBolometerRecord;
 
 class KPulsePolarityCalculator  { 
 
@@ -22,8 +24,11 @@ public:
   KPulsePolarityCalculator(void);
   virtual ~KPulsePolarityCalculator(void);
 
+  //this is written separately for the amp and raw level records because the base class
+  //for those records need to be rewritten. 
+  
   static int GetExpectedPolarity(KRawBoloPulseRecord *p, KRawBolometerRecord* bolo = 0);
-	
+	static int GetExpectedPolarity(KAmpBoloPulseRecord *p, KAmpBolometerRecord* bolo = 0);
 	//setters
 private:
 
@@ -32,6 +37,9 @@ private:
   static int GetExpectedPolarityFromID(KRawBolometerRecord* bolo, KRawBoloPulseRecord *p);
   static int GetPolarityStandardCalculator(KRawBolometerRecord* bolo, KRawBoloPulseRecord *p);
   
+  static int GetExpectedPolarityFromFID(KAmpBolometerRecord* bolo, KAmpBoloPulseRecord *p);
+  static int GetExpectedPolarityFromID(KAmpBolometerRecord* bolo, KAmpBoloPulseRecord *p);
+  static int GetPolarityStandardCalculator(KAmpBolometerRecord* bolo, KAmpBoloPulseRecord *p);
   
 };
 
