@@ -147,7 +147,7 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
     fPatRemoval.SetInputPulse((std::vector<short> &)pRec->GetTrace());
     
     GetHeatPulseStampWidths(pRec); //this fills a local vector<double>
-    for(unsigned int h = 0; fHeatPulseStampWidths.size(); h++){
+    for(unsigned int h = 0; h < fHeatPulseStampWidths.size(); h++){
       fPatRemoval.SetPatternLength(1*fHeatPulseStampWidths.at(h)); 
       if( !fPatRemoval.RunProcess())
         {cout << "fPatRemoval failed" << endl; return false;}
@@ -155,7 +155,7 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
     
     fPatRemoval.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
     
-    for(unsigned int h = 0; fHeatPulseStampWidths.size(); h++){  //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
+    for(unsigned int h = 0; h < fHeatPulseStampWidths.size(); h++){  //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
       fPatRemoval.SetPatternLength(2*fHeatPulseStampWidths.at(h)); 
       if( !fPatRemoval.RunProcess())
         {cout << "fPatRemoval failed" << endl; return false;}
