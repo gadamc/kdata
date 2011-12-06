@@ -76,6 +76,7 @@ bool KBaselineRemoval::CalculateAverage(void)
   }
   
   fBaseline = fBaseline/double(i-start);
+  return true;
   
 }
 
