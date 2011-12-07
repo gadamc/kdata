@@ -78,6 +78,7 @@ bool KBaselineRemoval::CalculateAverage(void)
   fBaseline = fBaseline/double(i-start);
   return true;
   
+  return true;
 }
 
 void KBaselineRemoval::Subtract(double aVal, unsigned int i)
