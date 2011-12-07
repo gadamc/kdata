@@ -295,6 +295,7 @@ KPulseAnalysisRecord* KAmpBoloPulseRecord::GetPulseAnalysisRecord(const char* na
       return r;
   }
   return 0;
+
 }
 
 
