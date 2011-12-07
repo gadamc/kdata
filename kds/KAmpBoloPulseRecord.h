@@ -30,11 +30,11 @@ public:
   virtual void Clear(Option_t *opt = "C");
   KAmpBoloPulseRecord& operator=(const KAmpBoloPulseRecord &aRec);
   Bool_t IsSame(const KAmpBoloPulseRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KAmpBoloPulseRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KAmpBoloPulseRecord &aRec) const { return !(*this==aRec); }
-	virtual void Compact(void);
-  
-  
+  Bool_t operator==(const KAmpBoloPulseRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KAmpBoloPulseRecord &aRec) const { return !(*this==aRec); }
+  virtual void Compact(void);
+
+
   const char* GetChannelName(void) const {return fChannelName.c_str();  }
   UInt_t GetPulseTimeWidth(void) const {return fPulseTimeWidth;  }
   Int_t GetPretriggerSize(void) const { return fPretriggerSize;}
@@ -68,21 +68,22 @@ public:
   void SetAmplModul(Double32_t aVal) {fAmplModul = aVal;}
   void SetAmplModulation(Double32_t aVal) {SetAmplModul(aVal);}
   void SetIsHeatPulse(Bool_t aVal) {fIsHeatPulse = aVal;}
-  
+
   KAmpBolometerRecord* GetBolometerRecord(void) const {return (KAmpBolometerRecord*)fBolometerRecord.GetObject();	}
-	void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;	}
-	
-	KPulseAnalysisRecord* GetPulseAnalysisRecord(Int_t i) const;
+  void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;	}
+
+  KPulseAnalysisRecord* GetPulseAnalysisRecord(Int_t i) const;
+  KPulseAnalysisRecord* GetPulseAnalysisRecord(const char* name) const;
   virtual Int_t GetNumPulseAnalysisRecords(void) const {return fPulseAnaRecords.GetEntriesFast();} 
-	virtual void AddPulseAnalysisRecord(KPulseAnalysisRecord* aPulseRecord);
-	
+  virtual void AddPulseAnalysisRecord(KPulseAnalysisRecord* aPulseRecord);
+
 private:
 
   TRef fBolometerRecord;  //the value of this is the pointer to KAmpBoloPulseRecord object that this pulse belongs to.
 
   std::string fChannelName;  //the name of the channel. for example: "chaleur ID4"
   UInt_t fPulseTimeWidth; //holds the number of ns for each point.  = 1 / f. Default is 10.080 micro sec
-  
+
   //move these into a separate amplitude record
   //Double32_t fAmplitude; //the pulse amplitude calcuated by the DAQ
   //Double32_t fAmplitudeBaseline; //the baseline amplitude calculated by DAQ
@@ -94,7 +95,7 @@ private:
   Double32_t fHeatPulseStampWidth;  //size of the heat pulse for this bolometer in stamps (same as D2 in Samba)
   Int_t fCryoPosition;
   std::string fPolarFet;
-  
+
   //these are only valid for chaleur signals, but to keep the structure
   //to have just one type of pulse record (could change to have an ionization and heat pulse)
   //these value are included in all pulse records.... why aren't these in the Samba record?
@@ -105,7 +106,7 @@ private:
   Bool_t fIsHeatPulse;
 
   TRefArray fPulseAnaRecords;
-  
+
   //private methods
   void InitializeMembers(void);
   void CopyLocalMembers(const KAmpBoloPulseRecord &aRec);

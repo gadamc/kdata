@@ -19,11 +19,11 @@ def upload(*argv):
   doc['_id'] = os.path.basename(argv[2])
   if db.doc_exist(doc['_id']):
     doc['_rev'] = db.get_rev(doc['_id'])
-  
+  doc['type'] = 'radondatafile'
   data = []
-  while line:
-    
-    if line.strip('\n\r\t') != '':
+  
+  while line:  
+    if line.strip('\n\r\t') != '' and line != '':
       eventTimeAsci, adcValue = line.strip('\r\n').split('\t ')
       adcValue = int(adcValue.strip())
       ehour, eminute, esecond, ems = eventTimeAsci.strip().split(':')
