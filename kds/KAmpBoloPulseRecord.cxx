@@ -13,6 +13,7 @@
 
 #include "KAmpBoloPulseRecord.h"
 #include "KRawSambaRecord.h"
+#include "KPulseAnalysisRecord.h"
 #include "TH1.h"
 #include "TGraph.h"
 #include <iostream>
@@ -289,11 +290,11 @@ KPulseAnalysisRecord* KAmpBoloPulseRecord::GetPulseAnalysisRecord(const char* na
   //regardless of channel number, or pulse record type (collectrode, veto, guard, heat)
   //
   for (int i = 0; i < GetNumPulseAnalysisRecords(); i++){
-    KPulseAnalysisRecord* r = GetPulseAnalysisRecord(Int_t i);
+    KPulseAnalysisRecord* r = GetPulseAnalysisRecord(i);
     if (strcmp(r->GetName(), name) == 0)
       return r;
   }
-  return (KPulseAnalysisRecord*) fPulseAnaRecords.At(i);
+  return 0;
 }
 
 
