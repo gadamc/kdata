@@ -284,14 +284,14 @@ KPulseAnalysisRecord* KAmpBoloPulseRecord::GetPulseAnalysisRecord(Int_t i) const
   return (KPulseAnalysisRecord*) fPulseAnaRecords.At(i);
 }
 
-KPulseAnalysisRecord* KAmpBoloPulseRecord::GetPulseAnalysisRecord(const char* name) const
+KPulseAnalysisRecord* KAmpBoloPulseRecord::GetPulseAnalysisRecord(const char* name, bool isBaseline) const
 {
   //this returns the pulse analysis record with a particular name
   //regardless of channel number, or pulse record type (collectrode, veto, guard, heat)
   //
   for (int i = 0; i < GetNumPulseAnalysisRecords(); i++){
     KPulseAnalysisRecord* r = GetPulseAnalysisRecord(i);
-    if (strcmp(r->GetName(), name) == 0)
+    if (strcmp(r->GetName(), name) == 0  && r->IsBaseline() == isBaseline)
       return r;
   }
   return 0;
