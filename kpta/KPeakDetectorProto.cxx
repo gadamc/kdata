@@ -342,6 +342,14 @@ bool KPeakDetectorProto::RunProcess(void)
   unsigned int temp_from,temp_to;
   double minRegionSize = 4;
   
+  //fine tuning and debugging
+  dCorrelations.resize(fProcesses.size());
+  dPeakRegions.resize(fProcesses.size());
+  dTrapOutputs.resize(fProcesses.size());
+  dCorrInputs.resize(fProcesses.size());
+  //----------
+  
+  
   for(unsigned int proc = 0; proc < fProcesses.size(); proc++){
     //cout << " Starting filtering process: " << proc << endl;
     trapfilter.SetInputPulse(fInputPulse);
@@ -351,7 +359,10 @@ bool KPeakDetectorProto::RunProcess(void)
       return false;
     }
     trapOutput = ConvertToVector(trapfilter.GetOutputPulse(), trapfilter.GetOutputPulseSize());
-    dTrapOutput = trapOutput;
+    
+    // fine tuning and debugging
+    dTrapOutputs[proc] = trapOutput;
+    //---
     
     // Setting up the pulse/pulse derivative which should be correlated
       if(fProcesses[proc].derivative == 0)
@@ -360,7 +371,11 @@ bool KPeakDetectorProto::RunProcess(void)
         derivatives = CalculateDerivatives(trapOutput);
         corrInput = derivatives[(fProcesses[proc].derivative == 1) ? 0 : 1 ];
       }
-      dCorrInput = corrInput;
+      
+      // fine tuning and debugging
+      dCorrInputs[proc] = corrInput;
+      //-----
+      
     // Setting up the correlation pattern
     switch(fProcesses[proc].derivative){
       // pulse itself
@@ -403,7 +418,6 @@ bool KPeakDetectorProto::RunProcess(void)
         break;
       }
     }
-    dPattern = pattern;
     
     temp_peaks.clear();  
     for(unsigned int n = 0; n < peaks.size(); n++){
@@ -424,7 +438,10 @@ bool KPeakDetectorProto::RunProcess(void)
       if(fProcesses[proc].normalize)
         corrResult = Normalize(corrResult);
       
-      dCorrelation = corrResult;
+      // fine tuning and debugging
+      dCorrelations[proc].push_back(corrResult);
+      //------
+      
       // This will only work if you search for multiple peaks in one peak region only!
       if(fProcesses[proc].multiplePeaks){
         temp_peaks = FindMultipleMaxima(corrResult, fProcesses[proc].threshold, fPolarity, minRegionSize);
@@ -450,21 +467,25 @@ bool KPeakDetectorProto::RunProcess(void)
       }
     }
     peaks = temp_peaks;
+    dPeakRegions[proc].clear();
+    for(unsigned int i = 0; i < peaks.size();i++){
+      dPeakRegions[proc].push_back(peaks[i].maxPos);
+      dPeakRegions[proc].push_back(peaks[i].from);
+      dPeakRegions[proc].push_back(peaks[i].to);
+    }
     //cout << "Number of remaining peaks after processing: " << peaks.size() << endl;
   }
   
   fRemainingPeaks.clear();
-  fRemainingPeaks.resize(3);
-  fRemainingPeaks[0].assign(fInputPulse.size(), 0.0);
-  fRemainingPeaks[1].assign(fInputPulse.size(), 0.0);
-  fRemainingPeaks[2].assign(fInputPulse.size(), 0.0);
+  fRemainingPeaks.resize(peaks.size());
   
   for(unsigned int i = 0; i < peaks.size(); i++){
-    fRemainingPeaks[0][peaks[i].maxPos] = peaks[i].maxValue;
-    fRemainingPeaks[1][peaks[i].maxPos] = peaks[i].from;
-    fRemainingPeaks[2][peaks[i].maxPos] = peaks[i].to;
-    //cout << "Peak at " << peaks[i].maxPos << " in [" << peaks[i].from << "," << peaks[i].to << "]" << endl;
+    fRemainingPeaks[i].push_back(double(peaks[i].maxPos));
+    fRemainingPeaks[i].push_back(double(peaks[i].from));
+    fRemainingPeaks[i].push_back(double(peaks[i].to));
+    //cout << "KPeakDetectorProto:Peak at " << fRemainingPeaks[i][0] << " in [" << fRemainingPeaks[i][1] << "," << fRemainingPeaks[i][2] << "]" << endl;
   }
+  
   
   return true;
 }

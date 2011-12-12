@@ -67,15 +67,36 @@ public:
   virtual bool AddFilteringProcess(unsigned int aRiseTime, unsigned int aFlatTop, double aThreshold, unsigned int aDerivative = 1, unsigned int aProcessType = 0, bool aMultiplePeaks = false, bool aAdjustConstrains = true, bool aNormalize = true);
   virtual std::vector< std::vector<double> > GetRemainingPeaks(void){ return fRemainingPeaks; }
   
-  // Variables for DEBUGGING:
-  std::vector<double> dPattern;
-  std::vector<double> dCorrelation;
-  std::vector<double> dTrapOutput;
-  std::vector<double> dCorrInput;
+  // for debugging and fine tuning
+  virtual std::vector<double> GetDCorrelations(unsigned int n, unsigned int i){
+    std::vector<double> trace;
+    if(n >= dCorrelations.size())
+      return trace;
+    trace.clear();
+    for(unsigned int j = 0; j < dCorrelations[n][i].size(); j++) 
+        trace.push_back(dCorrelations[n][i][j]); 
+    return trace;
+  }
+  virtual unsigned int GetNumCorrTraces(unsigned int n){
+    if(dCorrelations.size() > n){
+      return dCorrelations[n].size();
+    }
+    else
+      return 0;
+  }
+  
+  // Variables for debugging and finetuning:
+  std::vector< std::vector<double> > dTrapOutputs;
+  std::vector< std::vector<double> > dCorrInputs;
+  typedef std::vector<double> DoubleVector1D;
+  typedef std::vector< DoubleVector1D > DoubleVector2D;
+  std::vector< DoubleVector2D > dCorrelations;
+  std::vector< std::vector<unsigned int> > dPeakRegions;
+  //-------
   
   
 protected:
-   std::vector< std::vector<double> > fRemainingPeaks; // [0] = max. Value, [1] = from, [2] = to
+   std::vector< std::vector<double> > fRemainingPeaks; 
    std::vector<KPeakDetectorProto::FilteringProcess> fProcesses;
    double fDecayTimeConstant;
    std::vector<double> fInputPulse;
