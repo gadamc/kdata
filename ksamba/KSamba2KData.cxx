@@ -369,8 +369,10 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
     return false; //this should be really really impossible. like, more impossible than normal.
   }
     
+  TString aHackJobStartDateBecauseSambaChangedFormatOfGc1Header = "11/12/01";
+  TString dateOfThisFile = fSambaHeader.GetDate();
   if(bolo.BeginsWith("Gc")){
-    if (bolo.EqualTo("Gc1")){
+    if (bolo.EqualTo("Gc1") && dateOfThisFile <= aHackJobStartDateBecauseSambaChangedFormatOfGc1Header){
       AddChannelToDetectorWithNamePost919(0, bolo, detector);
     }
     else{
