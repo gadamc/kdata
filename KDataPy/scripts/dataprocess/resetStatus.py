@@ -19,14 +19,14 @@ def resetStatusForFile(uri, dbname, oldStatus, newStatus, runname):
   db = s[dbname]
   
   vr = db.view('proc/daqdoc',  reduce = False, key = runname)
-  deleteFromView(vr, db, oldStatus, newStatus)
+  resetStatusFromView(vr, db, oldStatus, newStatus)
   
 def resetStatusFromListOfRuns(uri, dbname, oldStatus, newStatus, startrun, endrun):
   s = Server(uri)
   db = s[dbname]
   
   vr = db.view('proc/daqdoc',  reduce = False, startkey = startrun, endkey = endrun)
-  deleteFromView(vr, db, oldStatus, newStatus)
+  resetStatusFromView(vr, db, oldStatus, newStatus)
 
 def main(*args):
   '''
