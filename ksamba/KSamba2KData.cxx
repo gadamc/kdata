@@ -510,10 +510,20 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
         
         else if(key.EqualTo("corr-pied") || key.BeginsWith("corr-chal")) {
           //seems that in samba version 9.20 this field only exists for detectors with one 
-          KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
-          
-          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrPied(-9999);
-          else chan->SetCorrPied(val.Atof());
+
+          if(key.EqualTo("corr-chal")){
+            //special Gc1 with only one heat in Run16... or any detector with just one heat.
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrPied(-9999);
+            else chan->SetCorrPied(val.Atof());
+          }
+          if(key.EndsWith("A") || key.EndsWith("B")){
+            TString cName = "chal";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrPied(-9999);
+            else chan->SetCorrPied(val.Atof());
+          }
         }
         
         
