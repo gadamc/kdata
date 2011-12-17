@@ -33,7 +33,7 @@ def main(*argv):
     if doc.has_key('batchJob') == False:
       doc['batchJob']= []
     jobStuff = {}
-    jobStruff['script'] =  script
+    jobStuff['script'] =  script
     jobStuff['stdout'] = scriptOut
     jobStuff['stderr'] = scriptOut
     jobStuff['command'] = command
