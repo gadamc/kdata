@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from couchdbkit import Server, Database
-import sys, os, subprocess
+import sys, os, subprocess, datetime
 
 
 def main(*argv):
@@ -37,6 +37,7 @@ def main(*argv):
     jobStuff['type'] = 'proc1'
     jobStuff['message'] = val
     jobStuff['number'] = int(val.split(' ')[3])
+    jobStuff['date'] = datetime.datetime.now()
     db.['batchJob'].append(jobStuff)
     
     db.save_doc(doc)  
