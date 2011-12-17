@@ -494,7 +494,7 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
         }
         
         
-        else if(key.BeginsWith("polar-fet") ) {
+        else if(key.BeginsWith("polar-fet") || key.BeginsWith("fet-chal") ) {
           if(key.EqualTo("polar-fet")){
             //special Gc1 with only one heat in Run16... or any detector with just one heat.
             KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
@@ -508,17 +508,16 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
           }          
         }
         
-        else if(key.EqualTo("corr-pied") ) {
+        else if(key.EqualTo("corr-pied") || key.BeginsWith("corr-chal")) {
           //seems that in samba version 9.20 this field only exists for detectors with one 
           KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
-          chan->SetPolarFet(val.Data());
           
           if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrPied(-9999);
           else chan->SetCorrPied(val.Atof());
         }
         
         
-        else if(key.BeginsWith("comp-modul") ) {
+        else if(key.BeginsWith("comp-modul") || key.BeginsWith("comp-chal")  ) {
           
           if(key.EqualTo("comp-modul")){
             //special Gc1 with only one heat in Run16... or any detector with just one heat.
@@ -536,7 +535,7 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
           
         }
         
-        else if(key.BeginsWith("corr-trng") ) {
+        else if(key.BeginsWith("corr-trng") || key.BeginsWith("corr-chal") ) {
           
           if(key.EqualTo("corr-trng")){
             //special Gc1 with only one heat in Run16... or any detector with just one heat.
@@ -555,7 +554,7 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
         }
         
         
-        else if(key.BeginsWith("ampl-modul") ) {
+        else if(key.BeginsWith("ampl-modul") || key.BeginsWith("ampl-chal") ) {
           
           if(key.EqualTo("ampl-modul")){
             //special Gc1 with only one heat in Run16... or any detector with just one heat.
