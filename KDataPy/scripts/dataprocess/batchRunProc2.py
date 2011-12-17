@@ -22,7 +22,7 @@ def main(*argv):
   for row in vr:
     doc = db[row['id']]
     doc['status'] = 'proc2 queued'
-    db.save_doc(doc)
+    
     
     command = 'qsub -P P_edelweis -b y -o %s -e %s -l sps=1 -l vmem=3G -l fsize=4096M  %s %s %s %s' % (scriptOut, scriptOut, script, argv[0], argv[1], row['id']) 
   
@@ -30,6 +30,16 @@ def main(*argv):
     val = proc.communicate()[0]
     if val != '':
       print val
-      
+    
+    if db.has_key('batchJob') == False:
+      db['batchJob']= []
+    jobStuff = {}
+    jobStuff['type'] = 'proc2'
+    jobStuff['message'] = val
+    jobStuff['number'] = int(val.split(' ')[3])
+    db.['batchJob'].append(jobStuff)
+
+    db.save_doc(doc)
+       
 if __name__ == '__main__':
    main(*sys.argv[1:])

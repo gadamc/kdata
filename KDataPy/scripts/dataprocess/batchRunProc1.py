@@ -30,6 +30,16 @@ def main(*argv):
     val = proc.communicate()[0]
     if val != '':
       print val
-      
+    
+    if db.has_key('batchJob') == False:
+      db['batchJob']= []
+    jobStuff = {}
+    jobStuff['type'] = 'proc1'
+    jobStuff['message'] = val
+    jobStuff['number'] = int(val.split(' ')[3])
+    db.['batchJob'].append(jobStuff)
+    
+    db.save_doc(doc)  
+
 if __name__ == '__main__':
    main(*sys.argv[1:])
