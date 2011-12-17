@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from DBProcess import *
-import os, sys, tempfile, shutil, datetime, copy
+import os, sys, tempfile, shutil, datetime, copy, socket
 
 import ROOT
 
