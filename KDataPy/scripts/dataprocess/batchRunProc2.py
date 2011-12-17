@@ -33,6 +33,10 @@ def main(*argv):
     if db.has_key('batchJob') == False:
       db['batchJob']= []
     jobStuff = {}
+    jobStruff['script'] =  script
+    jobStuff['stdout'] = scriptOut
+    jobStuff['stderr'] = scriptOut
+    jobStuff['command'] = command
     jobStuff['type'] = 'proc2'
     jobStuff['message'] = val
     jobStuff['number'] = int(val.split(' ')[3])
