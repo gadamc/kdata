@@ -23,7 +23,6 @@ def main(*argv):
     doc = db[row['id']]
     doc['status'] = 'proc2 queued'
     
-    
     command = 'qsub -P P_edelweis -b y -o %s -e %s -l sps=1 -l vmem=3G -l fsize=4096M  %s %s %s %s' % (scriptOut, scriptOut, script, argv[0], argv[1], row['id']) 
   
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,)
@@ -37,8 +36,8 @@ def main(*argv):
     jobStuff['type'] = 'proc2'
     jobStuff['message'] = val
     jobStuff['number'] = int(val.split(' ')[3])
-    jobStuff['date'] = datetime.datetime.now()
-    db.['batchJob'].append(jobStuff)
+    jobStuff['date'] = str(datetime.datetime.now())
+    db['batchJob'].append(jobStuff)
 
     db.save_doc(doc)
        

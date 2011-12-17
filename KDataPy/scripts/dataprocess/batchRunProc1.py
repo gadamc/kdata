@@ -22,7 +22,6 @@ def main(*argv):
   for row in vr:
     doc = db[row['id']]
     doc['status'] = 'proc1 queued'
-    db.save_doc(doc)
     
     command = 'qsub -P P_edelweis -b y -o %s -e %s -l sps=1 -l vmem=3G -l fsize=4096M  %s %s %s %s' % (scriptOut, scriptOut, script, argv[0], argv[1], row['id']) 
   
@@ -37,8 +36,8 @@ def main(*argv):
     jobStuff['type'] = 'proc1'
     jobStuff['message'] = val
     jobStuff['number'] = int(val.split(' ')[3])
-    jobStuff['date'] = datetime.datetime.now()
-    db.['batchJob'].append(jobStuff)
+    jobStuff['date'] = str(datetime.datetime.now())
+    db['batchJob'].append(jobStuff)
     
     db.save_doc(doc)  
 
