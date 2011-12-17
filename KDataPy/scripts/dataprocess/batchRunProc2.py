@@ -30,8 +30,8 @@ def main(*argv):
     if val != '':
       print val
     
-    if db.has_key('batchJob') == False:
-      db['batchJob']= []
+    if doc.has_key('batchJob') == False:
+      doc['batchJob']= []
     jobStuff = {}
     jobStruff['script'] =  script
     jobStuff['stdout'] = scriptOut
@@ -41,7 +41,7 @@ def main(*argv):
     jobStuff['message'] = val
     jobStuff['number'] = int(val.split(' ')[3])
     jobStuff['date'] = str(datetime.datetime.now())
-    db['batchJob'].append(jobStuff)
+    doc['batchJob'].append(jobStuff)
 
     db.save_doc(doc)
        
