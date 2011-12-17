@@ -39,7 +39,7 @@ def main(*argv):
     jobStuff['command'] = command
     jobStuff['type'] = 'proc1'
     jobStuff['message'] = val
-    jobStuff['number'] = int(val.split(' ')[3])
+    jobStuff['number'] = int(val.split(' ')[2])
     jobStuff['date'] = str(datetime.datetime.now())
     doc['batchJob'].append(jobStuff)
     
