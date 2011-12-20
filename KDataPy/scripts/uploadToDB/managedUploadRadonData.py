@@ -41,7 +41,7 @@ def main(*argv):
           up.upload(uri, dbname, os.path.join(dataDir, afile))
 
     print 'sleeping...', datetime.datetime.now()
-    time.sleep(24*3600)  #wait one hour to look for more data
+    time.sleep(3600)  #wait one hour to look for more data
 
 if __name__ == '__main__':
   main(*sys.argv[1:])
