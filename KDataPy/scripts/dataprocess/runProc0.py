@@ -41,8 +41,7 @@ def main(*argv):
 
     if len(procDict) > 0:
       #add a few more items to the document
-      dd = datetime.datetime.utcnow()
-      procDict['date'] = {'year':dd.year, 'month':dd.month, 'day':dd.day, 'hour':dd.hour, 'minute':dd.minute, 'second':dd.second, 'microsecond':dd.microsecond} 
+      procDict['date'] = str(datetime.datetime.utcnow())
       procDict['processname'] = 'copySambaFileToSps'
       
       if len(procDict['scpErrs']) > 0:
