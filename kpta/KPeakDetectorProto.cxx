@@ -419,7 +419,8 @@ bool KPeakDetectorProto::RunProcess(void)
       }
     }
     
-    temp_peaks.clear();  
+    temp_peaks.clear();
+    dCorrelations[proc].assign(fInputPulse.size(),0.0);
     for(unsigned int n = 0; n < peaks.size(); n++){
       if((peaks[n].from - peaks[n].to) < 3*pattern.size()){
         temp_from = ((peaks[n].maxPos - 1.5*pattern.size()) > 0) ? peaks[n].maxPos - 1.5*pattern.size() : 0;
@@ -439,7 +440,8 @@ bool KPeakDetectorProto::RunProcess(void)
         corrResult = Normalize(corrResult);
       
       // fine tuning and debugging
-      dCorrelations[proc].push_back(corrResult);
+      for(unsigned int i = 0; i < corrResult.size(); i++)
+        dCorrelations[proc][i+peaks[n].from] = corrResult[i];
       //------
       
       // This will only work if you search for multiple peaks in one peak region only!
