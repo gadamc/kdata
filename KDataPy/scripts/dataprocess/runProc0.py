@@ -24,6 +24,8 @@ def main(*argv):
   argv[1] is the database (datadb)
   '''
   
+  print '\n', str(datetime.datetime.now()), ': starting runProc0.py \n'
+
   #create a DBProcess instance, which will assist in uploading the proc
   #document to the database
   myProc = DBProcess(argv[0], argv[1], scpToLyon)
