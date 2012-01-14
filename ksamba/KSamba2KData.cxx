@@ -1606,7 +1606,13 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
         p->SetCompModul(0);
         p->SetCorrTrngl(0);
         p->SetAmplModul(0);
-
+        p->SetBoloBoxVersion(chan->GetBoloBoxVersion());
+        p->SetConvergencePeriod(chan->GetConvergencePeriod());
+        p->SetRelay1Status(chan->GetRelay1Status());
+        p->SetRelay2Status(chan->GetRelay2Status());  
+        p->SetFetDac(chan->GetFetDac());
+        p->SetBoloGain(chan->GetBoloGain());
+        
         if(pulseChannelName.BeginsWith("chal") || detName.BeginsWith("Gc")){  //changed 'chaleur' to 'chal' to accommodate samba version >= 9.20
           p->SetIsHeatPulse(1);
           p->SetPolarity(0.0);
