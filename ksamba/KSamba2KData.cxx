@@ -623,6 +623,99 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
           }
         }
         
+      
+        else if(key.BeginsWith("Rt") ) {
+          
+          TString cName = "ionis";
+          cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (!val.BeginsWith("indetermine") && !val.BeginsWith("inconnu")){
+            chan->SetConvergencePeriod(val.Atof());
+            chan->SetBoloBoxVersion(2.0);
+          }
+          
+          //The Rt field contains two different channels in the name :P
+          cName = "ionis";
+          cName += key(key.Length()-2, 1);  cName += " "; cName += bolo;
+          chan = detector->GetChannelFromList(cName);
+          
+          if (!val.BeginsWith("indetermine") && !val.BeginsWith("inconnu")){
+            chan->SetConvergencePeriod(val.Atof());
+            chan->SetBoloBoxVersion(2.0);
+          }
+        }
+        
+        
+        else if(key.BeginsWith("rlay1") ) {
+          
+          TString cName = "ionis";
+          cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (!val.BeginsWith("indetermine") && !val.BeginsWith("inconnu")){ 
+            chan->SetRelay1Status(val.Data());
+            chan->SetBoloBoxVersion(2.0);
+          }
+          
+          //The rlay field contains two different channels in the name :P
+          cName = "ionis";
+          cName += key(key.Length()-2, 1);  cName += " "; cName += bolo;
+          chan = detector->GetChannelFromList(cName);
+          
+          if (!val.BeginsWith("indetermine") && !val.BeginsWith("inconnu")){
+            chan->SetRelay1Status(val.Data());
+            chan->SetBoloBoxVersion(2.0);
+          }
+        }
+        
+        
+         else if(key.BeginsWith("rlay2") ) {
+
+            TString cName = "ionis";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+
+            if (!val.BeginsWith("indetermine") && !val.BeginsWith("inconnu")) {
+              chan->SetRelay2Status(val.Data());
+              chan->SetBoloBoxVersion(2.0);
+            }
+            //The rlay field contains two different channels in the name :P
+            cName = "ionis";
+            cName += key(key.Length()-2, 1);  cName += " "; cName += bolo;
+            chan = detector->GetChannelFromList(cName);
+
+            if (!val.BeginsWith("indetermine") && !val.BeginsWith("inconnu")){
+              chan->SetRelay2Status(val.Data());
+              chan->SetBoloBoxVersion(2.0);
+            }
+          }
+        
+          else if(key.BeginsWith("Rdac") ) {
+
+              TString cName = "ionis";
+              cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+              KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+
+              if (!val.BeginsWith("indetermine") && !val.BeginsWith("inconnu")){
+                chan->SetFetDac(val.Atof());
+                chan->SetBoloBoxVersion(2.0);
+              }
+
+          }
+          
+          else if(key.BeginsWith("Rg") ) {
+
+              TString cName = "ionis";
+              cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+              KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+
+              if (!val.BeginsWith("indetermine") && !val.BeginsWith("inconnu")){
+                chan->SetBoloGain(val.Atof());
+                chan->SetBoloBoxVersion(2.0);
+              }
+
+          }
         
         else  {
           cerr << "Unknown key Reading Voie header: " << key << endl;

@@ -41,4 +41,11 @@ void KSambaDetectorChannel::InitializeMembers(void)
   SetCorrTrngl(0);
   SetAmplModul(0);
   SetGainChaleur(0);
+  SetBoloBoxVersion(1.0);
+  SetConvergencePeriod(-99999.);
+  SetRelay1Status("");
+  SetRelay2Status("");
+  SetFetDac(-99999.);
+  SetBoloGain(-99999.);
+  
 }

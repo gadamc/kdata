@@ -42,6 +42,12 @@ public:
   Double_t GetAmplModul(void) const { return fAmplModul;}
   Double_t GetGainChaleur(void) const { return fGainChaleur;}
 
+  Double32_t GetBoloBoxVersion(void) const {return fBoloBoxVersion;}
+  Double32_t GetConvergencePeriod(void) const {return fConvergencePeriod;}
+  const char* GetRelay1Status(void) const {return fRelay1Status.c_str();}
+  const char* GetRelay2Status(void) const {return fRelay2Status.c_str();}
+  Double32_t GetFetDac(void) const {return fFetDac;}
+  Double32_t GetBoloGain(void) const {return fBoloGain;}
   
   void SetName(const char* aVal) {fName = aVal;}
   void SetState(const char* aVal) {fState = aVal;}
@@ -61,6 +67,12 @@ public:
   void SetAmplModul(Double_t aVal) {fAmplModul = aVal;}
   void SetGainChaleur(Double_t aVal) {fGainChaleur = aVal;}
 
+  void SetBoloBoxVersion(Double32_t aVal) {fBoloBoxVersion = aVal;}
+  void SetConvergencePeriod(Double32_t aVal) {fConvergencePeriod = aVal;}
+  void SetRelay1Status(const char* aVal) {fRelay1Status = aVal;}
+  void SetRelay2Status(const char* aVal) {fRelay2Status = aVal;}
+  void SetFetDac(Double32_t aVal) {fFetDac = aVal;}
+  void SetBoloGain(Double32_t aVal) {fBoloGain = aVal;}
   
 private:
   
@@ -84,6 +96,12 @@ private:
   Double_t fAmplModul;
   Double_t fGainChaleur;
 
+  Double32_t fBoloBoxVersion;
+  Double32_t fConvergencePeriod;
+  string fRelay1Status;
+  string fRelay2Status;
+  Double32_t fFetDac;
+  Double32_t fBoloGain;
   
   ClassDef(KSambaDetectorChannel,1);
 

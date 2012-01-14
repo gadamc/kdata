@@ -126,7 +126,7 @@ void KBoloPulseRecord::InitializeMembers(void)
   fPolarity = -99999;
   fGain = -999999;
   
-  fBoloBoxVersion = -99999;
+  fBoloBoxVersion = 1.0;  //assume its bbv1 unless otherwise informed (because there is no such information in the samba header)
   fConvergencePeriod = -99999;
   fRelay1Status.resize(0);
   fRelay2Status.resize(0);
