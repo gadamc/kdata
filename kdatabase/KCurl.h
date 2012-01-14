@@ -38,6 +38,7 @@ public:
  
   const char* GetReturn(void) const {return fReturn.c_str();}
   size_t GetReturnSize(void) const {return fReturn.size();}
+  //string& GetReturn(void) const {return fReturn;}
   Bool_t GetVerbose(void) const { return fVerbose;}
   void SetVerbose(Bool_t aVal = true) {fVerbose = aVal;}
   

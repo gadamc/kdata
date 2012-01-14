@@ -18,6 +18,7 @@
 #include "KRootMeanSquare.h"
 #include <string>
 #include <vector>
+#include <map>
 
 class KTrapKamperProto : KAmper {
 
@@ -37,8 +38,7 @@ public:
   virtual KTrapezoidalFilter* AddTrapHeatTime(double decay, unsigned int rise, unsigned int flat); 
   virtual KTrapezoidalFilter* AddTrapIonTime(double decay, unsigned int rise, unsigned int flat); 
   
-  virtual KTrapezoidalFilter* GetTrapHeatAmplitude(void){return &fTrapHeatAmplitude;}
-  virtual KTrapezoidalFilter* GetTrapIonAmplitude(void){return &fTrapIonAmplitude;}
+  virtual KTrapezoidalFilter* GetTrapAmplitude(void){return &fTrapAmplitude;}
   
   virtual KBaselineRemoval* GetBaselineRemovalHeat(void){return &fBaseRemovalHeat;}
   virtual KBaselineRemoval* GetBaselineRemovalIon(void){return &fBaseRemovalIon;}
@@ -48,6 +48,13 @@ public:
 
   virtual double GetPeakPositionSearchAmplifier(void){return fPeakPositionSearchAmplifier;}
   virtual void SetPeakPositionSearchAmplifier(double aval){ fPeakPositionSearchAmplifier = aval;}
+
+
+  //methods to set internal values for the various parameters for specific channels.
+  //these parameters should be available from the database 
+  virtual void SetTrapAmplitudeDecayConstant(const char* channelName, double value){ fTrapAmplitudeDecayConstants[channelName] = value;}
+  virtual double GetTrapAmplitudeDecayConstant(const char* channelName) const;
+  
 
   //temporarily public!
   void FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrapezoidalFilter* trap, int polarity);
@@ -70,10 +77,7 @@ private:
   KPatternRemoval fPatRemoval;
   KRootMeanSquare fRms;
   
-  //KTrapezoidalFilter fTrapHeatTime;
-  //KTrapezoidalFilter fTrapIonTime;
-  KTrapezoidalFilter fTrapHeatAmplitude;
-  KTrapezoidalFilter fTrapIonAmplitude;
+  KTrapezoidalFilter fTrapAmplitude;
 
   KOrderFilter fOrderFilter1Heat;
   KOrderFilter fOrderFilter2Heat;
@@ -82,8 +86,12 @@ private:
   
   double fPeakPositionSearchAmplifier;
   
+  std::map<std::string, double> fTrapAmplitudeDecayConstants;
+  std::vector<double> fDefaultTrapHeatAmplitudeParameters;
+  std::vector<double> fDefaultTrapIonAmplitudeParameters;
+  void FillTrapAmplitudeParameters(const char* channelName, bool isHeatPulse);
   
-    
+  
   unsigned int FindPeak(vector<double>& pulse, unsigned int maxPosition);
     
   double GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity);

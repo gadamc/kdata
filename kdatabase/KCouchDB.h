@@ -13,28 +13,36 @@
 #define __KCOUCHDB_H__
 
 #include "Rtypes.h"
+#include <string>
+
+class KJson;
 
 class KCouchDB  { 
 
 public:
   //Constructors
-  KCouchDB(void);
+  KCouchDB();//(const char* server = 0, const char* db = 0, const char* user = 0, const char* pass = 0);
   virtual ~KCouchDB(void);
 
-  //getdoc
-  //view
-  //savedoc
-  //bulksave
-
-  //set server
-  //set dbname
-  //set user
-  //set password
+  // KJson* Getdoc(const char* docId) const;
+  //   KJson* View(const char* viewName, const char* options) const;
+  //   //savedoc
+  //   //bulksave
+  // 
+  //   void SetServer(const char* name){fServer = name;}
+  //   void SetDb(const char* name){fDb = name;}
+  //   void SetUser(const char* name){fUser = name;}
+  //   void SetPassword(const char* name){fPass = name;}
+  
   
 private:
 
   //private methods
-
+  // std::string fServer;
+  //   std::string fDb;
+  //   std::string fUser;
+  //   std::string fPass;
+  
   ClassDef(KCouchDB,1);
 };
 

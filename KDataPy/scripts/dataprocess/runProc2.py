@@ -2,9 +2,43 @@
 
 from DBProcess import *
 import os, sys, tempfile, shutil, datetime, copy, socket
+from couchdbkit import Server, Database
 
 import ROOT
 
+def fillGrandCanyonParameters(dataFile, kg):
+  global myProc
+  db = myProc.sv['pulsetemplates']
+  
+  #have to scan through the file to find
+  #the names of the channels that have data in this file
+  #and also need to get a date string for the first event
+  #in this file.
+  ftemp = ROOT.KDataReader(dataFile)
+  e = ftemp.GetEvent()
+  chanList = []
+  filedate = ''
+  for i in range(ftemp.GetEntries()):
+    ftemp.GetEntry(i)
+    if filedate == '':
+      if e.GetNumSambas()>0:
+        s = e.GetSamba(0)
+        dd = datetime.datetime.utcfromtimestamp(s.GetNtpDateSec())
+        filedate = str(dd)
+    for j in range(e.GetNumBoloPulses()):
+      p = e.GetBoloPulse(j)
+      if p.GetChannelName() not in chanList:
+        chanList.append(p.GetChannelName())
+  ftemp.Close()
+  
+  for chan in chanList:
+    vr = db.view('analytical/bychandate', descending=True, reduce=False,startkey=[chan,filedate], endkey=[chan,''], limit=1, include_docs=True)
+    try:
+      doc = vr.first()['doc']
+      kg.SetTrapAmplitudeDecayConstant(doc['channel'],doc['kampsites']['KGrandCanyonKAmpSite']['trapAmpDecayConstant'])
+    except: #this will throw if vr.first() doesn't return a document. just ignore it and move on to the next channel
+      pass
+  
 def runProcess(*args, **kwargs):
   
   if len(args) > 1:
@@ -17,6 +51,7 @@ def runProcess(*args, **kwargs):
   
   k = ROOT.KAmpKounselor()
   kg = ROOT.KGrandCanyonKAmpSite()
+  fillGrandCanyonParameters(args[0]['proc1']['file'], kg)
   k.AddKAmpSite(kg)
   theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)
   
