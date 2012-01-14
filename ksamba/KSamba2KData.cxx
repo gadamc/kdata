@@ -72,7 +72,9 @@ void KSamba2KData::InitializeMembers(void)
   fSambaFileLine = "";
   fSambaRunName = "";
   fSambaFileNum = -1;
-    
+  TString value = fLocalBigEndian==true ? "big" : "little";
+
+  cout << "Local machine endianness: " <<  value.Data() << endl;
 }
 
 void  KSamba2KData::SetInputSambaFile(const char* fileName)
@@ -209,6 +211,7 @@ Bool_t KSamba2KData::ReadSambaHeaderGeneral(void)
          && !fSambaFileStream.eof()) {
     
     if(fSambaFileLine.BeginsWith("Byte-order")){
+      cout << "Samba data: " << fSambaFileLine.Data() << endl;
       if(fSambaFileLine.Contains("big"))
         fSambaHeader.SetEndian(true);
       else 
