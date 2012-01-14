@@ -34,10 +34,11 @@ public:
   Double32_t GetGain(void) const { return fGain;}
   
   Double32_t GetBoloBoxVersion(void) const {return fBoloBoxVersion;}
-  Int_t GetConvergencePeriod(void) const {return fConvergencePeriod;}
+  Double32_t GetConvergencePeriod(void) const {return fConvergencePeriod;}
   const char* GetRelay1Status(void) const {return fRelay1Status.c_str();}
   const char* GetRelay2Status(void) const {return fRelay2Status.c_str();}
-  Int_t GetFetDac(void) const {return fFetDac;}
+  Double32_t GetFetDac(void) const {return fFetDac;}
+  Double32_t GetBoloGain(void) const {return fBoloGain;}
 
   void SetPositiveTriggerAmp(Double32_t aVal) {fPositiveTriggerAmp = aVal;}
   void SetNegativeTriggerAmp(Double32_t aVal) {fNegativeTriggerAmp = aVal;}
@@ -46,11 +47,12 @@ public:
   void SetGain(Double32_t aVal) {fGain = aVal;}
 
   void SetBoloBoxVersion(Double32_t aVal) {fBoloBoxVersion = aVal;}
-  void SetConvergencePeriod(Int_t aVal) {fConvergencePeriod = aVal;}
+  void SetConvergencePeriod(Double32_t aVal) {fConvergencePeriod = aVal;}
   void SetRelay1Status(const char* aVal) {fRelay1Status = aVal;}
   void SetRelay2Status(const char* aVal) {fRelay2Status = aVal;}
-  void SetFetDac(Int_t aVal) {fFetDac = aVal;}
-
+  void SetFetDac(Double32_t aVal) {fFetDac = aVal;}
+  void SetBoloGain(Double32_t aVal) {fBoloGain = aVal;}
+  
 private:
 
   Double32_t fPositiveTriggerAmp;
@@ -61,10 +63,11 @@ private:
 
   //bolo box information
   Double32_t fBoloBoxVersion;
-  Int_t fConvergencePeriod;
+  Double32_t fConvergencePeriod;
   string fRelay1Status;
   string fRelay2Status;
-  Int_t fFetDac;
+  Double32_t fFetDac;
+  Double32_t fBoloGain;
 
   void InitializeMembers(void);
   void CopyLocalMembers(const KBoloPulseRecord &aRec);

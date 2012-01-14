@@ -83,6 +83,7 @@ void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
   fRelay1Status = aRec.fRelay1Status;
   fRelay2Status = aRec.fRelay2Status;
   fFetDac = aRec.fFetDac;
+  fBoloGain = aRec.fBoloGain;
 }
 
 KBoloPulseRecord::~KBoloPulseRecord(void)
@@ -130,7 +131,7 @@ void KBoloPulseRecord::InitializeMembers(void)
   fRelay1Status.resize(0);
   fRelay2Status.resize(0);
   fFetDac = -99999;
-
+  fBoloGain = -99999;
 }
 
 
@@ -242,6 +243,15 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      else
        return false;  
    }
+   
+   if(fBoloGain != aRec.fBoloGain){
+      bIsEqual = false;
+      if (bPrint) 
+        cout << "KBoloPulseRecord fBoloGain Not Equal. lhs: " 
+        << fBoloGain << " != rhs " << aRec.fBoloGain << endl;		
+      else
+        return false;  
+    }
    
   return bIsEqual;
 }
