@@ -212,10 +212,24 @@ Bool_t KSamba2KData::ReadSambaHeaderGeneral(void)
     
     if(fSambaFileLine.BeginsWith("Byte-order")){
       cout << "Samba data: " << fSambaFileLine.Data() << endl;
-      if(fSambaFileLine.Contains("big"))
+      TObjArray *arr = fSambaFileLine.Tokenize("=#");
+      TString s = GetStringFromTokenizedStringResult(arr, 1);
+      
+      if(s.Contains("big")){
+	cout << "Setting samba endian: big" << endl;
         fSambaHeader.SetEndian(true);
-      else 
+      }
+      else {
+	cout << "Setting samba endian: little" << endl;
         fSambaHeader.SetEndian(false);
+      }
+      
+      delete arr;
+
+      if(fSambaHeader.GetEndian() != fLocalBigEndian)
+	cout << "     will swap bytes" << endl;
+      else 
+	cout << "     no byte swap" << endl;
     }
     
     else if( fSambaFileLine.BeginsWith("Fichier") ) {
@@ -1469,9 +1483,10 @@ Bool_t KSamba2KData::ReadSambaData(void)
                 if (fSambaFileStream.fail()) 
                   cerr << "KSamba2KData::ReadSambaData. Error reading a pulse for event " << samba->GetSambaEventNumber()<< endl;
                 
-                if (fSambaHeader.GetEndian() != fLocalBigEndian && GetMajorVersion() > 100000.0)  //reverse order if necessary. currently samba does the byte swap no matter what! so, when samba fixes this bug have to check for the version number
-                  for (Short_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
-                
+		if (fSambaHeader.GetEndian() != fLocalBigEndian)  {//reverse order if necessary.
+		  for (Short_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
+                }
+
                 pulse->SetTrace(lPulseSize,lArray);
                 delete[] lArray;
               } 
