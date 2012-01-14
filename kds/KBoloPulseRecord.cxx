@@ -38,34 +38,34 @@ ClassImp(KBoloPulseRecord);
 
 KBoloPulseRecord::KBoloPulseRecord(void)
 {	
-	//standard constructors 
-  
-	InitializeMembers();
-	
-	//we must take care of members on the heap differently
-	//than members created on the stack.
-		
+  //standard constructors 
+
+  InitializeMembers();
+
+  //we must take care of members on the heap differently
+  //than members created on the stack.
+
 }
 
 KBoloPulseRecord::KBoloPulseRecord(const KBoloPulseRecord &aRec)
-: KSubRecord(aRec)
+  : KSubRecord(aRec)
 {
   //copy constructor 
-  
-	CopyLocalMembers(aRec);
-		
+
+  CopyLocalMembers(aRec);
+
 }
 
 KBoloPulseRecord& KBoloPulseRecord::operator=(const KBoloPulseRecord &aRec)
 {
   //assignment operator
-  
-	if(&aRec == this) return *this;
-	
-	this->KSubRecord::operator=(aRec);
-	CopyLocalMembers(aRec);
-		
-	return *this;
+
+  if(&aRec == this) return *this;
+
+  this->KSubRecord::operator=(aRec);
+  CopyLocalMembers(aRec);
+
+  return *this;
 }
 
 void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
@@ -78,76 +78,180 @@ void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
   fPolarity = aRec.fPolarity;
   fGain = aRec.fGain;
 
-  
+  fBoloBoxVersion = aRec.fBoloBoxVersion;
+  fConvergencePeriod = aRec.fConvergencePeriod;
+  fRelay1Status = aRec.fRelay1Status;
+  fRelay2Status = aRec.fRelay2Status;
+  fFetDac = aRec.fFetDac;
 }
 
 KBoloPulseRecord::~KBoloPulseRecord(void)
 {
   //destructor
-  
-	//Does calling clear at destruction take too much computing time?
+
+  //Does calling clear at destruction take too much computing time?
   Clear("C");
-	
+
 }
 
 void KBoloPulseRecord::Clear(Option_t *anopt)
 {
-	
-	//Clear the base classes and then clear/delete any local
+
+  //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
   //in the case that instances of this object are stored
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-	KSubRecord::Clear(anopt);
-	
+  KSubRecord::Clear(anopt);
+
   //Clear and delete local objects here. 
-	
-	
+
+
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
-	
+
 }
 
 void KBoloPulseRecord::InitializeMembers(void)
 {
   //init local members to default values (-99)
-  
+
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-	
+  fPositiveTriggerAmp = -99999;
+  fNegativeTriggerAmp = -99999;
+  fState.resize(0);
+  fPolarity = -99999;
+  fGain = -999999;
+  
+  fBoloBoxVersion = -99999;
+  fConvergencePeriod = -99999;
+  fRelay1Status.resize(0);
+  fRelay2Status.resize(0);
+  fFetDac = -99999;
 
-	
 }
 
 
 Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) const
 {
   //Compares two objects and their member variables to test for equality.
-	//If bPrint is set to true, then a message for each member variable that is different
-	//will print to standard out. Otherwise, this method will return false and quit
-	//checking member variables as soon as it finds a unequal data member.
+  //If bPrint is set to true, then a message for each member variable that is different
+  //will print to standard out. Otherwise, this method will return false and quit
+  //checking member variables as soon as it finds a unequal data member.
+
+  Bool_t bIsEqual = true; //assume its true, then test for differences
+
+  //call the base class's IsSame methods
+  if(!this->KSubRecord::IsSame(aRec,bPrint)){
+    bIsEqual = false;
+    if(!bPrint)
+      return false;  //if we're not printing out, just return false at first failure
+    //the operator== method uses this functionality.
+  }
+
+   
+  if(fGain != aRec.fGain){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fGain Not Equal. lhs: " 
+       << fGain << " != rhs " << aRec.fGain << endl;		
+     else
+       return false;  
+   }
+   
+  if(fPolarity != aRec.fPolarity){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fPolarity Not Equal. lhs: " 
+       << fPolarity << " != rhs " << aRec.fPolarity << endl;		
+     else
+       return false;  
+   }
+   
+  if(fState != aRec.fState){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fState Not Equal. lhs: " 
+       << fState << " != rhs " << aRec.fState << endl;		
+     else
+       return false;  
+   }
   
-	Bool_t bIsEqual = true; //assume its true, then test for differences
-	
-	//call the base class's IsSame methods
-	if(!this->KSubRecord::IsSame(aRec,bPrint)){
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}
-	
-			
-	return bIsEqual;
+  if(fNegativeTriggerAmp != aRec.fNegativeTriggerAmp){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fNegativeTriggerAmp Not Equal. lhs: " 
+       << fNegativeTriggerAmp << " != rhs " << aRec.fNegativeTriggerAmp << endl;		
+     else
+       return false;  
+   }
+  
+  if(fPositiveTriggerAmp != aRec.fPositiveTriggerAmp){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fPositiveTriggerAmp Not Equal. lhs: " 
+       << fPositiveTriggerAmp << " != rhs " << aRec.fPositiveTriggerAmp << endl;		
+     else
+       return false;  
+   }
+   
+   
+  if(fBoloBoxVersion != aRec.fBoloBoxVersion){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fBoloBoxVersion Not Equal. lhs: " 
+       << fBoloBoxVersion << " != rhs " << aRec.fBoloBoxVersion << endl;		
+     else
+       return false;  
+   }
+
+   if(fConvergencePeriod != aRec.fConvergencePeriod){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fConvergencePeriod Not Equal. lhs: " 
+       << fConvergencePeriod << " != rhs " << aRec.fConvergencePeriod << endl;		
+     else
+       return false;  
+   }
+
+   if(fRelay1Status != aRec.fRelay1Status){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fRelay1Status Not Equal. lhs: " 
+       << fRelay1Status << " != rhs " << aRec.fRelay1Status << endl;		
+     else
+       return false;  
+   }
+
+   if(fRelay2Status != aRec.fRelay2Status){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fRelay2Status Not Equal. lhs: " 
+       << fRelay2Status << " != rhs " << aRec.fRelay2Status << endl;		
+     else
+       return false;  
+   }
+
+   if(fFetDac != aRec.fFetDac){
+     bIsEqual = false;
+     if (bPrint) 
+       cout << "KBoloPulseRecord fFetDac Not Equal. lhs: " 
+       << fFetDac << " != rhs " << aRec.fFetDac << endl;		
+     else
+       return false;  
+   }
+   
+  return bIsEqual;
 }
 
 
 void KBoloPulseRecord::Compact(void)
 {
-	//make the event class as small as possible. this calls 'Compact' for all member
-	//variables that are KDS classes, member variables that can be compacted (such as TBits)
-	//and base classes
-	
-	KSubRecord::Compact();
+  //make the event class as small as possible. this calls 'Compact' for all member
+  //variables that are KDS classes, member variables that can be compacted (such as TBits)
+  //and base classes
+
+  KSubRecord::Compact();
 }
