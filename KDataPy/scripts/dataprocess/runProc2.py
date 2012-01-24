@@ -14,6 +14,7 @@ def fillGrandCanyonParameters(dataFile, kg):
   #the names of the channels that have data in this file
   #and also need to get a date string for the first event
   #in this file.
+  
   ftemp = ROOT.KDataReader(dataFile)
   e = ftemp.GetEvent()
   chanList = []
@@ -47,17 +48,36 @@ def runProcess(*args, **kwargs):
 
   #
   newFileName = args[0]['proc1']['file'].strip('.root') + '.amp.root'
+  theRet = ''
+  exc = {}
+  try:
+    ROOT.gSystem.Load('libkds')
+    ROOT.gSystem.Load('libkpta')
+    ROOT.gSystem.Load('libkamping')
   
+
+    k = ROOT.KAmpKounselor()
+    kg = ROOT.KGrandCanyonKAmpSite()
+    fillGrandCanyonParameters(args[0]['proc1']['file'], kg)
+    k.AddKAmpSite(kg)
+    theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)
   
-  k = ROOT.KAmpKounselor()
-  kg = ROOT.KGrandCanyonKAmpSite()
-  fillGrandCanyonParameters(args[0]['proc1']['file'], kg)
-  k.AddKAmpSite(kg)
-  theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)
-  
+  except Exception as theExcep:
+    theRet = ''
+    print theExcep
+    exc['print'] = str(theExcep)
+    exc['type'] = str(type(theExcep))
+    #exc['args'] = theExcep.args
+    #exc['message'] = theExcep.message
+    
   processdoc = {}
-  processdoc['file'] = newFileName
   
+  if theRet != '':
+    processdoc['file'] = newFileName
+  else:
+    processdoc['exception'] = copy.deepcopy(exc)
+      
+ 
   return (processdoc, theRet)
   
 def processOne(doc):
@@ -77,13 +97,15 @@ def processOne(doc):
   
   #this step will add the procDict dictionary to the 
   #database document and then upload it to the DB
-  doc['proc2'] = copy.deepcopy(procDict)
+  if doc.has_key('proc2') == False:
+    doc['proc2'] = {}
+      
+  doc['proc2'].update(procDict)
   
-  if theRet:
+  if theRet.has_key('file'):
     doc['status'] = 'good'
     return (doc, True)
   else:
-    print 'the process returned an empty dictionary!'
     doc['status'] = 'proc2 failed'
     return (doc, False)
     

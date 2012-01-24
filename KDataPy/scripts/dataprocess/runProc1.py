@@ -12,11 +12,26 @@ def runProcess(*args, **kwargs):
 
   #
   newFileName = args[0]['proc0']['file'] + '.root'
-  outFile = rt.convertfile(args[0]['proc0']['file'], newFileName)
+  outFile = ''
+  exc = {}
+  try:
+    outFile = rt.convertfile(args[0]['proc0']['file'], newFileName)
+  except Exception as theExcep:
+    outFile = ''
+    print theExcep
+    exc['print'] = str(theExcep)
+    exc['type'] = str(type(theExcep))
+    #exc['args'] = theExcep.args
+    #exc['message'] = theExcep.message
+    print 'done reading exception'
+    
   processdoc = {}
   
   if outFile != '':
     processdoc['file'] = outFile
+  elif exc.has_key['print']:
+    processdoc['exception'] = copy.deepcopy(exc)
+    
   
   return processdoc
   
@@ -37,13 +52,15 @@ def processOne(doc):
   
   #this step will add the procDict dictionary to the 
   #database document and then upload it to the DB
-  doc['proc1'] = copy.deepcopy(procDict)
+  if doc.has_key('proc1') == False:
+    doc['proc1'] = {}
+      
+  doc['proc1'].update(procDict)
   
   if procDict.has_key('file'):
     doc['status'] = 'good'
     return (doc, True)
   else:
-    print 'the process returned an empty dictionary!'
     doc['status'] = 'proc1 failed'
     return (doc, False)
     

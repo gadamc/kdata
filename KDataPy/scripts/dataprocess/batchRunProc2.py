@@ -18,6 +18,7 @@ def main(*argv):
   script = '$KDATA_ROOT/lib/KDataPy/scripts/dataprocess/runProc2.py'
 
   scriptOut = os.path.join(scriptDir, 'qsubout')
+  scriptErr = os.path.join(scriptDir, 'qsubout')
   
   for row in vr:
     doc = db[row['id']]
@@ -33,16 +34,20 @@ def main(*argv):
     if doc.has_key('batchJob') == False:
       doc['batchJob']= []
     jobStuff = {}
+    jobStuff['number'] = int(val.split(' ')[2])
     jobStuff['script'] =  script
-    jobStuff['stdout'] = scriptOut
-    jobStuff['stderr'] = scriptOut
+    jobStuff['stdout'] = os.path.join(scriptOut, os.path.basename(script)) + '.o' + str(jobStuff['number'])
+    jobStuff['stderr'] = os.path.join(scriptErr, os.path.basename(script)) + '.e' + str(jobStuff['number'])
     jobStuff['command'] = command
     jobStuff['type'] = 'proc2'
     jobStuff['message'] = val
-    jobStuff['number'] = int(val.split(' ')[2])
+    
     jobStuff['date'] = str(datetime.datetime.now())
     doc['batchJob'].append(jobStuff)
-
+    proc = {}
+    proc['batchjob'] = jobStuff['number']
+    doc['proc2'] = proc
+    
     db.save_doc(doc)
        
 if __name__ == '__main__':

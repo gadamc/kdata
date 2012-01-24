@@ -52,7 +52,10 @@ def main(*argv):
         doc['status'] = 'good'
       #this step will add the procDict dictionary to the 
       #database document and then upload it to the DB
-      doc['proc0'] = procDict
+      if doc.has_key('proc0') == False:
+        doc['proc0'] = {}
+        
+      doc['proc0'].update(procDict)
       myProc.upload(doc)
       
     else:

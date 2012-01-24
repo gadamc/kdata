@@ -18,12 +18,12 @@ def main(*argv):
   script = '$KDATA_ROOT/lib/KDataPy/scripts/dataprocess/runProc1.py'
 
   scriptOut = os.path.join(scriptDir, 'qsubout')
-  
+  scriptErr = os.path.join(scriptDir, 'qsubout')
   for row in vr:
     doc = db[row['id']]
     doc['status'] = 'proc1 queued'
     
-    command = 'qsub -P P_edelweis -b y -o %s -e %s -l sps=1 -l vmem=3G -l fsize=4096M  %s %s %s %s' % (scriptOut, scriptOut, script, argv[0], argv[1], row['id']) 
+    command = 'qsub -P P_edelweis -b y -o %s -e %s -l sps=1 -l vmem=3G -l fsize=4096M  %s %s %s %s' % (scriptOut, scriptErr, script, argv[0], argv[1], row['id']) 
   
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,)
     val = proc.communicate()[0]
@@ -33,15 +33,19 @@ def main(*argv):
     if doc.has_key('batchJob') == False:
       doc['batchJob']= []
     jobStuff = {}
+    jobStuff['number'] = int(val.split(' ')[2])
     jobStuff['script'] =  script
-    jobStuff['stdout'] = scriptOut
-    jobStuff['stderr'] = scriptOut
+    jobStuff['stdout'] = os.path.join(scriptOut, os.path.basename(script)) + '.o' + str(jobStuff['number'])
+    jobStuff['stderr'] = os.path.join(scriptErr, os.path.basename(script)) + '.e' + str(jobStuff['number'])
     jobStuff['command'] = command
     jobStuff['type'] = 'proc1'
     jobStuff['message'] = val
-    jobStuff['number'] = int(val.split(' ')[2])
+    
     jobStuff['date'] = str(datetime.datetime.now())
     doc['batchJob'].append(jobStuff)
+    proc = {}
+    proc['batchjob'] = jobStuff['number']
+    doc['proc1'] = proc
     
     db.save_doc(doc)  
 

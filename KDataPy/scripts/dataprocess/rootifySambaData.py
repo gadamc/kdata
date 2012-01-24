@@ -17,7 +17,8 @@ def convertfile(input, output):
     converts input samba file into output kdata file. If successful, this returns the 'output',
     otherwise it returns an empty string ( '' )
   '''
-
+  ROOT.gSystem.Load('libkds')
+  ROOT.gSystem.Load('libksamba')
   ROOT.gROOT.SetBatch(True)
   
   if os.path.isfile(input) and os.path.isdir(output)==False:
