@@ -33,6 +33,8 @@ public:
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e);  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void){ return false;}
   
+  KTrapKamperProto& GetTrapKamperProto(void){return fTrapKamp;}
+  
 private:
   
   KTrapKamperProto fTrapKamp;

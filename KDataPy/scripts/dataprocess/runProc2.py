@@ -32,11 +32,12 @@ def fillGrandCanyonParameters(dataFile, kg):
         chanList.append(p.GetChannelName())
   ftemp.Close()
   
+  trapKamper = kg.GetTrapKamperProto()
   for chan in chanList:
     vr = db.view('analytical/bychandate', descending=True, reduce=False,startkey=[chan,filedate], endkey=[chan,''], limit=1, include_docs=True)
     try:
       doc = vr.first()['doc']
-      kg.SetTrapAmplitudeDecayConstant(doc['channel'],doc['kampsites']['KGrandCanyonKAmpSite']['trapAmpDecayConstant'])
+      trapKamper.SetTrapAmplitudeDecayConstant(doc['channel'],doc['kampsites']['KGrandCanyonKAmpSite']['trapAmpDecayConstant'])
     except: #this will throw if vr.first() doesn't return a document. just ignore it and move on to the next channel
       pass
   
