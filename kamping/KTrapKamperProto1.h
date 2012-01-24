@@ -88,8 +88,8 @@ private:
   KPeakDetectorProto fMaxIonPeakDetector;
   KPeakDetectorProto fMultipleIonPeakDetector;
   
-  //KPeakDetectorProto fMaxHeatPeakDetector;
-  //KPeakDetectorProto fMultipleHeatPeakDetector;
+  KPeakDetectorProto fMaxHeatPeakDetector;
+  KPeakDetectorProto fMultipleHeatPeakDetector;
   
   double fPeakPositionSearchAmplifier;
   

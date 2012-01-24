@@ -90,6 +90,14 @@ KTrapKamperProto1::KTrapKamperProto1(void)
   fMultipleIonPeakDetector.AddFilteringProcess(50, 0, 0.5, 1, 1, false, true, false);
   fMultipleIonPeakDetector.AddFilteringProcess(10, 0, 1.0, 1, 0, false, true,  true);
   fMultipleIonPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true,  true);
+  
+  fMaxHeatPeakDetector.AddFilteringProcess(20, 0, 0.5,  1,  1, false,   true, false);
+  fMaxHeatPeakDetector.AddFilteringProcess(10, 0, 0.5, 1, 1, false, true, false);
+  fMaxHeatPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true, true);
+  
+  fMultipleHeatPeakDetector.AddFilteringProcess(20, 0, 0.5,  1,  1, true,   true, false);
+  fMultipleHeatPeakDetector.AddFilteringProcess(10, 0, 0.5, 1, 1, false, true, false);
+  fMultipleHeatPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true, true);
 }
 
 KTrapKamperProto1::~KTrapKamperProto1(void)
@@ -143,18 +151,39 @@ Bool_t KTrapKamperProto1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRec
     if( !fBaseRemovalHeat.RunProcess())
       {cout << "fBaseRemovalHeat failed" << endl; return false;}
       
-    if(fixPeakPosition == -1)
-      maxPeakPos = RunHeatPulseStartTime();
+    if(fixPeakPosition == -1){
+      // Maximal peak detection
+      fMaxHeatPeakDetector.SetDecayTimeConstant(fTrapAmplitude.GetDecayTimeConstant());
+      fMaxHeatPeakDetector.SetPolarity(KPulsePolarityCalculator::GetExpectedPolarity(pRec));
+      fMaxHeatPeakDetector.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
+      if( !fMaxHeatPeakDetector.RunProcess())
+        {cout << "fMaxHeatPeakDetector failed" << endl; return false;}
+      remainingPeaks = fMaxHeatPeakDetector.GetRemainingPeaks();
+      maxPeakPos = (remainingPeaks.size() == 1) ? remainingPeaks[0][0] : -1;
+    }      
     else maxPeakPos = fixPeakPosition;
     
     fTrapAmplitude.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
     if( !fTrapAmplitude.RunProcess())
       {cout << "fTrapAmplitude failed" << endl; return false;}
-
-    //PileUpDetection(pRec, rec);
-     
-    rec->SetAmp(GetMean((int)maxPeakPos + fTrapAmplitude.GetRiseTime(), (int)maxPeakPos + fTrapAmplitude.GetRiseTime() + 
+    
+     //Pile-up detection
+    fMultipleHeatPeakDetector.SetDecayTimeConstant(fTrapAmplitude.GetDecayTimeConstant());
+    fMultipleHeatPeakDetector.SetPolarity(KPulsePolarityCalculator::GetExpectedPolarity(pRec));
+    fMultipleHeatPeakDetector.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
+    if( !fMultipleHeatPeakDetector.RunProcess())
+      {cout << "fMultipleHeatPeakDetector failed" << endl; return false;}
+    remainingPeaks = fMultipleHeatPeakDetector.GetRemainingPeaks();
+    if(remainingPeaks.size() > 1)
+      rec->SetPileUpDetected(true);
+    else
+      rec->SetPileUpDetected(false);
+    
+    if(maxPeakPos != -1)
+      rec->SetAmp(GetMean((int)maxPeakPos + fTrapAmplitude.GetRiseTime(), (int)maxPeakPos + fTrapAmplitude.GetRiseTime() + 
         fTrapAmplitude.GetFlatTopWidth()/2, fTrapAmplitude.GetOutputPulse(), fTrapAmplitude.GetOutputPulseSize(), -1) );
+    else
+      rec->SetAmp(0);
     // rec->SetAmp(GetMax((int)maxPeakPos-1, (int)maxPeakPos-1 + fTrapAmplitude.GetRiseTime() + 
     //            fTrapAmplitude.GetFlatTopWidth()/2, fTrapAmplitude.GetOutputPulse(), fTrapAmplitude.GetOutputPulseSize(), -1) );
     rec->SetPeakPosition(maxPeakPos);
