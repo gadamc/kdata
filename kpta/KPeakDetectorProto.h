@@ -52,7 +52,7 @@ public:
   virtual void SetInputPulse(std::vector<double> aInputPulse){ fInputPulse = aInputPulse; }
   virtual void SetInputPulse(double* aInputPulse, unsigned int aSize){ fInputPulse = ConvertToVector(aInputPulse,aSize);}
   virtual void SetPolarity(int aPolarity){ fPolarity = aPolarity; }
-  virtual void SetDecayTimeConstant(double aDecayTimeConstant){ fDecayTimeConstant = aDecayTimeConstant; }
+  virtual void SetDecayTimeConstant(double aDecayTimeConstant){ fDecayTimeConstant = (aDecayTimeConstant>0) ? aDecayTimeConstant : 0; }
 
   virtual std::vector < std::vector<double> > CalculateDerivatives(std::vector<double> aInputPulse);
   
