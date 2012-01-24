@@ -74,7 +74,7 @@ def runProcess(*args, **kwargs):
   
   if theRet != '':
     processdoc['file'] = newFileName
-  else:
+  elif exc.has_key('print'):
     processdoc['exception'] = copy.deepcopy(exc)
       
  
