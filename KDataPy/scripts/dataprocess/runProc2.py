@@ -51,32 +51,22 @@ def runProcess(*args, **kwargs):
   newFileName = args[0]['proc1']['file'].strip('.root') + '.amp.root'
   theRet = False
   exc = {}
-  try:
-    ROOT.gSystem.Load('libkds')
-    ROOT.gSystem.Load('libkpta')
-    ROOT.gSystem.Load('libkamping')
-  
 
-    k = ROOT.KAmpKounselor()
-    kg = ROOT.KGrandCanyonKAmpSite()
-    fillGrandCanyonParameters(args[0]['proc1']['file'], kg)
-    k.AddKAmpSite(kg)
-    theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)
+  ROOT.gSystem.Load('libkds')
+  ROOT.gSystem.Load('libkpta')
+  ROOT.gSystem.Load('libkamping')
   
-  except Exception as theExcep:
-    theRet = False
-    print theExcep
-    exc['print'] = str(theExcep)
-    exc['type'] = str(type(theExcep))
-    #exc['args'] = theExcep.args
-    #exc['message'] = theExcep.message
-    
+  
+  k = ROOT.KAmpKounselor()
+  kg = ROOT.KGrandCanyonKAmpSite()
+  fillGrandCanyonParameters(args[0]['proc1']['file'], kg)
+  k.AddKAmpSite(kg)
+  theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)
+  
   processdoc = {}
   
   if theRet == True:
     processdoc['file'] = newFileName
-  elif exc.has_key('print'):
-    processdoc['exception'] = copy.deepcopy(exc)
    
  
   return (processdoc, theRet)
@@ -132,7 +122,12 @@ def main(*argv):
   myProc = setupProc(argv[0], argv[1], runProcess)
   doc = myProc.get(argv[2])
 
-  (doc, result) = processOne(doc)
+  try:
+    (doc, result) = processOne(doc)
+  except Exception as e:
+    doc['exception'] = str(type(e)) + ': ' + str(e)
+    doc['status']  = 'proc2 failed'
+
   myProc.upload(doc)
 
 

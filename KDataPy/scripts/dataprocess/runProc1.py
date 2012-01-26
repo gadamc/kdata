@@ -2,7 +2,7 @@
 
 from KDataPy.scripts.dataprocess.DBProcess import *
 import os, sys, tempfile, shutil, datetime, copy, socket
-import rootifySambaData as rt
+import KDataPy.scripts.dataprocess.rootifySambaData as rt
 
 def runProcess(*args, **kwargs):
   
@@ -13,26 +13,14 @@ def runProcess(*args, **kwargs):
   #
   newFileName = args[0]['proc0']['file'] + '.root'
   outFile = ''
-  exc = {}
-  try:
-    outFile = rt.convertfile(args[0]['proc0']['file'], newFileName)
-  except Exception as theExcep:
-    outFile = ''
-    print theExcep
-    exc['print'] = str(theExcep)
-    exc['type'] = str(type(theExcep))
-    #exc['args'] = theExcep.args
-    #exc['message'] = theExcep.message
-    print 'done reading exception'
     
+  outFile = rt.convertfile(args[0]['proc0']['file'], newFileName)
+      
   processdoc = {}
   
   if outFile != '':
     processdoc['file'] = outFile
-  elif exc.has_key['print']:
-    processdoc['exception'] = copy.deepcopy(exc)
     
-  
   return processdoc
   
 def processOne(doc):
@@ -50,11 +38,9 @@ def processOne(doc):
   procDict['hostname'] = socket.gethostname()
   procDict['localuname'] = os.uname()
   
-  #this step will add the procDict dictionary to the 
-  #database document and then upload it to the DB
+
   if doc.has_key('proc1') == False:
     doc['proc1'] = {}
-      
   doc['proc1'].update(procDict)
   
   if procDict.has_key('file'):
@@ -85,8 +71,12 @@ def main(*argv):
   global myProc
   myProc = setupProc(argv[0], argv[1], runProcess)
   doc = myProc.get(argv[2])
-
-  (doc, result) = processOne(doc)
+  try:
+    (doc, result) = processOne(doc)
+  except Exception as e:
+    doc['exception'] = str(type(e)) + ': ' +  str(e)
+    doc['status'] = 'proc1 failed'
+    
   myProc.upload(doc)
 
 

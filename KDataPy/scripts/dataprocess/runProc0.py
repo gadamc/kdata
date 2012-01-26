@@ -2,7 +2,7 @@
 
 from KDataPy.scripts.dataprocess.DBProcess import *
 import os, sys, tempfile, shutil, datetime
-import scpToSps as scp
+import KDataPy.scripts.dataprocess.scpToSps as scp
 
 def scpToLyon(*args, **kwargs):
   
@@ -38,32 +38,40 @@ def main(*argv):
     print 'have doc', row['id']
     doc['status'] = 'proc0 in progress'
     myProc.upload(doc)
-    procDict = myProc.doprocess(doc['file']) #this step calls rootfiyAndScp
-    print 'called process'
+    try:
+      procDict = myProc.doprocess(doc['file']) #this step calls rootfiyAndScp
+      print 'called process'
 
-    if len(procDict) > 0:
-      #add a few more items to the document
-      procDict['date'] = str(datetime.datetime.utcnow())
-      procDict['processname'] = 'copySambaFileToSps'
+      if len(procDict) > 0:
+        #add a few more items to the document
+        procDict['date'] = str(datetime.datetime.utcnow())
+        procDict['processname'] = 'copySambaFileToSps'
       
-      if len(procDict['scpErrs']) > 0:
-        doc['status'] = 'bad'
-      else:
-        doc['status'] = 'good'
-      #this step will add the procDict dictionary to the 
-      #database document and then upload it to the DB
-      if doc.has_key('proc0') == False:
-        doc['proc0'] = {}
+        if len(procDict['scpErrs']) > 0:
+          doc['status'] = 'bad'
+        else:
+          doc['status'] = 'good'
+        #this step will add the procDict dictionary to the 
+        #database document and then upload it to the DB
+        if doc.has_key('proc0') == False:
+          doc['proc0'] = {}
         
-      doc['proc0'].update(procDict)
-      myProc.upload(doc)
+        doc['proc0'].update(procDict)
+        myProc.upload(doc)
       
-    else:
-      doc['status'] = 'good'
+      else:
+        doc['status'] = 'proc0 failed'
+        myProc.upload(doc)
+        print 'the process returned an empty dictionary!'
+        sys.exit(-1)
+
+    except Exception as e:
+      print e
+      doc['exception'] = str(type(e)) + ': ' + str(e)
+      doc['status'] = 'proc0 failed'
+      if doc.has_key('proc0'): del doc['proc0']
       myProc.upload(doc)
-      print 'the process returned an empty dictionary!'
       sys.exit(-1)
-    
 
 
 if __name__ == '__main__':
