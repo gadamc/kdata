@@ -1,18 +1,15 @@
 #!/usr/bin/env python
 
 from couchdbkit import Server, Database
-import sys, os, subprocess, datetime
+import sys, os, subprocess, datetime, string
 
 
-def main(*argv):
+def main(*argv, **kwargs):
   s = Server(argv[0])
   db = s[argv[1]]
 
-  if len(argv) > 3:
-    vr = db.view('proc/proc1', reduce=False, limit = int(argv[3]) )
-  else:
-    vr = db.view('proc/proc1', reduce=False)
-  
+  vr = db.view('proc/proc1', reduce=False, **kwargs )
+    
   
   scriptDir = argv[2]
   script = '$KDATA_ROOT/lib/KDataPy/scripts/dataprocess/runProc1.py'
@@ -50,4 +47,13 @@ def main(*argv):
     db.save_doc(doc)  
 
 if __name__ == '__main__':
-   main(*sys.argv[1:])
+  myargs = []
+  mykwargs = {}
+  for arg in sys.argv[1:]:
+    if string.find(arg, '=') == -1:
+      myargs.append(arg)
+    else:
+      mykwargs[arg.split('=')[0]]=arg.split('=')[1]
+
+  main(*myargs, **mykwargs)
+  
