@@ -3,6 +3,7 @@ tmtags
 *.so
 test*.C
 *.root
+*.pyc
 
 # /
 /build

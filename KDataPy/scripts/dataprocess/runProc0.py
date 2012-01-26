@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from DBProcess import *
+from KDataPy.scripts.dataprocess.DBProcess import *
 import os, sys, tempfile, shutil, datetime
 import scpToSps as scp
 
