@@ -49,7 +49,7 @@ def runProcess(*args, **kwargs):
 
   #
   newFileName = args[0]['proc1']['file'].strip('.root') + '.amp.root'
-  theRet = ''
+  theRet = False
   exc = {}
   try:
     ROOT.gSystem.Load('libkds')
@@ -64,7 +64,7 @@ def runProcess(*args, **kwargs):
     theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)
   
   except Exception as theExcep:
-    theRet = ''
+    theRet = False
     print theExcep
     exc['print'] = str(theExcep)
     exc['type'] = str(type(theExcep))
@@ -73,11 +73,11 @@ def runProcess(*args, **kwargs):
     
   processdoc = {}
   
-  if theRet != '':
+  if theRet == True:
     processdoc['file'] = newFileName
   elif exc.has_key('print'):
     processdoc['exception'] = copy.deepcopy(exc)
-      
+   
  
   return (processdoc, theRet)
   
@@ -103,7 +103,7 @@ def processOne(doc):
       
   doc['proc2'].update(procDict)
   
-  if theRet.has_key('file'):
+  if theRet == True:
     doc['status'] = 'good'
     return (doc, True)
   else:
