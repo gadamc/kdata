@@ -95,7 +95,7 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAn
 
 Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
 {
-  Bool_t theRet = MakeKamp(pRec, rec, 0);
+  Bool_t theRet = MakeKamp(pRec, rec, -2);
   rec->SetIsBaseline(true);
   return theRet;
 }
@@ -134,6 +134,9 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
       
     if(fixPeakPosition == -1)
       maxPeakPos = RunHeatPulseStartTime();
+    else if (fixPeakPosition == -2) {
+      maxPeakPos = fTrapAmplitude.GetRiseTime()*2 + fTrapAmplitude.GetFlatTopWidth();
+    }
     else maxPeakPos = fixPeakPosition;
     
     fTrapAmplitude.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
@@ -180,6 +183,9 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
 
     if(fixPeakPosition == -1)
       maxPeakPos = RunIonPulseStartTime( KPulsePolarityCalculator::GetExpectedPolarity(pRec) );
+    else if (fixPeakPosition == -2) {
+      maxPeakPos = fTrapAmplitude.GetRiseTime()*2 + fTrapAmplitude.GetFlatTopWidth();
+    }
     else maxPeakPos = fixPeakPosition;
       
     fTrapAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
