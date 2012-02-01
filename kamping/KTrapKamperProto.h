@@ -12,6 +12,7 @@
 
 #include "KAmper.h"
 #include "KBaselineRemoval.h"
+#include "KLinearRemoval.h"
 #include "KPatternRemoval.h"
 #include "KTrapezoidalFilter.h"
 #include "KOrderFilter.h"
@@ -74,6 +75,7 @@ private:
 
   KBaselineRemoval fBaseRemovalHeat;
   KBaselineRemoval fBaseRemovalIon;
+  KLinearRemoval fLineRemovalIon;
   KPatternRemoval fPatRemoval;
   KRootMeanSquare fRms;
   
@@ -99,7 +101,7 @@ private:
   
   unsigned int RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter& ord1, KOrderFilter& ord2, 
     KPtaProcessor& fromProcessor, int polarity);
-  unsigned int RunIonPulseStartTime(int polarity);
+  unsigned int RunIonPulseStartTime(KPtaProcessor& fromProcessor, int polarity);
   unsigned int RunHeatPulseStartTime(void);
   
   virtual KTrapezoidalFilter* AddTrapTime(vector<KTrapezoidalFilter *>& trapVec, double decay, 

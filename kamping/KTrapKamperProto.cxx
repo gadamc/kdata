@@ -143,15 +143,12 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
     if( !fTrapAmplitude.RunProcess())
       {cout << "fTrapAmplitude failed" << endl; return false;}
 
-    //PileUpDetection(pRec, rec);
      
     rec->SetAmp(GetMean((int)maxPeakPos + fTrapAmplitude.GetRiseTime(), (int)maxPeakPos + fTrapAmplitude.GetRiseTime() + 
         fTrapAmplitude.GetFlatTopWidth()/2, fTrapAmplitude.GetOutputPulse(), fTrapAmplitude.GetOutputPulseSize(), -1) );
-    // rec->SetAmp(GetMax((int)maxPeakPos-1, (int)maxPeakPos-1 + fTrapAmplitude.GetRiseTime() + 
-    //            fTrapAmplitude.GetFlatTopWidth()/2, fTrapAmplitude.GetOutputPulse(), fTrapAmplitude.GetOutputPulseSize(), -1) );
+   
     rec->SetPeakPosition(maxPeakPos);
     rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
-    //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
           
     return true;
   }
@@ -160,10 +157,16 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
   else{
     
     fPatRemoval.SetInputPulse((std::vector<short> &)pRec->GetTrace());
-    
-    GetHeatPulseStampWidths(pRec); //this fills a local vector<double>
-    for(unsigned int h = 0; h < fHeatPulseStampWidths.size(); h++){
-      fPatRemoval.SetPatternLength(1*fHeatPulseStampWidths.at(h)); 
+    if (pRec->GetBoloBoxVersion() < 2.0){
+      GetHeatPulseStampWidths(pRec); //this fills a local vector<double>
+      for(unsigned int h = 0; h < fHeatPulseStampWidths.size(); h++){
+        fPatRemoval.SetPatternLength(1*fHeatPulseStampWidths.at(h)); 
+        if( !fPatRemoval.RunProcess())
+          {cout << "fPatRemoval failed" << endl; return false;}
+      }
+    }
+    else {
+      fPatRemoval.SetPatternLength(10);  //for some reason, the bbv2 have a "pattern" of 10  bins in period. Some very strong 10 kHz noise 
       if( !fPatRemoval.RunProcess())
         {cout << "fPatRemoval failed" << endl; return false;}
     }
@@ -176,34 +179,46 @@ Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisReco
         {cout << "fPatRemoval failed" << endl; return false;}
     }
     
-        
-    fBaseRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
-    if( !fBaseRemovalIon.RunProcess())
-      {cout << "fBaseRemovalIon failed" << endl; return false;}
-
+    
+    if (pRec->GetBoloBoxVersion() < 2.0){
+      fBaseRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
+      if( !fBaseRemovalIon.RunProcess())
+        {cout << "fBaseRemovalIon failed" << endl; return false;}
+      fTrapAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
+      rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
+    }
+    else {
+      fLineRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
+      if( !fLineRemovalIon.RunProcess())
+        {cout << "fLineRemovalIon failed" << endl; return false;}
+      fTrapAmplitude.SetInputPulse(fLineRemovalIon.GetOutputPulse(), fLineRemovalIon.GetOutputPulseSize());
+      rec->SetBaselineRemoved(fLineRemovalIon.GetOffset());
+      rec->SetExtra(fLineRemovalIon.GetSlope(), 3);
+    }
+    
+    
     if(fixPeakPosition == -1)
-      maxPeakPos = RunIonPulseStartTime( KPulsePolarityCalculator::GetExpectedPolarity(pRec) );
+      if ( pRec->GetBoloBoxVersion() < 2.0) 
+        maxPeakPos = RunIonPulseStartTime( fBaseRemovalIon, KPulsePolarityCalculator::GetExpectedPolarity(pRec) );
+      else
+        maxPeakPos = RunIonPulseStartTime( fLineRemovalIon, KPulsePolarityCalculator::GetExpectedPolarity(pRec) );
     else if (fixPeakPosition == -2) {
       maxPeakPos = fTrapAmplitude.GetRiseTime()*2 + fTrapAmplitude.GetFlatTopWidth();
     }
     else maxPeakPos = fixPeakPosition;
       
-    fTrapAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
+    
     if( !fTrapAmplitude.RunProcess())
       {cout << "fTrapAmplitude failed" << endl; return false;}
-                
-    //PileUpDetection(pRec, rec);
-    
+                    
     rec->SetAmp(GetMean((int)maxPeakPos + fTrapAmplitude.GetRiseTime(), (int)maxPeakPos + fTrapAmplitude.GetRiseTime() + 
       fTrapAmplitude.GetFlatTopWidth()/2, fTrapAmplitude.GetOutputPulse(), fTrapAmplitude.GetOutputPulseSize(), 
        KPulsePolarityCalculator::GetExpectedPolarity(pRec) ));
-    // rec->SetAmp(GetMax((int)maxPeakPos-1, (int)maxPeakPos-1 + fTrapAmplitude.GetRiseTime() + 
-    //                 fTrapAmplitude.GetFlatTopWidth()/2, fTrapAmplitude.GetOutputPulse(), fTrapAmplitude.GetOutputPulseSize(), pRec->GetPolarity() > 0 ? -1 : 1) );
+    
     rec->SetPeakPosition(maxPeakPos);
-    rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
-    //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
     
     return true;
+   
    }
 
 }
@@ -344,9 +359,9 @@ unsigned int KTrapKamperProto::RunHeatPulseStartTime(void)
   return RunPulseStartTime(fTrapHeatTime, fOrderFilter1Heat, fOrderFilter2Heat, fBaseRemovalHeat, -1);
 }
 
-unsigned int KTrapKamperProto::RunIonPulseStartTime(int polarity)
+unsigned int KTrapKamperProto::RunIonPulseStartTime(KPtaProcessor& fromProcessor, int polarity)
 {
-  return RunPulseStartTime(fTrapIonTime, fOrderFilter1Ion, fOrderFilter2Ion, fBaseRemovalIon, polarity);   
+  return RunPulseStartTime(fTrapIonTime, fOrderFilter1Ion, fOrderFilter2Ion, fromProcessor, polarity);   
 }
 
 unsigned int KTrapKamperProto::RunPulseStartTime(vector<KTrapezoidalFilter *>& trapVec, KOrderFilter& ord1, KOrderFilter& ord2, KPtaProcessor& fromProcessor, int polarity)
@@ -418,17 +433,4 @@ std::vector<int>& KTrapKamperProto::GetHeatPulseStampWidths(KRawBoloPulseRecord 
   }
   return fHeatPulseStampWidths;
 }
-
-
-// 
-// unsigned int KTrapKamperProto::PileUpDetection(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
-// {
-//   int polarity = KPulsePolarityCalculator::GetExpectedPolarity(pRec);
-//   
-//   unsigned int mPeakBin  = FindPeak(fPeakPositionResult, fPeakPositionResult.size());
-//   if (mPeakBin > 0){
-//     for (unsigned int i = 10; i < fPeakPositionResult.size() && (i < mPeakBin - 10 || i > mPeakBin + 10) ; i++)
-//       
-//   }
-// }
 

@@ -42,10 +42,6 @@ private:
   KTrapKamperProto fTrapKamp;
   KBBv2TimeDomainFitKamper fBBv2TimeFitter;
   
-  //KTrapKamperProto* fTrapKampHeat;
-  //std::map<std::string, KTrapKamperProto *> fIonTraps;
-  
-  //KOptimalKamper fOptKamp;
   
 };
 
