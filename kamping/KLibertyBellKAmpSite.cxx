@@ -1,5 +1,5 @@
 //
-// KGrandCanyonKAmpSite.cxx  
+// KLibertyBellKAmpSite.cxx  
 // KDataStructure
 //
 // Created by Adam Cox
@@ -10,7 +10,7 @@
 // You can see in the RunKampSite method that this KampSite adds a KPulseAnalysisRecord to the KAmpEvent
 // and passes it to the KTrapKamperProto to fill its data. It also sets the TRef links. 
 
-#include "KGrandCanyonKAmpSite.h"
+#include "KLibertyBellKAmpSite.h"
 
 #include "KAmpEvent.h"
 #include "KRawEvent.h"
@@ -24,42 +24,48 @@
 
 using namespace std;
 
-KGrandCanyonKAmpSite::KGrandCanyonKAmpSite(void)
+KLibertyBellKAmpSite::KLibertyBellKAmpSite(void)
 {
-  SetName("KGrandCanyonKAmpSite");
+  SetName("KLibertyBellKAmpSite");
  
 }
 
-KGrandCanyonKAmpSite::~KGrandCanyonKAmpSite(void)
+KLibertyBellKAmpSite::~KLibertyBellKAmpSite(void)
 {
 
 }
 
-Bool_t KGrandCanyonKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee)
+Bool_t KLibertyBellKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee)
 {
  
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
+    
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
     KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp); //for each pulse record, we add a bolo amp pulse record
     
+    
     KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    fTrapKamp.MakeKamp(pRaw, rec);
+    if(pRaw->GetIsHeatPulse())
+      fTrapKamp.MakeKamp(pRaw, rec);
+    else
+      fBBv2TimeFitter.MakeKamp(pRaw, rec);
     rec->SetName(GetName());  //rename this pulse analysis record to this kampsite
     
-    //create a new KPulseAnalysisRecord to store the results from 
-    //MakeBaseKamp, which will estimate the amplitude
-    //of the baseline. 
+    
     KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    fTrapKamp.MakeBaseKamp(pRaw, recBase);
+    if(pRaw->GetIsHeatPulse())
+      fTrapKamp.MakeBaseKamp(pRaw, rec);
+    else
+      fBBv2TimeFitter.MakeBaseKamp(pRaw, rec);
     rec->SetName(GetName());  //rename this pulse analysis record to this kampsite
   }
   
   return true;
 }  
 
-Bool_t KGrandCanyonKAmpSite::ScoutKampSite(KRawBoloPulseRecord* /*pRaw*/, KRawEvent* /*e*/)
+Bool_t KLibertyBellKAmpSite::ScoutKampSite(KRawBoloPulseRecord* /*pRaw*/, KRawEvent* /*e*/)
 {
   //just returns true;  no scouting required 
   return true;

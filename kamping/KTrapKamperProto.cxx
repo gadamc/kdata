@@ -103,7 +103,7 @@ Bool_t KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysis
 Bool_t KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec, double fixPeakPosition)
 {
   rec->SetIsBaseline(false); 
-  rec->SetName(GetName());
+  //rec->SetName(GetName());
   rec->SetUnit(0);
   if(pRec->GetPulseLength() == 0){
     //cerr << "KTrapKamperProto::MakeKamp. Pulse Length is zero." << endl;
