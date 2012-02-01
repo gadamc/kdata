@@ -61,6 +61,8 @@ def runProcess(*args, **kwargs):
   kg = ROOT.KGrandCanyonKAmpSite()
   fillGrandCanyonParameters(args[0]['proc1']['file'], kg)
   k.AddKAmpSite(kg)
+  klb = ROOT.KLibertyBellKAmpSite()
+  k.AddKAmpSite(klb)
   theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)
   
   processdoc = {}
