@@ -53,7 +53,7 @@ Bool_t KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw, KPulseAnaly
   //f1->FixParameter(2, 0.149);
   //f1->SetParLimits(2, 0, 0.3);
   f1->SetParameter(3, 4100);
-  f1->SetParLimits(3, 2000, 8192);
+  f1->SetParLimits(3, 0, 8192);
   
   if(raw->GetPulseLength() != (unsigned int)fData.GetN())
     fData.Set(raw->GetPulseLength());
@@ -71,7 +71,7 @@ Bool_t KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw, KPulseAnaly
   for(int i = 0; i < fIrrFour.GetOutputPulseSize(); i++)
     fData.SetPoint(i, i, fIrrFour.GetOutputPulse()[i]);
     
-  Int_t fitStatus = fData.Fit(f1, "QR");
+  Int_t fitStatus = fData.Fit(f1, "QRW");
   
   rec->SetAmp(f1->GetParameter(1));
   rec->SetPeakPosition(f1->GetParameter(3));
