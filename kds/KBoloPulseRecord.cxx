@@ -72,6 +72,7 @@ void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
 {
   //used by the assignment operator to copy local members (fPulseType and
   //fChanneNumber)
+  fChannelName = aRec.fChannelName;  
   fPositiveTriggerAmp = aRec.fPositiveTriggerAmp;
   fNegativeTriggerAmp = aRec.fNegativeTriggerAmp;
   fState = aRec.fState; 
@@ -120,6 +121,7 @@ void KBoloPulseRecord::InitializeMembers(void)
 
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+  fChannelName.resize(0);  //the name of the channel. for example: "chaleur ID4"
   fPositiveTriggerAmp = -99999;
   fNegativeTriggerAmp = -99999;
   fState.resize(0);
@@ -152,7 +154,15 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
     //the operator== method uses this functionality.
   }
 
-   
+  if(fChannelName != aRec.fChannelName){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KRawBoloPulseRecord fChannelName Not Equal. lhs: " 
+      << fChannelName << " != rhs " << aRec.fChannelName << endl;		
+    else
+      return false;  
+  }
+
   if(fGain != aRec.fGain){
      bIsEqual = false;
      if (bPrint) 

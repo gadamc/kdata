@@ -57,7 +57,6 @@ void KRawBoloPulseRecord::CopyLocalMembers(const KRawBoloPulseRecord &aRec)
 	//fBolometerRecordNum = aRec.fBolometerRecordNum;  have to set this value manually
 	fBolometerRecord = 0;
 	
-  fChannelName = aRec.fChannelName;  
   fPulseTimeWidth = aRec.fPulseTimeWidth;  
   fTrace = aRec.fTrace;   
   fAmplitude = aRec.fAmplitude;   
@@ -108,7 +107,6 @@ void KRawBoloPulseRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
   
-  fChannelName.resize(0);  //the name of the channel. for example: "chaleur ID4"
   fPulseTimeWidth = 10; //returns number of ns for each point.  = 1 / f
   fTrace.resize(0); //the raw trace.
   fAmplitude = -99; //the pulse amplitude calcuated by the DAQ
@@ -151,15 +149,7 @@ Bool_t KRawBoloPulseRecord::IsSame(const KRawBoloPulseRecord &aRec, Bool_t bPrin
 	//this is inherently dangerous.  its probably better to specify an allowed 
 	//range that's on the order of machine error. 
 	
-	if(fChannelName != aRec.fChannelName){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fChannelName Not Equal. lhs: " 
-			<< fChannelName << " != rhs " << aRec.fChannelName << endl;		
-		else
-			return false;  
-	}
-	
+
 	if(fPulseTimeWidth != aRec.fPulseTimeWidth){
 		bIsEqual = false;
 		if (bPrint) 
