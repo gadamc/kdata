@@ -520,15 +520,31 @@ KAmpBolometerRecord* KAmpEvent::AddBolo(void)
   return AddSubRecord<KAmpBolometerRecord>(fBolo);
 }
 
-KAmpBolometerRecord* KAmpEvent::AddBolo(KRawBolometerRecord* boloRaw)
+KAmpBolometerRecord* KAmpEvent::AddBolo(KRawBolometerRecord* boloRaw, Bool_t force)
 {
-  //use this method to add an AmpBolometer Record, but then to also 
+  //use this method to add an AmpBolometer Record, and 
   //copy the necessary data from the RawBolometerRecord. This includes
   //creating the appropriate SambaRecord and setting the TRef links
   //This method is used in building the AMP-level KData file from 
   //from the RAW-level file.
+  //
+  //If force=False, this method returns an EXISTING KAmpBolometerRecord
+  //found in this KAmpEvent with the same name if one is found!  
+  //If force=True, it will create a new record in this KAmpEvent no matter 
+  //if a KAmpBolometerRecord with the same name already exists. 
+  //Use force==True with caution. Physically, there should
+  //only be one bolometer record for each bolometer. By default, force==False,
+  //but this option is provided for special needs cases. 
+  //
   
-  KAmpBolometerRecord* mBoloAmp=AddBolo();
+  KAmpBolometerRecord *mBoloAmp = 0;
+  if (!force)
+    mBoloAmp = static_cast<KAmpBolometerRecord *>( GetBolo(boloRaw->GetDetectorName()) );
+  if(!mBoloAmp)
+    mBoloAmp=AddBolo();
+  else
+    return mBoloAmp;
+    
   mBoloAmp->SetMass(boloRaw->GetMass());
   mBoloAmp->SetDetectorName(boloRaw->GetDetectorName());
 
@@ -564,7 +580,7 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(void)
   return AddSubRecord<KAmpBoloPulseRecord>(fBoloPulse);
 }
 
-KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolometerRecord* boloAmp)
+KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolometerRecord* boloAmp, Bool_t force)
 {
   //use this method to add an AmpBoloPulse Record, but then to also 
   //copy the necessary data from the RawBolomPulseRecord. This includes
@@ -572,30 +588,45 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolo
   //This method is used in building the AMP-level KData file from 
   //from the RAW-level file.
   
-  KAmpBoloPulseRecord *pAmp = AddBoloPulse();
+  //If force=False, this method returns an EXISTING KAmpBoloPulseRecord
+  //found in this KAmpEvent with the same name if one is found!  
+  //If force=True, it will create a new record in this KAmpEvent no matter 
+  //if a KAmpBolometerRecord with the same name already exists. 
+  //Use force==True with caution. Physically, there should
+  //only be one bolometer record for each bolometer. By default, force==False,
+  //but this option is provided for special needs cases. 
+  //
   
-  boloAmp->AddPulseRecord(pAmp); //link the TRef
-  pAmp->SetBolometerRecord(boloAmp); //link the TRef
+  KAmpBoloPulseRecord *mAmp = 0;
+  if (!force)
+    mAmp = static_cast<KAmpBoloPulseRecord *>( GetBoloPulse(pRaw->GetChannelName()) );
+  if(!mAmp)
+    mAmp=AddBoloPulse();
+  else
+    return mAmp;
+      
+  boloAmp->AddPulseRecord(mAmp); //link the TRef
+  mAmp->SetBolometerRecord(boloAmp); //link the TRef
   
-  *(KBoloPulseRecord *)pAmp = *pRaw;  //copies the base class stuff.
+  *(KBoloPulseRecord *)mAmp = *pRaw;  //copies the base class stuff.
   
   //copy the relevant information from the raw bolo pulse record to the amp pulse record.
   //one day, if i can get some template classes defined, this stuff could be more automatic. 
   //its certainly not very pretty. This should all be put in the base-class... 
-  pAmp->SetChannelName(pRaw->GetChannelName());
-  pAmp->SetPulseTimeWidth(pRaw->GetPulseTimeWidth());
-  pAmp->SetPretriggerSize(pRaw->GetPretriggerSize());
-  pAmp->SetFilterSize(pRaw->GetFilterSize());
-  pAmp->SetHeatPulseStampWidth(pRaw->GetHeatPulseStampWidth());
-  pAmp->SetCryoPosition(pRaw->GetCryoPosition());
-  pAmp->SetPolarFet(pRaw->GetPolarFet());
-  pAmp->SetCorrPied(pRaw->GetCorrPied());
-  pAmp->SetCompModul(pRaw->GetCompModul());
-  pAmp->SetCorrTrngl(pRaw->GetCorrTrngl());
-  pAmp->SetAmplModul(pRaw->GetAmplModul());
-  pAmp->SetIsHeatPulse(pRaw->GetIsHeatPulse());
-  pAmp->SetPulseLength(pRaw->GetPulseLength());
-  pAmp->SetCorrPied(pRaw->GetCorrPied());
+  mAmp->SetChannelName(pRaw->GetChannelName());
+  mAmp->SetPulseTimeWidth(pRaw->GetPulseTimeWidth());
+  mAmp->SetPretriggerSize(pRaw->GetPretriggerSize());
+  mAmp->SetFilterSize(pRaw->GetFilterSize());
+  mAmp->SetHeatPulseStampWidth(pRaw->GetHeatPulseStampWidth());
+  mAmp->SetCryoPosition(pRaw->GetCryoPosition());
+  mAmp->SetPolarFet(pRaw->GetPolarFet());
+  mAmp->SetCorrPied(pRaw->GetCorrPied());
+  mAmp->SetCompModul(pRaw->GetCompModul());
+  mAmp->SetCorrTrngl(pRaw->GetCorrTrngl());
+  mAmp->SetAmplModul(pRaw->GetAmplModul());
+  mAmp->SetIsHeatPulse(pRaw->GetIsHeatPulse());
+  mAmp->SetPulseLength(pRaw->GetPulseLength());
+  mAmp->SetCorrPied(pRaw->GetCorrPied());
   
   //move the samba data into a pulse analysis record. 
   KPulseAnalysisRecord *sambarec = AddPulseAnalysisRecord(); 
@@ -607,8 +638,8 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolo
   sambarec->SetUnit(0);
   
   sambarec->SetBolometerRecord(boloAmp);  //link the TRefs in the different objects. This is important
-  sambarec->SetBoloPulseRecord(pAmp);
-  pAmp->AddPulseAnalysisRecord(sambarec);
+  sambarec->SetBoloPulseRecord(mAmp);
+  mAmp->AddPulseAnalysisRecord(sambarec);
   
   
   KPulseAnalysisRecord *sambarecBaseline = AddPulseAnalysisRecord(); //add a new analysis record
@@ -620,10 +651,10 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolo
   sambarecBaseline->SetUnit(0);
   
   sambarecBaseline->SetBolometerRecord(boloAmp); //make the proper TRef links
-  sambarecBaseline->SetBoloPulseRecord(pAmp);
-  pAmp->AddPulseAnalysisRecord(sambarecBaseline);
+  sambarecBaseline->SetBoloPulseRecord(mAmp);
+  mAmp->AddPulseAnalysisRecord(sambarecBaseline);
   
-  return pAmp;
+  return mAmp;
 }
 
 
@@ -666,6 +697,30 @@ KBoloPulseRecord *KAmpEvent::GetBoloPulse(Int_t i) const
   return static_cast<KBoloPulseRecord *>(fBoloPulse->At(i));
 }
 
+KBolometerRecord *KAmpEvent::GetBolo(const char* name) const
+{
+  //Return the first found Bolometer Sub Record with detector name == name.
+  //this searches in order from i = 0 to i = GetNumBolos()-1
+  for (int i = 0; i < GetNumBolos(); i++){
+    KBolometerRecord *b = GetBolo(i);
+    if(b)
+      if( strcmp(b->GetDetectorName(), name) == 0 ) return b;
+  }
+  return 0;
+}
+
+KBoloPulseRecord *KAmpEvent::GetBoloPulse(const char* name) const
+{
+  //Return the first found Bolometer Pulse Record with channel name == name.
+  //this searches in order from i = 0 to i = GetNumBoloPulses()-1
+  for (int i = 0; i < GetNumBoloPulses(); i++){
+    KBoloPulseRecord *b = GetBoloPulse(i);
+    if(b)
+      if( strcmp(b->GetChannelName(), name) == 0 ) return b;
+  }
+  return 0;
+  
+}
 KMuonModuleRecord *KAmpEvent::GetMuonModule(Int_t i) const
 {
   // Return the i'th Muon Module Sub Record for this event.

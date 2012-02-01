@@ -74,7 +74,9 @@ public:
   virtual KBolometerRecord* GetBolo(Int_t i) const;
   virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const;
   virtual KMuonModuleRecord* GetMuonModule(Int_t i) const;
-
+  virtual KBolometerRecord* GetBolo(const char* name) const;
+  virtual KBoloPulseRecord* GetBoloPulse(const char* name) const;
+  
 private: 
 
   KRawMuonVetoSysRecord fMuonSystem; //Muon Veto System Record

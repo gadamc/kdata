@@ -35,8 +35,6 @@ public:
 	Bool_t operator!=(const KRawBoloPulseRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
   
-  
-  const char* GetChannelName(void) const {return fChannelName.c_str();  }
   UInt_t GetPulseTimeWidth(void) const {return fPulseTimeWidth;  }
   const vector<Short_t>& GetTrace(void) const {return fTrace;  }
   void GetTrace(double *p){CopyTraceToMem(p);}
@@ -64,7 +62,6 @@ public:
   Double32_t GetAmplModulation(void) const { return GetAmplModul();}
   Bool_t GetIsHeatPulse(void) const { return fIsHeatPulse;}
 
-  void SetChannelName(const char* name) {fChannelName = name;  } 
   void SetPulseTimeWidth(ULong_t aVal) {fPulseTimeWidth = aVal;  }
   void SetTrace(const vector<Short_t> & aTrace) { fTrace = aTrace; }
   void SetTrace(UInt_t size, const Short_t* aData); 
@@ -96,7 +93,6 @@ private:
 
   TRef fBolometerRecord;  //the value of this is the pointer to KRawBolometerRecord object that this pulse belongs to.
 
-  string fChannelName;  //the name of the channel. for example: "chaleur ID4"
   UInt_t fPulseTimeWidth; //holds the number of ns for each point.  = 1 / f. Default is 10.080 micro sec
   vector<Short_t> fTrace; //the raw trace.
   Double32_t fAmplitude; //the pulse amplitude calcuated by the DAQ
@@ -124,7 +120,7 @@ private:
   void CopyLocalMembers(const KRawBoloPulseRecord &aRec);
   template<class T> void CopyTraceToMem(T *pulse) const {for(unsigned int i = 0; i < fTrace.size(); i++) *(pulse+i) = fTrace[i];}
   
-  ClassDef(KRawBoloPulseRecord,3);
+  ClassDef(KRawBoloPulseRecord,4);
 };
 
 

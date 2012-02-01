@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from couchdbkit import Server, Database
 from ROOT import TF1
-import pickle, sys, datetime, json
+import pickle, sys, datetime, json, string
 
 def fillVars(vlist, skip, number):
   
@@ -65,8 +65,8 @@ def addFormulaResult(n, channel):
     subdoc['c']['value'] = 'double xx = x[0];\n if(xx < par[0]) return 0;\n else return par[1]*(1 - exp(-(xx-par[0])/par[2]))*(exp(-(xx-par[0])/par[3]) + par[4]*exp(-(xx-par[0])/par[5]));\n'
     subdoc['python'] = {}
     subdoc['python']['function'] = "def %s_template(x,par):\n  import math\n  xx = x[0]\n  if xx < par[0]: return 0\n  else: return par[1]*(1 - math.exp(-(xx-par[0])/par[2]))*(math.exp(-(xx-par[0])/par[3]) + par[4]*math.exp(-(xx-par[0])/par[5]))\n" % string.replace(channel, ' ', '_')
-       
-       print 'you selected the following functional form (c syntax): '
+    
+    print 'you selected the following functional form (c syntax): '
     print subdoc['c']['value']
     
     subdoc['par'] = [256,1,0,0,0,0]

@@ -106,7 +106,8 @@ public:
   virtual KBolometerRecord* GetBolo(Int_t i) const;
   virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const;
   virtual KMuonModuleRecord* GetMuonModule(Int_t i) const;
-
+  virtual KBolometerRecord* GetBolo(const char* name) const;
+  virtual KBoloPulseRecord* GetBoloPulse(const char* name) const;
 
   //soon to be deprecated methods
   Double_t GetEventTriggerTime(void) const;

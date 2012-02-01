@@ -61,6 +61,9 @@ def runProcess(*args, **kwargs):
   kg = ROOT.KGrandCanyonKAmpSite()
   fillGrandCanyonParameters(args[0]['proc1']['file'], kg)
   k.AddKAmpSite(kg)
+  bbv2 = False
+  for i in range(len(args[0]['Detecteurs']))
+    #check to see if we have bbv2 detectors, which then needs different pulse amplitude estimator code
   klb = ROOT.KLibertyBellKAmpSite()
   k.AddKAmpSite(klb)
   theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)

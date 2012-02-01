@@ -516,6 +516,32 @@ KBoloPulseRecord *KRawEvent::GetBoloPulse(Int_t i) const
   return static_cast<KBoloPulseRecord *>(fBoloPulse->At(i));
 }
 
+KBolometerRecord *KRawEvent::GetBolo(const char* name) const
+{
+  //Return the first found Bolometer Sub Record with detector name == name.
+  //this searches in order from i = 0 to i = GetNumBolos()-1
+  for (int i = 0; i < GetNumBolos(); i++){
+    KBolometerRecord *b = GetBolo(i);
+    if(b)
+      if( strcmp(b->GetDetectorName(), name) == 0 ) return b;
+  }
+  return 0;
+}
+
+KBoloPulseRecord *KRawEvent::GetBoloPulse(const char* name) const
+{
+  //Return the first found Bolometer Pulse Record with channel name == name.
+  //this searches in order from i = 0 to i = GetNumBoloPulses()-1
+  for (int i = 0; i < GetNumBoloPulses(); i++){
+    KBoloPulseRecord *b = GetBoloPulse(i);
+    if(b)
+      if( strcmp(b->GetChannelName(), name) == 0 ) return b;
+  }
+  return 0;
+  
+}
+
+
 KMuonModuleRecord *KRawEvent::GetMuonModule(Int_t i) const
 {
   // Return the i'th Muon Module Sub Record for this event.

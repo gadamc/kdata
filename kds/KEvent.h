@@ -72,7 +72,9 @@ public:
   virtual KBolometerRecord* GetBolo(Int_t i) const = 0;
   virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const = 0;
   virtual KMuonModuleRecord* GetMuonModule(Int_t i) const = 0;
-
+  virtual KBoloPulseRecord* GetBoloPulse(const char* name) const = 0;
+  virtual KBolometerRecord* GetBolo(const char* name) const = 0;
+  
   virtual Int_t GetNumSambas(void) const = 0;
   virtual Int_t GetNumBolos(void) const = 0;
   virtual Int_t GetNumBoloPulses(void) const = 0;

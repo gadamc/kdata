@@ -57,9 +57,9 @@ public:
 
   KRawSambaRecord* AddSamba();
   KAmpBolometerRecord* AddBolo();
-  KAmpBolometerRecord* AddBolo(KRawBolometerRecord* boloRaw);
+  KAmpBolometerRecord* AddBolo(KRawBolometerRecord* boloRaw, Bool_t force=false);
   KAmpBoloPulseRecord* AddBoloPulse();
-  KAmpBoloPulseRecord* AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolometerRecord* boloAmp);
+  KAmpBoloPulseRecord* AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolometerRecord* boloAmp, Bool_t force=false);
   KRawMuonModuleRecord* AddMuonModule();
   KPulseAnalysisRecord* AddPulseAnalysisRecord();
 
@@ -81,7 +81,8 @@ public:
   virtual KBoloPulseRecord* GetBoloPulse(Int_t i) const;
   virtual KMuonModuleRecord* GetMuonModule(Int_t i) const;
   virtual KPulseAnalysisRecord* GetPulseAnalysisRecord(Int_t i) const;
-
+  virtual KBolometerRecord* GetBolo(const char* name) const;
+  virtual KBoloPulseRecord* GetBoloPulse(const char* name) const;
 private: 
 
   KRawMuonVetoSysRecord fMuonSystem; //Muon Veto System Record

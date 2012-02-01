@@ -27,6 +27,7 @@ public:
   Bool_t operator!=(const KBoloPulseRecord &aRec) const { return !(*this==aRec); }
   virtual void Compact(void);
 
+  const char* GetChannelName(void) const {return fChannelName.c_str();  }
   Double32_t GetPositiveTriggerAmp(void) const { return fPositiveTriggerAmp;}
   Double32_t GetNegativeTriggerAmp(void) const { return fNegativeTriggerAmp;}
   const char* GetState(void) const { return fState.c_str();}
@@ -40,6 +41,7 @@ public:
   Double32_t GetFetDac(void) const {return fFetDac;}
   Double32_t GetBoloGain(void) const {return fBoloGain;}
 
+  void SetChannelName(const char* name) {fChannelName = name;  } 
   void SetPositiveTriggerAmp(Double32_t aVal) {fPositiveTriggerAmp = aVal;}
   void SetNegativeTriggerAmp(Double32_t aVal) {fNegativeTriggerAmp = aVal;}
   void SetState(const char* aVal) {fState = aVal;}
@@ -54,7 +56,7 @@ public:
   void SetBoloGain(Double32_t aVal) {fBoloGain = aVal;}
   
 private:
-
+  string fChannelName;  //the name of the channel. for example: "chaleur ID4"
   Double32_t fPositiveTriggerAmp;
   Double32_t fNegativeTriggerAmp;
   string fState;
@@ -72,7 +74,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KBoloPulseRecord &aRec);
 
-  ClassDef(KBoloPulseRecord,6);
+  ClassDef(KBoloPulseRecord,7);
 };
 
 
