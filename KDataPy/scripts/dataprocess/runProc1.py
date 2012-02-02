@@ -59,8 +59,8 @@ def main(*argv):
   '''
   argv[0] is the couchdb server (http://127.0.0.1:5984)
   argv[1] is the database (datadb)
-  argv[2] is the document id
-
+  argv[2], argv[3], ... are the document ids (you can pass in an unlimited number of ids.)
+  
   process 1 - converts a raw Samba data file into Kdata ROOT file.
   This script is meant to be run on ccage.in2p3.fr with access to the /sps/edelweis directory
   because that is where we expect the data files to be located.
@@ -70,14 +70,16 @@ def main(*argv):
   #document to the database... although, its barely useful... 
   global myProc
   myProc = setupProc(argv[0], argv[1], runProcess)
-  doc = myProc.get(argv[2])
-  try:
-    (doc, result) = processOne(doc)
-  except Exception as e:
-    doc['exception'] = str(type(e)) + ': ' +  str(e)
-    doc['status'] = 'proc1 failed'
+  
+  for anId in argv[2:]:
+    doc = myProc.get(anId)
+    try:
+      (doc, result) = processOne(doc)
+    except Exception as e:
+      doc['exception'] = str(type(e)) + ': ' +  str(e)
+      doc['status'] = 'proc1 failed'
     
-  myProc.upload(doc)
+    myProc.upload(doc)
 
 
 if __name__ == '__main__':

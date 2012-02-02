@@ -4,6 +4,23 @@ import sys, os, subprocess, datetime, string
 
 
 def main(*argv, **kwargs):
+  '''                                                                                                                                                                                   
+      This script will create jobs that call $KDATA_ROOT/KDataPy/scripts/dataprocess/runProc2.py
+      to be run on a Sun Grid Engine based system, such as the computing center in Lyon. You must 
+      provide the URI (with username/password) to the couchdb, the name of the database, and
+      the directory where the standard out and standard err files will be put after processing.
+      Additionally, you may add any couchdbkit-based options when it queries the database to find
+      suitable data to process. This routine calls the db.view('proc/proc2') View (which reduce=False),
+      along with your options. 
+      
+      This routine will update the database document with the metadata results of this process. 
+
+      For example:                                                                                                                                                                            
+      ./batchRunProc2.py https://edwdbuser:password@edwdbik.fzk.de:6984 datadb /sps/edelweis/kdata/dataprocessing/schedule/ key=lg23b002 
+
+      ./batchRunProc2.py https://edwdbuser:password@edwdbik.fzk.de:6984 datadb /sps/edelweis/kdata/dataprocessing/schedule/ startkey=lg23b002  endkey=lh18c005                                                                                         
+  '''
+  
   s = Server(argv[0])
   db = s[argv[1]]
 
