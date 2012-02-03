@@ -40,7 +40,39 @@ def fillGrandCanyonParameters(dataFile, kg):
       trapKamper.SetTrapAmplitudeDecayConstant(doc['channel'],doc['kampsites']['KGrandCanyonKAmpSite']['trapAmpDecayConstant'])
     except: #this will throw if vr.first() doesn't return a document. just ignore it and move on to the next channel
       pass
-  
+
+def fillBlackForestParameters(dataFile, kbf):
+  global myProc
+  db = myProc.sv['pulsetemplates']
+  f = ROOT.KDataReader(dataFile)
+  e = f.GetEvent()
+  chanList = []
+  fileDate = ''
+  for entry in range(f.GetEntries()):
+    f.GetEntry(entry)
+    if (fileDate == '') and (e.GetNumSambas()>0):
+      timestamp = e.GetSamba(0).GetNtpDateSec()
+      fileDate = str(datetime.datetime.utcfromtimestamp(timestamp))
+    for pulse in range(e.GetNumBoloPulses()):
+      prec = e.GetBoloPulse(pulse)
+      if prec.GetChannelName() not in chanList:
+        chanList.append(prec.GetChannelName())
+  f.Close()
+  settings = {}
+  Kamper = kbf.GetBFKamper()
+  for chan in chanList:
+    vr = db.view('analytical/bychandate', descending=True, reduce=False,startkey=[chan,'2013'], limit=1, include_docs=True)
+    try:
+      doc = vr.first()['doc']
+      params = ROOT.std.vector("double")()
+      paramlist = doc['kampsites']['KBlackForestKAmpSite']['params']
+      for i in range(len(paramlist)):
+        params.push_back(paramlist[i])
+      Kamper.SetParams(doc['channel'],params)
+      settings[doc['channel']] = paramlist
+    except: #this will throw if vr.first() doesn't return a document. just ignore it and move on to the next channel
+      pass
+
 def runProcess(*args, **kwargs):
   
   if len(args) > 1:
@@ -65,6 +97,10 @@ def runProcess(*args, **kwargs):
   klb = ROOT.KLibertyBellKAmpSite()
   fillGrandCanyonParameters(args[0]['proc1']['file'], klb)
   k.AddKAmpSite(klb)
+  
+  #kbf = ROOT.KBlackForestKAmpSite()
+  #fillBlackForestParameters(args[0]['proc1']['file'], kbf)
+  #k.AddKAmpSite(kbf)
   
   theRet = k.RunKamp(args[0]['proc1']['file'], newFileName)
   
