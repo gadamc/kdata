@@ -1,5 +1,5 @@
 //
-// KBlackForestKamperProto.cxx  
+// KMultiTrapKamperProto.cxx  
 // KDataStructure
 //
 // Created by Adam Cox
@@ -23,7 +23,7 @@
 //  6,7..          Positions of found peaks (maximal 15 positions)
 
 
-#include "KBlackForestKamperProto.h"
+#include "KMultiTrapKamperProto.h"
 
 #include "KBaselineRemoval.h"
 #include "KPatternRemoval.h"
@@ -43,10 +43,10 @@
 
 using namespace std;
 
-KBlackForestKamperProto::KBlackForestKamperProto(void)
+KMultiTrapKamperProto::KMultiTrapKamperProto(void)
 {
 
-  SetName("KBlackForestKamperProto");
+  SetName("KMultiTrapKamperProto");
   
   fDefaultTrapHeatAmplitudeParameters.push_back(20.0); //fast decay constant
   fDefaultTrapHeatAmplitudeParameters.push_back(0.3); //coefficient of the second exponential
@@ -81,18 +81,18 @@ KBlackForestKamperProto::KBlackForestKamperProto(void)
   fMultipleHeatPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true, true);
 }
 
-KBlackForestKamperProto::~KBlackForestKamperProto(void)
+KMultiTrapKamperProto::~KMultiTrapKamperProto(void)
 {
   
 }
 
-Bool_t KBlackForestKamperProto::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec )
+Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec )
 {
   return MakeKamp(rawPulseRecord, rec, -1);
 }
 
 
-Bool_t KBlackForestKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
+Bool_t KMultiTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
 {
   Bool_t theRet;
   if(pRec->GetIsHeatPulse())
@@ -103,13 +103,13 @@ Bool_t KBlackForestKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseA
   return theRet;
 }
 
-Bool_t KBlackForestKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec, double fixPeakPosition)
+Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec, double fixPeakPosition)
 {
   rec->SetIsBaseline(false); 
   rec->SetName(GetName());
   rec->SetUnit(0);
   if(pRec->GetPulseLength() == 0){
-    //cerr << "KBlackForestKamperProto::MakeKamp. Pulse Length is zero." << endl;
+    //cerr << "KMultiTrapKamperProto::MakeKamp. Pulse Length is zero." << endl;
     return false;
   }
     
@@ -305,7 +305,7 @@ Bool_t KBlackForestKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnaly
 
 }
 
-void KBlackForestKamperProto::FillTrapAmplitudeParameters(const char* channelName, bool isHeatPulse)
+void KMultiTrapKamperProto::FillTrapAmplitudeParameters(const char* channelName, bool isHeatPulse)
 {
   double decayConst, riseTime, width;
   std::vector< double > params;
@@ -339,7 +339,7 @@ void KBlackForestKamperProto::FillTrapAmplitudeParameters(const char* channelNam
   }
 }
 
-std::vector<double> KBlackForestKamperProto::GetParams(const char* channelName) const
+std::vector<double> KMultiTrapKamperProto::GetParams(const char* channelName) const
 {
   if (fParams.find(channelName) != fParams.end()){
     return fParams.find(channelName)->second;
@@ -351,7 +351,7 @@ std::vector<double> KBlackForestKamperProto::GetParams(const char* channelName) 
   };
 } 
 
-double KBlackForestKamperProto::GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity)
+double KMultiTrapKamperProto::GetMean(unsigned int first, unsigned int last, double *pulse, unsigned int pulseLength, int polarity)
 {
   double mean = 0;
   unsigned int i = first;
@@ -362,7 +362,7 @@ double KBlackForestKamperProto::GetMean(unsigned int first, unsigned int last, d
   return (i > first) ? mean/(i-first) : -1*polarity*9999999;
 }
 
-std::vector<int>& KBlackForestKamperProto::GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec)
+std::vector<int>& KMultiTrapKamperProto::GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec)
 {
   KRawBolometerRecord *bolo = pRec->GetBolometerRecord();
   unsigned int counter = 0;

@@ -1,5 +1,5 @@
 //
-// KBlackForestKamperProto.h
+// KMultiTrapKamperProto.h
 // KDataStructure
 //
 // Created by Adam Cox
@@ -7,8 +7,8 @@
 //
 //
 
-#ifndef __KBLACKFORESTKAMPERPROTO_H_
-#define __KBLACKFORESTKAMPERPROTO_H_
+#ifndef __KMULTITRAPKAMPERPROTO_H_
+#define __KMULTITRAPKAMPERPROTO_H_
 
 #include "KAmper.h"
 #include "KBaselineRemoval.h"
@@ -21,11 +21,11 @@
 #include <vector>
 #include <map>
 
-class KBlackForestKamperProto : KAmper {
+class KMultiTrapKamperProto : KAmper {
 
 public:
-  KBlackForestKamperProto(void);
-  virtual ~KBlackForestKamperProto(void);
+  KMultiTrapKamperProto(void);
+  virtual ~KMultiTrapKamperProto(void);
   
   virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
   virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec, double fixPeakPosition);
@@ -75,4 +75,4 @@ private:
 };
 
 
-#endif // __KBLACKFORESTKAMPERPROTO_H_
+#endif // __KMULTITRAPKAMPERPROTO_H_

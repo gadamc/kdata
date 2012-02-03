@@ -11,7 +11,7 @@
 #define __KBLACKFORRESTKAMPSITE_H_
 
 #include "KAmpSite.h"
-#include "KBlackForestKamperProto.h"
+#include "KMultiTrapKamperProto.h"
 #include <vector>
 #include <string>
 #include <map>
@@ -32,11 +32,11 @@ public:
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e);  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void){ return false;}
   
-  KBlackForestKamperProto& GetBFKamper(void){return fBFKamp;}
+  KMultiTrapKamperProto& GetMTKamper(void){return fMTKamp;}
   
 private:
   
-  KBlackForestKamperProto fBFKamp;
+  KMultiTrapKamperProto fMTKamp;
 
   
   
