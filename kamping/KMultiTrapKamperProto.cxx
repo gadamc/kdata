@@ -20,7 +20,8 @@
 //  3              Trapezoidal Filter for Pulse Amplitude - coefficient of the slow decay exponential (zero if only one exponential is used)
 //  4              Trapezoidal Filter for Pulse Amplitude - slow decay slope (zero if only one exponential is used)
 //  5              Number of found peaks
-//  6,7..          Positions of found peaks (maximal 15 positions)
+//  6,8,10..(even numbers)       Positions of found peaks (maximal 8 positions)
+//  7,9,11         Corresponding correlation coefficient to the peak position at previous fExtra
 
 
 #include "KMultiTrapKamperProto.h"
@@ -76,8 +77,8 @@ KMultiTrapKamperProto::KMultiTrapKamperProto(void)
   fIonPeakDetector.AddFilteringProcess(10, 0, 1.0, 1, 0, false, true,  true);
   fIonPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true,  true);
   
-  fMultipleHeatPeakDetector.AddFilteringProcess(20, 0, 0.5,  1,  1, true,   true, false);
-  fMultipleHeatPeakDetector.AddFilteringProcess(10, 0, 0.5, 1, 1, false, true, false);
+  fMultipleHeatPeakDetector.AddFilteringProcess(20, 0, 0.7,  1,  1, true,   true, false);
+  fMultipleHeatPeakDetector.AddFilteringProcess(10, 0, 0.7, 1, 1, false, true, false);
   fMultipleHeatPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true, true);
 }
 
@@ -163,9 +164,11 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
         rec->SetPileUpDetected(true);
         rec->SetExtra((double) remainingPeaks.size(),5);
  
-        unsigned int numStoredPileUps = (remainingPeaks.size()<15) ? remainingPeaks.size() : 15;
-        for(unsigned int i = 0; i < numStoredPileUps; i++)          
+        unsigned int numStoredPileUps = (remainingPeaks.size()<8) ? remainingPeaks.size() : 8;
+        for(unsigned int i = 0; i < numStoredPileUps; i=i+2){          
           rec->SetExtra(remainingPeaks[i][0],i+6);
+          rec->SetExtra(remainingPeaks[i][1],i+7);
+        }
       }
       else
         rec->SetPileUpDetected(false);
@@ -183,9 +186,12 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
       if(remainingPeaks.size() > 1){
         rec->SetPileUpDetected(true);
         rec->SetExtra((double) remainingPeaks.size(),5);
-        unsigned int numStoredPileUps = (remainingPeaks.size()<15) ? remainingPeaks.size() : 15;
-        for(unsigned int i = 0; i < numStoredPileUps; i++)
+ 
+        unsigned int numStoredPileUps = (remainingPeaks.size()<8) ? remainingPeaks.size() : 8;
+        for(unsigned int i = 0; i < numStoredPileUps; i=i+2){          
           rec->SetExtra(remainingPeaks[i][0],i+6);
+          rec->SetExtra(remainingPeaks[i][1],i+7);
+        }
       }
       else
         rec->SetPileUpDetected(false);
@@ -198,7 +204,7 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
       std::vector<double> SlowDecayPulse(fBaseRemovalHeat.GetOutputPulseSize(), 0.);
       double* signal = fBaseRemovalHeat.GetOutputPulse();
       try{
-        for(int i = (int)PeakPos; (i < (int)(PeakPos+fDefaultTrapHeatAmplitudeParameters[1]+2*fDefaultTrapHeatAmplitudeParameters[0])) && (i < (int)fBaseRemovalHeat.GetOutputPulseSize()); i++){
+        for(int i = (int)PeakPos; (i < (int)(PeakPos+fDefaultTrapHeatAmplitudeParameters[4]+2*fDefaultTrapHeatAmplitudeParameters[3])) && (i < (int)fBaseRemovalHeat.GetOutputPulseSize()); i++){
             FastDecayPulse[i] = signal[i]*exp((double)(-(i-PeakPos)/fHeat1Decay))/(exp((double)(-(i-PeakPos)/fHeat1Decay))+fHeat2Coeff*exp((double)(-(i-PeakPos)/fHeat2Decay)));
             SlowDecayPulse[i] = signal[i]*exp((double)(-(i-PeakPos)/fHeat2Decay))/(exp((double)(-(i-PeakPos)/fHeat2Decay))+exp((double)(-(i-PeakPos)/fHeat1Decay))/fHeat2Coeff);
         }
@@ -219,10 +225,10 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
       if( !fTrapAmplitudeHeat2.RunProcess())
         {cout << "fTrapAmplitudeHeat2 failed" << endl; return false;}
       
-      rec->SetAmp((GetMean((int)PeakPos + fTrapAmplitudeHeat1.GetRiseTime(), (int)PeakPos + fTrapAmplitudeHeat1.GetRiseTime() + 
+      rec->SetAmp((GetMean((int)PeakPos + fTrapAmplitudeHeat1.GetRiseTime()+0.2*fTrapAmplitudeHeat1.GetFlatTopWidth(), (int)PeakPos + fTrapAmplitudeHeat1.GetRiseTime() + 
         fTrapAmplitudeHeat1.GetFlatTopWidth(), fTrapAmplitudeHeat1.GetOutputPulse(), fTrapAmplitudeHeat1.GetOutputPulseSize(), -1))/(fHeat1Decay*fTrapAmplitudeHeat1.GetRiseTime()) 
          +
-        (GetMean((int)PeakPos + fTrapAmplitudeHeat2.GetRiseTime(), (int)PeakPos + fTrapAmplitudeHeat2.GetRiseTime() + 
+        (GetMean((int)PeakPos + fTrapAmplitudeHeat2.GetRiseTime()+0.2*fTrapAmplitudeHeat2.GetFlatTopWidth(), (int)PeakPos + fTrapAmplitudeHeat2.GetRiseTime() + 
         fTrapAmplitudeHeat2.GetFlatTopWidth(), fTrapAmplitudeHeat2.GetOutputPulse(), fTrapAmplitudeHeat2.GetOutputPulseSize(), -1))/(fHeat2Decay*fTrapAmplitudeHeat2.GetRiseTime()) );
     }
     else
@@ -290,8 +296,8 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
       {cout << "fTrapAmplitudeIon failed" << endl; return false;}
                     
     if(PeakPos != -1)
-      rec->SetAmp((GetMean((int)PeakPos + fTrapAmplitudeIon.GetRiseTime(), (int)PeakPos + fTrapAmplitudeIon.GetRiseTime() + 
-        fTrapAmplitudeIon.GetFlatTopWidth()/2, fTrapAmplitudeIon.GetOutputPulse(), fTrapAmplitudeIon.GetOutputPulseSize(), 
+      rec->SetAmp((GetMean((int)PeakPos + fTrapAmplitudeIon.GetRiseTime()+0.2*fTrapAmplitudeIon.GetFlatTopWidth(), (int)PeakPos + fTrapAmplitudeIon.GetRiseTime() + 
+        fTrapAmplitudeIon.GetFlatTopWidth(), fTrapAmplitudeIon.GetOutputPulse(), fTrapAmplitudeIon.GetOutputPulseSize(), 
         KPulsePolarityCalculator::GetExpectedPolarity(pRec) ))/(fTrapAmplitudeIon.GetDecayTimeConstant()*fTrapAmplitudeIon.GetRiseTime()));
     else
       rec->SetAmp(0);
@@ -311,11 +317,11 @@ void KMultiTrapKamperProto::FillTrapAmplitudeParameters(const char* channelName,
   std::vector< double > params;
   
   if(isHeatPulse){
-    riseTime = fDefaultTrapHeatAmplitudeParameters[0];
-    width = fDefaultTrapHeatAmplitudeParameters[1];
-    fHeat1Decay = fDefaultTrapHeatAmplitudeParameters[2];
-    fHeat2Coeff = fDefaultTrapHeatAmplitudeParameters[3];
-    fHeat2Decay = fDefaultTrapHeatAmplitudeParameters[4];
+    riseTime = fDefaultTrapHeatAmplitudeParameters[3];
+    width = fDefaultTrapHeatAmplitudeParameters[4];
+    fHeat1Decay = fDefaultTrapHeatAmplitudeParameters[0];
+    fHeat2Coeff = fDefaultTrapHeatAmplitudeParameters[1];
+    fHeat2Decay = fDefaultTrapHeatAmplitudeParameters[2];
     
     if(GetParams(channelName).size() > 0){
       params = GetParams(channelName);
@@ -327,9 +333,9 @@ void KMultiTrapKamperProto::FillTrapAmplitudeParameters(const char* channelName,
     fTrapAmplitudeHeat2.SetParams(fHeat2Decay, riseTime, width);
   }
   else{
-    riseTime = fDefaultTrapHeatAmplitudeParameters[0];
-    width = fDefaultTrapHeatAmplitudeParameters[1];
-    decayConst = fDefaultTrapHeatAmplitudeParameters[2];
+    riseTime = fDefaultTrapIonAmplitudeParameters[3];
+    width = fDefaultTrapIonAmplitudeParameters[4];
+    decayConst = fDefaultTrapIonAmplitudeParameters[0];
     
     if(GetParams(channelName).size() > 0){
       params = GetParams(channelName);
