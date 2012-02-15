@@ -121,6 +121,7 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
   if(pRec->GetTrace().size() == 0){
       rec->SetPeakPosition(-1);
       rec->SetAmp(-99999);
+      return false;
     }
 
 

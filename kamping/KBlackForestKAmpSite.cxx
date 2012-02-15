@@ -38,14 +38,13 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
   double PeakPos = -1;
   double maxPeak = 0.;
   int precNum = -1;
-  
   // create KPulseAnalysisRecords for ionisation pulses and
   // look for the largest pulse in ionisation channels to fix the position of the heat pulse
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
     if(!pRaw->GetIsHeatPulse()){
       // Create KPulseAnalysisRecord and a valid KAmpEvent
-      
+      //cout << "channel:"<< pRaw->GetChannelName()<<endl;
       KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
       KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
       fMTKamp.SetName("BlackForestKAmperProto-Ion");
@@ -57,14 +56,14 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
       SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
       fMTKamp.MakeBaseKamp(pRaw, recBase);
       
-      if(fabs(rec->GetAmp()) > maxPeak){
+      
+      if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
         maxPeak = fabs(rec->GetAmp());
         PeakPos = rec->GetPeakPosition();
         precNum = k;
       }
     }
   }
-  
   // create KPulseAnalysisRecords for heat pulses, use largest ionisation pulse to fix the peak position
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
@@ -72,7 +71,7 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
     
     if(pRaw->GetIsHeatPulse()){      
       // with peak position fixed by ionisation
-      if(precNum != -1){
+      /*if(precNum != -1){
         // Create KPulseAnalysisRecord and a valid KAmpEvent
         
         KPulseAnalysisRecord *recFixed  =  ee->AddPulseAnalysisRecord();
@@ -86,7 +85,7 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
           PeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
         }
         fMTKamp.MakeKamp(pRaw, recFixed, PeakPos);
-      }
+      }*/
       
       // without fixed peak position
       KPulseAnalysisRecord *recFree  =  ee->AddPulseAnalysisRecord();
@@ -100,8 +99,7 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
       SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
       fMTKamp.MakeBaseKamp(pRaw, recBase);
     }
-  }
-  
+  } 
   return true;
 }  
 

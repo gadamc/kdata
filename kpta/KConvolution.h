@@ -37,6 +37,7 @@ public:
   virtual void SetResponse(const float* resp, unsigned int size){SetTheResponse(resp, size);}
   virtual void SetResponse(const int* resp, unsigned int size){SetTheResponse(resp, size);}
   virtual void SetResponse(const short* resp, unsigned int size){SetTheResponse(resp, size);}
+  
 	
 protected:
   double *fResponse;
@@ -47,6 +48,7 @@ protected:
 private:
   //private methods
   void InitializeMembers(void);
+  
 
 
  // ClassDef(KConvolution,1);
@@ -86,7 +88,7 @@ template <class T> void KConvolution::SetTheResponse(const T* resp, unsigned int
   else
     for(unsigned int i = 0; i < fResponseSize; i++)
       *(fResponse+i) = resp[fResponseSize-1 - i];
-      
+
   //std::copy(resp, resp + size, fResponse);
 }
 
