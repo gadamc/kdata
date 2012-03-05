@@ -1,5 +1,5 @@
 //
-// KBlackForestKAmpSite.h
+// KFeldbergKAmpSite.h
 // KDataStructure
 //
 // Created by Michael Unrau
@@ -7,11 +7,11 @@
 //
 //
 
-#ifndef __KBLACKFORESTKAMPSITE_H_
-#define __KBLACKFORESTKAMPSITE_H_
+#ifndef __KFELDBERGKAMPSITE_H_
+#define __KFELDBERGKAMPSITE_H_
 
 #include "KAmpSite.h"
-#include "KMultiTrapKamperProto.h"
+#include "KFilterChainBestCorrelationKamper.h"
 #include <vector>
 #include <string>
 #include <map>
@@ -22,25 +22,25 @@ class KAmpBolometerRecord;
 class KAmpBoloPulseRecord;
 class KRawBoloPulseRecord;
 
-class KBlackForestKAmpSite : public KAmpSite {
+class KFeldbergKAmpSite : public KAmpSite {
 
 public:
-  KBlackForestKAmpSite(void);
-  virtual ~KBlackForestKAmpSite(void);
+  KFeldbergKAmpSite(void);
+  virtual ~KFeldbergKAmpSite(void);
   
   virtual Bool_t RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee); //this runs the data processing on each event. 
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e);  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void){ return false;}
   
-  KMultiTrapKamperProto& GetMTKamper(void){return fMTKamp;}
+  KFilterChainBestCorrelationKamper& GetKamper(void){return fFCKamp;}
   
 private:
   
-  KMultiTrapKamperProto fMTKamp;
+  KFilterChainBestCorrelationKamper fFCKamp;
 
   
   
 };
 
 
-#endif // __KBLACKFORESTKAMPSITE_H_
+#endif // __KFELDBERGKAMPSITE_H_
