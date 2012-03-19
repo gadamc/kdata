@@ -5,6 +5,8 @@ test*.C
 *.root
 *.pyc
 
+temp.py
+
 # /
 /build
 /bin
