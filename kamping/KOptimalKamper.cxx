@@ -82,7 +82,7 @@ Bool_t KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnal
   }
   
   //what is this: just a test to see what is the amplitude of the pulse at this point in time.
-  rec->SetExtra(fOptimalFilter.GetOutputPulse()[rawPulseRecord->GetPretriggerSize()+2], 0);
+  rec->SetExtra(fOptimalFilter.GetOutputPulse()[5], 0);
   
   //find the maximum value in the optimal filter
   double maxValue= fOptimalFilter.GetOutputPulse()[0];

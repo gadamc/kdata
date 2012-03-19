@@ -314,7 +314,7 @@ double KOptimalFilter::GetChiSquared(unsigned int aTimeBin)
     
     chi2 += (sig2 + temp2*optAmp2*(cos_i*cos_i + sin_i*sin_i) 
       - 2*optimalAmp*cos_i*(temp_re*sig_re + temp_im*sig_im) 
-      + 2*optimalAmp*sin_i*(temp_re*sig_im - temp_im*sig_re)) / fNoiseSpectrum[i];
+      + 2*optimalAmp*sin_i*(temp_re*sig_im - temp_im*sig_re)) / (fNoiseSpectrum[i]*fNoiseSpectrum[i]);
   }
   
   return chi2;

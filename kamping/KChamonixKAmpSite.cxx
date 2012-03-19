@@ -3,12 +3,9 @@
 // KDataStructure
 //
 // Created by Adam Cox
-// Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+// Copyright 2012 Karlsruhe Institute of Technology. All rights reserved.
 //
-// This KampSite uses the KSimpleKamper1 to estimate the peak position and amplitude of the pulse. 
-// It does nothing fancy at the moment and serves as a nice example. 
-// You can see in the RunKampSite method that this KampSite adds a KPulseAnalysisRecord to the KAmpEvent
-// and passes it to the KSimpleKamper1 to fill its data. It also sets the TRef links. 
+ 
 
 #include "KChamonixKAmpSite.h"
 
@@ -90,6 +87,7 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     //we don't really need to call this! The answer should already be calculated for us! Just get the optimal filter from
     //the fOptKamper and get the results from the output
     fOptKamper.MakeBaseKamp(pRaw, basRec);
+    basRec->SetIsBaseline(true);
     basRec->SetName(GetName());
   }
   
