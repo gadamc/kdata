@@ -66,7 +66,7 @@ public:
   virtual void SetOutputPulse(double *aPulse);
   virtual void SetOutputPulseSize(unsigned int s);
   
-  
+  virtual double GetChiSquared(unsigned int aTimeBin);
   
 protected:
   double *fNoiseSpectrum;

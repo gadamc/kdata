@@ -29,6 +29,8 @@
 #include <iostream>
 #include "KHalfComplexToRealDFT.h"
 #include "KHalfComplexPower.h"
+#include "KHalfComplexArray.h"
+#include <cmath>
 
 using namespace std;
 //ClassImp(KOptimalFilter);
@@ -279,6 +281,45 @@ void KOptimalFilter::SetTemplateDFTSize(unsigned int s)
   fTemplateDFTSize = s;
   SetToRecalculate();
 }
+
+double KOptimalFilter::GetChiSquared(unsigned int aTimeBin)
+{
+  //
+  
+  //fOutputSize should equal fInputSize and fTemplateDFTSize.
+  //while these are all in half-complex form, their size is equal to 
+  //the size of the raw signal.
+  //fNoiseSpectrumSize should equal fInputSize/2
+  
+  if(aTimeBin > fOutputSize) return -1;
+  KHalfComplexArray complex;
+  // double pi = 3.14159265358979;
+  double twopi = 6.28318530717958; 
+  
+  double optimalAmp = fOutputPulse[aTimeBin];
+  double optAmp2 = optimalAmp*optimalAmp;
+  double chi2 = 0;
+  double sig2, temp2, cos_i, sin_i, temp_re, temp_im, sig_re, sig_im; 
+  
+  for(unsigned int i = 0; i < fNoiseSpectrumSize; i++) {
+  
+    sig_re = complex.Real(fInputPulse, fInputSize, i);
+    sig_im = complex.Imag(fInputPulse, fInputSize, i);
+    temp_re = complex.Real(fTemplateDFT, fTemplateDFTSize, i);
+    temp_im = complex.Imag(fTemplateDFT, fTemplateDFTSize, i);
+    sig2 = sig_re*sig_re + sig_im*sig_im;
+    temp2 = temp_re*temp_re + temp_im*temp_im;
+    cos_i = cos(twopi*i *aTimeBin/fInputSize);
+    sin_i = sin(twopi*i *aTimeBin/fInputSize);
+    
+    chi2 += (sig2 + temp2*optAmp2*(cos_i*cos_i + sin_i*sin_i) 
+      - 2*optimalAmp*cos_i*(temp_re*sig_re + temp_im*sig_im) 
+      + 2*optimalAmp*sin_i*(temp_re*sig_im - temp_im*sig_re)) / fNoiseSpectrum[i];
+  }
+  
+  return chi2;
+}
+
 
 
 

@@ -12,6 +12,10 @@
 
 #include "KAmper.h"
 #include "KOptimalFilter.h"
+#include "KRealToHalfComplexDFT.h"
+
+class KWindow;
+class KPtaProcessor;
 
 class KOptimalKamper : KAmper {
 
@@ -24,11 +28,16 @@ public:
   virtual Bool_t MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
 
   KOptimalFilter& GetOptimalFilter(void){return fOptimalFilter;}
+  void SetWindow(KWindow *pta){fWindow = pta;}
+  void SetBaselineRemoval(KPtaProcessor *pta){fBaseRemove = pta;}
   
 private:
  
   KOptimalFilter fOptimalFilter;
+  KPtaProcessor *fBaseRemove; //baseline removal will always happen before windowing. Its a KPtaProcessor in case you want to pass in a KLinearRemoval instead.
+  KWindow *fWindow; //set the window pointer - this lets you choose different windows via KWindowDesign
   
+  KRealToHalfComplexDFT fR2Hc;
   
 };
 

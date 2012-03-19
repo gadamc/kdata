@@ -34,7 +34,7 @@ private:
 
   void InitializeMembers(void);
   template <class T> double Rms(std::vector<T> &r, unsigned int start = 0,  int stop = -1);
-  template <class T> double Rms(const T* r, unsigned int start = 0,  unsigned int stop = -1);
+  template <class T> double Rms(const T* r, unsigned int start = 0,  unsigned int stop = 0);
   
   
 };
@@ -42,24 +42,28 @@ private:
 template <class T> double KRootMeanSquare::Rms(std::vector<T> &r, unsigned int start, int stop )
 {
   if (stop < 0) stop = r.size();
-  double val2 = 0;
+  double val2 = 0, val = 0;
   int i = start;
   for(; i < stop; i++){
     val2 += r[i]*r[i];
+    val += r[i];
   }
-
-  return sqrt( val2/(double)(i-start) );
+  val = val/double(i-start);
+  return sqrt( abs(val*val - val2/(double)(i-start)) );
 }
 
 template <class T> double KRootMeanSquare::Rms(const T* r, unsigned int start, unsigned int stop)
 {
-  double val2 = 0;
+  if (start >= stop) return 0.0;
+  
+  double val2 = 0, val = 0;
   unsigned int i = start;
   for(; i < stop; i++){
     val2 += *(r+i) * *(r+i);
+    val += *(r+i);
   }
-  
-  return sqrt( val2/(double)(i-start) );
+  val = val/double(i-start);
+  return sqrt( abs(val*val - val2/(double)(i-start)) );
 }
 
 #endif // __KROOTMEANSQUARE_H__

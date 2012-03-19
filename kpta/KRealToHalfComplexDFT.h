@@ -26,7 +26,7 @@ public:
 	
 	virtual bool RunProcess(void);
 	virtual void SetFFTWPlan(void);
-	
+  
 private:
 	
 	//private methods

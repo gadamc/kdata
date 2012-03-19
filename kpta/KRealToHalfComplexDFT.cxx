@@ -83,6 +83,3 @@ void KRealToHalfComplexDFT::SetFFTWPlan(void)
     cerr << "KRealToHalfComplexDFT::SetFFTWPlan. Arrays are empty." << endl;
 
 }
-
-
-

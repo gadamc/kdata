@@ -15,6 +15,9 @@
 #include "KPeakDetectorProto.h"
 #include "KRealToHalfComplexDFT.h"
 #include "KHalfComplexPower.h"
+#include "KBaselineRemoval.h"
+#include "KWindow.h"
+#include "KEraPeakFinder.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -37,24 +40,39 @@ public:
   
   //methods to set internal values for the various parameters for specific channels.
   //these parameters should be available from the database 
-  void SetTemplate(const char* channelName, const std::vector<double>& pulse);
-  std::vector<double> GetTemplatePower(const char* channelName) const;
+  Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse);
+  std::vector<double> GetTemplateSpectrum(const char* channelName) const;
   
   void SetTrapDecayConstant(const char* channelName, double value){fDecayValues[channelName] = value;}
   double GetTrapDecayConstant(const char* channelName) const;
   
+  unsigned int GetNumNoiseEventsFound(const char* channelName) const;
+  std::vector<double> GetNoisePower(const char* channelName) const;
+  
+  KBaselineRemoval& GetBaselineRemovalHeat(void){return fBaselineRemovalHeat;}
+  KWindow& GetHeatWindow(void){return fHeatWindow;}
+  
+  KOptimalKamper& GetOptimalKamper(void){return fOptKamper;}
+  KRealToHalfComplexDFT& GetRealToHalfComplexDFT(void){return fR2Hc;}
+  KHalfComplexPower& GetHalfComplexPower(void){return fHc2P;}
+  
+  
 private:
   
-  KPeakDetectorProto fPeakDetector;
-  KRealToHalfComplextDFT fR2Hc;
-  KHalfComplexPower fHc2P;
+  //KPeakDetectorProto fIonPeakDetector;
+  //KPeakDetectorProto fHeatPeakDetector;
+  KEraPeakFinder fHeatPeakDetector;
   
-  KPeakDetectorProto fIonPeakDetector;
-  KPeakDetectorProto fMultipleHeatPeakDetector;
+  KBaselineRemoval fBaselineRemovalHeat;
+  //KBaselineRemoval fBaselineRemovalIon;
+  
+  KRealToHalfComplexDFT fR2Hc;
+  KHalfComplexPower fHc2P;
+  KWindow fHeatWindow;
   
   std::map<std::string, unsigned int> fNoiseEventCounts;
-  std::map<std::string, std::vector<double>> fNoiseSpectra;
-  std::map<std::string, std::vector<double>> fTemplateSpectra;
+  std::map<std::string, std::vector<double> > fNoiseSpectra;
+  std::map<std::string, std::vector<double> > fTemplateSpectra;
   std::map<std::string, double> fDecayValues;
   
   KOptimalKamper fOptKamper;
