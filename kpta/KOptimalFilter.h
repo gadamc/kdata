@@ -35,7 +35,7 @@ public:
   virtual double* GetOptimalFilter(void){return fOptFilter;}
   virtual unsigned int GetOptimalFilterSize(void){return fOptFilterSize;}
   
-  virtual void SetToRecalculate(void){fRecalculate= true;}
+  virtual void SetToRecalculate(bool option = true){fRecalculate= option;}
   
   virtual void SetNoiseSpectrum(std::vector<double> &r){SetTheNoiseSpectrum(r);}
   virtual void SetNoiseSpectrum(std::vector<float> &r){SetTheNoiseSpectrum(r);}
@@ -47,6 +47,8 @@ public:
   virtual void SetNoiseSpectrum(const int* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
   virtual void SetNoiseSpectrum(const short* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
   
+  virtual void SetNoiseSpectrum(double* resp);
+  virtual void SetNoiseSpectrumSize(unsigned int size);
   
   virtual void SetTemplateDFT(std::vector<double> &r){SetTheTemplateDFT(r);}
   virtual void SetTemplateDFT(std::vector<float> &r){SetTheTemplateDFT(r);}
@@ -57,6 +59,9 @@ public:
   virtual void SetTemplateDFT(const float* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
   virtual void SetTemplateDFT(const int* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
   virtual void SetTemplateDFT(const short* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
+  
+  virtual void SetTemplateDFT(double* resp);
+  virtual void SetTemplateDFTSize(unsigned int size);
   
   virtual void SetOutputPulse(double *aPulse);
   virtual void SetOutputPulseSize(unsigned int s);

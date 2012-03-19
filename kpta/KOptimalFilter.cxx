@@ -110,7 +110,17 @@ bool KOptimalFilter::RunProcess(void)
 
 bool KOptimalFilter::BuildFilter(void)
 {
-  
+  //Builds the kernel of the optimal filter using the template fourier transform and
+  //the average noise power spectrum.
+  //
+  //Note, that in order to optimize this class, some internal memory of this class points
+  //to the fOutputPulse pointer. If you do not call SetInputPulse before you call this method, 
+  //the fOutputPulse pointer
+  //will still be NILL and calling BuildFilter will break. To get around this, if you just
+  //want to call BuildFilter without calling RunProcess (RunProcess requires the existence of both
+  //the input and output pulses), you can use the publicly available KPtaProcessor::AllocateArrays
+  //method to set up the output pulse memory. Good luck.
+  //
   if(!fRecalculate)
     return true;
   
@@ -176,9 +186,6 @@ bool KOptimalFilter::BuildFilter(void)
   for(unsigned int i = 0; i <= fOptFilterSize/2; i++)
     *(fOptFilter+i) =  *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+i));
     
-    
-  
-    
   //then the imaginary parts. make sure to use the correct index in the noise spectrum
   unsigned int j = 1;
   for(unsigned int i = fOptFilterSize-1; i > fOptFilterSize/2; i--)
@@ -202,3 +209,76 @@ void KOptimalFilter::SetOutputPulse(double *aPulse)
   fHc2r->SetOutputPulse(aPulse);
   fHc2r->SetFFTWPlan();
 }
+
+void KOptimalFilter::SetNoiseSpectrum(double* resp)
+{
+  //This sets the internal pointer to the NoiseSpectrum for this object. This is to be used
+  //with caution, as you could crash if you later move the memory. However, this will be a useful
+  //tool to optimize the performance of using this filter with multiple channels. You just have to 
+  //set this pointer rather than creating separate optimal filters for each channel. 
+  //
+  //You should also tell this object the size of this pointer with the SetNoiseSpectrumSize method.
+  //Otherwise, you could also cause crashes and unpredictable behavior.
+  //
+  //When you call this method, the SetToRecalculate(true) is also automatically called for you.
+  //The next time that you call RunProcess (or BuildFilter), the optimal filter will be rebuilt
+  //using the data pointed to by the noise spectrum pointer and the pulse template spectrum pointer.
+  //You can undo this behavior, of course, by calling SetToRecalculate(false) before you call RunProcess.
+  //But I'm not sure why you'd ever want to do that.  
+  
+  fNoiseSpectrum = resp;
+  SetToRecalculate();
+}
+void KOptimalFilter::SetNoiseSpectrumSize(unsigned int s)
+{
+  //Explicitly set the size of the internal array for the noise spectrum that is pointed to
+  //by the interal pointer. This is a relatively dangerous method and use it at your own risk.
+  //This should be used if you use the SetNoiseSpectrum(double*) method. 
+  //
+  //When you call this method, the SetToRecalculate(true) is also automatically called for you.
+  //The next time that you call RunProcess (or BuildFilter), the optimal filter will be rebuilt
+  //using the data pointed to by the noise spectrum pointer and the pulse template spectrum pointer.
+  //You can undo this behavior, of course, by calling SetToRecalculate(false) before you call RunProcess.
+  //But I'm not sure why you'd ever want to do that.
+  
+  fNoiseSpectrumSize = s;
+  SetToRecalculate();
+}
+
+void KOptimalFilter::SetTemplateDFT(double* resp)
+{
+  //This sets the internal pointer to the TemplateDFT for this object. This is to be used
+  //with caution, as you could crash if you later move the memory. However, this will be a useful
+  //tool to optimize the performance of using this filter with multiple channels. You just have to 
+  //set this pointer rather than creating separate optimal filters for each channel. 
+  //
+  //You should also tell this object the size of this pointer with the SetTemplateDFTSize method.
+  //Otherwise, you could also cause crashes and unpredictable behavior.
+  //
+  //When you call this method, the SetToRecalculate(true) is also automatically called for you.
+  //The next time that you call RunProcess (or BuildFilter), the optimal filter will be rebuilt
+  //using the data pointed to by the noise spectrum pointer and the pulse template spectrum pointer.
+  //You can undo this behavior, of course, by calling SetToRecalculate(false) before you call RunProcess.
+  //But I'm not sure why you'd ever want to do that.
+  
+  fTemplateDFT = resp;
+  SetToRecalculate();
+}
+void KOptimalFilter::SetTemplateDFTSize(unsigned int s)
+{
+  //Explicitly set the size of the internal array for the noise spectrum that is pointed to
+  //by the interal pointer. This is a relatively dangerous method and use it at your own risk.
+  //This should be used if you use the SetTemplateDFT(double*) method. 
+  //
+  //When you call this method, the SetToRecalculate(true) is also automatically called for you.
+  //The next time that you call RunProcess (or BuildFilter), the optimal filter will be rebuilt
+  //using the data pointed to by the noise spectrum pointer and the pulse template spectrum pointer.
+  //You can undo this behavior, of course, by calling SetToRecalculate(false) before you call RunProcess.
+  //But I'm not sure why you'd ever want to do that.
+  
+  fTemplateDFTSize = s;
+  SetToRecalculate();
+}
+
+
+
