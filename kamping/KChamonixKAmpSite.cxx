@@ -209,17 +209,17 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   return true;
 }
 
-// vector<double> KChamonixKAmpSite::GetTemplateSpectrum(const char* channelName) const
-// {
-//   if (fTemplateSpectra.find(channelName) != fTemplateSpectra.end()){
-//     return fTemplateSpectra.find(channelName)->second;
-//   }
-//   else {
-//     vector<double> empty;  //just return an empty vector
-//     return empty;
-//   }
-//     
-// }
+vector<double> KChamonixKAmpSite::GetTemplateSpectrum(const char* channelName) const
+{
+  if (fTemplateSpectra.find(channelName) != fTemplateSpectra.end()){
+    return fTemplateSpectra.find(channelName)->second;
+  }
+  else {
+    vector<double> empty;  //just return an empty vector
+    return empty;
+  }
+    
+}
 
 double KChamonixKAmpSite::GetTrapDecayConstant(const char* channelName) const
 {
@@ -238,22 +238,15 @@ unsigned int KChamonixKAmpSite::GetNumNoiseEventsFound(const char* channelName) 
   else return 0;
 }
 
-// vector<double> KChamonixKAmpSite::GetNoisePower(const char* channelName) const
-// {
-//   if (fNoiseSpectra.find(channelName) != fNoiseSpectra.end()){
-//     return fNoiseSpectra.find(channelName)->second;
-//   }
-//   else {
-//     vector<double> empty;  //just return an empty vector
-//     return empty;
-//   }
-//     
-// }
+vector<double> KChamonixKAmpSite::GetNoisePower(const char* channelName) const
+{
+  if (fNoiseSpectra.find(channelName) != fNoiseSpectra.end()){
+    return fNoiseSpectra.find(channelName)->second;
+  }
+  else {
+    vector<double> empty;  //just return an empty vector
+    return empty;
+  }
+    
+}
 
-
-
-
-//
-//
-//
-//

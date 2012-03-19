@@ -41,13 +41,13 @@ public:
   //methods to set internal values for the various parameters for specific channels.
   //these parameters should be available from the database 
   Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse);
-  //std::vector<double> GetTemplateSpectrum(const char* channelName) const;
+  std::vector<double> GetTemplateSpectrum(const char* channelName) const;
   
   void SetTrapDecayConstant(const char* channelName, double value){fDecayValues[channelName] = value;}
   double GetTrapDecayConstant(const char* channelName) const;
   
   unsigned int GetNumNoiseEventsFound(const char* channelName) const;
-  //std::vector<double> GetNoisePower(const char* channelName) const;
+  std::vector<double> GetNoisePower(const char* channelName) const;
   
   KBaselineRemoval& GetBaselineRemovalHeat(void){return fBaselineRemovalHeat;}
   KWindow& GetHeatWindow(void){return fHeatWindow;}
