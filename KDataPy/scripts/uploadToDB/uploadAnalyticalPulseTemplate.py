@@ -19,69 +19,52 @@ def fillVars(vlist, skip, number):
   
 def addFormulaResult(n, channel):
   doc = {}
-  sf = TF1('single exponential', 'x < [0] ? [1] * exp(-(x-[0])/[2]) : 0', 0, 8192)
-  sf.SetName('single exponential')
-  df = TF1('double exponential heat template', 'x < [0] ? [1]*(1 - exp(-(x-[0])/[2]))*(exp(-(x-[0])/[3]) + [4]*exp(-(x-[0])/[5])) : 0', 0, 512)
-  df.SetName('double exponential heat template')
+  sf = TF1('single_decay', 'x > [0] ? [1] * exp(-(x-[0])/[2]) : 0', 0, 8192)
+  sf.SetName('single_decay')
+  df = TF1('rise_double_decay', 'x > [0] ? [1]*(1 - exp(-(x-[0])/[2]))*(exp(-(x-[0])/[3]) + [4]*exp(-(x-[0])/[5])) : 0', 0, 512)
+  df.SetName('rise_double_decay')
   
   if n == 1:
     subdoc = {}
-    doc['single exponential'] = subdoc
+    doc['single_decay'] = subdoc
     
-    subdoc['c'] = {}
-    subdoc['c']['functionargs'] = ['double *x', 'double *par']
-    subdoc['c']['value'] = 'double xx = x[0];\n if(xx < par[0]) return 0;\n else return par[1]*exp(-(xx-par[0])/par[2]);\n'
-    subdoc['python'] = {}
-    subdoc['python']['function'] = "def %s_template(x,par):\n  import math\n  xx = x[0]\n  if xx < par[0]: return 0\n  else: return par[1]*math.exp(-(xx-par[0])/par[2])\n" % string.replace(channel, ' ', '_')
+    subdoc['python'] = "\ndef template(x,par):\n  import math\n  if x < par[0]: return 0\n  else: return par[1]*math.exp(-(x-par[0])/par[2])\n"
     
-    
-    print 'you selected the following functional form (c syntax): '
-    print subdoc['c']['value']
+    print 'you selected the following functional form (python syntax): '
+    print subdoc['python']
     
     subdoc['par'] = [0,1,0]
     
     if channel.startswith('chal'):
       sf.SetRange(0,512)
-      subdoc['par'][0] = 256
+      subdoc['par'][0] = 255
+      subdoc['par'][1] = -1
     else: 
       sf.SetRange(0,8192)
-      subdoc['par'][0] = 4096
+      subdoc['par'][0] = 4095
     
     fillVars(subdoc['par'], 2, len(subdoc['par']))
     
-    sf.SetParameter(0, subdoc['par'][0])
-    sf.SetParameter(1, subdoc['par'][1])
-    sf.SetParameter(2, subdoc['par'][2])
+    for i in range(len(subdoc['par'])):
+      sf.SetParameter(i, subdoc['par'][i])
     
-    psf = pickle.dumps(sf)
-    #print psf
-    subdoc['tf1'] = psf
+    subdoc['tf1'] = pickle.dumps(sf)
     
   elif n == 2:
     subdoc = {}
-    doc['double exponential heat template'] = subdoc 
-    subdoc['c'] = {}
-    subdoc['c']['functionargs'] = ['double *x', 'double *par']
-    subdoc['c']['value'] = 'double xx = x[0];\n if(xx < par[0]) return 0;\n else return par[1]*(1 - exp(-(xx-par[0])/par[2]))*(exp(-(xx-par[0])/par[3]) + par[4]*exp(-(xx-par[0])/par[5]));\n'
-    subdoc['python'] = {}
-    subdoc['python']['function'] = "def %s_template(x,par):\n  import math\n  xx = x[0]\n  if xx < par[0]: return 0\n  else: return par[1]*(1 - math.exp(-(xx-par[0])/par[2]))*(math.exp(-(xx-par[0])/par[3]) + par[4]*math.exp(-(xx-par[0])/par[5]))\n" % string.replace(channel, ' ', '_')
+    doc['rise_double_decay'] = subdoc 
+    subdoc['python']= "\ndef template(x,par):\n  import math\n  if x < par[0]: return 0\n  else: return par[1]*(1 - math.exp(-(x-par[0])/par[2]))*(math.exp(-(x-par[0])/par[3]) + par[4]*math.exp(-(x-par[0])/par[5]))\n"
     
-    print 'you selected the following functional form (c syntax): '
-    print subdoc['c']['value']
+    print 'you selected the following functional form (python syntax): '
+    print subdoc['python']
     
-    subdoc['par'] = [256,1,0,0,0,0]
+    subdoc['par'] = [255,-1,0,0,0,0]
     fillVars(subdoc['par'], 2, len(subdoc['par']))
     
-    df.SetParameter(0, subdoc['par'][0])
-    df.SetParameter(1, subdoc['par'][1])
-    df.SetParameter(2, subdoc['par'][2])
-    df.SetParameter(3, subdoc['par'][3])
-    df.SetParameter(4, subdoc['par'][4])
-    df.SetParameter(5, subdoc['par'][5])
+    for i in range(len(subdoc['par'])):
+      df.SetParameter(i, subdoc['par'][i])
     
-    pdf = pickle.dumps(df)
-    #print psf
-    subdoc['tf1'] = pdf
+    subdoc['tf1'] = pickle.dumps(df)
     
   else:
     print 'unrecognized option...'
@@ -124,10 +107,7 @@ def addTemplates(doc):
       formulaDoc = addFormulaResult(formNum, doc['channel'])
       if formulaDoc != '':
         doc['formula'].update(formulaDoc)
-    except Exception as e:
-      print e
-      print option, 'is not a number. try again'
-  
+    except: pass
   
 def addKampSites(doc):
   
@@ -149,16 +129,19 @@ def addKampSites(doc):
       addParameter = raw_input('Give a name for a new parameter for this kampsite (or done): ')
       if addParameter == 'done':
         break
+      value = '' 
       try:
-        kampDoc[answer][addParameter] = float(raw_input('Give a numerical value for this parameter: '))
-      except:
-        print 'That was not a number. try again'
+        inputValue = raw_input('Give a value for this parameter (this can be a number, string, list, or dictionary): ')
+        value = eval(inputValue)
+      except SyntaxError:  #eval throws if inputValue is a string that can't be parsed into a number, list or dictionary
+        value = inputValue
+        
+      kampDoc[answer][addParameter] = value
         
     if doc.has_key('kampsites') == False:
       doc['kampsites'] = {}
       
     doc['kampsites'].update(kampDoc)
-  
   
   
     

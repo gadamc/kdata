@@ -29,6 +29,8 @@
 #include <iostream>
 #include "KHalfComplexToRealDFT.h"
 #include "KHalfComplexPower.h"
+#include "KHalfComplexArray.h"
+#include <cmath>
 
 using namespace std;
 //ClassImp(KOptimalFilter);
@@ -110,7 +112,17 @@ bool KOptimalFilter::RunProcess(void)
 
 bool KOptimalFilter::BuildFilter(void)
 {
-  
+  //Builds the kernel of the optimal filter using the template fourier transform and
+  //the average noise power spectrum.
+  //
+  //Note, that in order to optimize this class, some internal memory of this class points
+  //to the fOutputPulse pointer. If you do not call SetInputPulse before you call this method, 
+  //the fOutputPulse pointer
+  //will still be NILL and calling BuildFilter will break. To get around this, if you just
+  //want to call BuildFilter without calling RunProcess (RunProcess requires the existence of both
+  //the input and output pulses), you can use the publicly available KPtaProcessor::AllocateArrays
+  //method to set up the output pulse memory. Good luck.
+  //
   if(!fRecalculate)
     return true;
   
@@ -176,9 +188,6 @@ bool KOptimalFilter::BuildFilter(void)
   for(unsigned int i = 0; i <= fOptFilterSize/2; i++)
     *(fOptFilter+i) =  *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+i));
     
-    
-  
-    
   //then the imaginary parts. make sure to use the correct index in the noise spectrum
   unsigned int j = 1;
   for(unsigned int i = fOptFilterSize-1; i > fOptFilterSize/2; i--)
@@ -202,3 +211,115 @@ void KOptimalFilter::SetOutputPulse(double *aPulse)
   fHc2r->SetOutputPulse(aPulse);
   fHc2r->SetFFTWPlan();
 }
+
+void KOptimalFilter::SetNoiseSpectrum(double* resp)
+{
+  //This sets the internal pointer to the NoiseSpectrum for this object. This is to be used
+  //with caution, as you could crash if you later move the memory. However, this will be a useful
+  //tool to optimize the performance of using this filter with multiple channels. You just have to 
+  //set this pointer rather than creating separate optimal filters for each channel. 
+  //
+  //You should also tell this object the size of this pointer with the SetNoiseSpectrumSize method.
+  //Otherwise, you could also cause crashes and unpredictable behavior.
+  //
+  //When you call this method, the SetToRecalculate(true) is also automatically called for you.
+  //The next time that you call RunProcess (or BuildFilter), the optimal filter will be rebuilt
+  //using the data pointed to by the noise spectrum pointer and the pulse template spectrum pointer.
+  //You can undo this behavior, of course, by calling SetToRecalculate(false) before you call RunProcess.
+  //But I'm not sure why you'd ever want to do that.  
+  
+  fNoiseSpectrum = resp;
+  SetToRecalculate();
+}
+void KOptimalFilter::SetNoiseSpectrumSize(unsigned int s)
+{
+  //Explicitly set the size of the internal array for the noise spectrum that is pointed to
+  //by the interal pointer. This is a relatively dangerous method and use it at your own risk.
+  //This should be used if you use the SetNoiseSpectrum(double*) method. 
+  //
+  //When you call this method, the SetToRecalculate(true) is also automatically called for you.
+  //The next time that you call RunProcess (or BuildFilter), the optimal filter will be rebuilt
+  //using the data pointed to by the noise spectrum pointer and the pulse template spectrum pointer.
+  //You can undo this behavior, of course, by calling SetToRecalculate(false) before you call RunProcess.
+  //But I'm not sure why you'd ever want to do that.
+  
+  fNoiseSpectrumSize = s;
+  SetToRecalculate();
+}
+
+void KOptimalFilter::SetTemplateDFT(double* resp)
+{
+  //This sets the internal pointer to the TemplateDFT for this object. This is to be used
+  //with caution, as you could crash if you later move the memory. However, this will be a useful
+  //tool to optimize the performance of using this filter with multiple channels. You just have to 
+  //set this pointer rather than creating separate optimal filters for each channel. 
+  //
+  //You should also tell this object the size of this pointer with the SetTemplateDFTSize method.
+  //Otherwise, you could also cause crashes and unpredictable behavior.
+  //
+  //When you call this method, the SetToRecalculate(true) is also automatically called for you.
+  //The next time that you call RunProcess (or BuildFilter), the optimal filter will be rebuilt
+  //using the data pointed to by the noise spectrum pointer and the pulse template spectrum pointer.
+  //You can undo this behavior, of course, by calling SetToRecalculate(false) before you call RunProcess.
+  //But I'm not sure why you'd ever want to do that.
+  
+  fTemplateDFT = resp;
+  SetToRecalculate();
+}
+void KOptimalFilter::SetTemplateDFTSize(unsigned int s)
+{
+  //Explicitly set the size of the internal array for the noise spectrum that is pointed to
+  //by the interal pointer. This is a relatively dangerous method and use it at your own risk.
+  //This should be used if you use the SetTemplateDFT(double*) method. 
+  //
+  //When you call this method, the SetToRecalculate(true) is also automatically called for you.
+  //The next time that you call RunProcess (or BuildFilter), the optimal filter will be rebuilt
+  //using the data pointed to by the noise spectrum pointer and the pulse template spectrum pointer.
+  //You can undo this behavior, of course, by calling SetToRecalculate(false) before you call RunProcess.
+  //But I'm not sure why you'd ever want to do that.
+  
+  fTemplateDFTSize = s;
+  SetToRecalculate();
+}
+
+double KOptimalFilter::GetChiSquared(unsigned int aTimeBin)
+{
+  //
+  
+  //fOutputSize should equal fInputSize and fTemplateDFTSize.
+  //while these are all in half-complex form, their size is equal to 
+  //the size of the raw signal.
+  //fNoiseSpectrumSize should equal fInputSize/2
+  
+  if(aTimeBin > fOutputSize) return -1;
+  KHalfComplexArray complex;
+  // double pi = 3.14159265358979;
+  double twopi = 6.28318530717958; 
+  
+  double optimalAmp = fOutputPulse[aTimeBin];
+  double optAmp2 = optimalAmp*optimalAmp;
+  double chi2 = 0;
+  double sig2, temp2, cos_i, sin_i, temp_re, temp_im, sig_re, sig_im; 
+  
+  for(unsigned int i = 0; i < fNoiseSpectrumSize; i++) {
+  
+    sig_re = complex.Real(fInputPulse, fInputSize, i);
+    sig_im = complex.Imag(fInputPulse, fInputSize, i);
+    temp_re = complex.Real(fTemplateDFT, fTemplateDFTSize, i);
+    temp_im = complex.Imag(fTemplateDFT, fTemplateDFTSize, i);
+    sig2 = sig_re*sig_re + sig_im*sig_im;
+    temp2 = temp_re*temp_re + temp_im*temp_im;
+    cos_i = cos(twopi*i *aTimeBin/fInputSize);
+    sin_i = sin(twopi*i *aTimeBin/fInputSize);
+    
+    chi2 += (sig2 + temp2*optAmp2*(cos_i*cos_i + sin_i*sin_i) 
+      - 2*optimalAmp*cos_i*(temp_re*sig_re + temp_im*sig_im) 
+      + 2*optimalAmp*sin_i*(temp_re*sig_im - temp_im*sig_re)) / fNoiseSpectrum[i];
+  }
+  
+  return chi2;
+}
+
+
+
+

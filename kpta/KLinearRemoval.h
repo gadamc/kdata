@@ -35,7 +35,6 @@ public:
   virtual void SetOffset(double offset){fOffset = offset;}
   virtual double GetSlope(void) const {return fSlope;}
   virtual double GetOffset(void) const {return fOffset;}
-  
   virtual void SetDefaultSettings(void);
   
 private:

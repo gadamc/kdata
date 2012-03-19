@@ -197,4 +197,3 @@ unsigned int KHalfComplexToRealDFT::MapFlag(void)
 
   return FFTW_ESTIMATE;
 }
-

@@ -29,6 +29,7 @@ public:
 	virtual const char* GetFFTWFlag(void){return fFFTWFlag.c_str();}
 	virtual void SetFFTWPlan(void);
 	
+  
 private:
 	//private methods
   void InitializeMembers(void);

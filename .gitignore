@@ -6,6 +6,8 @@ test*.C
 *.pyc
 temp.py
 
+temp.py
+
 # /
 /build
 /bin
