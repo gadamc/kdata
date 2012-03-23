@@ -48,12 +48,16 @@ bool KPulseShifter::RunProcess(void)
     cerr << "input and output pulses must be of the same size. nothing done. " << endl;
     return false;
   }
+  
+  if(fPulseShift == 0 && (fInputPulse == fOutputPulse))
+    return true; //in this case, there is nothing to do... save cpu. don't loop.
+    
   switch(fMode){
     case 0:
       {
         // Shifting and filling the unknown points at the edge with the first/last values in the trace
-        for(int i = 0 ; i < fOutputSize; i++)
-          if((i - fPulseShift)>=0 and (i-fPulseShift)<fOutputSize)
+        for(unsigned int i = 0 ; i < fOutputSize; i++)
+          if( (int)(i - fPulseShift)>=0 &&  (int)(i-fPulseShift)<(int)fOutputSize)
             *(fOutputPulse+i) = *(fInputPulse+i-fPulseShift);
           else{
             if((i - fPulseShift)<0)
@@ -66,15 +70,15 @@ bool KPulseShifter::RunProcess(void)
     case 1:
     {
       // Cyclically shifting the trace
-      for(int i = 0 ; i < fOutputSize; i++)
+      for(unsigned  int i = 0 ; i < fOutputSize; i++)
         *(fOutputPulse+i) = *(fInputPulse+((i-fPulseShift+fOutputSize)%fOutputSize));
       break;
     }
     case 2:
       {
         // Shifting and filling the unknown points at the edge with zeros
-        for(int i = 0 ; i < fOutputSize; i++)
-          if(((i-fPulseShift)<0)or((i-fPulseShift)>=fOutputSize))
+        for(unsigned int i = 0 ; i < fOutputSize; i++)
+          if( (int)(i-fPulseShift)<0  || (int)(i-fPulseShift)>=(int)fOutputSize )
             *(fOutputPulse+i) = 0;
           else
             *(fOutputPulse+i) = *(fInputPulse+i-fPulseShift);

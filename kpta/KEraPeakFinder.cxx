@@ -47,7 +47,7 @@ void KEraPeakFinder::InitializeMembers(void)
   fBaselineStart = 0.0;
   fBaselineStop = 0.40;
   fOrder = 3; 
-  fNumRms = 5.5; 
+  fNumRms = 3.0; 
   fPeakBins.reserve(100);
   fPolarity = 0;
 }

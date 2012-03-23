@@ -21,7 +21,9 @@ using namespace std;
 
 KOptimalKamper::KOptimalKamper(void)
 {
-
+  fPulseTemplateShift = 0;
+  fAmplitudeEstimatorSearchRange = 0.10;
+  
 }
 
 KOptimalKamper::~KOptimalKamper(void)
@@ -82,14 +84,23 @@ Bool_t KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnal
   }
   
   //what is this: just a test to see what is the amplitude of the pulse at this point in time.
-  rec->SetExtra(fOptimalFilter.GetOutputPulse()[5], 0);
+  rec->SetExtra(fOptimalFilter.GetOutputPulse()[(int)fPulseTemplateShift+5], 0);
   
   //find the maximum value in the optimal filter
   double maxValue= fOptimalFilter.GetOutputPulse()[0];
   int maxPosition = 0;
   
   if(fixPeakPosition < 0){  //search for it
-    for(UInt_t i = 0; i < (UInt_t)(fOptimalFilter.GetOutputPulseSize()*0.10); i++){ //hack - just put in first 50 bins for each pulse
+    
+    //figure out start and stop positions
+    UInt_t start = fPulseTemplateShift - fOptimalFilter.GetOutputPulseSize()*fAmplitudeEstimatorSearchRange > 0 ? fPulseTemplateShift - fOptimalFilter.GetOutputPulseSize()*fAmplitudeEstimatorSearchRange : 0;
+    UInt_t stop = fPulseTemplateShift + fOptimalFilter.GetOutputPulseSize()*fAmplitudeEstimatorSearchRange < fOptimalFilter.GetOutputPulseSize() ? fPulseTemplateShift + fOptimalFilter.GetOutputPulseSize()*fAmplitudeEstimatorSearchRange : fOptimalFilter.GetOutputPulseSize(); 
+    
+    //the amplitude estimator and the chi^2 should be cyclical in time, so, one could write the code
+    //here to cycle through the beginning/end of the pulse trace to properly search for the start time of 
+    //the pulse. However, at the moment, its easiest to shift the pulse template to a position where 
+    //this code works as is. 
+    for(UInt_t i = start; i < stop; i++){ 
       if (fOptimalFilter.GetOutputPulse()[i] > maxValue) {
         maxValue = fOptimalFilter.GetOutputPulse()[i];
         maxPosition = i;
@@ -98,8 +109,8 @@ Bool_t KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnal
     }    
     double minChi2 = fOptimalFilter.GetChiSquared(0);
     double temp;
-    double minChi2Pos = 0;
-    for(UInt_t i = 0; i < (UInt_t)(fOptimalFilter.GetOutputPulseSize()*0.10); i++){ //hack - just put in first 50 bins for each pulse
+    int minChi2Pos = 0;
+    for(UInt_t i = start; i < stop; i++){ 
       temp = fOptimalFilter.GetChiSquared(i); 
       if (temp < minChi2) {
         minChi2 = temp;
@@ -109,6 +120,41 @@ Bool_t KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnal
     }
     rec->SetExtra(minChi2, 1);
     rec->SetExtra(minChi2Pos, 2);
+    rec->SetExtra(fOptimalFilter.GetOutputPulse()[minChi2Pos], 3);
+    rec->SetExtra(last->GetOutputPulse()[maxPosition], 4);
+    rec->SetExtra(last->GetOutputPulse()[minChi2Pos], 5);
+    
+    //other pulse shape characteristics. rise time, width
+    stop = fOptimalFilter.GetOutputPulseSize();
+    double tenPerc = last->GetOutputPulse()[maxPosition]*0.10;
+    double ninetyPerc = last->GetOutputPulse()[maxPosition]*0.90;
+    int tenPercStartTime = start;
+    int ninetyPercTime = start;
+    int tenPercEndTime = stop;
+    bool foundTenPercStart = false;
+    bool foundninetyPercTime = false;
+    for(UInt_t i = start+1; i < stop; i++){ 
+      if(!foundTenPercStart){
+        if(last->GetOutputPulse()[i] > tenPerc && last->GetOutputPulse()[i-1] < tenPerc){
+          foundTenPercStart = true;
+          tenPercStartTime = i;  
+        }
+      }
+      else if(foundTenPercStart && foundninetyPercTime == false){
+        if(last->GetOutputPulse()[i] > ninetyPerc && last->GetOutputPulse()[i-1] < ninetyPerc){
+          foundninetyPercTime = true;
+          ninetyPercTime = i;
+        }
+      }
+      else if(foundTenPercStart && foundninetyPercTime){
+        if(last->GetOutputPulse()[i] < tenPerc && last->GetOutputPulse()[i-1] < tenPerc){
+          tenPercEndTime = i;
+        }
+      }
+    }
+    rec->SetRisetime( (ninetyPercTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9);
+    rec->SetPulseWidth( (tenPercEndTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9);
+    
   }
   else if (fixPeakPosition >= 0 && fixPeakPosition < fOptimalFilter.GetOutputPulseSize()){  //use the position specificed by the caller
     maxValue = fOptimalFilter.GetOutputPulse()[(int)fixPeakPosition];
@@ -136,7 +182,7 @@ Bool_t KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnal
 
 Bool_t KOptimalKamper::MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec)
 {
-  return MakeKamp(rawPulseRecord, rec, 200);
+  return MakeKamp(rawPulseRecord, rec, 60);
   rec->SetIsBaseline(true);
   rec->SetUnit(0);
 }

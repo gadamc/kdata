@@ -23,7 +23,7 @@
 
 using namespace std;
 
-KChamonixKAmpSite::KChamonixKAmpSite(void)
+KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //set the fPulseTemplateShifter pulse locations to NULL so we set them later.
 {
   SetName("KChamonixKAmpSite");
   
@@ -37,7 +37,8 @@ KChamonixKAmpSite::KChamonixKAmpSite(void)
   //   fHeatPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true, true);
   
   fHeatWindow.SetWindow(KWindowDesign::GetTukeyWindow(512,0.7), 512);
-  
+  fHeatPeakDetector.SetOrder(5);
+  fHeatPeakDetector.SetNumRms(2.3);
 }
 
 KChamonixKAmpSite::~KChamonixKAmpSite(void)
@@ -71,23 +72,32 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     KOptimalFilter& filter = fOptKamper.GetOptimalFilter();
     
     filter.SetTemplateDFT(fTemplateSpectra.find(pRaw->GetChannelName())->second);
-    //filter.SetTemplateDFTSize(fTemplateSpectra.find(pRaw->GetChannelName())->second.size());
     filter.SetNoiseSpectrum(fNoiseSpectra.find(pRaw->GetChannelName())->second);
-    //filter.SetNoiseSpectrumSize(fNoiseSpectra.find(pRaw->GetChannelName())->second.size());
     filter.SetToRecalculate(); //tell the filter to recalculate its kernel
     
     fOptKamper.SetWindow(&fHeatWindow); //tell the optimal filter kamper to use this window function.
     fOptKamper.SetBaselineRemoval(&fBaselineRemovalHeat);
-    
+    //need to tell the Kamper about the template pulse shift.
+    fOptKamper.SetPulseTemplateShiftFromPreTrigger(fPulseTemplateShifter.GetShift());
     fOptKamper.MakeKamp(pRaw, rec);
-    rec->SetName(GetName());
+    
     
     KPulseAnalysisRecord *basRec = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(basRec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
     //we don't really need to call this! The answer should already be calculated for us! Just get the optimal filter from
     //the fOptKamper and get the results from the output
+    
+    fHeatPeakDetector.SetInputPulse(fHeatWindow.GetOutputPulse(), fHeatWindow.GetOutputPulseSize());
+    if(!fHeatPeakDetector.RunProcess())
+      cout << "KChamonixKAmpSite::RunKampSite. fHeatPeakDetector fail"<< endl;
+    else{
+      rec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); 
+      basRec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); //
+    }
+    
     fOptKamper.MakeBaseKamp(pRaw, basRec);
     basRec->SetIsBaseline(true);
+    rec->SetName(GetName());
     basRec->SetName(GetName());
   }
   
@@ -135,13 +145,12 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   }
   if(fHeatPeakDetector.GetPeakBins().size() > 0) return false; //we found a peak, so this is not noise.
       
-  //we found noise, now window it, find its power spectrum and then add it to the running average power spectrum
-  //cout << "Found noise" << endl;
+  //we found noise, now window it, find its power spectrum and then add it to the running average power spectrum  
   fHeatWindow.SetInputPulse(fBaselineRemovalHeat.GetOutputPulse(), fBaselineRemovalHeat.GetOutputPulseSize());
   if(!fHeatWindow.RunProcess()){
     cout << "KChamonixKAmpSite::ScoutKampSite. fHeatWindow failed" << endl; return false;
   }
-  
+
   fR2Hc.SetInputPulse(fHeatWindow.GetOutputPulse(), fHeatWindow.GetOutputPulseSize());
   if(!fR2Hc.RunProcess()){
     cout << "KChamonixKAmpSite::ScoutKampSite. fR2Hc failed" << endl; return false;
@@ -189,6 +198,13 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   if(!fHeatWindow.RunProcess()){
     cout << "fHeatWindow failed" << endl; return false;
   }
+    
+  fPulseTemplateShifter.SetInputPulse(fHeatWindow.GetOutputPulse());
+  fPulseTemplateShifter.SetInputPulseSize(fHeatWindow.GetOutputPulseSize());
+  fPulseTemplateShifter.SetOutputPulse(fHeatWindow.GetOutputPulse());
+  fPulseTemplateShifter.SetOutputPulseSize(fHeatWindow.GetOutputPulseSize());
+  fPulseTemplateShifter.SetMode(2);
+  fPulseTemplateShifter.RunProcess();
   
   fR2Hc.SetInputPulse(fHeatWindow.GetOutputPulse(), fHeatWindow.GetOutputPulseSize());
   if(!fR2Hc.RunProcess()){

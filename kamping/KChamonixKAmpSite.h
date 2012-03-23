@@ -18,6 +18,7 @@
 #include "KBaselineRemoval.h"
 #include "KWindow.h"
 #include "KEraPeakFinder.h"
+#include "KPulseShifter.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -55,7 +56,8 @@ public:
   KOptimalKamper& GetOptimalKamper(void){return fOptKamper;}
   KRealToHalfComplexDFT& GetRealToHalfComplexDFT(void){return fR2Hc;}
   KHalfComplexPower& GetHalfComplexPower(void){return fHc2P;}
-  
+  KEraPeakFinder& GetHeatPeakDetector(void){return fHeatPeakDetector;}
+  KPulseShifter& GetPulseTemplateShifter(void){return fPulseTemplateShifter;}
   
 private:
   
@@ -69,6 +71,7 @@ private:
   KRealToHalfComplexDFT fR2Hc;
   KHalfComplexPower fHc2P;
   KWindow fHeatWindow;
+  KPulseShifter fPulseTemplateShifter;
   
   std::map<std::string, unsigned int> fNoiseEventCounts;
   std::map<std::string, std::vector<double> > fNoiseSpectra;
