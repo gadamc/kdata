@@ -113,8 +113,8 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   if(pRaw->GetPulseLength() == 0) return false;
   if(!pRaw->GetIsHeatPulse()) return false;
   
-  double decayVal = GetTrapDecayConstant(pRaw->GetChannelName());
-  if (decayVal < 0) return false;
+  // double decayVal = GetTrapDecayConstant(pRaw->GetChannelName());
+  //  d if (decayVal < 0) return false;
   
   fBaselineRemovalHeat.SetInputPulse( (std::vector<short> &)pRaw->GetTrace());
   if(!fBaselineRemovalHeat.RunProcess()){
