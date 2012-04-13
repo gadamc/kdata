@@ -16,7 +16,7 @@
 #include "KAmpBoloPulseRecord.h"
 #include <string>
 
-#define KPULSEANARECORD_EXTRA_SIZE 25
+#define KPULSEANARECORD_EXTRA_SIZE 10
 
 class KPulseAnalysisRecord : public KSubRecord { 
 
@@ -66,15 +66,7 @@ public:
   void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;}
   void SetBoloPulseRecord(KAmpBoloPulseRecord *aRec) {fBoloPulseRecord = aRec;}
   
-  /*
-  enum kPulseAmpCalculatorType {
-     kButter1 = 1,
-     kOptimalFilter = 2,
-     kWaveletDecomposition = 3
-     ...
-   };
-   */  //lets first try a string to store the type. this is easiest and most flexible.
-   
+  
 private:
 	//private methods
   
@@ -96,8 +88,8 @@ private:
   Double32_t fSlopeRemoved; //amplitude of the slope that was removed (=0 exactly if linear removal was not performed)
   Bool_t fPileUpDetected;  //set to true if a pile up was detected.
   
-  Double32_t fExtra[KPULSEANARECORD_EXTRA_SIZE];  //this array holds 25 floating-point numbers for the different calculations to fill as desired.
-                                                  //this is a static sized array so that ALL values are accessible from TTree::Draw and Scan
+  Double32_t fExtra[KPULSEANARECORD_EXTRA_SIZE];  //this array holds 10 floating-point numbers for the different calculations to fill as desired.
+                                                  //this is a static sized array so that they are accessible from TTree::Draw and Scan
   
 
   //WARNING: just remember, that if you modifiy this class and add or remove variables, each time you 
@@ -109,7 +101,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KPulseAnalysisRecord &aRec);
   
-  ClassDef(KPulseAnalysisRecord,2);
+  ClassDef(KPulseAnalysisRecord,3);
 };
 
 

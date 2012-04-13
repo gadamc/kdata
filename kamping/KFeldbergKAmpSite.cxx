@@ -1,12 +1,12 @@
 //
-// KBlackForestKAmpSite.cxx  
+// KFeldbergKAmpSite.cxx  
 // KDataStructure
 //
 // Created by Michael Unrau
 // Copyright 2012 Karlsruhe Institute of Technology. All rights reserved.
 //
 
-#include "KBlackForestKAmpSite.h"
+#include "KFeldbergKAmpSite.h"
 
 #include "KAmpEvent.h"
 #include "KRawEvent.h"
@@ -17,23 +17,24 @@
 #include "KPulseAnalysisRecord.h"
 #include "TString.h"
 #include <iostream>
+#include <math.h>
 
 
 using namespace std;
 
 
-KBlackForestKAmpSite::KBlackForestKAmpSite(void)
+KFeldbergKAmpSite::KFeldbergKAmpSite(void)
 {
-  SetName("KBlackForestKAmpSite");
+  SetName("KFeldbergKAmpSite");
 
 }
 
-KBlackForestKAmpSite::~KBlackForestKAmpSite(void)
+KFeldbergKAmpSite::~KFeldbergKAmpSite(void)
 {
 
 }
 
-Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee)
+Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee)
 {
   double PeakPos = -1;
   double maxPeak = 0.;
@@ -47,14 +48,14 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
       //cout << "channel:"<< pRaw->GetChannelName()<<endl;
       KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
       KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
-      fMTKamp.SetName("BlackForestKAmperProto-Ion");
+      fFCKamp.SetName("FeldbergKAmper-Ion");
       SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
-      fMTKamp.MakeKamp(pRaw, rec);
+      fFCKamp.MakeKamp(pRaw, rec);
       // create  KPulseAnalysisRecord for baseline amplitude estimation
       KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
-      fMTKamp.SetName("BlackForestKAmperProto-Ion-Baseline");
+      fFCKamp.SetName("FeldbergKAmper-Ion");
       SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-      fMTKamp.MakeBaseKamp(pRaw, recBase);
+      fFCKamp.MakeBaseKamp(pRaw, recBase);
       
       
       if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
@@ -71,11 +72,11 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
     
     if(pRaw->GetIsHeatPulse()){      
       // with peak position fixed by ionisation
-      /*if(precNum != -1){
+      if(precNum != -1){
         // Create KPulseAnalysisRecord and a valid KAmpEvent
         
         KPulseAnalysisRecord *recFixed  =  ee->AddPulseAnalysisRecord();
-        fMTKamp.SetName("BlackForestKAmperProto-Heat-Fixed");
+        fFCKamp.SetName("FeldbergKAmper-Heat-Fixed");
         SetTRefLinksForKAmpEvent(recFixed, boloAmp,pAmp);
       
         
@@ -84,26 +85,26 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
         if(PeakPos != -1){
           PeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
         }
-        fMTKamp.MakeKamp(pRaw, recFixed, PeakPos);
-      }*/
+        fFCKamp.MakeKamp(pRaw, recFixed, PeakPos);
+      }
       
       // without fixed peak position
       KPulseAnalysisRecord *recFree  =  ee->AddPulseAnalysisRecord();
-      fMTKamp.SetName("BlackForestKAmperProto-Heat-Not-Fixed");
+      fFCKamp.SetName("FeldbergKAmper-Heat-Not-Fixed");
       SetTRefLinksForKAmpEvent(recFree, boloAmp, pAmp);
-      fMTKamp.MakeKamp(pRaw, recFree);
+      fFCKamp.MakeKamp(pRaw, recFree);
       
       // create  KPulseAnalysisRecord for baseline amplitude estimation
       KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
-      fMTKamp.SetName("BlackForestKAmperProto-Heat-Baseline");
+      fFCKamp.SetName("FeldbergKAmper-Heat");
       SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-      fMTKamp.MakeBaseKamp(pRaw, recBase);
+      fFCKamp.MakeBaseKamp(pRaw, recBase);
     }
   } 
   return true;
 }  
 
-Bool_t KBlackForestKAmpSite::ScoutKampSite(KRawBoloPulseRecord* /*pRaw*/, KRawEvent* /*e*/)
+Bool_t KFeldbergKAmpSite::ScoutKampSite(KRawBoloPulseRecord* /*pRaw*/, KRawEvent* /*e*/)
 {
   return true;
 }  

@@ -4,6 +4,9 @@ tmtags
 test*.C
 *.root
 *.pyc
+temp.py
+
+temp.py
 
 temp.py
 

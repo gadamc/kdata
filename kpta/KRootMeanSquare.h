@@ -49,7 +49,9 @@ template <class T> double KRootMeanSquare::Rms(std::vector<T> &r, unsigned int s
     val += r[i];
   }
   val = val/double(i-start);
-  return sqrt( abs(val*val - val2/(double)(i-start)) );
+
+  return sqrt( fabs(val*val - val2/(double)(i-start)) );
+
 }
 
 template <class T> double KRootMeanSquare::Rms(const T* r, unsigned int start, unsigned int stop)
@@ -63,7 +65,9 @@ template <class T> double KRootMeanSquare::Rms(const T* r, unsigned int start, u
     val += *(r+i);
   }
   val = val/double(i-start);
-  return sqrt( abs(val*val - val2/(double)(i-start)) );
+
+  return sqrt( fabs(val*val - val2/(double)(i-start)) );
+
 }
 
 #endif // __KROOTMEANSQUARE_H__
