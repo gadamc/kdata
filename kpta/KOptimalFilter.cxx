@@ -29,7 +29,6 @@
 #include <iostream>
 #include "KHalfComplexToRealDFT.h"
 #include "KHalfComplexPower.h"
-#include "KHalfComplexArray.h"
 #include <cmath>
 
 using namespace std;
@@ -163,16 +162,16 @@ bool KOptimalFilter::BuildFilter(void)
   //cout << "running hcpower" << endl;
   fHcPower->RunProcess();
   
-  // the optimal filter has a length of n elements. the first n/2 + 1 are the real parts
+  // the optimal filter has a length of n elements. the first n/2 + 1 (0 to n/2) are the real parts
   // the remaining elements are the imaginary parts. but, because we are assuming that
   // our pulses are real (which they are), the 0th and n/2th components have an imaginary value
   // of zero and are therefore not included in this half-complex format.
-  // the templateDFT has the same half-complex structure. The first n/2 + 1 elements correspond
+  // the templateDFT has the same half-complex structure. The first n/2 + 1 (0 to n/2) elements correspond
   // to the lowest frequency component (DC) up to the highest (Nyquist). The corresponding frequency
   // component order is reveresed in the imaginary part of the half-complex array. The lowest frequency 
   // component (not DC!) in the imaginary part is the (n-1)st element of the array and the highest frequncy
   // component (also not Nyquist) in the imaginary part is the (n/2 + 1)st element. 
-  // See the KRealToHalfComplexDFT, KHalfComplextToRealDFT and the FFTW documentation.
+  // See the KRealToHalfComplexDFT, KHalfComplexToRealDFT and the FFTW documentation.
   //
   // the noise power, on the other hand, has a lengh of n/2+1 elements starting with the lowest
   // frequency component (DC) up to the highest (Nyquist).
@@ -292,7 +291,7 @@ double KOptimalFilter::GetChiSquared(unsigned int aTimeBin)
   //fNoiseSpectrumSize should equal fInputSize/2
   
   if(aTimeBin > fOutputSize) return -1;
-  KHalfComplexArray complex;
+  
   // double pi = 3.14159265358979;
   double twopi = 6.28318530717958; 
   
@@ -303,10 +302,11 @@ double KOptimalFilter::GetChiSquared(unsigned int aTimeBin)
   
   for(unsigned int i = 0; i < fNoiseSpectrumSize; i++) {
   
-    sig_re = complex.Real(fInputPulse, fInputSize, i);
-    sig_im = complex.Imag(fInputPulse, fInputSize, i);
-    temp_re = complex.Real(fTemplateDFT, fTemplateDFTSize, i);
-    temp_im = complex.Imag(fTemplateDFT, fTemplateDFTSize, i);
+    sig_re = fComplex.Real(fInputPulse, fInputSize, i);
+    sig_im = fComplex.Imag(fInputPulse, fInputSize, i);
+    temp_re = fComplex.Real(fTemplateDFT, fTemplateDFTSize, i);
+    temp_im = fComplex.Imag(fTemplateDFT, fTemplateDFTSize, i);
+    
     sig2 = sig_re*sig_re + sig_im*sig_im;
     temp2 = temp_re*temp_re + temp_im*temp_im;
     cos_i = cos(twopi*i *aTimeBin/fInputSize);
@@ -317,7 +317,7 @@ double KOptimalFilter::GetChiSquared(unsigned int aTimeBin)
       + 2*optimalAmp*sin_i*(temp_re*sig_im - temp_im*sig_re)) / fNoiseSpectrum[i];
   }
   
-  return chi2;
+  return 2.0 * chi2; //multiply by two because integration was done only over positive frequencies, but should be done over +- frequency range.
 }
 
 
