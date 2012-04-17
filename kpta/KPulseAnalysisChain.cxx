@@ -161,40 +161,26 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
     //cout << "Pulse Analysis Chain Processor: " << i << endl;
     try {
       KPtaProcessor *p = fProcessorList.at(i);
-      if(p != 0){
+      
+      //set the input pulse of the first processor. 
+      if(i == 0)
+        if(!smartMemory) p->SetInputPulse(GetInputPulse(), GetInputPulseSize());
 
-        //set the input pulse of the first processor. 
-        if(i == 0)
-          if(!smartMemory) p->SetInputPulse(GetInputPulse(), GetInputPulseSize());
-
-        if(p->RunProcess()){
-          theReturn++;
-          unsigned int j = i+1;
-          while(j < fProcessorList.size()){ //search for the next valid processor in the list. 
-
-            KPtaProcessor *pnext = fProcessorList.at(j);
-            if(pnext != 0) {
-              //cout << "Pulse Analysis Chain. Found Next Processor: " << j << endl;
-              //if this fails here, then this will break... the next processor won't get the pulse
-              if(!smartMemory) pnext->SetInputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
-              break; //break out of the while loop if this is a valid pointer to a processor;
-            }
-            j++;
-          }
-          i = j - 1;  //advance i as necessary.
-        }
-        else {
-          cerr << p->GetName() << " Processor Failed. Stopping Subsequent Processes for this Chain. " << endl;
-          cerr << "   The output pulse for this chain should be the same as the input pulse." << endl;
-          cerr << "   If you're sure this is a bug, submit a report at https://edwdev-ik.fzk.de/bugs" << endl;
-          //fOutputPulse = fInputPulse;  //make the output equal the input.
-          break;
-        }
+      if(p->RunProcess()){
+        theReturn++;
 
       }
-
+      else {
+        cerr << p->GetName() << " Processor Failed. Stopping Subsequent Processes for this Chain. " << endl;
+        cerr << "   The output pulse for this chain should be the same as the input pulse." << endl;
+        cerr << "   If you're sure this is a bug, submit a report at https://edwdev-ik.fzk.de/bugs" << endl;
+        //fOutputPulse = fInputPulse;  //make the output equal the input.
+        break;
+      }
+        
       if(i == fProcessorList.size() - 1  && !smartMemory)
         SetMyOutputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
+        
     }
     catch (out_of_range& e) {
       //I think this should be impossible... 
@@ -202,6 +188,7 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
     }
 
   }
+  
 
   if(theReturn) 
     return true;
@@ -211,13 +198,19 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
 void KPulseAnalysisChain::AddProcessor(KPtaProcessor *p)
 {
   //Add a processor to the end of the list.
+  //If p is NULL, then nothing happens. 
+  
+  if(p == 0) return;
   fProcessorList.push_back(p);	
 }
 
 void KPulseAnalysisChain::AddProcessorAt(KPtaProcessor *p, unsigned int index)
 {
   //Add a processor at a particular position in the list.
-
+  //If p is NULL then nothing happens
+  
+  if(p == 0) return;
+  
   if(index >= fProcessorList.size())
     AddProcessor(p);
 
