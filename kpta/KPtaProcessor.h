@@ -56,7 +56,7 @@ public:
   virtual double* GetOutputPulse(void) const {return fOutputPulse;}  
   virtual unsigned int GetOutputPulseSize(void) const {return fOutputSize;}
   virtual double* GetInputPulse(void) const {return fInputPulse;}  
-  virtual unsigned int GetInputPulseSize(void) const {return fOutputSize;}
+  virtual unsigned int GetInputPulseSize(void) const {return fInputSize;}
 
   virtual const char* GetName(void) const {return fProcessorName.c_str();}
   virtual void SetName(const char* aName){fProcessorName = aName;}

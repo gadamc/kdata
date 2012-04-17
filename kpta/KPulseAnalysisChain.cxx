@@ -233,7 +233,7 @@ void KPulseAnalysisChain::SetMyOutputPulse(const double* p, unsigned int s)
     fOutputPulse = new double[s];
     fOutputSize = s;
   }
-
+  
   memcpy(fOutputPulse, p, s*sizeof(double));  
 }
 
