@@ -171,6 +171,8 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
           p->SetInputPulse(p_prev->GetOutputPulse(), p_prev->GetOutputPulseSize());
       } 
 
+      p_prev = p;
+      
       if(p->RunProcess())
         theReturn++;
 
@@ -181,11 +183,6 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
         //fOutputPulse = fInputPulse;  //make the output equal the input.
         break;
       }
-      
-      p_prev = p;
-      
-      if(i == fProcessorList.size() - 1  && !smartMemory)
-        SetMyOutputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
         
     }
     catch (out_of_range& e) {
@@ -195,6 +192,12 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
 
   }
   
+  
+  if(!smartMemory) {
+    KPtaProcessor *p = fProcessorList.at( fProcessorList.size() - 1);
+    SetMyOutputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
+  }
+    
 
   if(theReturn) 
     return true;
