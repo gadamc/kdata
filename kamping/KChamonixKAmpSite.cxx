@@ -179,7 +179,7 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   }
   else{ //add noise spectrum to the running average
     for(unsigned int i = 0; i < fNoiseSpectra[pRaw->GetChannelName()].size(); i++ ){
-      fNoiseSpectra[pRaw->GetChannelName()][i] = fNoiseSpectra[pRaw->GetChannelName()][i] * (fNoiseEventCounts[pRaw->GetChannelName()]-1)/fNoiseEventCounts[pRaw->GetChannelName()] + fHc2P.GetOutputPulse()[i]/fNoiseEventCounts[pRaw->GetChannelName()];
+      fNoiseSpectra[pRaw->GetChannelName()][i] = fNoiseSpectra[pRaw->GetChannelName()][i] * (fNoiseEventCounts[pRaw->GetChannelName()]-1.0)/fNoiseEventCounts[pRaw->GetChannelName()] + fHc2P.GetOutputPulse()[i]/fNoiseEventCounts[pRaw->GetChannelName()];
     }
   }
 
@@ -215,11 +215,11 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
     cout << "fR2Hc null pointer" << endl; return false;
   }
   
-  vector<double> power;
-  power.resize(fR2Hc.GetOutputPulseSize());
+  vector<double> dft;
+  dft.resize(fR2Hc.GetOutputPulseSize());
   
-  std::copy(fR2Hc.GetOutputPulse(), fR2Hc.GetOutputPulse()+fR2Hc.GetOutputPulseSize(), power.begin());
-  fTemplateSpectra[channelName] = power;
+  std::copy(fR2Hc.GetOutputPulse(), fR2Hc.GetOutputPulse()+fR2Hc.GetOutputPulseSize(), dft.begin());
+  fTemplateSpectra[channelName] = dft;
   return true;
 }
 
