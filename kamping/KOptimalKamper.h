@@ -30,6 +30,7 @@ public:
   KOptimalFilter& GetOptimalFilter(void){return fOptimalFilter;}
   void SetWindow(KWindow *pta){fWindow = pta;}
   void SetBaselineRemoval(KPtaProcessor *pta){fBaseRemove = pta;}
+
   void SetPulseTemplateShiftFromPreTrigger(double aVal){fPulseTemplateShift = -1*aVal;}
   void SetAmplitudeEstimatorSearchRange(double aVal){fAmplitudeEstimatorSearchRange = aVal;}
   double GetPulseTemplateShiftFromPreTrigger(void) const {return fPulseTemplateShift;}
@@ -40,6 +41,7 @@ private:
   KOptimalFilter fOptimalFilter;
   KPtaProcessor *fBaseRemove; //baseline removal will always happen before windowing. Its a KPtaProcessor in case you want to pass in a KLinearRemoval instead.
   KWindow *fWindow; //set the window pointer - this lets you choose different windows via KWindowDesign
+
   double fPulseTemplateShift;
   double fAmplitudeEstimatorSearchRange;
   

@@ -12,6 +12,7 @@
 #define __KOPTIMALFILTER_H__
 
 #include "KPtaProcessor.h"
+#include "KHalfComplexArray.h"
 
 class KHalfComplexToRealDFT;
 class KHalfComplexPower;
@@ -96,7 +97,8 @@ private:
   //private methods
   void InitializeMembers(void);
 
-
+  KHalfComplexArray fComplex;
+  
  // ClassDef(KOptimalFilter,1);
   
 };
