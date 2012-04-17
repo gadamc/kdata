@@ -163,7 +163,7 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
     try {
       KPtaProcessor *p = fProcessorList.at(i);
       
-      //set the input pulse of the first processor. 
+      //set the input pulse of the previous processor. 
       if(!smartMemory) p->SetInputPulse(p_prev->GetInputPulse(), p_prev->GetInputPulseSize());
 
       if(p->RunProcess()){
