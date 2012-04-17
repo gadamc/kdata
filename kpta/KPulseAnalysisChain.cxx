@@ -161,7 +161,7 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
   for(unsigned int i = 0; i < fProcessorList.size(); i++){
     //cout << "Pulse Analysis Chain Processor: " << i << endl;
     try {
-      KPtaProcessor *p = fProcessorList.at(i);
+      KPtaProcessor *p = fProcessorList[i];
       
       //set the input pulse of the previous processor. 
       if(!smartMemory) {
@@ -194,8 +194,7 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
   
   
   if(!smartMemory) {
-    KPtaProcessor *p = fProcessorList.at( fProcessorList.size() - 1);
-    SetMyOutputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
+    if(p_prev) SetMyOutputPulse(p_prev->GetOutputPulse(), p_prev->GetOutputPulseSize());
   }
     
 
@@ -232,6 +231,7 @@ void KPulseAnalysisChain::SetMyOutputPulse(const double* p, unsigned int s)
   if(s != fOutputSize){
     if(fOutputPulse) delete [] fOutputPulse;
     fOutputPulse = new double[s];
+    fOutputSize = s;
   }
 
   memcpy(fOutputPulse, p, s*sizeof(double));  

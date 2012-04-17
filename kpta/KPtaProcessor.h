@@ -106,7 +106,7 @@ template <class T> void KPtaProcessor::SetTheInputPulse(const std::vector<T> &aP
 
   try {
     for(unsigned int i = 0; i < fInputSize; i++){
-      *(fInputPulse+i) = aPulse.at(i);
+      *(fInputPulse+i) = aPulse[i]; //use [i]. its faster than .at(i) 
     }
   }
   catch (std::out_of_range& e) {
