@@ -156,7 +156,7 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
 
 
   int theReturn = 0;
-  KPtaProcessor *p_prev = this;
+  KPtaProcessor *p_prev = 0;
 
   for(unsigned int i = 0; i < fProcessorList.size(); i++){
     //cout << "Pulse Analysis Chain Processor: " << i << endl;
@@ -164,8 +164,12 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
       KPtaProcessor *p = fProcessorList.at(i);
       
       //set the input pulse of the previous processor. 
-      if(!smartMemory) p->SetInputPulse(p_prev->GetInputPulse(), p_prev->GetInputPulseSize());
-
+      if(!smartMemory) {
+        if(i == 0)
+          p->SetInputPulse(GetInputPulse(), GetInputPulseSize());
+        else 
+          p->SetInputPulse(p_prev->GetOutputPulse(), p_prev->GetOutputPulseSize());
+      } 
       if(p->RunProcess()){
         theReturn++;
 
@@ -178,10 +182,11 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
         break;
       }
       
+      p_prev = p;
+      
       if(i == fProcessorList.size() - 1  && !smartMemory)
         SetMyOutputPulse(p->GetOutputPulse(), p->GetOutputPulseSize());
-      
-      p_prev = p;  
+        
     }
     catch (out_of_range& e) {
       //I think this should be impossible... 
