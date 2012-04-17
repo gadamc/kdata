@@ -170,10 +170,10 @@ bool KPulseAnalysisChain::RunProcess(bool smartMemory)
         else 
           p->SetInputPulse(p_prev->GetOutputPulse(), p_prev->GetOutputPulseSize());
       } 
-      if(p->RunProcess()){
+
+      if(p->RunProcess())
         theReturn++;
 
-      }
       else {
         cerr << p->GetName() << " Processor Failed. Stopping Subsequent Processes for this Chain. " << endl;
         cerr << "   The output pulse for this chain should be the same as the input pulse." << endl;
