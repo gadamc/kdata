@@ -29,6 +29,8 @@ public:
   //all derived classes must over-ride this method
   virtual bool RunProcess(void) = 0;
 
+  virtual void SetInputPulse(KPtaProcessor *pta) {SetInputPulse(pta->GetOutputPulse(), pta->GetOutputPulseSize());}
+
   //this weird pattern of coding is so that SetInputPulse can be overloaded in derived classes.
   //and because using template functions in ROOT's CINT isn't trivial.
   virtual void SetInputPulse(std::vector<double> &aPulse){SetTheInputPulse(aPulse);}

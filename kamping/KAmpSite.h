@@ -28,6 +28,7 @@ public:
   virtual ~KAmpSite(void);
   
   virtual Bool_t RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee) = 0;      //this runs the data processing on each event. 
+  virtual Bool_t PrepareKampSite(void){return true;}
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e) = 0;  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void) = 0;
   virtual void SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp);

@@ -3,7 +3,7 @@
 // KNoiseWhitening.cxx
 // Author: Adam Cox <mailto:adam.cox@kit.edu>
 //
-// *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
+// *Copyright 2012 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
 //
 // Input pulse is assumed to be of the half-complex form
@@ -38,13 +38,13 @@ KNoiseWhitening::KNoiseWhitening(double *inPulse, unsigned int inSize, double* o
 
 KNoiseWhitening::~KNoiseWhitening(void)
 {
-
+  if(fNoiseSpectrum) delete [] fNoiseSpectrum;
 }
 
 void KNoiseWhitening::InitializeMembers(void)
 {
-
-
+  fNoiseSpectrum = 0;
+  fNoiseSpectrumSize = 0;
 }
 
 bool KNoiseWhitening::RunProcess(void)
@@ -59,13 +59,27 @@ bool KNoiseWhitening::RunProcess(void)
     return false;
   }
   
-  if(fNoiseSpectrumSize != fOutputSize) {
-    cerr << "KNoiseWhitening::RunProcess. noise spectrum array must be the same size as the input and output arrays." << endl;
+  if(2*(fNoiseSpectrumSize - 1) != fOutputSize) {
+    cerr << "KNoiseWhitening::RunProcess. noise spectrum array must be twice the size as the input and output arrays." << endl;
     return false;
   }
   
-  for(unsigned int i = 0; i < fInputSize; i++)
-    *(fOutputPulse+i) = *(fInputPulse+i) / *(fNoiseSpectrum+i);
+  //cout << "denominator " << denom << endl;
+  //now caluclate the real parts of the optimal filter
+  for(unsigned int i = 1; i < fOutputSize/2; i++)
+    *(fOutputPulse+i) =  *(fInputPulse+i) / sqrt( *(fNoiseSpectrum+i) );
+    
+    
+  //the zero-th bin
+  *(fOutputPulse) =  *(fInputPulse) / sqrt( *(fNoiseSpectrum));
+  //the size/2 + 1 bin
+  *(fOutputPulse + fOutputSize/2) =  *(fInputPulse + fOutputSize/2) /  sqrt( *(fNoiseSpectrum + fOutputSize/2));
+  
+  //then the imaginary parts. make sure to use the correct index in the noise spectrum
+  unsigned int j = 1;
+  for(unsigned int i = fOutputSize-1; i > fOutputSize/2; i--)
+    *(fOutputPulse+i) = *(fInputPulse+i) /  sqrt( *(fNoiseSpectrum+(j++)) ) ;
+    
 
   return true;
 

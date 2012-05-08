@@ -58,6 +58,7 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
   //will need to scout out the data in order to estimate the noise power for each channel.
   vector<KAmpSite *>::iterator it;
   Bool_t bNeedScouting = false;
+  
   for( it = fKampSites.begin(); it < fKampSites.end(); it++){
     mNewInfo->AddCommand( (*it)->GetName());
     if ( (*it)->NeedScout()){
@@ -81,6 +82,13 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
         }
       }
     }
+  }
+  
+  //call each KampSite's Prepare method, which is used to calculate any information
+  //obtained during the ScoutKampSite method
+  for( it = fKampSites.begin(); it < fKampSites.end(); it++){
+    if ( (*it)->NeedScout() )
+      (*it)->PrepareKampSite();
   }
   
   

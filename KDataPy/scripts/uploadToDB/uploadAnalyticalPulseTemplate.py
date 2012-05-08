@@ -23,6 +23,8 @@ def addFormulaResult(n, channel):
   sf.SetName('single_decay')
   df = TF1('rise_double_decay', 'x > [0] ? [1]*(1 - exp(-(x-[0])/[2]))*(exp(-(x-[0])/[3]) + [4]*exp(-(x-[0])/[5])) : 0', 0, 512)
   df.SetName('rise_double_decay')
+  stepf = TF1('step', 'x > [0] ? [1] : 0', 0, 8192)
+  stepf.SetName('step')
   
   if n == 1:
     subdoc = {}
@@ -66,6 +68,33 @@ def addFormulaResult(n, channel):
     
     subdoc['tf1'] = pickle.dumps(df)
     
+  elif n == 3:
+    subdoc = {}
+    doc['step'] = subdoc 
+    subdoc['python']= "\ndef template(x,par):\n  import math\n  if x < par[0]: return 0\n  else: return par[1]\n"
+    
+    print 'you selected the following functional form (python syntax): '
+    print subdoc['python']
+    
+    subdoc['par'] = [0,0]
+    
+    if channel.startswith('chal'):
+      stepf.SetRange(0,512)
+      subdoc['par'][0] = 255
+      subdoc['par'][1] = 1
+    else: 
+      stepf.SetRange(0,8192)
+      subdoc['par'][0] = 4095
+      subdoc['par'][1] = 1
+      
+    fillVars(subdoc['par'], 2, len(subdoc['par']))
+    
+    for i in range(len(subdoc['par'])):
+      stepf.SetParameter(i, subdoc['par'][i])
+    
+    
+    subdoc['tf1'] = pickle.dumps(stepf)
+    
   else:
     print 'unrecognized option...'
     doc = ''
@@ -80,20 +109,20 @@ def printGreeting(now):
   print 'Please answer the following questions'
   
   
-def getFormattedDate():
+def getFormattedDate(value = ''):
   
-  value = ''
-  while value == '':
+  if value == '':
     value = raw_input("Start UTC date-time from which this template is valid (yyyy-mm-dd hh:mm:ss): ")
-    #check format
-    try:
-      theDate = datetime.datetime.strptime(value,'%Y-%m-%d %H:%M:%S')
-      value = str(theDate)
-    except:
-      print 'that did not seem to match the format. try again.'
-      value = ''
+  #check format
+  try:
+    theDate = datetime.datetime.strptime(value,'%Y-%m-%d %H:%M:%S')
+    value = str(theDate)
+    return value
+    
+  except:
+    print 'that did not seem to match the format. try again.'
+    return getFormattedDate()
   
-  return value
   
 def addTemplates(doc):
   
@@ -101,13 +130,15 @@ def addTemplates(doc):
   if doc.has_key('formula') == False:
     doc['formula'] = {}
   while option != 'done':
-    option = raw_input('Add a record: Single exponential[1], heat double exponential template[2] (or type "done"): ')
+    option = raw_input('Add a record: Single exponential[1], heat double exponential template[2], or bbv2 step [3] (or type "done"): ')
     try:
       formNum = int(option)
+    except: pass
+    else:
       formulaDoc = addFormulaResult(formNum, doc['channel'])
       if formulaDoc != '':
         doc['formula'].update(formulaDoc)
-    except: pass
+    
   
 def addKampSites(doc):
   
@@ -145,22 +176,35 @@ def addKampSites(doc):
   
   
     
-def fillDoc():
+def fillDoc(**kwargs):
   
   now = datetime.datetime.utcnow()
   printGreeting(now)
   
   doc = {}
-  doc['channel'] = raw_input("Channel Name: ")
-  doc['author'] = raw_input("What is your name? ")
-  doc['date'] = getFormattedDate()
+  if kwargs.has_key('channel') == False: doc['channel'] = raw_input("Channel Name: ")
+  else: doc['channel'] = kwargs['channel']
+  
+  if kwargs.has_key('author') == False: doc['author'] = raw_input("What is your name? ")
+  else: doc['author'] = kwargs['author']
+  
+  if kwargs.has_key('date') == False: doc['date'] = getFormattedDate()
+  else: doc['date'] = getFormattedDate(kwargs['date'])
+  
+  if kwargs.has_key('method') == False: doc['method'] = raw_input('Short description of analysis method (i.e "by hand"): ')
+  else: doc['method'] = kwargs['method']
+    
   doc['date submited'] = str(now)
   doc['type'] = 'analytical'
-  doc['method'] = raw_input('Short description of analysis method (i.e "by hand"): ')
   doc['formula'] = {}
-  addTemplates(doc)
-  addKampSites(doc)
 
+  addTemplates(doc)
+
+  if kwargs.has_key('addkampsite') == False: 
+    addKampSites(doc)
+  else:
+    if kwargs['addkampsite'] != 0:
+      addKampSites(doc)
   print 'Review your document'
   print json.dumps(doc, indent=1)
   
@@ -172,21 +216,43 @@ def fillDoc():
   else: 
     return ''
 
-def main(*args):
+def main(*args, **kwargs):
   '''
   you should pass in the username / password of the edwdbik.fzk.de couch database
   '''
-  if len(args) != 2:
-    print help(main)
-    sys.exit(-1)
-    
+  # if len(args) != 2:
+  #     print help(main)
+  #     sys.exit(-1)
+      
   s = Server('https://%s:%s@edwdbik.fzk.de:6984' % (args[0], args[1]))
   db = s['pulsetemplates']
 
-  doc = fillDoc()
+  doc = fillDoc(**kwargs)
   
   if doc != '':
     db.save_doc(doc)
   
 if __name__ == '__main__':
-  main(*sys.argv[1:])
+  import json
+  
+  argv = sys.argv
+  arg_strs = argv[1:]
+  
+  args = []
+  kwargs = {}
+  for s in arg_strs:
+    if s.count('=') == 1:
+      key, value = s.split('=', 1)
+    else:
+      key, value = None, s
+    print key, value
+    try:
+      value = json.loads(value) 
+    except ValueError:
+      pass
+    if key:
+      kwargs[key] = value
+    else:
+      args.append(value)
+              
+  main(*args, **kwargs)

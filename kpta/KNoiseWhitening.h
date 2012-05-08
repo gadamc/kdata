@@ -40,8 +40,8 @@ public:
   virtual void SetNoiseSpectrum(const int* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
   virtual void SetNoiseSpectrum(const short* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
   
-  virtual void SetNoiseSpectrum(double* resp);
-  virtual void SetNoiseSpectrumSize(unsigned int size);
+  virtual void SetNoiseSpectrum(double* resp) {fNoiseSpectrum = resp;} //memory experts only
+  virtual void SetNoiseSpectrumSize(unsigned int size) {fNoiseSpectrumSize = size;} //memory experts only
   
 protected:
   double *fNoiseSpectrum;

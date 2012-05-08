@@ -3,7 +3,7 @@
 // KDataStructure
 //
 // Created by Adam Cox
-// Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+// Copyright 2012 Karlsruhe Institute of Technology. All rights reserved.
 //
 //
 
@@ -13,8 +13,7 @@
 #include "KAmper.h"
 #include "KRawBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
-#include "KIIRFourthOrder.h"
-#include "KLinearRemoval.h"
+#include "KPtaProcessor.h"
 #include "TGraph.h"
 #include "KPulsePolarityCalculator.h"
 
@@ -29,19 +28,18 @@ public:
   virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
   virtual Bool_t MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
    
-  KIIRFourthOrder& GetIIR(void) {return fIrrFour;}
-  KLinearRemoval& GetLinearRemoval(void) {return fLineRemove;}
+  KPtaProcessor* GetPreProcessor(void) {return fPulsePreProcessor;}
+  void SetPreProcessor(KPtaProcessor *pta) { fPulsePreProcessor = pta;}
+
   TGraph& GetGraph(void) {return fData;}
-  TF1* GetPositiveFitFunction(void){return fPositiveFit;}
-  TF1* GetNegativeFitFunction(void){return fNegativeFit;}
+  TF1* GetFitFunction(void){return fPulseFit;}
   
 private:
 
-  KIIRFourthOrder fIrrFour;
-  KLinearRemoval fLineRemove;
-  TGraph fData;
-  TF1 *fPositiveFit;
-  TF1 *fNegativeFit;
+  KPtaProcessor* fPulsePreProcessor; //you're probably going to pass in a KPulseAnalysis chain here..
+
+  TGraph fData; //holds the data for the fit - using ROOT fittting
+  TF1 *fPulseFit;  
   KPulsePolarityCalculator fPolCalc;
   
 };
