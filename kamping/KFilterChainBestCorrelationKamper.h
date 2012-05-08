@@ -32,37 +32,60 @@ public:
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
   
-  virtual void SetHeatPreprocessor(KPulseAnalysisChain* p){fHeatPreprocessor = p;}
-  virtual void SetIonPreprocessor(KPulseAnalysisChain* p){fIonPreprocessor = p;}
+  virtual void SetPreprocessor(KPulseAnalysisChain* p){fPreprocessor = p;}
+  virtual void SetProcessorChain(KPulseAnalysisChain* p){fProcessorChain = p;}
+  virtual void SetPeakPositionSearchRange(unsigned int min, unsigned int max){fPosRangeMin = min; fPosRangeMax = max;}
+  virtual void SetDoFit(Bool_t value){fDoFit = value;}
   
-  virtual KPulseAnalysisChain* GetHeatPreprocessor(void){return fHeatPreprocessor;}
-  virtual KPulseAnalysisChain* GetBaselineRemovalIon(void){return fIonPreprocessor;}
+  
+  
+  virtual KPulseAnalysisChain* GetPreprocessor(void){return fPreprocessor;}
 
   //methods to set internal values for the various parameters for specific channels.
   //these parameters should be available from the database 
-  virtual Bool_t SetTemplate(const char* channelName, std::vector<double> templ, double starttime);//{ fTemplate[channelName] = templ; fAmpEstimatorTimeInTemplate[channelName] = starttime;}
-  virtual void AddProcessor(const char* channelName, KPtaProcessor *p){fPtaProcessorChain[channelName].AddProcessor(p);}
-  virtual void AddIIRFilter(const char* channelName, double* a, unsigned int asize, double* b, unsigned int bsize);
-  virtual KPulseAnalysisChain* GetPulseAnalysisChain(const char* channelName){return &fPtaProcessorChain[channelName];}
+  virtual void SetTemplate(std::vector<double> templ, double AmpEstimatorTimeInTemplate, double PulseStartTimeInTemplate);
+
+  virtual KPulseAnalysisChain* GetProcessorChain(){return fProcessorChain;}
+  virtual std::vector<double> GetPreProcessedPulse(){return fPreprocessedPulse;}
+  virtual std::vector<double> GetProcessedPulse(){return fProcessedPulse;}
+  virtual std::vector<double> GetCorrelatedPulse(){return fCorrelatedPulse;}
+  virtual unsigned int GetPositionOfMaxAbsValue(double* input, unsigned int size, unsigned int from = 0, unsigned int to = 0);
+  virtual Bool_t GetDoFit(void){return fDoFit;}
+  
+  virtual Double_t TemplateFitFunction(Double_t *x, Double_t *par);
   
   
   
-  std::vector<int>& GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
+//  std::vector<int>& GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
   
 private:
   std::string fName;
-  std::vector<int> fHeatPulseStampWidths;
+//  std::vector<int> fHeatPulseStampWidths;
   
-  KPulseAnalysisChain* fHeatPreprocessor;
-  KPulseAnalysisChain* fIonPreprocessor;
+  KPulseAnalysisChain* fPreprocessor;
+  KPulseAnalysisChain* fProcessorChain;
   KCorrelation fCorrelation;
-
+  double fAmpEstimatorTimeInTemplate;
+  double fPulseStartTimeInTemplate;
+  double fMaxAbsValueInTemplate;
+  std::vector<double> fTemplate;
+  unsigned int fPosRangeMin;
+  unsigned int fPosRangeMax;
   
-  std::map<std::string, std::vector<double> > fTemplate;
-  std::map<std::string, double> fAmpEstimatorTimeInTemplate;
-  std::map<std::string, KPulseAnalysisChain> fPtaProcessorChain;
+  //debug
+  double fPeakPos;
+  double fAmpEstPos;
+  std::vector<double> fPreprocessedPulse;
+  std::vector<double> fProcessedPulse;
+  std::vector<double> fCorrelatedPulse;
   
-  virtual unsigned int GetPositionOfMaxAbsValue(double* input, unsigned int size);
+  Bool_t fDoFit;
+  
+  
+  
+  
+  
+  
   
   
 };

@@ -550,21 +550,26 @@ KAmpBolometerRecord* KAmpEvent::AddBolo(KRawBolometerRecord* boloRaw, Bool_t for
 
   //copy the samba DAQ record and set the TRef
   KRawSambaRecord *samRaw = (KRawSambaRecord *)boloRaw->GetSambaRecord();
-  //check to see if we already have this samba
-  KRawSambaRecord *samAmp = 0;
-  for(int ss = 0; ss < GetNumSambas(); ss++){
-    if(*(KRawSambaRecord *)GetSamba(ss) == *samRaw) { //compare the samba records
-      samAmp = (KRawSambaRecord *)GetSamba(ss); //if they are equal, we've found a match
-      break;  //stop the loop
-      } 
-  }
   
-  if(samAmp == 0){ //if we didn't find a samba match, make a new one.
-    samAmp = AddSamba();
-    *samAmp = *samRaw; //copy the data
+  //just for the case, that there are no samba records in the raw data
+  if(samRaw){
+ 
+    //check to see if we already have this samba
+    KRawSambaRecord *samAmp = 0;
+    for(int ss = 0; ss < GetNumSambas(); ss++){
+      if(*(KRawSambaRecord *)GetSamba(ss) == *samRaw) { //compare the samba records
+        samAmp = (KRawSambaRecord *)GetSamba(ss); //if they are equal, we've found a match
+        break;  //stop the loop
+        } 
+    }
+    
+    if(samAmp == 0){ //if we didn't find a samba match, make a new one.
+      samAmp = AddSamba();
+      *samAmp = *samRaw; //copy the data
+    }
+    
+    mBoloAmp->SetSambaRecord(samAmp); //set the TRef
   }
-  
-  mBoloAmp->SetSambaRecord(samAmp); //set the TRef
   
   return mBoloAmp;
 }
