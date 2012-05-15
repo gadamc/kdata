@@ -252,10 +252,10 @@ Bool_t KFeldbergKAmpSite::SetTemplate(const char* channel, std::vector<double> t
     
   if(fProcessorChain.find(channel) != fProcessorChain.end()){
     //debug
-    cout << channel << " unprocessed template: ";
-    for(unsigned int i = 0; i < templ.size(); i++)
-      cout << templ[i] <<",";
-    cout <<endl;
+    //cout << channel << " unprocessed template: ";
+    //for(unsigned int i = 0; i < templ.size(); i++)
+      //cout << templ[i] <<",";
+    //cout <<endl;
     
     fProcessorChain[channel].SetInputPulse(templ);
     //debug
@@ -300,12 +300,12 @@ Bool_t KFeldbergKAmpSite::SetTemplate(const char* channel, std::vector<double> t
     // make the template always with positive polarity
     double scale = (fNormalizeTemplate) ? templvector[pos] : (templvector[pos]>0) ? 1:-1;
     cout << "NormalizeTemplate:"<< fNormalizeTemplate <<", Scale:"<< scale << endl;
-    cout << "processed,cut and scaled template: ";
+    //cout << "processed,cut and scaled template: ";
     for(unsigned int i = 0; i< templvector.size();i++){
       templvector[i]/=scale;
-      cout<<templvector[i]<<",";
+      //cout<<templvector[i]<<",";
     }
-    cout<<endl;
+    //cout<<endl;
     fTemplate[channel] = templvector;
     return true;
   }
