@@ -82,8 +82,8 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     fOptKamper.MakeKamp(pRaw, rec);
     
     
-    KPulseAnalysisRecord *basRec = ee->AddPulseAnalysisRecord();
-    SetTRefLinksForKAmpEvent(basRec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
+    //KPulseAnalysisRecord *basRec = ee->AddPulseAnalysisRecord();
+    //SetTRefLinksForKAmpEvent(basRec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
     //we don't really need to call this! The answer should already be calculated for us! Just get the optimal filter from
     //the fOptKamper and get the results from the output
     
@@ -92,13 +92,13 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
       cout << "KChamonixKAmpSite::RunKampSite. fHeatPeakDetector fail"<< endl;
     else{
       rec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); 
-      basRec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); //
+      //basRec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); //
     }
     
-    fOptKamper.MakeBaseKamp(pRaw, basRec);
-    basRec->SetIsBaseline(true);
+    //fOptKamper.MakeBaseKamp(pRaw, basRec);
+    //basRec->SetIsBaseline(true);
     rec->SetName(GetName());
-    basRec->SetName(GetName());
+    //basRec->SetName(GetName());
   }
   
   
