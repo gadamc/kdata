@@ -1,7 +1,7 @@
 from .info import __version_info__, __version__
 from ROOT import *
 
-kdatalibs = ['libkds', 'libkpta', 'libksamba', 'libkamping']
+kdatalibs = ['libkds', 'libkpta', 'libksamba', 'libkamping', 'libEra', 'libkera', 'libkqpa']
 for lib in kdatalibs:
   try:
     print 'load', lib
