@@ -45,6 +45,7 @@ public:
 	void SetSambaRecord(KRawSambaRecord *aRec) {fSambaRecord = aRec;	}
 	void AddPulseRecord(KRawBoloPulseRecord* aPulseRecord);
 
+  TRefArray& pulseRecords(void) { return fPulseRecords;}
 private:
 
 	TRef fSambaRecord;  //holds a pointer to the associated Samba record
