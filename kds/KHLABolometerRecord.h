@@ -115,6 +115,7 @@ public:
 	void SetCutsBit(Int_t i, Bool_t aVal = true) {fCuts.SetBitNumber(i, aVal);}
 	void SetCuts(const TBits *mCuts);
 
+  TRefArray& pulseRecords(){return fPulseRecords;}
 private:
 
 	Double32_t fQvalue; //calculation based upon event category (heat, fiducial, surface, etc...)

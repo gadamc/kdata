@@ -252,8 +252,10 @@ $(RMKDEP): $(ROOTSYS)/bin/rmkdepend
 prepare::
 	@$(INSTALLDIR) include
 	@$(INSTALLDIR) lib
-	@rsync -aq --exclude=.svn/ --exclude=.DS_Store KDataPy lib/.
-	@chmod -R +x lib/KDataPy
+	@rsync -aq --exclude=.svn/ --exclude=.DS_Store KDataPy/kdatapy lib/KDataPy
+	@cp KDataPy/__init__.py lib/KDataPy/.
+	@rsync -aq --exclude=.svn/ --exclude=.DS_Store KDataPy/scripts lib/KDataPy
+	@chmod -R +x lib/KDataPy/scripts
 	@config/checkenv
 
 clean::

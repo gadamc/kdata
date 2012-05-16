@@ -77,6 +77,7 @@ public:
   virtual Int_t GetNumPulseAnalysisRecords(void) const {return fPulseAnaRecords.GetEntriesFast();} 
   virtual void AddPulseAnalysisRecord(KPulseAnalysisRecord* aPulseRecord);
 
+  TRefArray& analysisRecords() {return fPulseAnaRecords;}
 private:
 
   TRef fBolometerRecord;  //the value of this is the pointer to KAmpBoloPulseRecord object that this pulse belongs to.

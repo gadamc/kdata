@@ -54,7 +54,12 @@ public:
   const KClonesArray* GetBoloPulseRecords(void) const {return static_cast<KClonesArray *>(fBoloPulse);}
   const KClonesArray* GetMuonModuleRecords(void) const {return static_cast<KClonesArray *>(fMuonModule);}
   const KClonesArray* GetPulseAnalysisRecord(void) const {return static_cast<KClonesArray *>(fPulseAna);}
-
+  //more pythonic looking methdos
+  const KClonesArray* sambaRecords(void) const {return GetSambaRecords();}
+  const KClonesArray* boloRecords(void) const {return GetBoloRecords();}
+  const KClonesArray* boloPulseRecords(void) const {return GetBoloPulseRecords();}
+  const KClonesArray* muonModuleRecords(void) const {return GetMuonModuleRecords();}
+  
   KRawSambaRecord* AddSamba();
   KAmpBolometerRecord* AddBolo();
   KAmpBolometerRecord* AddBolo(KRawBolometerRecord* boloRaw, Bool_t force=false);
