@@ -1,4 +1,14 @@
 def functionlist():
+  '''
+  returns a list of dictionaries that define the different pulse templates. Each dictionary has a 'name', 'python', 'par', 'time_unit' and 'tf1' key.
+  the 'python' key contains a string that defines a function called "template(x, par)" which can be used within a Python script by calling
+  exec(doc['python'])
+  the 'tf1' key contains a string that defines a formula used in ROOT's TF1 class
+  the 'par' is an array of initial values for the formula found in 'python' and 'tf1'
+  the 'time_unit' holds the number of seconds for each parameter is 'par' that has a dimension of time. For example, in the 'rise_double_decay' template
+  the first, third, fourth and fifth parameters are the trigger time, rise time, first decay time and second decay time. 
+  Thus par[0] * time_unit = pretrigger time in seconds.  
+  '''
   _rise_double_decay = {'python':"\ndef template(x,par):\n  import math\n  if x < par[0]: return 0\n  else: return par[1]*(1 - math.exp(-(x-par[0])/par[2]))*(math.exp(-(x-par[0])/par[3]) + par[5]*math.exp(-(x-par[0])/par[4]))\n",
                           'tf1': "x < [0] ? 0.0 : [1]*(1 - ([2] > 0.0 ? TMath::Exp(-(x-[0])/[2]) : 0.0))*(([3] > 0.0 ? TMath::Exp(-(x-[0])/[3]) : 0.0) + [5]*([4] > 0.0 ? TMath::Exp(-(x-[0])/[4]) : 0.0))",
                           'par': [514.08, -1.0, 5.0, 15.0, 70.0, 0.25], 'time_unit': 0.001, 'name':'rise_double_decay'}

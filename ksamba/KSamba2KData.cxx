@@ -409,6 +409,11 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
       AddChannelToDetectorWithNamePost919("ionisH", bolo, detector);
     }
   } 
+  else if (bolo.BeginsWith("ZM")) {
+    AddChannelToDetectorWithNamePost919("H1", bolo, detector);
+    AddChannelToDetectorWithNamePost919("LT1", bolo, detector);
+    AddChannelToDetectorWithNamePost919("LT2", bolo, detector);
+  }
   
   while (!fSambaFileLine.BeginsWith(endOfDetecorHeader) && !fSambaFileStream.eof()){
     
@@ -480,8 +485,8 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
         }
         
         
-        else if(key.BeginsWith("gain") &&  !key.BeginsWith("gain-chal") ) {
-          
+        else if(key.BeginsWith("gain") &&  !key.BeginsWith("gain-chal") &&  !key.BeginsWith("gain-H") &&  !key.BeginsWith("gain-L") ) {
+          //ignore the new ZM detectors. why are the names ALWAYS changing. so stupid...
           TString cName = "ionis";
           cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
           KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
@@ -489,7 +494,6 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
           if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainCentre(-9999);
           else chan->SetGainCentre(val.Atof());
         }
-        
         
         else if(key.BeginsWith("gain-chal") && !key.EqualTo("gain-chaleur")) {
           
@@ -501,7 +505,6 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
           else chan->SetGainChaleur(val.Atof());
         }
         
-        
         else if(key.EqualTo("gain-chaleur") ) {
           //special Gc1 detector in Run16... or any detector with just one heat.
           KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
@@ -510,6 +513,14 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
           else chan->SetGainChaleur(val.Atof());
         }
         
+        else if(key.EqualTo("gain-H1") || key.EqualTo("gain-LT1")  || key.EqualTo("gain-LT2") ) {
+          
+          TString cName = key(5, key.Length()-5); cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainChaleur(-9999);
+          else chan->SetGainChaleur(val.Atof());
+        }
         
         else if(key.BeginsWith("polar-fet") || key.BeginsWith("fet-chal") ) {
           if(key.EqualTo("polar-fet")){
@@ -523,6 +534,15 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
             KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
             chan->SetPolarFet(val.Data());
           }          
+        }
+        
+        else if(key.EqualTo("fet-H1") || key.EqualTo("fet-LT1")  || key.EqualTo("fet-LT2") ) {
+          
+          TString cName = key(4, key.Length()-4); cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainChaleur(-9999);
+          else chan->SetGainChaleur(val.Atof());
         }
         
         else if(key.EqualTo("corr-pied") || key.BeginsWith("corr-chal")) {
@@ -541,6 +561,33 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
             if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCorrPied(-9999);
             else chan->SetCorrPied(val.Atof());
           }
+        }
+        
+        else if(key.BeginsWith("corr-trng") || key.BeginsWith("corr-chal") ) {
+          
+          if(key.EqualTo("corr-trng")){
+            //special Gc1 with only one heat in Run16... or any detector with just one heat.
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetCorrTrngl(val.Atof());
+          }
+          else if(key.EndsWith("A") || key.EndsWith("B")){
+            TString cName = "chal";
+            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetCorrTrngl(val.Atof());
+          }
+          
+        }
+        
+        else if(key.EqualTo("corr-H1") || key.EqualTo("corr-LT1")  || key.EqualTo("corr-LT2") ) {
+          
+          TString cName = key(5, key.Length()-5); cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainChaleur(-9999);
+          else chan->SetGainChaleur(val.Atof());
         }
         
         
@@ -562,22 +609,13 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
           
         }
         
-        else if(key.BeginsWith("corr-trng") || key.BeginsWith("corr-chal") ) {
+        else if(key.EqualTo("comp-H1") || key.EqualTo("comp-LT1")  || key.EqualTo("comp-LT2") ) {
           
-          if(key.EqualTo("corr-trng")){
-            //special Gc1 with only one heat in Run16... or any detector with just one heat.
-            KSambaDetectorChannel* chan = detector->GetChannelFromList(bolo.Data());
-            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
-            else chan->SetCorrTrngl(val.Atof());
-          }
-          else if(key.EndsWith("A") || key.EndsWith("B")){
-            TString cName = "chal";
-            cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
-            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
-            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
-            else chan->SetCorrTrngl(val.Atof());
-          }
+          TString cName = key(5, key.Length()-5); cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
           
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainChaleur(-9999);
+          else chan->SetGainChaleur(val.Atof());
         }
         
         
@@ -600,6 +638,17 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
         }
         
         
+        else if(key.EqualTo("ampl-H1") || key.EqualTo("ampl-LT1")  || key.EqualTo("ampl-LT2") ) {
+          
+          TString cName = key(5, key.Length()-5); cName += " "; cName += bolo;
+          KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+          
+          if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetGainChaleur(-9999);
+          else chan->SetGainChaleur(val.Atof());
+        }
+        
+        
+        
         else if(key.BeginsWith("d2") ) {
           
           if(key.EqualTo("d2")){
@@ -616,8 +665,12 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
             if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
             else chan->SetDiviseurD2(val.Atof());
           }
-          
-          
+          else if(key.EndsWith("H1") || key.EndsWith("LT1") || key.EndsWith("LT2")){
+            TString cName = key(2, key.Length()-2);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetDiviseurD2(val.Atof());
+          }
           
         }
         
@@ -638,6 +691,13 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
             if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
             else chan->SetDiviseurD3(val.Atof());
           }
+          else if(key.EndsWith("H1") || key.EndsWith("LT1") || key.EndsWith("LT2")){
+            TString cName = key(2, key.Length()-2);  cName += " "; cName += bolo;
+            KSambaDetectorChannel* chan = detector->GetChannelFromList(cName);
+            if (val.BeginsWith("indetermine") || val.BeginsWith("inconnu")) chan->SetCompModul(-9999);
+            else chan->SetDiviseurD2(val.Atof());
+          }
+          
         }
         
       
