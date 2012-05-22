@@ -1,23 +1,19 @@
 ===========
-kdatapy
+KDataPy
 ===========
 
-Towel Stuff provides such and such and so and so. You might find
-it most useful for tasks involving <x> and also <y>. Typical usage
-often looks like this::
 
     #!/usr/bin/env python
 
-    from kdatapy import data
-    from kdatapy import pulsetempy
+    import KDataPy.pulsetempy as kptl #(kptl = kdata pulse template, but you can call it whatever you want)
+    from ROOT import *
+    
+    for event in KDataReader('path/to/file'):
+      for bolo in event.boloRecords():
+        for pulse in bolo.pulseRecords():
+          fitresults = kptl.Fit(pulse, type='single_decay', init=[4096,-1,10000.0])
 
-    for event in data.Reader('path/to/file'):
-      for bolo in event:
-        for pulse in bolo:
-          pulse.GetTrace()
-          fitresults = pulsetempy.Fit(pulse, type='single_decay', init=[4096,-1,10000.0])
 
-(Note the double-colon and 4-space indent formatting above.)
 
 Paragraphs are separated by blank lines. *Italics*, **bold**,
 and ``monospace`` look like this.
