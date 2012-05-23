@@ -34,7 +34,7 @@ def get_in(pta):
   '''
   return get_as_nparray(pta.GetInputPulse(), pta.GetInputPulseSize())
     
-def plotpulse(data, name=None, match=False, pta = None):
+def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None):
     '''
     This function provides you with a simple single-plot viewer and some automatic pulse processing. It will loop through a data
     file and can plot each pulse that you specify. Additionally, it can process each pulse with a KPtaProcessor, plotting
@@ -48,6 +48,8 @@ def plotpulse(data, name=None, match=False, pta = None):
     Example.
     
     from KDataPy import util
+    from ROOT import *
+    gSystem.Load('libkpta')
     
     bas = KBaselineRemoval()
     pat = KPatternRemoval()
@@ -57,6 +59,34 @@ def plotpulse(data, name=None, match=False, pta = None):
     
     util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain)
     
+    The 'analysisFunction' input gives you the opportunity to tell the function to pass the output of the KPtaProcessor to another
+    function in order to analyze the output. The function must take two parameters, the pulse record (KRawBoloPulseRecord)
+    and the KPtaProcessor. For example.
+    
+    from KDataPy import util
+    import numpy as np
+    from ROOT import *
+    gSystem.Load('libkpta')
+
+    
+    def myAnalysis(pulse, pta=None):
+      if pta != None
+        pulsetrace = util.get_out(pta)
+      else: pulsetrace = np.array(pulse.GetTrace())
+      
+      print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
+    
+    bas = KBaselineRemoval()
+    pat = KPatternRemoval()
+    filter = KIIRSecondOrder(a1, a2, b0, b1, b2)
+    chain = KPulseAnalysisChain()
+    chain.AddProcessor(bas)
+    chain.AddProcessor(pat)
+    chain.AddProcessor(filter)
+
+    util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myAnalysis)
+      
+      
     
     '''
     if 'KDataReader' in str(type(data)): kdfilereader = data
@@ -79,6 +109,9 @@ def plotpulse(data, name=None, match=False, pta = None):
         else:
           plt.plot( np.array(pulse.GetTrace()) )
         
+        if analysisFunction != None:
+          analysisFunction(pulse, pta)
+          
         try:
           if raw_input() == 'quit': return
         except KeyboardInterrupt: return
