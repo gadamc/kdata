@@ -40,7 +40,7 @@ def main(*argv, **kwargs):
     doc = db[row['id']]
     doc['status'] = 'proc2 queued'
     
-    command = 'qsub -P P_edelweis -o %s -e %s -l sps=1 -l vmem=3G -l fsize=4096M  %s %s %s %s' % (scriptOut, scriptErr, script, argv[0], argv[1], row['id']) 
+    command = 'qsub -P P_edelweis -o %s -e %s -l sps=1 -l vmem=10G -l fsize=4096M  %s %s %s %s' % (scriptOut, scriptErr, script, argv[0], argv[1], row['id']) 
   
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,)
     val = proc.communicate()[0]
