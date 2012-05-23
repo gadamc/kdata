@@ -14,19 +14,51 @@ except Exception as e:
 
 #small utility functions  
 def get_as_nparray(c_pointer, size):
-    data = np.zeros(size)
-    for i in range(size):
-      data[i] = c_pointer[i]
-    return data
+  '''
+  return a numpy array from a pointer to data of length 'size'
+  '''
+  data = np.zeros(size)
+  for i in range(size):
+    data[i] = c_pointer[i]
+  return data
 
 def get_out(pta):
-    return get_as_nparray(pta.GetOutputPulse(), pta.GetOutputPulseSize())
+  '''
+  return a numpy array from the output pulse of a KPtaProcessor (pta)
+  '''
+  return get_as_nparray(pta.GetOutputPulse(), pta.GetOutputPulseSize())
 
 def get_in(pta):
-    return get_as_nparray(pta.GetInputPulse(), pta.GetInputPulseSize())
+  '''
+  return a numpy array from the input pulse of a KPtaProcessor (pta)
+  '''
+  return get_as_nparray(pta.GetInputPulse(), pta.GetInputPulseSize())
     
 def plotpulse(data, name=None, match=False, pta = None):
+    '''
+    This function provides you with a simple single-plot viewer and some automatic pulse processing. It will loop through a data
+    file and can plot each pulse that you specify. Additionally, it can process each pulse with a KPtaProcessor, plotting
+    the output of the processor. 
     
+    data = the .root data file, OR an instance of a KDataReader object
+    name = plot pulses where 'name' is found in a pulse's channel name. 
+    match = if match is True, then only plot pulses that have a channel name that exactly matches 'name'
+    pta = if you pass in a KPtaProcessor, the pulse is processed by the KPtaProcessor and output of that processor is plotted to screen.
+    
+    Example.
+    
+    from KDataPy import util
+    
+    bas = KBaselineRemoval()
+    pat = KPatternRemoval()
+    chain = KPulseAnalysisChain()
+    chain.AddProcessor(bas)
+    chain.AddProcessor(pat)
+    
+    util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain)
+    
+    
+    '''
     if 'KDataReader' in str(type(data)): kdfilereader = data
     else:
       kdfilereader = KDataPy.KDataReader(data)
