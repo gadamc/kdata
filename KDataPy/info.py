@@ -36,7 +36,7 @@ class version_info(_version_info_base):
         return '%s.%s.%s' % (self[:3])
 
 
-__version_info__ = version_info(4, 6, 0, 'final')
+__version_info__ = version_info(4, 7, 0, 'final')
 __version__ = str(__version_info__)
 __url__ = 'https://edwdev-ik.fzk.de/'
 __repo_url__ = 'https://edwdev-ik.fzk.de/wsvn/EDELWEISS/analysis/kdata/'

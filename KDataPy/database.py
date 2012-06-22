@@ -1,8 +1,8 @@
 import couchdbkit
 
-class KDataBase(object):
+class kdatabase(object):
   
-  def __init__(self, database='datadb',server=None):
+  def __init__(self, database, server=None):
     self.server = couchdbkit.Server('http://edwdbik.fzk.de:5984')
     self.db = self.server[database]
 
@@ -14,3 +14,19 @@ class KDataBase(object):
     
     
   
+class kdatadb(kdatabase):
+  
+  def __init__(self, server=None):
+    kdatabase.__init__(self, 'datadb',server)
+    
+
+class kradondb(kdatabase):
+
+  def __init__(self, server=None):
+    kdatabase.__init__(self, 'radondb',server)
+    
+
+class kcryodb(kdatabase):
+
+  def __init__(self, server=None):
+    kdatabase.__init__(self, 'automat',server)
