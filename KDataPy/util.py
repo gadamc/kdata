@@ -41,21 +41,93 @@ def get_in(pta):
 
 def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, **kwargs):
   '''
-  Like plotpulse, but no plotting for each pulse. It just loops through each pulse record for you
-  and you provide the analysis function. 'pta' is a KPulseProcessor. If pta != None, then it will
-  call pta.SetInputPulse and pta.RunProcess for you.
+  This function provides you with automatic looping code and gives you the chance for pulse processing. 
+  This function will loop through a datafile, apply the KPulseProcessor that you provide (in pta), 
+  and then call the analysisFunction, passing in the pulseRecord, the pta, and all **kwargs. 
   
-  The analysisFunciton takes two arguments, a KPulseRecord (may be Raw, Amp or HLA), and the 'pta'.
-  example, plus optional set of kwargs, which are passed in above
+  data = the .root data file, OR an instance of a KDataReader object
+  name = plot pulses where 'name' is found in a pulse's channel name. You can use this to only analyze particular pulses
+  match = if match is True, then only plot pulses that have a channel name that exactly matches 'name'
+  pta = if you pass in a KPtaProcessor, the pulse is processed by the KPtaProcessor 
+  analysisFunction = is a function that you provide to do extra analysis on each pulseRecord. The analysisFunction
+  takes three arguments: the pulseRecord, the pta object and the **kwargs
+    
   
-  def myFunction(pulseRecord, ptaObject=None):
+  Example 1.
+  from KDataPy import util
+  from ROOT import *
+  gSystem.Load('libkpta')
+  
+  #here i define the analysis function
+  def myFunction(pulseRecord, ptaObject=None, **kwargs):
     print pulseRecord.GetChannelName()
-    if ptaObject != None:
-      return get_out( ptaObject )
+    
+    if ptaObject != None
+      pulsetrace = util.get_out(pta)
+    else: pulsetrace = np.array(pulse.GetTrace())
+
+    print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
   
+  #a KPtaProcessor object that will analyse each pulse
   bas = KBaselineRemoval()
   
+  
   util.looppulse('path/to/kdatafile.root', name='ZM1', pta = bas, analysisFunction = myFunction)
+  
+  
+  Example 2
+  
+  from KDataPy import util
+  from ROOT import *
+  gSystem.Load('libkpta')
+  
+  #here i define the analysis function
+  def myFunction(pulseRecord, ptaObject=None, **kwargs):
+    print pulseRecord.GetChannelName()
+    
+    if ptaObject != None
+      pulsetrace = util.get_out(pta)
+    else: pulsetrace = np.array(pulse.GetTrace())
+
+    print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
+    
+  bas = KBaselineRemoval()
+  pat = KPatternRemoval()
+  chain = KPulseAnalysisChain()
+  chain.AddProcessor(bas)
+  chain.AddProcessor(pat)
+  
+  util.looppulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myFunction)
+  
+  
+  ## Example 3 - using kwargs
+  
+  from KDataPy import util
+  import numpy as np
+  from ROOT import *
+  gSystem.Load('libkpta')
+
+  
+  def myAnalysis(pulse, pta=None, **kwargs):
+    if pta != None
+      pulsetrace = util.get_out(pta)
+    else: pulsetrace = np.array(pulse.GetTrace())
+    
+    if kwargs['myExtraOption'] == 'printMin':
+      print 'the pulse minimum is', np.amin(pulsetrace), 'at bin', np.argmin(pulsetrace)
+    else:
+      print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
+      
+  bas = KBaselineRemoval()
+  pat = KPatternRemoval()
+  filter = KIIRSecondOrder(a1, a2, b0, b1, b2)  #the "a" and "b" variables can be calculated by external tools (such as Scipy.signal)
+  chain = KPulseAnalysisChain()
+  chain.AddProcessor(bas)
+  chain.AddProcessor(pat)
+  chain.AddProcessor(filter)
+
+  util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myAnalysis, myExtraOption="printMin")
+    
   
   '''
   if 'KDataReader' in str(type(data)): kdfilereader = data
@@ -96,7 +168,7 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, **kwargs):
       .... do some analysis....
       
       
-  util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction)
+  util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, myExtraOptions="condition1")
   
   will loop through the file and return to you any bolometer with a GetDetectorName that
   contains "FID" and pass that bolo record to your myFunction(bolo).
@@ -122,57 +194,10 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, **kwargs):
             
 def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None, **kwargs):
     '''
-    This function provides you with a simple single-plot viewer and some automatic pulse processing. It will loop through a data
-    file and can plot each pulse that you specify. Additionally, it can process each pulse with a KPtaProcessor, plotting
-    the output of the processor. 
-    
-    data = the .root data file, OR an instance of a KDataReader object
-    name = plot pulses where 'name' is found in a pulse's channel name. 
-    match = if match is True, then only plot pulses that have a channel name that exactly matches 'name'
-    pta = if you pass in a KPtaProcessor, the pulse is processed by the KPtaProcessor and output of that processor is plotted to screen.
-    
-    Example.
-    
-    from KDataPy import util
-    from ROOT import *
-    gSystem.Load('libkpta')
-    
-    bas = KBaselineRemoval()
-    pat = KPatternRemoval()
-    chain = KPulseAnalysisChain()
-    chain.AddProcessor(bas)
-    chain.AddProcessor(pat)
-    
-    util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain)
-    
-    The 'analysisFunction' input gives you the opportunity to tell the function to pass the output of the KPtaProcessor to another
-    function in order to analyze the output. The function must take two parameters, the pulse record (KRawBoloPulseRecord)
-    and the KPtaProcessor. For example.
-    
-    from KDataPy import util
-    import numpy as np
-    from ROOT import *
-    gSystem.Load('libkpta')
-
-    
-    def myAnalysis(pulse, pta=None):
-      if pta != None
-        pulsetrace = util.get_out(pta)
-      else: pulsetrace = np.array(pulse.GetTrace())
-      
-      print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
-    
-    bas = KBaselineRemoval()
-    pat = KPatternRemoval()
-    filter = KIIRSecondOrder(a1, a2, b0, b1, b2)
-    chain = KPulseAnalysisChain()
-    chain.AddProcessor(bas)
-    chain.AddProcessor(pat)
-    chain.AddProcessor(filter)
-
-    util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myAnalysis)
-      
-      
+    Like looppulse, but will plot each pulse on screen and wait for you to hit the 'Enter'
+    key in the shell before continuing. This is a nice way to visualize what is happening
+    to the pulses. Additionally, if you don't provide any analysisFunction, it will be a
+    nice event viewere just to look at the data.
     
     '''
         
@@ -187,10 +212,10 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       else:
         plt.plot( np.array(pulse.GetTrace()) )
         
-      if kwargs['callersAnalysisFunction']:
+      if kwargs['__callersAnalysisFunction']:
         newkwargs = copy.deepcopy(kwargs)
-        del newkwargs['callersAnalysisFunction']
-        kwargs['callersAnalysisFunction'](pulse,pta=pta, **newkwargs)
+        del newkwargs['__callersAnalysisFunction']
+        kwargs['__callersAnalysisFunction'](pulse,pta=pta, **newkwargs)
       
       try:
         if raw_input() == 'quit': 
@@ -203,7 +228,7 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       plt.cla()
       
       
-    looppulse(data, name=name, match=match, pta = pta, analysisFunction = plotingfunction, callersAnalysisFunction = analysisFunction, **kwargs)  
+    looppulse(data, name=name, match=match, pta = pta, analysisFunction = plotingfunction, __callersAnalysisFunction = analysisFunction, **kwargs)  
     
         
         
