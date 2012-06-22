@@ -18,4 +18,4 @@ def _KEvent_iter__(self):
 
 _libpyroot.MakeRootClass( "KDataReader" ).__iter__    = _KEvent_iter__
 
-__all__ = ['info', 'pulsetempy', 'util']
+__all__ = ['info', 'pulsetempy', 'util', 'database']
