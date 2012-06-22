@@ -53,7 +53,8 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, *
   takes three arguments: the pulseRecord, the pta object and the **kwargs
     
   
-  Example 1.
+  ## Example 1.
+  
   from KDataPy import util
   from ROOT import *
   gSystem.Load('libkpta')
@@ -75,7 +76,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, *
   util.looppulse('path/to/kdatafile.root', name='ZM1', pta = bas, analysisFunction = myFunction)
   
   
-  Example 2
+  ## Example 2
   
   from KDataPy import util
   from ROOT import *
