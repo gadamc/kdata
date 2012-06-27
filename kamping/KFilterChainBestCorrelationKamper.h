@@ -35,7 +35,7 @@ public:
   virtual void SetPreprocessor(KPulseAnalysisChain* p){fPreprocessor = p;}
   virtual void SetProcessorChain(KPulseAnalysisChain* p){fProcessorChain = p;}
   virtual void SetPeakPositionSearchRange(unsigned int min, unsigned int max){fPosRangeMin = min; fPosRangeMax = max;}
-  virtual void SetDoFit(Bool_t value){fDoFit = value;}
+  virtual void SetBaselinePosition(unsigned int pos){fBaselinePosition = pos;}
   
   
   
@@ -50,7 +50,7 @@ public:
   virtual std::vector<double> GetProcessedPulse(){return fProcessedPulse;}
   virtual std::vector<double> GetCorrelatedPulse(){return fCorrelatedPulse;}
   virtual unsigned int GetPositionOfMaxAbsValue(double* input, unsigned int size, unsigned int from = 0, unsigned int to = 0);
-  virtual Bool_t GetDoFit(void){return fDoFit;}
+	virtual unsigned int GetBaselinePosition(){return fBaselinePosition;}
   
   virtual Double_t TemplateFitFunction(Double_t *x, Double_t *par);
   
@@ -71,6 +71,7 @@ private:
   std::vector<double> fTemplate;
   unsigned int fPosRangeMin;
   unsigned int fPosRangeMax;
+	unsigned int fBaselinePosition;
   
   //debug
   double fPeakPos;
@@ -79,7 +80,6 @@ private:
   std::vector<double> fProcessedPulse;
   std::vector<double> fCorrelatedPulse;
   
-  Bool_t fDoFit;
   
   
   

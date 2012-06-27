@@ -6,12 +6,16 @@
 // Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
 // Extra fields:
-// 0 : RMS of the first 40% of the processed pulse
-// 1 : Chi^2 of the fit
+// 0 : Baseline estimation value
+// 1 : RMS of the first 40% of the processed pulse
 // 2 : NDF of the fit
 // 3 : fit result
 // 4 : RMS of preprocessed pulse
 // 5 : RMS of processed pulse
+// 6 : Amplitude estimation for fixed pulse time
+// 7 : Fixed pulse time
+// 8 : baseline fit result
+// 9 : fixed pulse time fit result
 
 #include "KFilterChainBestCorrelationKamper.h"
 
@@ -27,6 +31,7 @@
 #include "KRawBolometerRecord.h"
 #include "TH1D.h"
 #include "TF1.h"
+#include "TCanvas.h"
 #include "TFitResultPtr.h"
 #include "TVirtualFitter.h"
 
@@ -52,6 +57,7 @@ KFilterChainBestCorrelationKamper::KFilterChainBestCorrelationKamper(void)
   fCorrelatedPulse.resize(0);
   fPosRangeMin = 0;
   fPosRangeMax = 0;
+	fBaselinePosition = 50;
 }
 
 KFilterChainBestCorrelationKamper::~KFilterChainBestCorrelationKamper(void)
@@ -67,13 +73,8 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * rawPuls
 
 Bool_t KFilterChainBestCorrelationKamper::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
 {
-  Bool_t theRet;
-  if(pRec->GetIsHeatPulse())
-    theRet = MakeKamp(pRec, rec, 260);
-  else
-    theRet = MakeKamp(pRec, rec, 4100); 
-  rec->SetIsBaseline(true);
-  return theRet;
+  // this method will not be used anymore
+  return true;
 }
 
 Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec, double fixPeakPosition)
@@ -86,6 +87,7 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
     //cerr << "KFilterChainBestCorrelationKamper::MakeKamp. Pulse Length is zero." << endl;
     rec->SetPeakPosition(-1);
     rec->SetAmp(-99999);
+    rec->SetExtra(-99999,0);
     return false;
   }
 
@@ -93,49 +95,62 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
   if(pRec->GetTrace().size() == 0){
       rec->SetPeakPosition(-1);
       rec->SetAmp(-99999);
+      rec->SetExtra(-99999,0);
       return false;
     }
   
   
-
-  if(!fPreprocessor)
-  {cout << "fPreprocessor isn't set!" << endl; return false;}
-  
-  if(!fProcessorChain)
-    {cout << "fProcessorChain isn't set!" << endl; return false;}
   
   if(fTemplate.size() == 0)
     {cout << "fTemplate isn't set!" << endl; return false;}
 
-  double PeakPos = -1.0;
+  fPeakPos = -1.0;
   
   // pre-processing
-  fPreprocessor->SetInputPulse((std::vector<short> &)pRec->GetTrace());
   
   // debug output
 //   cout << "input pulse:"<<endl;
 //   for(int i=0; i<fPreprocessor->GetInputPulseSize(); i++)
 //     cout<<fPreprocessor->GetInputPulse()[i]<<",";
 //   cout<< endl;
-  
-  if(!fPreprocessor->RunProcess())
-    {cout << "fPreprocessor failed" << endl; return false;}
-  //debug output
-  fPreprocessedPulse.resize(fPreprocessor->GetOutputPulseSize());
-  for(unsigned int i=0; i<fPreprocessor->GetOutputPulseSize();i++)
-    fPreprocessedPulse[i]=*(fPreprocessor->GetOutputPulse()+i);
-  
+  if(fPreprocessor){
+		fPreprocessor->SetInputPulse((std::vector<short> &)pRec->GetTrace());
+		if(!fPreprocessor->RunProcess())
+		{cout << "fPreprocessor failed" << endl; return false;}
+		//debug output
+		fPreprocessedPulse.resize(fPreprocessor->GetOutputPulseSize());
+		for(unsigned int i=0; i<fPreprocessor->GetOutputPulseSize();i++)
+			fPreprocessedPulse[i]=*(fPreprocessor->GetOutputPulse()+i);
+		fProcessorChain->SetInputPulse(fPreprocessor->GetOutputPulse(), fPreprocessor->GetOutputPulseSize());
+	}
+	else{
+		if(fProcessorChain)
+			fProcessorChain->SetInputPulse((std::vector<short> &)pRec->GetTrace());
+	}
   // processing
-  fProcessorChain->SetInputPulse(fPreprocessor->GetOutputPulse(), fPreprocessor->GetOutputPulseSize());
-  if(!fProcessorChain->RunProcess())
-    {cout << "fProcessorChain failed" << endl; return false;}
-  
-  
-  fProcessedPulse.resize(fProcessorChain->GetOutputPulseSize());
-  for(unsigned int j = 0; j < fProcessorChain->GetOutputPulseSize() ;j++){
-    fProcessedPulse[j] = *(fProcessorChain->GetOutputPulse()+j);
-  }
-  
+  if(fProcessorChain){
+		if(!fProcessorChain->RunProcess())
+		{cout << "fProcessorChain failed" << endl; return false;}
+		
+		fCorrelation.SetInputPulse(fProcessorChain->GetOutputPulse(), fProcessorChain->GetOutputPulseSize());
+		
+		fProcessedPulse.resize(fProcessorChain->GetOutputPulseSize());
+		for(unsigned int j = 0; j < fProcessorChain->GetOutputPulseSize() ;j++){
+			fProcessedPulse[j] = *(fProcessorChain->GetOutputPulse()+j);
+		}
+	}
+	else{
+		if(fPreprocessor)
+			fCorrelation.SetInputPulse(fPreprocessor->GetOutputPulse(), fPreprocessor->GetOutputPulseSize());
+		else
+			fCorrelation.SetInputPulse((std::vector<short> &)pRec->GetTrace());
+		fProcessorChain = new KPulseAnalysisChain();
+		fProcessorChain->SetInputPulse((std::vector<short> &)pRec->GetTrace());
+		double* trace = 0;
+		pRec->GetTrace(trace);
+		fProcessorChain->SetOutputPulse(trace);
+		fProcessorChain->SetOutputPulseSize(pRec->GetPulseLength());
+	}
   //debugging
 //  if(pRec->GetIsHeatPulse()){
 //    cout << "Channel: "<<pRec->GetChannelName()<<endl;
@@ -162,17 +177,17 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 //   cout<<endl;//}
 //   
 
-  if(fixPeakPosition == -1){
-    fCorrelation.SetInputPulse(fProcessorChain->GetOutputPulse(), fProcessorChain->GetOutputPulseSize());
+ 
     
-    fCorrelation.SetResponse(fTemplate);
-    if( !fCorrelation.RunProcess() ){
-        cout << "fCorrelation failed" <<endl; return false;
-      }
-      
-    fCorrelatedPulse.resize(fCorrelation.GetOutputPulseSize());
-    for(unsigned int i=0; i<fCorrelation.GetOutputPulseSize();i++)
-      fCorrelatedPulse[i]=*(fCorrelation.GetOutputPulse()+i);
+    
+	fCorrelation.SetResponse(fTemplate);
+	if( !fCorrelation.RunProcess() ){
+		cout << "fCorrelation failed" <<endl; return false;
+	}
+	
+	fCorrelatedPulse.resize(fCorrelation.GetOutputPulseSize());
+	for(unsigned int i=0; i<fCorrelation.GetOutputPulseSize();i++)
+		fCorrelatedPulse[i]=*(fCorrelation.GetOutputPulse()+i);
     
       //debugging
 //  cout << "Correlation output:" << endl;
@@ -182,93 +197,94 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
       //
    
       //cout << "Range:"<<fPosRangeMin<<","<<fPosRangeMax<<endl;
-      PeakPos = (double) GetPositionOfMaxAbsValue(fCorrelation.GetOutputPulse(),fCorrelation.GetOutputPulseSize(),fPosRangeMin,fPosRangeMax)+fPulseStartTimeInTemplate;
-      
+	fPeakPos = (double) GetPositionOfMaxAbsValue(fCorrelation.GetOutputPulse(),fCorrelation.GetOutputPulseSize(),fPosRangeMin,fPosRangeMax)+fPulseStartTimeInTemplate;
+
       //cout<< "PeakPos:" << PeakPos << endl;
-    }      
-    else
-      PeakPos = fixPeakPosition;
-    fPeakPos = PeakPos;
-    fAmpEstPos = PeakPos+(fAmpEstimatorTimeInTemplate-fPulseStartTimeInTemplate);
-    
-    //Baseline RMS of the first 40% of the processed pulse
-    double Baseline_RMS = 0.0;
-    unsigned int sample = 0;
-    for(;sample < 0.4*fProcessorChain->GetOutputPulseSize();sample++)
-      Baseline_RMS += fProcessorChain->GetOutputPulse()[sample]*fProcessorChain->GetOutputPulse()[sample];
-    Baseline_RMS /= (double) sample;
-    Baseline_RMS = sqrt(Baseline_RMS);
-    rec->SetExtra(Baseline_RMS,0);
-    //--------------------
-    
-    //RMS of the preprocessed pulse
-    double Preprocessed_RMS = 0.0;
-    sample = 0;
-    for(;sample < fPreprocessor->GetOutputPulseSize();sample++)
-      Preprocessed_RMS += fPreprocessor->GetOutputPulse()[sample]*fPreprocessor->GetOutputPulse()[sample];
-    Preprocessed_RMS /= (double) sample;
-    Preprocessed_RMS = sqrt(Preprocessed_RMS);
-    rec->SetExtra(Preprocessed_RMS,4);
-    //-----------------------
-    
-    //RMS of the processed pulse
-    double Processed_RMS = 0.0;
-    sample = 0;
-    for(;sample < fProcessorChain->GetOutputPulseSize();sample++)
-      Processed_RMS += fProcessorChain->GetOutputPulse()[sample]*fProcessorChain->GetOutputPulse()[sample];
-    Processed_RMS /= (double) sample;
-    Processed_RMS = sqrt(Processed_RMS);
-    rec->SetExtra(Processed_RMS,5);
-    //-----------------------------
-    
-    if(!fDoFit){
-      if((PeakPos)>0){
-        rec->SetAmp(*(fProcessorChain->GetOutputPulse()+(int)fAmpEstPos));
-        rec->SetPeakPosition(PeakPos);
-        //if (fixPeakPosition != -1)
-          //cout<<pRec->GetChannelName()<<" baseline:\t"<<rec->GetAmp()<<endl;
-  //      cout << "AmpEstimation for " << pRec->GetChannelName()<<" Amp:"<<rec->GetAmp()<<" Pos:"<<rec->GetPeakPosition()<<endl;
-  //      cout << "fAmpEstimatorTimeInTemplate:"<<fAmpEstimatorTimeInTemplate<<" fPulseStartTimeInTemplate:"<<fPulseStartTimeInTemplate<<endl; 
-        //cout<<*(fProcessorChain->GetOutputPulse()+(int)(PeakPos+fAmpEstimatorTimeInTemplate))<<endl;
-      }
-      else{
-        rec->SetAmp(-99999);
-        rec->SetPeakPosition(-1);
-        return false;
-      }
-    }
-    else{
-      //Fitting
-      //TVirtualFitter::SetDefaultFitter("Fumili");
-      TF1 *fitfunc = new TF1("fitfunc",this, &KFilterChainBestCorrelationKamper::TemplateFitFunction,(double) (PeakPos - fPulseStartTimeInTemplate - 5),(double) (PeakPos - fPulseStartTimeInTemplate + fTemplate.size() - 5),2,"KFilterChainBestCorrelationKamper","TemplateFitFunction");
-      //TF1 *fitfunc2 = new TF1("fitfunc2",this, &KFilterChainBestCorrelationKamper::TemplateFitFunction,(double) (PeakPos - fPulseStartTimeInTemplate - 20),(double) (PeakPos - fPulseStartTimeInTemplate + fTemplate.size()),2,"KFilterChainBestCorrelationKamper","TemplateFitFunction");
-      fitfunc->SetParameters(*(fProcessorChain->GetOutputPulse()+(int)fAmpEstPos)/fMaxAbsValueInTemplate,PeakPos - fPulseStartTimeInTemplate);
-      if (fixPeakPosition == -1)
-        fitfunc->SetParLimits(1,PeakPos - fPulseStartTimeInTemplate - 5,PeakPos - fPulseStartTimeInTemplate + 5);
-      else
-        fitfunc->FixParameter(1,PeakPos - fPulseStartTimeInTemplate);
-      //fitfunc->SetParLimits(0,-1000,0);
-      TH1D *hist = new TH1D("hist",pRec->GetChannelName(),fProcessorChain->GetOutputPulseSize(),0,fProcessorChain->GetOutputPulseSize()-1);
-      for(unsigned int i = 0; i < fProcessorChain->GetOutputPulseSize();i++){
-        hist->SetBinContent(i+1,fProcessorChain->GetOutputPulse()[i]);
-        hist->SetBinError(i+1,Baseline_RMS);
-      }
-      Int_t fitres = hist->Fit("fitfunc","RQNS");
-      //fitfunc2->SetParameters(fitfunc->GetParameters());
-      //hist->Fit("fitfunc2","RQ");
-      //cout<<pRec->GetChannelName()<<" before fitting:"<<*(fProcessorChain->GetOutputPulse()+(int)fAmpEstPos)<<","<<PeakPos<<" after fitting:"<<fitfunc->GetParameter(0)<<","<<fitfunc->GetParameter(1)+fPulseStartTimeInTemplate<<endl;
-      rec->SetAmp(fitfunc->GetParameter(0));
-      rec->SetPeakPosition((double)fitfunc->GetParameter(1)+fPulseStartTimeInTemplate);
-      rec->SetExtra(fitfunc->GetChisquare(),1);
-      rec->SetExtra(fitfunc->GetNDF(),2);
-      rec->SetExtra(fitres,3);
-      //if(fitres != 0)
-        //cout << "fit is not valid "<<fitres << endl;
-      
-      delete fitfunc;
-      delete hist;
-    }
-    return true;
+         
+
+	fAmpEstPos = fPeakPos+(fAmpEstimatorTimeInTemplate-fPulseStartTimeInTemplate);
+
+	//Baseline RMS of the first 40% of the processed pulse
+	double Baseline_RMS = 0.0;
+	unsigned int sample = 0;
+	for(;sample < 0.4*fProcessorChain->GetOutputPulseSize();sample++)
+		Baseline_RMS += fProcessorChain->GetOutputPulse()[sample]*fProcessorChain->GetOutputPulse()[sample];
+	Baseline_RMS /= (double) sample;
+	Baseline_RMS = sqrt(Baseline_RMS);
+	rec->SetExtra(Baseline_RMS,1);
+	//--------------------
+	
+	//RMS of the preprocessed pulse
+	if(fPreprocessor){
+		double Preprocessed_RMS = 0.0;
+		sample = 0;
+		for(;sample < fPreprocessor->GetOutputPulseSize();sample++)
+			Preprocessed_RMS += fPreprocessor->GetOutputPulse()[sample]*fPreprocessor->GetOutputPulse()[sample];
+		Preprocessed_RMS /= (double) sample;
+		Preprocessed_RMS = sqrt(Preprocessed_RMS);
+		rec->SetExtra(Preprocessed_RMS,4);
+	}
+	//-----------------------
+	
+	//RMS of the processed pulse
+	double Processed_RMS = 0.0;
+	sample = 0;
+	for(;sample < fProcessorChain->GetOutputPulseSize();sample++)
+		Processed_RMS += fProcessorChain->GetOutputPulse()[sample]*fProcessorChain->GetOutputPulse()[sample];
+	Processed_RMS /= (double) sample;
+	Processed_RMS = sqrt(Processed_RMS);
+	rec->SetExtra(Processed_RMS,5);
+	//-----------------------------
+	
+
+	//Fitting
+	//TVirtualFitter::SetDefaultFitter("Fumili");
+	// Amplitude estimation
+	TF1 *fitfunc = new TF1("fitfunc",this, &KFilterChainBestCorrelationKamper::TemplateFitFunction,(double) (fPeakPos - fPulseStartTimeInTemplate - 5),(double) (fPeakPos - fPulseStartTimeInTemplate + fTemplate.size() - 5),2,"KFilterChainBestCorrelationKamper","TemplateFitFunction");
+	fitfunc->SetParameters(*(fProcessorChain->GetOutputPulse()+(int)fAmpEstPos)/fMaxAbsValueInTemplate,fPeakPos - fPulseStartTimeInTemplate);
+	fitfunc->SetParLimits(1,fPeakPos - fPulseStartTimeInTemplate - 5,fPeakPos - fPulseStartTimeInTemplate + 5);
+	
+	//fitfunc->FixParameter(1,PeakPos - fPulseStartTimeInTemplate);
+	//fitfunc->SetParLimits(0,-1000,0);
+	TH1D *hist = new TH1D("hist",pRec->GetChannelName(),fProcessorChain->GetOutputPulseSize(),0,fProcessorChain->GetOutputPulseSize()-1);
+	for(unsigned int i = 0; i < fProcessorChain->GetOutputPulseSize();i++){
+		hist->SetBinContent(i+1,fProcessorChain->GetOutputPulse()[i]);
+		hist->SetBinError(i+1,Baseline_RMS);
+	}
+	Int_t fitres = hist->Fit("fitfunc","RQNS");
+
+	rec->SetAmp(fitfunc->GetParameter(0));
+	rec->SetPeakPosition((double)fitfunc->GetParameter(1)+fPulseStartTimeInTemplate);
+	rec->SetChiSq(fitfunc->GetChisquare());
+	rec->SetExtra(fitfunc->GetNDF(),2);
+	rec->SetExtra(fitres,3);
+	//if(fitres != 0)
+		//cout << "fit is not valid "<<fitres << endl;
+	
+	// Baseline value estimation
+	fitfunc->SetParameters(*(fProcessorChain->GetOutputPulse()+(int)fBaselinePosition)/fMaxAbsValueInTemplate,fBaselinePosition);
+	fitfunc->FixParameter(1,fBaselinePosition);
+	fitres = hist->Fit("fitfunc","RQNS");
+	
+	rec->SetExtra(fitfunc->GetParameter(0),0);
+  rec->SetExtra(fitres,8);
+	//-----------------
+	
+	// Heat pulse time fixed by ionisation
+	if(fixPeakPosition != -1){
+		fitfunc->SetParameters(*(fProcessorChain->GetOutputPulse()+(int)fixPeakPosition)/fMaxAbsValueInTemplate,fixPeakPosition);
+		fitfunc->FixParameter(1,fixPeakPosition);
+		fitres = hist->Fit("fitfunc","RQNS");
+	
+		rec->SetExtra(fitfunc->GetParameter(0),6);
+		rec->SetExtra(fixPeakPosition,7);
+    rec->SetExtra(fitres,9);
+	}
+	
+	delete fitfunc;
+	delete hist;
+	
+	return true;
 
 }
 

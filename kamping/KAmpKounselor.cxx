@@ -25,6 +25,8 @@ using namespace std;
 
 KAmpKounselor::KAmpKounselor(void)
 {
+  fInput = 0;
+  fOutput = 0;
 
 }
 

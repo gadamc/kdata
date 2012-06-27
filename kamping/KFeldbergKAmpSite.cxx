@@ -16,6 +16,7 @@
 #include "KPulseAnalysisRecord.h"
 #include "KBaselineRemoval.h"
 #include "KPatternRemoval.h"
+#include "KLinearRemoval.h"
 #include "KIIRFilter.h"
 #include "KIIRFirstOrder.h"
 #include "KIIRSecondOrder.h"
@@ -61,17 +62,10 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
        //cout << "channel:"<< pRaw->GetChannelName()<<endl;
        KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
        KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
-       fFCKamp.SetName("FeldbergKAmper-Ion");
        SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
        if(!SetupFCKamp(pRaw))
          {cout<<"SetupFCKamp for "<< pRaw->GetChannelName() << " failed"<<endl;return false;}
        fFCKamp.MakeKamp(pRaw, rec);
-       // create  KPulseAnalysisRecord for baseline amplitude estimation
-       KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
-       fFCKamp.SetName("FeldbergKAmper-Ion");
-       SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-       fFCKamp.MakeBaseKamp(pRaw, recBase);
-       
        
        if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
          maxPeak = fabs(rec->GetAmp());
@@ -90,34 +84,16 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
       // with peak position fixed by ionisation
       if(!SetupFCKamp(pRaw))
          {cout<<"SetupFCKamp for "<< pRaw->GetChannelName() << "failed"<<endl;return false;}
-      if(precNum != -1){
-        // Create KPulseAnalysisRecord and a valid KAmpEvent
-        
-        KPulseAnalysisRecord *recFixed  =  ee->AddPulseAnalysisRecord();
-        fFCKamp.SetName("FeldbergKAmper-Heat-Fixed");
-        SetTRefLinksForKAmpEvent(recFixed, boloAmp,pAmp); 
-       
-      
-        
-      
+      if(precNum != -1){      
         KRawBoloPulseRecord *pRawIon = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(precNum);
         if(PeakPos != -1){
           PeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
         }
-        fFCKamp.MakeKamp(pRaw, recFixed, PeakPos);
       } 
       
-      // without fixed peak position
-      KPulseAnalysisRecord *recFree  =  ee->AddPulseAnalysisRecord();
-      fFCKamp.SetName("FeldbergKAmper-Heat-Not-Fixed");
-      SetTRefLinksForKAmpEvent(recFree, boloAmp, pAmp);
-      fFCKamp.MakeKamp(pRaw, recFree); 
-      
-      // create  KPulseAnalysisRecord for baseline amplitude estimation
-      KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
-      fFCKamp.SetName("FeldbergKAmper-Heat");
-      SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-      fFCKamp.MakeBaseKamp(pRaw, recBase);
+      KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
+      SetTRefLinksForKAmpEvent(rec, boloAmp, pAmp);
+      fFCKamp.MakeKamp(pRaw, rec, PeakPos); 
     }
   } 
   return true;
@@ -158,6 +134,7 @@ Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
     // setting up for heat analysis
     //cout << "fHeatPreprocessor for "<< pRaw->GetChannelName()<< "contains " << fHeatPreprocessor.GetNumProcessors() << " processors"<<endl;
     fFCKamp.SetPreprocessor(&fHeatPreprocessor);
+		fFCKamp.SetBaselinePosition(300);
     
     if(fProcessorChain.find(pRaw->GetChannelName()) != fProcessorChain.end()){
       //cout << "fProcessorChain for "<< pRaw->GetChannelName()<< "contains " << fProcessorChain[pRaw->GetChannelName()].GetNumProcessors() << " processors"<<endl;
@@ -190,9 +167,12 @@ Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
         fIonPreprocessor.AddProcessor(tempPattRv);
         fIonPreprocessor.AddProcessor(tempPattRv1);
       }
+      if(pRaw->GetBoloBoxVersion()==2.0)
+        fIonPreprocessor.AddProcessor(new KLinearRemoval());
     }
     
     fFCKamp.SetPreprocessor(&fIonPreprocessor);
+		fFCKamp.SetBaselinePosition(5000);
     
     if(fProcessorChain.find(pRaw->GetChannelName()) != fProcessorChain.end())
       fFCKamp.SetProcessorChain(&fProcessorChain[pRaw->GetChannelName()]);
@@ -207,7 +187,6 @@ Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
   if((fPosRangeMin.find(pRaw->GetChannelName()) != fPosRangeMin.end()) && (fPosRangeMax.find(pRaw->GetChannelName()) != fPosRangeMax.end()))
     fFCKamp.SetPeakPositionSearchRange(fPosRangeMin[pRaw->GetChannelName()],fPosRangeMax[pRaw->GetChannelName()]);
   
-  fFCKamp.SetDoFit(fDoFit);
   //cout<<"SetupFCKamp done"<<endl;
   return true;
 }
@@ -299,7 +278,7 @@ Bool_t KFeldbergKAmpSite::SetTemplate(const char* channel, std::vector<double> t
     fPulseStartTimeInTemplate[channel] = (double) delta_t;
     // make the template always with positive polarity
     double scale = (fNormalizeTemplate) ? templvector[pos] : (templvector[pos]>0) ? 1:-1;
-    cout << "NormalizeTemplate:"<< fNormalizeTemplate <<", Scale:"<< scale << endl;
+    //cout << "NormalizeTemplate:"<< fNormalizeTemplate <<", Scale:"<< scale << endl;
     //cout << "processed,cut and scaled template: ";
     for(unsigned int i = 0; i< templvector.size();i++){
       templvector[i]/=scale;

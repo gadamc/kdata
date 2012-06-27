@@ -57,8 +57,10 @@ bool KWindow::RunProcess(void)
     return false;
   }
   if(fWindowSize == 0){
-    cerr<<"window is not set"<<endl;
-    return false;
+    cerr<<"WARNING: window is not set! => output = input"<<endl;
+    for(unsigned int i = 0 ; i < fOutputSize; i++)
+      *(fOutputPulse+i) =  *(fInputPulse+i);
+    return true;
   }  
   
   if(fWindowSize != fOutputSize){

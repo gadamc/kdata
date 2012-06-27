@@ -39,8 +39,6 @@ public:
   virtual void AddIIRFilter(const char* channel,double* a, unsigned int asize, double* b, unsigned int bsize); 
   virtual Bool_t SetupFCKamp(KRawBoloPulseRecord* pRaw);
   
-  virtual void SetDoFit(Bool_t value){fDoFit = value;};
-  virtual Bool_t GetDoFit(void){return fDoFit;}
   
   virtual void SetNormalizeTemplate(Bool_t value){fNormalizeTemplate = value;}
   virtual Bool_t GetNormalizeTemplate(void){return fNormalizeTemplate;}
@@ -66,7 +64,6 @@ private:
   KPulseAnalysisChain fIonPreprocessor;
   std::vector<int> fHeatPulseStampWidths;
   
-  Bool_t fDoFit;
   Bool_t fNormalizeTemplate;
   
   
