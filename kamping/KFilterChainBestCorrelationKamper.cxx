@@ -30,7 +30,6 @@
 // 12 : Heat channel amplitude estimate from the fit with the peak time fixed to the estimated Ionization pulse time. Heat channel only. This will be empty for ionization channels.
 // 13: Fixed pulse time -- the estimated Ionization pulse time used in the fit. This will be empty for ionization channels.
 // 14 : fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time. This will be empty for ionization channels.
-// 15 : fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time. This will be empty for ionization channels.
 
 
 #include "KFilterChainBestCorrelationKamper.h"
@@ -209,6 +208,7 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 		rec->SetExtra(fixPeakPosition,13);
     rec->SetExtra(fitres,14);
 	}
+  else rec->SetExtra(-1,14);
 
 	delete fitfunc;
 	delete hist;

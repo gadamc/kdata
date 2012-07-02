@@ -57,7 +57,7 @@ Bool_t KAmpKounselor::CheckSetup()
   else return true;
 }
 
-Bool_t KAmpKounselor::Scout()
+Bool_t KAmpKounselor::Scout( int maxNumEvents)
 {
   //check to see if any of the KAmpSites that are managed by this KAmpKounselor need
   //to "scout" their kampsite. For example, a KAmpSite that employs an Optimal Filter
@@ -67,6 +67,8 @@ Bool_t KAmpKounselor::Scout()
   
   fInput->cd();
   int numEvents = fInput->GetEntries();
+  if(maxNumEvents > -1) numEvents = maxNumEvents;
+
   KRawEvent *e = (KRawEvent *)fInput->GetEvent();
   
   vector<KAmpSite *>::iterator it;
@@ -122,7 +124,7 @@ Bool_t KAmpKounselor::Prepare()
   return true;
 }
 
-Bool_t KAmpKounselor::Run()
+Bool_t KAmpKounselor::Run( int maxNumEvents)
 {
   //loop through the data, passing data to the KAmpSites in order to calculate
   //pulse amplitudes and other characteristics of each event.
@@ -136,6 +138,7 @@ Bool_t KAmpKounselor::Run()
   
   fInput->cd();
   int numEvents = fInput->GetEntries();
+  if(maxNumEvents > -1) numEvents = maxNumEvents;
   
   for(int ii = 0; ii < numEvents; ii++){
     fInput->GetEntry(ii);
@@ -169,15 +172,15 @@ Bool_t KAmpKounselor::Run()
 }
 
 
-Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputAmpKDataFile)
+Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputAmpKDataFile,  int maxNumEvents)
 {
   //calls SetFiles, Scout, Prepare and then Run. Returns the result of Run.
   
   SetFiles(inputRawKDataFile, outputAmpKDataFile);
   
-  if(!Scout()) return false;
+  if(!Scout(maxNumEvents)) return false;
   
   if(!Prepare()) return false;
   
-  return Run();
+  return Run(maxNumEvents);
 }

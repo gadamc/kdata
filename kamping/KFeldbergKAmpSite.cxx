@@ -35,8 +35,6 @@ KFeldbergKAmpSite::KFeldbergKAmpSite(void)
   SetName("KFeldbergKAmpSite");
   fHeatPreprocessor.SetIsOwner(true);
   fHeatPreprocessor.AddProcessor(new KBaselineRemoval());
-  //fDoFit = false;
-  //cout<<"KFeldbergKAmpSite() done"<<endl;
   fFCKamp.SetName("KFeldbergKAmpSite");
 
 }
@@ -56,7 +54,7 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
 
    for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
      KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
-     if(!pRaw->GetIsHeatPulse()){
+     if(!pRaw->GetIsHeatPulse() && pRaw->GetPulseLength() != 0){
 
        if(!SetupFCKamp(pRaw)) continue;
 
@@ -64,7 +62,7 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
        KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
        SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
        fFCKamp.MakeKamp(pRaw, rec);
-       
+
        if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
          maxPeak = fabs(rec->GetAmp());
          PeakPos = rec->GetPeakPosition();
@@ -77,24 +75,28 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
      }
    }
 
+
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
-    if(pRaw->GetIsHeatPulse()){
+    if(pRaw->GetIsHeatPulse() && pRaw->GetPulseLength() != 0){
 
       if(!SetupFCKamp(pRaw)) continue;
 
       KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
       
+      int heatPeakPos = -1;
+
       if(precNum != -1){      
         KRawBoloPulseRecord *pRawIon = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(precNum);
         if(PeakPos != -1){
-          PeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
+          heatPeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
         }
       } 
       
       KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
       SetTRefLinksForKAmpEvent(rec, boloAmp, pAmp);
-      fFCKamp.MakeKamp(pRaw, rec, PeakPos); 
+
+      fFCKamp.MakeKamp(pRaw, rec, heatPeakPos); 
 
       rec->SetExtra(fLowPassFilterOrder,5);
       rec->SetExtra(fLowPassFilterCorner, 6);
@@ -130,7 +132,7 @@ void KFeldbergKAmpSite::AddIIRFilter(const char* channel, double* a, unsigned in
           iir->SetCoefficients(a,asize,b,bsize);
         }
   fProcessorChain[channel].AddProcessor(iir);
-  fProcessorChain[channel].SetIsOwner(true);
+  fProcessorChain[channel].SetIsOwner(true);  //make sure that the KPulseAnalysisChain deletes these objects
         
 }
 
@@ -158,8 +160,8 @@ Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
 
       set<int>& stampWidths = fHeatPulseStampWidths[pRaw->GetChannelName()];
       set<int>::iterator stampIter;
-      for ( stampIter=stampWidths.begin() ; stampIter != stampWidths.end(); stampIter++ ){
-        for(unsigned int ii = 0; ii < 2; ii++){  //from experience we know that pattern removal of heat cross-talk 
+      for ( stampIter = stampWidths.begin() ; stampIter != stampWidths.end(); stampIter++ ){
+        for(unsigned int ii = 1; ii <= 2; ii++){  //from experience we know that pattern removal of heat cross-talk 
                                                   //can be improved by also removing a pattern of 2x heat pulse width
           KPatternRemoval *temp = new KPatternRemoval();
           temp->SetPatternLength(*stampIter * ii);
@@ -178,7 +180,8 @@ Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
   else  return false;
 
   if(fTemplate.find(pRaw->GetChannelName()) != fTemplate.end())
-    fFCKamp.SetTemplate(fTemplate[pRaw->GetChannelName()],fAmpEstimatorTimeInTemplate[pRaw->GetChannelName()],fPulseStartTimeInTemplate[pRaw->GetChannelName()], fTemplate[ pRaw->GetChannelName() ][ fAmpEstimatorTimeInTemplate[pRaw->GetChannelName() ] ]);
+    fFCKamp.SetTemplate(fTemplate[pRaw->GetChannelName()],fAmpEstimatorTimeInTemplate[pRaw->GetChannelName()],
+      fPulseStartTimeInTemplate[pRaw->GetChannelName()], fTemplate[ pRaw->GetChannelName() ][ fAmpEstimatorTimeInTemplate[pRaw->GetChannelName() ] ]);
   else return false; 
 
   if((fPosRangeMin.find(pRaw->GetChannelName()) != fPosRangeMin.end()) && (fPosRangeMax.find(pRaw->GetChannelName()) != fPosRangeMax.end()))
@@ -195,7 +198,9 @@ Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
 std::set<int> KFeldbergKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec)
 {
   //returns the set of heat pulse stamp widths. The reason for a set is that there can 
-  //be two NTDs per bolometer and so, this is general enough to return all of the heat pulse
+  //be two NTDs per bolometer and they could have the same heat pulse widths. Using a set
+  //means that I don't have to check if the NTDs have the same pulse widths. 
+  //so, this is general enough to return all of the unique heat pulse
   //widths for each NTD connected to each bolometer. This even works if there are more than
   //two NTDs per bolometer, which might be kinda cool... but probably not.
 
@@ -212,8 +217,11 @@ std::set<int> KFeldbergKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord * p
 
 Bool_t KFeldbergKAmpSite::SetTemplate(const char* channel, std::vector<double> templ, unsigned int pretrigger, unsigned int delta_t, unsigned int width, Bool_t force)
 {
-  //Sets the template pulse for a channel if its not already been set. However, if the template for channel has already
-  //been set, this method will only reset the template if force=true
+  //Sets the template pulse for a channel if it has not already been set. However, if the template for channel has already
+  //been set, you and reset the template if you set force=true
+  //
+  //You MUST ONLY CALL this method after you have completely set up the fProcessorChain, which is set up by
+  //adding all of the IIRFilters you wish to use.
 
   if(fTemplate.find(channel) != fTemplate.end())
     if(!force)
@@ -226,27 +234,27 @@ Bool_t KFeldbergKAmpSite::SetTemplate(const char* channel, std::vector<double> t
     if(!fProcessorChain[channel].RunProcess()){
       cout<<"Processing the template failed!"<<endl; return false;}
     
-    std::vector<double> templvector;
-    templvector.resize(width);
+    fTemplate[channel].clear();
+    fTemplate[channel].resize(width);
+
     if(fProcessorChain[channel].GetOutputPulseSize() > (pretrigger - delta_t + width)){
       for(unsigned int i = pretrigger - delta_t; i < (pretrigger - delta_t + width); i++){
-        templvector[i-(pretrigger-delta_t)]=*(fProcessorChain[channel].GetOutputPulse()+i);
+        fTemplate[channel][i-(pretrigger-delta_t)]=*(fProcessorChain[channel].GetOutputPulse()+i);
       }
     }
     else
       { cout << "(Pretrigger + template width - delta_t) > size of the input template!" << endl; return false;}
     
-    unsigned int pos = fFCKamp.GetPositionOfMaxAbsValue(&templvector[0], templvector.size());
+    unsigned int pos = fFCKamp.GetPositionOfMaxAbsValue(&fTemplate[channel][0], fTemplate[channel].size());
     fAmpEstimatorTimeInTemplate[channel] = (double) pos;
     fPulseStartTimeInTemplate[channel] = (double) delta_t;
 
     // make the template always with positive polarity
-    double scale = (fNormalizeTemplate) ? templvector[pos] : (templvector[pos]>0) ? 1:-1;
+    double scale = (fNormalizeTemplate) ? fTemplate[channel][pos] : (fTemplate[channel][pos]>0) ? 1:-1;
 
-    for(unsigned int i = 0; i< templvector.size();i++){
-      templvector[i]/=scale;
+    for(unsigned int i = 0; i< fTemplate[channel].size();i++){
+      fTemplate[channel][i]/=scale;
     }
-    fTemplate[channel] = templvector;
     return true;
   }
   else{

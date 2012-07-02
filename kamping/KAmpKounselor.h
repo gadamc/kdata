@@ -25,10 +25,10 @@ public:
   virtual ~KAmpKounselor(void);
   virtual void AddKAmpSite(KAmpSite *aSite);
   virtual void SetFiles(const char* inputRawKDataFile, const char* outputAmpKDataFile);
-  virtual Bool_t RunKamp(const char* inputRawKDataFile, const char* outputAmpKDataFile);
-  virtual Bool_t Scout();
+  virtual Bool_t RunKamp(const char* inputRawKDataFile, const char* outputAmpKDataFile, int maxNumEvents = -1);
+  virtual Bool_t Scout(int maxNumEvents = -1);
   virtual Bool_t Prepare();
-  virtual Bool_t Run();
+  virtual Bool_t Run(int maxNumEvents = -1);
   //virtual std::vector<KAmpSite *> GetListOfKAmpSites(void){ return fKampSites;}
   
 private:

@@ -16,7 +16,7 @@
 #include "KAmpBoloPulseRecord.h"
 #include <string>
 
-#define KPULSEANARECORD_EXTRA_SIZE 20
+#define KPULSEANARECORD_EXTRA_SIZE 15
 
 class KPulseAnalysisRecord : public KSubRecord { 
 
