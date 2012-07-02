@@ -33,38 +33,36 @@ using namespace std;
 KFeldbergKAmpSite::KFeldbergKAmpSite(void)
 {
   SetName("KFeldbergKAmpSite");
-  fHeatPulseStampWidths.reserve(6);
   fHeatPreprocessor.SetIsOwner(true);
-  fIonPreprocessor.SetIsOwner(true);
   fHeatPreprocessor.AddProcessor(new KBaselineRemoval());
   //fDoFit = false;
   //cout<<"KFeldbergKAmpSite() done"<<endl;
-  
+  fFCKamp.SetName("KFeldbergKAmpSite");
+
 }
 
 KFeldbergKAmpSite::~KFeldbergKAmpSite(void)
 {
+  //
 
 }
 
 Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee)
 {
-  //cout<<"RunKampSite start"<<endl;
+
   double PeakPos = -1;
   double maxPeak = 0.;
   int precNum = -1;
-  // create KPulseAnalysisRecords for ionisation pulses and
-  // look for the largest pulse in ionisation channels to fix the position of the heat pulse
+
    for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
      KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
      if(!pRaw->GetIsHeatPulse()){
-       // Create KPulseAnalysisRecord and a valid KAmpEvent
-       //cout << "channel:"<< pRaw->GetChannelName()<<endl;
+
+       if(!SetupFCKamp(pRaw)) continue;
+
        KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
        KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
        SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
-       if(!SetupFCKamp(pRaw))
-         {cout<<"SetupFCKamp for "<< pRaw->GetChannelName() << " failed"<<endl;return false;}
        fFCKamp.MakeKamp(pRaw, rec);
        
        if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
@@ -72,18 +70,21 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
          PeakPos = rec->GetPeakPosition();
          precNum = k;
        }
+       rec->SetExtra(fLowPassFilterOrder,5);
+       rec->SetExtra(fLowPassFilterCorner, 6);
+       rec->SetExtra(fHighPassFilterOrder,7);
+       rec->SetExtra(fHighPassFilterCorner, 8);
      }
    }
-  //cout << "Starting with heat pulses" << endl;
-  // create KPulseAnalysisRecords for heat pulses, use largest ionisation pulse to fix the peak position
+
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
     if(pRaw->GetIsHeatPulse()){
+
+      if(!SetupFCKamp(pRaw)) continue;
+
       KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
-      //cout << "KFeldbergKAmpSite heat channel branch for " << pRaw->GetChannelName()<<endl;
-      // with peak position fixed by ionisation
-      if(!SetupFCKamp(pRaw))
-         {cout<<"SetupFCKamp for "<< pRaw->GetChannelName() << "failed"<<endl;return false;}
+      
       if(precNum != -1){      
         KRawBoloPulseRecord *pRawIon = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(precNum);
         if(PeakPos != -1){
@@ -94,6 +95,12 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
       KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
       SetTRefLinksForKAmpEvent(rec, boloAmp, pAmp);
       fFCKamp.MakeKamp(pRaw, rec, PeakPos); 
+
+      rec->SetExtra(fLowPassFilterOrder,5);
+      rec->SetExtra(fLowPassFilterCorner, 6);
+      rec->SetExtra(fHighPassFilterOrder,7);
+      rec->SetExtra(fHighPassFilterCorner, 8);
+
     }
   } 
   return true;
@@ -122,169 +129,123 @@ void KFeldbergKAmpSite::AddIIRFilter(const char* channel, double* a, unsigned in
           iir = new KIIRFilter();
           iir->SetCoefficients(a,asize,b,bsize);
         }
-  fProcessorChain[channel].AddProcessor((KPtaProcessor*) iir); 
-  //cout<<"AddIIRFilter done"<<endl;
+  fProcessorChain[channel].AddProcessor(iir);
+  fProcessorChain[channel].SetIsOwner(true);
         
 }
 
 Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
 {
-  //cout<<"SetupFCKamp start"<<endl;
+
   if(pRaw->GetIsHeatPulse()){
-    // setting up for heat analysis
-    //cout << "fHeatPreprocessor for "<< pRaw->GetChannelName()<< "contains " << fHeatPreprocessor.GetNumProcessors() << " processors"<<endl;
-    fFCKamp.SetPreprocessor(&fHeatPreprocessor);
-		fFCKamp.SetBaselinePosition(300);
     
-    if(fProcessorChain.find(pRaw->GetChannelName()) != fProcessorChain.end()){
-      //cout << "fProcessorChain for "<< pRaw->GetChannelName()<< "contains " << fProcessorChain[pRaw->GetChannelName()].GetNumProcessors() << " processors"<<endl;
-      fFCKamp.SetProcessorChain(&fProcessorChain[pRaw->GetChannelName()]);
-    }
-    else
-      {cout<<"ProcessorChain for "<< pRaw->GetChannelName() << "was not found!" << endl; return false;}
-      
-    if(fTemplate.find(pRaw->GetChannelName()) != fTemplate.end())
-      fFCKamp.SetTemplate(fTemplate[pRaw->GetChannelName()],fAmpEstimatorTimeInTemplate[pRaw->GetChannelName()],fPulseStartTimeInTemplate[pRaw->GetChannelName()]);
-    else
-      {cout<<"Template for "<<pRaw->GetChannelName()<<" was not found!"<< endl; return false;}    
+    fFCKamp.SetPreprocessor(&fHeatPreprocessor);      
   }
   else{
     // setting up for ionisation analysis
     
-    // checking the modulation frequencies and setting up an ion. preprocessor
-    //cout << "ion pulse"<<endl;
-    if(fHeatPulseStampWidths != GetHeatPulseStampWidths(pRaw))
-    {
-      fHeatPulseStampWidths = GetHeatPulseStampWidths(pRaw);
-      fIonPreprocessor.DeleteProcessors();
-      fIonPreprocessor.AddProcessor(new KBaselineRemoval());
-      for(unsigned int i = 0; i < fHeatPulseStampWidths.size(); i++)
-      {
-        KPatternRemoval* tempPattRv = new KPatternRemoval();
-        KPatternRemoval* tempPattRv1 = new KPatternRemoval();
-        tempPattRv->SetPatternLength(fHeatPulseStampWidths.at(i));
-        tempPattRv1->SetPatternLength(2*fHeatPulseStampWidths.at(i));
-        fIonPreprocessor.AddProcessor(tempPattRv);
-        fIonPreprocessor.AddProcessor(tempPattRv1);
-      }
-      if(pRaw->GetBoloBoxVersion()==2.0)
-        fIonPreprocessor.AddProcessor(new KLinearRemoval());
+    //get pulse stamp widths only if haven't already got them.
+    if(fHeatPulseStampWidths.find(pRaw->GetChannelName()) == fHeatPulseStampWidths.end()){
+      fHeatPulseStampWidths[pRaw->GetChannelName()] = GetHeatPulseStampWidths(pRaw);
     }
-    
-    fFCKamp.SetPreprocessor(&fIonPreprocessor);
-		fFCKamp.SetBaselinePosition(5000);
-    
-    if(fProcessorChain.find(pRaw->GetChannelName()) != fProcessorChain.end())
-      fFCKamp.SetProcessorChain(&fProcessorChain[pRaw->GetChannelName()]);
-    else
-      {cout<<"ProcessorChain for "<< pRaw->GetChannelName() << "was not found!" << endl; return false;}
       
-    if(fTemplate.find(pRaw->GetChannelName()) != fTemplate.end())
-      fFCKamp.SetTemplate(fTemplate[pRaw->GetChannelName()],fAmpEstimatorTimeInTemplate[pRaw->GetChannelName()],fPulseStartTimeInTemplate[pRaw->GetChannelName()]);
-    else
-      {cout<<"Template for "<<pRaw->GetChannelName()<<" was not found!" << endl; return false;} 
+    //create a new ion preproc only if needed.
+    if(fIonPreprocessor.find(pRaw->GetChannelName()) == fIonPreprocessor.end()){  
+      if(pRaw->GetBoloBoxVersion()==2.0)
+        fIonPreprocessor[pRaw->GetChannelName()].AddProcessor(new KLinearRemoval());
+      else
+        fIonPreprocessor[pRaw->GetChannelName()].AddProcessor(new KBaselineRemoval());
+
+      set<int>& stampWidths = fHeatPulseStampWidths[pRaw->GetChannelName()];
+      set<int>::iterator stampIter;
+      for ( stampIter=stampWidths.begin() ; stampIter != stampWidths.end(); stampIter++ ){
+        for(unsigned int ii = 0; ii < 2; ii++){  //from experience we know that pattern removal of heat cross-talk 
+                                                  //can be improved by also removing a pattern of 2x heat pulse width
+          KPatternRemoval *temp = new KPatternRemoval();
+          temp->SetPatternLength(*stampIter * ii);
+          fIonPreprocessor[pRaw->GetChannelName()].AddProcessor(temp);
+        }
+      }
+      fIonPreprocessor[pRaw->GetChannelName()].SetIsOwner(true);
+    }  
+    
+
+    fFCKamp.SetPreprocessor(&fIonPreprocessor[pRaw->GetChannelName()]);      
   }
+
+  if(fProcessorChain.find(pRaw->GetChannelName()) != fProcessorChain.end())
+    fFCKamp.SetPostProcessor(&fProcessorChain[pRaw->GetChannelName()]);
+  else  return false;
+
+  if(fTemplate.find(pRaw->GetChannelName()) != fTemplate.end())
+    fFCKamp.SetTemplate(fTemplate[pRaw->GetChannelName()],fAmpEstimatorTimeInTemplate[pRaw->GetChannelName()],fPulseStartTimeInTemplate[pRaw->GetChannelName()], fTemplate[ pRaw->GetChannelName() ][ fAmpEstimatorTimeInTemplate[pRaw->GetChannelName() ] ]);
+  else return false; 
+
   if((fPosRangeMin.find(pRaw->GetChannelName()) != fPosRangeMin.end()) && (fPosRangeMax.find(pRaw->GetChannelName()) != fPosRangeMax.end()))
     fFCKamp.SetPeakPositionSearchRange(fPosRangeMin[pRaw->GetChannelName()],fPosRangeMax[pRaw->GetChannelName()]);
+  else return false;
+
+  if((fFixedPosition.find(pRaw->GetChannelName()) != fFixedPosition.end()))
+    fFCKamp.SetBaselinePosition(fFixedPosition[pRaw->GetChannelName()]);
+  else return false;
   
-  //cout<<"SetupFCKamp done"<<endl;
   return true;
 }
 
-std::vector<int> KFeldbergKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec)
+std::set<int> KFeldbergKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec)
 {
+  //returns the set of heat pulse stamp widths. The reason for a set is that there can 
+  //be two NTDs per bolometer and so, this is general enough to return all of the heat pulse
+  //widths for each NTD connected to each bolometer. This even works if there are more than
+  //two NTDs per bolometer, which might be kinda cool... but probably not.
+
   KRawBolometerRecord *bolo = pRec->GetBolometerRecord();
-  unsigned int counter = 0;
-  std::vector<int> HeatPulseStampWidths;
-  HeatPulseStampWidths.reserve(6);  
-  HeatPulseStampWidths.clear();
+  std::set<int> HeatPulseStampWidths;
   
   for(int i = 0; i < bolo->GetNumPulseRecords(); i++){
     KRawBoloPulseRecord *p = bolo->GetPulseRecord(i);
-    if(p->GetIsHeatPulse()){
-      counter++;
-      bool addValue = true;
-      //search through the vector to find out if this stamp width is unique
-      for(unsigned int j = 0; j < HeatPulseStampWidths.size(); j++){
-        if(HeatPulseStampWidths.at(j) == (int)(p->GetHeatPulseStampWidth()) )
-          addValue = false;
-      }
-      
-      if(addValue){
-        if(HeatPulseStampWidths.size() < counter)
-          HeatPulseStampWidths.push_back( (int)(p->GetHeatPulseStampWidth()) );
-        else
-          HeatPulseStampWidths.at(counter) = (int)(p->GetHeatPulseStampWidth()) ;
-      }
-  
-    }
+    if(p->GetIsHeatPulse())
+      HeatPulseStampWidths.insert( (int)(p->GetHeatPulseStampWidth()) );  
   }
   return HeatPulseStampWidths;
 }
 
 Bool_t KFeldbergKAmpSite::SetTemplate(const char* channel, std::vector<double> templ, unsigned int pretrigger, unsigned int delta_t, unsigned int width, Bool_t force)
 {
-  //cout <<"KFeldbergKAmpSite::SetTemplate start"<<endl;
+  //Sets the template pulse for a channel if its not already been set. However, if the template for channel has already
+  //been set, this method will only reset the template if force=true
+
   if(fTemplate.find(channel) != fTemplate.end())
     if(!force)
       return true;
     
   if(fProcessorChain.find(channel) != fProcessorChain.end()){
-    //debug
-    //cout << channel << " unprocessed template: ";
-    //for(unsigned int i = 0; i < templ.size(); i++)
-      //cout << templ[i] <<",";
-    //cout <<endl;
-    
+   
     fProcessorChain[channel].SetInputPulse(templ);
-    //debug
-//     for(unsigned int i = 0; i < fProcessorChain[channel].GetNumProcessors(); i++)
-//       cout<<fProcessorChain[channel].GetProcessor(i)->GetName()<<endl;
-//     cout << "fProcessorChain contains following processors:"<<endl;
-//     for(unsigned int i = 0; i < fProcessorChain[channel].GetNumProcessors();i++){
-//       //  cout << fProcessorChain->GetProcessor(i)->GetName() << endl;
-//       //cout << ((KIIRFilter*) fProcessorChain->GetProcessor(i))->GetCoefASize()<<" "<<((KIIRFilter*) fProcessorChain->GetProcessor(i))->GetCoefBSize()<<endl;
-//       for(unsigned int j = 0; j < ((KIIRFilter*) fProcessorChain[channel].GetProcessor(i))->GetCoefASize();j++)
-//         cout<<((KIIRFilter*) fProcessorChain[channel].GetProcessor(i))->GetCoefA()[j]<<" ";
-//       cout<<endl;
-//       for(unsigned int j = 0; j < ((KIIRFilter*) fProcessorChain[channel].GetProcessor(i))->GetCoefBSize();j++)
-//         cout<<((KIIRFilter*) fProcessorChain[channel].GetProcessor(i))->GetCoefB()[j]<<" ";
-//       cout<<endl;
-//     }
-    //debug
-
-    
+   
     if(!fProcessorChain[channel].RunProcess()){
       cout<<"Processing the template failed!"<<endl; return false;}
     
-    //debug
-//     cout<<"Processed template:";
-//     for(unsigned int j = 0; j<fProcessorChain[channel].GetOutputPulseSize(); j++)
-//       cout<<fProcessorChain[channel].GetOutputPulse()[j]<<",";
-//     cout<<endl;
-    //debug
-    
     std::vector<double> templvector;
     templvector.resize(width);
-    if(fProcessorChain[channel].GetOutputPulseSize() > (pretrigger - delta_t + width))
+    if(fProcessorChain[channel].GetOutputPulseSize() > (pretrigger - delta_t + width)){
       for(unsigned int i = pretrigger - delta_t; i < (pretrigger - delta_t + width); i++){
         templvector[i-(pretrigger-delta_t)]=*(fProcessorChain[channel].GetOutputPulse()+i);
       }
+    }
     else
       { cout << "(Pretrigger + template width - delta_t) > size of the input template!" << endl; return false;}
     
     unsigned int pos = fFCKamp.GetPositionOfMaxAbsValue(&templvector[0], templvector.size());
     fAmpEstimatorTimeInTemplate[channel] = (double) pos;
     fPulseStartTimeInTemplate[channel] = (double) delta_t;
+
     // make the template always with positive polarity
     double scale = (fNormalizeTemplate) ? templvector[pos] : (templvector[pos]>0) ? 1:-1;
-    //cout << "NormalizeTemplate:"<< fNormalizeTemplate <<", Scale:"<< scale << endl;
-    //cout << "processed,cut and scaled template: ";
+
     for(unsigned int i = 0; i< templvector.size();i++){
       templvector[i]/=scale;
-      //cout<<templvector[i]<<",";
     }
-    //cout<<endl;
     fTemplate[channel] = templvector;
     return true;
   }
