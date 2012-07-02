@@ -27,7 +27,6 @@ KAmpKounselor::KAmpKounselor(void)
 {
   fInput = 0;
   fOutput = 0;
-
 }
 
 KAmpKounselor::~KAmpKounselor(void)
