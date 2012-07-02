@@ -73,7 +73,7 @@ public:
   void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;	}
 
   KPulseAnalysisRecord* GetPulseAnalysisRecord(Int_t i) const;
-  KPulseAnalysisRecord* GetPulseAnalysisRecord(const char* name, bool isBaseline = false) const;
+  KPulseAnalysisRecord* GetPulseAnalysisRecord(const char* name) const;
   virtual Int_t GetNumPulseAnalysisRecords(void) const {return fPulseAnaRecords.GetEntriesFast();} 
   virtual void AddPulseAnalysisRecord(KPulseAnalysisRecord* aPulseRecord);
 

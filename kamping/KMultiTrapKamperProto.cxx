@@ -22,7 +22,7 @@
 //  5              Number of found peaks
 //  6,8,10..(even numbers)       Positions of found peaks (maximal 8 positions)
 //  7,9,11         Corresponding correlation coefficient to the peak position at previous fExtra
-
+//  12             Pile up detection. 1 = pile up detected.
 
 #include "KMultiTrapKamperProto.h"
 
@@ -100,13 +100,13 @@ Bool_t KMultiTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAna
     theRet = MakeKamp(pRec, rec, 2*HEAT_RISE+HEAT_FLAT_TOP);
   else
     theRet = MakeKamp(pRec, rec, 2*ION_RISE+ION_FLAT_TOP);
-  rec->SetIsBaseline(true);
+
   return theRet;
 }
 
 Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec, double fixPeakPosition)
 {
-  rec->SetIsBaseline(false); 
+
   rec->SetName(GetName());
   rec->SetUnit(0);
   if(pRec->GetPulseLength() == 0){
@@ -162,7 +162,7 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
       
       //Pile-up detection
       if(remainingPeaks.size() > 1){
-        rec->SetPileUpDetected(true);
+        rec->SetExtra(1, 12);
         rec->SetExtra((double) remainingPeaks.size(),5);
  
         unsigned int numStoredPileUps = (remainingPeaks.size()<8) ? remainingPeaks.size() : 8;
@@ -172,7 +172,7 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
         }
       }
       else
-        rec->SetPileUpDetected(false);
+        rec->SetExtra(0, 12);
     }      
     else PeakPos = fixPeakPosition;
     
@@ -185,7 +185,7 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
         {cout << "fMultipleHeatPeakDetector failed" << endl; return false;}
       remainingPeaks = fMultipleHeatPeakDetector.GetRemainingPeaks();
       if(remainingPeaks.size() > 1){
-        rec->SetPileUpDetected(true);
+        rec->SetExtra(1, 12);
         rec->SetExtra((double) remainingPeaks.size(),5);
  
         unsigned int numStoredPileUps = (remainingPeaks.size()<8) ? remainingPeaks.size() : 8;
@@ -195,7 +195,7 @@ Bool_t KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysi
         }
       }
       else
-        rec->SetPileUpDetected(false);
+        rec->SetExtra(0,12);
     };
     
     if(PeakPos != -1){

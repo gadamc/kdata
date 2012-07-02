@@ -114,13 +114,13 @@ Bool_t KTrapKamperProto1::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseA
 Bool_t KTrapKamperProto1::MakeBaseKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
 {
   Bool_t theRet = MakeKamp(pRec, rec, 0);
-  rec->SetIsBaseline(true);
+  
   return theRet;
 }
 
 Bool_t KTrapKamperProto1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec, double fixPeakPosition)
 {
-  rec->SetIsBaseline(false); 
+
   rec->SetName(GetName());
   rec->SetUnit(0);
   if(pRec->GetPulseLength() == 0){
@@ -175,9 +175,9 @@ Bool_t KTrapKamperProto1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRec
       {cout << "fMultipleHeatPeakDetector failed" << endl; return false;}
     remainingPeaks = fMultipleHeatPeakDetector.GetRemainingPeaks();
     if(remainingPeaks.size() > 1)
-      rec->SetPileUpDetected(true);
+      rec->SetExtra(1,12);
     else
-      rec->SetPileUpDetected(false);
+      rec->SetExtra(0,12);
     
     if(maxPeakPos != -1)
       rec->SetAmp(GetMean((int)maxPeakPos + fTrapAmplitude.GetRiseTime(), (int)maxPeakPos + fTrapAmplitude.GetRiseTime() + 
@@ -242,9 +242,9 @@ Bool_t KTrapKamperProto1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRec
       {cout << "fMultipleIonPeakDetector failed" << endl; return false;}
     remainingPeaks = fMultipleIonPeakDetector.GetRemainingPeaks();
     if(remainingPeaks.size() > 1)
-      rec->SetPileUpDetected(true);
+      rec->SetExtra(1,12);
     else
-      rec->SetPileUpDetected(false);
+      rec->SetExtra(0,12);
       
     
     if(maxPeakPos != -1)

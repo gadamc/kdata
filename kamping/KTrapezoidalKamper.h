@@ -27,7 +27,6 @@ public:
   virtual ~KTrapezoidalKamper(void);
   
   virtual Bool_t MakeKamp(KRawBoloPulseRecord * ampBolo, KPulseAnalysisRecord *rec);
-  virtual Bool_t MakeBaseKamp(KRawBoloPulseRecord * ampBolo, KPulseAnalysisRecord *rec);
 
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}

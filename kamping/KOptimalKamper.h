@@ -25,7 +25,7 @@ public:
   
   virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
   virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec, double fixPeakPosition);
-  virtual Bool_t MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
+
 
   KOptimalFilter& GetOptimalFilter(void){return fOptimalFilter;}
   void SetWindow(KWindow *pta){fWindow = pta;}

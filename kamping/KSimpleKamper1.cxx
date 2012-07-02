@@ -139,7 +139,6 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
           }
           rec->SetAmp(maxAmp);
           rec->SetPeakPosition(peakPos); 
-          rec->SetIsBaseline(false); 
           rec->SetName(GetName());
           rec->SetUnit(0);
           rec->SetBaselineRemoved(fLinRemovalHeat.GetBaselineOffset());
@@ -186,7 +185,6 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
 
             rec->SetAmp(maxAmp);
             rec->SetPeakPosition(peakPos);  
-            rec->SetIsBaseline(false); 
             rec->SetName(GetName());
             rec->SetUnit(0);
             rec->SetBaselineRemoved(fLinRemovalIon.GetBaselineOffset());

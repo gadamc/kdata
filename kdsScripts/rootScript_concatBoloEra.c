@@ -14,7 +14,7 @@
 	string myKdataPath = "$KDATA_ROOT"; //locating of the directory where bin/concatDst lives.
   string kInputDirectory = "/kalinka/storage/edelweiss/Bolo/Run12/Eds/Input/";
   string kQSubScriptFileDir = "/kalinka/storage/edelweiss/Bolo/Run12/Eds/scripts/concatDst/";
-	TString qsubWorkingDir = "/kalinka/home/gadamc/qsubOutputs/concatDst";
+	TString qsubWorkingDir = "/kalinka/home/edelweiss/uspace/gadamc/qsuboutputs/concatdst";
 
 	Int_t kNumberBolos=13;
 	string kDetectorNames[kNumberBolos]=

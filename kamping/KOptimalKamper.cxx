@@ -35,7 +35,6 @@ KOptimalKamper::~KOptimalKamper(void)
 Bool_t KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec)
 {
   return MakeKamp(rawPulseRecord, rec, -1);
-  rec->SetIsBaseline(false);
   rec->SetUnit(0);
 }
 
@@ -185,10 +184,3 @@ Bool_t KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnal
   return true;
 }
 
-Bool_t KOptimalKamper::MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec)
-{
-
-  return MakeKamp(rawPulseRecord, rec, 200);  //hard coded for now...
-  rec->SetIsBaseline(true);
-  rec->SetUnit(0);
-}

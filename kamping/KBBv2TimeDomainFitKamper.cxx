@@ -32,7 +32,6 @@ Bool_t KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw, KPulseAnaly
   if(raw->GetIsHeatPulse())
     return false;
     
-  rec->SetIsBaseline(false); 
   rec->SetUnit(0);
   
   if(raw->GetPulseLength() == 0)
