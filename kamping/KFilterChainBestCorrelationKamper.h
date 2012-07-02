@@ -35,8 +35,6 @@ public:
   virtual void SetPeakPositionSearchRange(unsigned int min, unsigned int max){fPosRangeMin = min; fPosRangeMax = max;}
   virtual void SetBaselinePosition(unsigned int pos){fBaselinePosition = pos;}
   
-  
-  
   virtual KPtaProcessor* GetPreprocessor(void){return fPreProcessor;}
 
   //methods to set internal values for the various parameters for specific channels.
@@ -63,19 +61,13 @@ private:
   double fPulseStartTimeInTemplate;
   double fMaxAbsValueInTemplate;
   std::vector<double> fTemplate;
+  //double fPosOfTemplateWidth; 
   unsigned int fPosRangeMin;
   unsigned int fPosRangeMax;
 	unsigned int fBaselinePosition;
   
   double fPeakPos;
-  double fAmpEstPos;
-
-  
-  
-  
-  
-  
-  
+  double fAmpEstPos;  
   
   
   

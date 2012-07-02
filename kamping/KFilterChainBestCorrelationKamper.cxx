@@ -35,6 +35,7 @@
 #include "KFilterChainBestCorrelationKamper.h"
 
 #include "KBaselineRemoval.h"
+#include "KLinearRemoval.h"
 #include "KPatternRemoval.h"
 #include "KIIRFilter.h"
 #include "KIIRFirstOrder.h"
@@ -81,7 +82,6 @@ KFilterChainBestCorrelationKamper::~KFilterChainBestCorrelationKamper(void)
 Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec, double fixPeakPosition)
 {
   //cout << "MakeKamp start"<<endl;
-  rec->SetIsBaseline(false); 
   rec->SetName(GetName());
   rec->SetUnit(0);
   if(pRec->GetPulseLength() == 0){
@@ -111,15 +111,14 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
   fPreProcessor->SetInputPulse((std::vector<short> &)pRec->GetTrace());
 	if(!fPreProcessor->RunProcess())
 		{cerr << "KFilterChainBestCorrelationKamper: fPreProcessor failed" << endl; return false;}
-		
-  fCorrelation.SetInputPulse(fPreProcessor);
-
+	
 	fPostProcessor->SetInputPulse(fPreProcessor);
 
   if(!fPostProcessor->RunProcess())
     {cerr << "KFilterChainBestCorrelationKamper: fPostProcessor failed" << endl; return false;}
 
- 
+  fCorrelation.SetInputPulse(fPostProcessor);
+
 	fCorrelation.SetResponse(fTemplate);
 	if( !fCorrelation.RunProcess() ){
 		cerr << "KFilterChainBestCorrelationKamper: fCorrelation failed" <<endl; return false;
@@ -210,6 +209,45 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 	}
   else rec->SetExtra(-1,14);
 
+  for(unsigned int i = 0; i < fPreProcessor->GetNumProcessors(); i++){
+    
+    try{
+      KLinearRemoval* mProc = dynamic_cast<KLinearRemoval *>( fPreProcessor->GetProcessor(i) );
+      rec->SetBaselineRemoved(mProc->GetOffset());
+      rec->SetSlopeRemoved(mProc->GetSlope());\
+      break;
+    }
+    catch(std::bad_cast){} //just do nothing.
+    
+    try{
+      KBaselineRemoval* mProc = dynamic_cast<KBaselineRemoval *>( fPreProcessor->GetProcessor(i) );
+      rec->SetBaselineRemoved(mProc->GetBaselineOffset());
+      break;
+    }
+    catch(std::bad_cast){} //do nothing.
+
+  }
+
+  // //calculate the pulse rise time and pulse width.
+  // double baselineValue = 0;
+  // std::vector<Short_t>& rawPulse = pRec->GetTrace();
+
+  // if(!mProc){
+  //   //we didn't find a baseline removal type of processor above, so we have to calculate 
+  //   //the baseline amplitude by hand. 
+  //   double stop = 0.4*rawPulse.size();
+  //   unsigned int start = 0;
+  //   unsigned int i = start;
+  //   for( ; i < stop; i++){
+  //     baselineValue += rawPulse[i];
+  //   }
+  // baselineValue = baselineValue/double(i-start);
+  // }
+
+  //now calculate the area under the pulse template, given 
+
+
+  
 	delete fitfunc;
 	delete hist;
 	
@@ -235,6 +273,9 @@ unsigned int KFilterChainBestCorrelationKamper::GetPositionOfMaxAbsValue(double*
 
 void KFilterChainBestCorrelationKamper::SetTemplate(std::vector<double>& templ, double AmpEstimatorTimeInTemplate, double PulseStartTimeInTemplate, double maxTemplateValue)
 {
+  //the template should be of positive polarity....
+  //
+  //
 
   fTemplate = templ;
   fAmpEstimatorTimeInTemplate = AmpEstimatorTimeInTemplate;

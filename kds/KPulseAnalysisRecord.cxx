@@ -54,7 +54,6 @@ void KPulseAnalysisRecord::CopyLocalMembers(const KPulseAnalysisRecord &aRec)
   fAmp = aRec.fAmp;
   fName = aRec.fName;
   fPeakPosition = aRec.fPeakPosition; 
-  fIsBaseline = aRec.fIsBaseline;
   fUnit = aRec.fUnit;
   fChiSq = aRec.fChiSq;
   fBaselineAmplitudeWidth = aRec.fBaselineAmplitudeWidth;
@@ -62,7 +61,6 @@ void KPulseAnalysisRecord::CopyLocalMembers(const KPulseAnalysisRecord &aRec)
   fPulseWidth = aRec.fPulseWidth;
   fBaselineRemoved = aRec.fBaselineRemoved;
   fSlopeRemoved = aRec.fSlopeRemoved;
-  fPileUpDetected = aRec.fPileUpDetected;
   memcpy(fExtra, aRec.fExtra, KPULSEANARECORD_EXTRA_SIZE * sizeof(Double32_t));
 
 }
@@ -105,7 +103,6 @@ void KPulseAnalysisRecord::InitializeMembers(void)
   fAmp = -9999;
   fName.resize(0);  
   fPeakPosition = -1;
-  fIsBaseline = 0;  
   fUnit = -1;  
   fChiSq = -1;
   fBaselineAmplitudeWidth = -1;
@@ -113,7 +110,6 @@ void KPulseAnalysisRecord::InitializeMembers(void)
   fPulseWidth = -1;
   fBaselineRemoved = 0;
   fSlopeRemoved = 0;
-  fPileUpDetected = 0;
   memset(fExtra, 0, KPULSEANARECORD_EXTRA_SIZE * sizeof(Double32_t));
 }
 
@@ -159,14 +155,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     else
       return false;  
   }
-  if(fIsBaseline != aRec.fIsBaseline){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KPulseAnalysisRecord fIsBaseline Not Equal. " 
-      << fIsBaseline << " != rhs " << aRec.fIsBaseline << endl;		
-    else
-      return false;  
-  }
+ 
   if(fUnit != aRec.fUnit){
     bIsEqual = false;
     if (bPrint) 
@@ -229,14 +218,6 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
       return false;  
   }
   
-  if(fPileUpDetected != aRec.fPileUpDetected){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KPulseAnalysisRecord fPileUpDetected Not Equal." 
-      << fPileUpDetected << " != rhs " << aRec.fPileUpDetected << endl;		
-    else
-      return false;  
-  }
   
   
   for(int xtr = 0; xtr < KPULSEANARECORD_EXTRA_SIZE; xtr++){
