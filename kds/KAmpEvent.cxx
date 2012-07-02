@@ -638,7 +638,6 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolo
   
   sambarec->SetAmp(pRaw->GetAmplitude());
   sambarec->SetName("samba");
-  sambarec->SetIsBaseline(false);
   sambarec->SetBaselineAmplitudeWidth(pRaw->GetAmplitudeBaselineNoise());
   sambarec->SetUnit(0);
   sambarec->SetExtra(pRaw->GetAmplitudeBaseline(), 0);

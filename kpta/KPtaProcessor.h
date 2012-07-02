@@ -66,6 +66,7 @@ public:
   virtual void AllocateArrays(unsigned int size);
 
   //make a kind of generic interface supporting these methods in the KPulseAnalysisChain class
+  //these methods are overriden in the KPulseAnalysisChain
   virtual KPtaProcessor* GetProcessor(unsigned int i = 0) { return this;}
   virtual unsigned int GetNumProcessors(void) const {return 1;}
 
