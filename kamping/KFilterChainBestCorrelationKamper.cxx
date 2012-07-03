@@ -212,16 +212,16 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
   for(unsigned int i = 0; i < fPreProcessor->GetNumProcessors(); i++){
     
     try{
-      KLinearRemoval* mProc = dynamic_cast<KLinearRemoval *>( fPreProcessor->GetProcessor(i) );
-      rec->SetBaselineRemoved(mProc->GetOffset());
-      rec->SetSlopeRemoved(mProc->GetSlope());\
+      KLinearRemoval& mProc = dynamic_cast<KLinearRemoval &>( *fPreProcessor->GetProcessor(i) );
+      rec->SetBaselineRemoved(mProc.GetOffset());
+      rec->SetSlopeRemoved(mProc.GetSlope());
       break;
     }
     catch(std::bad_cast){} //just do nothing.
     
     try{
-      KBaselineRemoval* mProc = dynamic_cast<KBaselineRemoval *>( fPreProcessor->GetProcessor(i) );
-      rec->SetBaselineRemoved(mProc->GetBaselineOffset());
+      KBaselineRemoval& mProc = dynamic_cast<KBaselineRemoval &>( *fPreProcessor->GetProcessor(i) );
+      rec->SetBaselineRemoved(mProc.GetBaselineOffset());
       break;
     }
     catch(std::bad_cast){} //do nothing.
