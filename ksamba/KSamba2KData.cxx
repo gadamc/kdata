@@ -848,7 +848,7 @@ Bool_t KSamba2KData::AddDetectorInfoPre919(KSambaDetector *detector)
   TString channelgarde;
   TString channelName;
   
-  if (!bolo.BeginsWith("Gc")){  //okay for FID and ID detectors that have the format FID809AB
+  if (bolo.BeginsWith("ID") || bolo.BeginsWith("FID")){  //okay for FID and ID detectors that have the format FID809AB
                                 //assume the sub is something like "chaleur FID809AB"
     TString cc ( sub(sub.Length()-2, 1) );
     TString cg ( sub(sub.Length()-1, 1) );
@@ -891,9 +891,11 @@ Bool_t KSamba2KData::AddDetectorInfoPre919(KSambaDetector *detector)
     }
   }
   else{
-    //assume the sub is something like "Gc2B"
-    TString cg ( sub(sub.Length()-1, 1) );
-    channelName = cg;
+    if(bolo.BeginsWith("Gc")){
+      //assume the sub is something like "Gc2B"
+      TString cg ( sub(sub.Length()-1, 1) );
+      channelName = cg;
+    }
   }
     
   KSambaDetectorChannel *chan;
