@@ -48,7 +48,7 @@ def main(*argv):
         procDict['processname'] = 'copySambaFileToSps'
       
         if len(procDict['scpErrs']) > 0:
-          doc['status'] = 'bad'
+          doc['status'] = 'proc0 failed'
         else:
           doc['status'] = 'good'
         #this step will add the procDict dictionary to the 

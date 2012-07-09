@@ -54,7 +54,9 @@ def send(item, path):
     if re.search('cannot read file system information for',line) == False and re.search('missing second argument',line) == False:
       #skip these errors... for some reason scp to in2p3 doesn't find the file
       theRet['scpErrs'].append(line)
-  
+    if re.search('Stale NFS',line):
+      theRet['scpErrs'].append(line)
+      
   print 'returning', theRet
   return theRet
   
