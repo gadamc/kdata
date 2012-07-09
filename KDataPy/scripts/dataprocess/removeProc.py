@@ -3,11 +3,24 @@
 from couchdbkit import Server, Database
 import sys, string
   
-def deleteFromView(*args, **kwargs):
-    
-  s = Server(args[0])
-  db = s[args[1]]
-  procname = args[2]
+import argparse
+
+
+def deleteFromView(server, databaseName, procname, **kwargs):
+  '''
+    This script will remove a "procname" key from database run documents.  You can give this script
+    a single run number, or a range of runs numbers. (For now, it will remove the proc from ALL partition files within
+    a single run. 
+    Additionally, you can specify options to the db.view('proc/daqdoc') call by including key=value pairs to the command line args 
+    kwargs should at least contain startkey and endkey
+  '''
+
+  s = Server(server)
+  db = s[databaseName]
+
+  if kwargs['startkey'] == None or kwargs['endkey'] == None:
+    print 'you should supply a range of runs to use with **kwargs["startkey"] and kwargs["endkey"]'
+    return
 
   vr = db.view('proc/daqdoc',  reduce = False, **kwargs)
 
@@ -27,34 +40,29 @@ def deleteFromView(*args, **kwargs):
         doc['status'] = 'good'
       db.save_doc(doc)
 
-def main(*args, **kwargs):
-  '''
-    This script will remove a "proc" key from a database run document.  You can give this script
-    a single run number, or a range of runs numbers. (For now, it will remove the proc from ALL partition files within
-    a single run. 
-    Additionally, you can specify options to the db.view('proc/daqdoc') call. 
-
-    for example:
-    ./removeProc https://edwdbuser:password@edwdbik.fzk.de:6984 datadb proc1 key=lg23b002
-    
-    ./removeProc https://edwdbuser:password@edwdbik.fzk.de:6984 datadb proc1 startkey=lg23b002  endkey=lh18c005
-  '''
-  if len(args) < 3:
-    return Done
-  
-  print kwargs
-   
-  deleteFromView(*args, **kwargs)
   
 if __name__ == '__main__':
 
-  myargs = []
+  parser = argparse.ArgumentParser()
+  parser.add_argument('password', help='you must supply the password')
+  parser.add_argument('procname', help='the name of the process key you wish to remove')
+  parser.add_argument('startkey', help='the name of the samba run that defines the beginning of the range of runs')
+  parser.add_argument('endkey', help='the name of the samba run that defines the end of the range of runs')
+  parser.add_argument('-u', '--username', default='edwdbuser')
+  parser.add_argument('-db', '--database', help='select the database you wish to you. "datadb" is the default', default='datadb')
+  parser.add_argument('-s', '--server', help='select the couchdb server you wish to you.', default='edwdbik.fzk.de')
+  parser.add_argument('-p', '--port', help='select the couchdb server you wish to you.', default='6984')
+
+  args = parser.parse_args()
+
   mykwargs = {}
-  for arg in sys.argv[1:]:
-    if string.find(arg, '=') == -1:
-      myargs.append(arg)
-    else:
-      mykwargs[arg.split('=')[0]]=arg.split('=')[1]
-      
-  main(*myargs, **mykwargs)
+  mykwargs['startkey'] = args.startkey
+  mykwargs['endkey'] = args.endkey
+
+  protocol = 'https'
+  if args.port == '5984':
+    protocol = 'http'
+  server = '%s://%s:%s@%s:%s' % (protocol, args.username, args.password, args.server, args.port)
+  
+  deleteFromView(server, args.database, args.procname, **mykwargs)
 
