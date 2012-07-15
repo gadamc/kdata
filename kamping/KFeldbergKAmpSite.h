@@ -49,7 +49,8 @@ public:
   
 private:
   std::set<int> GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
-  
+  void FillResults(KPulseAnalysisRecord* rec, map<string, KResult> &resMap);
+
   KFilterChainBestCorrelationKamper fFCKamp;
   
   std::map<std::string, std::vector<double> > fTemplate;

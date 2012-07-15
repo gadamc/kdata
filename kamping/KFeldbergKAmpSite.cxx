@@ -24,10 +24,8 @@
 // 11 : baseline fit result -- ROOT's TMinuit Fit return output for baseline fit
 
 // 12 : Heat channel amplitude estimate from the fit with the peak time fixed to the estimated Ionization pulse time. Heat channel only. This will be empty for ionization channels.
-// 13: Fixed pulse time -- the estimated Ionization pulse time used in the fit. This will be empty for ionization channels.
+// 13 : Fixed pulse time -- the estimated Ionization pulse time used in the fit. This will be empty for ionization channels.
 // 14 : fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time. This will be empty for ionization channels.
-// 15 :  the baseline value removed from the pulse in preprocessing (measured baseline offset of first 40% of pulse)
-// 16 :  the linear slope removed from the pulse in preprocessing (measured linear slope of first 40% of pulse)
 
 #include "KFeldbergKAmpSite.h"
 #include "KAmpEvent.h"
@@ -76,66 +74,91 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
   double maxPeak = 0.;
   int precNum = -1;
 
-   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
-     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
-     if(!pRaw->GetIsHeatPulse() && pRaw->GetPulseLength() != 0){
-
-       if(!SetupFCKamp(pRaw)) continue;
-
-       KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
-       KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
-       SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
-       map<string, KResult> kampResults = fFCKamp.MakeKamp(pRaw);
-
-       rec->SetName(fFCKamp.GetName());
-       rec->SetUnit(0);
-
-       rec->SetExtra(fLowPassFilterOrder,5);
-       rec->SetExtra(fLowPassFilterCorner, 6);
-       rec->SetExtra(fHighPassFilterOrder,7);
-       rec->SetExtra(fHighPassFilterCorner, 8);
-
-       if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
-         maxPeak = fabs(rec->GetAmp());
-         PeakPos = rec->GetPeakPosition();
-         precNum = k;
-       }
-       
-     }
-   }
-
-
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
-    KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
-    if(pRaw->GetIsHeatPulse() && pRaw->GetPulseLength() != 0){
+   KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
+   if(!pRaw->GetIsHeatPulse() && pRaw->GetPulseLength() != 0){
 
-      if(!SetupFCKamp(pRaw)) continue;
+     if(!SetupFCKamp(pRaw)) continue;
 
-      KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
-      
-      int heatPeakPos = -1;
+     KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
+     KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
+     SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
+     map<string, KResult> kampResults = fFCKamp.MakeKamp(pRaw);
 
-      if(precNum != -1){      
-        KRawBoloPulseRecord *pRawIon = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(precNum);
-        if(PeakPos != -1){
-          heatPeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
-        }
-      } 
-      
-      KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
-      SetTRefLinksForKAmpEvent(rec, boloAmp, pAmp);
+     FillResults(rec, kampResults);
 
-      fFCKamp.MakeKamp(pRaw, heatPeakPos); 
 
-      rec->SetExtra(fLowPassFilterOrder,5);
-      rec->SetExtra(fLowPassFilterCorner, 6);
-      rec->SetExtra(fHighPassFilterOrder,7);
-      rec->SetExtra(fHighPassFilterCorner, 8);
+     if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
+       maxPeak = fabs(rec->GetAmp());
+       PeakPos = rec->GetPeakPosition();
+       precNum = k;
+     }
 
-    }
-  } 
-  return true;
+   }
+ }
+
+
+ for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
+  KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
+  if(pRaw->GetIsHeatPulse() && pRaw->GetPulseLength() != 0){
+
+    if(!SetupFCKamp(pRaw)) continue;
+
+    KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
+
+    int heatPeakPos = -1;
+
+    if(precNum != -1){      
+      KRawBoloPulseRecord *pRawIon = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(precNum);
+      if(PeakPos != -1){
+        heatPeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
+      }
+    } 
+
+    KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
+    SetTRefLinksForKAmpEvent(rec, boloAmp, pAmp);
+
+    map<string, KResult> kampResults = fFCKamp.MakeKamp(pRaw, heatPeakPos); 
+
+    FillResults(rec, kampResults);
+
+  }
+} 
+return true;
 }  
+
+void KFeldbergKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResult> &resMap)
+{
+  if(resMap.find("amp") != resMap.end())                    rec->SetAmp(resMap["amp"].fValue);
+  if(resMap.find("peakPosition") != resMap.end())           rec->SetPeakPosition(resMap["peakPosition"].fValue);
+  if(resMap.find("chiSq") != resMap.end())                  rec->SetChiSq(resMap["chiSq"].fValue); 
+  if(resMap.find("baselineRemoved") != resMap.end())        rec->SetBaselineRemoved(resMap["baselineRemoved"].fValue);
+  if(resMap.find("slopeRemoved") != resMap.end())           rec->SetSlopeRemoved(resMap["slopeRemoved"].fValue);
+
+  if(resMap.find("ndfFloat") != resMap.end())               rec->SetExtra(resMap["ndfFloat"].fValue, 0);
+  if(resMap.find("fitResult") != resMap.end())              rec->SetExtra(resMap["fitResult"].fValue, 1);
+  if(resMap.find("baselineRmsPostProc") != resMap.end())    rec->SetExtra(resMap["baselineRmsPostProc"].fValue, 2);
+  if(resMap.find("rmsPreProc") != resMap.end())             rec->SetExtra(resMap["rmsPreProc"].fValue, 3);
+  if(resMap.find("rmsPostProc") != resMap.end())            rec->SetExtra(resMap["rmsPostProc"].fValue, 4);
+
+
+  rec->SetExtra(fLowPassFilterOrder,5);
+  rec->SetExtra(fLowPassFilterCorner, 6);
+  rec->SetExtra(fHighPassFilterOrder,7);
+  rec->SetExtra(fHighPassFilterCorner, 8);
+
+
+  if(resMap.find("ampFixHeatPosition") != resMap.end())             rec->SetExtra(resMap["ampFixHeatPosition"].fValue, 9);
+  if(resMap.find("fixHeatPosition") != resMap.end())                rec->SetExtra(resMap["fixHeatPosition"].fValue, 10);
+  if(resMap.find("fitResults_fixHeatPosition") != resMap.end())     rec->SetExtra(resMap["fitResults_fixHeatPosition"].fValue, 11);
+
+  if(resMap.find("ampFixedPositionFromIon") != resMap.end())        rec->SetExtra(resMap["ampFixedPositionFromIon"].fValue, 12);
+  if(resMap.find("fixedPositionFromIon") != resMap.end())           rec->SetExtra(resMap["fixedPositionFromIon"].fValue, 13);
+  if(resMap.find("fitResults_fixedPositionFromIon") != resMap.end())    rec->SetExtra(resMap["fitResults_fixedPositionFromIon"].fValue, 14);
+
+  rec->SetName(fFCKamp.GetName());
+  rec->SetUnit(0);
+}
 
 Bool_t KFeldbergKAmpSite::ScoutKampSite(KRawBoloPulseRecord* /*pRaw*/, KRawEvent* /*e*/)
 {
@@ -160,26 +183,26 @@ void KFeldbergKAmpSite::AddIIRFilter(const char* channel, double* a, unsigned in
           iir = new KIIRFilter();
           iir->SetCoefficients(a,asize,b,bsize);
         }
-  fProcessorChain[channel].AddProcessor(iir);
+        fProcessorChain[channel].AddProcessor(iir);
   fProcessorChain[channel].SetIsOwner(true);  //make sure that the KPulseAnalysisChain deletes these objects
-        
+
 }
 
 Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
 {
 
   if(pRaw->GetIsHeatPulse()){
-    
+
     fFCKamp.SetPreprocessor(&fHeatPreprocessor);      
   }
   else{
     // setting up for ionisation analysis
-    
+
     //get pulse stamp widths only if haven't already got them.
     if(fHeatPulseStampWidths.find(pRaw->GetChannelName()) == fHeatPulseStampWidths.end()){
       fHeatPulseStampWidths[pRaw->GetChannelName()] = GetHeatPulseStampWidths(pRaw);
     }
-      
+
     //create a new ion preproc only if needed.
     if(fIonPreprocessor.find(pRaw->GetChannelName()) == fIonPreprocessor.end()){  
       if(pRaw->GetBoloBoxVersion()==2.0)
@@ -256,41 +279,41 @@ Bool_t KFeldbergKAmpSite::SetTemplate(const char* channel, std::vector<double> t
     if(!force)
       return true;
     
-  if(fProcessorChain.find(channel) != fProcessorChain.end()){
-   
-    fProcessorChain[channel].SetInputPulse(templ);
-   
-    if(!fProcessorChain[channel].RunProcess()){
-      cout<<"Processing the template failed!"<<endl; return false;}
-    
-    fTemplate[channel].clear();
-    fTemplate[channel].resize(width);
+    if(fProcessorChain.find(channel) != fProcessorChain.end()){
 
-    if(fProcessorChain[channel].GetOutputPulseSize() > (pretrigger - delta_t + width)){
-      for(unsigned int i = pretrigger - delta_t; i < (pretrigger - delta_t + width); i++){
-        fTemplate[channel][i-(pretrigger-delta_t)]=*(fProcessorChain[channel].GetOutputPulse()+i);
-      }
-    }
-    else
-      { cout << "(Pretrigger + template width - delta_t) > size of the input template!" << endl; return false;}
-    
-    unsigned int pos = fFCKamp.GetPositionOfMaxAbsValue(&fTemplate[channel][0], fTemplate[channel].size());
-    fAmpEstimatorTimeInTemplate[channel] = (double) pos;
-    fPulseStartTimeInTemplate[channel] = (double) delta_t;
+      fProcessorChain[channel].SetInputPulse(templ);
+
+      if(!fProcessorChain[channel].RunProcess()){
+        cout<<"Processing the template failed!"<<endl; return false;}
+
+        fTemplate[channel].clear();
+        fTemplate[channel].resize(width);
+
+        if(fProcessorChain[channel].GetOutputPulseSize() > (pretrigger - delta_t + width)){
+          for(unsigned int i = pretrigger - delta_t; i < (pretrigger - delta_t + width); i++){
+            fTemplate[channel][i-(pretrigger-delta_t)]=*(fProcessorChain[channel].GetOutputPulse()+i);
+          }
+        }
+        else
+          { cout << "(Pretrigger + template width - delta_t) > size of the input template!" << endl; return false;}
+
+        unsigned int pos = fFCKamp.GetPositionOfMaxAbsValue(&fTemplate[channel][0], fTemplate[channel].size());
+        fAmpEstimatorTimeInTemplate[channel] = (double) pos;
+        fPulseStartTimeInTemplate[channel] = (double) delta_t;
 
     // make the template always with positive polarity
-    double scale = (fNormalizeTemplate) ? fTemplate[channel][pos] : (fTemplate[channel][pos]>0) ? 1:-1;
+        double scale = (fNormalizeTemplate) ? fTemplate[channel][pos] : (fTemplate[channel][pos]>0) ? 1:-1;
 
-    for(unsigned int i = 0; i< fTemplate[channel].size();i++){
-      fTemplate[channel][i]/=scale;
+        for(unsigned int i = 0; i< fTemplate[channel].size();i++){
+          fTemplate[channel][i]/=scale;
+        }
+        return true;
+      }
+      else{
+        cout << "fProcessorChain not set! Template cannot be processed!"<<endl;
+        return false;
+      }
+
+
+
     }
-    return true;
-  }
-  else{
-    cout << "fProcessorChain not set! Template cannot be processed!"<<endl;
-    return false;
-  }
-  
-   
-   
-}

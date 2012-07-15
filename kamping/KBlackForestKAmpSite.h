@@ -33,8 +33,9 @@ public:
   virtual Bool_t NeedScout(void){ return false;}
   
   KMultiTrapKamperProto& GetMTKamper(void){return fMTKamp;}
-  
+
 private:
+  void FillResults(KPulseAnalysisRecord* rec, map<string, KResult> &resMap);
   
   KMultiTrapKamperProto fMTKamp;
 

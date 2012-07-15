@@ -60,6 +60,9 @@ Bool_t KBackyardKampSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
 
     //this code looks annoying... wait until c++11, then we'll get Lambda functions
     //which will simplify all of this... gcc v4.5 or greater is needed for Lambda functions
+    //this code would compile without the if statements, but if the map object didnt'
+    //exit, a new one would be created automatically. So, the if statements here
+    //check for existence first and only set values in the KPulseAnalysisRecord if they are there. 
     if(resMap.find("amp") != resMap.end()) rec->SetAmp(resMap["amp"].fValue);
 
     if(resMap.find("peakPosition") != resMap.end()) rec->SetPeakPosition(resMap["peakPosition"].fValue);

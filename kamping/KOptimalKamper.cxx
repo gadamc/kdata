@@ -155,15 +155,11 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
     }
     myResults["minChi2"] = KResult("minChi2", minChi2);
     myResults["minChi2Pos"] = KResult("minChi2Pos", minChi2Pos, "bin");
-    //rec->SetExtra(minChi2, 1);
-    //rec->SetExtra(minChi2Pos, 2);
     myResults["optAmpAtMinChi2"] = KResult("optAmpAtMinChi2", fOptimalFilter.GetOutputPulse()[minChi2Pos], "ADU");
-    //rec->SetExtra(fOptimalFilter.GetOutputPulse()[minChi2Pos], 3);
+
     if(last){
       myResults["pulseAmpAtOptimalAmpPeakPosition"] = KResult("pulseAmpAtOptimalAmpPeakPosition", last->GetOutputPulse()[maxPosition], "ADU");
       myResults["pulseAmpAtMinChi2Position"] = KResult("pulseAmpAtMinChi2Position", last->GetOutputPulse()[minChi2Pos], "ADU");
-      //rec->SetExtra(last->GetOutputPulse()[maxPosition], 4);
-      //rec->SetExtra(last->GetOutputPulse()[minChi2Pos], 5);
     
     
       //other pulse shape characteristics. rise time, width
@@ -195,9 +191,7 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
         }
       }
       myResults["risetime"] = KResult("risetime", (ninetyPercTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9, "seconds");
-      //rec->SetRisetime( (ninetyPercTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9);
       myResults["pulseWidth"] = KResult("pulseWidth", (tenPercEndTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9, "seconds");
-      //rec->SetPulseWidth( (tenPercEndTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9);
     }
   }
   else if (fixPeakPosition >= 0 && fixPeakPosition < fOptimalFilter.GetOutputPulseSize()){  //use the position specificed by the caller
@@ -209,19 +203,14 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
   myResults["chi2AtPeakPosition"] = KResult("chi2AtPeakPosition", fOptimalFilter.GetChiSquared(maxPosition));
   myResults["fixPeakPosition"] = KResult("fixPeakPosition", fixPeakPosition, "bin");
 
-  //rec->SetAmp(maxValue);
-  //rec->SetPeakPosition(maxPosition);
-  //rec->SetChiSq( fOptimalFilter.GetChiSquared(maxPosition) );
   
   
   try{
     if( dynamic_cast<KBaselineRemoval*>(fPreProcessor) != 0)
       myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KBaselineRemoval*>(fPreProcessor))->GetBaselineOffset(), "ADU");
-      //rec->SetBaselineRemoved( (dynamic_cast<KBaselineRemoval*>(fPreProcessor))->GetBaselineOffset());
       
     else if( dynamic_cast<KLinearRemoval*>(fPreProcessor) != 0)
       myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetOffset(), "ADU");
-      //rec->SetBaselineRemoved((dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetOffset());
   }
   catch (exception& e) {
     cout << "Exception: " << e.what() << endl;

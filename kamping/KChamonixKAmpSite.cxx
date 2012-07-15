@@ -48,11 +48,10 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     if(!pRaw->GetIsHeatPulse()) continue;
     
     if(fTemplateSpectra.find(pRaw->GetChannelName()) == fTemplateSpectra.end()) {
-      //cout << "no template! " << pRaw->GetChannelName() << endl;
       continue;
     }; //we don't have a template spectra for this channel. skip it.
+
     if(fNoiseSpectra.find(pRaw->GetChannelName()) == fNoiseSpectra.end()) {
-      //cout << "no noise spectra! " << pRaw->GetChannelName() << endl;
       continue;
     };  //also skip if we don't have a noise spectr
     
@@ -63,38 +62,43 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     
     KOptimalFilter& filter = fOptKamper.GetOptimalFilter();
     
-    filter.SetTemplateDFT(fTemplateSpectra.find(pRaw->GetChannelName())->second);
-    filter.SetNoiseSpectrum(fNoiseSpectra.find(pRaw->GetChannelName())->second);
+    filter.SetTemplateDFT( fTemplateSpectra.find(pRaw->GetChannelName())->second );
+    filter.SetNoiseSpectrum( fNoiseSpectra.find(pRaw->GetChannelName())->second );
     filter.SetToRecalculate(); //tell the filter to recalculate its kernel
     
-    fOptKamper.SetWindow(&fHeatWindow); //tell the optimal filter kamper to use this window function.
-    fOptKamper.SetPreProcessor(&fBaselineRemovalHeat);
+    fOptKamper.SetWindow( &fHeatWindow ); //tell the optimal filter kamper to use this window function.
+    fOptKamper.SetPreProcessor( &fBaselineRemovalHeat );
     //need to tell the Kamper about the template pulse shift.
-    fOptKamper.SetPulseTemplateShiftFromPreTrigger(fPulseTemplateShifter.GetShift());
-    map<string, KResult> myResults = fOptKamper.MakeKamp(pRaw);
-    
+    fOptKamper.SetPulseTemplateShiftFromPreTrigger( fPulseTemplateShifter.GetShift() );
 
-    //fill in the KPulseAnalysisRecord with myResults
+    //perform the optimal filtering
+    map<string, KResult> resMap = fOptKamper.MakeKamp(pRaw);
+    
+    //fill results
+    if(resMap.find("amp") != resMap.end())                    rec->SetAmp(resMap["amp"].fValue);
+    if(resMap.find("peakPosition") != resMap.end())           rec->SetPeakPosition(resMap["peakPosition"].fValue);
+    if(resMap.find("chi2AtPeakPosition") != resMap.end())     rec->SetChiSq(resMap["chi2AtPeakPosition"].fValue);
+    if(resMap.find("baselineRemoved") != resMap.end())        rec->SetBaselineRemoved(resMap["baselineRemoved"].fValue);
 
-    
-    
-    //KPulseAnalysisRecord *basRec = ee->AddPulseAnalysisRecord();
-    //SetTRefLinksForKAmpEvent(basRec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    //we don't really need to call this! The answer should already be calculated for us! Just get the optimal filter from
-    //the fOptKamper and get the results from the output
-    
+    if(resMap.find("ampAtTemplatePluseAmplitudeShift") != resMap.end())     rec->SetExtra(resMap["ampAtTemplatePluseAmplitudeShift"].fValue, 0);
+    if(resMap.find("minChi2") != resMap.end())                              rec->SetExtra(resMap["minChi2Pos"].fValue, 1);
+    if(resMap.find("minChi2Pos") != resMap.end())                           rec->SetExtra(resMap["minChi2"].fValue, 2);
+    if(resMap.find("optAmpAtMinChi2") != resMap.end())                      rec->SetExtra(resMap["optAmpAtMinChi2"].fValue, 3);
+    if(resMap.find("pulseAmpAtOptimalAmpPeakPosition") != resMap.end())     rec->SetExtra(resMap["pulseAmpAtOptimalAmpPeakPosition"].fValue, 4);
+    if(resMap.find("pulseAmpAtMinChi2Position") != resMap.end())            rec->SetExtra(resMap["pulseAmpAtMinChi2Position"].fValue, 5);
+
+    if(resMap.find("risetime") != resMap.end())       rec->SetRisetime(resMap["risetime"].fValue);
+    if(resMap.find("pulseWidth") != resMap.end())     rec->SetPulseWidth(resMap["pulseWidth"].fValue);
+
     fHeatPeakDetector.SetInputPulse( &fHeatWindow);
-    if(!fHeatPeakDetector.RunProcess())
-      cout << "KChamonixKAmpSite::RunKampSite. fHeatPeakDetector fail"<< endl;
-    else{
-      rec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); 
-      //basRec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); //
-    }
+    if(fHeatPeakDetector.RunProcess() )                       rec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); 
     
-    //fOptKamper.MakeBaseKamp(pRaw, basRec);
-    //basRec->SetIsBaseline(true);
+
+    if(resMap.find("pulseTemplateShift") != resMap.end())     rec->SetExtra(resMap["pulseTemplateShift"].fValue, 7);
+    if(resMap.find("amplitudeShift") != resMap.end())         rec->SetExtra(resMap["amplitudeShift"].fValue, 8);
+    if(resMap.find("fixPeakPosition") != resMap.end())        rec->SetExtra(resMap["fixPeakPosition"].fValue, 9);
+
     rec->SetName(GetName());
-    //basRec->SetName(GetName());
   }
   
   
