@@ -116,13 +116,16 @@ void KSimpleKamper1::CheckMemory(KRawBoloPulseRecord *pRec)
   }
 }
 
-Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec)
+map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
 {
-  if(pRec->GetPulseLength() == 0)
-    return true;
     
   CheckMemory(pRec);
   
+  map<string, vector<double> > myResults;
+
+  if(pRec->GetPulseLength() == 0)
+    return myResults;
+
   //do heat pulse analysis
   if(pRec->GetIsHeatPulse()){
     pRec->GetTrace(fHeatPulse);
@@ -137,18 +140,22 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
               peakPos = fPeakFindHeat.GetExtraWeakPosition(i);
             }
           }
-          rec->SetAmp(maxAmp);
-          rec->SetPeakPosition(peakPos); 
-          rec->SetName(GetName());
-          rec->SetUnit(0);
-          rec->SetBaselineRemoved(fLinRemovalHeat.GetBaselineOffset());
+          myResults["amp"] = KResult("amp", maxAmp, "ADU");
+          myResults["peakPosition"] = KResult("peakPosition", peakPos, "bin");
+          //rec->SetAmp(maxAmp);
+          //rec->SetPeakPosition(peakPos); 
+          //rec->SetName(GetName());
+          //rec->SetUnit(0);
+          myResults["baselineRemoved"] = KResult("baselineRemoved", fLinRemovalHeat.GetBaselineOffset(), "ADU");
+          myResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalHeat.GetSlope(), "ADU/bin");
+          //rec->SetBaselineRemoved(fLinRemovalHeat.GetBaselineOffset());
           //rec->SetSlopeRemoved(fLinRemovalHeat.GetSlope());
         }
-        else {cerr << "ksimplekamper1 - peak find heat fail." << endl; return false;}
+        else {cerr << "ksimplekamper1 - peak find heat fail." << endl; return myResults;}
       } 
-      else {cerr << "ksimplekamper1 - iir filter heat fail." << endl; return false;}
+      else {cerr << "ksimplekamper1 - iir filter heat fail." << endl; return myResults;}
     }
-    else {cerr << "ksimplekamper1 - linear removal heat fail." << endl; return false;}
+    else {cerr << "ksimplekamper1 - linear removal heat fail." << endl; return myResults;}
     
   }
   
@@ -183,22 +190,25 @@ Bool_t KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord
               }
             }
 
-            rec->SetAmp(maxAmp);
-            rec->SetPeakPosition(peakPos);  
-            rec->SetName(GetName());
-            rec->SetUnit(0);
-            rec->SetBaselineRemoved(fLinRemovalIon.GetBaselineOffset());
-            //rec->SetSlopeRemoved(fLinRemovalIon.GetSlope());
+            myResults["amp"] = KResult("amp", maxAmp, "ADU");
+            myResults["peakPosition"] = KResult("peakPosition", peakPos, "bin");
+            //rec->SetAmp(maxAmp);
+            //rec->SetPeakPosition(peakPos); 
+            //rec->SetName(GetName());
+            //rec->SetUnit(0);
+            myResults["baselineRemoved"] = KResult("baselineRemoved", fLinRemovalIon.GetBaselineOffset(), "ADU");
+            myResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalIon.GetSlope(), "ADU/bin");
+            //rec->SetBaselineRemoved(fLinRemovalIon.GetBaselineOffset());
           }
-          else {cerr << "ksimplekamper1 - peak find ion fail." << endl; return false;}
+          else {cerr << "ksimplekamper1 - peak find ion fail." << endl; return myResults;}
         }
-        else {cerr << "ksimplekamper1 - iir filter ion fail." << endl; return false;}
+        else {cerr << "ksimplekamper1 - iir filter ion fail." << endl; return myResults;}
       }
-      else {cerr << "ksimplekamper1 - pattern removal ion fail." << endl; return false;}
+      else {cerr << "ksimplekamper1 - pattern removal ion fail." << endl; return myResults;}
     }
-    else {cerr << "ksimplekamper1 - linear removal ion fail." << endl; return false;}
+    else {cerr << "ksimplekamper1 - linear removal ion fail." << endl; return myResults;}
   }
   
   
-  return true;
+  return myResults;
 }

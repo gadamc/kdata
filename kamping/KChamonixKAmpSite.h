@@ -37,8 +37,9 @@ public:
   
   virtual Bool_t RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee); //this runs the data processing on each event. 
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e);  //should call this method first. Use this to scan through data to estimate noise...etc..
-  virtual Bool_t NeedScout(void){ return true;}
+  virtual Bool_t NeedScout(void){ return fScoutData;}
   
+  void SetNeedScout(Bool_t aVal){fScoutData = aVal;}
   //methods to set internal values for the various parameters for specific channels.
   //these parameters should be available from the database 
   Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse);
@@ -49,7 +50,10 @@ public:
   
   unsigned int GetNumNoiseEventsFound(const char* channelName) const;
   std::vector<double> GetNoisePower(const char* channelName) const;
-  
+
+  void SetNoisePower(const char* channelName, std::vector<double> power);
+  void SetNoiseEventCounts(const char* channelName, unsigned int n){fNoiseEventCounts[channelName] = n;}
+
   KBaselineRemoval& GetBaselineRemovalHeat(void){return fBaselineRemovalHeat;}
   KWindow& GetHeatWindow(void){return fHeatWindow;}
   
@@ -64,7 +68,8 @@ private:
   //KPeakDetectorProto fIonPeakDetector;
   //KPeakDetectorProto fHeatPeakDetector;
   KEraPeakFinder fHeatPeakDetector;
-  
+  Bool_t fScoutData;
+
   KBaselineRemoval fBaselineRemovalHeat;
   //KBaselineRemoval fBaselineRemovalIon;
   

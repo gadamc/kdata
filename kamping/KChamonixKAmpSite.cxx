@@ -27,14 +27,6 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
 {
   SetName("KChamonixKAmpSite");
   
-  // fIonPeakDetector.AddFilteringProcess(100, 0, 0.7,  1,  1, false,   true, false);
-  //   fIonPeakDetector.AddFilteringProcess(50, 0, 0.7, 1, 1, false, true, false);
-  //   fIonPeakDetector.AddFilteringProcess(10, 0, 1.0, 1, 0, false, true,  true);
-  //   fIonPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true,  true);
-  
-  // fHeatPeakDetector.AddFilteringProcess(20, 0, 0.5,  1,  1, true,   true, false);
-  //   fHeatPeakDetector.AddFilteringProcess(10, 0, 0.5, 1, 1, false, true, false);
-  //   fHeatPeakDetector.AddFilteringProcess(3, 0, 1.0, 1, 0, false, true, true);
   
   fHeatWindow.SetWindow(KWindowDesign::GetTukeyWindow(512,0.7), 512);
   fHeatPeakDetector.SetOrder(5);
@@ -76,7 +68,7 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     filter.SetToRecalculate(); //tell the filter to recalculate its kernel
     
     fOptKamper.SetWindow(&fHeatWindow); //tell the optimal filter kamper to use this window function.
-    fOptKamper.SetBaselineRemoval(&fBaselineRemovalHeat);
+    fOptKamper.SetPreProcessor(&fBaselineRemovalHeat);
     //need to tell the Kamper about the template pulse shift.
     fOptKamper.SetPulseTemplateShiftFromPreTrigger(fPulseTemplateShifter.GetShift());
     fOptKamper.MakeKamp(pRaw, rec);
@@ -87,7 +79,7 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     //we don't really need to call this! The answer should already be calculated for us! Just get the optimal filter from
     //the fOptKamper and get the results from the output
     
-    fHeatPeakDetector.SetInputPulse(fHeatWindow.GetOutputPulse(), fHeatWindow.GetOutputPulseSize());
+    fHeatPeakDetector.SetInputPulse( &fHeatWindow);
     if(!fHeatPeakDetector.RunProcess())
       cout << "KChamonixKAmpSite::RunKampSite. fHeatPeakDetector fail"<< endl;
     else{
@@ -138,7 +130,7 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   
   
   fHeatPeakDetector.SetPolarity(-1);
-  fHeatPeakDetector.SetInputPulse(fBaselineRemovalHeat.GetOutputPulse(), fBaselineRemovalHeat.GetOutputPulseSize());
+  fHeatPeakDetector.SetInputPulse(&fBaselineRemovalHeat);
   if( !fHeatPeakDetector.RunProcess()){
       cout << "KChamonixKAmpSite::ScoutKampSite. fHeatPeakDetector failed" << endl;
       return false;
@@ -146,16 +138,16 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   if(fHeatPeakDetector.GetPeakBins().size() > 0) return false; //we found a peak, so this is not noise.
       
   //we found noise, now window it, find its power spectrum and then add it to the running average power spectrum  
-  fHeatWindow.SetInputPulse(fBaselineRemovalHeat.GetOutputPulse(), fBaselineRemovalHeat.GetOutputPulseSize());
+  fHeatWindow.SetInputPulse(&fBaselineRemovalHeat);
   if(!fHeatWindow.RunProcess()){
     cout << "KChamonixKAmpSite::ScoutKampSite. fHeatWindow failed" << endl; return false;
   }
 
-  fR2Hc.SetInputPulse(fHeatWindow.GetOutputPulse(), fHeatWindow.GetOutputPulseSize());
+  fR2Hc.SetInputPulse(&fHeatWindow);
   if(!fR2Hc.RunProcess()){
     cout << "KChamonixKAmpSite::ScoutKampSite. fR2Hc failed" << endl; return false;
   }
-  fHc2P.SetInputPulse(fR2Hc.GetOutputPulse(), fR2Hc.GetOutputPulseSize());
+  fHc2P.SetInputPulse(&fR2Hc);
   if(!fHc2P.RunProcess()){
     cout << "KChamonixKAmpSite::ScoutKampSite. fHc2P failed" << endl; return false;
   }
@@ -206,7 +198,7 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   fPulseTemplateShifter.SetMode(2);
   fPulseTemplateShifter.RunProcess();
   
-  fR2Hc.SetInputPulse(fHeatWindow.GetOutputPulse(), fHeatWindow.GetOutputPulseSize());
+  fR2Hc.SetInputPulse( &fHeatWindow);
   if(!fR2Hc.RunProcess()){
     cout << "fR2Hc failed" << endl; return false;
   }
@@ -263,3 +255,9 @@ vector<double> KChamonixKAmpSite::GetNoisePower(const char* channelName) const
   }
     
 }
+
+void KChamonixKAmpSite::SetNoisePower(const char* channelName, vector<double> power)
+{
+  fNoiseSpectra[channelName] = power;
+}
+

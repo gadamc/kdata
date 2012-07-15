@@ -25,8 +25,8 @@ class KFilterChainBestCorrelationKamper : KAmper {
 public:
   KFilterChainBestCorrelationKamper(void);
   virtual ~KFilterChainBestCorrelationKamper(void);
-  virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec){return MakeKamp(rawPulseRecord, rec, -1.0);}
-  virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec, double fixPeakPosition);
+  virtual std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord){return MakeKamp(rawPulseRecord, -1.0);}
+  virtual std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord, double fixPeakPosition);
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
   

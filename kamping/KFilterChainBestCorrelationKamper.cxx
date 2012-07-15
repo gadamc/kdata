@@ -5,31 +5,59 @@
 // Created by Adam Cox
 // Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
-// Definition of parameters for output KPulseAnalysisRecord
-//  fAmp : amplitude estimate from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
-//  fPeakPosition: estimated pulse peak position from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
-//  fChiSq: ChiSq returned by ROOT fit routine from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
+// Definition of map returned by MakeKamp  (myResults is of type map<string, KResult>)
+//
+// myResults["amp"]
+//        amplitude estimate from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
+//
+// myResults["peakPosition"] 
+//        estimated pulse peak position from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
+//
+// myResults["chiSq"]
+//        ChiSq returned by ROOT fit routine from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
+//
+// myResults["ndfFloat"] 
+//        NDF of the fit -- fit with floating start time
+//
+// myResults["fitResult"] 
+//        ROOT's TMinuit Fit return output - 0=good fit.
+//
+// myResults["baselineRmsPostProc"] 
+//        RMS of the first 40% of the post-processed pulse
+//
+// myResults["rmsPreProc"] 
+//        RMS of entire preprocessed pulse
+//
+// myResults["rmsPostProc"]
+//        RMS of entire post-processed pulse
 //  
-// Extra field definition for output KPulseAnalysisRecord:
-// 0 : NDF of the fit -- fit with floating start time
-// 1 : ROOT's TMinuit Fit return output - 0=good fit.
+// myResults["ampFixHeatPosition"]
+//        amplitude estimate of the fit with a fixed start time set to fBaselinePosition.
+//
+// myResults["fixHeatPosition"]
+//        fBaselinePosition - the fixed position of the pulse peak time in the above amplitude estimate fit..
+//
+// myResults["fitResults_fixHeatPosition"]
+//        fit result -- ROOT's TMinuit Fit return output for baseline fit
+//
+// myResults["ampFixedPositionFromIon"] 
+//        Heat channel amplitude estimate from the fit with the peak time fixed to the estimated Ionization pulse time. 
+//        Heat channel only. This element of the map will not exist for ionization channels
+//
+// myResults["fixedPositionFromIon"] 
+//        Fixed pulse time -- the estimated Ionization pulse time used in the fit. 
+//        This element of the map will not exist for ionization channels
+//
+// myResults["fitResults_fixedPositionFromIon"]
+//        fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time. 
+//
+// myResults["baselineRemoved"]
+//        the value removed from baseline removal object found in the PreProcessor object (if the preProcessor is a chain)
+// myResults["slopeRemoved"] 
+//        the linear slope removed from the baseline removal object. If a KBaselineRemoval object was used
+//        then this element will not exist -- only if a KLinearRemoval object was found in the PreProcessor
 
-// 2 : RMS of the first 40% of the processed pulse
-// 3 : RMS of preprocessed pulse
-// 4 : RMS of processed pulse
 
-// 5: order of lowpass filter -- butterworth
-// 6: corner frequency of lowpass
-// 7: order of highpass filter
-// 8: corner frequency of highpass
-
-// 9 : Baseline estimation value - amplitude estimate of the fit with a fixed start time set to fBaselinePosition.
-// 10 : fBaselinePosition - the fixed position of the pulse peak time in the Baseline amplitude estimate fit..
-// 11 : baseline fit result -- ROOT's TMinuit Fit return output for baseline fit
-
-// 12 : Heat channel amplitude estimate from the fit with the peak time fixed to the estimated Ionization pulse time. Heat channel only. This will be empty for ionization channels.
-// 13: Fixed pulse time -- the estimated Ionization pulse time used in the fit. This will be empty for ionization channels.
-// 14 : fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time. This will be empty for ionization channels.
 
 
 #include "KFilterChainBestCorrelationKamper.h"
@@ -79,27 +107,24 @@ KFilterChainBestCorrelationKamper::~KFilterChainBestCorrelationKamper(void)
 }
 
 
-Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, KPulseAnalysisRecord *rec, double fixPeakPosition)
+std::map<std::string, KResult> KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, double fixPeakPosition)
 {
   //cout << "MakeKamp start"<<endl;
-  rec->SetName(GetName());
-  rec->SetUnit(0);
-  if(pRec->GetPulseLength() == 0){
-    //cerr << "KFilterChainBestCorrelationKamper: ::MakeKamp. Pulse Length is zero." << endl;
-    rec->SetPeakPosition(-1);
-    rec->SetAmp(-99999);
-    rec->SetExtra(-99999,0);
-    return false;
-}
+  // rec->SetName(GetName());
+  // rec->SetUnit(0);
 
-  
-  if(pRec->GetTrace().size() == 0){
-    rec->SetPeakPosition(-1);
-    rec->SetAmp(-99999);
-    rec->SetExtra(-99999,0);
-    return false;
+  map<string, KResult> myResults;
+  if(pRec->GetPulseLength() == 0 || pRec->GetTrace().size() == 0){
+
+    myResults["peakPosition"] = KResult("peakPosition", -1, "bin");
+    //rec->SetPeakPosition(-1);
+    myResults["amp"] = KResult("amp", -99999, "ADU");
+    //rec->SetAmp(-99999);
+    myResults["ndfFloat"] = KResult("ndfFloat", -99999);
+    //rec->SetExtra(-99999,0);
+    return myResults;
   }
-  
+
   
   if(fTemplate.size() == 0)
     {cerr << "KFilterChainBestCorrelationKamper: fTemplate isn't set!" << endl; return false;}
@@ -137,7 +162,8 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 		Baseline_RMS += fPostProcessor->GetOutputPulse()[sample]*fPostProcessor->GetOutputPulse()[sample];
 	Baseline_RMS /= (double) sample;
 	Baseline_RMS = sqrt(Baseline_RMS);
-	rec->SetExtra(Baseline_RMS,2);
+	//rec->SetExtra(Baseline_RMS,2);
+  myResults["baselineRmsPostProc"] = KResult("baselineRmsPostProc", Baseline_RMS, "ADU");
 	//--------------------
 	
 	//RMS of the preprocessed pulse
@@ -148,7 +174,8 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 			Preprocessed_RMS += fPreProcessor->GetOutputPulse()[sample]*fPreProcessor->GetOutputPulse()[sample];
 		Preprocessed_RMS /= (double) sample;
 		Preprocessed_RMS = sqrt(Preprocessed_RMS);
-		rec->SetExtra(Preprocessed_RMS,3);
+		//rec->SetExtra(Preprocessed_RMS,3);
+    myResults["rmsPreProc"] = KResult("rmsPreProc", Preprocessed_RMS, "ADU");
 	}
 	//-----------------------
 	
@@ -159,7 +186,8 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 		Processed_RMS += fPostProcessor->GetOutputPulse()[sample]*fPostProcessor->GetOutputPulse()[sample];
 	Processed_RMS /= (double) sample;
 	Processed_RMS = sqrt(Processed_RMS);
-	rec->SetExtra(Processed_RMS,4);
+	//rec->SetExtra(Processed_RMS,4);
+  myResults["rmsPostProc"] = KResult("rmsPostProc", Processed_RMS, "ADU");
 	//-----------------------------
 	
 
@@ -179,11 +207,17 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 	}
 	Int_t fitres = hist->Fit("fitfunc","RQNS");
 
-	rec->SetAmp(fitfunc->GetParameter(0));
-	rec->SetPeakPosition((double)fitfunc->GetParameter(1)+fPulseStartTimeInTemplate);
-	rec->SetChiSq(fitfunc->GetChisquare());
-	rec->SetExtra(fitfunc->GetNDF(),0);
-	rec->SetExtra(fitres,1);
+  myResults["amp"] = KResult("amp", fitfunc->GetParameter(0), "ADU");
+  myResults["peakPosition"] = KResult("peakPosition", (double)fitfunc->GetParameter(1) + fPulseStartTimeInTemplate, "bin");
+  myResults["chiSq"] = KResult("chiSq", fitfunc->GetChisquare());
+  myResults["ndfFloat"] = KResult("ndfFloat", fitfunc->GetNDF());
+  myResults["fitResult"] = KResult("fitResult", fitres);
+
+	// rec->SetAmp(fitfunc->GetParameter(0));
+	// rec->SetPeakPosition((double)fitfunc->GetParameter(1)+fPulseStartTimeInTemplate);
+	// rec->SetChiSq(fitfunc->GetChisquare());
+	// rec->SetExtra(fitfunc->GetNDF(),0);
+	// rec->SetExtra(fitres,1);
 	//if(fitres != 0)
 		//cout << "fit is not valid "<<fitres << endl;
 	
@@ -192,9 +226,12 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 	fitfunc->FixParameter(1,fBaselinePosition);
 	fitres = hist->Fit("fitfunc","RQNS");
 
-	rec->SetExtra(fitfunc->GetParameter(0),9);
-  rec->SetExtra(fBaselinePosition,10);
-  rec->SetExtra(fitres,11);
+  myResults["ampFixHeatPosition"] = KResult("ampFixHeat", fitfunc->GetParameter(0), "ADU");
+  myResults["fixHeatPosition"] = KResult("fixHeatPosition", fBaselinePosition, "bin");
+  myResults["fitResults_fixHeatPosition"] = KResult("fitResults_fixHeatPosition", fitres);
+	// rec->SetExtra(fitfunc->GetParameter(0),9);
+ //  rec->SetExtra(fBaselinePosition,10);
+ //  rec->SetExtra(fitres,11);
 	//-----------------
 	
 	// Heat pulse time fixed by ionisation
@@ -203,26 +240,32 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 		fitfunc->SetParameters(*(fPostProcessor->GetOutputPulse()+(int)fixPeakPosition)/fMaxAbsValueInTemplate,fixPeakPosition);
 		fitfunc->FixParameter(1,fixPeakPosition);
 		fitres = hist->Fit("fitfunc","RQNS");
-		rec->SetExtra(fitfunc->GetParameter(0),12);
-		rec->SetExtra(fixPeakPosition,13);
-    rec->SetExtra(fitres,14);
+    myResults["ampFixedPositionFromIon"] = KResult("ampFixedPositionFromIon", fitfunc->GetParameter(0), "ADU");
+    myResults["fixedPositionFromIon"] = KResult("fixedPositionFromIon", fixPeakPosition, "bin");
+    myResults["fitResults_fixedPositionFromIon"] = KResult("fitResults_fixedPositionFromIon", fitres);
+
+		//rec->SetExtra(fitfunc->GetParameter(0),12);
+		//rec->SetExtra(fixPeakPosition,13);
+    //rec->SetExtra(fitres,14);
 	}
-  else rec->SetExtra(-1,14);
+  else myResults["fitResults_fixedPositionFromIon"] =  KResult("fitResults_fixedPositionFromIon", -1);
+    //rec->SetExtra(-1,14);
 
   for(unsigned int i = 0; i < fPreProcessor->GetNumProcessors(); i++){
     
     try{
       KLinearRemoval& mProc = dynamic_cast<KLinearRemoval &>( *fPreProcessor->GetProcessor(i) );
-      rec->SetBaselineRemoved(mProc.GetOffset());
-      rec->SetSlopeRemoved(mProc.GetSlope());
-      break;
+      myResults["baselineRemoved"] = KResult("baselineRemoved", myProc.GetOffset(), "ADU");
+      myResults["slopeRemoved"] = KResult("slopeRemoved", myProc.GetSlope(), "ADU/bin");
+      //rec->SetBaselineRemoved(mProc.GetOffset());
+      //rec->SetSlopeRemoved(mProc.GetSlope());
     }
     catch(std::bad_cast){} //just do nothing.
     
     try{
       KBaselineRemoval& mProc = dynamic_cast<KBaselineRemoval &>( *fPreProcessor->GetProcessor(i) );
-      rec->SetBaselineRemoved(mProc.GetBaselineOffset());
-      break;
+      myResults["baselineRemoved"] = KResult("baselineRemoved", myProc.GetOffset(), "ADU");
+      //rec->SetBaselineRemoved(mProc.GetBaselineOffset());
     }
     catch(std::bad_cast){} //do nothing.
 
@@ -251,7 +294,7 @@ Bool_t KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, K
 	delete fitfunc;
 	delete hist;
 	
-	return true;
+	return myResults;
 
 }
 

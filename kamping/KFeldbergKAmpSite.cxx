@@ -5,6 +5,29 @@
 // Created by Michael Unrau
 // Copyright 2012 Karlsruhe Institute of Technology. All rights reserved.
 //
+//
+// Extra field definition for output KPulseAnalysisRecord:
+// 0 : NDF of the fit -- fit with floating start time
+// 1 : ROOT's TMinuit Fit return output - 0=good fit.
+
+// 2 : RMS of the first 40% of the processed pulse
+// 3 : RMS of preprocessed pulse
+// 4 : RMS of processed pulse
+
+// 5: order of lowpass filter -- butterworth
+// 6: corner frequency of lowpass
+// 7: order of highpass filter
+// 8: corner frequency of highpass
+
+// 9 : Baseline estimation value - amplitude estimate of the fit with a fixed start time set to fBaselinePosition.
+// 10 : fBaselinePosition - the fixed position of the pulse peak time in the Baseline amplitude estimate fit..
+// 11 : baseline fit result -- ROOT's TMinuit Fit return output for baseline fit
+
+// 12 : Heat channel amplitude estimate from the fit with the peak time fixed to the estimated Ionization pulse time. Heat channel only. This will be empty for ionization channels.
+// 13: Fixed pulse time -- the estimated Ionization pulse time used in the fit. This will be empty for ionization channels.
+// 14 : fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time. This will be empty for ionization channels.
+// 15 :  the baseline value removed from the pulse in preprocessing (measured baseline offset of first 40% of pulse)
+// 16 :  the linear slope removed from the pulse in preprocessing (measured linear slope of first 40% of pulse)
 
 #include "KFeldbergKAmpSite.h"
 #include "KAmpEvent.h"
@@ -23,6 +46,7 @@
 #include "KIIRThirdOrder.h"
 #include "KIIRFourthOrder.h"
 #include "TString.h"
+#include "KResult.h"
 #include <iostream>
 #include <math.h>
 
@@ -61,17 +85,22 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
        KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
        KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
        SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
-       fFCKamp.MakeKamp(pRaw, rec);
+       map<string, KResult> kampResults = fFCKamp.MakeKamp(pRaw);
+
+       rec->SetName(fFCKamp.GetName());
+       rec->SetUnit(0);
+
+       rec->SetExtra(fLowPassFilterOrder,5);
+       rec->SetExtra(fLowPassFilterCorner, 6);
+       rec->SetExtra(fHighPassFilterOrder,7);
+       rec->SetExtra(fHighPassFilterCorner, 8);
 
        if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
          maxPeak = fabs(rec->GetAmp());
          PeakPos = rec->GetPeakPosition();
          precNum = k;
        }
-       rec->SetExtra(fLowPassFilterOrder,5);
-       rec->SetExtra(fLowPassFilterCorner, 6);
-       rec->SetExtra(fHighPassFilterOrder,7);
-       rec->SetExtra(fHighPassFilterCorner, 8);
+       
      }
    }
 

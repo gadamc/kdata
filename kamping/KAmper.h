@@ -12,9 +12,9 @@
 
 #include "Rtypes.h"
 #include <string>
+#include "KResult.h"
 
 class KRawBoloPulseRecord;
-class KPulseAnalysisRecord;
 
 class KAmper {
 
@@ -22,7 +22,7 @@ public:
   KAmper(void);
   virtual ~KAmper(void);
   
-  virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec) = 0;
+  virtual std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord) = 0;
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
   

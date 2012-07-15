@@ -50,12 +50,16 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
       fMTKamp.SetName("BlackForestKAmperProto-Ion");
       SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
       fMTKamp.MakeKamp(pRaw, rec);
+      rec->SetName(fMTKamp.GetName());
+      rec->SetUnit(0);
+
       // create  KPulseAnalysisRecord for baseline amplitude estimation
       KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
       fMTKamp.SetName("BlackForestKAmperProto-Ion-Baseline");
       SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
       fMTKamp.MakeBaseKamp(pRaw, recBase);
-      
+      recBase->SetName(fMTKamp.GetName());
+      recBase->SetUnit(0);
       
       if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
         maxPeak = fabs(rec->GetAmp());
@@ -92,12 +96,16 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
       fMTKamp.SetName("BlackForestKAmperProto-Heat-Not-Fixed");
       SetTRefLinksForKAmpEvent(recFree, boloAmp, pAmp);
       fMTKamp.MakeKamp(pRaw, recFree);
-      
+      recFree->SetName(fMTKamp.GetName());
+      recFree->SetUnit(0);
+
       // create  KPulseAnalysisRecord for baseline amplitude estimation
-      KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
+      KPulseAnalysisRecord *recBase2 = ee->AddPulseAnalysisRecord();
       fMTKamp.SetName("BlackForestKAmperProto-Heat-Baseline");
-      SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-      fMTKamp.MakeBaseKamp(pRaw, recBase);
+      SetTRefLinksForKAmpEvent(recBase2, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
+      fMTKamp.MakeBaseKamp(pRaw, recBase2);
+      recBase2->SetName(fMTKamp.GetName());
+      recBase2->SetUnit(0);
     }
   } 
   return true;

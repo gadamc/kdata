@@ -4,8 +4,21 @@
 //
 // Created by Adam Cox
 // Copyright 2012 Karlsruhe Institute of Technology. All rights reserved.
-
 //
+//
+//   The following map<string, KResult> is returned by MakeKamp
+// myResults["amp"] = KResult("amp", fPulseFit->GetParameter(1), "ADU");
+// myResults["peakPositon"] = KResult("peakPosition", fPulseFit->GetParameter(3), "bin");
+// myResults["chiSq"] = KResult("chiSq", fPulseFit->GetChisquare(), "");
+// myResults["baseline"] = KResult("baseline", fPulseFit->GetParameter(0), "ADU");
+// myResults["sharpness"] = KResult("sharpness", fPulseFit->GetParameter(2), "1/ADU");
+// myResults["fitStatus"] = KResult("fitstatus", fitStatus);
+//
+//    The following is returned by MakeBaseKamp
+// if(raw->GetIsHeatPulse())
+//     myResults["pulseType"] = KResult("heat", 0);
+// else
+//     myResults["pulseType"] = KResult("ionization", 0);
 
 #include "KBBv2TimeDomainFitKamper.h"
 #include "TF1.h"
@@ -27,12 +40,14 @@ KBBv2TimeDomainFitKamper::~KBBv2TimeDomainFitKamper(void)
   if(fPulseFit) delete fPulseFit;
 }
 
-Bool_t KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw, KPulseAnalysisRecord *rec)
+std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw)
 {
   if(raw->GetIsHeatPulse())
     return false;
     
-  rec->SetUnit(0);
+  map<string, KResult> myResults;
+
+  //rec->SetUnit(0);
   
   if(raw->GetPulseLength() == 0)
     return false;
@@ -76,62 +91,33 @@ Bool_t KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw, KPulseAnaly
     
   Int_t fitStatus = fData.Fit(fPulseFit, "QRW");
   
-  rec->SetAmp(fPulseFit->GetParameter(1));
-  rec->SetPeakPosition(fPulseFit->GetParameter(3));
+  myResults["amp"] = KResult("amp", fPulseFit->GetParameter(1), "ADU");
+  //rec->SetAmp(fPulseFit->GetParameter(1));
+  myResults["peakPositon"] = KResult("peakPosition", fPulseFit->GetParameter(3), "bin");
+  //rec->SetPeakPosition(fPulseFit->GetParameter(3));
   //rec->SetSlopeRemoved(fLineRemove.GetSlope());
-  rec->SetChiSq(fPulseFit->GetChisquare());
+  myResults["chiSq"] = KResult("chiSq", fPulseFit->GetChisquare(), "");
+  //rec->SetChiSq(fPulseFit->GetChisquare());
   
-  rec->SetExtra(fPulseFit->GetParameter(0), 0);//the baseline value... essentially.
-  rec->SetExtra(fPulseFit->GetParameter(2), 1);//the parameter that defines the sharpness of the step
-  rec->SetExtra(fitStatus, 2);//status returned by the ROOT fitter
+  myResults["baseline"] = KResult("baseline", fPulseFit->GetParameter(0), "ADU");
+  myResults["sharpness"] = KResult("sharpness", fPulseFit->GetParameter(2), "1/ADU");
+  myResults["fitStatus"] = KResult("fitstatus", fitStatus);
+
+  //rec->SetExtra(fPulseFit->GetParameter(0), 0);//the baseline value... essentially.
+  //rec->SetExtra(fPulseFit->GetParameter(2), 1);//the parameter that defines the sharpness of the step
+  //rec->SetExtra(fitStatus, 2);//status returned by the ROOT fitter
   
-  return true;
+  return myResults;
 }
 
-Bool_t KBBv2TimeDomainFitKamper::MakeBaseKamp(KRawBoloPulseRecord * raw, KPulseAnalysisRecord * /*rec*/)
+std::map<std::string, myResults> KBBv2TimeDomainFitKamper::MakeBaseKamp(KRawBoloPulseRecord * raw, KPulseAnalysisRecord * /*rec*/)
 {
+
+  map<string, double> myResults;
   if(raw->GetIsHeatPulse())
-    return false;
-    
-  // rec->SetIsBaseline(true); 
-  //   rec->SetUnit(0);
-  //   
-  //   if(raw->GetPulseLength() == 0)
-  //     return false;
-  //   
-  //   if(fPulsePreProcessor){
-  //     
-  //     fPulsePreProcessor->SetInputPulse( (vector<short> &)raw->GetTrace());
-  //     if(!fPulsePreProcessor->RunProcess()){
-  //       cerr << "KBBv2TimeDomainFitKamper. Pulse preprocessor failed" << endl; return false;
-  //     }
-  //     
-  //     for(int i = 0; i < fPulsePreProcessor->GetOutputPulseSize(); i++)
-  //       fData.SetPoint(i, i, fPulsePreProcessor->GetOutputPulse()[i]);
-  //       
-  //   }
-  //   else {
-  //     //vector<short> thePulse = raw->GetTrace();
-  //     for(unsigned int i = 0; i < raw->GetTrace().size(); i++)
-  //       fData.SetPoint(i, i, raw->GetTrace()[i]);
-  //   }
-  //   
-  //   //okay - how should this be done? 
-  //   double mean = 0;
-  //   double rms = 0;
-  //   int points = 0;
-  //   for(int i = 0; i < fData.GetN()*0.20; i++){
-  //     mean += fData.GetY(i);
-  //     rms += fData.GetY(i)*fData.GetY(i);
-  //     points++;
-  //   }
-  //   if(points) mean = mean/(double)points;
-  //   if(points) rms = sqrt(rms/(double)points);
-  //     
-  //   rec->SetAmp(mean);
-  //   rec->SetPeakPosition(0);
-  //   //+rec->SetSlopeRemoved(fLineRemove.GetSlope());
-  //   rec->SetExtra(rms, 0);
-  
-  return true;
+    myResults["pulseType"] = KResult("heat", 0);
+  else
+    myResults["pulseType"] = KResult("ionization", 0);
+
+  return myResults;
 }

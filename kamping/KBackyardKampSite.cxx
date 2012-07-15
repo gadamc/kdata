@@ -20,6 +20,7 @@
 #include "KRawBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
 
+using namespace std;
 
 KBackyardKampSite::KBackyardKampSite(void)
 {

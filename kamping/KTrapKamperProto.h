@@ -27,9 +27,9 @@ public:
   KTrapKamperProto(void);
   virtual ~KTrapKamperProto(void);
   
-  virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
-  virtual Bool_t MakeKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec, double fixPeakPosition);
-  virtual Bool_t MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord, KPulseAnalysisRecord *rec);
+  virtual std::map<std::string, KResult> MakeKamp(KRawBoloPulseRecord * rawPulseRecord);
+  virtual std::map<std::string, KResult> MakeKamp(KRawBoloPulseRecord * rawPulseRecord, double fixPeakPosition);
+  virtual std::map<std::string, KResult> MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord);
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
 

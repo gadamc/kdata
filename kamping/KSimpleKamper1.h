@@ -24,7 +24,7 @@ public:
   KSimpleKamper1(void);
   virtual ~KSimpleKamper1(void);
   
-  virtual Bool_t MakeKamp(KRawBoloPulseRecord * ampBolo, KPulseAnalysisRecord *rec);
+  virtual std::map<std::string, KResult> MakeKamp(KRawBoloPulseRecord * ampBolo);
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
   
