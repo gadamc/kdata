@@ -148,6 +148,8 @@ Bool_t KAmpKounselor::Run( int maxNumEvents)
         
     //copy the muon veto system record information
     KRawMuonVetoSysRecord *muonRaw = (KRawMuonVetoSysRecord *)e->GetMuonVetoSystemRecord();
+
+    //NO, this is NOT a bug, its just bad design. :)  the KAmpEvent holds KRawMuonVeto data....
     KRawMuonVetoSysRecord *muonAmp = (KRawMuonVetoSysRecord *)ee->GetMuonVetoSystemRecord();
     *muonAmp = *muonRaw;
 
