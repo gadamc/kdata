@@ -125,7 +125,7 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
       KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
       SetTRefLinksForKAmpEvent(rec, boloAmp, pAmp);
 
-      fFCKamp.MakeKamp(pRaw, rec, heatPeakPos); 
+      fFCKamp.MakeKamp(pRaw, heatPeakPos); 
 
       rec->SetExtra(fLowPassFilterOrder,5);
       rec->SetExtra(fLowPassFilterCorner, 6);

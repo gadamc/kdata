@@ -47,18 +47,18 @@ Bool_t KLibertyBellKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
     KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
     if(pRaw->GetIsHeatPulse() || pRaw->GetBoloBoxVersion() < 2.0)
-      fTrapKamp.MakeKamp(pRaw, rec);
+      fTrapKamp.MakeKamp(pRaw);
     else
-      fBBv2TimeFitter.MakeKamp(pRaw, rec);
+      fBBv2TimeFitter.MakeKamp(pRaw);
     rec->SetName(GetName());  //rename this pulse analysis record to this kampsite
     
     
     KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
     if(pRaw->GetIsHeatPulse() || pRaw->GetBoloBoxVersion() < 2.0)
-      fTrapKamp.MakeBaseKamp(pRaw, recBase);
+      fTrapKamp.MakeBaseKamp(pRaw);
     else
-      fBBv2TimeFitter.MakeBaseKamp(pRaw, recBase);
+      fBBv2TimeFitter.MakeBaseKamp(pRaw);
     recBase->SetName(GetName());  //rename this pulse analysis record to this kampsite
   }
   

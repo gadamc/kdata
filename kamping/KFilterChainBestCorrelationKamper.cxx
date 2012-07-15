@@ -127,26 +127,26 @@ std::map<std::string, KResult> KFilterChainBestCorrelationKamper::MakeKamp(KRawB
 
   
   if(fTemplate.size() == 0)
-    {cerr << "KFilterChainBestCorrelationKamper: fTemplate isn't set!" << endl; return false;}
+    {cerr << "KFilterChainBestCorrelationKamper: fTemplate isn't set!" << endl; return myResults;}
 
   fPeakPos = -1.0;
   
-  if(!fPreProcessor  || !fPostProcessor) {cerr << "KFilterChainBestCorrelationKamper: pre or post processor pointer not set." << endl; return false;} 
+  if(!fPreProcessor  || !fPostProcessor) {cerr << "KFilterChainBestCorrelationKamper: pre or post processor pointer not set." << endl; return myResults;} 
 
   fPreProcessor->SetInputPulse((std::vector<short> &)pRec->GetTrace());
 	if(!fPreProcessor->RunProcess())
-		{cerr << "KFilterChainBestCorrelationKamper: fPreProcessor failed" << endl; return false;}
+		{cerr << "KFilterChainBestCorrelationKamper: fPreProcessor failed" << endl; return myResults;}
 	
 	fPostProcessor->SetInputPulse(fPreProcessor);
 
   if(!fPostProcessor->RunProcess())
-    {cerr << "KFilterChainBestCorrelationKamper: fPostProcessor failed" << endl; return false;}
+    {cerr << "KFilterChainBestCorrelationKamper: fPostProcessor failed" << endl; return myResults;}
 
   fCorrelation.SetInputPulse(fPostProcessor);
 
 	fCorrelation.SetResponse(fTemplate);
 	if( !fCorrelation.RunProcess() ){
-		cerr << "KFilterChainBestCorrelationKamper: fCorrelation failed" <<endl; return false;
+		cerr << "KFilterChainBestCorrelationKamper: fCorrelation failed" <<endl; return myResults;
 	}
 	
   //cerr << "Range:"<<fPosRangeMin<<","<<fPosRangeMax<<endl;
@@ -255,8 +255,8 @@ std::map<std::string, KResult> KFilterChainBestCorrelationKamper::MakeKamp(KRawB
     
     try{
       KLinearRemoval& mProc = dynamic_cast<KLinearRemoval &>( *fPreProcessor->GetProcessor(i) );
-      myResults["baselineRemoved"] = KResult("baselineRemoved", myProc.GetOffset(), "ADU");
-      myResults["slopeRemoved"] = KResult("slopeRemoved", myProc.GetSlope(), "ADU/bin");
+      myResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetOffset(), "ADU");
+      myResults["slopeRemoved"] = KResult("slopeRemoved", mProc.GetSlope(), "ADU/bin");
       //rec->SetBaselineRemoved(mProc.GetOffset());
       //rec->SetSlopeRemoved(mProc.GetSlope());
     }
@@ -264,7 +264,7 @@ std::map<std::string, KResult> KFilterChainBestCorrelationKamper::MakeKamp(KRawB
     
     try{
       KBaselineRemoval& mProc = dynamic_cast<KBaselineRemoval &>( *fPreProcessor->GetProcessor(i) );
-      myResults["baselineRemoved"] = KResult("baselineRemoved", myProc.GetOffset(), "ADU");
+      myResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetBaselineOffset(), "ADU");
       //rec->SetBaselineRemoved(mProc.GetBaselineOffset());
     }
     catch(std::bad_cast){} //do nothing.

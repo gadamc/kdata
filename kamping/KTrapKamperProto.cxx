@@ -9,14 +9,6 @@
 // This is called the "Prototype" because it does nothing smart with memory management. Thus
 // it is not optimized for performance, but rather optimized for fewer bugs! 
 //
-// This class stores some data in the fExtra space in the KPulseAnalysisRecord. In these extra
-// spaces, it stores some of the settings used in the calculation of the pulse.
-//
-//  fExtra Index  |  Description of value
-//  ---------------------------------------
-//  0              Trapezoidal Filter for Pulse Amplitude - decay slope
-//  1              Trapezoidal Filter for Pulse Amplitude - rise time
-//  2              Trapezoidal Filter for Pulse Amplitude - flat top width
 
 #include "KTrapKamperProto.h"
 

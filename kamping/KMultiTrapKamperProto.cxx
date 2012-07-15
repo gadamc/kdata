@@ -109,13 +109,14 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeBaseKamp(KRawBoloPuls
 std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, double fixPeakPosition)
 {
 
+  std::map<std::string, KResult> myResults;
 
   if(pRec->GetPulseLength() == 0){
     //cerr << "KMultiTrapKamperProto::MakeKamp. Pulse Length is zero." << endl;
-    return false;
+    return myResults;
   }
     
-  std::map<std::string, KResult> myResults;
+
 
   double PeakPos = -1.;
   std::vector< std::vector<double> > remainingPeaks;
@@ -150,7 +151,7 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
     fBaseRemovalHeat.SetInputPulse( (std::vector<short> &)pRec->GetTrace());
 
     if( !fBaseRemovalHeat.RunProcess())
-      {cout << "fBaseRemovalHeat failed" << endl; return false;}
+      {cout << "fBaseRemovalHeat failed" << endl; return myResults;}
     
     if(fixPeakPosition == -1){
       // central peak detection
@@ -158,7 +159,7 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
       fMultipleHeatPeakDetector.SetPolarity(KPulsePolarityCalculator::GetExpectedPolarity(pRec));
       fMultipleHeatPeakDetector.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
       if( !fMultipleHeatPeakDetector.RunProcess())
-        {cout << "fMultipleHeatPeakDetector failed" << endl; return false;}
+        {cout << "fMultipleHeatPeakDetector failed" << endl; return myResults;}
       remainingPeaks = fMultipleHeatPeakDetector.GetRemainingPeaks();
       double diff = (double) fBaseRemovalHeat.GetOutputPulseSize();
       double center = (double) fBaseRemovalHeat.GetOutputPulseSize()/2;
@@ -200,7 +201,7 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
       fMultipleHeatPeakDetector.SetPolarity(KPulsePolarityCalculator::GetExpectedPolarity(pRec));
       fMultipleHeatPeakDetector.SetInputPulse(fBaseRemovalHeat.GetOutputPulse(), fBaseRemovalHeat.GetOutputPulseSize());
       if( !fMultipleHeatPeakDetector.RunProcess())
-        {cout << "fMultipleHeatPeakDetector failed" << endl; return false;}
+        {cout << "fMultipleHeatPeakDetector failed" << endl; return myResults;}
       remainingPeaks = fMultipleHeatPeakDetector.GetRemainingPeaks();
       if(remainingPeaks.size() > 1){
         myResults["pileUpFound"] = KResult("pileUpFound", 1);
@@ -246,17 +247,18 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
       
       fTrapAmplitudeHeat1.SetInputPulse(FastDecayPulse);
       if( !fTrapAmplitudeHeat1.RunProcess())
-        {cout << "fTrapAmplitudeHeat1 failed" << endl; return false;}
+        {cout << "fTrapAmplitudeHeat1 failed" << endl; return myResults;}
       
       fTrapAmplitudeHeat2.SetInputPulse(SlowDecayPulse);
       if( !fTrapAmplitudeHeat2.RunProcess())
-        {cout << "fTrapAmplitudeHeat2 failed" << endl; return false;}
+        {cout << "fTrapAmplitudeHeat2 failed" << endl; return myResults;}
       
       double mean = GetMean((int)PeakPos + fTrapAmplitudeHeat1.GetRiseTime()+0.2*fTrapAmplitudeHeat1.GetFlatTopWidth(), (int)PeakPos + fTrapAmplitudeHeat1.GetRiseTime() + 
-        fTrapAmplitudeHeat1.GetFlatTopWidth(), fTrapAmplitudeHeat1.GetOutputPulse(), fTrapAmplitudeHeat1.GetOutputPulseSize(), -1))/(fHeat1Decay*fTrapAmplitudeHeat1.GetRiseTime()) 
+        fTrapAmplitudeHeat1.GetFlatTopWidth(), fTrapAmplitudeHeat1.GetOutputPulse(), fTrapAmplitudeHeat1.GetOutputPulseSize(), -1)/(fHeat1Decay*fTrapAmplitudeHeat1.GetRiseTime()) 
          +
-        (GetMean((int)PeakPos + fTrapAmplitudeHeat2.GetRiseTime()+0.2*fTrapAmplitudeHeat2.GetFlatTopWidth(), (int)PeakPos + fTrapAmplitudeHeat2.GetRiseTime() + 
-        fTrapAmplitudeHeat2.GetFlatTopWidth(), fTrapAmplitudeHeat2.GetOutputPulse(), fTrapAmplitudeHeat2.GetOutputPulseSize(), -1))/(fHeat2Decay*fTrapAmplitudeHeat2.GetRiseTime());
+        GetMean((int)PeakPos + fTrapAmplitudeHeat2.GetRiseTime()+0.2*fTrapAmplitudeHeat2.GetFlatTopWidth(), (int)PeakPos + fTrapAmplitudeHeat2.GetRiseTime() + 
+        fTrapAmplitudeHeat2.GetFlatTopWidth(), fTrapAmplitudeHeat2.GetOutputPulse(), fTrapAmplitudeHeat2.GetOutputPulseSize(), -1)/(fHeat2Decay*fTrapAmplitudeHeat2.GetRiseTime());
+
       myResults["amp"] = KResult("amp", mean, "ADU");
       //rec->SetAmp(mean);
     }
@@ -268,10 +270,10 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
     myResults["peakPosition"] = KResult("peakPosition", PeakPos, "bin");
     //rec->SetPeakPosition(PeakPos);
     myResults["baselineRemoved"] = KResult("baselineRemoved", fBaseRemovalHeat.GetBaselineOffset(), "ADU");
-    rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
+    //rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
     //rec->SetSlopeRemoved(fBaseRemovalHeat.GetSlope());
     
-    return true;
+    return myResults;
   }
 
   //do ion pulse analysis
@@ -290,7 +292,7 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
     for(unsigned int h = 0; h < fHeatPulseStampWidths.size(); h++){
       fPatRemoval.SetPatternLength(1*fHeatPulseStampWidths.at(h)); 
       if( !fPatRemoval.RunProcess())
-        {cout << "fPatRemoval failed" << endl; return false;}
+        {cout << "fPatRemoval failed" << endl; return myResults;}
     }
     
     fPatRemoval.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
@@ -298,13 +300,13 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
     for(unsigned int h = 0; h < fHeatPulseStampWidths.size(); h++){  //reports from Eric Armengaud is that its better to remove a pattern that is twice as long.
       fPatRemoval.SetPatternLength(2*fHeatPulseStampWidths.at(h)); 
       if( !fPatRemoval.RunProcess())
-        {cout << "fPatRemoval failed" << endl; return false;}
+        {cout << "fPatRemoval failed" << endl; return myResults;}
     }
     
         
     fBaseRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
     if( !fBaseRemovalIon.RunProcess())
-      {cout << "fBaseRemovalIon failed" << endl; return false;}
+      {cout << "fBaseRemovalIon failed" << endl; return myResults;}
 
     if(fixPeakPosition == -1){
       // maximal correlation peak detection
@@ -312,7 +314,7 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
       fIonPeakDetector.SetPolarity(KPulsePolarityCalculator::GetExpectedPolarity(pRec));
       fIonPeakDetector.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
       if( !fIonPeakDetector.RunProcess())
-        {cout << "fMultipleIonPeakDetector failed" << endl; return false;}
+        {cout << "fMultipleIonPeakDetector failed" << endl; return myResults;}
       remainingPeaks = fIonPeakDetector.GetRemainingPeaks();
       PeakPos = (remainingPeaks.size() == 1) ? remainingPeaks[0][0] : -1;
       /*
@@ -324,18 +326,18 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
           rec->SetExtra(remainingPeaks[i][0],i+6);
       }
       else
-        rec->SetPileUpDetected(false);
+        rec->SetPileUpDetected(myResults);
       */
     }
     else PeakPos = fixPeakPosition;
       
     fTrapAmplitudeIon.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
     if( !fTrapAmplitudeIon.RunProcess())
-      {cout << "fTrapAmplitudeIon failed" << endl; return false;}
+      {cout << "fTrapAmplitudeIon failed" << endl; return myResults;}
                    
     double mean = 0; 
     if(PeakPos != -1)
-      double mean = (GetMean((int)PeakPos + fTrapAmplitudeIon.GetRiseTime()+0.2*fTrapAmplitudeIon.GetFlatTopWidth(), (int)PeakPos + fTrapAmplitudeIon.GetRiseTime() + 
+      mean = (GetMean((int)PeakPos + fTrapAmplitudeIon.GetRiseTime()+0.2*fTrapAmplitudeIon.GetFlatTopWidth(), (int)PeakPos + fTrapAmplitudeIon.GetRiseTime() + 
         fTrapAmplitudeIon.GetFlatTopWidth(), fTrapAmplitudeIon.GetOutputPulse(), fTrapAmplitudeIon.GetOutputPulseSize(), 
         KPulsePolarityCalculator::GetExpectedPolarity(pRec) ))/(fTrapAmplitudeIon.GetDecayTimeConstant()*fTrapAmplitudeIon.GetRiseTime());
     
@@ -347,7 +349,7 @@ std::map<std::string, KResult>  KMultiTrapKamperProto::MakeKamp(KRawBoloPulseRec
     //rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
     //rec->SetSlopeRemoved(fBaseRemovalIon.GetSlope());
     
-    return true;
+    return myResults;
    }
 
 }

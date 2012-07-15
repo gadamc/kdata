@@ -104,13 +104,13 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
   else fR2Hc.SetInputPulse((std::vector<short>&)rawPulseRecord->GetTrace());
   
   if(!fR2Hc.RunProcess()){
-    cout << "KOptimalKamper::MakeKamp. fR2Hc failed" << endl; return false;
+    cout << "KOptimalKamper::MakeKamp. fR2Hc failed" << endl; return myResults;
   }
   
   fOptimalFilter.SetInputPulse( &fR2Hc);
   
   if(!fOptimalFilter.RunProcess()){
-    cout << "KOptimalKamper::MakeKamp. fOptimalFilter failed" << endl; return false;
+    cout << "KOptimalKamper::MakeKamp. fOptimalFilter failed" << endl; return myResults;
   }
   
   //what is this: just a test to see what is the amplitude of the pulse at this point in time.
@@ -220,7 +220,7 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
       //rec->SetBaselineRemoved( (dynamic_cast<KBaselineRemoval*>(fPreProcessor))->GetBaselineOffset());
       
     else if( dynamic_cast<KLinearRemoval*>(fPreProcessor) != 0)
-      myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetBaselineOffset(), "ADU");
+      myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetOffset(), "ADU");
       //rec->SetBaselineRemoved((dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetOffset());
   }
   catch (exception& e) {

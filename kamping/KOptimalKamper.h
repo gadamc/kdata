@@ -30,14 +30,14 @@ public:
   KOptimalFilter& GetOptimalFilter(void){return fOptimalFilter;}
   void SetWindow(KWindow *pta){fWindow = pta;}
   void SetPreProcessor(KPtaProcessor *pta){fPreProcessor = pta;}
-  void SetPulseAmplitudeShift(int a){fPulseAmplitudeShift = a;}
 
+  void SetPulseAmplitudeShift(int a){fPulseAmplitudeShift = a;}
   void SetPulseTemplateShiftFromPreTrigger(double aVal){fPulseTemplateShift = -1*aVal;}
   void SetAmplitudeEstimatorSearchRange(double aVal){fAmplitudeEstimatorSearchRange = aVal;}
   double GetPulseTemplateShiftFromPreTrigger(void) const {return fPulseTemplateShift;}
   double GetAmplitudeEstimatorSearchRange(void) const {return fAmplitudeEstimatorSearchRange;}
   int GetPulseAmplitudeShift(void){return fPulseAmplitudeShift;}
-  
+
 private:
  
   KOptimalFilter fOptimalFilter;

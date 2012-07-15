@@ -121,7 +121,7 @@ map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
     
   CheckMemory(pRec);
   
-  map<string, vector<double> > myResults;
+  map<string, KResult > myResults;
 
   if(pRec->GetPulseLength() == 0)
     return myResults;
@@ -147,7 +147,7 @@ map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
           //rec->SetName(GetName());
           //rec->SetUnit(0);
           myResults["baselineRemoved"] = KResult("baselineRemoved", fLinRemovalHeat.GetBaselineOffset(), "ADU");
-          myResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalHeat.GetSlope(), "ADU/bin");
+          //myResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalHeat.GetSlope(), "ADU/bin");
           //rec->SetBaselineRemoved(fLinRemovalHeat.GetBaselineOffset());
           //rec->SetSlopeRemoved(fLinRemovalHeat.GetSlope());
         }
@@ -197,7 +197,7 @@ map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
             //rec->SetName(GetName());
             //rec->SetUnit(0);
             myResults["baselineRemoved"] = KResult("baselineRemoved", fLinRemovalIon.GetBaselineOffset(), "ADU");
-            myResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalIon.GetSlope(), "ADU/bin");
+            //myResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalIon.GetSlope(), "ADU/bin");
             //rec->SetBaselineRemoved(fLinRemovalIon.GetBaselineOffset());
           }
           else {cerr << "ksimplekamper1 - peak find ion fail." << endl; return myResults;}

@@ -45,17 +45,39 @@ Bool_t KBackyardKampSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
     KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp); //for each pulse record, we add a bolo amp pulse record
     
-    //use the KSimpleKamper to fill the KPulseAnalysisRecord
+    //Create a new analysis record to hold your results
+    //and set up the necessary TRef Links for the KAmpEvent
     KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    fSimpKamp1.MakeKamp(pRaw, rec);
+    
+    //run the kamper and grab the results
+    map<string, KResult> resMap = fSimpKamp1.MakeKamp(pRaw);
+    
+    //fill the KPulseAnalysisRecord with the data found in the resMap
+    //In order to know what is in the resMap, the author the KAmper must
+    //document the results in their code! (Otherwise, you'll have to go and
+    //read the details of the MakeKamp method.)
+
+    //this code looks annoying... wait until c++11, then we'll get Lambda functions
+    //which will simplify all of this... gcc v4.5 or greater is needed for Lambda functions
+    if(resMap.find("amp") != resMap.end()) rec->SetAmp(resMap["amp"].fValue);
+
+    if(resMap.find("peakPosition") != resMap.end()) rec->SetPeakPosition(resMap["peakPosition"].fValue);
+
+    if(resMap.find("baselineRemoved") != resMap.end()) rec->SetBaselineRemoved(resMap["baselineRemoved"].fValue);
+
+    if(resMap.find("slopeRemoved") != resMap.end()) rec->SetSlopeRemoved(resMap["slopeRemoved"].fValue);
+
+    rec->SetName(fSimpKamp1.GetName());
+    rec->SetUnit(0);
+
     
     //if there were more kampers in your kampsite, you could use them to estimate pulse amplitudes
     //and pack the results into appropriate KPulseAnalysisRecords
     //for example:
     //   KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
     //   SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    //   fComplicatedKamper.MakeKamp(pRaw, rec);
+    //   map<string, KResults> complicatedResults = fComplicatedKamper.MakeKamp(pRaw);
     //
     
     //however, really you can hack the data anyway you want...

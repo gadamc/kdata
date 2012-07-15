@@ -11,16 +11,23 @@
 #define __KResult_H_
 
 #include <string>
+#include <map>
+#include "KPulseAnalysisRecord.h"
+class KPulseAnalysisRecord;
 
 class KResult {
 
 public:
+  KResult();
 	KResult(std::string name, double value, std::string unit="");
 	virtual ~KResult(void);
   std::string fName;
   double fValue;
   std::string fUnit;
   
+  // void fill( void (KPulseAnalysisRecord::*Method)(double), KPulseAnalysisRecord* rec, 
+  //             std::map<string, KResult>& theResult, string& theField );
+
 };
 
 

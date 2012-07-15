@@ -71,7 +71,11 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     fOptKamper.SetPreProcessor(&fBaselineRemovalHeat);
     //need to tell the Kamper about the template pulse shift.
     fOptKamper.SetPulseTemplateShiftFromPreTrigger(fPulseTemplateShifter.GetShift());
-    fOptKamper.MakeKamp(pRaw, rec);
+    map<string, KResult> myResults = fOptKamper.MakeKamp(pRaw);
+    
+
+    //fill in the KPulseAnalysisRecord with myResults
+
     
     
     //KPulseAnalysisRecord *basRec = ee->AddPulseAnalysisRecord();

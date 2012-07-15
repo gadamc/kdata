@@ -43,13 +43,26 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
     if(!pRaw->GetIsHeatPulse()){
+
       // Create KPulseAnalysisRecord and a valid KAmpEvent
       //cout << "channel:"<< pRaw->GetChannelName()<<endl;
       KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
       KPulseAnalysisRecord *rec  =  ee->AddPulseAnalysisRecord();
       fMTKamp.SetName("BlackForestKAmperProto-Ion");
+
       SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);
-      fMTKamp.MakeKamp(pRaw, rec);
+      map<string, KResult> resMap = fMTKamp.MakeKamp(pRaw);
+
+      //fill in the results
+      if(resMap.find("amp") != resMap.end()) rec->SetAmp(resMap["amp"].fValue);
+
+      if(resMap.find("peakPosition") != resMap.end()) rec->SetPeakPosition(resMap["peakPosition"].fValue);
+
+      if(resMap.find("baselineRemoved") != resMap.end()) rec->SetBaselineRemoved(resMap["baselineRemoved"].fValue);
+
+      if(resMap.find("slopeRemoved") != resMap.end()) rec->SetSlopeRemoved(resMap["slopeRemoved"].fValue);
+
+
       rec->SetName(fMTKamp.GetName());
       rec->SetUnit(0);
 
@@ -57,7 +70,7 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
       KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
       fMTKamp.SetName("BlackForestKAmperProto-Ion-Baseline");
       SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-      fMTKamp.MakeBaseKamp(pRaw, recBase);
+      resMap = fMTKamp.MakeBaseKamp(pRaw);
       recBase->SetName(fMTKamp.GetName());
       recBase->SetUnit(0);
       
@@ -74,28 +87,28 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
     KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp);
     
     if(pRaw->GetIsHeatPulse()){      
-      // with peak position fixed by ionisation
-      /*if(precNum != -1){
-        // Create KPulseAnalysisRecord and a valid KAmpEvent
-        
-        KPulseAnalysisRecord *recFixed  =  ee->AddPulseAnalysisRecord();
-        fMTKamp.SetName("BlackForestKAmperProto-Heat-Fixed");
-        SetTRefLinksForKAmpEvent(recFixed, boloAmp,pAmp);
       
-        
-      
-        KRawBoloPulseRecord *pRawIon = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(precNum);
-        if(PeakPos != -1){
-          PeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
-        }
-        fMTKamp.MakeKamp(pRaw, recFixed, PeakPos);
-      }*/
       
       // without fixed peak position
       KPulseAnalysisRecord *recFree  =  ee->AddPulseAnalysisRecord();
       fMTKamp.SetName("BlackForestKAmperProto-Heat-Not-Fixed");
       SetTRefLinksForKAmpEvent(recFree, boloAmp, pAmp);
-      fMTKamp.MakeKamp(pRaw, recFree);
+
+      map<string, KResult> resMap = fMTKamp.MakeKamp(pRaw);
+
+      //fill in the results
+      if(resMap.find("amp") != resMap.end())
+        recFree->SetAmp(resMap["amp"].fValue);
+
+      if(resMap.find("peakPosition") != resMap.end())
+        recFree->SetPeakPosition(resMap["peakPosition"].fValue);
+
+      if(resMap.find("baselineRemoved") != resMap.end())
+        recFree->SetBaselineRemoved(resMap["baselineRemoved"].fValue);
+
+      if(resMap.find("slopeRemoved") != resMap.end())
+        recFree->SetSlopeRemoved(resMap["slopeRemoved"].fValue);
+
       recFree->SetName(fMTKamp.GetName());
       recFree->SetUnit(0);
 
@@ -103,7 +116,7 @@ Bool_t KBlackForestKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
       KPulseAnalysisRecord *recBase2 = ee->AddPulseAnalysisRecord();
       fMTKamp.SetName("BlackForestKAmperProto-Heat-Baseline");
       SetTRefLinksForKAmpEvent(recBase2, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-      fMTKamp.MakeBaseKamp(pRaw, recBase2);
+      fMTKamp.MakeBaseKamp(pRaw);
       recBase2->SetName(fMTKamp.GetName());
       recBase2->SetUnit(0);
     }

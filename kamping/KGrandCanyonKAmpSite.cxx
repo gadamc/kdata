@@ -45,7 +45,7 @@ Bool_t KGrandCanyonKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
 
     KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    fTrapKamp.MakeKamp(pRaw, rec);
+    fTrapKamp.MakeKamp(pRaw);
     rec->SetName(GetName());  //rename this pulse analysis record to this kampsite
     
     //create a new KPulseAnalysisRecord to store the results from 
@@ -53,7 +53,7 @@ Bool_t KGrandCanyonKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
     //of the baseline. 
     KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    fTrapKamp.MakeBaseKamp(pRaw, recBase);
+    fTrapKamp.MakeBaseKamp(pRaw);
     recBase->SetName(GetName());  //rename this pulse analysis record to this kampsite
   }
   

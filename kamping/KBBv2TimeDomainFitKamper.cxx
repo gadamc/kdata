@@ -42,15 +42,18 @@ KBBv2TimeDomainFitKamper::~KBBv2TimeDomainFitKamper(void)
 
 std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw)
 {
-  if(raw->GetIsHeatPulse())
-    return false;
-    
+
   map<string, KResult> myResults;
+
+
+  if(raw->GetIsHeatPulse())
+    return myResults;
+    
 
   //rec->SetUnit(0);
   
   if(raw->GetPulseLength() == 0)
-    return false;
+    return myResults;
   
   
   if(fPolCalc.GetExpectedPolarity(raw) < 0){
@@ -76,7 +79,7 @@ std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseR
     
     fPulsePreProcessor->SetInputPulse( (vector<short> &)raw->GetTrace());
     if(!fPulsePreProcessor->RunProcess()){
-      cerr << "KBBv2TimeDomainFitKamper. Pulse preprocessor failed" << endl; return false;
+      cerr << "KBBv2TimeDomainFitKamper. Pulse preprocessor failed" << endl; return myResults;
     }
     
     for(unsigned int i = 0; i < fPulsePreProcessor->GetOutputPulseSize(); i++)
@@ -110,10 +113,10 @@ std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseR
   return myResults;
 }
 
-std::map<std::string, myResults> KBBv2TimeDomainFitKamper::MakeBaseKamp(KRawBoloPulseRecord * raw, KPulseAnalysisRecord * /*rec*/)
+std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeBaseKamp(KRawBoloPulseRecord * raw)
 {
 
-  map<string, double> myResults;
+  map<string, KResult> myResults;
   if(raw->GetIsHeatPulse())
     myResults["pulseType"] = KResult("heat", 0);
   else
