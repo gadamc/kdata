@@ -93,6 +93,13 @@ std::map<std::string, KResult> KTrapKamperProto::MakeBaseKamp(KRawBoloPulseRecor
 
 std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * pRec, double fixPeakPosition)
 {
+  //if fixPeakPosition == -1, then the peak position is estimated from the pulse
+  //if fixPeakPositon == -1, then the peak position if fixed to a point after the pretrigger. that point is
+  //  determined by the rise-time and flat-top width of the trapezoidal filter so that the estimate of the 
+  // amplitude of the pulse is in the region where the trapoizdal filter should produce valid estimate
+  // if fixPeakPosition is set to some value, then the pulse amplitude is estimated at the position in the pulse trace.
+  
+
   map<string, KResult> myResults;
 
 
@@ -127,7 +134,7 @@ std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * 
     if(fixPeakPosition == -1)
       maxPeakPos = RunHeatPulseStartTime();
     else if (fixPeakPosition == -2) {
-      maxPeakPos = fTrapAmplitude.GetRiseTime()*2 + fTrapAmplitude.GetFlatTopWidth();
+      maxPeakPos = pRec->GetPretriggerSize() + fTrapAmplitude.GetRiseTime()*2 + fTrapAmplitude.GetFlatTopWidth();
     }
     else maxPeakPos = fixPeakPosition;
     
@@ -197,7 +204,7 @@ std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * 
       else
         maxPeakPos = RunIonPulseStartTime( fLineRemovalIon, KPulsePolarityCalculator::GetExpectedPolarity(pRec) );
     else if (fixPeakPosition == -2) {
-      maxPeakPos = fTrapAmplitude.GetRiseTime()*2 + fTrapAmplitude.GetFlatTopWidth();
+      maxPeakPos = pRec->GetPretriggerSize() + fTrapAmplitude.GetRiseTime()*2 + fTrapAmplitude.GetFlatTopWidth();
     }
     else maxPeakPos = fixPeakPosition;
       

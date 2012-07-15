@@ -38,6 +38,10 @@ public:
   KBBv2TimeDomainFitKamper& GetBBv2TimeDomainFitKamper(void){return fBBv2TimeFitter;}
   
 private:
+
+  void FillTrapResults(KPulseAnalysisRecord *rec, map<string, KResult> &resMap);
+  void FillTimeFitterResults(KPulseAnalysisRecord *rec, map<string, KResult> &resMap);
+
   
   KTrapKamperProto fTrapKamp;
   KBBv2TimeDomainFitKamper fBBv2TimeFitter;
