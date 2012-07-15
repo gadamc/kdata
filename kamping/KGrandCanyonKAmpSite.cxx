@@ -45,20 +45,41 @@ Bool_t KGrandCanyonKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolom
 
     KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
     SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    fTrapKamp.MakeKamp(pRaw);
-    rec->SetName(GetName());  //rename this pulse analysis record to this kampsite
+    map<string, KResult> myResults = fTrapKamp.MakeKamp(pRaw);
+    FillResults(rec, myResults);
     
-    //create a new KPulseAnalysisRecord to store the results from 
-    //MakeBaseKamp, which will estimate the amplitude
-    //of the baseline. 
+    
+    //baseline estimates
     KPulseAnalysisRecord *recBase = ee->AddPulseAnalysisRecord();
-    SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    fTrapKamp.MakeBaseKamp(pRaw);
-    recBase->SetName(GetName());  //rename this pulse analysis record to this kampsite
+    SetTRefLinksForKAmpEvent(recBase, boloAmp,pAmp);  
+    
+    myResults = fTrapKamp.MakeBaseKamp(pRaw);  //MakeBaseKamp performs estimates of the baseline 
+    FillResults(recBase, myResults);
+
+    string basName = GetName();
+    basName += "Base";
+    rec->SetName(basName.c_str());
   }
   
   return true;
 }  
+
+void KGrandCanyonKAmpSite::FillResults(KPulseAnalysisRecord *rec, map<string, KResult> &resMap)
+{
+  if(resMap.find("amp") != resMap.end())                    rec->SetAmp(resMap["amp"].fValue);
+  if(resMap.find("peakPosition") != resMap.end())           rec->SetPeakPosition(resMap["peakPosition"].fValue);
+  if(resMap.find("baselineRemoved") != resMap.end())        rec->SetBaselineRemoved(resMap["baselineRemoved"].fValue);
+  if(resMap.find("slopeRemoved") != resMap.end())           rec->SetSlopeRemoved(resMap["slopeRemoved"].fValue);
+
+  if(resMap.find("trapDecayTime") != resMap.end())               rec->SetExtra(resMap["trapDecayTime"].fValue, 0);
+  if(resMap.find("trapRiseTime") != resMap.end())              rec->SetExtra(resMap["trapRiseTime"].fValue, 1);
+  if(resMap.find("trapFlatTopWidth") != resMap.end())    rec->SetExtra(resMap["trapFlatTopWidth"].fValue, 2);
+  if(resMap.find("rmsPreProc") != resMap.end())             rec->SetExtra(resMap["rmsPreProc"].fValue, 3);
+  if(resMap.find("rmsPostProc") != resMap.end())            rec->SetExtra(resMap["rmsPostProc"].fValue, 4);
+
+  rec->SetName(GetName());  //rename this pulse analysis record to this kampsite
+
+}
 
 Bool_t KGrandCanyonKAmpSite::ScoutKampSite(KRawBoloPulseRecord* /*pRaw*/, KRawEvent* /*e*/)
 {

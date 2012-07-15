@@ -36,6 +36,8 @@ public:
   KTrapKamperProto& GetTrapKamperProto(void){return fTrapKamp;}
   
 private:
+  void FillResults(KPulseAnalysisRecord *rec, map<string, KResult> &resMap);
+
   
   KTrapKamperProto fTrapKamp;
   

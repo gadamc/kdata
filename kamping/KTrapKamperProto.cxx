@@ -95,8 +95,7 @@ std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * 
 {
   map<string, KResult> myResults;
 
-  //rec->SetName(GetName());
-  //rec->SetUnit(0);
+
   if(pRec->GetPulseLength() == 0){
     //cerr << "KTrapKamperProto::MakeKamp. Pulse Length is zero." << endl;
     fPeakPositionResult.clear();
@@ -113,9 +112,7 @@ std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * 
   myResults["trapDecayTime"] = KResult("trapDecayTime", fTrapAmplitude.GetDecayTimeConstant(), "bin");
   myResults["trapRiseTime"] = KResult("trapRiseTime", fTrapAmplitude.GetRiseTime(), "bin");
   myResults["trapFlatTopWidth"] = KResult("trapFlatTopWidth", fTrapAmplitude.GetFlatTopWidth(), "bin");
-  //rec->SetExtra(fTrapAmplitude.GetDecayTimeConstant(), 0);
-  //rec->SetExtra(fTrapAmplitude.GetRiseTime() ,1);
-  //rec->SetExtra(fTrapAmplitude.GetFlatTopWidth(), 2);
+
   
   
   //do heat pulse analysis
@@ -145,8 +142,6 @@ std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * 
     myResults["amp"] = KResult("amp", mean, "ADU");
     myResults["peakPositon"] = KResult("peakPositon", maxPeakPos, "bin");
     myResults["baselineRemoved"] = KResult("baselineRemoved", fBaseRemovalHeat.GetBaselineOffset(), "ADU");
-    //rec->SetPeakPosition(maxPeakPos);
-    //rec->SetBaselineRemoved(fBaseRemovalHeat.GetBaselineOffset());
           
     return myResults;
   }
@@ -184,7 +179,6 @@ std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * 
         {cout << "fBaseRemovalIon failed" << endl; return myResults;}
       fTrapAmplitude.SetInputPulse(fBaseRemovalIon.GetOutputPulse(), fBaseRemovalIon.GetOutputPulseSize());
       myResults["baselineRemoved"] = KResult("baselineRemoved", fBaseRemovalIon.GetBaselineOffset(), "ADU");
-      //rec->SetBaselineRemoved(fBaseRemovalIon.GetBaselineOffset());
     }
     else {
       fLineRemovalIon.SetInputPulse(fPatRemoval.GetOutputPulse(), fPatRemoval.GetOutputPulseSize());
@@ -193,8 +187,7 @@ std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * 
       fTrapAmplitude.SetInputPulse(fLineRemovalIon.GetOutputPulse(), fLineRemovalIon.GetOutputPulseSize());
       myResults["baselineRemoved"] = KResult("baselineRemoved", fLineRemovalIon.GetOffset(), "ADU");
       myResults["slopeRemoved"] = KResult("slopeRemoved", fLineRemovalIon.GetSlope(), "ADU");
-      //rec->SetBaselineRemoved(fLineRemovalIon.GetOffset());
-      //rec->SetExtra(fLineRemovalIon.GetSlope(), 3);
+
     }
     
     
@@ -218,7 +211,6 @@ std::map<std::string, KResult> KTrapKamperProto::MakeKamp(KRawBoloPulseRecord * 
     
     myResults["amp"] = KResult("amp", mean, "ADU");
     myResults["peakPositon"] = KResult("peakPositon", maxPeakPos, "bin");
-    //rec->SetPeakPosition(maxPeakPos);
     
     return myResults;
    
