@@ -35,6 +35,8 @@
 #include "KBBv2TimeDomainFitKamper.h"
 #include "TF1.h"
 #include "math.h"
+#include "KLinearRemoval.h"
+#include "KBaselineRemoval.h"
 #include <iostream>
 
 using namespace std;
