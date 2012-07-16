@@ -11,6 +11,8 @@
 #define __KAMPSITE_H_
 
 #include "Rtypes.h"
+#include "KResult.h"
+#include <map>
 #include <string>
 
 class KAmpEvent;
@@ -35,6 +37,12 @@ public:
   const char * GetName(void) const {return fName.c_str();}
   virtual void SetName(const char* name){fName = name;}
   
+  //helper method
+  // this compiles, but it doesn't yet work with the build-system and how rootcint is used in Kdata
+  // I leave this commented out here -- to be fixed in the future. 
+  // static void fill( KPulseAnalysisRecord* rec,  void( KPulseAnalysisRecord:: *Method)(double), 
+  //             std::map<string, KResult>& theResult, const char* theField );
+
 protected:
 
   std::string fName;

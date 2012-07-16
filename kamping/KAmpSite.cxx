@@ -48,3 +48,10 @@ void KAmpSite::SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometer
   pAmp->AddPulseAnalysisRecord(rec);
   
 }
+
+// inline void KAmpSite::fill( KPulseAnalysisRecord* rec, void(KPulseAnalysisRecord::*Method)(double),  
+// 	std::map<string, KResult>& theResult, const char* theField)
+// {
+// 	if( theResult.find(theField) != theResult.end() )
+//       (rec->*Method)( theResult[theField].fValue );
+// }

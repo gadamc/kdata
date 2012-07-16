@@ -28,9 +28,4 @@ KResult::~KResult(void)
 
 }
 
-// void KResult::fill( void(KPulseAnalysisRecord::*Method)(double), KPulseAnalysisRecord* rec, 
-// 	std::map<string, KResult>& theResult, string& theField)
-// {
-// 	if( theResult.find(theField.c_str()) != theResult.end() )
-//       rec->*Method( theResult[theField.c_str()].fValue );
-// }
+
