@@ -31,7 +31,8 @@ DEBUG = -g
 
 # the Module_libs.mk file is needed for ExeSuf, ObjSuf, DllSuf, OutputOpt, ROOTCFLAGS, ROOTLDFLAGS
 # ROOTLIBS, UNDEFOPT, SYSLIBS, LDFLAGS, SOFLAGS have been defined elsewhere 
-include era/Module_libs.mk
+#
+#   -- all of these things are now included by the top level KDATA Makefile  (include $(ROOTSYS)/etc/Makefile.arch)
 
 -include ../MyConfig.mk
 SRCDIR = era/
@@ -57,7 +58,7 @@ CLASSES += Pulse FitPulse OffsetFFT SambaToRoot
 
 EXE = edwrootana
 
-FILLEVENT    = $(KDATA_ROOT)/bin/$(EXE)$(ExeSuf)
+FILLEVENT    = $(KDATA_ROOT)/$(KDATABINDIR)/$(EXE)$(ExeSuf)
 FILLEVENTO   = $(addprefix $(SRCDIR),$(EXE).$(ObjSuf))
 PROGRAMS     = $(FILLEVENT) 
 OBJS        += $(FILLEVENTO)
@@ -84,10 +85,10 @@ COBJS = $(addprefix $(SRCDIR),$(addsuffix .$(ObjSuf), $(CLASSES)))
 OBJS          = $(COBJS)
 
 ## Library and Executable
-LIBEDWDSO       = $(KDATA_ROOT)/lib/libEra.$(DllSuf)
+LIBEDWDSO       = $(KDATA_ROOT)/$(KDATALDIR)/libEra.$(DllSuf)
 
 ifeq ($(PLATFORM),win32)
-EVENTLIB      = $(KDATA_ROOT)/lib/libEra.lib
+EVENTLIB      = $(KDATA_ROOT)/$(KDATALDIR)/libEra.lib
 else
 EVENTLIB      = $(shell pwd)/$(LIBEDWDSO)
 endif
@@ -101,7 +102,7 @@ EDSDICTO = $(EDSDICT).$(ObjSuf)
 EDSDICTS = $(EDSDICT).$(SrcSuf)
 OBJS   += $(EDSDICTO) 
 
-ERALDFLAGS := $(LDFLAGS) $(ROOTLDFLAGS)
+ERALDFLAGS := $(LDFLAGS)
 
 #------------------------------------------------------------------------------
 
@@ -116,15 +117,16 @@ all-era:        all
 #	$(COPY_HEADER) $< $@
 	
 $(LIBEDWDSO):     $(COBJS) $(EDSDICTO) 
-
+		@echo "Building ERA Libs"
+		@echo #(ERALDFLAGS)
 ifeq ($(PLATFORM),macosx)
 # We need to make both the .dylib and the .so
-		$(LD) $(SOFLAGS)$@ $(ERALDFLAGS) $(ROOTLIBS) $(SYSLIBS) $^ $(OutPutOpt) $@
+		$(LD) $(SOFLAGS)/$(KDATALDIR)/libEra.$(DllSuf) $(ERALDFLAGS) $^ $(OutPutOpt) $@ $(EXPLLINKLIBS)
 ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
 ifeq ($(MACOSX_MINOR),4)
 		ln -sf $@ $(subst .$(DllSuf),.so,$@)
 else
-		$(LD) -bundle -undefined $(UNDEFOPT) $(ERALDFLAGS) $(ROOTLIBS) $(SYSLIBS) $^ \
+		$(LD) -bundle -undefined $(UNDEFOPT) $(ERALDFLAGS)  $^ \
 			$(OutPutOpt) $(subst .$(DllSuf),.so,$@)
 endif
 endif
@@ -133,17 +135,17 @@ ifeq ($(PLATFORM),win32)
 		bindexplib $* $^ > $*.def
 		lib -nologo -MACHINE:IX86 $^ -def:$*.def \
 			$(OutPutOpt)$(EVENTLIB)
-		$(LD) $(SOFLAGS) $(ERALDFLAGS) $^ $*.exp $(ROOTLIBS) $(SYSLIBS) \
-			$(OutPutOpt)$@
+		$(LD) $(SOFLAGS) $(ERALDFLAGS) $^ $*.exp \
+			$(OutPutOpt)$@ $(EXPLLINKLIBS)
 		$(MT_DLL)
 else
-	$(LD) $(SOFLAGS) $(ERALDFLAGS) $(ROOTLIBS)  $(SYSLIBS) $^ $(OutPutOpt) $@ 
+	$(LD) $(SOFLAGS) $(ERALDFLAGS) $^ $(OutPutOpt) $@ $(EXPLLINKLIBS)
 endif
 endif
 		@echo "$@ done"
 
 $(FILLEVENT):       $(LIBEDWDSO) $(FILLEVENTO)
-		$(LD) $(ERALDFLAGS) $(FILLEVENTO) $(COBJS) $(EDSDICTO) $(ROOTLIBS) $(SYSLIBS) $(OutPutOpt)$@	
+		$(LD) $(ERALDFLAGS) $(FILLEVENTO) $(COBJS) $(EDSDICTO) $(EXPLLINKLIBS) $(SYSLIBS) $(OutPutOpt) $@ 
 		$(MT_EXE)
 		@echo "$@ done"
 

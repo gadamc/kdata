@@ -1,3 +1,5 @@
-# Libraries built by the kraw module
+# Libraries built by the kdatabase module
 
-KDATABASE_LIB    := $(LPATH)/libkdatabase.$(SOEXT)  
+KDATABASE_LIBNAME := libkdatabase.$(DllSuf)
+KDATABASE_LIB    := $(LPATH)/$(KDATABASE_LIBNAME)
+

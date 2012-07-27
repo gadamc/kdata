@@ -31,7 +31,7 @@
 MODNAME      := kqpa
 MODDIR       := kqpa
 
-KQPA_FLAGS  := $(CXXFLAGS)
+KQPA_FLAGS  := $(CXXFLAGS) -I$(KDATA_ROOT)/$(KDATAINCDIR)
 KQPA_LDFLAGS := $(LDFLAGS)
 KQPA_OPT     := $(OPT)
 
@@ -63,30 +63,30 @@ KQPA_LIBDEP   := $(ERA_LIB) $(KDS_LIB) $(KPTA_LIB)
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KQPA_LH     := $(KQPA_DIRI)/$(MODNAME)_LinkDef.h
 KQPA_DC     := $(KQPA_DIRS)/$(MODNAME)_Dict.C
-KQPA_DO     := $(KQPA_DC:.C=.o)
+KQPA_DO     := $(KQPA_DC:.C=.$(ObjSuf))
 KQPA_DH     := $(KQPA_DC:.C=.h)
 
 KQPA_H      := $(filter-out $(KQPA_LH) $(KQPA_DH),$(wildcard $(KQPA_DIRI)/*.h))
 KQPA_ECXX   := $(wildcard $(KQPA_DIRS)/K*.cxx)
 KQPA_CXX    := $(filter-out $(KQPA_ECXX),$(wildcard $(KQPA_DIRS)/*.cxx))
-KQPA_O      := $(KQPA_CXX:.cxx=.o)
-KQPA_EO     := $(KQPA_ECXX:.cxx=.o)
+KQPA_O      := $(KQPA_CXX:.cxx=.$(ObjSuf))
+KQPA_EO     := $(KQPA_ECXX:.cxx=.$(ObjSuf))
 KQPA_EH     := $(KQPA_ECXX:.cxx=.h)
-KQPA_DICTH  := $(KQPA_EH:.h=.h+)
+KQPA_DICTH  := $(patsubst $(KQPA_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KQPA_EH))
 
-KQPA_EXE    := $(patsubst $(KQPA_DIRS)/%.cxx,bin/%,$(KQPA_CXX))
+KQPA_EXE    := $(patsubst $(KQPA_DIRS)/%.cxx,$(KDATABINDIR)/%,$(KQPA_CXX))
 
-KQPALIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KQPA_LIB))
+KQPALIBS	   := $(patsubst $(LPATH)/lib%.$(DllSuf),-l%,$(KQPA_LIB))
 
-KQPA_DEP    := $(KQPA_O:.o=.d) $(KQPA_EO:.o=.d)
+KQPA_DEP    := $(KQPA_O:.$(ObjSuf)=.d) $(KQPA_EO:.$(ObjSuf)=.d)
 
 # only depend on our dictionary if we are building a library
 ifneq ($(KQPA_LIB),)
-KQPA_DEP    += $(KQPA_DO:.o=.d)
+KQPA_DEP    += $(KQPA_DO:.$(ObjSuf)=.d)
 endif
 
 # used in the main Makefile
-ALLHDRS      += $(patsubst $(KQPA_DIRI)/%.h,include/%.h,$(KQPA_H))
+ALLHDRS      += $(patsubst $(KQPA_DIRI)/%.h,$(KDATAINCDIR)/%.h,$(KQPA_H))
 ifneq ($(KQPA_EO),)
 ALLLIBS      += $(KQPA_LIB)
 endif
@@ -102,17 +102,17 @@ INCLUDEFILES += $(KQPA_DEP)
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KQPA_DIRI)/%.h
-		$(COPY_HEADER) $< $@
+$(KDATAINCDIR)/%.h:    $(KQPA_DIRI)/%.h
+	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
-$(KQPA_DIRS)/%.o:    $(KQPA_DIRS)/%.cxx
-	$(CXX) $(KQPA_OPT) $(KQPA_FLAGS) $(ROOTINCS) -I$(KQPA_XTRAINCS) -o $@ -c $< 
+$(KQPA_DIRS)/%.$(ObjSuf):    $(KQPA_DIRS)/%.cxx
+	$(CXX) $(KQPA_FLAGS) -I$(KQPA_XTRAINCS) -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KQPA_DIRS)/%.o $(KDATAED_LIB) $(KQPA_LIBDEP)
+$(KDATABINDIR)/%: $(KQPA_DIRS)/%.$(ObjSuf) $(KDATAED_LIB) $(KQPA_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(KQPA_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KQPALIBS) $(KQPA_XTRALIBS)
+		$(LD) $(KQPA_LDFLAGS) -o $@ $< $(ROOTLIBS) $(SYSLIBS) $(KDATALIBDIRS) $(KQPALIBS) $(KQPA_XTRALIBS)
                 
 # rules for building dictionary
 $(KQPA_DO):         $(KQPA_DC)
@@ -120,25 +120,48 @@ $(KQPA_DO):         $(KQPA_DC)
 
 $(KQPA_DC):         $(KQPA_EH) $(KQPA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KQPA_XTRAINCS)  $(KQPA_DICTH) $(KQPA_LH) 
+	$(ROOTCINT) -f $@ -c -I$(KQPA_XTRAINCS)  $(KQPA_DICTH) $(KQPA_LH) 
 
 # rule for building library
 $(KQPA_LIB):        $(KQPA_EO) $(KQPA_DO) $(KQPA_LIBDEP)
-	@echo "Building $@..."
-	$(LD) $(KQPA_LDFLAGS) $(SOFLAGS)  -o $@ $(KQPA_EO) $(KQPA_DO) $(KDATALIBDIRS) $(KQPA_XTRALIBS) $(ROOTLIBS) $(KQPA_FLAGS) 
+		@echo "Building $@..."
+ifeq ($(ARCH),aix5)
+		$(MAKESHARED) $(OutPutOpt) $@ $(LIBS) -p 0 $(KQPA_EO) $(KQPA_DO)
+else
+ifeq ($(PLATFORM),macosx)
+# We need to make both the .dylib and the .so
+		$(LD) $(SOFLAGS)$(KDATALDIR)/$(KQPA_LIBNAME) $(KQPA_LDFLAGS) $(KQPA_EO) $(KQPA_DO) $(KDATALIBDIRS) $(KQPA_XTRALIBS) $(OutPutOpt) $@ $(EXPLLINKLIBS) -lMathMore -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
+ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
+ifeq ($(MACOSX_MINOR),4)
+		ln -sf $@ $(subst .$(DllSuf),.so,$@)
+endif
+endif
+else
+ifeq ($(PLATFORM),win32)
+		bindexplib $* $(KQPA_EO) $(KQPA_DO) > $*.def
+		lib -nologo -MACHINE:IX86 $(KQPA_EO) $(KQPA_DO) -def:$*.def \
+		   $(OutPutOpt)$(EVENTLIB)
+		$(LD) $(SOFLAGS) $(KQPA_LDFLAGS) $(KQPA_EO) $(KQPA_DO) $(KDATALIBDIRS) $(KQPA_XTRALIBS) $*.exp $(LIBS) -lMathMore -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom \
+		   $(OutPutOpt)$@
+		$(MT_DLL)
+else
+		$(LD) $(SOFLAGS) $(KQPA_LDFLAGS) $(KQPA_EO) $(KQPA_DO) $(KDATALIBDIRS) $(KQPA_XTRALIBS) $(OutPutOpt) $@ $(EXPLLINKLIBS) -lMathMore -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
+endif
+endif
+endif
+		@echo "$@ done"
+
+# @echo "Building $@..."
+# $(LD) $(KQPA_LDFLAGS) $(SOFLAGS)  -o $@ $(KQPA_EO) $(KQPA_DO) $(KDATALIBDIRS) $(KQPA_XTRALIBS) $(ROOTLIBS) $(KQPA_FLAGS) 
 
 
 all-kqpa:       $(KQPA_LIB) 
   
 clean-kqpa:
-		@rm -f $(KQPA_DIRS)/*~ $(KQPA_DIRS)/*.o
+		@rm -f $(KQPA_DIRS)/*~ $(KQPA_DIRS)/*.o $(KQPA_DIRS)/*.obj
 		@rm -f $(KQPA_DC) $(KQPA_DH) $(KQPA_DEP) $(KQPA_LIB)
 
 clean::         clean-kqpa
-
-
-	
-#prepare::       prepare-kqpa
 
 #end
 

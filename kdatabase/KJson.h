@@ -68,11 +68,11 @@ public:
   typedef struct Hooks {
         void *(*malloc_fn)(size_t sz);
         void (*free_fn)(void *ptr);
-  } Hooks;
+  } JHook;
 
 
 	/* Supply malloc, realloc and free functions to KJson */
-  static void InitHooks(Hooks* hooks);
+  static void InitHooks(JHook* hooks);
 
 
   /* Supply a block of JSON, and this returns a KJson object you can interrogate. Call Delete when finished. */

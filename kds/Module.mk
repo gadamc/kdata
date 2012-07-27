@@ -33,13 +33,12 @@ MODDIR       := kds
 
 KDS_FLAGS  := $(CXXFLAGS)
 KDS_LDFLAGS := $(LDFLAGS)
-KDS_OPT     := $(OPT)
 
 #add for debuging purposes
 #assignment operator
 #KDS_FLAGS  += -D_K_DEBUG_EVENT_ASSIGNOP
 #remove the optimization in order to improve debugging if you want
-#KDS_OPT  := $(filter-out -O2,$(KDS_OPT))
+#KDS_OPT  := $(filter-out -O2,$(OPT))
 #KDS_LDFLAGS := $(filter-out -O2,$(KDS_LDFLAGS))
 
 ###
@@ -54,7 +53,7 @@ KDS_DIRI   := $(MODDIR)
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KDS_LH     := $(KDS_DIRI)/$(MODNAME)_LinkDef.h
 KDS_DC     := $(KDS_DIRS)/$(MODNAME)_Dict.C
-KDS_DO     := $(KDS_DC:.C=.o)
+KDS_DO     := $(KDS_DC:.C=.$(ObjSuf))
 KDS_DH     := $(KDS_DC:.C=.h)
 
 KDS_H      := $(filter-out $(KDS_LH) $(KDS_DH),$(wildcard $(KDS_DIRI)/*.h))
@@ -62,25 +61,25 @@ KDS_ECXX   := $(wildcard $(KDS_DIRS)/K*.cxx)
 KDS_CXX    := $(filter-out $(KDS_ECXX),$(wildcard $(KDS_DIRS)/*.cxx))
 #KDS_CXX    := $(filter-out $(KDS_CXX),$(KDS_DIRS)/mergeKEdsTree.cxx)
 
-KDS_O      := $(KDS_CXX:.cxx=.o)
-KDS_EO     := $(KDS_ECXX:.cxx=.o)
+KDS_O      := $(KDS_CXX:.cxx=.$(ObjSuf))
+KDS_EO     := $(KDS_ECXX:.cxx=.$(ObjSuf))
 KDS_EH     := $(KDS_ECXX:.cxx=.h)
-KDS_DICTH  := $(KDS_EH:.h=.h+)
+KDS_DICTH  := $(patsubst $(KDS_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KDS_EH)) 
 
 
-KDS_EXE    := $(patsubst $(KDS_DIRS)/%.cxx,bin/%,$(KDS_CXX))
+KDS_EXE    := $(patsubst $(KDS_DIRS)/%.cxx,$(KDATABINDIR)/%,$(KDS_CXX))
 
-KDSLIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KDS_LIB))
+KDSLIBS	   := $(patsubst $(LPATH)/lib%.$(DllSuf),-l%,$(KDS_LIB))
 
-KDS_DEP    := $(KDS_O:.o=.d) $(KDS_EO:.o=.d)
+KDS_DEP    := $(KDS_O:.$(ObjSuf)=.d) $(KDS_EO:.$(ObjSuf)=.d)
 
 # only depend on our dictionary if we are building a library
 ifneq ($(KDS_LIB),)
-KDS_DEP    += $(KDS_DO:.o=.d)
+KDS_DEP    += $(KDS_DO:.$(ObjSuf)=.d)
 endif
 
 # used in the main Makefile
-ALLHDRS      += $(patsubst $(KDS_DIRI)/%.h,include/%.h,$(KDS_H))
+ALLHDRS      += $(patsubst $(KDS_DIRI)/%.h,$(KDATAINCDIR)/%.h,$(KDS_H))
 ifneq ($(KDS_EO),)
 ALLLIBS      += $(KDS_LIB)
 endif
@@ -97,39 +96,65 @@ INCLUDEFILES += $(KDS_DEP)
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KDS_DIRI)/%.h
-		$(COPY_HEADER) $< $@
+$(KDATAINCDIR)/%.h:    $(KDS_DIRI)/%.h
+	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
-$(KDS_DIRS)/%.o:    $(KDS_DIRS)/%.cxx 
-	$(CXX) $(KDS_OPT) $(KDS_FLAGS) $(ROOTINCS) -o $@ -c $< 
+$(KDS_DIRS)/%.$(ObjSuf):    $(KDS_DIRS)/%.cxx 
+	$(CXX) $(KDS_FLAGS) -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KDS_DIRS)/%.o $(KDATAED_LIB) 
-		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KDSLIBS) 
+$(KDATABINDIR)/%: $(KDS_DIRS)/%.$(ObjSuf) $(KDATAED_LIB) 
+	@echo "=== Linking executable $@ ==="
+	$(LD) $(KDS_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(KDSLIBS) $(ROOTLIBS) $(SYSLIBS) 
                 
 # rules for building dictionary
 $(KDS_DO):         $(KDS_DC)
-	$(CXX) $(NOOPT) $(KDS_FLAGS) $(ROOTINCS) -I.  -o $@ -c $< 
+	$(CXX) $(KDS_FLAGS) -I. -o $@ -c $< 
 
 $(KDS_DC):         $(KDS_EH) $(KDS_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KDS_DICTH) $(KDS_LH) 
+	$(ROOTCINT) -f $@ -c $(KDS_DICTH) $(KDS_LH) 
 
 # rule for building library
 $(KDS_LIB):        $(KDS_EO) $(KDS_DO) $(KDS_LIBDEP) 
-	@echo "Building $@..."
-	$(LD) $(LDFLAGS) $(SOFLAGS) -o $@  $(KDS_EO) $(KDS_DO) $(ROOTLIBS) $(KDS_FLAGS) 
-	@echo "done building kpta library"
+		@echo "Building $@..."
+ifeq ($(ARCH),aix5)
+		$(MAKESHARED) $(OutPutOpt) $@ $(LIBS) -p 0 $(KDS_EO) $(KDS_DO)
+else
+ifeq ($(PLATFORM),macosx)
+# We need to make both the .dylib and the .so
+		$(LD) $(SOFLAGS)$(KDATALDIR)/$(KDS_LIBNAME) $(KDS_LDFLAGS) $(KDS_EO) $(KDS_DO) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
+ifeq ($(MACOSX_MINOR),4)
+		ln -sf $@ $(subst .$(DllSuf),.so,$@)
+endif
+endif
+else
+ifeq ($(PLATFORM),win32)
+		bindexplib $* $(KDS_EO) $(KDS_DO) > $*.def
+		lib -nologo -MACHINE:IX86 $(KDS_EO) $(KDS_DO) -def:$*.def \
+		   $(OutPutOpt)$(EVENTLIB)
+		$(LD) $(SOFLAGS) $(KDS_LDFLAGS) $(KDS_EO) $(KDS_DO) $*.exp $(LIBS) \
+		   $(OutPutOpt)$@
+		$(MT_DLL)
+else
+		$(LD) $(SOFLAGS) $(KDS_LDFLAGS) $(KDS_EO) $(KDS_DO) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+endif
+endif
+endif
+		@echo "$@ done"
+
+#	$(LD) $(KDS_LDFLAGS) $(SOFLAGS) -o $@  $(KDS_EO) $(KDS_DO) $(ROOTLIBS) $(KDS_FLAGS) 
+#	@echo "done building kpta library"
 
 all-kds:       $(KDS_LIB)
 
 clean-kds:
-		@rm -f $(KDS_DIRS)/*~ $(KDS_DIRS)/*.o
+		@rm -f $(KDS_DIRS)/*~  $(KDS_DIRS)/*.o $(KDS_DIRS)/*.obj $(KDS_DIRS)/*.d
 		@rm -f $(KDS_DC) $(KDS_DH) $(KDS_DEP) $(KDS_LIB)
 
-clean::         clean-kds
+clean::      clean-kds
 
 #end
 

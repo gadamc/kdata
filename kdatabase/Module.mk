@@ -36,8 +36,8 @@ KDATABASE_LDFLAGS := $(LDFLAGS)
 KDATABASE_OPT     := $(OPT)
 
 #KDATABASE_OPT  += -g
-KDATABASE_OPT  := $(filter-out -O2,$(KDATABASE_OPT))
-KDATABASE_LDFLAGS := $(filter-out -O2,$(KDATABASE_LDFLAGS))
+#KDATABASE_OPT  := $(filter-out -O2,$(KDATABASE_OPT))
+#KDATABASE_LDFLAGS := $(filter-out -O2,$(KDATABASE_LDFLAGS))
 
 #adding debugging flags here
 #KDATABASE_FLAGS += -D_K_DEBUG_ERAEVENTFINDER
@@ -48,9 +48,6 @@ KDATABASE_DIR    := $(MODDIR)
 KDATABASE_DIRS   := $(MODDIR)
 KDATABASE_DIRI   := $(MODDIR)
 
-#only need to put the ERAINCS here because ERA files are NOT copied
-# to the projects include directory! This should be changed.
-KDATABASE_XTRAINCS := $(ERAINCS) 
 
 #list all external module libs that this module depends on
 #if this module depends on other modules in this project you MUST
@@ -62,30 +59,30 @@ KDATABASE_LIBDEP   :=
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KDATABASE_LH     := $(KDATABASE_DIRI)/$(MODNAME)_LinkDef.h
 KDATABASE_DC     := $(KDATABASE_DIRS)/$(MODNAME)_Dict.C
-KDATABASE_DO     := $(KDATABASE_DC:.C=.o)
+KDATABASE_DO     := $(KDATABASE_DC:.C=.$(ObjSuf))
 KDATABASE_DH     := $(KDATABASE_DC:.C=.h)
 
 KDATABASE_H      := $(filter-out $(KDATABASE_LH) $(KDATABASE_DH),$(wildcard $(KDATABASE_DIRI)/*.h))
 KDATABASE_ECXX   := $(wildcard $(KDATABASE_DIRS)/K*.cxx) $(wildcard $(KDATABASE_DIRS)/JSON*.cxx)
 KDATABASE_CXX    := $(filter-out $(KDATABASE_ECXX),$(wildcard $(KDATABASE_DIRS)/*.cxx))
-KDATABASE_O      := $(KDATABASE_CXX:.cxx=.o)
-KDATABASE_EO     := $(KDATABASE_ECXX:.cxx=.o)
+KDATABASE_O      := $(KDATABASE_CXX:.cxx=.$(ObjSuf))
+KDATABASE_EO     := $(KDATABASE_ECXX:.cxx=.$(ObjSuf))
 KDATABASE_EH     := $(KDATABASE_ECXX:.cxx=.h)
 KDATABASE_DICTH  := $(KDATABASE_EH:.h=.h+)
 
-KDATABASE_EXE    := $(patsubst $(KDATABASE_DIRS)/%.cxx,bin/%,$(KDATABASE_CXX))
+KDATABASE_EXE    := $(patsubst $(KDATABASE_DIRS)/%.cxx,$(KDATABINDIR)/%,$(KDATABASE_CXX))
 
-KDATABASELIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KDATABASE_LIB))
+KDATABASELIBS	   := $(patsubst $(LPATH)/lib%.$(DllSuf),-l%,$(KDATABASE_LIB))
 
-KDATABASE_DEP    := $(KDATABASE_O:.o=.d) $(KDATABASE_EO:.o=.d)
+KDATABASE_DEP    := $(KDATABASE_O:.$(ObjSuf)=.d) $(KDATABASE_EO:.$(ObjSuf)=.d)
 
 # only depend on our dictionary if we are building a library
 ifneq ($(KDATABASE_LIB),)
-KDATABASE_DEP    += $(KDATABASE_DO:.o=.d)
+KDATABASE_DEP    += $(KDATABASE_DO:.$(ObjSuf)=.d)
 endif
 
 # used in the main Makefile
-ALLHDRS      += $(patsubst $(KDATABASE_DIRI)/%.h,include/%.h,$(KDATABASE_H))
+ALLHDRS      += $(patsubst $(KDATABASE_DIRI)/%.h,$(KDATAINCDIR)/%.h,$(KDATABASE_H))
 ifneq ($(KDATABASE_EO),)
 ALLLIBS      += $(KDATABASE_LIB)
 endif
@@ -101,36 +98,63 @@ INCLUDEFILES += $(KDATABASE_DEP)
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KDATABASE_DIRI)/%.h
+$(KDATAINCDIR)/%.h:    $(KDATABASE_DIRI)/%.h
 	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
-$(KDATABASE_DIRS)/%.o:    $(KDATABASE_DIRS)/%.cxx
-	$(CXX) $(KDATABASE_OPT) $(KDATABASE_FLAGS) $(ROOTINCS) $(JANSSONINCS) $(CURLINCS) -I$(KDATABASE_XTRAINCS) -o $@ -c $< 
+$(KDATABASE_DIRS)/%.$(ObjSuf):    $(KDATABASE_DIRS)/%.cxx
+	$(CXX) $(KDATABASE_FLAGS) $(CURLINCS) -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KDATABASE_DIRS)/%.o $(KDATAED_LIB) $(KDATABASE_LIBDEP)
+$(KDATABINDIR)/%: $(KDATABASE_DIRS)/%.$(ObjSuf) $(KDATAED_LIB) $(KDATABASE_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(KDATABASE_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(JANSSONLIBS) $(CURLLIBS) $(ROOTLIBS) $(SYSLIBS) $(KDATABASELIBS) $(KDATABASE_XTRALIBS)
+		$(LD) $(KDATABASE_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(KDATABASELIBS) $(CURLLIBS) $(ROOTLIBS) $(SYSLIBS)  $(KDATABASE_XTRALIBS)
                 
 # rules for building dictionary
 $(KDATABASE_DO):         $(KDATABASE_DC)
-	$(CXX) $(NOOPT) $(KDATABASE_FLAGS) $(ROOTINCS) -I. -I$(KDATABASE_XTRAINCS) -o $@ -c $< 
+	$(CXX) $(KDATABASE_FLAGS) -I. -o $@ -c $< 
 
 $(KDATABASE_DC):         $(KDATABASE_EH) $(KDATABASE_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KDATABASE_XTRAINCS)  $(KDATABASE_DICTH) $(KDATABASE_LH) 
+	$(ROOTCINT) -f $@ -c $(KDATABASE_DICTH) $(KDATABASE_LH) 
 
 # rule for building library
 $(KDATABASE_LIB):        $(KDATABASE_EO) $(KDATABASE_DO) $(KDATABASE_LIBDEP) 
-	@echo "Building $@..."
-	$(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KDATABASE_EO) $(KDATABASE_DO) $(KDATALIBDIRS) $(KDATABASE_XTRALIBS) $(JANSSONLIBS) $(CURLLIBS) $(ROOTLIBS) $(KDATABASE_FLAGS) 
+		@echo "Building $@..."
+ifeq ($(ARCH),aix5)
+		$(MAKESHARED) $(OutPutOpt) $@ $(LIBS) -p 0 $(KDATABASE_EO) $(KDATABASE_DO)
+else
+ifeq ($(PLATFORM),macosx)
+# We need to make both the .dylib and the .so
+		$(LD) $(SOFLAGS)$(KDATALDIR)/$(KDATABASE_LIBNAME) $(KDATABASE_LDFLAGS) $(KDATABASE_EO) $(KDATABASE_DO) $(KDATALIBDIRS) $(KDATABASE_XTRALIBS) $(CURLLIBS) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
+ifeq ($(MACOSX_MINOR),4)
+		ln -sf $@ $(subst .$(DllSuf),.so,$@)
+endif
+endif
+else
+ifeq ($(PLATFORM),win32)
+		bindexplib $* $(KDATABASE_EO) $(KDATABASE_DO) > $*.def
+		lib -nologo -MACHINE:IX86 $(KDATABASE_EO) $(KDATABASE_DO) -def:$*.def \
+		   $(OutPutOpt)$(EVENTLIB)
+		$(LD) $(SOFLAGS) $(KDATABASE_LDFLAGS) $(KDATABASE_EO) $(KDATABASE_DO) $(KDATALIBDIRS) $(KDATABASE_XTRALIBS) $(CURLLIBS) $*.exp $(LIBS) \
+		   $(OutPutOpt)$@
+		$(MT_DLL)
+else
+		$(LD) $(SOFLAGS) $(KDATABASE_LDFLAGS) $(KDATABASE_EO) $(KDATABASE_DO) $(KDATALIBDIRS) $(KDATABASE_XTRALIBS) $(CURLLIBS) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+endif
+endif
+endif
+		@echo "$@ done"
+
+# @echo "Building $@..."
+# $(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KDATABASE_EO) $(KDATABASE_DO) $(KDATALIBDIRS) $(KDATABASE_XTRALIBS) $(JANSSONLIBS)  $(ROOTLIBS) $(KDATABASE_FLAGS) 
 
 
 all-kdatabase:       $(KDATABASE_LIB) 
 
 clean-kdatabase:
-		@rm -f $(KDATABASE_DIRS)/*~ $(KDATABASE_DIRS)/*.o
+		@rm -f $(KDATABASE_DIRS)/*~ $(KDATABASE_DIRS)/*.$(ObjSuf)
 		@rm -f $(KDATABASE_DC) $(KDATABASE_DH) $(KDATABASE_DEP) $(KDATABASE_LIB)
 
 clean::         clean-kdatabase

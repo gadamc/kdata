@@ -3,7 +3,7 @@
 
 #include "EdwRawDB.h"
 #include "EdwAnaDB.h"
-#include "SambaToRoot.h"
+#include "EdwSambaToRoot.h"
 #include "EdwNtuple.h"
 
 // Syntaxe specifique fichiers params a documenter

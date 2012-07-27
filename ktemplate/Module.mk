@@ -32,6 +32,7 @@ MODNAME      := ktemplate
 MODDIR       := ktemplate
 
 KTMP_FLAGS  := $(CXXFLAGS)
+KTMP_LDFLAGS  := $(LDFLAGS)
 
 KTMP_DIR    := $(MODDIR)
 KTMP_DIRS   := $(MODDIR)
@@ -48,26 +49,26 @@ KTMP_LIBDEP   :=
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KTMP_LH     := $(KTMP_DIRI)/$(MODNAME)_LinkDef.h
 KTMP_DC     := $(KTMP_DIRS)/$(MODNAME)_Dict.C
-KTMP_DO     := $(KTMP_DC:.C=.o)
+KTMP_DO     := $(KTMP_DC:.C=.$(ObjSuf))
 KTMP_DH     := $(KTMP_DC:.C=.h)
 
 KTMP_H      := $(filter-out $(KTMP_LH) $(KTMP_DH),$(wildcard $(KTMP_DIRI)/*.h))
 KTMP_ECXX   := $(wildcard $(KTMP_DIRS)/K*.cxx)
 KTMP_CXX    := $(filter-out $(KTMP_ECXX),$(wildcard $(KTMP_DIRS)/*.cxx))
-KTMP_O      := $(KTMP_CXX:.cxx=.o)
-KTMP_EO     := $(KTMP_ECXX:.cxx=.o)
+KTMP_O      := $(KTMP_CXX:.cxx=.$(ObjSuf))
+KTMP_EO     := $(KTMP_ECXX:.cxx=.$(ObjSuf))
 KTMP_EH     := $(KTMP_ECXX:.cxx=.h)
-KTMP_DICTH  := $(KTMP_EH:.h=.h+)
+KTMP_DICTH  := $(patsubst $(KTMP_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KTMP_EH))
 
-KTMP_EXE    := $(patsubst $(KTMP_DIRS)/%.cxx,bin/%,$(KTMP_CXX))
+KTMP_EXE    := $(patsubst $(KTMP_DIRS)/%.cxx,$(KDATABINDIR)/%,$(KTMP_CXX))
 
-KTMPLIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KTMP_LIB))
+KTMPLIBS	   := $(patsubst $(LPATH)/lib%.$(DllSuf),-l%,$(KTMP_LIB))
 
-KTMP_DEP    := $(KTMP_O:.o=.d) $(KTMP_EO:.o=.d)
+KTMP_DEP    := $(KTMP_O:.$(ObjSuf)=.d) $(KTMP_EO:.$(ObjSuf)=.d)
 
 # only depend on our dictionary if we are building a library
 ifneq ($(KTMP_LIB),)
-KTMP_DEP    += $(KTMP_DO:.o=.d)
+KTMP_DEP    += $(KTMP_DO:.$(ObjSuf)=.d)
 endif
 
 # used in the main Makefile
@@ -90,42 +91,63 @@ INCLUDEFILES += $(KTMP_DEP)
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KTMP_DIRI)/%.h
-		$(COPY_HEADER) $< $@
+$(KDATAINCDIR)/%.h:    $(KTMP_DIRI)/%.h
+	$(COPY_HEADER) $< $@
 
-    
 # rule for compiling our source files
-$(KTMP_DIRS)/%.o:    $(KTMP_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KTMP_FLAGS) $(ROOTINCS)  -o $@ -c $< 
+$(KTMP_DIRS)/%.$(ObjSuf):    $(KTMP_DIRS)/%.cxx
+	$(CXX) $(KTMP_FLAGS) -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KTMP_DIRS)/%.o $(KDATAED_LIB) $(KTMP_LIBDEP)
+$(KDATABINDIR)/%: $(KTMP_DIRS)/%.$(ObjSuf) $(KDATAED_LIB) $(KTMP_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KTMPLIBS) $(KTMP_XTRALIBS)
+		$(LD) $(KTMP_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(KTMPLIBS) $(ROOTLIBS) $(SYSLIBS) $(KTMP_XTRALIBS)
                 
 # rules for building dictionary
 $(KTMP_DO):         $(KTMP_DC) 
-	$(CXX) $(NOOPT) $(KTMP_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
+	$(CXX) $(KTMP_FLAGS) -I. -o $@ -c $< 
 
 $(KTMP_DC):         $(KTMP_EH) $(KTMP_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KTMP_DICTH) $(KTMP_LH) 
+	$(ROOTCINT) -f $@ -c $(KTMP_DICTH) $(KTMP_LH) 
 
 # rule for building library
 $(KTMP_LIB):        $(KTMP_EO) $(KTMP_DO) $(KTMP_LIBDEP)
-	@echo "Building $@..."
-	$(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KTMP_EO) $(KTMP_DO) $(KDATALIBDIRS) $(KTMP_XTRALIBS) $(ROOTLIBS) $(KTMP_FLAGS) 
-	@echo "done building ktemplate library"
+		@echo "Building $@..."
+ifeq ($(ARCH),aix5)
+		$(MAKESHARED) $(OutPutOpt) $@ $(LIBS) -p 0 $(KTMP_EO) $(KTMP_DO)
+else
+ifeq ($(PLATFORM),macosx)
+# We need to make both the .dylib and the .so
+		$(LD) $(SOFLAGS)$(KDATALDIR)/$(KTMP_LIBNAME) $(KTMP_LDFLAGS) $(KTMP_EO) $(KTMP_DO) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
+ifeq ($(MACOSX_MINOR),4)
+		ln -sf $@ $(subst .$(DllSuf),.so,$@)
+endif
+endif
+else
+ifeq ($(PLATFORM),win32)
+		bindexplib $* $(KTMP_EO) $(KTMP_DO) > $*.def
+		lib -nologo -MACHINE:IX86 $(KTMP_EO) $(KTMP_DO) -def:$*.def \
+		   $(OutPutOpt)$(EVENTLIB)
+		$(LD) $(SOFLAGS) $(KTMP_LDFLAGS) $(KTMP_EO) $(KTMP_DO) $*.exp $(LIBS) \
+		   $(OutPutOpt)$@
+		$(MT_DLL)
+else
+		$(LD) $(SOFLAGS) $(KTMP_LDFLAGS) $(KTMP_EO) $(KTMP_DO) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+endif
+endif
+endif
+		@echo "$@ done"
+
 
 all-ktemplate:       $(KTMP_LIB) 
 
 
 clean-ktemplate:
-		@rm -f $(KTMP_DIRS)/*~ $(KTMP_DIRS)/*.o
+		@rm -f $(KTMP_DIRS)/*~ $(KTMP_DIRS)/*.o $(KTMP_DIRS)/*.obj
 		@rm -f $(KTMP_DC) $(KTMP_DH) $(KTMP_DEP) $(KTMP_LIB)
 
 clean::         clean-ktemplate
 
-
 #end
-

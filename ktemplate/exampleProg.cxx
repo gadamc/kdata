@@ -19,7 +19,7 @@
 
 using namespace std;
 
-int main(int argc, char* argv[])
+int main()
 {
 	cout << "kdata is the bomb." << endl;
 }

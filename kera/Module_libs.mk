@@ -1,5 +1,4 @@
-# Libraries built by the kraw module
+# Libraries built by the kera module
 
-KERA_LIB    := $(LPATH)/libkera.$(SOEXT)  
-
-
+KERA_LIBNAME := libkera.$(DllSuf)
+KERA_LIB    := $(LPATH)/$(KERA_LIBNAME)

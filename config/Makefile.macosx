@@ -7,29 +7,29 @@
 
 # change compiler options (ROOT default for linux is -O)
 OPT            += -g
-CXX            := g++
-CC             := gcc
-LD             := g++
+#CXX            := g++
+#CC             := gcc
+#LD             := g++
 
 # add KDATA-specific compiler switches for this platform
-KDATA_FLAGS     := -fPIC
+#KDATA_FLAGS     := -fPIC
 
 # support intel-based macs
-ifeq ($(MACHTYPE),i386)
-KDATA_FLAGS     +=
-endif
+#ifeq ($(MACHTYPE),i386)
+#KDATA_FLAGS     +=
+#endif
 
 
 EXTRALIBS      := 
 
 ##### Extra fortran flags #####
 
-F77FLAGS       += -fno-f2c -fno-second-underscore -fPIC
+#F77FLAGS       += -fno-f2c -fno-second-underscore -fPIC
 
 #####
 
-F77LD		    = ${F77}
+#F77LD		    = ${F77}
 
-ifeq (${F77},gfortran)
-F77LIBS        += -lstdc++
-endif
+#ifeq (${F77},gfortran)
+#F77LIBS        += -lstdc++
+#endif

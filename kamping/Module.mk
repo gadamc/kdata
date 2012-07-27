@@ -31,7 +31,8 @@
 MODNAME      := kamping
 MODDIR       := kamping
 
-KAMPING_FLAGS  := $(CXXFLAGS)
+KAMPING_FLAGS  := $(CXXFLAGS) -I$(KDATA_ROOT)/$(KDATAINCDIR)
+KAMPING_LDFLAGS  := $(LDFLAGS)
 
 KAMPING_DIR    := $(MODDIR)
 KAMPING_DIRS   := $(MODDIR)
@@ -48,30 +49,30 @@ KAMPING_LIBDEP   := $(KPTA_LIB) $(KDS_LIB)
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KAMPING_LH     := $(KAMPING_DIRI)/$(MODNAME)_LinkDef.h
 KAMPING_DC     := $(KAMPING_DIRS)/$(MODNAME)_Dict.C
-KAMPING_DO     := $(KAMPING_DC:.C=.o)
+KAMPING_DO     := $(KAMPING_DC:.C=.$(ObjSuf))
 KAMPING_DH     := $(KAMPING_DC:.C=.h)
 
 KAMPING_H      := $(filter-out $(KAMPING_LH) $(KAMPING_DH),$(wildcard $(KAMPING_DIRI)/*.h))
 KAMPING_ECXX   := $(wildcard $(KAMPING_DIRS)/K*.cxx)
 KAMPING_CXX    := $(filter-out $(KAMPING_ECXX), $(wildcard $(KAMPING_DIRS)/*.cxx))
-KAMPING_O      := $(KAMPING_CXX:.cxx=.o)
-KAMPING_EO     := $(KAMPING_ECXX:.cxx=.o)
+KAMPING_O      := $(KAMPING_CXX:.cxx=.$(ObjSuf))
+KAMPING_EO     := $(KAMPING_ECXX:.cxx=.$(ObjSuf))
 KAMPING_EH     := $(KAMPING_ECXX:.cxx=.h)
-KAMPING_DICTH  := $(KAMPING_EH:.h=.h+)
+KAMPING_DICTH  := $(patsubst $(KAMPING_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KAMPING_EH))
 
-KAMPING_EXE    := $(patsubst $(KAMPING_DIRS)/%.cxx,bin/%,$(KAMPING_CXX))
+KAMPING_EXE    := $(patsubst $(KAMPING_DIRS)/%.cxx,$(KDATABINDIR)/%,$(KAMPING_CXX))
 
-KAMPINGLIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KAMPING_LIB))
+KAMPINGLIBS	   := $(patsubst $(LPATH)/lib%.$(DllSuf),-l%,$(KAMPING_LIB))
 
-KAMPING_DEP    := $(KAMPING_O:.o=.d) $(KAMPING_EO:.o=.d)
+KAMPING_DEP    := $(KAMPING_O:.$(ObjSuf)=.d) $(KAMPING_EO:.$(ObjSuf)=.d)
 
 # only depend on our dictionary if we are building a library
 ifneq ($(KAMPING_LIB),)
-KAMPING_DEP    += $(KAMPING_DO:.o=.d)
+KAMPING_DEP    += $(KAMPING_DO:.$(ObjSuf)=.d)
 endif
 
 # used in the main Makefile
-ALLHDRS      += $(patsubst $(KAMPING_DIRI)/%.h,include/%.h,$(KAMPING_H))
+ALLHDRS      += $(patsubst $(KAMPING_DIRI)/%.h,$(KDATAINCDIR)/%.h,$(KAMPING_H))
 ifneq ($(KAMPING_EO),)
 ALLLIBS      += $(KAMPING_LIB)
 endif
@@ -90,37 +91,64 @@ INCLUDEFILES += $(KAMPING_DEP)
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KAMPING_DIRI)/%.h
+$(KDATAINCDIR)/%.h:    $(KAMPING_DIRI)/%.h
 		$(COPY_HEADER) $< $@
 
     
 # rule for compiling our source files
-$(KAMPING_DIRS)/%.o:    $(KAMPING_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KAMPING_FLAGS) $(ROOTINCS)  -o $@ -c $< 
+$(KAMPING_DIRS)/%.$(ObjSuf):    $(KAMPING_DIRS)/%.cxx
+	$(CXX) $(KAMPING_FLAGS) -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KAMPING_DIRS)/%.o $(KDATAED_LIB) $(KAMPING_LIBDEP)
+bin/%: $(KAMPING_DIRS)/%.$(ObjSuf) $(KDATAED_LIB) $(KAMPING_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KAMPINGLIBS) $(KAMPING_XTRALIBS)
+		$(LD) $(KAMPING_LDFLAGS) -o $@ $< $(ROOTLIBS) $(SYSLIBS) $(KDATALIBDIRS) $(KAMPINGLIBS) $(KAMPING_XTRALIBS)
                 
 # rules for building dictionary
 $(KAMPING_DO):         $(KAMPING_DC)
-	$(CXX) $(NOOPT) $(KAMPING_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
+	$(CXX) $(KAMPING_FLAGS) -I. -o $@ -c $< 
 
 $(KAMPING_DC):         $(KAMPING_EH) $(KAMPING_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KAMPING_DICTH) $(KAMPING_LH) 
+	$(ROOTCINT) -f $@ -c $(KAMPING_DICTH) $(KAMPING_LH) 
 
 # rule for building library
 $(KAMPING_LIB):        $(KAMPING_EO) $(KAMPING_DO) $(KAMPING_LIBDEP) $(KAMPING_LIBDEP)
-	@echo "Building $@..."
-	$(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KAMPING_EO) $(KAMPING_DO) $(KDATALIBDIRS) $(KAMPING_XTRALIBS) $(ROOTLIBS) $(KAMPING_FLAGS) 
+		@echo "Building $@..."
+ifeq ($(ARCH),aix5)
+		$(MAKESHARED) $(OutPutOpt) $@ $(LIBS) -p 0 $(KAMPING_EO) $(KAMPING_DO)
+else
+ifeq ($(PLATFORM),macosx)
+# We need to make both the .dylib and the .so
+		$(LD) $(SOFLAGS)$(KDATALDIR)/$(KAMPING_LIBNAME) $(KAMPING_LDFLAGS) $(KAMPING_EO) $(KAMPING_DO) $(KDATALIBDIRS) $(KAMPING_XTRALIBS) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
+ifeq ($(MACOSX_MINOR),4)
+		ln -sf $@ $(subst .$(DllSuf),.so,$@)
+endif
+endif
+else
+ifeq ($(PLATFORM),win32)
+		bindexplib $* $(KAMPING_EO) $(KAMPING_DO) > $*.def
+		lib -nologo -MACHINE:IX86 $(KAMPING_EO) $(KAMPING_DO) -def:$*.def \
+		   $(OutPutOpt)$(EVENTLIB)
+		$(LD) $(SOFLAGS) $(KAMPING_LDFLAGS) $(KAMPING_EO) $(KAMPING_DO) $(KDATALIBDIRS) $(KAMPING_XTRALIBS) $*.exp $(LIBS) \
+		   $(OutPutOpt)$@
+		$(MT_DLL)
+else
+		$(LD) $(SOFLAGS) $(KAMPING_LDFLAGS) $(KAMPING_EO) $(KAMPING_DO) $(KDATALIBDIRS) $(KAMPING_XTRALIBS) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+endif
+endif
+endif
+		@echo "$@ done"
+
+	# @echo "Building $@..."
+	# $(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KAMPING_EO) $(KAMPING_DO) $(KDATALIBDIRS) $(KAMPING_XTRALIBS) $(ROOTLIBS) $(KAMPING_FLAGS) 
 
 all-kamping:       $(KAMPING_LIB) 
 
 
 clean-kamping:
-		@rm -f $(KAMPING_DIRS)/*~ $(KAMPING_DIRS)/*.o
+		@rm -f $(KAMPING_DIRS)/*~ $(KAMPING_DIRS)/*.o $(KAMPING_DIRS)/*.obj
 		@rm -f $(KAMPING_DC) $(KAMPING_DH) $(KAMPING_DEP) $(KAMPING_LIB)
 
 clean::         clean-kamping
