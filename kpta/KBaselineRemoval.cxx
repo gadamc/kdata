@@ -13,7 +13,7 @@
 #include <iostream>
 #include "KBaselineRemoval.h"
 
-//ClassImp(KBaselineRemoval);
+ClassImp(KBaselineRemoval);
 
 KBaselineRemoval::KBaselineRemoval(void)
 {

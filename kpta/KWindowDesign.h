@@ -12,6 +12,7 @@
 #define __KWINDOWDESIGN_H__
 #define PI 3.14159265358979
 
+#include "Rtypes.h"
 
 class KWindowDesign {
 
@@ -23,6 +24,8 @@ public:
   static double* GetBlackmanWindow(unsigned int size,double alpha = 0.16, int middle = -9999, unsigned int width = 0);
 
 private:
+  ClassDef(KWindowDesign,1);
+
 };
 
 

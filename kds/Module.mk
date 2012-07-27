@@ -48,6 +48,8 @@ KDS_DIR    := $(MODDIR)
 KDS_DIRS   := $(MODDIR)
 KDS_DIRI   := $(MODDIR)
 
+#this library should have no dependencies on other KDATA libraries. 
+#therefore, there is no XTRALIBS variable used here.
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KDS_LH     := $(KDS_DIRI)/$(MODNAME)_LinkDef.h
@@ -105,7 +107,7 @@ $(KDS_DIRS)/%.o:    $(KDS_DIRS)/%.cxx
 # rule for building executables
 bin/%: $(KDS_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(KDS_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KDSLIBS) 
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KDSLIBS) 
                 
 # rules for building dictionary
 $(KDS_DO):         $(KDS_DC)
@@ -118,9 +120,8 @@ $(KDS_DC):         $(KDS_EH) $(KDS_LH)
 # rule for building library
 $(KDS_LIB):        $(KDS_EO) $(KDS_DO) $(KDS_LIBDEP) 
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KDS_LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KDS_LIB)" $@  "$(KDS_EO) $(KDS_DO)" \
-	   "$(ROOTLIBS) $(KDS_FLAGS)"  -I/opt/include -Iinclude 
+	$(LD) $(LDFLAGS) $(SOFLAGS) -o $@  $(KDS_EO) $(KDS_DO) $(ROOTLIBS) $(KDS_FLAGS) 
+	@echo "done building kpta library"
 
 all-kds:       $(KDS_LIB)
 

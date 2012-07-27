@@ -40,7 +40,7 @@
 
 using namespace std;
 
-//ClassImp(KRealToHalfComplexDFT);
+ClassImp(KRealToHalfComplexDFT);
 
 KRealToHalfComplexDFT::KRealToHalfComplexDFT(void)
 {

@@ -12,11 +12,11 @@ CC             := gcc
 LD             := g++
 
 # add KDATA-specific compiler switches for this platform
-KDATA_FLAGS     := 
+KDATA_FLAGS     := -fPIC
 
 # support intel-based macs
 ifeq ($(MACHTYPE),i386)
-KDATA_FLAGS     += 
+KDATA_FLAGS     +=
 endif
 
 

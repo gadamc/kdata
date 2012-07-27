@@ -26,6 +26,10 @@ KPTA_DIR    := $(MODDIR)
 KPTA_DIRS   := $(MODDIR)
 KPTA_DIRI   := $(MODDIR)
 
+#this module does not have any XTRALIBS. Also, this module is not intended
+#to depend on any other KData module, in order to make this library more portable
+#However, when building the libkpta.so file, I must link against ROOTLIBS in order
+#to provide access to these class from the ROOT CINT. 
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KPTA_LH     := $(KPTA_DIRI)/$(MODNAME)_LinkDef.h
@@ -77,15 +81,16 @@ include/%.h:    $(KPTA_DIRI)/%.h
     
 # rule for compiling our source files
 $(KPTA_DIRS)/%.o:    $(KPTA_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KPTA_FLAGS) $(FFTWINCS) -o $@ -c $< 
+	$(CXX) $(OPT) $(KPTA_FLAGS) $(FFTWINCS) $(ROOTINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KPTA_DIRS)/%.o $(KDATAED_LIB) 
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(SYSLIBS) $(KPTALIBS) $(FFTWLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(ROOTLIBS) $(SYSLIBS) $(KPTALIBS) $(FFTWLIBS)
                 
 # rules for building dictionary
 $(KPTA_DO):         $(KPTA_DC)
+	@echo "building dictionary... $@"
 	$(CXX) $(NOOPT) $(KPTA_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
 
 $(KPTA_DC):         $(KPTA_EH) $(KPTA_LH)
@@ -94,10 +99,9 @@ $(KPTA_DC):         $(KPTA_EH) $(KPTA_LH)
 
 # rule for building library
 $(KPTA_LIB):        $(KPTA_EO) $(KPTA_DO) $(KPTA_LIBDEP)
-	@echo "Building $@...$(MAKELIB) $(PLATFORM)"
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KPTA_LIB)" $@  "$(KPTA_EO) $(KPTA_DO)" \
-	   "$(FFTWLIBS) $(KPTA_FLAGS)"  -I/opt/include -Iinclude 
+	@echo "Building $@..."
+	$(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KPTA_EO) $(KPTA_DO) $(FFTWLIBS) $(ROOTLIBS) $(KPTA_FLAGS) 
+	@echo "Done building library kpta"
 
 all-kpta:       $(KPTA_LIB)
 

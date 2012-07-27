@@ -16,7 +16,7 @@
 
 using namespace std;
 
-//ClassImp(KPatternRemoval);
+ClassImp(KPatternRemoval);
 
 KPatternRemoval::KPatternRemoval(void)
 {

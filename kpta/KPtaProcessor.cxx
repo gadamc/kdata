@@ -19,7 +19,7 @@
 using namespace std;
 
 
-//ClassImp(KPtaProcessor)
+ClassImp(KPtaProcessor);
 
 KPtaProcessor::KPtaProcessor(void)
 {

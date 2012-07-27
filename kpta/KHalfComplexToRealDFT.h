@@ -43,7 +43,7 @@ protected:
 	virtual bool Normalize(void);
 	virtual bool CalculateFFT(void);
 	
-	//ClassDef(KHalfComplexToRealDFT,1);
+	ClassDef(KHalfComplexToRealDFT,1);
   
 };
 

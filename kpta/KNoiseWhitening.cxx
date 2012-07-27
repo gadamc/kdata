@@ -23,6 +23,8 @@
 
 using namespace std;
 
+ClassImp(KNoiseWhitening);
+
 KNoiseWhitening::KNoiseWhitening(void)
 {
   SetName("KNoiseWhitening");

@@ -19,6 +19,8 @@
 #include <iostream>
 using namespace std;
 
+ClassImp(KComplex);
+
 
 KComplex::KComplex(void)
 {

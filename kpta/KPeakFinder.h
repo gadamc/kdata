@@ -68,6 +68,7 @@ private:
   //private methods
   void InitializeMembers(void);
   
+  ClassDef(KPeakFinder,1);
   
 };
 

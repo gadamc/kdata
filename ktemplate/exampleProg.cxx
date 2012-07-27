@@ -16,26 +16,10 @@
  *
  */
 #include <iostream>
-#include <cstdlib>
-#include "TString.h"
-#include "TDatime.h"
-#include "KRawEvent.h"
-#include "KDataReader.h"
-#include "KBaselineRemoval.h"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-	KDataReader f("myFile.root");
-  KBaselineRemoval bas;
-  
-  KRawEvent *e = (KRawEvent *)f.GetEvent();
-  
-  for(int i = 0; i < f.GetEntries(); i++){
-    f.GetEntry(i);
-
-  }
-		
-	
+	cout << "kdata is the bomb." << endl;
 }

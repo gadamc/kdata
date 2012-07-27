@@ -56,8 +56,8 @@ KDATABASE_XTRAINCS := $(ERAINCS)
 #if this module depends on other modules in this project you MUST
 #make sure that this MODNAME is listed AFTER all of the MODNAMEs
 #that it depends on.
-KDATABASE_XTRALIBS := $(ERALIBS) $(KDSLIBS) $(KPTALIBS)
-KDATABASE_LIBDEP   := $(ERA_LIB) $(KDS_LIB) $(KPTA_LIB)
+KDATABASE_XTRALIBS := 
+KDATABASE_LIBDEP   := 
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KDATABASE_LH     := $(KDATABASE_DIRI)/$(MODNAME)_LinkDef.h
@@ -124,9 +124,8 @@ $(KDATABASE_DC):         $(KDATABASE_EH) $(KDATABASE_LH)
 # rule for building library
 $(KDATABASE_LIB):        $(KDATABASE_EO) $(KDATABASE_DO) $(KDATABASE_LIBDEP) 
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KDATABASE_LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KDATABASE_LIB)" $@  "$(KDATABASE_EO) $(KDATABASE_DO) $(KDATABASE_XTRALIBS) "\
-	   "$(JANSSONLIBS) $(CURLLIBS) $(ROOTLIBS) $(KDATABASE_FLAGS)"  -I/opt/include -Iinclude 
+	$(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KDATABASE_EO) $(KDATABASE_DO) $(KDATALIBDIRS) $(KDATABASE_XTRALIBS) $(JANSSONLIBS) $(CURLLIBS) $(ROOTLIBS) $(KDATABASE_FLAGS) 
+
 
 all-kdatabase:       $(KDATABASE_LIB) 
 

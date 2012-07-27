@@ -26,7 +26,7 @@ $(KPROG_DIRS)/%.o:    $(KPROG_DIRS)/%.cxx
 # rule for building executables
 bin/%: $(KPROG_DIRS)/%.o  $(ALLLIBS)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(ALLKDATALIBS) $(ROOTLIBS) $(SYSLIBS) $(FFTWLIBS) $(CURLLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ALLKDATALIBS) $(ROOTLIBS) $(SYSLIBS) $(FFTWLIBS) $(CURLLIBS)
                 
 
 clean-programs:

@@ -18,7 +18,8 @@
 #include <string.h>
 
 using namespace std;
-//ClassImp(KPulseShifter);
+
+ClassImp(KPulseShifter);
 
 KPulseShifter::KPulseShifter(void)
 {

@@ -23,6 +23,7 @@
 #include <iostream>
 using namespace std;
 
+ClassImp(KOrderFilter);
 
 KOrderFilter::KOrderFilter(void)
 {

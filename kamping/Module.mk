@@ -37,6 +37,13 @@ KAMPING_DIR    := $(MODDIR)
 KAMPING_DIRS   := $(MODDIR)
 KAMPING_DIRI   := $(MODDIR)
 
+#list all external module libs that this module depends on
+#if this module depends on other modules in this project you MUST
+#make sure that this MODNAME is listed AFTER all of the MODNAMEs
+#that it depends on.
+KAMPING_XTRALIBS := $(KPTALIBS) $(KDSLIBS) 
+KAMPING_LIBDEP   := $(KPTA_LIB) $(KDS_LIB) 
+
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KAMPING_LH     := $(KAMPING_DIRI)/$(MODNAME)_LinkDef.h
@@ -71,7 +78,7 @@ endif
 ALLEXECS     += $(KAMPING_EXE)
 ALLKDATALIBS += $(KAMPINGLIBS)
 
-KAMPING_XTRALIBS := $(KDSLIBS) $(KPTALIBS)
+
 
 
 # include all dependency files
@@ -92,7 +99,7 @@ $(KAMPING_DIRS)/%.o:    $(KAMPING_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KAMPING_FLAGS) $(ROOTINCS)  -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KAMPING_DIRS)/%.o $(KDATAED_LIB)
+bin/%: $(KAMPING_DIRS)/%.o $(KDATAED_LIB) $(KAMPING_LIBDEP)
 		@echo "=== Linking $@ ==="
 		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KAMPINGLIBS) $(KAMPING_XTRALIBS)
                 
@@ -105,11 +112,9 @@ $(KAMPING_DC):         $(KAMPING_EH) $(KAMPING_LH)
 	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KAMPING_DICTH) $(KAMPING_LH) 
 
 # rule for building library
-$(KAMPING_LIB):        $(KAMPING_EO) $(KAMPING_DO) $(KAMPING_LIBDEP)
+$(KAMPING_LIB):        $(KAMPING_EO) $(KAMPING_DO) $(KAMPING_LIBDEP) $(KAMPING_LIBDEP)
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KAMPING_LIB)" $@  "$(KAMPING_EO) $(KAMPING_DO)" \
-	   "$(ROOTLIBS) $(KAMPING_FLAGS)"  -I/opt/include -Iinclude 
+	$(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KAMPING_EO) $(KAMPING_DO) $(KDATALIBDIRS) $(KAMPING_XTRALIBS) $(ROOTLIBS) $(KAMPING_FLAGS) 
 
 all-kamping:       $(KAMPING_LIB) 
 

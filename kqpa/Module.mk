@@ -37,8 +37,8 @@ KQPA_OPT     := $(OPT)
 
 
 
-KQPA_OPT  := $(filter-out -O2,$(KQPA_OPT))
-KQPA_LDFLAGS := $(filter-out -O2,$(KQPA_LDFLAGS))
+#KQPA_OPT  := $(filter-out -O2,$(KQPA_OPT))
+#KQPA_LDFLAGS := $(filter-out -O2,$(KQPA_LDFLAGS))
 
 #adding debugging flags here
 #KQPA_FLAGS += -D_K_DEBUG_ERAEVENTFINDER
@@ -125,9 +125,8 @@ $(KQPA_DC):         $(KQPA_EH) $(KQPA_LH)
 # rule for building library
 $(KQPA_LIB):        $(KQPA_EO) $(KQPA_DO) $(KQPA_LIBDEP)
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KQPA_LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KQPA_LIB)" $@  "$(KQPA_EO) $(KQPA_DO) $(KQPA_XTRALIBS)"\
-	   "$(ROOTLIBS)  $(KQPA_FLAGS)"  -I/opt/include -Iinclude 
+	$(LD) $(KQPA_LDFLAGS) $(SOFLAGS)  -o $@ $(KQPA_EO) $(KQPA_DO) $(KDATALIBDIRS) $(KQPA_XTRALIBS) $(ROOTLIBS) $(KQPA_FLAGS) 
+
 
 all-kqpa:       $(KQPA_LIB) 
   

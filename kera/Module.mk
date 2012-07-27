@@ -37,8 +37,8 @@ KERA_OPT     := $(OPT)
 
 
 #KERA_OPT  += -g
-KERA_OPT  := $(filter-out -O2,$(KERA_OPT))
-KERA_LDFLAGS := $(filter-out -O2,$(KERA_LDFLAGS))
+#KERA_OPT  := $(filter-out -O2,$(KERA_OPT))
+#KERA_LDFLAGS := $(filter-out -O2,$(KERA_LDFLAGS))
 
 #adding debugging flags here
 #KERA_FLAGS += -D_K_DEBUG_ERAEVENTFINDER
@@ -125,9 +125,7 @@ $(KERA_DC):         $(KERA_EH) $(KERA_LH)
 # rule for building library
 $(KERA_LIB):        $(KERA_EO) $(KERA_DO) $(KERA_LIBDEP) 
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KERA_LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KERA_LIB)" $@  "$(KERA_EO) $(KERA_DO) $(KERA_XTRALIBS)"\
-	   "$(ROOTLIBS)  $(KERA_FLAGS)"  -I/opt/include -Iinclude 
+	$(LD) $(KERA_LDFLAGS) $(SOFLAGS)  -o $@ $(KERA_EO) $(KERA_DO) $(KDATALIBDIRS) $(KERA_XTRALIBS) $(ROOTLIBS) $(KERA_FLAGS) 
 
 all-kera:       $(KERA_LIB)
 

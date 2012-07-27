@@ -18,6 +18,8 @@
 
 using namespace std;
 
+ClassImp(KEraPeakFinder);
+
 KEraPeakFinder::KEraPeakFinder(void)
 : fOrderFilter(0, 0, 0, 0)  //initialize the order filter with null pointers so that we can set the internal arrays at run-time
 {

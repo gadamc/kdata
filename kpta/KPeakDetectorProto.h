@@ -112,7 +112,7 @@ private:
   //private methods
   
   
- // ClassDef(KPeakDetectorProto,1);
+  ClassDef(KPeakDetectorProto,1);
   
 };
 

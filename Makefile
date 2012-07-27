@@ -120,7 +120,9 @@ ERA_LIB := $(LPATH)/libEra.$(SOEXT)
 ERALIBS	   := $(KDATALIBDIRS) $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(ERA_LIB))
 ERAINCS  :=  $(ERADIR)
 
+ifeq ( $($(filter $(MODULES), kera)), )
 ALLKDATALIBS += $(ERALIBS)
+endif
 
 ##### Utilities #####
 
@@ -161,8 +163,8 @@ include config/Makefile.$(ARCH)
 
 EXTRALIBS += -lutil
 
-EXTRA_CFLAGS   += $(KDATA_FLAGS)
-EXTRA_CXXFLAGS += $(KDATA_FLAGS)
+EXTRA_CFLAGS   += $(KDATA_FLAGS) 
+EXTRA_CXXFLAGS += $(KDATA_FLAGS) 
 ROOTCINTFLAGS  := -c $(EXTRA_CXXFLAGS)
 ROOTLIBS       += $(EXTRALIBS)
 SYSLIBS        += $(EXTRALIBS)
@@ -235,18 +237,19 @@ include/dummy.d: prepare $(RMKDEP) $(ALLHDRS)
 	   touch $@; \
 	fi)
 
-#%.d: %.c
-#	$(MAKEDEP) $@ "$(CFLAGS)" $< > $@
+# %.d: %.c
+# 	$(MAKEDEP) $@ "$(CFLAGS)" $< > $@
 
-#%.d: %.cxx
-#	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
+# %.d: %.cxx
+# 	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
 
-#%.d: %.C
-#	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
+# %.d: %.C
+# 	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
 
 $(RMKDEP): $(ROOTSYS)/bin/rmkdepend
 	@$(INSTALLDIR) bin
 	@cp $(ROOTSYS)/bin/rmkdepend bin
+#	@ln -s $(ROOTSYS)/bin/root-config bin/root-config
 
 # stuff we need to do in preparation for building KDATA
 prepare::

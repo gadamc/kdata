@@ -59,7 +59,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  //ClassDef(KEraPeakFinder,1);
+  ClassDef(KEraPeakFinder,1);
 };
 
 

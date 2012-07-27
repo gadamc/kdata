@@ -11,7 +11,7 @@
 
 #include "KCorrelation.h"
 
-//ClassImp(KCorrelation);
+ClassImp(KCorrelation);
 
 
 KCorrelation::KCorrelation(void)

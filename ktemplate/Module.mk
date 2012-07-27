@@ -38,6 +38,13 @@ KTMP_DIRS   := $(MODDIR)
 KTMP_DIRI   := $(MODDIR)
 
 
+#list all external module libs that this module depends on
+#if this module depends on other modules in this project you MUST
+#make sure that this MODNAME is listed AFTER all of the MODNAMEs
+#that it depends on.
+KTMP_XTRALIBS := 
+KTMP_LIBDEP   := 
+
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KTMP_LH     := $(KTMP_DIRI)/$(MODNAME)_LinkDef.h
 KTMP_DC     := $(KTMP_DIRS)/$(MODNAME)_Dict.C
@@ -92,12 +99,12 @@ $(KTMP_DIRS)/%.o:    $(KTMP_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KTMP_FLAGS) $(ROOTINCS)  -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KTMP_DIRS)/%.o $(KDATAED_LIB) 
+bin/%: $(KTMP_DIRS)/%.o $(KDATAED_LIB) $(KTMP_LIBDEP)
 		@echo "=== Linking $@ ==="
 		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KTMPLIBS) $(KTMP_XTRALIBS)
                 
 # rules for building dictionary
-$(KTMP_DO):         $(KTMP_DC)
+$(KTMP_DO):         $(KTMP_DC) 
 	$(CXX) $(NOOPT) $(KTMP_FLAGS) $(ROOTINCS) -I. -o $@ -c $< 
 
 $(KTMP_DC):         $(KTMP_EH) $(KTMP_LH)
@@ -107,9 +114,8 @@ $(KTMP_DC):         $(KTMP_EH) $(KTMP_LH)
 # rule for building library
 $(KTMP_LIB):        $(KTMP_EO) $(KTMP_DO) $(KTMP_LIBDEP)
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KTMP_LIB)" $@  "$(KTMP_EO) $(KTMP_DO)" \
-	   "$(ROOTLIBS) $(KTMP_FLAGS)"  -I/opt/include -Iinclude 
+	$(LD) $(LDFLAGS) $(SOFLAGS)  -o $@ $(KTMP_EO) $(KTMP_DO) $(KDATALIBDIRS) $(KTMP_XTRALIBS) $(ROOTLIBS) $(KTMP_FLAGS) 
+	@echo "done building ktemplate library"
 
 all-ktemplate:       $(KTMP_LIB) 
 

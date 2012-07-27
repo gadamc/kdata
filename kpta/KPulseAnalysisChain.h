@@ -39,7 +39,7 @@ private:
   void InitializeMembers(void);
 
 
-  //ClassDef(KPulseAnalysisChain,1);
+  ClassDef(KPulseAnalysisChain,1);
 
 };
 

@@ -14,7 +14,8 @@
 #include <string.h>
 
 using namespace std;
-//ClassImp(KWindow);
+
+ClassImp(KWindow);
 
 KWindow::KWindow(void)
 {

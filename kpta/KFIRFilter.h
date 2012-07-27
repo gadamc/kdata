@@ -47,7 +47,7 @@ private:
   //private methods
   void InitializeMembers(void);
   
-  //ClassDef(KFIRFilter,1);
+  ClassDef(KFIRFilter,1);
   
 };
 #endif

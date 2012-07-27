@@ -19,6 +19,8 @@
 #include "KSpecialFunctions.h"
 #include <cmath>
 
+ClassImp(KIonTemplate);
+
 KIonTemplate::KIonTemplate(void)
 {
   //standard constructor 

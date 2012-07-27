@@ -14,6 +14,7 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
+#include "Rtypes.h"
 
 class KHalfComplexArray  {
   
@@ -54,6 +55,7 @@ protected:
 private:
   
   void InitializeMembers(void);
+  ClassDef(KHalfComplexArray,1);
   
 };
 

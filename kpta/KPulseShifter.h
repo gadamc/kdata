@@ -39,7 +39,7 @@ class KPulseShifter : public KPtaProcessor {
     //private methods
     void InitializeMembers(void);
     
-    // ClassDef(KPulseShifter,1);
+    ClassDef(KPulseShifter,1);
     
 };
 

@@ -10,8 +10,8 @@ CXX            := g++
 CC             := gcc
 LD             := g++
 
-# add KDATA-specific compiler switches for this platform
-KDATA_FLAGS     := 
+# add KDATA-specifi-fPICc compiler switches for this platform
+KDATA_FLAGS     := -fPIC
 EXTRALIBS      := 
 
 ##### Extra fortran flags #####

@@ -26,7 +26,7 @@
 
 using namespace std;
 
-//ClassImp(KSimpleLowPassFilter);
+ClassImp(KSimpleLowPassFilter);
 
 KSimpleLowPassFilter::KSimpleLowPassFilter(void)
 {

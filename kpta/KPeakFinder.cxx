@@ -19,6 +19,9 @@
 
 using namespace std;
 
+ClassImp(KPeakFinder);
+
+
 KPeakFinder::KPeakFinder(void)
 {
   SetName("KPeakFinder");

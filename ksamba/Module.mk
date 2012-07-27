@@ -34,6 +34,14 @@ KSAMBA_DIR    := $(MODDIR)
 KSAMBA_DIRS   := $(MODDIR)
 KSAMBA_DIRI   := $(MODDIR)
 
+
+#list all external module libs that this module depends on
+#if this module depends on other modules in this project you MUST
+#make sure that this MODNAME is listed AFTER all of the MODNAMEs
+#that it depends on.
+KSAMBA_XTRALIBS := $(KDSLIBS) 
+KSAMBA_LIBDEP   := $(KDS_LIB)
+
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KSAMBA_LH     := $(KSAMBA_DIRI)/$(MODNAME)_LinkDef.h
 KSAMBA_DC     := $(KSAMBA_DIRS)/$(MODNAME)_Dict.C
@@ -84,9 +92,9 @@ $(KSAMBA_DIRS)/%.o:    $(KSAMBA_DIRS)/%.cxx
 	$(CXX) $(OPT) $(KSAMBA_FLAGS) $(ROOTINCS)  -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KSAMBA_DIRS)/%.o $(KDATAED_LIB) 
+bin/%: $(KSAMBA_DIRS)/%.o $(KDATAED_LIB) $(KSAMBA_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KSAMBALIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KSAMBALIBS) $(KSAMBA_XTRALIBS)
                 
 # rules for building dictionary
 $(KSAMBA_DO):         $(KSAMBA_DC)
@@ -97,11 +105,10 @@ $(KSAMBA_DC):         $(KSAMBA_EH) $(KSAMBA_LH)
 	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) $(KSAMBA_DICTH) $(KSAMBA_LH) 
 
 # rule for building library
-$(KSAMBA_LIB):        $(KSAMBA_EO) $(KSAMBA_DO) $(KSAMBA_LIBDEP)
+$(KSAMBA_LIB):        $(KSAMBA_EO) $(KSAMBA_DO) $(KSAMBA_LIBDEP) $(KSAMBA_LIBDEP)
 	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KSAMBA_LIB)" $@  "$(KSAMBA_EO) $(KSAMBA_DO)" \
-	   "$(ROOTLIBS) $(KSAMBA_FLAGS)"  -I/opt/include -Iinclude 
+	$(LD) $(LDFLAGS) $(SOFLAGS) -o $@ $(KSAMBA_EO) $(KSAMBA_DO) $(KDATALIBDIRS) $(KSAMBA_XTRALIBS) $(ROOTLIBS) $(KSAMBA_FLAGS) 
+	
 
 all-ksamba:       $(KSAMBA_LIB)
 

@@ -30,7 +30,8 @@ private:
   
   //private methods
   void InitializeMembers(void);
-    
+  ClassDef(KIIRFourthOrder,1);
+
 };
 
 
