@@ -12,7 +12,7 @@
 #define __KPTATESTPULSE_H__
 
 #include <vector>
-//#include "Rtypes.h"
+#include "Rtypes.h"
 
 class KPtaTestPulse  { 
 
@@ -45,7 +45,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  //ClassDef(KPtaTestPulse,1);
+  ClassDef(KPtaTestPulse,1);
   
 };
 

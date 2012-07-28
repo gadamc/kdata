@@ -1,3 +1,5 @@
-# Libraries built by the ktemplate module
+# Libraries built by the ksamba module
 
-KPTA_LIB    := $(LPATH)/libkpta.$(SOEXT)
+KPTA_LIBNAME := libkpta.$(DllSuf)
+KPTA_LIB    := $(LPATH)/$(KPTA_LIBNAME)
+

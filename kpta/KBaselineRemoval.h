@@ -46,7 +46,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  //ClassDef(KBaselineRemoval,1);
+  ClassDef(KBaselineRemoval,1);
 };
 
 

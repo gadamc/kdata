@@ -1,3 +1,5 @@
-# Libraries built by the kraw module
+# Libraries built by the kqpa module
 
-KQPA_LIB    := $(LPATH)/libkqpa.$(SOEXT)  
+KQPA_LIBNAME := libkqpa.$(DllSuf)
+KQPA_LIB    := $(LPATH)/$(KQPA_LIBNAME)
+

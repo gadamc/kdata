@@ -19,6 +19,7 @@
 #include <iostream>
 
 using namespace std;
+ClassImp(KHalfComplexPower);
 
 KHalfComplexPower::KHalfComplexPower(void)
 {

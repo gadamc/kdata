@@ -75,30 +75,35 @@
 CLEAN_MODULES := $(patsubst %,clean-%,$(MODULES))
 ifeq ($(filter $(MAKECMDGOALS),clean reallyclean distclean $(CLEAN_MODULES)),)
 
-##### the ROOT config file (specifies our architecture) #####
+##### the ROOT config file #####
+include $(ROOTSYS)/etc/Makefile.arch
+## just set this explicitly.. this might reduce compatibility with obscure architectures,
+## but should be find for standard linux/macosx/windows
 
-include $(ROOTSYS)/config/Makefile.config
-
-##### include ROOT make file for this architecture #####
-
-include $(ROOTSYS)/config/Makefile.$(ARCH)
+EXPLLINKLIBS := $(ROOTLIBS) $(ROOTGLIBS)
 
 ##### default additions to basic ROOT system definitions #####
 
+#set these relative to KDATA_ROOT
+KDATALDIR := lib
+KDATABINDIR := bin
+KDATAINCDIR := include
+KDATAPYDIR := $(KDATALDIR)/KDataPy
 
-LPATH          := $(KDATA_ROOT)/lib
+LPATH          := $(KDATA_ROOT)/$(KDATALDIR)
 KDATALIBDIRS    := -L$(LPATH)
 ERADIR       := ./era
 
+
 # add KDATA_ROOT directories if not building modules from there
 ifneq ($(shell pwd),$(KDATA_ROOT))
-EXTRA_CXXFLAGS += -I$(KDATA_ROOT)/include 
+EXTRA_CXXFLAGS += -I$(KDATA_ROOT)/$(KDATAINCDIR) 
 endif
 
 ROOTINCS       := -I$(ROOTSYS)/include
 XMLIBS         := $(patsubst -lX11,-lXm -lXmu -lXt -lX11,$(XLIBS))
-ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMathMore -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
-ROOTLIBS       += -Wl,-rpath,$(ROOTSYS)/lib
+#ROOTLIBS       := $(shell $(ROOTSYS)/bin/root-config $(ROOT_LINK_NEW) --glibs) -lMathMore -lMinuit -lPyROOT -lGeomPainter -lMatrix -lGeom
+#ROOTLIBS       += -Wl,-rpath,$(ROOTSYS)/lib
 
 FFTWINCS       := -I$(FFTW_DIR)/../include -I$(FFTW_DIR)/../include/fftw -I$(FFTW_DIR)/../include/rfftw
 FFTWLIBS       := -L$(FFTW_DIR) -lfftw3 -lm
@@ -116,11 +121,13 @@ endif
 
 
 #special paths to the local ERA libraries. Needed for modules that depend upon ERA. 
-ERA_LIB := $(LPATH)/libEra.$(SOEXT)
-ERALIBS	   := $(KDATALIBDIRS) $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(ERA_LIB))
+ERA_LIB := $(LPATH)/libEra.$(DllSuf)
+ERALIBS	   := $(KDATALIBDIRS) $(patsubst $(LPATH)/lib%.$(DllSuf),-l%,$(ERA_LIB))
 ERAINCS  :=  $(ERADIR)
 
+ifeq ( $($(filter $(MODULES), kera)), )
 ALLKDATALIBS += $(ERALIBS)
+endif
 
 ##### Utilities #####
 
@@ -129,20 +136,20 @@ AR             := ar -rl
 
 ##### f77 options #####
 
-ifeq ($(F77LD),)
-F77LD        := $(LD)
-endif
-ifeq ($(F77OPT),)
-F77OPT       := $(OPT)
-endif
-ifeq ($(F77LDFLAGS),)
-F77LDFLAGS   := $(LDFLAGS)
-endif
+# ifeq ($(F77LD),)
+# F77LD        := $(LD)
+# endif
+# ifeq ($(F77OPT),)
+# F77OPT       := $(OPT)
+# endif
+# ifeq ($(F77LDFLAGS),)
+# F77LDFLAGS   := $(LDFLAGS)
+# endif
 
 ##### utilities #####
 
-MAKEDEP         = $(KDATA_ROOT)/scripts/depend.sh
-MAKELIB         = $(ROOTSYS)/build/unix/makelib.sh $(MKLIBOPTIONS)
+#MAKEDEP         = $(KDATA_ROOT)/scripts/depend.sh
+#MAKELIB         = $(ROOTSYS)/build/unix/makelib.sh $(MKLIBOPTIONS)
 #MAKELIB         = $(ROOTSYS)/build/unix/makelib.sh 
 
 # warn when overwriting headers if this is our first pass
@@ -159,14 +166,12 @@ MKDIR = mkdir -p
 
 include config/Makefile.$(ARCH)
 
-EXTRALIBS += -lutil
-
-EXTRA_CFLAGS   += $(KDATA_FLAGS)
-EXTRA_CXXFLAGS += $(KDATA_FLAGS)
+EXTRA_CFLAGS   += $(KDATA_CFLAGS) 
+EXTRA_CXXFLAGS += $(KDATA_CXXFLAGS) 
 ROOTCINTFLAGS  := -c $(EXTRA_CXXFLAGS)
 ROOTLIBS       += $(EXTRALIBS)
 SYSLIBS        += $(EXTRALIBS)
-F77LIBS        += $(EXTRALIBS)
+# F77LIBS        += $(EXTRALIBS)
 
 ##### Allow local macros #####
 
@@ -219,43 +224,50 @@ libs:           kdatalibs
 kdatalibs:       $(ALLLIBS) 
 
 # the executables depend on the libraries being built first
-kdataexecs:      kdatalibs $(ALLEXECS)
+kdataexecs:      kdatalibs $(ALLEXECS) prepare
 
 # define generic rules last to allow modules to override them
 # (the first matching rule is the one that is used)
-%.o: %.cxx
-	$(CXX) $(OPT) $(CXXFLAGS) $(ROOTINCS) -o $@ -c $<
+%.$(ObjSuf): %.cxx
+	$(CXX) $(CXXFLAGS) $(ROOTINCS) -o $@ -c $<
 
-%.o: %.c
-	$(CC) $(OPT) $(CFLAGS) -o $@ -c $<
+%.$(ObjSuf): %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 
 include/dummy.d: prepare $(RMKDEP) $(ALLHDRS)
 	@(if [ ! -f $@ ] ; then \
-	   touch $@; \
+		touch $@; \
 	fi)
 
-#%.d: %.c
-#	$(MAKEDEP) $@ "$(CFLAGS)" $< > $@
+# %.d: %.c
+# 	$(MAKEDEP) $@ "$(CFLAGS)" $< > $@
 
-#%.d: %.cxx
-#	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
+# %.d: %.cxx
+# 	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
 
-#%.d: %.C
-#	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
+# %.d: %.C
+# 	$(MAKEDEP) $@ "$(CXXFLAGS)" $< > $@
 
 $(RMKDEP): $(ROOTSYS)/bin/rmkdepend
-	@$(INSTALLDIR) bin
+	@$(MKDIR) bin
 	@cp $(ROOTSYS)/bin/rmkdepend bin
+#@ln -s $(ROOTSYS)/bin/root-config bin/root-config
 
 # stuff we need to do in preparation for building KDATA
-prepare::
-	@$(INSTALLDIR) include
-	@$(INSTALLDIR) lib
-	@rsync -aq --exclude=.svn/ --exclude=.DS_Store KDataPy/*.py lib/KDataPy
+prepare:: 
+	@echo "Preparing for build...."
+	@$(MKDIR) $(KDATABINDIR)
+	@echo " ... $(KDATABINDIR) directory created"
+	@$(MKDIR) $(KDATAINCDIR)
+	@echo " ... $(KDATAINCDIR) directory created"
+	@$(MKDIR) $(KDATALDIR)
+	@echo " ... $(KDATALDIR) directory created"
+	@rsync -aq --exclude=.svn/ --exclude=.DS_Store KDataPy/*.py $(KDATAPYDIR)
 #	@cp KDataPy/__init__.py lib/KDataPy/.
-	@rsync -aq --exclude=.svn/ --exclude=.DS_Store KDataPy/scripts lib/KDataPy
-	@chmod -R +x lib/KDataPy/scripts
+	@rsync -aq --exclude=.svn/ --exclude=.DS_Store KDataPy/scripts $(KDATAPYDIR)
+	@chmod -R +x $(KDATAPYDIR)/scripts
+	@echo " ... KDataPy copied to $(KDATAPYDIR)"
 	@config/checkenv
 
 clean::
@@ -272,9 +284,15 @@ distclean::	reallyclean
 	@echo "Made reallyclean -- Can only make distclean in KDATA_ROOT"
 endif
 
-showbuild:
+showbuild::
 	@echo "------------------------------------------------"
 	@echo "KDATA_ROOT          = $(KDATA_ROOT)"
+	@echo "KDATALDIR          = $(KDATALDIR)"
+	@echo "KDATABINDIR          = $(KDATABINDIR)"
+	@echo "KDATAINCDIR          = $(KDATAINCDIR)"
+	@echo "KDATAPYDIR          = $(KDATAPYDIR)"
+	@echo "EXPLLINKLIBS          = $(EXPLLINKLIBS)"
+#	@echo "INCLUDEFILES          = $(INCLUDEFILES)"
 	@echo "ROOTSYS            = $(ROOTSYS)"
 	@echo "FFTW_DIR           = $(FFTW_DIR)"
 #	@echo "YAJL_DIR           = $(YAJL_DIR)"
@@ -292,10 +310,10 @@ showbuild:
 	@echo ""
 	@echo "CXX                = $(CXX)"
 	@echo "CC                 = $(CC)"
-	@echo "F77                = $(F77)"
+#	@echo "F77                = $(F77)"
 	@echo "CPP                = $(CPP)"
 	@echo "LD                 = $(LD)"
-	@echo "F77LD              = $(F77LD)"
+#	@echo "F77LD              = $(F77LD)"
 	@echo "AR                 = $(AR)"
 	@echo ""
 	@echo "CXXFLAGS           = $(CXXFLAGS)"
@@ -304,12 +322,12 @@ showbuild:
 	@echo "CFLAGS             = $(CFLAGS)"
 	@echo "ROOTCINTFLAGS      = $(ROOTCINTFLAGS)"
 	@echo "EXTRA_CFLAGS       = $(EXTRA_CFLAGS)"
-	@echo "F77FLAGS           = $(F77FLAGS)"
-	@echo "F77OPT             = $(F77OPT)"
+#	@echo "F77FLAGS           = $(F77FLAGS)"
+#	@echo "F77OPT             = $(F77OPT)"
 	@echo "LDFLAGS            = $(LDFLAGS)"
 	@echo "EXTRA_LDFLAGS      = $(EXTRA_LDFLAGS)"
 	@echo "SOFLAGS            = $(SOFLAGS)"
-	@echo "SOEXT              = $(SOEXT)"
+	@echo "DllSuf              = $(DllSuf)"
 	@echo ""
 	@echo "FFTWINCS           = $(FFTWINCS)"
 #	@echo "YAJLINCS           = $(YAJLINCS)"
@@ -321,7 +339,7 @@ showbuild:
 	@echo "ROOTLIBS           = $(ROOTLIBS)"
 	@echo "SYSLIBS            = $(SYSLIBS)"
 	@echo "XLIBS              = $(XLIBS)"
-	@echo "F77LIBS            = $(F77LIBS)"
+#	@echo "F77LIBS            = $(F77LIBS)"
 	@echo "FFTWLIBS           = $(FFTWLIBS)"
 #	@echo "YAJLLIBS           = $(YAJLLIBS)"
 #	@echo "JANSSONLIBS        = $(JANSSONLIBS)"
@@ -330,9 +348,9 @@ showbuild:
 	@echo "OSTHREADLIB        = $(OSTHREADLIB)"
 	@echo ""
 	@echo "INSTALL            = $(INSTALL)"
-	@echo "RMKDEP             = $(RMKDEP)"
-	@echo "MAKEDEP            = $(MAKEDEP)"
-	@echo "MAKELIB            = $(MAKELIB)"
+#	@echo "RMKDEP             = $(RMKDEP)"
+#	@echo "MAKEDEP            = $(MAKEDEP)"
+#	@echo "MAKELIB            = $(MAKELIB)"
 	@echo "COPY_HEADER        = $(COPY_HEADER)"
 	@echo " "
 	@echo "KDATA_FLAGS         = $(KDATA_FLAGS)"

@@ -10,6 +10,8 @@
 #ifndef __KPULSETEMPLATE_H__
 #define __KPULSETEMPLATE_H__
 
+#include "Rtypes.h"
+
 
 class KPulseTemplate  { 
 
@@ -19,6 +21,8 @@ public:
   virtual ~KPulseTemplate(void);
   
   virtual double Get(double time) = 0;
+private:
+  ClassDef(KPulseTemplate,1);
 
 };
 

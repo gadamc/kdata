@@ -49,6 +49,7 @@ private:
   
   //private methods
   void InitializeMembers(void);
+  ClassDef(KMultiEraPeakFinder,1);
 
 };
 

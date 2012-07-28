@@ -9,6 +9,8 @@
 
 #include "KHalfComplexArray.h"
 
+ClassImp(KHalfComplexArray);
+
 
 KHalfComplexArray::KHalfComplexArray(void)
 {

@@ -51,7 +51,7 @@ private:
   
 
 
- // ClassDef(KConvolution,1);
+  ClassDef(KConvolution,1);
   
 };
 

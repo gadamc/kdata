@@ -32,7 +32,8 @@
 #include <cmath>
 
 using namespace std;
-//ClassImp(KOptimalFilter);
+
+ClassImp(KOptimalFilter);
 
 KOptimalFilter::KOptimalFilter(void)
 {

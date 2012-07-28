@@ -19,6 +19,9 @@
 #include "KSpecialFunctions.h"
 #include <cmath>
 
+ClassImp(KHeatTemplate);
+
+
 KHeatTemplate::KHeatTemplate(void)
 {
   //standard constructor 

@@ -10,6 +10,8 @@
 
 #include "KPulseTemplate.h"
 
+ClassImp(KPulseTemplate);
+
 KPulseTemplate::KPulseTemplate(void)
 {
   //standard constructor 

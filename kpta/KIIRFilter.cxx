@@ -25,7 +25,7 @@
 
 using namespace std;
 
-//ClassImp(KIIRFilter);
+ClassImp(KIIRFilter);
 
 KIIRFilter::KIIRFilter(void)
 {

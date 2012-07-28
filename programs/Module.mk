@@ -15,18 +15,19 @@ KPROG_CXX    := $(wildcard $(KPROG_DIRS)/*.cxx)
 KPROG_EXE    := $(patsubst $(KPROG_DIRS)/%.cxx,bin/%,$(KPROG_CXX))
 
 ALLEXECS     += $(KPROG_EXE)
- 
+
+KDATAINCS := -I$(KDATA_ROOT)/include 
 
 ##### local rules #####
 
 # rule for compiling our source files
 $(KPROG_DIRS)/%.o:    $(KPROG_DIRS)/%.cxx
-	$(CXX) $(OPT) $(KPROG_FLAGS) $(ROOTINCS) $(FFTWINCS) $(CURLINCS) -I$(ERAINCS) -o $@ -c $< 
+	$(CXX) $(KPROG_FLAGS) $(KDATAINCS) $(FFTWINCS) $(CURLINCS) -I$(ERAINCS) -o $@ -c $< 
 
 # rule for building executables
 bin/%: $(KPROG_DIRS)/%.o  $(ALLLIBS)
 		@echo "=== Linking $@ ==="
-		$(LD) $(LDFLAGS) -o $@ $< $(ALLKDATALIBS) $(ROOTLIBS) $(SYSLIBS) $(FFTWLIBS) $(CURLLIBS)
+		$(LD) $(LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ALLKDATALIBS) $(ROOTLIBS) $(SYSLIBS) $(FFTWLIBS) $(CURLLIBS)
                 
 
 clean-programs:

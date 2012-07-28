@@ -13,6 +13,8 @@
 #include <cmath>
 #include <vector>
 
+#include "Rtypes.h"
+
 class KRootMeanSquare  { 
 
 public:
@@ -36,6 +38,7 @@ private:
   template <class T> double Rms(std::vector<T> &r, unsigned int start = 0,  int stop = -1);
   template <class T> double Rms(const T* r, unsigned int start = 0,  unsigned int stop = 0);
   
+  ClassDef(KRootMeanSquare,1);
   
 };
 

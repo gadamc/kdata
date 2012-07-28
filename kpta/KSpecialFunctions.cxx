@@ -21,6 +21,7 @@ using namespace std;
 #define EPS 3.0e-7 
 #define FPMIN 1.0e-30
 
+ClassImp(KSpecialFunctions);
 
 KSpecialFunctions::KSpecialFunctions(void)
 {

@@ -18,7 +18,7 @@
 #include <string.h>
 
 using namespace std;
-//ClassImp(KRingBuffer);
+ClassImp(KRingBuffer);
 
 KRingBuffer::KRingBuffer(void)
 {

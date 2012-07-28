@@ -35,7 +35,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  //ClassDef(KNULLPROCESSOR,1);
+  ClassDef(KNullProcessor,1);
 };
 
 

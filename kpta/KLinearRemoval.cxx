@@ -20,7 +20,7 @@
 #include <iostream>
 
 using namespace std;
-//ClassImp(KLinearRemoval);
+ClassImp(KLinearRemoval);
 
 KLinearRemoval::KLinearRemoval(void)
 {

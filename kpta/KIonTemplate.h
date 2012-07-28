@@ -26,6 +26,7 @@ public:
 private:
   double fParams[5];  //there are five parameters in the current ion template function
 
+  ClassDef(KIonTemplate,1);
 
 };
 

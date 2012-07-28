@@ -9,6 +9,8 @@
 
 #include "KMultiEraPeakFinder.h"
 
+ClassImp(KMultiEraPeakFinder);
+
 
 KMultiEraPeakFinder::KMultiEraPeakFinder(void)
 {

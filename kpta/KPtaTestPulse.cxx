@@ -25,7 +25,7 @@
 
 using namespace std;
 
-//ClassImp(KPtaTestPulse);
+ClassImp(KPtaTestPulse);
 
 
 KPtaTestPulse::KPtaTestPulse(void)

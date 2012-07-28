@@ -31,14 +31,14 @@
 MODNAME      := kera
 MODDIR       := kera
 
-KERA_FLAGS  := $(CXXFLAGS)
+KERA_FLAGS  := $(CXXFLAGS) -I$(KDATA_ROOT)/$(KDATAINCDIR)
 KERA_LDFLAGS := $(LDFLAGS)
 KERA_OPT     := $(OPT)
 
 
 #KERA_OPT  += -g
-KERA_OPT  := $(filter-out -O2,$(KERA_OPT))
-KERA_LDFLAGS := $(filter-out -O2,$(KERA_LDFLAGS))
+#KERA_OPT  := $(filter-out -O2,$(KERA_OPT))
+#KERA_LDFLAGS := $(filter-out -O2,$(KERA_LDFLAGS))
 
 #adding debugging flags here
 #KERA_FLAGS += -D_K_DEBUG_ERAEVENTFINDER
@@ -64,29 +64,30 @@ KERA_LIBDEP   := $(ERA_LIB) $(KDS_LIB) $(KPTA_LIB)
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KERA_LH     := $(KERA_DIRI)/$(MODNAME)_LinkDef.h
 KERA_DC     := $(KERA_DIRS)/$(MODNAME)_Dict.C
-KERA_DO     := $(KERA_DC:.C=.o)
+KERA_DO     := $(KERA_DC:.C=.$(ObjSuf))
 KERA_DH     := $(KERA_DC:.C=.h)
 
 KERA_H      := $(filter-out $(KERA_LH) $(KERA_DH),$(wildcard $(KERA_DIRI)/*.h))
 KERA_ECXX   := $(wildcard $(KERA_DIRS)/K*.cxx)
 KERA_CXX    := $(filter-out $(KERA_ECXX),$(wildcard $(KERA_DIRS)/*.cxx))
-KERA_O      := $(KERA_CXX:.cxx=.o)
-KERA_EO     := $(KERA_ECXX:.cxx=.o)
+KERA_O      := $(KERA_CXX:.cxx=.$(ObjSuf))
+KERA_EO     := $(KERA_ECXX:.cxx=.$(ObjSuf))
 KERA_EH     := $(KERA_ECXX:.cxx=.h)
+KERA_DICTH  := $(patsubst $(KERA_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KERA_EH))
 
-KERA_EXE    := $(patsubst $(KERA_DIRS)/%.cxx,bin/%,$(KERA_CXX))
+KERA_EXE    := $(patsubst $(KERA_DIRS)/%.cxx,$(KDATABINDIR)/%,$(KERA_CXX))
 
-KERALIBS	   := $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KERA_LIB))
+KERALIBS	:= $(patsubst $(LPATH)/lib%.$(DllSuf),-l%,$(KERA_LIB))
 
-KERA_DEP    := $(KERA_O:.o=.d) $(KERA_EO:.o=.d)
+KERA_DEP    := $(KERA_O:.$(ObjSuf)=.d) $(KERA_EO:.$(ObjSuf)=.d)
 
 # only depend on our dictionary if we are building a library
 ifneq ($(KERA_LIB),)
-KERA_DEP    += $(KERA_DO:.o=.d)
+KERA_DEP    += $(KERA_DO:.$(ObjSuf)=.d)
 endif
 
 # used in the main Makefile
-ALLHDRS      += $(patsubst $(KERA_DIRI)/%.h,include/%.h,$(KERA_H))
+ALLHDRS      += $(patsubst $(KERA_DIRI)/%.h,$(KDATAINCDIR)/%.h,$(KERA_H))
 ifneq ($(KERA_EO),)
 ALLLIBS      += $(KERA_LIB)
 endif
@@ -102,38 +103,62 @@ INCLUDEFILES += $(KERA_DEP)
 ##### local rules #####
 
 # we depend on all of our header files being up to date in the include directory
-include/%.h:    $(KERA_DIRI)/%.h
-		$(COPY_HEADER) $< $@
+$(KDATAINCDIR)/%.h:    $(KERA_DIRI)/%.h
+	$(COPY_HEADER) $< $@
 
 # rule for compiling our source files
-$(KERA_DIRS)/%.o:    $(KERA_DIRS)/%.cxx
-	$(CXX) $(KERA_OPT) $(KERA_FLAGS) $(ROOTINCS) -I$(KERA_XTRAINCS) -o $@ -c $< 
+$(KERA_DIRS)/%.$(ObjSuf):    $(KERA_DIRS)/%.cxx
+	$(CXX) $(KERA_FLAGS) -I$(KERA_XTRAINCS) -o $@ -c $< 
 
 # rule for building executables
-bin/%: $(KERA_DIRS)/%.o $(KDATAED_LIB) $(KERA_LIBDEP)
+$(KDATABINDIR)/%: $(KERA_DIRS)/%.$(ObjSuf) $(KDATAED_LIB) $(KERA_LIBDEP)
 		@echo "=== Linking $@ ==="
-		$(LD) $(KERA_LDFLAGS) -o $@ $< $(KDATALIBDIRS) $(ROOTLIBS) $(SYSLIBS) $(KERALIBS) $(KERA_XTRALIBS)
+		$(LD) $(KERA_LDFLAGS) -o $@ $<  $(ROOTLIBS) $(SYSLIBS) $(KDATALIBDIRS) $(KERALIBS) $(KERA_XTRALIBS)
                 
 # rules for building dictionary
 $(KERA_DO):         $(KERA_DC)
-	$(CXX) $(NOOPT) $(KERA_FLAGS) $(ROOTINCS) -I. -I$(KERA_XTRAINCS) -o $@ -c $< 
+	$(CXX) $(KERA_FLAGS) -I. -I$(KERA_XTRAINCS) -o $@ -c $< 
 
 $(KERA_DC):         $(KERA_EH) $(KERA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ $(ROOTCINTFLAGS) -I$(KERA_XTRAINCS)  $(KERA_EH) $(KERA_LH) 
+	$(ROOTCINT) -f $@ -c -I$(KERA_XTRAINCS)  $(KERA_DICTH) $(KERA_LH) 
 
 # rule for building library
 $(KERA_LIB):        $(KERA_EO) $(KERA_DO) $(KERA_LIBDEP) 
-	@echo "Building $@..."
-	@$(MAKELIB) $(PLATFORM) "$(LD)" "$(KERA_LDFLAGS)" \
-	   "$(SOFLAGS)" "$(KERA_LIB)" $@  "$(KERA_EO) $(KERA_DO) $(KERA_XTRALIBS)"\
-	   "$(ROOTLIBS)  $(KERA_FLAGS)"  -I/opt/include -Iinclude 
+		@echo "Building $@..."
+ifeq ($(ARCH),aix5)
+		$(MAKESHARED) $(OutPutOpt) $@ $(LIBS) -p 0 $(KERA_EO) $(KERA_DO)
+else
+ifeq ($(PLATFORM),macosx)
+# We need to make both the .dylib and the .so
+		$(LD) $(SOFLAGS)$(KDATALDIR)/$(KERA_LIBNAME) $(KERA_LDFLAGS) $(KERA_EO) $(KERA_DO) $(KDATALIBDIRS) $(KERA_XTRALIBS) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
+ifeq ($(MACOSX_MINOR),4)
+		ln -sf $@ $(subst .$(DllSuf),.so,$@)
+endif
+endif
+else
+ifeq ($(PLATFORM),win32)
+		bindexplib $* $(KERA_EO) $(KERA_DO) > $*.def
+		lib -nologo -MACHINE:IX86 $(KERA_EO) $(KERA_DO) -def:$*.def \
+		   $(OutPutOpt)$(EVENTLIB)
+		$(LD) $(SOFLAGS) $(KERA_LDFLAGS) $(KERA_EO) $(KERA_DO) $(KDATALIBDIRS) $(KERA_XTRALIBS) $*.exp $(LIBS) \
+		   $(OutPutOpt)$@
+		$(MT_DLL)
+else
+		$(LD) $(SOFLAGS) $(KERA_LDFLAGS) $(KERA_EO) $(KERA_DO) $(KDATALIBDIRS) $(KERA_XTRALIBS) $(OutPutOpt) $@ $(EXPLLINKLIBS)
+endif
+endif
+endif
+		@echo "$@ done"
+# @echo "Building $@..."
+# $(LD) $(KERA_LDFLAGS) $(SOFLAGS)  -o $@ $(KERA_EO) $(KERA_DO) $(KDATALIBDIRS) $(KERA_XTRALIBS) $(ROOTLIBS) $(KERA_FLAGS) 
 
 all-kera:       $(KERA_LIB)
 
 
 clean-kera:
-		@rm -f $(KERA_DIRS)/*~ $(KERA_DIRS)/*.o
+		@rm -f $(KERA_DIRS)/*~ $(KERA_DIRS)/*.o $(KERA_DIRS)/*.obj
 		@rm -f $(KERA_DC) $(KERA_DH) $(KERA_DEP) $(KERA_LIB)
 
 clean::         clean-kera
