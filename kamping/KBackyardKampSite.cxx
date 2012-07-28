@@ -63,6 +63,7 @@ Bool_t KBackyardKampSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     //this code would compile without the if statements, but if the map object didnt'
     //exit, a new one would be created automatically. So, the if statements here
     //check for existence first and only set values in the KPulseAnalysisRecord if they are there. 
+
     if(resMap.find("amp") != resMap.end()) rec->SetAmp(resMap["amp"].fValue);
 
     if(resMap.find("peakPosition") != resMap.end()) rec->SetPeakPosition(resMap["peakPosition"].fValue);
@@ -74,7 +75,13 @@ Bool_t KBackyardKampSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     rec->SetName(fSimpKamp1.GetName());
     rec->SetUnit(0);
 
-    
+    //an alternative to the code above is a new method being constructed in the KAmpSite base class
+    //however, this method isn't yet ready because of problems incorporating it into the ROOT dictionary code.
+    //
+    //fill(rec, &KPulseAnalysisRecord::SetAmp, resMap, "amp");
+
+
+
     //if there were more kampers in your kampsite, you could use them to estimate pulse amplitudes
     //and pack the results into appropriate KPulseAnalysisRecords
     //for example:

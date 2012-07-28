@@ -25,8 +25,7 @@ public:
   double fValue;
   std::string fUnit;
   
-  // void fill( void (KPulseAnalysisRecord::*Method)(double), KPulseAnalysisRecord* rec, 
-  //             std::map<string, KResult>& theResult, string& theField );
+  
 
 };
 
