@@ -99,7 +99,7 @@ private:
 
   KHalfComplexArray fComplex;
   
-  ClassDef(KOptimalFilter,1);
+  //ClassDef(KOptimalFilter,1);
   
 };
 

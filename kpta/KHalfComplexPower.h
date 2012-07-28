@@ -33,7 +33,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  ClassDef(KHalfComplexPower,1);
+  //ClassDef(KHalfComplexPower,1);
   
 };
 

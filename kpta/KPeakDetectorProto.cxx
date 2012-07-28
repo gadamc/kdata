@@ -14,7 +14,7 @@
 
 using namespace std;
 
-ClassImp(KPeakDetectorProto);
+//ClassImp(KPeakDetectorProto);
 
 KPeakDetectorProto::KPeakDetectorProto(void)
 {

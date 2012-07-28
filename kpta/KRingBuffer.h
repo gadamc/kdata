@@ -50,7 +50,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  ClassDef(KRingBuffer,1);
+  //ClassDef(KRingBuffer,1);
 
 };
 

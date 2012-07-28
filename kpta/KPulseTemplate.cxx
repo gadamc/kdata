@@ -10,7 +10,7 @@
 
 #include "KPulseTemplate.h"
 
-ClassImp(KPulseTemplate);
+//ClassImp(KPulseTemplate);
 
 KPulseTemplate::KPulseTemplate(void)
 {

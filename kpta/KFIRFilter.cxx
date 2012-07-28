@@ -15,7 +15,7 @@
 
 #include "KFIRFilter.h"
 
-ClassImp(KFIRFilter);
+//ClassImp(KFIRFilter);
 
 
 KFIRFilter::KFIRFilter(void)

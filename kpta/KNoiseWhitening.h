@@ -54,7 +54,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  ClassDef(KNoiseWhitening,1);
+  //ClassDef(KNoiseWhitening,1);
   
 };
 

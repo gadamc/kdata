@@ -14,7 +14,7 @@
 #include <iostream>
 
 using namespace std;
-ClassImp(KConvolution);
+//ClassImp(KConvolution);
 
 KConvolution::KConvolution(void)
 {

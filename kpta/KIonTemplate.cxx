@@ -19,7 +19,7 @@
 #include "KSpecialFunctions.h"
 #include <cmath>
 
-ClassImp(KIonTemplate);
+//ClassImp(KIonTemplate);
 
 KIonTemplate::KIonTemplate(void)
 {

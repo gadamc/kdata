@@ -9,7 +9,7 @@
 
 #include "KMultiEraPeakFinder.h"
 
-ClassImp(KMultiEraPeakFinder);
+//ClassImp(KMultiEraPeakFinder);
 
 
 KMultiEraPeakFinder::KMultiEraPeakFinder(void)

@@ -19,7 +19,7 @@
 #include <iostream>
 using namespace std;
 
-ClassImp(KComplex);
+//ClassImp(KComplex);
 
 
 KComplex::KComplex(void)

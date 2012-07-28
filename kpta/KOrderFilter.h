@@ -36,7 +36,7 @@ private:
   bool fSetInitOutputValue;
   //private methods
   void InitializeMembers(void);
-  ClassDef(KOrderFilter,1);
+  //ClassDef(KOrderFilter,1);
     
 };
 

@@ -14,7 +14,7 @@
 #include <iostream>
 using namespace std;
 
-ClassImp(KIIRThirdOrder);
+//ClassImp(KIIRThirdOrder);
 
 KIIRThirdOrder::KIIRThirdOrder(void)
 {

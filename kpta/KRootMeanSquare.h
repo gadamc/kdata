@@ -12,8 +12,7 @@
 #define __KROOTMEANSQUARE_H__
 #include <cmath>
 #include <vector>
-
-#include "Rtypes.h"
+//#include "Rtypes.h"
 
 class KRootMeanSquare  { 
 
@@ -38,7 +37,7 @@ private:
   template <class T> double Rms(std::vector<T> &r, unsigned int start = 0,  int stop = -1);
   template <class T> double Rms(const T* r, unsigned int start = 0,  unsigned int stop = 0);
   
-  ClassDef(KRootMeanSquare,1);
+  //ClassDef(KRootMeanSquare,1);
   
 };
 

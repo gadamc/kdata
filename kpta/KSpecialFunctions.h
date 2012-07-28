@@ -10,7 +10,7 @@
 #ifndef __KSPECIALFUNCTIONS_H__
 #define __KSPECIALFUNCTIONS_H__
 
-#include "Rtypes.h"
+//#include "Rtypes.h"
 
 class KSpecialFunctions  { 
 
@@ -26,7 +26,7 @@ public:
   static void Gcf(double *gammcf, double a, double x, double *gln);
   
 private:
-  ClassDef(KSpecialFunctions,1);
+  //ClassDef(KSpecialFunctions,1);
 
 };
 

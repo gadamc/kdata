@@ -55,7 +55,7 @@ private:
   //private methods
   void InitializeMembers(void);
   
-  ClassDef(KTrapezoidalPeakDetector,1);
+  //ClassDef(KTrapezoidalPeakDetector,1);
   
 };
 

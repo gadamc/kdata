@@ -17,7 +17,7 @@
 #include <iostream>
 #include "KNullProcessor.h"
 
-ClassImp(KNullProcessor);
+//ClassImp(KNullProcessor);
 
 KNullProcessor::KNullProcessor(void)
 {

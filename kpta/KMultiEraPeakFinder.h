@@ -49,7 +49,7 @@ private:
   
   //private methods
   void InitializeMembers(void);
-  ClassDef(KMultiEraPeakFinder,1);
+  //ClassDef(KMultiEraPeakFinder,1);
 
 };
 

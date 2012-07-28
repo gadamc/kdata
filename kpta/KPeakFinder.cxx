@@ -19,7 +19,7 @@
 
 using namespace std;
 
-ClassImp(KPeakFinder);
+//ClassImp(KPeakFinder);
 
 
 KPeakFinder::KPeakFinder(void)

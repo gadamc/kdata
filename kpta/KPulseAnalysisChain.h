@@ -28,7 +28,7 @@ public:
   virtual void DeleteProcessors(void);
   virtual void SetIsOwner(bool anOpt = true);
 
-  KPtaProcessor* GetProcessor(unsigned int i) { return fProcessorList.at(i);}
+  KPtaProcessor* GetProcessor(unsigned int i) { try{return fProcessorList.at(i);} catch(std::out_of_range){return 0;} }
   virtual unsigned int GetNumProcessors(void) const {return fProcessorList.size();}
   virtual void SetMyOutputPulse(const double* p, unsigned int s);
 
@@ -39,7 +39,7 @@ private:
   void InitializeMembers(void);
 
 
-  ClassDef(KPulseAnalysisChain,1);
+  //ClassDef(KPulseAnalysisChain,1);
 
 };
 

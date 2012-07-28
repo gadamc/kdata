@@ -16,7 +16,7 @@
 #include "KRootMeanSquare.h"
 #include <cmath>
 
-ClassImp(KRootMeanSquare);
+//ClassImp(KRootMeanSquare);
 
 KRootMeanSquare::KRootMeanSquare(void)
 {

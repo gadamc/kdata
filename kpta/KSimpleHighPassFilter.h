@@ -33,7 +33,7 @@ private:
   //private methods
   void InitializeMembers(void);
   
-  ClassDef(KSimpleHighPassFilter,1);
+  //ClassDef(KSimpleHighPassFilter,1);
   
 };
 

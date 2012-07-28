@@ -14,7 +14,7 @@
 
 using namespace std;
 
-ClassImp(KTrapezoidalPeakDetector);
+//ClassImp(KTrapezoidalPeakDetector);
 
 KTrapezoidalPeakDetector::KTrapezoidalPeakDetector(void)
 {

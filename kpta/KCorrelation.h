@@ -43,7 +43,7 @@ private:
   //private methods
   void InitializeMembers(void);
   
-  ClassDef(KCorrelation,1);
+  //ClassDef(KCorrelation,1);
   
 };
 #endif

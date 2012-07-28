@@ -45,7 +45,7 @@ private:
   
   //private methods
   void InitializeMembers(void);
-  ClassDef(KLinearRemoval,1);
+  //ClassDef(KLinearRemoval,1);
 
 };
 

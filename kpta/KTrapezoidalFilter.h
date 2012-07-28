@@ -41,7 +41,7 @@ private:
   //private methods
   void InitializeMembers(void);
   
-  ClassDef(KTrapezoidalFilter,1);
+  //ClassDef(KTrapezoidalFilter,1);
   
 };
 

@@ -35,7 +35,7 @@ private:
 protected:
 	
 	
-  ClassDef(KRealToHalfComplexDFT,1);
+  //ClassDef(KRealToHalfComplexDFT,1);
   
 };
 

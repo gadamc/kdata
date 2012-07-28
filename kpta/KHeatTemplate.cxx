@@ -19,7 +19,7 @@
 #include "KSpecialFunctions.h"
 #include <cmath>
 
-ClassImp(KHeatTemplate);
+//ClassImp(KHeatTemplate);
 
 
 KHeatTemplate::KHeatTemplate(void)

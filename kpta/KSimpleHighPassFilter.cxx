@@ -27,7 +27,7 @@
 
 using namespace std;
 
-ClassImp(KSimpleHighPassFilter);
+//ClassImp(KSimpleHighPassFilter);
 
 KSimpleHighPassFilter::KSimpleHighPassFilter(void)
 {

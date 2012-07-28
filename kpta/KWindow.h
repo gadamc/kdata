@@ -38,7 +38,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  ClassDef(KWindow,1);
+  //ClassDef(KWindow,1);
 
 };
 

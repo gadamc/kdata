@@ -11,7 +11,7 @@
 #ifndef __KCOMPLEX_H__
 #define __KCOMPLEX_H__
 #define PI 3.14159265358979
-#include "Rtypes.h"
+//#include "Rtypes.h"
 
 class KComplex {
 
@@ -23,7 +23,7 @@ public:
   static double* GetHalfComplexPhase(double* input, unsigned int size);
 
 private:
-  ClassDef(KComplex,1);
+  //ClassDef(KComplex,1);
 };
 
 

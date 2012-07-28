@@ -16,7 +16,7 @@
 
 using namespace std;
 
-ClassImp(KTrapezoidalFilter);
+//ClassImp(KTrapezoidalFilter);
 
 KTrapezoidalFilter::KTrapezoidalFilter(void)
 {

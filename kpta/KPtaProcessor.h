@@ -14,7 +14,7 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
-#include "Rtypes.h"
+//#include "Rtypes.h"
 
 class KPtaProcessor  { 
 
@@ -27,7 +27,7 @@ public:
     SetInputPulse(inPulse); SetInputPulseSize(inSize); SetOutputPulse(outPulse); SetOutputPulseSize(outsize);
   }
   //all derived classes must over-ride this method
-  virtual bool RunProcess(void) {return true;}
+  virtual bool RunProcess(void) = 0;
 
   virtual void SetInputPulse(KPtaProcessor *pta) {SetInputPulse(pta->GetOutputPulse(), pta->GetOutputPulseSize());}
 
@@ -92,7 +92,7 @@ private:
   //private methods
   void InitializeMembers(void);
 
-  ClassDef(KPtaProcessor,1);
+  //ClassDef(KPtaProcessor,1);
 
 };
 
