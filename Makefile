@@ -75,13 +75,12 @@
 CLEAN_MODULES := $(patsubst %,clean-%,$(MODULES))
 ifeq ($(filter $(MAKECMDGOALS),clean reallyclean distclean $(CLEAN_MODULES)),)
 
-##### the ROOT config file (specifies our architecture) #####
-
+##### the ROOT config file #####
 include $(ROOTSYS)/etc/Makefile.arch
+## just set this explicitly.. this might reduce compatibility with obscure architectures,
+## but should be find for standard linux/macosx/windows
 
-##### include ROOT make file for this architecture #####
-
-#include $(ROOTSYS)/config/Makefile.$(ARCH)
+EXPLLINKLIBS := $(ROOTLIBS) $(ROOTGLIBS)
 
 ##### default additions to basic ROOT system definitions #####
 
@@ -292,6 +291,7 @@ showbuild::
 	@echo "KDATABINDIR          = $(KDATABINDIR)"
 	@echo "KDATAINCDIR          = $(KDATAINCDIR)"
 	@echo "KDATAPYDIR          = $(KDATAPYDIR)"
+	@echo "EXPLLINKLIBS          = $(EXPLLINKLIBS)"
 #	@echo "INCLUDEFILES          = $(INCLUDEFILES)"
 	@echo "ROOTSYS            = $(ROOTSYS)"
 	@echo "FFTW_DIR           = $(FFTW_DIR)"

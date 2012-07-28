@@ -1,10 +1,10 @@
 ##### List of KDATA modules to build #####
 
-MODULES      := kds ksamba ktemplate era kpta kera kqpa kamping
+MODULES      := kds ksamba era 
 
 ### kera depends on kpta now, so it must come afterwards in this list. 
 #ifneq ($(FFTW_DIR),)
-#MODULES      += kqpa kpta kera ktemplate kamping
+MODULES      += kqpa kpta kera ktemplate kamping
 #endif
 
 MODULES += $(if $(CURL_DIR),kdatabase,)
