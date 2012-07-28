@@ -216,20 +216,21 @@ Bool_t KSamba2KData::ReadSambaHeaderGeneral(void)
       TString s = GetStringFromTokenizedStringResult(arr, 1);
       
       if(s.Contains("big")){
-	cout << "Setting samba endian: big" << endl;
+        cout << "Setting samba endian: big" << endl;
         fSambaHeader.SetEndian(true);
       }
-      else {
-	cout << "Setting samba endian: little" << endl;
+      else {  
+        cout << "Setting samba endian: little" << endl;
         fSambaHeader.SetEndian(false);
       }
       
       delete arr;
 
       if(fSambaHeader.GetEndian() != fLocalBigEndian)
-	cout << "     will swap bytes" << endl;
-      else 
-	cout << "     no byte swap" << endl;
+        cout << "     will swap bytes" << endl;
+      else
+        cout << "     no byte swap" << endl;
+    
     }
     
     else if( fSambaFileLine.BeginsWith("Fichier") ) {
@@ -313,13 +314,13 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
       TString sub = GetStringFromTokenizedStringResult(arr, 2);
       delete arr;
 
-      if (!fSambaHeader.IsInDetectorList(detector.Data()) && !sub.Contains("veto")){
+      if (!fSambaHeader.IsInDetectorList(detector.Data())){
         KSambaDetector *fNewDetector =  fSambaHeader.AddDetector();
         fNewDetector->SetName(detector.Data());
         cout << "Adding new detector to list: " << detector.Data() << endl;
         AddDetectorInfo(fNewDetector);
       }
-      else if(!sub.Contains("veto")) {  //we have already started adding this information
+      else  {  //we have already started adding this information
         AddDetectorInfo(detector.Data());
       }
     }
@@ -414,6 +415,11 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
     AddChannelToDetectorWithNamePost919("LT1", bolo, detector);
     AddChannelToDetectorWithNamePost919("LT2", bolo, detector);
   }
+
+  else if (bolo.BeginsWith("veto")) {
+    AddChannelToDetectorWithNamePost919("hits", bolo, detector);
+    AddChannelToDetectorWithNamePost919("stamp", bolo, detector);
+  }
   
   while (!fSambaFileLine.BeginsWith(endOfDetecorHeader) && !fSambaFileStream.eof()){
     
@@ -458,10 +464,13 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
     }
     
     
-    else if(fSambaFileLine.BeginsWith("Bolo.reglages")){
+    else if(fSambaFileLine.BeginsWith("Bolo.reglages")){  //the bolometer
       Bool_t foundGoodKey = true;
       fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
       
+      if (fSambaFileLine.BeginsWith(endOfDetecorHeader.c_str()) ) return true;  //probably the veto configuration
+      //return here if the Bolo.reglages section is empty.
+
       while (foundGoodKey){  //see below. i return when i get to the end. 
         TObjArray *regarr = fSambaFileLine.Tokenize("{}");  
         TString regSub = GetStringFromTokenizedStringResult(regarr, 1);
@@ -990,6 +999,9 @@ Bool_t KSamba2KData::AddDetectorInfoPre919(KSambaDetector *detector)
       Bool_t foundGoodKey = true;
       fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
       
+      if (fSambaFileLine.BeginsWith(endOfDetecorHeader.c_str()) ) return true;  //probably the veto configuration
+      //return here if the Bolo.reglages section is empty.
+
       while (foundGoodKey){  //see below. i return when i get to the end. 
         TObjArray *regarr = fSambaFileLine.Tokenize("{}");  
         TString regSub = GetStringFromTokenizedStringResult(regarr, 1);
@@ -1336,7 +1348,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
   
   string kBeginEvent = "# ===== Entete d'evenement =====" ; // empirical flags in the raw Edelweiss files
   string kBeginEvent2 = "* Evenement";
-  string kBeginChannel = "* Voie \"" ;
+  string kBeginChannel = "* Voie " ;
   string kSeparator = "* ----------" ;
   string kMuonVetoIgnore = "veto";
   
@@ -1365,7 +1377,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
       
       //an event is found. the following needs to be done.
       //read the samba record information. read every channel stored in the 
-      //event, discarding the data from the muon veto events, and pack each
+      //event, and pack each
       //channels pulse trace and other information into the appropriate bolometer
       //record. 
       
@@ -1396,11 +1408,11 @@ Bool_t KSamba2KData::ReadSambaData(void)
       while (!fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginEvent2)
              && !fSambaFileStream.eof() ) { //keep reading channel recordss until we reach the start of the next event. 
                                             //we are at the start of a channel record in the samba file now. 
-                                            //if we've found a muon veto hits channel record, ignore it for now and skip ahead. 
-        if (!fSambaFileLine.Contains(kMuonVetoIgnore) && !fSambaFileStream.eof()) {
+        if (!fSambaFileStream.eof()) {
           
           TString subStr( fSambaFileLine(fSambaFileLine.Index(kBeginChannel), fSambaFileLine.Length() - fSambaFileLine.Index(kBeginChannel)) );
          
+          // cout << subStr.Data() << endl;
           TObjArray *arr = subStr.Tokenize(" ");
           TString sub, detector;
           
@@ -1409,7 +1421,6 @@ Bool_t KSamba2KData::ReadSambaData(void)
             //this works for all channels, it seems
             sub = GetStringFromTokenizedStringResult(arr, arr->GetEntries()-1);
             detector = sub.Strip(TString::kBoth,'"');   //strip off the quotes
-            
           }
           else{
             if(arr->GetEntries() == 4){
@@ -1439,6 +1450,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
           if (newBolo) {
             bolo = event->AddBolo();
             bolo->SetDetectorName(detector.Data());
+            
             bolo->SetSambaRecord(samba);
           }
           
@@ -1471,6 +1483,8 @@ Bool_t KSamba2KData::ReadSambaData(void)
           
           while( !fSambaFileLine.Contains(kBeginChannel) && !fSambaFileStream.eof() && !fSambaFileLine.Contains(kBeginEvent)){
             
+            if (fSambaFileLine.Contains(kMuonVetoIgnore)) cout << fSambaFileLine.Data() << endl;
+
             //read line from the pulse channel and store them appropriately
             if(fSambaFileLine.BeginsWith("Dimension")){
               arr = fSambaFileLine.Tokenize("=#");
@@ -1543,10 +1557,10 @@ Bool_t KSamba2KData::ReadSambaData(void)
                 fSambaFileStream.read((char*)lArray,lPulseSize*2); //read the pulse from the stream. always 2 bytes for each point. 
                 
                 if (fSambaFileStream.fail()) 
-                  cerr << "KSamba2KData::ReadSambaData. Error reading a pulse for event " << samba->GetSambaEventNumber()<< endl;
+                  cerr << "KSamba2KData::ReadSambaData. Possible error reading a pulse for event " << samba->GetSambaEventNumber()<< endl;
                 
-		if (fSambaHeader.GetEndian() != fLocalBigEndian)  {//reverse order if necessary.
-		  for (Short_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
+                if (fSambaHeader.GetEndian() != fLocalBigEndian)  {//reverse order if necessary.
+		              for (Short_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
                 }
 
                 pulse->SetTrace(lPulseSize,lArray);
@@ -1567,16 +1581,16 @@ Bool_t KSamba2KData::ReadSambaData(void)
           //reached the end of this channel's record.
         }
       
-        else {
-          //found a muon channel record, so must skip ahead to either the next channel
-          //or the next event. 
-          //cout << "Found Muon Veto Event." << fSambaFileLine << endl;
-          fSambaFileLine.ReadToDelim(fSambaFileStream);
+        // else {
+        //   //found a muon channel record, so must skip ahead to either the next channel
+        //   //or the next event. 
+        //   //cout << "Found Muon Veto Event." << fSambaFileLine << endl;
+        //   fSambaFileLine.ReadToDelim(fSambaFileStream);
           
-          while( !fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginEvent2) &&
-                !fSambaFileLine.BeginsWith(kBeginChannel) && !fSambaFileStream.eof() )
-            fSambaFileLine.ReadToDelim(fSambaFileStream);
-        }
+        //   while( !fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginEvent2) &&
+        //         !fSambaFileLine.BeginsWith(kBeginChannel) && !fSambaFileStream.eof() )
+        //     fSambaFileLine.ReadToDelim(fSambaFileStream);
+        // }
         
       }
       
