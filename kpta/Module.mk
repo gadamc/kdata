@@ -46,7 +46,7 @@ KPTA_DICTH  := $(patsubst $(KPTA_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KPTA_EH)) $(KPT
 
 KPTA_EXE    := $(patsubst $(KPTA_DIRS)/%.cxx,bin/%,$(KPTA_CXX))
 
-KPTALIBS	:= $(patsubst $(LPATH)/lib%.$(SOEXT),-l%,$(KPTA_LIB))
+KPTALIBS	:= $(patsubst $(LPATH)/lib%.$(DllSuf),-l%,$(KPTA_LIB))
 
 KPTA_DEP    := $(KPTA_O:.$(ObjSuf)=.d) $(KPTA_EO:.$(ObjSuf)=.d)
 
