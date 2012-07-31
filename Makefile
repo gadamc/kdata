@@ -209,6 +209,9 @@ all:            kdataexecs
 
 -include MyRules.mk            # allow local rules
 
+# add -Wl,-rpath 
+ALLKDATALIBS += -Wl,-rpath,$(LPATH)
+
 # include dependency files from each module
 # (do this silently because they won't exist the first time we compile)
 # - don't include them when cleaning, because they will cause targets to be built
