@@ -58,21 +58,14 @@ print "Configuring KDATA...\n\n";
 
 # list of environment variables that we need to set
 my @env_list = ( 'KDATA_ROOT',
-                 #'KDATA_DATA',
                  'ROOTSYS',
-                 #'KW_KWMAN_VER',
-                 #'KW_ROOT',
                  'MAKE'
                );
 
 if ($opt_all) {
     push(@env_list, 
                     'FFTW_DIR',
-  #'YAJL_DIR',
                     'CURL_DIR'
-  #'LIBCURL',
-                    #'HISTO_DIR',
-                    #'CERNDIR'
 				);
 }
 

@@ -93,7 +93,7 @@ if (open(FILE, $setup_file)) {
     } else {
       next if $ENV{$var} eq $val;
     }
-    print STDERR "\nWarning: $var may not be set properly. \n\n $val\n";
+    #print STDERR "\nWarning: $var may not be set properly. \n\n $val\n";
     
   } else {
     print STDERR "Error: $var is not defined\n";
