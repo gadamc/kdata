@@ -47,7 +47,7 @@ KAMPING_LIBDEP   := $(KPTA_LIB) $(KDS_LIB)
 
 
 # Uncomment this to use the LinkDef file when generating the dictionary
-#KAMPING_LH     := $(KAMPING_DIRI)/$(MODNAME)_LinkDef.h
+KAMPING_LH     := $(KAMPING_DIRI)/$(MODNAME)_LinkDef.h
 KAMPING_DC     := $(KAMPING_DIRS)/$(MODNAME)_Dict.C
 KAMPING_DO     := $(KAMPING_DC:.C=.$(ObjSuf))
 KAMPING_DH     := $(KAMPING_DC:.C=.h)
@@ -58,7 +58,7 @@ KAMPING_CXX    := $(filter-out $(KAMPING_ECXX), $(wildcard $(KAMPING_DIRS)/*.cxx
 KAMPING_O      := $(KAMPING_CXX:.cxx=.$(ObjSuf))
 KAMPING_EO     := $(KAMPING_ECXX:.cxx=.$(ObjSuf))
 KAMPING_EH     := $(KAMPING_ECXX:.cxx=.h)
-KAMPING_DICTH  := $(patsubst $(KAMPING_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KAMPING_EH))
+KAMPING_DICTH  := $(patsubst $(KAMPING_DIRI)/%.h,$(KDATAINCDIR)/%.h,$(KAMPING_EH))
 
 KAMPING_EXE    := $(patsubst $(KAMPING_DIRS)/%.cxx,$(KDATABINDIR)/%,$(KAMPING_CXX))
 
