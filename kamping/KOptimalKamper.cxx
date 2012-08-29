@@ -122,7 +122,7 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
 
   
   //find the maximum value in the optimal filter
-  double maxValue= fOptimalFilter.GetOutputPulse()[0];
+  double maxValue = fOptimalFilter.GetOutputPulse()[0];
   int maxPosition = 0;
   
   if(fixPeakPosition < 0){  //search for it
