@@ -45,10 +45,6 @@ public:
   void SetEraOrder(Int_t aVal){fHeatPeakDetector.SetOrder(aVal);}
   void SetEraNumRms(Float_t aVal){fHeatPeakDetector.SetNumRms(aVal);}
   void SetEraPolarity(Int_t aVal){fHeatPeakDetector.SetPolarity(aVal);}
-era.SetOrder(5)
-era.SetNumRms(2.3)
-era.SetPolarity(-1) 
-
   
   Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse);
   std::vector<double> GetTemplateSpectrum(const char* channelName) const;
