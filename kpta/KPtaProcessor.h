@@ -29,23 +29,9 @@ public:
   //all derived classes must over-ride this method
   virtual bool RunProcess(void) = 0;
 
-  template <class T> void SetInputPulse(const std::vector<T> &aPulse){SetTheInputPulse(aPulse);}
-  template <class T> void SetInputPulse(const T* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
-
+  template <class T> void SetInputPulse(const std::vector<T> &aPulse);
+  template <class T> void SetInputPulse(const T* aPulse, unsigned int size);
   virtual void SetInputPulse(KPtaProcessor *pta) {SetInputPulse(pta->GetOutputPulse(), pta->GetOutputPulseSize());}
-
-  //this weird pattern of coding is so that SetInputPulse can be overloaded in derived classes.
-  //and because using template functions in ROOT's CINT isn't trivial.
-  // virtual void SetInputPulse(std::vector<double> &aPulse){SetTheInputPulse(aPulse);}
-  // virtual void SetInputPulse(std::vector<float> &aPulse){SetTheInputPulse(aPulse);}
-  // virtual void SetInputPulse(std::vector<int> &aPulse){SetTheInputPulse(aPulse);}
-  // virtual void SetInputPulse(std::vector<short> &aPulse){SetTheInputPulse(aPulse);}
-  
-  // virtual void SetInputPulse(const double* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
-  // virtual void SetInputPulse(const float* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
-  // virtual void SetInputPulse(const int* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
-  // virtual void SetInputPulse(const short* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
-
   virtual void SetInputPulse(const char* aFile);
 
   //for the memory-savy programmers. 
@@ -56,7 +42,6 @@ public:
   virtual void DeleteInputPulse(void){if(fInputPulse){delete [] fInputPulse; fInputPulse = 0; fInputSize = 0;}}
   virtual void DeleteOutputPulse(void){if(fOutputPulse){delete [] fOutputPulse; fOutputPulse = 0; fOutputSize = 0;}}
   virtual void DoNotDeletePulses(bool opt){fDoNotDelete = opt;}
-  //
 
   virtual double* GetOutputPulse(void) const {return fOutputPulse;}  
   virtual unsigned int GetOutputPulseSize(void) const {return fOutputSize;}
@@ -84,10 +69,6 @@ protected:
   unsigned int fOutputSize;
   bool fDoNotDelete;
 
-  template <class T> void SetTheInputPulse(const std::vector<T> &aPulse);
-  template <class T> void SetTheInputPulse(const T* aPulse, unsigned int size);
-
-
 
 
 private:
@@ -99,7 +80,7 @@ private:
 
 };
 
-template <class T> void KPtaProcessor::SetTheInputPulse(const T* aPulse, unsigned int size)
+template <class T> void KPtaProcessor::SetInputPulse(const T* aPulse, unsigned int size)
 {
   if(size != fInputSize)
     AllocateArrays(size);
@@ -109,7 +90,7 @@ template <class T> void KPtaProcessor::SetTheInputPulse(const T* aPulse, unsigne
 }
 
 
-template <class T> void KPtaProcessor::SetTheInputPulse(const std::vector<T> &aPulse)
+template <class T> void KPtaProcessor::SetInputPulse(const std::vector<T> &aPulse)
 {
   if(aPulse.size() != fInputSize)
     AllocateArrays(aPulse.size());  
