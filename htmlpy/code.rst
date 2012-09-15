@@ -1,11 +1,10 @@
-Auto Generated Documentation
+kdatapy modules
 ============================
+.. toctree::
+   :maxdepth: 2
 
-.. automodule:: KDataPy.util
-   :members:
+   util
+   database
+   bandpass
 
-.. automodule:: KDataPy.database
-   :members:
 
-.. automodule:: KDataPy.bandpass
-   :members:

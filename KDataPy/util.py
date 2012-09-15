@@ -53,82 +53,88 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, *
   takes three arguments: the pulseRecord, the pta object and the **kwargs
     
   
-  ## Example 1.
+  Example 1
   
-  from KDataPy import util
-  from ROOT import *
-  gSystem.Load('libkpta')
-  
-  #here i define the analysis function
-  def myFunction(pulseRecord, ptaObject=None, **kwargs):
-    print pulseRecord.GetChannelName()
-    
-    if ptaObject != None
-      pulsetrace = util.get_out(pta)
-    else: pulsetrace = np.array(pulse.GetTrace())
+  .. code-block:: python
 
-    print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
+     from KDataPy import util
+     from ROOT import *
+     gSystem.Load('libkpta')
   
-  #a KPtaProcessor object that will analyse each pulse
-  bas = KBaselineRemoval()
-  
-  
-  util.looppulse('path/to/kdatafile.root', name='ZM1', pta = bas, analysisFunction = myFunction)
-  
-  
-  ## Example 2
-  
-  from KDataPy import util
-  from ROOT import *
-  gSystem.Load('libkpta')
-  
-  #here i define the analysis function
-  def myFunction(pulseRecord, ptaObject=None, **kwargs):
-    print pulseRecord.GetChannelName()
+     #here i define the analysis function
+     def myFunction(pulseRecord, ptaObject=None, **kwargs):
+       print pulseRecord.GetChannelName()
     
-    if ptaObject != None
-      pulsetrace = util.get_out(pta)
-    else: pulsetrace = np.array(pulse.GetTrace())
+       if ptaObject != None
+         pulsetrace = util.get_out(pta)
+       else: pulsetrace = np.array(pulse.GetTrace())
 
-    print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
+       print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
+  
+     #a KPtaProcessor object that will analyse each pulse
+     bas = KBaselineRemoval()
+  
+     util.looppulse('path/to/kdatafile.root', name='ZM1', pta = bas, analysisFunction = myFunction)
+  
+  
+  Example 2
+  
+  .. code-block:: python
     
-  bas = KBaselineRemoval()
-  pat = KPatternRemoval()
-  chain = KPulseAnalysisChain()
-  chain.AddProcessor(bas)
-  chain.AddProcessor(pat)
+    from KDataPy import util
+    from ROOT import *
+    gSystem.Load('libkpta')
   
-  util.looppulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myFunction)
-  
-  
-  ## Example 3 - using kwargs
-  
-  from KDataPy import util
-  import numpy as np
-  from ROOT import *
-  gSystem.Load('libkpta')
+    #here i define the analysis function
+    def myFunction(pulseRecord, ptaObject=None, **kwargs):
+      print pulseRecord.GetChannelName()
+    
+      if ptaObject != None
+        pulsetrace = util.get_out(pta)
+      else: pulsetrace = np.array(pulse.GetTrace())
 
-  
-  def myAnalysis(pulse, pta=None, **kwargs):
-    if pta != None
-      pulsetrace = util.get_out(pta)
-    else: pulsetrace = np.array(pulse.GetTrace())
-    
-    if kwargs['myExtraOption'] == 'printMin':
-      print 'the pulse minimum is', np.amin(pulsetrace), 'at bin', np.argmin(pulsetrace)
-    else:
       print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
-      
-  bas = KBaselineRemoval()
-  pat = KPatternRemoval()
-  filter = KIIRSecondOrder(a1, a2, b0, b1, b2)  #the "a" and "b" variables can be calculated by external tools (such as Scipy.signal)
-  chain = KPulseAnalysisChain()
-  chain.AddProcessor(bas)
-  chain.AddProcessor(pat)
-  chain.AddProcessor(filter)
-
-  util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myAnalysis, myExtraOption="printMin")
     
+    bas = KBaselineRemoval()
+    pat = KPatternRemoval()
+    chain = KPulseAnalysisChain()
+    chain.AddProcessor(bas)
+    chain.AddProcessor(pat)
+  
+    util.looppulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myFunction)
+  
+  
+  Example 3 - using kwargs
+  
+  .. code-block:: python
+
+
+    from KDataPy import util
+    import numpy as np
+    from ROOT import *
+    gSystem.Load('libkpta')
+
+    
+    def myAnalysis(pulse, pta=None, **kwargs):
+      if pta != None
+        pulsetrace = util.get_out(pta)
+      else: pulsetrace = np.array(pulse.GetTrace())
+      
+      if kwargs['myExtraOption'] == 'printMin':
+        print 'the pulse minimum is', np.amin(pulsetrace), 'at bin', np.argmin(pulsetrace)
+      else:
+        print 'the pulse maximum is', np.amax(pulsetrace), 'at bin', np.argmax(pulsetrace)
+        
+    bas = KBaselineRemoval()
+    pat = KPatternRemoval()
+    filter = KIIRSecondOrder(a1, a2, b0, b1, b2)  #the "a" and "b" variables can be calculated by external tools (such as Scipy.signal)
+    chain = KPulseAnalysisChain()
+    chain.AddProcessor(bas)
+    chain.AddProcessor(pat)
+    chain.AddProcessor(filter)
+
+    util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myAnalysis, myExtraOption="printMin")
+      
   
   '''
   if 'KDataReader' in str(type(data)): kdfilereader = data
@@ -161,16 +167,18 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, **kwargs):
   
   For example
   
-  def myFunction(boloRecord, **kwargs):
-    print boloRecord.GetDetectorName()
+  .. code-block:: python
+
+    def myFunction(boloRecord, **kwargs):
+      print boloRecord.GetDetectorName()
+      
+      for pulse in boloRecord.pulseRecords():
+        print pulse.GetChannelName()
+        .... do some analysis....
+        
+        
+    util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, myExtraOptions="condition1")
     
-    for pulse in boloRecord.pulseRecords():
-      print pulse.GetChannelName()
-      .... do some analysis....
-      
-      
-  util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, myExtraOptions="condition1")
-  
   will loop through the file and return to you any bolometer with a GetDetectorName that
   contains "FID" and pass that bolo record to your myFunction(bolo).
   
