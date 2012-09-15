@@ -11,10 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: KDataPy
-.. autofunction::
-.. automodule:: KDataPy.util
-
+   introduction
+   code
 
 Indices and tables
 ==================
