@@ -1,5 +1,5 @@
 .. kdatapy documentation master file, created by
-   sphinx-quickstart on Sat Sep 15 10:01:06 2012.
+   sphinx-quickstart on Sat Sep 15 10:44:35 2012.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
@@ -11,6 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+.. automodule:: KDataPy
+.. autofunction::
+.. automodule:: KDataPy.util
 
 
 Indices and tables
