@@ -31,7 +31,7 @@ KPTA_DIRI   := $(MODDIR)
 KPTA_XTRALIBS  := $(FFTWLIBS)
 
 # Uncomment this to use the LinkDef file when generating the dictionary
-#KPTA_LH     := $(KPTA_DIRI)/$(MODNAME)_LinkDef.h
+KPTA_LH     := $(KPTA_DIRI)/$(MODNAME)_LinkDef.h
 KPTA_DC     := $(KPTA_DIRS)/$(MODNAME)_Dict.C
 KPTA_DO     := $(KPTA_DC:.C=.$(ObjSuf))
 KPTA_DH     := $(KPTA_DC:.C=.h)
@@ -42,7 +42,7 @@ KPTA_CXX    := $(filter-out $(KPTA_ECXX),$(wildcard $(KPTA_DIRS)/*.cxx))
 KPTA_O      := $(KPTA_CXX:.cxx=.$(ObjSuf))
 KPTA_EO     := $(KPTA_ECXX:.cxx=.$(ObjSuf))
 KPTA_EH     := $(KPTA_ECXX:.cxx=.h)
-KPTA_DICTH  := $(patsubst $(KPTA_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KPTA_EH)) $(KPTA_EH:.h=.h+)
+KPTA_DICTH  := $(patsubst $(KPTA_DIRI)/%.h,$(KDATAINCDIR)/%.h,$(KPTA_EH)) 
 
 KPTA_EXE    := $(patsubst $(KPTA_DIRS)/%.cxx,bin/%,$(KPTA_CXX))
 

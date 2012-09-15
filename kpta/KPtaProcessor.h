@@ -29,19 +29,22 @@ public:
   //all derived classes must over-ride this method
   virtual bool RunProcess(void) = 0;
 
+  template <class T> void SetInputPulse(const std::vector<T> &aPulse){SetTheInputPulse(aPulse);}
+  template <class T> void SetInputPulse(const T* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+
   virtual void SetInputPulse(KPtaProcessor *pta) {SetInputPulse(pta->GetOutputPulse(), pta->GetOutputPulseSize());}
 
   //this weird pattern of coding is so that SetInputPulse can be overloaded in derived classes.
   //and because using template functions in ROOT's CINT isn't trivial.
-  virtual void SetInputPulse(std::vector<double> &aPulse){SetTheInputPulse(aPulse);}
-  virtual void SetInputPulse(std::vector<float> &aPulse){SetTheInputPulse(aPulse);}
-  virtual void SetInputPulse(std::vector<int> &aPulse){SetTheInputPulse(aPulse);}
-  virtual void SetInputPulse(std::vector<short> &aPulse){SetTheInputPulse(aPulse);}
+  // virtual void SetInputPulse(std::vector<double> &aPulse){SetTheInputPulse(aPulse);}
+  // virtual void SetInputPulse(std::vector<float> &aPulse){SetTheInputPulse(aPulse);}
+  // virtual void SetInputPulse(std::vector<int> &aPulse){SetTheInputPulse(aPulse);}
+  // virtual void SetInputPulse(std::vector<short> &aPulse){SetTheInputPulse(aPulse);}
   
-  virtual void SetInputPulse(const double* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
-  virtual void SetInputPulse(const float* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
-  virtual void SetInputPulse(const int* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
-  virtual void SetInputPulse(const short* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+  // virtual void SetInputPulse(const double* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+  // virtual void SetInputPulse(const float* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+  // virtual void SetInputPulse(const int* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
+  // virtual void SetInputPulse(const short* aPulse, unsigned int size){SetTheInputPulse(aPulse, size);}
 
   virtual void SetInputPulse(const char* aFile);
 
