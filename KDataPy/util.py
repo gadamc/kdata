@@ -44,13 +44,21 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, *
   This function provides you with automatic looping code and gives you the chance for pulse processing. 
   This function will loop through a datafile, apply the KPulseProcessor that you provide (in pta), 
   and then call the analysisFunction, passing in the pulseRecord, the pta, and all **kwargs. 
-  
-  data = the .root data file, OR an instance of a KDataReader object
-  name = plot pulses where 'name' is found in a pulse's channel name. You can use this to only analyze particular pulses
-  match = if match is True, then only plot pulses that have a channel name that exactly matches 'name'
-  pta = if you pass in a KPtaProcessor, the pulse is processed by the KPtaProcessor 
-  analysisFunction = is a function that you provide to do extra analysis on each pulseRecord. The analysisFunction
-  takes three arguments: the pulseRecord, the pta object and the **kwargs
+
+  :param data: The data file to use.
+  :type data: string path to file or KDataReader object
+  :param name: The channel name you want to analyze
+  :type name: string
+  :param match: if match is True, then the pulse channel name needs to exactly match 'name'. Otherwise, if the pulse channel name starts with 'name', then the data will be analyzed. For example, if you set 'name'='chal', then you will probably analyze all heat channels
+  :type match: bool
+  :param pta: a KPtaProcessor that will be automatically called for each pulse
+  :type pta: KPtaProcessor object
+  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
+  :type analysisFunction: function pointer
+  :param kwargs: all kwargs are pass to the analysisFunction
+  :type kwargs: keyword argument list
+
+
     
   
   Example 1
@@ -161,10 +169,18 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, **kwargs):
   '''
   Like looppulse, but just loops through each bolo record for you
   and you provide the analysis function. 
-  "name" should be the name of the bolometer.
-  if match == True, then only an exact match is passed to the analysisFunction
-  The analysisFunction must take one argument, which is of type KBolometerRecord (or subclass), plus optional kwargs
   
+  :param data: The data file to use.
+  :type data: string path to file or KDataReader object
+  :param name: The bolometer name you want to analyze
+  :type name: string
+  :param match: if match is True, then the bolometer name needs to exactly match 'name'. Otherwise, if the pulse channel name starts with 'name', then the data will be analyzed. For example, if you set 'name'='chal', then you will probably analyze all heat channels
+  :type match: bool
+  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KRawPulseRecord, **kwargs). 
+  :type analysisFunction: function pointer
+  :param kwargs: all kwargs are pass to the analysisFunction
+  :type kwargs: keyword argument list
+
   For example
   
   .. code-block:: python
@@ -203,11 +219,24 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, **kwargs):
             
 def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None, **kwargs):
     '''
-    Like looppulse, but will plot each pulse on screen and wait for you to hit the 'Enter'
-    key in the shell before continuing. This is a nice way to visualize what is happening
+    Exactly like looppulse, but will plot each pulse on screen and wait for you to hit the 'Enter'
+    key in the shell before continuing. In fact, this function calls looppulse. This is a nice way to visualize what is happening
     to the pulses. Additionally, if you don't provide any analysisFunction, it will be a
     nice event viewere just to look at the data.
     
+    :param data: The data file to use.
+    :type data: string path to file or KDataReader object
+    :param name: The channel name you want to analyze
+    :type name: string
+    :param match: if match is True, then the pulse channel name needs to exactly match 'name'. Otherwise, if the pulse channel name starts with 'name', then the data will be analyzed. For example, if you set 'name'='chal', then you will probably analyze all heat channels
+    :type match: bool
+    :param pta: a KPtaProcessor that will be automatically called for each pulse
+    :type pta: KPtaProcessor object
+    :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
+    :type analysisFunction: function pointer
+    :param kwargs: all kwargs are pass to the analysisFunction
+    :type kwargs: keyword argument list
+
     '''
         
     def plotingfunction(pulse, pta=None, **kwargs):
