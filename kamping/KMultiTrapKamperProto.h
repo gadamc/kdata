@@ -1,4 +1,4 @@
-//
+//_____________________________________________
 // KMultiTrapKamperProto.h
 // KDataStructure
 //

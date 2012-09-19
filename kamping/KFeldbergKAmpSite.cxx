@@ -1,4 +1,4 @@
-//
+//_____________________________________________
 // KFeldbergKAmpSite.cxx  
 // KDataStructure
 //
@@ -9,20 +9,20 @@
 // Extra field definition for output KPulseAnalysisRecord:
 // 0 : NDF of the fit -- fit with floating start time
 // 1 : ROOT's TMinuit Fit return output - 0=good fit.
-
+//
 // 2 : RMS of the first 40% of the processed pulse
 // 3 : RMS of preprocessed pulse
 // 4 : RMS of processed pulse
-
+//
 // 5: order of lowpass filter -- butterworth
 // 6: corner frequency of lowpass
 // 7: order of highpass filter
 // 8: corner frequency of highpass
-
+//
 // 9 : Baseline estimation value - amplitude estimate of the fit with a fixed start time set to fBaselinePosition.
 // 10 : fBaselinePosition - the fixed position of the pulse peak time in the Baseline amplitude estimate fit..
 // 11 : baseline fit result -- ROOT's TMinuit Fit return output for baseline fit
-
+//
 // 12 : Heat channel amplitude estimate from the fit with the peak time fixed to the estimated Ionization pulse time. Heat channel only. This will be empty for ionization channels.
 // 13 : Fixed pulse time -- the estimated Ionization pulse time used in the fit. This will be empty for ionization channels.
 // 14 : fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time. This will be empty for ionization channels.

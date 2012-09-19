@@ -1,10 +1,10 @@
-//
+//_____________________________________________
 // KSimpleKamper1.cxx  
 // KDataStructure
 //
 // Created by Adam Cox
 // Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
-
+//
 //
 
 #include "KSimpleKamper1.h"

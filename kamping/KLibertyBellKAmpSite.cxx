@@ -1,4 +1,4 @@
-//
+//_____________________________________________
 // KLibertyBellKAmpSite.cxx  
 // KDataStructure
 //
@@ -33,7 +33,7 @@
 // if(resMap.find("baselineRemoved") != resMap.end())        rec->SetBaselineRemoved(resMap["baselineRemoved"].fValue);
 // if(resMap.find("slopeRemoved") != resMap.end())           rec->SetSlopeRemoved(resMap["slopeRemoved"].fValue);
 // if(resMap.find("chiSq") != resMap.end())                  rec->SetChiSq(resMap["chiSq"].fValue);   
-
+//
 // if(resMap.find("baselineAmp") != resMap.end())            rec->SetExtra(resMap["baselineAmp"].fValue, 0);
 // if(resMap.find("sharpness") != resMap.end())              rec->SetExtra(resMap["sharpness"].fValue, 1);
 // if(resMap.find("fitStatus") != resMap.end())              rec->SetExtra(resMap["fitStatus"].fValue, 2);

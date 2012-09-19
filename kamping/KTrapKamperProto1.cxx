@@ -1,4 +1,4 @@
-//
+//_____________________________________________
 // KTrapKamperProto1.cxx  
 // KDataStructure
 //
