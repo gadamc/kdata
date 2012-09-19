@@ -34,11 +34,16 @@
 #pragma link C++ operators std::map<std::string, KResult>::reverse_iterator;
 
 #pragma link C++ class KFilterChainBestCorrelationKamper+;
-#pragma link C++ function KFilterChainBestCorrelationKamper::TestFunc<double>;
-//#pragma link C++ function KFilterChainBestCorrelationKamper::TestFunc<float>;
-//#pragma link C++ function KFilterChainBestCorrelationKamper::TestFunc<int>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<double>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<float>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<int>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<short>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<Double_t>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<Double32_t>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<Float_t>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<Int_t>;
+#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<Short_t>;
 
-//#pragma link C++ function KFilterChainBestCorrelationKamper::MakeKamp<double>;
 
 
 #endif 
