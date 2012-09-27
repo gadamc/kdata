@@ -9,13 +9,13 @@ def functionlist():
   the first, third, fourth and fifth parameters are the trigger time, rise time, first decay time and second decay time. 
   Thus par[0] * time_unit = pretrigger time in seconds.  
   '''
-  _rise_double_decay = {'python':"\ndef template(x,par):\n  import math\n  if x < par[0]: return 0\n  else: return par[1]*(1 - math.exp(-(x-par[0])/par[2]))*(math.exp(-(x-par[0])/par[3]) + par[5]*math.exp(-(x-par[0])/par[4]))\n",
+  _rise_double_decay = {'python':"\ndef template(xx,par):\n  import math\n  x = float(xx)\n  if x < float(par[0]): return 0\n  else: return float(par[1])*(1 - math.exp(-(x-float(par[0]))/float(par[2])))*(math.exp(-(x-float(par[0]))/float(par[3])) + float(par[5])*math.exp(-(x-float(par[0]))/float(par[4]))\n",
                           'tf1': "x < [0] ? 0.0 : [1]*(1 - ([2] > 0.0 ? TMath::Exp(-(x-[0])/[2]) : 0.0))*(([3] > 0.0 ? TMath::Exp(-(x-[0])/[3]) : 0.0) + [5]*([4] > 0.0 ? TMath::Exp(-(x-[0])/[4]) : 0.0))",
                           'par': [514.08, -1.0, 5.0, 15.0, 70.0, 0.25], 'time_unit': 0.001, 'name':'rise_double_decay'}
-  _single_decay = {'python' :"\ndef template(x,par):\n  import math\n  if x < par[0]: return 0\n  else: return par[1]*math.exp(-(x-par[0])/par[2])\n",
+  _single_decay = {'python' :"\ndef template(xx,par):\n  import math\n  x = float(xx)\n  if x < float(par[0]): return 0\n  else: return float(par[1])*math.exp(-(x-float(par[0]))/float(par[2]))\n",
                           'tf1': "x < [0] ? 0.0 : [1]*(([2] > 0.0 ? TMath::Exp(-(x-[0])/[2]) : 0.0))",
                           'par': [4095.0, 1.0, 1000.0], 'time_unit' : 0.00001,'name':'single_decay'}
-  _step = {'python':"\ndef template(x,par):\n  import math\n  if x < par[0]: return 0\n  else: return par[1]\n",
+  _step = {'python':"\ndef template(xx,par):\n  import math\n  x = float(xx)\n  if x < float(par[0]): return 0\n  else: return float(par[1])\n",
                           'tf1': "x < [0] ? 0.0 : [1]",
                           'par': [4095.0, 1.0], 'time_unit' : 0.00001,'name':'step'}
                 

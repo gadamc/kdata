@@ -61,7 +61,6 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
 {
   SetName("KChamonixKAmpSite");
   
-  
   fHeatPeakDetector.SetOrder(5);
   fHeatPeakDetector.SetNumRms(2.3);
 
@@ -75,7 +74,6 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
   fBBv1IonPreProcessor->AddProcessor( new KPatternRemoval() ); 
   fBBv1IonPreProcessor->AddProcessor( new KPatternRemoval() ); //yes, i make two...  see below.
 
-
   fBBv2IonPreProcessor  = new KPulseAnalysisChain();
   fBBv2IonPreProcessor = new KPulseAnalysisChain();
   fBBv2IonPreProcessor->SetIsOwner();
@@ -83,7 +81,6 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
   KPatternRemoval *pta = new KPatternRemoval();
   pta->SetPatternLength(10);  //just fixed for now!!!
   fBBv2IonPreProcessor->AddProcessor( pta ); 
-
 
   fHeatWindow = 0;
   fIonWindow = 0;
@@ -308,7 +305,8 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
       continue;
     };  //also skip if we don't have a noise spectr
     
-    
+    if(fHeatWindow == 0) continue;
+
     //
     KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp); //for each pulse record, we add a bolo amp pulse record
     KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
