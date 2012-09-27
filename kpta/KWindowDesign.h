@@ -10,7 +10,6 @@
 
 #ifndef __KWINDOWDESIGN_H__
 #define __KWINDOWDESIGN_H__
-#define PI 3.14159265358979
 
 //#include "Rtypes.h"
 

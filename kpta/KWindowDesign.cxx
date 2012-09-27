@@ -21,6 +21,7 @@ using namespace std;
 
 //ClassImp(KWindowDesign);
 
+
 KWindowDesign::KWindowDesign(void)
 {
 }
@@ -29,6 +30,7 @@ KWindowDesign::~KWindowDesign(void)
 {
 }
 
+
 double* KWindowDesign::GetTukeyWindow(unsigned int size, double alpha, int middle, unsigned int width)
 {
   //A Tukey window is a window that is flat in the middle with an amplitude of 1 and flanked by
@@ -36,7 +38,8 @@ double* KWindowDesign::GetTukeyWindow(unsigned int size, double alpha, int middl
   //
   //Don't forget - you own the memory pointed to by the returned pointer!
   //
-  
+  double PI =  3.14159265358979;
+
   double* coef = 0; 
   if(size != 0){
     width = (width > 0) ? width : size;
@@ -78,6 +81,9 @@ double* KWindowDesign::GetBlackmanWindow(unsigned int size, double alpha, int mi
   //
   //Don't forget - you own the memory pointed to by the returned pointer!
   //
+  double PI =  3.14159265358979;
+
+
   double* coef = 0; 
   if(size != 0){
     width = (width > 0) ? width : size;

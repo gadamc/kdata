@@ -21,6 +21,7 @@
 #include "KPulseShifter.h"
 #include <map>
 #include <string>
+#include <set>
 #include <vector>
 
 class KAmpEvent;
@@ -28,6 +29,7 @@ class KRawEvent;
 class KAmpBolometerRecord;
 class KAmpBoloPulseRecord;
 class KRawBoloPulseRecord;
+class KPulseAnalysisChain;
 
 class KChamonixKAmpSite : public KAmpSite {
 
@@ -46,7 +48,8 @@ public:
   void SetEraNumRms(Float_t aVal){fHeatPeakDetector.SetNumRms(aVal);}
   void SetEraPolarity(Int_t aVal){fHeatPeakDetector.SetPolarity(aVal);}
   
-  Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse);
+  //these parameters should be available from the database 
+  Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse, int pulseShift, unsigned int pulseType);
   std::vector<double> GetTemplateSpectrum(const char* channelName) const;
   
   void SetTrapDecayConstant(const char* channelName, double value){fDecayValues[channelName] = value;}
@@ -61,37 +64,56 @@ public:
   void SetTemplateShift(const char* channelName, int value){fTemplateShift[channelName] = value;}
   int GetTemplateShift(const char* channelName) const;
 
-  KBaselineRemoval& GetBaselineRemovalHeat(void){return fBaselineRemovalHeat;}
-  KWindow& GetHeatWindow(void){return fHeatWindow;}
-  
+  KPulseAnalysisChain* GetHeatPreProcessor(void){return fHeatPreProcessor;}
+  KPulseAnalysisChain* GetBBv1IonPreProcessor(void){return fBBv1IonPreProcessor;}
+  KPulseAnalysisChain* GetBBv2IonPreProcessor(void){return fBBv2IonPreProcessor;}
+  // void SetHeatPreProcessor(KPulseAnalysisChain* pta);
+  // void SetBBv1IonPreProcessor(KPulseAnalysisChain* pta);
+  // void SetBBv2IonPreProcessor(KPulseAnalysisChain* pta);
+
+  KWindow* GetHeatWindow(void){return fHeatWindow;}
+  KWindow* GetIonWindow(void){return fIonWindow;}
+
+  // void SetHeatWindow(KWindow* pta);
+  // void SetIonWindow(KWindow* pta);
+
   KOptimalKamper& GetOptimalKamper(void){return fOptKamper;}
   KRealToHalfComplexDFT& GetRealToHalfComplexDFT(void){return fR2Hc;}
   KHalfComplexPower& GetHalfComplexPower(void){return fHc2P;}
   KEraPeakFinder& GetHeatPeakDetector(void){return fHeatPeakDetector;}
   KPulseShifter& GetPulseTemplateShifter(void){return fPulseTemplateShifter;}
   
+  void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.5);
+  void CreateIonWindow(unsigned int pulseSize, double tukeyWindowParam = 0.1);
+  std::set<int> GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
+
 private:
+
+  void FillResults(KPulseAnalysisRecord* rec, std::map<std::string, KResult> &resMap);
+
   
-  //KPeakDetectorProto fIonPeakDetector;
-  //KPeakDetectorProto fHeatPeakDetector;
-  KEraPeakFinder fHeatPeakDetector;
+  KEraPeakFinder fHeatPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future... 
   Bool_t fScoutData;
 
-  KBaselineRemoval fBaselineRemovalHeat;
-  //KBaselineRemoval fBaselineRemovalIon;
+  KPulseAnalysisChain* fHeatPreProcessor;  //by default is just a baseline removal
+  KPulseAnalysisChain* fBBv1IonPreProcessor;  //by default is a pulse analysis chain with baseline removal + 2x pattern removal. 
+  KPulseAnalysisChain* fBBv2IonPreProcessor;  //by default is a pulse analysis chain with linear removal + pattern removal. 
+  KWindow* fHeatWindow;
+  KWindow* fIonWindow;
   
   KRealToHalfComplexDFT fR2Hc;
   KHalfComplexPower fHc2P;
-  KWindow fHeatWindow;
   KPulseShifter fPulseTemplateShifter;
   
   std::map<std::string, int> fTemplateShift;
   std::map<std::string, unsigned int> fNoiseEventCounts;
   std::map<std::string, std::vector<double> > fNoiseSpectra;
   std::map<std::string, std::vector<double> > fTemplateSpectra;
+  std::map<std::string, std::set<double> > fIonPatternRemovalSize;
   std::map<std::string, double> fDecayValues;
   
   KOptimalKamper fOptKamper;
+  // Bool_t fFirstPulse; 
   
 };
 

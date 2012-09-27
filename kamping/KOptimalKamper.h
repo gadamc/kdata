@@ -37,6 +37,7 @@ public:
   double GetPulseTemplateShiftFromPreTrigger(void) const {return fPulseTemplateShift;}
   double GetAmplitudeEstimatorSearchRange(void) const {return fAmplitudeEstimatorSearchRange;}
   int GetPulseAmplitudeShift(void){return fPulseAmplitudeShift;}
+  void SetIonPulseStartTime(double peakPos){fIonPulsePeakPos = peakPos;}
 
 private:
  
@@ -47,7 +48,8 @@ private:
   double fPulseTemplateShift;
   double fAmplitudeEstimatorSearchRange;
   int fPulseAmplitudeShift;
-
+  double fIonPulsePeakPos;
+  
   KRealToHalfComplexDFT fR2Hc;
   
 };

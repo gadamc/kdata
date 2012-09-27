@@ -88,7 +88,7 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
   }
   if (fWindow){
     if(fPreProcessor)
-      fWindow->SetInputPulse(fPreProcessor->GetOutputPulse(), fPreProcessor->GetOutputPulseSize());
+      fWindow->SetInputPulse(fPreProcessor);
     else
       fWindow->SetInputPulse((std::vector<short>&)rawPulseRecord->GetTrace());
     
