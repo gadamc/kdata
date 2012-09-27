@@ -50,36 +50,97 @@
             
   <h1>Source code for KDataPy.database</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">couchdbkit</span>
+
+<span class="k">def</span> <span class="nf">getDbList</span><span class="p">():</span>
+  <span class="k">return</span><span class="p">[</span><span class="s">&#39;http://localhost:5984&#39;</span><span class="p">,</span> <span class="s">&#39;https://edelweiss.cloudant.com&#39;</span><span class="p">,</span> <span class="s">&#39;http://edwdbik.fzk.de:5984&#39;</span><span class="p">]</span>
   
-<div class="viewcode-block" id="getdatabase"><a class="viewcode-back" href="../../database.html#KDataPy.database.getdatabase">[docs]</a><span class="k">def</span> <span class="nf">getdatabase</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">serverName</span><span class="o">=</span><span class="s">&#39;http://edwdbik.fzk.de:5984&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="getdatabase"><a class="viewcode-back" href="../../database.html#KDataPy.database.getdatabase">[docs]</a><span class="k">def</span> <span class="nf">getdatabase</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  returns an instance of couchdbkit.Database</span>
 <span class="sd">  &#39;&#39;&#39;</span>
-  <span class="n">server</span> <span class="o">=</span> <span class="n">couchdbkit</span><span class="o">.</span><span class="n">Server</span><span class="p">(</span><span class="n">serverName</span><span class="p">)</span>
-  <span class="k">return</span> <span class="n">server</span><span class="p">[</span><span class="n">database</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">tryDb</span><span class="p">(</span><span class="n">sName</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">server</span> <span class="o">=</span> <span class="n">couchdbkit</span><span class="o">.</span><span class="n">Server</span><span class="p">(</span><span class="n">sName</span><span class="p">)</span>
+      <span class="n">db</span> <span class="o">=</span> <span class="n">server</span><span class="p">[</span><span class="n">database</span><span class="p">]</span>
+      <span class="n">db</span><span class="o">.</span><span class="n">info</span><span class="p">()</span> <span class="c">#this will throw if there&#39;s a problem</span>
+      <span class="k">return</span> <span class="n">db</span>
+    <span class="k">except</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">None</span>
+
+
+  <span class="k">if</span> <span class="n">serverName</span><span class="p">:</span> 
+    <span class="n">db</span> <span class="o">=</span> <span class="n">tryDb</span><span class="p">(</span><span class="n">serverName</span><span class="p">)</span> 
+    <span class="k">if</span> <span class="n">db</span><span class="p">:</span> <span class="k">return</span> <span class="n">db</span>
+    <span class="k">else</span><span class="p">:</span> 
+      <span class="k">print</span> <span class="s">&quot;unable to connect to&quot;</span><span class="p">,</span> <span class="n">serverName</span><span class="p">,</span> <span class="s">&quot;...trying known edelweiss database servers.&quot;</span>
+
+  <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">getDbList</span><span class="p">():</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">tryDb</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> 
+    <span class="k">if</span> <span class="n">db</span><span class="p">:</span> <span class="k">return</span> <span class="n">db</span>
+
+  <span class="k">print</span> <span class="s">&quot;unable to connect to a database&quot;</span>
+  <span class="k">return</span> <span class="bp">None</span>
 
 </div>
-<div class="viewcode-block" id="kdatadb"><a class="viewcode-back" href="../../database.html#KDataPy.database.kdatadb">[docs]</a><span class="k">def</span> <span class="nf">kdatadb</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="s">&#39;http://edwdbik.fzk.de:5984&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="datadb"><a class="viewcode-back" href="../../database.html#KDataPy.database.datadb">[docs]</a><span class="k">def</span> <span class="nf">datadb</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;datadb&#39; database</span>
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">getdatabase</span><span class="p">(</span><span class="s">&#39;datadb&#39;</span><span class="p">,</span><span class="n">serverName</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="kradondb"><a class="viewcode-back" href="../../database.html#KDataPy.database.kradondb">[docs]</a><span class="k">def</span> <span class="nf">kradondb</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="s">&#39;http://edwdbik.fzk.de:5984&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="kdatadb"><a class="viewcode-back" href="../../database.html#KDataPy.database.kdatadb">[docs]</a><span class="k">def</span> <span class="nf">kdatadb</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;datadb&#39; database</span>
+<span class="sd">  this is supporting legacy code... </span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">datadb</span><span class="p">(</span><span class="n">serverName</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="analysis"><a class="viewcode-back" href="../../database.html#KDataPy.database.analysis">[docs]</a><span class="k">def</span> <span class="nf">analysis</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;analysis&#39; database</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">getdatabase</span><span class="p">(</span><span class="s">&#39;analysis&#39;</span><span class="p">,</span><span class="n">serverName</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="pulsetemplates"><a class="viewcode-back" href="../../database.html#KDataPy.database.pulsetemplates">[docs]</a><span class="k">def</span> <span class="nf">pulsetemplates</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;pulsetemplates&#39; database</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">getdatabase</span><span class="p">(</span><span class="s">&#39;pulsetemplates&#39;</span><span class="p">,</span><span class="n">serverName</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="muonhv"><a class="viewcode-back" href="../../database.html#KDataPy.database.muonhv">[docs]</a><span class="k">def</span> <span class="nf">muonhv</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;muonhv&#39; database</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">getdatabase</span><span class="p">(</span><span class="s">&#39;muonhv&#39;</span><span class="p">,</span><span class="n">serverName</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="muonvetohardwaremap"><a class="viewcode-back" href="../../database.html#KDataPy.database.muonvetohardwaremap">[docs]</a><span class="k">def</span> <span class="nf">muonvetohardwaremap</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;muonvetohardwaremap&#39; database</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">getdatabase</span><span class="p">(</span><span class="s">&#39;muonvetohardwaremap&#39;</span><span class="p">,</span><span class="n">serverName</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="bolohardwaremap"><a class="viewcode-back" href="../../database.html#KDataPy.database.bolohardwaremap">[docs]</a><span class="k">def</span> <span class="nf">bolohardwaremap</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;bolohardwaremap&#39; database</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">getdatabase</span><span class="p">(</span><span class="s">&#39;bolohardwaremap&#39;</span><span class="p">,</span><span class="n">serverName</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="radondb"><a class="viewcode-back" href="../../database.html#KDataPy.database.radondb">[docs]</a><span class="k">def</span> <span class="nf">radondb</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;radondb&#39; database</span>
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">getdatabase</span><span class="p">(</span><span class="s">&#39;radondb&#39;</span><span class="p">,</span><span class="n">serverName</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="kcryodb"><a class="viewcode-back" href="../../database.html#KDataPy.database.kcryodb">[docs]</a><span class="k">def</span> <span class="nf">kcryodb</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="s">&#39;http://edwdbik.fzk.de:5984&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="automat"><a class="viewcode-back" href="../../database.html#KDataPy.database.automat">[docs]</a><span class="k">def</span> <span class="nf">automat</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;automat&#39; database</span>
+<span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;automat&#39; database, </span>
+<span class="sd">  which contains all of the cryostat recorded data.</span>
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">getdatabase</span><span class="p">(</span><span class="s">&#39;automat&#39;</span><span class="p">,</span><span class="n">serverName</span><span class="p">)</span>
   
 </div>
-<div class="viewcode-block" id="kmultiprocdb"><a class="viewcode-back" href="../../database.html#KDataPy.database.kmultiprocdb">[docs]</a><span class="k">def</span> <span class="nf">kmultiprocdb</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="s">&#39;http://edwdbik.fzk.de:5984&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="multiprocessanadb"><a class="viewcode-back" href="../../database.html#KDataPy.database.multiprocessanadb">[docs]</a><span class="k">def</span> <span class="nf">multiprocessanadb</span><span class="p">(</span><span class="n">serverName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  returns an instance of couchdbkit.Database initialized to the &#39;multiprocessanadb&#39; database</span>
 <span class="sd">  &#39;&#39;&#39;</span>

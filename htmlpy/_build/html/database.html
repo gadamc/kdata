@@ -60,62 +60,69 @@
 <span id="kdatapy-database-access"></span><h1>kdatapy database access<a class="headerlink" href="#module-KDataPy.database" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="KDataPy.database.analysis">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">analysis</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.analysis" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">analysis</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;analysis&#8217; database</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="KDataPy.database.automat">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">automat</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.automat" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">automat</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#automat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.automat" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;automat&#8217; database, 
 which contains all of the cryostat recorded data.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="KDataPy.database.bolohardwaremap">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">bolohardwaremap</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.bolohardwaremap" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">bolohardwaremap</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#bolohardwaremap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.bolohardwaremap" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;bolohardwaremap&#8217; database</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="KDataPy.database.datadb">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">datadb</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.datadb" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">datadb</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#datadb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.datadb" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;datadb&#8217; database</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="KDataPy.database.getdatabase">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">getdatabase</tt><big>(</big><em>database</em>, <em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#getdatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.getdatabase" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">getdatabase</tt><big>(</big><em>database</em>, <em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#getdatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.getdatabase" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="KDataPy.database.kdatadb">
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">kdatadb</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#kdatadb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.kdatadb" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;datadb&#8217; database
+this is supporting legacy code...</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="KDataPy.database.multiprocessanadb">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">multiprocessanadb</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.multiprocessanadb" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">multiprocessanadb</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#multiprocessanadb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.multiprocessanadb" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;multiprocessanadb&#8217; database</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="KDataPy.database.muonhv">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">muonhv</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.muonhv" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">muonhv</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#muonhv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.muonhv" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;muonhv&#8217; database</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="KDataPy.database.muonvetohardwaremap">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">muonvetohardwaremap</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.muonvetohardwaremap" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">muonvetohardwaremap</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#muonvetohardwaremap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.muonvetohardwaremap" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;muonvetohardwaremap&#8217; database</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="KDataPy.database.pulsetemplates">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">pulsetemplates</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.pulsetemplates" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">pulsetemplates</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#pulsetemplates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.pulsetemplates" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;pulsetemplates&#8217; database</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="KDataPy.database.radondb">
-<tt class="descclassname">KDataPy.database.</tt><tt class="descname">radondb</tt><big>(</big><em>serverName='https://edelweiss.cloudant.com'</em><big>)</big><a class="headerlink" href="#KDataPy.database.radondb" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.database.</tt><tt class="descname">radondb</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#radondb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.radondb" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;radondb&#8217; database</p>
 </dd></dl>
 
