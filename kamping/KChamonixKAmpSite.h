@@ -58,6 +58,9 @@ public:
   void SetNoisePower(const char* channelName, std::vector<double> power);
   void SetNoiseEventCounts(const char* channelName, unsigned int n){fNoiseEventCounts[channelName] = n;}
 
+  void SetTemplateShift(const char* channelName, int value){fTemplateShift[channelName] = value;}
+  int GetTemplateShift(const char* channelName) const;
+
   KBaselineRemoval& GetBaselineRemovalHeat(void){return fBaselineRemovalHeat;}
   KWindow& GetHeatWindow(void){return fHeatWindow;}
   
@@ -82,6 +85,7 @@ private:
   KWindow fHeatWindow;
   KPulseShifter fPulseTemplateShifter;
   
+  std::map<std::string, int> fTemplateShift;
   std::map<std::string, unsigned int> fNoiseEventCounts;
   std::map<std::string, std::vector<double> > fNoiseSpectra;
   std::map<std::string, std::vector<double> > fTemplateSpectra;
