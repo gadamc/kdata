@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:46 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KLibertyBellKAmpSite</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KLibertyBellKAmpSite','','/Users/adam/softwareDev/kdata/kamping/KLibertyBellKAmpSite.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KLibertyBellKAmpSite.h.html">header file</a>
+<a class="descrheadentry" href="src/KLibertyBellKAmpSite.cxx.html">source file</a>
+<a class="descrheadentry" href="KLibertyBellKAmpSite_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KLibertyBellKAmpSite:description">class description</a> 
+<a class="descrheadentry" href="#KLibertyBellKAmpSite:Function_Members">function members</a>
+<a class="descrheadentry" href="#KLibertyBellKAmpSite:Data_Members">data members</a>
+<a class="descrheadentry" href="#KLibertyBellKAmpSite:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KAMPING_Index.html">KAMPING</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KLibertyBellKAmpSite</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KLibertyBellKAmpSite:description"></a>class KLibertyBellKAmpSite: public <a href="./KAmpSite.html">KAmpSite</a></h1>
+<div class="classdescr">
+<pre>
+ <a href="./KLibertyBellKAmpSite.html">KLibertyBellKAmpSite</a>.cxx
+ KDataStructure
+
+ Created by Adam Cox
+ Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+
+ This KampSite uses the <a href="./KTrapKamperProto.html">KTrapKamperProto</a> to estimate the peak position and amplitude of the pulse.
+ It also uses the <a href="./KBBv2TimeDomainFitKamper.html">KBBv2TimeDomainFitKamper</a> for bbv2 ionization channels.
+
+ This <a href="./KAmpSite.html">KAmpSite</a> is still under construction....
+
+
+ Heat <a href="./Pulse.html">Pulse</a> and BBv1 ionization channel results - using a trapezoidal filter
+ if(resMap.find(<span class="string">"amp"</span>) != resMap.end())                    rec-&gt;SetAmp(resMap[<span class="string">"amp"</span>].fValue);
+ if(resMap.find(<span class="string">"peakPosition"</span>) != resMap.end())           rec-&gt;SetPeakPosition(resMap[<span class="string">"peakPosition"</span>].fValue);
+ if(resMap.find(<span class="string">"baselineRemoved"</span>) != resMap.end())        rec-&gt;SetBaselineRemoved(resMap[<span class="string">"baselineRemoved"</span>].fValue);
+ if(resMap.find(<span class="string">"slopeRemoved"</span>) != resMap.end())           rec-&gt;SetSlopeRemoved(resMap[<span class="string">"slopeRemoved"</span>].fValue);
+
+ //I've started on Extra[][3] since there is room in the data structure to do this, and because
+ //they won't collide with Extra parameters filled in by the bbv2 fitter.
+ if(resMap.find(<span class="string">"trapDecayTime"</span>) != resMap.end())          rec-&gt;SetExtra(resMap[<span class="string">"trapDecayTime"</span>].fValue, 3);
+ if(resMap.find(<span class="string">"trapRiseTime"</span>) != resMap.end())           rec-&gt;SetExtra(resMap[<span class="string">"trapRiseTime"</span>].fValue, 4);
+ if(resMap.find(<span class="string">"trapFlatTopWidth"</span>) != resMap.end())       rec-&gt;SetExtra(resMap[<span class="string">"trapFlatTopWidth"</span>].fValue, 5);
+ if(resMap.find(<span class="string">"rmsPreProc"</span>) != resMap.end())             rec-&gt;SetExtra(resMap[<span class="string">"rmsPreProc"</span>].fValue, 6);
+ if(resMap.find(<span class="string">"rmsPostProc"</span>) != resMap.end())            rec-&gt;SetExtra(resMap[<span class="string">"rmsPostProc"</span>].fValue, 7);
+
+
+ Ionization channel results if using a BBv2 channel -- uses the <a href="./KBBv2TimeDomainFitKamper.html">KBBv2TimeDomainFitKamper</a>
+
+ if(resMap.find(<span class="string">"amp"</span>) != resMap.end())                    rec-&gt;SetAmp(resMap[<span class="string">"amp"</span>].fValue);
+ if(resMap.find(<span class="string">"peakPosition"</span>) != resMap.end())           rec-&gt;SetPeakPosition(resMap[<span class="string">"peakPosition"</span>].fValue);
+ if(resMap.find(<span class="string">"baselineRemoved"</span>) != resMap.end())        rec-&gt;SetBaselineRemoved(resMap[<span class="string">"baselineRemoved"</span>].fValue);
+ if(resMap.find(<span class="string">"slopeRemoved"</span>) != resMap.end())           rec-&gt;SetSlopeRemoved(resMap[<span class="string">"slopeRemoved"</span>].fValue);
+ if(resMap.find(<span class="string">"chiSq"</span>) != resMap.end())                  rec-&gt;SetChiSq(resMap[<span class="string">"chiSq"</span>].fValue);
+
+ if(resMap.find(<span class="string">"baselineAmp"</span>) != resMap.end())            rec-&gt;SetExtra(resMap[<span class="string">"baselineAmp"</span>].fValue, 0);
+ if(resMap.find(<span class="string">"sharpness"</span>) != resMap.end())              rec-&gt;SetExtra(resMap[<span class="string">"sharpness"</span>].fValue, 1);
+ if(resMap.find(<span class="string">"fitStatus"</span>) != resMap.end())              rec-&gt;SetExtra(resMap[<span class="string">"fitStatus"</span>].fValue, 2);
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KLibertyBellKAmpSite:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:KLibertyBellKAmpSite">KLibertyBellKAmpSite</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:KLibertyBellKAmpSite@1">KLibertyBellKAmpSite</a>(<span class="keyword">const</span> <a href="./KLibertyBellKAmpSite.html">KLibertyBellKAmpSite</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:_KLibertyBellKAmpSite">~KLibertyBellKAmpSite</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KBBv2TimeDomainFitKamper.html">KBBv2TimeDomainFitKamper</a>&amp;</td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:GetBBv2TimeDomainFitKamper">GetBBv2TimeDomainFitKamper</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KAmpSite.html#KAmpSite:GetName"><span class="baseclass">KAmpSite::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KTrapKamperProto.html">KTrapKamperProto</a>&amp;</td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:GetTrapKamperProto">GetTrapKamperProto</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:NeedScout">NeedScout</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KLibertyBellKAmpSite.html">KLibertyBellKAmpSite</a>&amp;</td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KLibertyBellKAmpSite.html">KLibertyBellKAmpSite</a>&amp;)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./KAmpSite.html#KAmpSite:PrepareKampSite"><span class="baseclass">KAmpSite::</span>PrepareKampSite</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:RunKampSite">RunKampSite</a>(<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* boloRaw, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpEvent.html">KAmpEvent</a>* ee)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:ScoutKampSite">ScoutKampSite</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* pRaw, <a href="./KRawEvent.html">KRawEvent</a>* e)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KAmpSite.html#KAmpSite:SetName"><span class="baseclass">KAmpSite::</span>SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KAmpSite.html#KAmpSite:SetTRefLinksForKAmpEvent"><span class="baseclass">KAmpSite::</span>SetTRefLinksForKAmpEvent</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpBoloPulseRecord.html">KAmpBoloPulseRecord</a>* pAmp)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:FillTimeFitterResults">FillTimeFitterResults</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, map&lt;string,<a href="./KResult.html">KResult</a>&gt;&amp; resMap)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KLibertyBellKAmpSite:FillTrapResults">FillTrapResults</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, map&lt;string,<a href="./KResult.html">KResult</a>&gt;&amp; resMap)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KLibertyBellKAmpSite:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./KAmpSite.html#KAmpSite:fName"><span class="baseclass">KAmpSite::</span>fName</a></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./KBBv2TimeDomainFitKamper.html">KBBv2TimeDomainFitKamper</a></td><td class="dataname"><a name="KLibertyBellKAmpSite:fBBv2TimeFitter"></a>fBBv2TimeFitter</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KTrapKamperProto.html">KTrapKamperProto</a></td><td class="dataname"><a name="KLibertyBellKAmpSite:fTrapKamp"></a>fTrapKamp</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KLibertyBellKAmpSite:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td>
+<center><tt><a name="KAmpSite" href="./KAmpSite.html">KAmpSite</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KLibertyBellKAmpSite" href="./KLibertyBellKAmpSite.html">KLibertyBellKAmpSite</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KLibertyBellKAmpSite:KLibertyBellKAmpSite@1" href="src/KLibertyBellKAmpSite.cxx.html#al4ncE">KLibertyBellKAmpSite</a>(<span class="keyword">const</span> <a href="./KLibertyBellKAmpSite.html">KLibertyBellKAmpSite</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KLibertyBellKAmpSite:_KLibertyBellKAmpSite" href="src/KLibertyBellKAmpSite.cxx.html#tijaiC">~KLibertyBellKAmpSite</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KLibertyBellKAmpSite:RunKampSite" href="src/KLibertyBellKAmpSite.cxx.html#uTYNaC">RunKampSite</a>(<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* boloRaw, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpEvent.html">KAmpEvent</a>* ee)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KLibertyBellKAmpSite:FillTrapResults" href="src/KLibertyBellKAmpSite.cxx.html#fJD.y">FillTrapResults</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, map&lt;string,<a href="./KResult.html">KResult</a>&gt;&amp; resMap)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KLibertyBellKAmpSite:FillTimeFitterResults" href="src/KLibertyBellKAmpSite.cxx.html#em9Yr">FillTimeFitterResults</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, map&lt;string,<a href="./KResult.html">KResult</a>&gt;&amp; resMap)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KLibertyBellKAmpSite:ScoutKampSite" href="src/KLibertyBellKAmpSite.cxx.html#p2EZfD">ScoutKampSite</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* pRaw, <a href="./KRawEvent.html">KRawEvent</a>* e)</span><br />
+<div class="funccomm"><pre>just returns <a href="./ListOfTypes.html#bool">true</a>;  no scouting required
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KLibertyBellKAmpSite:KLibertyBellKAmpSite@1" href="src/KLibertyBellKAmpSite.h.html#Bbb8g">KLibertyBellKAmpSite</a>(<span class="keyword">const</span> <a href="./KLibertyBellKAmpSite.html">KLibertyBellKAmpSite</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KLibertyBellKAmpSite:NeedScout" href="src/KLibertyBellKAmpSite.h.html#L0xnvC">NeedScout</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <span class="keyword">false</span>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KTrapKamperProto.html">KTrapKamperProto</a>&amp; <a class="funcname" name="KLibertyBellKAmpSite:GetTrapKamperProto" href="src/KLibertyBellKAmpSite.h.html#SiqFH">GetTrapKamperProto</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KLibertyBellKAmpSite.html#KLibertyBellKAmpSite:fTrapKamp" title="KTrapKamperProto KLibertyBellKAmpSite::fTrapKamp">fTrapKamp</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KBBv2TimeDomainFitKamper.html">KBBv2TimeDomainFitKamper</a>&amp; <a class="funcname" name="KLibertyBellKAmpSite:GetBBv2TimeDomainFitKamper" href="src/KLibertyBellKAmpSite.h.html#Be5hx">GetBBv2TimeDomainFitKamper</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KLibertyBellKAmpSite.html#KLibertyBellKAmpSite:fBBv2TimeFitter" title="KBBv2TimeDomainFitKamper KLibertyBellKAmpSite::fBBv2TimeFitter">fBBv2TimeFitter</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:46 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

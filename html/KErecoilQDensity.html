@@ -1,0 +1,474 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:44 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KErecoilQDensity</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KErecoilQDensity','','/Users/adam/softwareDev/kdata/kqpa/KErecoilQDensity.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KErecoilQDensity.h.html">header file</a>
+<a class="descrheadentry" href="src/KErecoilQDensity.cxx.html">source file</a>
+<a class="descrheadentry" href="KErecoilQDensity_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KErecoilQDensity:description">class description</a> 
+<a class="descrheadentry" href="#KErecoilQDensity:Function_Members">function members</a>
+<a class="descrheadentry" href="#KErecoilQDensity:Data_Members">data members</a>
+<a class="descrheadentry" href="#KErecoilQDensity:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KQPA_Index.html">KQPA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KErecoilQDensity</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KErecoilQDensity:description"></a>class KErecoilQDensity</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KErecoilQDensity.html">KErecoilQDensity</a>.cxx
+ Author: Daniel Wegner &lt;mailto:Daniel.Wegner@student.kit.edu&gt;
+
+ *Copyright 2011 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+
+ Created Friday 1. July 2011
+
+ A simple class that calculates the detector resolution function A, that for a
+ given <a href="./ListOfTypes.html#bool">true</a> event(Erecoil,Q) there is a certain measured value (Erecoil,Q)
+ By applying Bayes' theorem
+
+<span class="latex"><img class="latex" alt="g(a_{true} | a_{exp}) = #frac{ A(a_{exp} | a_{true}) f(a_{true})}{h(a_{exp})}" title="LATEX" src="LATEX_KErecoilQDensity_0_ga_truea_expfracAa_expa_truefa_trueha_exp.gif" /></span>
+ and assuming a flat prior
+
+<span class="latex"><img class="latex" alt="f(a_{true}) = const" title="LATEX" src="LATEX_KErecoilQDensity_1_fa_trueconst.gif" /></span>
+ this function can be interpreted  as the reverse pdf
+
+<span class="latex"><img class="latex" alt="g(a_{true} | a_{exp}) = A(a_{exp} | a_{true})" title="LATEX" src="LATEX_KErecoilQDensity_2_ga_truea_expAa_expa_true.gif" /></span>
+ that there is a certain  <a href="./ListOfTypes.html#bool">true</a> value of (ERecoil,Q)
+ for a specifed experimental value (EIon, EHeat)
+ (Bayesian probabilty)
+ The posterior
+
+<span class="latex"><img class="latex" alt="h(a_{exp})" title="LATEX" src="LATEX_KErecoilQDensity_3_ha_exp.gif" /></span>
+ is justed a fixed parameter then, which leads to normalization of g.
+
+ This can be done for a single event as well as for multiple events
+ Additionally marginal distributions with respect to E_recoil and Q
+ are available
+
+ The user can simply instantiate these functions by calling
+ TF2 aFunction(<span class="string">"aFunctionName"</span>,
+               &amp;<a href="./KErecoilQDensity.html">KErecoilQDensity</a>::&lt;aMethod&gt;,
+               anNpx,
+               Xmin,
+               Xmax,
+               anNpy,
+               Ymin,
+               Ymax
+               NumberOfParameters);
+
+ These static member functions are also used by the classes <a href="./KQContourPoint.html">KQContourPoint</a>
+ and <a href="./KQContourPointList.html">KQContourPointList</a>
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KErecoilQDensity:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:KErecoilQDensity">KErecoilQDensity</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:KErecoilQDensity@1">KErecoilQDensity</a>(<span class="keyword">const</span> <a href="./KErecoilQDensity.html">KErecoilQDensity</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:_KErecoilQDensity">~KErecoilQDensity</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret">static vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:ConvoluteProbabilities">ConvoluteProbabilities</a>(vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; vectorA, vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; vectorB)</td></tr>
+<tr class="func"><td class="funcret">static vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:GetDistributionOfMultipleEvents">GetDistributionOfMultipleEvents</a>(vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; aVector)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:GetDistributionOfMultipleEvents@1">GetDistributionOfMultipleEvents</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSize, <a href="./ListOfTypes.html#Double_t">Double_t</a>* aVector)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:MultiEventCummulativeProbDensity">MultiEventCummulativeProbDensity</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:MultiEventMarginalDensityErecoil">MultiEventMarginalDensityErecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:MultiEventMarginalDensityQ">MultiEventMarginalDensityQ</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:MultiEventProbabilityOfAtLeastOneEvent">MultiEventProbabilityOfAtLeastOneEvent</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:MultiEventProbDensity">MultiEventProbDensity</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KErecoilQDensity.html">KErecoilQDensity</a>&amp;</td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KErecoilQDensity.html">KErecoilQDensity</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:SingleEventMarginalDensityErecoil">SingleEventMarginalDensityErecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:SingleEventMarginalDensityQ">SingleEventMarginalDensityQ</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:SingleEventMomentErecoil">SingleEventMomentErecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:SingleEventMomentQ">SingleEventMomentQ</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:SingleEventProbDensity">SingleEventProbDensity</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:SingleEventProbDensityWithIndicator">SingleEventProbDensityWithIndicator</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:SingleEventTrueProbDensity">SingleEventTrueProbDensity</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KErecoilQDensity:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KErecoilQDensity:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KErecoilQDensity" href="./KErecoilQDensity.html">KErecoilQDensity</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KErecoilQDensity:KErecoilQDensity@1" href="src/KErecoilQDensity.cxx.html#L8HXFB">KErecoilQDensity</a>(<span class="keyword">const</span> <a href="./KErecoilQDensity.html">KErecoilQDensity</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KErecoilQDensity:_KErecoilQDensity" href="src/KErecoilQDensity.cxx.html#peP00B">~KErecoilQDensity</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:SingleEventProbDensity" href="src/KErecoilQDensity.cxx.html#kQ_e5C">SingleEventProbDensity</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre>This function represents the likelihood and detector resolution function g(E_recoil,Q)
+ (documented in $KDATA_ROOT/doc/ERecoilQDistribution.pdf) for a single event
+
+ The parameters are
+ par[0] : mean ion energy
+ par[1] :  mean heat energy
+ par[2] :  sigma ion
+ par[3] : sigma heat
+ par[4] : sigma ion heat
+ par[5] : voltage bias/ epsilon_gamma
+
+ x[0]: recoil energy
+ x[1]: Q value
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:SingleEventProbDensityWithIndicator" href="src/KErecoilQDensity.cxx.html#SUWpoE">SingleEventProbDensityWithIndicator</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the likelihood and detector resolution function
+ g(E_recoil,Q) (documented in $KDATA_ROOT/doc/ERecoilQDistribution.pdf)
+ for a single event
+
+ The difference to the previous method is, that an indicator function
+ ind(E_recoil,Q) can be given by the user.
+ The indicator function is supposed to return 1 if
+ (E_recoil,Q) is in a selected area, otherwise 0, and can be implemented
+ by the user.
+ Then the indicator is entered by casting a TF2* pointer to <a href="./ListOfTypes.html#Double_t">Double_t</a>, which
+ is then internally cast back
+ to a TF2* pointer.
+ Example:
+
+ TF2 indicator(<span class="string">"ind"</span>,
+               <span class="string">"(y&lt;100&amp;&amp;y&gt;50) ? 1 : 0"</span>); // x = recoil energy, y = Q value
+
+ TF2 f(<span class="string">"f"</span>,
+       &amp;<a href="./KErecoilQDensity.html#KErecoilQDensity:SingleEventProbDensityWithIndicator" title="Double_t KErecoilQDensity::SingleEventProbDensityWithIndicator(Double_t* x,Double_t* par)">SingleEventProbDensityWithIndicator</a>,
+       fEnergyRecoilMin,
+       fEnergyRecoilMax,
+       fQvalueMin,
+       fQvalueMax,
+       7);
+ f.SetParameter(0,(<a href="./ListOfTypes.html#Double_t">Double_t</a>)&amp;indicator);
+
+ If the 0th parameter is set to 0, the indicator function is ignored
+ (like always being 1) and the likelihood for given recoil energy and Q value
+ is directly returned, otherwise the likelihood and the indicator function
+ are evaluated and their product is returned
+
+ This method is implemented for integrating the likelihood over arbitraryly
+ shaped areas in (E_recoil,Q)
+
+ The parameters are
+ par[0] : pointer to the indicator function (TF2*)
+ par[1] : mean ion energy
+ par[2] :  mean heat energy
+ par[3] :  sigma ion
+ par[4] : sigma heat
+ par[5] : sigma ion heat
+ par[6] : voltage bias/ epsilon_gamma
+
+ x[0]: recoil energy
+ x[1]: Q value
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:MultiEventProbDensity" href="src/KErecoilQDensity.cxx.html#xngsDC">MultiEventProbDensity</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the propability density for multiple events, which
+ is the product of single event propabilities g_i(E_recoil,i,Q_i).
+ (The events are assumed to be uncorrelated between each other)
+ Again from a Bayesian point of view with flat prior (f(a) = const) it
+ represents the propability densitiy
+
+<span class="latex"><img class="latex" alt="f(#vec{a}|#vec{x})  = #prod_{i=0}^{n-1} f_{i}(a_{i}|x_{i})" title="LATEX" src="LATEX_KErecoilQDensity_MultiEventProbDensity_1_0_fvecavecxprod_inf_ia_ix_i.gif" /></span>
+ to have <a href="./ListOfTypes.html#bool">true</a> events a_i in certain regions of the (ERecoil,Q)-planes
+ (in total a (ERecoil,Q)^n-plane) for the corresponding events x_i.
+ The function is 2n - dimensional, where n is the number of events
+
+ The experimental values are
+ par[0]: number of events n
+ par[6*i+1]: mean ion energy of the i-th event
+ par[6*i+2]: mean heat energy of the i-th event
+ par[6*i+3]: sigma ion of the i-th event
+ par[6*i+4]: sigma heat of the i-th event
+ par[6*i+5]: sigma ion heat of the i-th event
+ par[6*i+6]: voltage bias/ epsilon_gamma of the i-th event
+
+ The elements of the <a href="./ListOfTypes.html#bool">true</a> values a_i are
+ x[2*i]: recoil energy of the i-th event
+ x[2*i+1]: Q value of the i-th event
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:SingleEventTrueProbDensity" href="src/KErecoilQDensity.cxx.html#tAbFvB">SingleEventTrueProbDensity</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents f(a|x)
+ Bayes Theorem is given by
+
+<span class="latex"><img class="latex" alt="f(a|x) = #frac{f(x|a) #dot f(a)}{f(x)}" title="LATEX" src="LATEX_KErecoilQDensity_SingleEventTrueProbDensity_1_0_faxfracfxadotfafx.gif" /></span>
+ So from a Bayesian point of view with flat prior (f(a) = const)  this
+ represents the propability density f(a|x) to have a <a href="./ListOfTypes.html#bool">true</a> event in a certain
+ region in the  (ERecoil,Q)-plane for given experimental data for an event
+ The peculiarity about this function is that the uncertainties sigma ion and
+ sigma heat are dynamic since the uncertainties depend on the <a href="./ListOfTypes.html#bool">true</a> value a
+ The uncertainties are linearly interpolated between uncertainties on zero
+ level and calibration level (by <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>())
+
+ The parameters are
+ par[0]: calibration energy
+ par[1]: mean ion energy
+ par[2]: sigma ion on zero level
+ par[3]: sigma ion on calibration level
+ par[4]: mean heat energy
+ par[5]: sigma heat on zero level
+ par[6]: sigma heat on calibration level
+ par[7] voltage bis/ epsilon_gamma
+
+ x[0]: recoil energy
+ x[1]: Q value
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:SingleEventMarginalDensityErecoil" href="src/KErecoilQDensity.cxx.html#Jv4jXB">SingleEventMarginalDensityErecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the marginal distribution g(E_recoil) for a single
+ event, which is the integral of g(E_recoil,Q) over Q from -infinity to
+ infinity
+
+ These experimental values are
+ par[0] : mean ion energy
+ par[1] :  mean heat energy
+ par[2] :  sigma ion
+ par[3] : sigma heat
+ par[4] : sigma ion heat
+ par[5] : voltage bias/ epsilon_gamma
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:SingleEventMomentErecoil" href="src/KErecoilQDensity.cxx.html#yU6jyB">SingleEventMomentErecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the function (E_recoil-E_recoil,ref)^n*g(E_recoil)
+ from which the central moments of E_recoil can be calculated
+
+ These  values are
+ par[0] : mean ion energy
+ par[1] :  mean heat energy
+ par[2] :  sigma ion
+ par[3] : sigma heat
+ par[4] : sigma ion heat
+ par[5] : voltage bias/ epsilon_gamma
+ par[6] : index of moment n
+ par[7] : reference point E_recoil,ref
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:MultiEventMarginalDensityErecoil" href="src/KErecoilQDensity.cxx.html#vdcqw">MultiEventMarginalDensityErecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the marginal distribution g(E_recoil) for multiple
+ events, which is the product of single event marginal densities
+ g_i(E_recoil,i)
+ From a Bayesian point of view it represents the propability density to
+ obtain  certain <a href="./ListOfTypes.html#bool">true</a> values of the recoil energy E_recoil,i
+ for arbitrary Q values Q_i
+ and the corresponding experimental data for an event
+
+ These experimental values are
+ par[0]: number of events
+ par[6*i+1] : mean ion energy of the i-th event
+ par[6*i+2] :  mean heat energy of the i-th event
+ par[6*i+3] :  sigma ion of the i-th event
+ par[6*i+4] : sigma heat of the i-th event
+ par[6*i+5] : sigma ion heat of the i-th event.q
+ par[6*i+6] : voltage bias/ epsilon_gamma
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:SingleEventMarginalDensityQ" href="src/KErecoilQDensity.cxx.html#Kusyb">SingleEventMarginalDensityQ</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the marginal distribution g(Q) for a single
+ event, which is the integral of g(E_recoil,Q) over E_recoil from -infinity
+ to infinity.
+ From a Bayesian point of view it represents the propability density to
+ obtain a certain <a href="./ListOfTypes.html#bool">true</a> value of the Q value for arbitrary E_recoil value
+ and given experimental data for an event
+
+ These experimental values are
+ par[0] : mean ion energy
+ par[1] :  mean heat energy
+ par[2] :  sigma ion
+ par[3] : sigma heat
+ par[4] : sigma ion heat
+ par[5] : voltage bias/ epsilon_gamma
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:SingleEventMomentQ" href="src/KErecoilQDensity.cxx.html#q1HtsD">SingleEventMomentQ</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the function  (Q-Q_ref)^n*g(Q)
+ from which the n-th central moment of Q can be calculated
+
+ The values are
+ par[0] : mean ion energy
+ par[1] :  mean heat energy
+ par[2] :  sigma ion
+ par[3] : sigma heat
+ par[4] : sigma ion heat
+ par[5] : voltage bias/ epsilon_gamma
+ par[6]: index of the moment n
+ par[7]: reference point Q_ref
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:MultiEventMarginalDensityQ" href="src/KErecoilQDensity.cxx.html#MwuBcB">MultiEventMarginalDensityQ</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the marginal distribution g(Q) for multiple
+ events, which is the product of single event marginal densities
+ g_i(
+ From a Bayesian point of view it represents the propability density to
+ obtain a certain <a href="./ListOfTypes.html#bool">true</a> value of the Q value for arbitrary Q value
+ and given experimental data for an event
+
+ These experimental values are
+ par[0]: number of events n
+ par[6*k+1] : mean ion energy of the k-th event
+ par[6*k+2] :  mean heat energy of the k-th event
+ par[6*k+3] :  sigma ion of the k-th event
+ par[6*k+4] : sigma heat of the k-th event
+ par[6*k+5] : sigma ion heat of the k-th event
+ par[6*k+6] : voltage bias/ epsilon_gamma
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:MultiEventCummulativeProbDensity" href="src/KErecoilQDensity.cxx.html#o6RwpD">MultiEventCummulativeProbDensity</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents a cummulative distribution h(E_recoil,Q) for
+ multiple events, which represents the propability that there exists at least one <a href="./ListOfTypes.html#bool">true</a> event a
+ in a certain small region dOmega
+
+
+<span class="latex"><img class="latex" alt="P(#exists a #in d#Omega) = h(E_{recoil},Q) d#Omega = 1 - #prod_{i=1}^{n} (1 - g_{i}(E_{recoil},Q) d#Omega)" title="LATEX" src="LATEX_KErecoilQDensity_MultiEventCummulativeProbDensity_1_0_PexistsaindOmegahE_recoilQdOmegaprod_ing_iE_recoilQdOmega.gif" /></span>
+
+ Thus we obtain
+
+
+<span class="latex"><img class="latex" alt="h(E_{recoil},Q) = #sum_{i=1}^{n} g_{i}(E_{recoil},Q)" title="LATEX" src="LATEX_KErecoilQDensity_MultiEventCummulativeProbDensity_1_1_hE_recoilQsum_ing_iE_recoilQ.gif" /></span>
+
+ This distribution is unconvenient to integrate over large regions
+
+
+<span class="latex"><img class="latex" alt="d#Omega &gt;&gt; #frac{1}{g_i(E_{recoil},Q)}" title="LATEX" src="LATEX_KErecoilQDensity_MultiEventCummulativeProbDensity_1_2_dOmegafracg_iE_recoilQ.gif" /></span>
+
+where the function values of the distributions g_i(E_recoil,Q) have strong variations.
+
+ These experimental values are
+ par[0]: number of events n
+ par[6*k+1] : mean ion energy of the k-th event
+ par[6*k+2] :  mean heat energy of the k-th event
+ par[6*k+3] :  sigma ion of the k-th event
+ par[6*k+4] : sigma heat of the k-th event
+ par[6*k+5] : sigma ion heat of the k-th event
+ par[6*k+6] : voltage bias/ epsilon_gamma
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KErecoilQDensity:MultiEventProbabilityOfAtLeastOneEvent" href="src/KErecoilQDensity.cxx.html#h03WNC">MultiEventProbabilityOfAtLeastOneEvent</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+<div class="funccomm"><pre> This function represents the propability that there exists at least one <a href="./ListOfTypes.html#bool">true</a> event
+  in an arbitrary area Omega of rectangular shape in the E_recoil-Q plane
+ It is given by
+
+<span class="latex"><img class="latex" alt="P(#exists a #in Omega) = h(E_{recoil},Q) d#Omega = 1 - #prod_{i=1}^{n} (1 - #int_{#Omega} g_{i}(E_{recoil},Q) d#Omega)" title="LATEX" src="LATEX_KErecoilQDensity_MultiEventProbabilityOfAtLeastOneEvent_1_0_PexistsainOmegahE_recoilQdOmegaprod_inint_Omegag_iE_recoilQdOmega.gif" /></span>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; <a class="funcname" name="KErecoilQDensity:ConvoluteProbabilities" href="src/KErecoilQDensity.cxx.html#Rxrr5B">ConvoluteProbabilities</a>(vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; vectorA, vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; vectorB)</span><br />
+<div class="funccomm"><pre> This method is the merge routine of
+ vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; <a href="./KErecoilQDensity.html">KErecoilQDensity</a>::<a href="./KErecoilQDensity.html#KErecoilQDensity:GetDistributionOfMultipleEvents" title="vector&lt;Double_t&gt; KErecoilQDensity::GetDistributionOfMultipleEvents(vector&lt;Double_t&gt; aVector) or overloads">GetDistributionOfMultipleEvents</a>(
+                                               vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; aVector)
+ It calculates from two distributions of the number of occured events
+ from two distinct sets of events represented by the input vectors
+ the total distribution of all events in both sets.
+ This is done by summing products of probabilities
+
+<span class="latex"><img class="latex" alt="a_{i} , b_{j}" title="LATEX" src="LATEX_KErecoilQDensity_ConvoluteProbabilities_1_0_a_ib_j.gif" /></span>
+ that i events occur in the first set of events and j events occur in the second set
+ of events
+ Summing over all combinations with
+
+<span class="latex"><img class="latex" alt="n = i + j" title="LATEX" src="LATEX_KErecoilQDensity_ConvoluteProbabilities_1_1_nij.gif" /></span>
+ then gives the probability, that n events occur in the union of both sets of events:
+
+
+<span class="latex"><img class="latex" alt="c_{n} = #sum_{i=0}^{n} a_{i} * b_{n-i}" title="LATEX" src="LATEX_KErecoilQDensity_ConvoluteProbabilities_1_2_c_nsum_ina_ib_ni.gif" /></span>
+
+ The size of the second vector must be equal or larger than the size of the first vector
+ for a safe call
+ This restriction is kept by
+ vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; <a href="./KErecoilQDensity.html">KErecoilQDensity</a>::<a href="./KErecoilQDensity.html#KErecoilQDensity:GetDistributionOfMultipleEvents" title="vector&lt;Double_t&gt; KErecoilQDensity::GetDistributionOfMultipleEvents(vector&lt;Double_t&gt; aVector) or overloads">GetDistributionOfMultipleEvents</a>(
+                                               vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; aVector)
+ since rounding off in the bisection leads to a smaller first vector, otherwise both
+ vectors are equal
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; <a class="funcname" name="KErecoilQDensity:GetDistributionOfMultipleEvents" href="src/KErecoilQDensity.cxx.html#hrOrr">GetDistributionOfMultipleEvents</a>(vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; aVector)</span><br />
+<div class="funccomm"><pre> This method calculates the distribution of the number of occured events from
+ a set of distinct events with different probabilities p_i given in the input vector
+ <span class="string">"aVector"</span>.
+ This is done by a divide and conquer approach similar to Merge sort.
+ The input vector is bisected and this method called for both parts.
+ The return values of this calls then represent the distributions for both subsets
+ of events, which are merged by calling
+ vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; <a href="./KErecoilQDensity.html">KErecoilQDensity</a>::<a href="./KErecoilQDensity.html#KErecoilQDensity:ConvoluteProbabilities" title="vector&lt;Double_t&gt; KErecoilQDensity::ConvoluteProbabilities(vector&lt;Double_t&gt; vectorA,vector&lt;Double_t&gt; vectorB)">ConvoluteProbabilities</a>(vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; vectorA,
+                                                           vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; vectorB)
+ The returned vector is then the distribution of the total set of events.
+ The recursive calls end when the vector size equals one, which means the input vector
+ represents only one event. In this case a vector with (1-p , p), where p is the
+ single entry in the input vector, is returned
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a>* <a class="funcname" name="KErecoilQDensity:GetDistributionOfMultipleEvents@1" href="src/KErecoilQDensity.cxx.html#LQDuAE">GetDistributionOfMultipleEvents</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSize, <a href="./ListOfTypes.html#Double_t">Double_t</a>* aVector)</span><br />
+<div class="funccomm"><pre> This method calls the vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt; version and converts between vector&lt;<a href="./ListOfTypes.html#Double_t">Double_t</a>&gt;
+ and <a href="./ListOfTypes.html#Double_t">Double_t</a>* vectors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KErecoilQDensity:KErecoilQDensity@1" href="src/KErecoilQDensity.h.html#cT105E">KErecoilQDensity</a>(<span class="keyword">const</span> <a href="./KErecoilQDensity.html">KErecoilQDensity</a>&amp; )</span><br />
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:44 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

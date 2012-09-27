@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:46 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KNoiseWhitening</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KNoiseWhitening','','/Users/adam/softwareDev/kdata/kpta/KNoiseWhitening.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KNoiseWhitening.h.html">header file</a>
+<a class="descrheadentry" href="src/KNoiseWhitening.cxx.html">source file</a>
+<a class="descrheadentry" href="KNoiseWhitening_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KNoiseWhitening:description">class description</a> 
+<a class="descrheadentry" href="#KNoiseWhitening:Function_Members">function members</a>
+<a class="descrheadentry" href="#KNoiseWhitening:Data_Members">data members</a>
+<a class="descrheadentry" href="#KNoiseWhitening:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KPTA_Index.html">KPTA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KNoiseWhitening</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KNoiseWhitening:description"></a>class KNoiseWhitening: public <a href="./KPtaProcessor.html">KPtaProcessor</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KNoiseWhitening.html">KNoiseWhitening</a>.cxx
+ Author: Adam Cox &lt;mailto:adam.cox@kit.edu&gt;
+
+ *Copyright 2012 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+
+ Input pulse is assumed to be of the half-complex form
+   (r0, r1, r2, ..., rN/2, i(N+1)/2-1, ..., i2, i1).
+ You must set the noise spectrum, which is also in half-complex form.
+ The output of this processor is the element-by-element division of the input pulse with the noise spectrum.
+ That is output_i = input_i / noise_i, where i is the i'th element of the half-complex array.
+
+  Output(f) = Input(f) / Noise(f)
+
+
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KNoiseWhitening:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:KNoiseWhitening">KNoiseWhitening</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:KNoiseWhitening@2">KNoiseWhitening</a>(<span class="keyword">const</span> <a href="./KNoiseWhitening.html">KNoiseWhitening</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:KNoiseWhitening@1">KNoiseWhitening</a>(<span class="keyword">double</span>* inPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> inSize, <span class="keyword">double</span>* outPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> outsize)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:_KNoiseWhitening">~KNoiseWhitening</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:AllocateArrays"><span class="baseclass">KPtaProcessor::</span>AllocateArrays</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DeleteInputPulse"><span class="baseclass">KPtaProcessor::</span>DeleteInputPulse</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DeleteOutputPulse"><span class="baseclass">KPtaProcessor::</span>DeleteOutputPulse</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DoNotDeletePulses"><span class="baseclass">KPtaProcessor::</span>DoNotDeletePulses</a>(<span class="keyword">bool</span> opt)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">double</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetInputPulse"><span class="baseclass">KPtaProcessor::</span>GetInputPulse</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetInputPulseSize"><span class="baseclass">KPtaProcessor::</span>GetInputPulseSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetName"><span class="baseclass">KPtaProcessor::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">double</span>*</td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:GetNoiseSpectrum">GetNoiseSpectrum</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:GetNoiseSpectrumSize">GetNoiseSpectrumSize</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetNumProcessors"><span class="baseclass">KPtaProcessor::</span>GetNumProcessors</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">double</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetOutputPulse"><span class="baseclass">KPtaProcessor::</span>GetOutputPulse</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetOutputPulseSize"><span class="baseclass">KPtaProcessor::</span>GetOutputPulseSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./KPtaProcessor.html">KPtaProcessor</a>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetProcessor"><span class="baseclass">KPtaProcessor::</span>GetProcessor</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span>)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KNoiseWhitening.html">KNoiseWhitening</a>&amp;</td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KNoiseWhitening.html">KNoiseWhitening</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:RunProcess">RunProcess</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<a href="./KPtaProcessor.html">KPtaProcessor</a>* pta)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aFile)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@2"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">double</span>* aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@3"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@5"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@7"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@9"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@4"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@6"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@8"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@10"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@11"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@12"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@13"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@14"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_double_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;double&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_double_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;double&gt;</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_float_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;float&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_float_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;float&gt;</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_int_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;int&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_int_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;int&gt;</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_short_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;short&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_short_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;short&gt;</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulseSize"><span class="baseclass">KPtaProcessor::</span>SetInputPulseSize</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> s)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetName"><span class="baseclass">KPtaProcessor::</span>SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aName)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum">SetNoiseSpectrum</a>(vector&lt;<span class="keyword">double</span>&gt;&amp; r)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum@1">SetNoiseSpectrum</a>(vector&lt;<span class="keyword">float</span>&gt;&amp; r)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum@2">SetNoiseSpectrum</a>(vector&lt;<span class="keyword">int</span>&gt;&amp; r)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum@3">SetNoiseSpectrum</a>(vector&lt;<span class="keyword">short</span>&gt;&amp; r)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum@8">SetNoiseSpectrum</a>(<span class="keyword">double</span>* resp)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum@4">SetNoiseSpectrum</a>(<span class="keyword">const</span> <span class="keyword">double</span>* resp, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum@5">SetNoiseSpectrum</a>(<span class="keyword">const</span> <span class="keyword">float</span>* resp, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum@6">SetNoiseSpectrum</a>(<span class="keyword">const</span> <span class="keyword">int</span>* resp, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrum@7">SetNoiseSpectrum</a>(<span class="keyword">const</span> <span class="keyword">short</span>* resp, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:SetNoiseSpectrumSize">SetNoiseSpectrumSize</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetOutputPulse"><span class="baseclass">KPtaProcessor::</span>SetOutputPulse</a>(<span class="keyword">double</span>* aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetOutputPulseSize"><span class="baseclass">KPtaProcessor::</span>SetOutputPulseSize</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> s)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KNoiseWhitening:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KNoiseWhitening:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="datainh"><td class="datatype"><span class="keyword">bool</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fDoNotDelete"><span class="baseclass">KPtaProcessor::</span>fDoNotDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">double</span>*</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fInputPulse"><span class="baseclass">KPtaProcessor::</span>fInputPulse</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fInputSize"><span class="baseclass">KPtaProcessor::</span>fInputSize</a></td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span>*</td><td class="dataname"><a name="KNoiseWhitening:fNoiseSpectrum"></a>fNoiseSpectrum</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a name="KNoiseWhitening:fNoiseSpectrumSize"></a>fNoiseSpectrumSize</td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">double</span>*</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fOutputPulse"><span class="baseclass">KPtaProcessor::</span>fOutputPulse</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fOutputSize"><span class="baseclass">KPtaProcessor::</span>fOutputSize</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fProcessorName"><span class="baseclass">KPtaProcessor::</span>fProcessorName</a></td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KNoiseWhitening:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td>
+<center><tt><a name="KPtaProcessor" href="./KPtaProcessor.html">KPtaProcessor</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KNoiseWhitening" href="./KNoiseWhitening.html">KNoiseWhitening</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KNoiseWhitening:KNoiseWhitening@2" href="src/KNoiseWhitening.cxx.html#uyMo3B">KNoiseWhitening</a>(<span class="keyword">const</span> <a href="./KNoiseWhitening.html">KNoiseWhitening</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KNoiseWhitening:KNoiseWhitening@1" href="src/KNoiseWhitening.cxx.html#H.rTPD">KNoiseWhitening</a>(<span class="keyword">double</span>* inPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> inSize, <span class="keyword">double</span>* outPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> outsize)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KNoiseWhitening:_KNoiseWhitening" href="src/KNoiseWhitening.cxx.html#f2pfDD">~KNoiseWhitening</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:InitializeMembers" href="src/KNoiseWhitening.cxx.html#oDAKrC">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KNoiseWhitening:RunProcess" href="src/KNoiseWhitening.cxx.html#HfYhgD">RunProcess</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KNoiseWhitening:KNoiseWhitening@2" href="src/KNoiseWhitening.h.html#TW3jhE">KNoiseWhitening</a>(<span class="keyword">const</span> <a href="./KNoiseWhitening.html">KNoiseWhitening</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span>* <a class="funcname" name="KNoiseWhitening:GetNoiseSpectrum" href="src/KNoiseWhitening.h.html#DT9bYB">GetNoiseSpectrum</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>getters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KNoiseWhitening.html#KNoiseWhitening:fNoiseSpectrum" title="double* KNoiseWhitening::fNoiseSpectrum">fNoiseSpectrum</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="KNoiseWhitening:GetNoiseSpectrumSize" href="src/KNoiseWhitening.h.html#xNKTUE">GetNoiseSpectrumSize</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KNoiseWhitening.html#KNoiseWhitening:fNoiseSpectrumSize" title="unsigned int KNoiseWhitening::fNoiseSpectrumSize">fNoiseSpectrumSize</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum" href="src/KNoiseWhitening.h.html#DYMkEB">SetNoiseSpectrum</a>(vector&lt;<span class="keyword">double</span>&gt;&amp; r)</span><br />
+<div class="funccomm"><pre>setters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{SetTheNoiseSpectrum(r);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum@1" href="src/KNoiseWhitening.h.html#qxBVHE">SetNoiseSpectrum</a>(vector&lt;<span class="keyword">float</span>&gt;&amp; r)</span><br />
+
+<div class="code"><code class="inlinecode">{SetTheNoiseSpectrum(r);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum@2" href="src/KNoiseWhitening.h.html#cTh3dC">SetNoiseSpectrum</a>(vector&lt;<span class="keyword">int</span>&gt;&amp; r)</span><br />
+
+<div class="code"><code class="inlinecode">{SetTheNoiseSpectrum(r);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum@3" href="src/KNoiseWhitening.h.html#UqLHRC">SetNoiseSpectrum</a>(vector&lt;<span class="keyword">short</span>&gt;&amp; r)</span><br />
+
+<div class="code"><code class="inlinecode">{SetTheNoiseSpectrum(r);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum@4" href="src/KNoiseWhitening.h.html#bRNDXD">SetNoiseSpectrum</a>(<span class="keyword">const</span> <span class="keyword">double</span>* resp, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</span><br />
+
+<div class="code"><code class="inlinecode">{SetTheNoiseSpectrum(resp, size);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum@5" href="src/KNoiseWhitening.h.html#vr7eh">SetNoiseSpectrum</a>(<span class="keyword">const</span> <span class="keyword">float</span>* resp, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</span><br />
+
+<div class="code"><code class="inlinecode">{SetTheNoiseSpectrum(resp, size);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum@6" href="src/KNoiseWhitening.h.html#cn0YUD">SetNoiseSpectrum</a>(<span class="keyword">const</span> <span class="keyword">int</span>* resp, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</span><br />
+
+<div class="code"><code class="inlinecode">{SetTheNoiseSpectrum(resp, size);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum@7" href="src/KNoiseWhitening.h.html#HdLUm">SetNoiseSpectrum</a>(<span class="keyword">const</span> <span class="keyword">short</span>* resp, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</span><br />
+
+<div class="code"><code class="inlinecode">{SetTheNoiseSpectrum(resp, size);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrum@8" href="src/KNoiseWhitening.h.html#gDCt7C">SetNoiseSpectrum</a>(<span class="keyword">double</span>* resp)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KNoiseWhitening.html#KNoiseWhitening:fNoiseSpectrum" title="double* KNoiseWhitening::fNoiseSpectrum">fNoiseSpectrum</a> = resp;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KNoiseWhitening:SetNoiseSpectrumSize" href="src/KNoiseWhitening.h.html#epUUMC">SetNoiseSpectrumSize</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> size)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KNoiseWhitening.html#KNoiseWhitening:fNoiseSpectrumSize" title="unsigned int KNoiseWhitening::fNoiseSpectrumSize">fNoiseSpectrumSize</a> = size;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:46 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

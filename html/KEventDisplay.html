@@ -1,0 +1,219 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:45 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KEventDisplay</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KEventDisplay','','/Users/adam/softwareDev/kdata/kera/KEventDisplay.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KEventDisplay.h.html">header file</a>
+<a class="descrheadentry" href="src/KEventDisplay.cxx.html">source file</a>
+<a class="descrheadentry" href="KEventDisplay_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KEventDisplay:description">class description</a> 
+<a class="descrheadentry" href="#KEventDisplay:Function_Members">function members</a>
+<a class="descrheadentry" href="#KEventDisplay:Data_Members">data members</a>
+<a class="descrheadentry" href="#KEventDisplay:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KERA_Index.html">KERA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KEventDisplay</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KEventDisplay:description"></a>class KEventDisplay</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KEventDisplay.html">KEventDisplay</a>.cxx
+ Author: Adam Cox &lt;mailto:adam.cox@kit.edu&gt;
+
+ *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+ This class is used to display the raw pulses (and power spectra)
+ found in EdwEvents. The data that are displayed come from the <a href="./EdwEvent.html">EdwEvent</a>
+ information and additionally from a KHLABolometer record, which
+ will contain the final calibrated observables for that event. However
+ its not necessary to have the KHLABolometer information to display
+ events. One can just pass in the name of the bolometer ('FID803' for
+ example) to the <a href="./KEventDisplay.html#KEventDisplay:DisplayEvent" title="void KEventDisplay::DisplayEvent() or overloads">DisplayEvent</a> or <a href="./KEventDisplay.html#KEventDisplay:DisplayPower" title="void KEventDisplay::DisplayPower() or overloads">DisplayPower</a> methods.
+ Some pulse trace processing is done in order to better visualize the event
+ The baseline values are subtracted for each pulse and a pattern is removed
+ from all of the ion pulses. Since the pattern length is not known a priori,
+ patterns of size 100, 200 and 400 points are computing and subtracted.
+ You can turn the pulse trace processing off by calling <a href="./KEventDisplay.html#KEventDisplay:SetApplyPulseProcessing" title="void KEventDisplay::SetApplyPulseProcessing(Bool_t anOpt=true)">SetApplyPulseProcessing</a>(0)
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KEventDisplay:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEventDisplay:KEventDisplay">KEventDisplay</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEventDisplay:KEventDisplay@2">KEventDisplay</a>(<span class="keyword">const</span> <a href="./KEventDisplay.html">KEventDisplay</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEventDisplay:KEventDisplay@1">KEventDisplay</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* b)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KEventDisplay:_KEventDisplay">~KEventDisplay</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KEventDisplay:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:DisplayEvent">DisplayEvent</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:DisplayEvent@1">DisplayEvent</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* b)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:DisplayEvent@2">DisplayEvent</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <span class="keyword">const</span> <span class="keyword">char</span>* boloName)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:DisplayPower">DisplayPower</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:DisplayPower@1">DisplayPower</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* b)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:DisplayPower@2">DisplayPower</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <span class="keyword">const</span> <span class="keyword">char</span>* boloName)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#KEventDisplay:GetNumPulses">GetNumPulses</a>()</td></tr>
+<tr class="func"><td class="funcret">TH1D</td><td class="funcname"><a class="funcname" href="#KEventDisplay:GetPulseHistogram">GetPulseHistogram</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KEventDisplay:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KEventDisplay.html">KEventDisplay</a>&amp;</td><td class="funcname"><a class="funcname" href="#KEventDisplay:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KEventDisplay.html">KEventDisplay</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:SetApplyPulseProcessing">SetApplyPulseProcessing</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> anOpt = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:SetEvent">SetEvent</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* b)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:SetEvent@1">SetEvent</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <span class="keyword">const</span> <span class="keyword">char</span>* boloName)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:DrawStatsCanvas">DrawStatsCanvas</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:InitializeMembers">InitializeMembers</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:SetUpCanvas">SetUpCanvas</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventDisplay:SetUpPulseAnalysisChains">SetUpPulseAnalysisChains</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEventDisplay:SetUpPulses">SetUpPulses</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> displayPower = <span class="keyword">false</span>)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KEventDisplay:Data_Members"></a>Data Members</h2>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KEventDisplay:fApplyPulseProcessing"></a>fApplyPulseProcessing</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>*</td><td class="dataname"><a name="KEventDisplay:fBolo"></a>fBolo</td><td class="datadesc">the HLA bolometer record</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KEventDisplay:fBoloName"></a>fBoloName</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KEventDisplay:fDisplayPower"></a>fDisplayPower</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./EdwEvent.html">EdwEvent</a>*</td><td class="dataname"><a name="KEventDisplay:fEdwEvent"></a>fEdwEvent</td><td class="datadesc">pointer to the current event</td></tr>
+<tr class="data"><td class="datatype"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a></td><td class="dataname"><a name="KEventDisplay:fHeatPulseAnalysisChain"></a>fHeatPulseAnalysisChain</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a></td><td class="dataname"><a name="KEventDisplay:fIonPulseAnalysisChain"></a>fIonPulseAnalysisChain</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="dataname"><a name="KEventDisplay:fNumPulseHists"></a>fNumPulseHists</td><td class="datadesc">number of fPulseHists.</td></tr>
+<tr class="data"><td class="datatype"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a></td><td class="dataname"><a name="KEventDisplay:fPowerSpectrumChain"></a>fPowerSpectrumChain</td><td></td></tr>
+<tr class="data"><td class="datatype">TCanvas*</td><td class="dataname"><a name="KEventDisplay:fPulseCanvas"></a>fPulseCanvas</td><td class="datadesc">canvas that shows the raw pulses (and power spectra)</td></tr>
+<tr class="data"><td class="datatype">TH1D*</td><td class="dataname"><a name="KEventDisplay:fPulseHists"></a>fPulseHists</td><td class="datadesc">an array of histograms holding pulses</td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./ListOfTypes.html#Int_t">Int_t</a>&gt;</td><td class="dataname"><a name="KEventDisplay:fPulseIndex"></a>fPulseIndex</td><td class="datadesc">holds the index values that correspond to the waveforms stored in EdwEvent</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KEventDisplay:fResizeStatWindow"></a>fResizeStatWindow</td><td></td></tr>
+<tr class="data"><td class="datatype">TCanvas*</td><td class="dataname"><a name="KEventDisplay:fStatCanvas"></a>fStatCanvas</td><td class="datadesc">canvas that holds the 'statistics' for an event</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KEventDisplay:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KEventDisplay" href="./KEventDisplay.html">KEventDisplay</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEventDisplay:KEventDisplay@2" href="src/KEventDisplay.cxx.html#QfdcUC">KEventDisplay</a>(<span class="keyword">const</span> <a href="./KEventDisplay.html">KEventDisplay</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEventDisplay:KEventDisplay@1" href="src/KEventDisplay.cxx.html#CbpGP">KEventDisplay</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* b)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEventDisplay:_KEventDisplay" href="src/KEventDisplay.cxx.html#tPqMw">~KEventDisplay</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:InitializeMembers" href="src/KEventDisplay.cxx.html#T23ua">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:SetUpPulseAnalysisChains" href="src/KEventDisplay.cxx.html#JG1Q0D">SetUpPulseAnalysisChains</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:DisplayEvent@1" href="src/KEventDisplay.cxx.html#xBAFGC">DisplayEvent</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* b)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:DisplayEvent@2" href="src/KEventDisplay.cxx.html#EWabG">DisplayEvent</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <span class="keyword">const</span> <span class="keyword">char</span>* boloName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:DisplayEvent" href="src/KEventDisplay.cxx.html#wVEwW">DisplayEvent</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:DisplayPower@1" href="src/KEventDisplay.cxx.html#FVkEt">DisplayPower</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* b)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:DisplayPower@2" href="src/KEventDisplay.cxx.html#t04W.B">DisplayPower</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <span class="keyword">const</span> <span class="keyword">char</span>* boloName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:DisplayPower" href="src/KEventDisplay.cxx.html#aFPQgB">DisplayPower</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:SetEvent" href="src/KEventDisplay.cxx.html#yLEMHE">SetEvent</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* b)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:SetEvent@1" href="src/KEventDisplay.cxx.html#I1vrsB">SetEvent</a>(<a href="./EdwEvent.html">EdwEvent</a>* e, <span class="keyword">const</span> <span class="keyword">char</span>* boloName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:SetUpCanvas" href="src/KEventDisplay.cxx.html#fXRn_B">SetUpCanvas</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:DrawStatsCanvas" href="src/KEventDisplay.cxx.html#dIduQC">DrawStatsCanvas</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEventDisplay:SetUpPulses" href="src/KEventDisplay.cxx.html#cNC3sB">SetUpPulses</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> displayPower = <span class="keyword">false</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TH1D <a class="funcname" name="KEventDisplay:GetPulseHistogram" href="src/KEventDisplay.cxx.html#DCsurB">GetPulseHistogram</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> i) const</span><br />
+<div class="funccomm"><pre>There are <a href="./KEventDisplay.html#KEventDisplay:fNumPulseHists" title="UInt_t KEventDisplay::fNumPulseHists">fNumPulseHists</a> in each event. Calling this method
+will make a copy of a particular histogram (that holds the waveform)
+and return it.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEventDisplay:KEventDisplay@2" href="src/KEventDisplay.h.html#DFUrq">KEventDisplay</a>(<span class="keyword">const</span> <a href="./KEventDisplay.html">KEventDisplay</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#UInt_t">UInt_t</a> <a class="funcname" name="KEventDisplay:GetNumPulses" href="src/KEventDisplay.h.html#uRM5_B">GetNumPulses</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEventDisplay.html#KEventDisplay:fNumPulseHists" title="UInt_t KEventDisplay::fNumPulseHists">fNumPulseHists</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventDisplay:SetApplyPulseProcessing" href="src/KEventDisplay.h.html#NY8aJC">SetApplyPulseProcessing</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> anOpt = <span class="keyword">true</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KEventDisplay.html#KEventDisplay:fApplyPulseProcessing" title="Bool_t KEventDisplay::fApplyPulseProcessing">fApplyPulseProcessing</a> = anOpt;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:45 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

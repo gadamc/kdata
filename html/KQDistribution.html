@@ -1,0 +1,559 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:47 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KQDistribution</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KQDistribution','','/Users/adam/softwareDev/kdata/kqpa/KQDistribution.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KQDistribution.h.html">header file</a>
+<a class="descrheadentry" href="src/KQDistribution.cxx.html">source file</a>
+<a class="descrheadentry" href="KQDistribution_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KQDistribution:description">class description</a> 
+<a class="descrheadentry" href="#KQDistribution:Function_Members">function members</a>
+<a class="descrheadentry" href="#KQDistribution:Data_Members">data members</a>
+<a class="descrheadentry" href="#KQDistribution:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KQPA_Index.html">KQPA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KQDistribution</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KQDistribution:description"></a>class KQDistribution</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KQDistribution.html">KQDistribution</a>.cxx
+ KDataStructure
+
+ Author: Daniel Wegner &lt;mailto:Daniel.Wegner@student.kit.edu&gt; on 1/13/11.
+
+ * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+
+ The basic purpose of this class is to show <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> gamma and neutron band widths
+ for a number of KBolometerEvents,
+ read from a specified KDATA tree file which stores KEvents
+ For this purpose the <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> and ERecoil values are read from all KBolometerEvents
+ within the tree file and stored in a vector of struct <span class="string">"DataRecord"</span>
+ This vector is sorted according to the ERecoil values in ascending order
+ and then equal numbers of adjacent data pairs are filled
+ in a specified number <span class="string">"fNumProjections"</span> of TH2D <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>-ERecoil histograms
+ These histograms are projected on the <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>-axis resulting in ERecoilvalues
+ resulting in TH1D histograms.
+ Mean and error values for the <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> gamma and neutron band are estimated by applying Gaussian fits in certain ERecoil intervals
+ determined by theoretically calculated values:
+ mean value  +/- a specified number of error value
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KQDistribution:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQDistribution:KQDistribution@1">KQDistribution</a>(<span class="keyword">const</span> <a href="./KQDistribution.html">KQDistribution</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQDistribution:KQDistribution">KQDistribution</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aTargetDir, <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumProjections)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQDistribution:_KQDistribution">~KQDistribution</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:BintoQ">BintoQ</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aBin)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KQDistribution:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:DrawHistogram">DrawHistogram</a>(TPad* aPad, <a href="./ListOfTypes.html#Int_t">Int_t</a> aHistogramCounter)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KBoloConfig.html">KBoloConfig</a>*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetBoloConfig">GetBoloConfig</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetBoloConfigFile">GetBoloConfigFile</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetCategoryName">GetCategoryName</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEventCategory)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetConfidenceInSigmas">GetConfidenceInSigmas</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetConfidenceLevel">GetConfidenceLevel</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetData">GetData</a>(<a href="./KQDistribution.html">KQDistribution</a>::DataType aType)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetDataSize">GetDataSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetDetectorName">GetDetectorName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TCanvas*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetDrawCanvas">GetDrawCanvas</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetERecoilMax">GetERecoilMax</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetERecoilMin">GetERecoilMin</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetFitParameters">GetFitParameters</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anIndex)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetGammaMax">GetGammaMax</a>(TH1D* aHistogram)</td></tr>
+<tr class="func"><td class="funcret">TH1D*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetHistogram">GetHistogram</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anIndex)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetImageFormat">GetImageFormat</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetIsBatch">GetIsBatch</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetNumBinsERecoil">GetNumBinsERecoil</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetNumBinsQ">GetNumBinsQ</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetNumProjections">GetNumProjections</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetQMax">GetQMax</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:GetQMin">GetQMin</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetSourceFile">GetSourceFile</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="#KQDistribution:GetTargetDir">GetTargetDir</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KQDistribution:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:MakeAll">MakeAll</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEventCategory, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aDetectorName, <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumProjections)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KQDistribution.html">KQDistribution</a>&amp;</td><td class="funcname"><a class="funcname" href="#KQDistribution:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KQDistribution.html">KQDistribution</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KQDistribution:QtoBin">QtoBin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQ)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SaveImage">SaveImage</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anIndex)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SaveImage@1">SaveImage</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFileName)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetBoloConfigFile">SetBoloConfigFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aBoloConfigFile)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetBoundaries">SetBoundaries</a>(TH1D* aHistogram, <a href="./ListOfTypes.html#Double_t">Double_t</a> aNumSigmas = 2.5, <a href="./ListOfTypes.html#Double_t">Double_t</a> aFirstValue = 0.01, <a href="./ListOfTypes.html#Double_t">Double_t</a> aSecondValue = 0.01, <a href="./ListOfTypes.html#Double_t">Double_t</a> aFirstError = 0.01, <a href="./ListOfTypes.html#Double_t">Double_t</a> aSecondError = 0.01)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetConfidenceInSigmas">SetConfidenceInSigmas</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aConfidenceInSigmas)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetConfidenceLevel">SetConfidenceLevel</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQuantil = 0.9)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetDetectorName">SetDetectorName</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aDetectorName)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetERecoilMax">SetERecoilMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anERecoilMax)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetERecoilMin">SetERecoilMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anERecoilMin)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetImageFormat">SetImageFormat</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* anImageFormat)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetIsBatch">SetIsBatch</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> anIsBatch)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetNumBinsERecoil">SetNumBinsERecoil</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNumBinsERecoil)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetNumBinsQ">SetNumBinsQ</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNumBinsQ)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetNumProjections">SetNumProjections</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNumProjections)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetPaths">SetPaths</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aTargetDir)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetQMax">SetQMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQMax)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetQMin">SetQMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQMin)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetSourceFile">SetSourceFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetTargetDir">SetTargetDir</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aTargetDir)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SortData">SortData</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:CalculateTheoErrors">CalculateTheoErrors</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:FillHistograms">FillHistograms</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:MakeCanvases">MakeCanvases</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:MakeGraphs">MakeGraphs</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:MakeTargetDir">MakeTargetDir</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:Next">Next</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:Previous">Previous</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:ReadEvents">ReadEvents</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:ResetVars">ResetVars</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SaveGraphData">SaveGraphData</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQDistribution:SetStyle">SetStyle</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KQDistribution:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="data"><td class="datatype">enum DataType { </td><td class="dataname"><a name="KQDistribution:ERECOIL"></a>ERECOIL</td><td></td></tr>
+<tr class="data"><td class="datatype"></td><td class="dataname"><a name="KQDistribution:Q"></a>Q</td><td></td></tr>
+<tr class="data"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="data"><td class="datatype">enum BoundaryType { </td><td class="dataname"><a name="KQDistribution:GAMMALOW"></a>GAMMALOW</td><td></td></tr>
+<tr class="data"><td class="datatype"></td><td class="dataname"><a name="KQDistribution:GAMMAHIGH"></a>GAMMAHIGH</td><td></td></tr>
+<tr class="data"><td class="datatype"></td><td class="dataname"><a name="KQDistribution:NEUTRONLOW"></a>NEUTRONLOW</td><td></td></tr>
+<tr class="data"><td class="datatype"></td><td class="dataname"><a name="KQDistribution:NEUTRONHIGH"></a>NEUTRONHIGH</td><td></td></tr>
+<tr class="data"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./KBoloConfig.html">KBoloConfig</a>*</td><td class="dataname"><a name="KQDistribution:fBoloConfig"></a>fBoloConfig</td><td class="datadesc">bolometer configuration</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQDistribution:fBoloConfigFile"></a>fBoloConfigFile</td><td class="datadesc">source ASCII file for heat and ion channel uncertainties for all bolometers</td></tr>
+<tr class="data"><td class="datatype">TPaveStats*</td><td class="dataname"><a name="KQDistribution:fChi2PaveText"></a>fChi2PaveText</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQDistribution:fConfidenceInSigmas"></a>fConfidenceInSigmas</td><td class="datadesc">confidence level in units of sigma</td></tr>
+<tr class="data"><td class="datatype">vector&lt;DataRecord&gt;</td><td class="dataname"><a name="KQDistribution:fData"></a>fData</td><td class="datadesc">stores ERecoil-Q pairs</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KQDistribution:fDataSize"></a>fDataSize</td><td class="datadesc">size of fData</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQDistribution:fDetectorName"></a>fDetectorName</td><td class="datadesc">temporary detector</td></tr>
+<tr class="data"><td class="datatype">TF1*</td><td class="dataname"><a name="KQDistribution:fDoubleGaus"></a>fDoubleGaus</td><td class="datadesc">sum of two gaussians functions</td></tr>
+<tr class="data"><td class="datatype">TCanvas*</td><td class="dataname"><a name="KQDistribution:fDrawCanvas"></a>fDrawCanvas</td><td class="datadesc">seperate canvas to draw and save to files</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fERecoilError"></a>fERecoilError</td><td class="datadesc">RMS estimations for the single ERecoil intervals</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQDistribution:fERecoilMax"></a>fERecoilMax</td><td class="datadesc">maximal value of E_Recoil</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fERecoilMean"></a>fERecoilMean</td><td class="datadesc">mean estimations for the single ERecoil intervals</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQDistribution:fERecoilMin"></a>fERecoilMin</td><td class="datadesc">minimal value of E_Recoil</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KQDistribution:fEventCategory"></a>fEventCategory</td><td class="datadesc">event category in KHLABolometerRecord</td></tr>
+<tr class="data"><td class="datatype">TF1*</td><td class="dataname"><a name="KQDistribution:fGammaGaus"></a>fGammaGaus</td><td class="datadesc">function fitting gamma peak for a single element of fHistograms</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KQDistribution:fHistogramCounter"></a>fHistogramCounter</td><td class="datadesc">index for current histogram</td></tr>
+<tr class="data"><td class="datatype">vector&lt;HistogramRecord&gt;</td><td class="dataname"><a name="KQDistribution:fHistogramRecords"></a>fHistogramRecords</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQDistribution:fImageFormat"></a>fImageFormat</td><td class="datadesc">format for the images to be created</td></tr>
+<tr class="data"><td class="datatype">TFile*</td><td class="dataname"><a name="KQDistribution:fInputFile"></a>fInputFile</td><td class="datadesc">source file with KHLABolometerRecord events</td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">bool</span></td><td class="dataname"><a name="KQDistribution:fIsBatch"></a>fIsBatch</td><td class="datadesc">batch-mode</td></tr>
+<tr class="data"><td class="datatype"><a href="./KDataReader.html">KDataReader</a>*</td><td class="dataname"><a name="KQDistribution:fKDataReader"></a>fKDataReader</td><td class="datadesc">kdata reader</td></tr>
+<tr class="data"><td class="datatype"><a href="./KHLAEvent.html">KHLAEvent</a>*</td><td class="dataname"><a name="KQDistribution:fKHLAEvent"></a>fKHLAEvent</td><td class="datadesc">used to read KHLABolometerRecord events</td></tr>
+<tr class="data"><td class="datatype">TF1*</td><td class="dataname"><a name="KQDistribution:fNeutronGaus"></a>fNeutronGaus</td><td class="datadesc">function fitting neutron peak for a single element of fHistograms</td></tr>
+<tr class="data"><td class="datatype">TButton*</td><td class="dataname"><a name="KQDistribution:fNextButton"></a>fNextButton</td><td class="datadesc">switch to next Q-projection histogram</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KQDistribution:fNumBinsERecoil"></a>fNumBinsERecoil</td><td class="datadesc">number of bins on E_Recoil-axis in TH2D histograms</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KQDistribution:fNumBinsQ"></a>fNumBinsQ</td><td class="datadesc">number of bins on Q-axis in TH2D histograms</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KQDistribution:fNumProjections"></a>fNumProjections</td><td class="datadesc">number of TH2D histograms</td></tr>
+<tr class="data"><td class="datatype">TFile*</td><td class="dataname"><a name="KQDistribution:fOutputFile"></a>fOutputFile</td><td class="datadesc">stores all fHistograms and fTotalGraph</td></tr>
+<tr class="data"><td class="datatype">TButton*</td><td class="dataname"><a name="KQDistribution:fPreviousButton"></a>fPreviousButton</td><td class="datadesc">switch to previous Q-projection histogram</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fQGamma"></a>fQGamma</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fQGammaError"></a>fQGammaError</td><td></td></tr>
+<tr class="data"><td class="datatype">TGraphErrors*</td><td class="dataname"><a name="KQDistribution:fQGammaErrorGraph"></a>fQGammaErrorGraph</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fQGammaTheo"></a>fQGammaTheo</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fQGammaTheoError"></a>fQGammaTheoError</td><td></td></tr>
+<tr class="data"><td class="datatype">TGraphErrors*</td><td class="dataname"><a name="KQDistribution:fQGammaTheoGraph"></a>fQGammaTheoGraph</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQDistribution:fQMax"></a>fQMax</td><td class="datadesc">maximal value of Q</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQDistribution:fQMin"></a>fQMin</td><td class="datadesc">minimal value of Q</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fQNeutron"></a>fQNeutron</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fQNeutronError"></a>fQNeutronError</td><td></td></tr>
+<tr class="data"><td class="datatype">TGraphErrors*</td><td class="dataname"><a name="KQDistribution:fQNeutronErrorGraph"></a>fQNeutronErrorGraph</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fQNeutronTheo"></a>fQNeutronTheo</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a>*</td><td class="dataname"><a name="KQDistribution:fQNeutronTheoError"></a>fQNeutronTheoError</td><td></td></tr>
+<tr class="data"><td class="datatype">TGraphErrors*</td><td class="dataname"><a name="KQDistribution:fQNeutronTheoGraph"></a>fQNeutronTheoGraph</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQDistribution:fSourceFile"></a>fSourceFile</td><td class="datadesc">source KDATA tree file</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQDistribution:fTargetDir"></a>fTargetDir</td><td class="datadesc">target directory for created files</td></tr>
+<tr class="data"><td class="datatype">TGraph*</td><td class="dataname"><a name="KQDistribution:fTotalGraph"></a>fTotalGraph</td><td class="datadesc">showing Q-ERecoil plot for all KHLABolometerRecord events</td></tr>
+<tr class="data"><td class="datatype">TMultiGraph*</td><td class="dataname"><a name="KQDistribution:fTotalMultiGraph"></a>fTotalMultiGraph</td><td></td></tr>
+<tr class="data"><td class="datatype">TPad*</td><td class="dataname"><a name="KQDistribution:pad3"></a>pad3</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KQDistribution:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KQDistribution" href="./KQDistribution.html">KQDistribution</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQDistribution:KQDistribution" href="src/KQDistribution.cxx.html#nxoDuD">KQDistribution</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aTargetDir = gSystem-&gt;pwd(),                               <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumProjections = 20)</span><br />
+<div class="funccomm"><pre> default constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">TH1D* <a class="funcname" name="KQDistribution:GetHistogram" href="src/KQDistribution.cxx.html#G7DeBE">GetHistogram</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anIndex)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* <a class="funcname" name="KQDistribution:GetCategoryName" href="src/KQDistribution.cxx.html#OI5zo">GetCategoryName</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEventCategory)</span><br />
+<div class="funccomm"><pre> gets a C string for the category of current <a href="./KQDistribution.html#KQDistribution:fEventCategory" title="Int_t KQDistribution::fEventCategory">fEventCategory</a> if anEventCategory=-1,
+ otherwise for anEventCategory itself
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a>* <a class="funcname" name="KQDistribution:GetData" href="src/KQDistribution.cxx.html#blxnYE">GetData</a>(<a href="./KQDistribution.html">KQDistribution</a>::DataType aType)</span><br />
+<div class="funccomm"><pre> returns a <a href="./ListOfTypes.html#Double_t">Double_t</a> array containing all <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> data (<a href="./KQDistribution.html">KQDistribution</a>::<a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>) or all ERecoil data (<a href="./KQDistribution.html">KQDistribution</a>::ERecoil)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SortData" href="src/KQDistribution.cxx.html#C0FEtD">SortData</a>()</span><br />
+<div class="funccomm"><pre> sorts <a href="./KQDistribution.html#KQDistribution:fData" title="vector&lt;DataRecord&gt; KQDistribution::fData">fData</a> with respect to ERecoil in ascending order
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:DrawHistogram" href="src/KQDistribution.cxx.html#nCdQpB">DrawHistogram</a>(TPad* aPad, <a href="./ListOfTypes.html#Int_t">Int_t</a> aHistogramCounter)</span><br />
+<div class="funccomm"><pre> draws a TH1D <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>-ERecoil histogram, which is a projection on <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>-axis of a previously created TH2D <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>-ERecoil histogram
+ this histogram is in the <a href="./KQDistribution.html#KQDistribution:fHistogramCounter" title="Int_t KQDistribution::fHistogramCounter">fHistogramCounter</a>'th element of type HistogramRecord in <a href="./KQDistribution.html#KQDistribution:fHistogramRecords" title="vector&lt;HistogramRecord&gt; KQDistribution::fHistogramRecords">fHistogramRecords</a>
+ aDirection=<a href="./ListOfTypes.html#bool">true</a>: <a href="./KQDistribution.html#KQDistribution:fHistogramCounter" title="Int_t KQDistribution::fHistogramCounter">fHistogramCounter</a> is incremented, next histogram is drawn
+ aDirection=<a href="./ListOfTypes.html#bool">false</a>: <a href="./KQDistribution.html#KQDistribution:fHistogramCounter" title="Int_t KQDistribution::fHistogramCounter">fHistogramCounter</a> is decremented, previous histogram is drawn
+
+ two gaussian fits are applied for gamma and neutron bands within fixed intervals and the corresponding chi2 values are drawn on a TPaveText
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetBoundaries" href="src/KQDistribution.cxx.html#UHmd1D">SetBoundaries</a>(TH1D* aHistogram, <a href="./ListOfTypes.html#Double_t">Double_t</a> aNumSigmas = 2.5, <a href="./ListOfTypes.html#Double_t">Double_t</a> aFirstValue = 0.01, <a href="./ListOfTypes.html#Double_t">Double_t</a> aSecondValue = 0.01, <a href="./ListOfTypes.html#Double_t">Double_t</a> aFirstError = 0.01, <a href="./ListOfTypes.html#Double_t">Double_t</a> aSecondError = 0.01)</span><br />
+<div class="funccomm"><pre> searches and sets the boundaries for the two gaussian fits
+ in the fitting function <a href="./KQDistribution.html#KQDistribution:fDoubleGaus" title="TF1* KQDistribution::fDoubleGaus">fDoubleGaus</a>
+ the central <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> values of the fit intervals, QNeutronMaxX and QGammaMaxX,
+ are the <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> values corresponding to the bins with maximal entries in aHistogram
+ in the <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> intervals [0.2,0.6] (neutron) and [0.8,1.2] (gamma)
+ the intervals are then [QNeutronMaxX - aNumSigmas*aFirstError, QNeutronMaxX + aNumSigmas*aFirstError] (neutron)
+ [QGammaMaxX - aNumSigmas*aSecondError, QGammaMaxX + aNumSigmas*aSecondError] (gamma)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SaveImage" href="src/KQDistribution.cxx.html#RN1m4B">SaveImage</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anIndex)</span><br />
+<div class="funccomm"><pre> saves the image drawn on <a href="./KQDistribution.html#KQDistribution:fDrawCanvas" title="TCanvas* KQDistribution::fDrawCanvas">fDrawCanvas</a> in an image file with format <a href="./KQDistribution.html#KQDistribution:fImageFormat" title="string KQDistribution::fImageFormat">fImageFormat</a>
+ in path <span class="string">"fTargetDir/fTargetSubDir/CategoryName_fDectorName_anIndex.fImageFormat"</span>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SaveImage@1" href="src/KQDistribution.cxx.html#Bue9aC">SaveImage</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFileName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KQDistribution:QtoBin" href="src/KQDistribution.cxx.html#H1VfTB">QtoBin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQ)</span><br />
+<div class="funccomm"><pre>This method converts a <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> value in the corresponding bin number
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQDistribution:BintoQ" href="src/KQDistribution.cxx.html#V4Ua">BintoQ</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aBin)</span><br />
+<div class="funccomm"><pre>This methdo converts a bin number in the corresponding <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> value
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetConfidenceLevel" href="src/KQDistribution.cxx.html#opkMr">SetConfidenceLevel</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQuantil = 0.9)</span><br />
+<div class="funccomm"><pre>This method sets the confidence level according to the specified quantil
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQDistribution:GetConfidenceLevel" href="src/KQDistribution.cxx.html#SMY8tB">GetConfidenceLevel</a>()</span><br />
+<div class="funccomm"><pre>This method returns the current confidence level
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetPaths" href="src/KQDistribution.cxx.html#ayN5MD">SetPaths</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aTargetDir)</span><br />
+<div class="funccomm"><pre> This method sets the specified paths for the source file and the target directory where the plot images are saved
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQDistribution:GetGammaMax" href="src/KQDistribution.cxx.html#Lbgo0C">GetGammaMax</a>(TH1D* aHistogram)</span><br />
+<div class="funccomm"><pre>This method returns the <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> value corresponding to the bin with maximal entries in aHistogram
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:GetFitParameters" href="src/KQDistribution.cxx.html#S5ZzeE">GetFitParameters</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anIndex)</span><br />
+<div class="funccomm"><pre>This method changes the current values, <a href="./KQDistribution.html#KQDistribution:fQGamma" title="Double_t* KQDistribution::fQGamma">fQGamma</a>, <a href="./KQDistribution.html#KQDistribution:fQGammaError" title="Double_t* KQDistribution::fQGammaError">fQGammaError</a>, <a href="./KQDistribution.html#KQDistribution:fQNeutron" title="Double_t* KQDistribution::fQNeutron">fQNeutron</a>, <a href="./KQDistribution.html#KQDistribution:fQNeutronError" title="Double_t* KQDistribution::fQNeutronError">fQNeutronError</a>,
+in the anIndex'th element of <a href="./KQDistribution.html#KQDistribution:fHistogramRecords" title="vector&lt;HistogramRecord&gt; KQDistribution::fHistogramRecords">fHistogramRecords</a> to the fit parameter values and errors in <a href="./KQDistribution.html#KQDistribution:fDoubleGaus" title="TF1* KQDistribution::fDoubleGaus">fDoubleGaus</a>
+These values are also changed in the graphs, <a href="./KQDistribution.html#KQDistribution:fQGammaErrorGraph" title="TGraphErrors* KQDistribution::fQGammaErrorGraph">fQGammaErrorGraph</a> and <a href="./KQDistribution.html#KQDistribution:fQNeutronErrorGraph" title="TGraphErrors* KQDistribution::fQNeutronErrorGraph">fQNeutronErrorGraph</a>,
+ as well as in the ASCII files, <span class="string">"fTargetDir/fTargetSubDir/QNeutronValues.dat"</span> and <span class="string">"fTargetDir/fTargetSubDir/QGammaValues.dat"</span> containing the data of the graphs
+ <a href="./KQDistribution.html#KQDistribution:fTotalMultiGraph" title="TMultiGraph* KQDistribution::fTotalMultiGraph">fTotalMultiGraph</a> containing <a href="./KQDistribution.html#KQDistribution:fQGammaErrorGraph" title="TGraphErrors* KQDistribution::fQGammaErrorGraph">fQGammaErrorGraph</a> and <a href="./KQDistribution.html#KQDistribution:fQNeutronErrorGraph" title="TGraphErrors* KQDistribution::fQNeutronErrorGraph">fQNeutronErrorGraph</a> is redrawn
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetStyle" href="src/KQDistribution.cxx.html#hay.hE">SetStyle</a>()</span><br />
+<div class="funccomm"><pre>This method sets styles for histogram and fit result drawing
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:ResetVars" href="src/KQDistribution.cxx.html#zr5B.B">ResetVars</a>()</span><br />
+<div class="funccomm"><pre>This method disposes all dynamically allocated class members
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:MakeTargetDir" href="src/KQDistribution.cxx.html#yBFxhD">MakeTargetDir</a>()</span><br />
+<div class="funccomm"><pre>This method creates the target directory
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KQDistribution:ReadEvents" href="src/KQDistribution.cxx.html#VaqxcB">ReadEvents</a>()</span><br />
+<div class="funccomm"><pre>This method reads the KBolometerEvents in <span class="string">"fSourceDir/fSourcefile.root"</span>
+For each KBolometerEvents the <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> value and the recoil energy is saved in a data structure <span class="string">"DataRecord"</span>,
+which is appended to the vector&lt;DataRecord&gt; <span class="string">"fData"</span>.
+<a href="./ListOfTypes.html#Double_t">Double_t</a> arrays for the single quantities can directly be retrieved with
+<a href="./KQDistribution.html">KQDistribution</a>::<a href="./KQDistribution.html#KQDistribution:GetData" title="Double_t* KQDistribution::GetData(KQDistribution::DataType aType)">GetData</a>(<a href="./KQDistribution.html">KQDistribution</a>::<a href="./KQDistribution.html#KQDistribution:ERECOIL" title="const KQDistribution::DataType KQDistribution::ERECOIL">ERECOIL</a>) or <a href="./KQDistribution.html">KQDistribution</a>::<a href="./KQDistribution.html#KQDistribution:GetData" title="Double_t* KQDistribution::GetData(KQDistribution::DataType aType)">GetData</a>(<a href="./KQDistribution.html">KQDistribution</a>::<a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>).
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:FillHistograms" href="src/KQDistribution.cxx.html#bKr5AB">FillHistograms</a>()</span><br />
+<div class="funccomm"><pre>This method fills <a href="./KQDistribution.html#KQDistribution:fNumProjections" title="Int_t KQDistribution::fNumProjections">fNumProjections</a> TH2D <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>-ERecoil histograms with equal numbers of entries from <a href="./KQDistribution.html#KQDistribution:fData" title="vector&lt;DataRecord&gt; KQDistribution::fData">fData</a>
+Each histogram is filled with the amount of entries corresponding to
+the integer quotient of the total entries <span class="string">"fDataSize"</span>  and the number of  histograms <span class="string">"fNumProjections"</span>.
+If this quotient is zero, the number of histograms <span class="string">"fNumProjections"</span> is set to one.
+The last histogram contains the remaining events <span class="string">"fDataSize"</span> modulo the number of entries per histogram.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:CalculateTheoErrors" href="src/KQDistribution.cxx.html#ldZ_NC">CalculateTheoErrors</a>()</span><br />
+<div class="funccomm"><pre>This method calculates the theoretical central <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> values and band widths for the gamma and neutron recoil bands for all histograms.
+At the moment, this is done the following way:
+The central <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> value for gamma recoil band is always 1.
+The central <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> value for the neutron recoil is calculated by the Lindhard formula <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>(E_Recoil) = 0.165* E_Recoil^0.185.
+For the band uncertainties, first the heat and ion channel  uncertainties on baseline and calibration level E=365.0 keV
+for the specific bolometer <span class="string">"fDetectorName"</span> are read from an ASCII file with tabled values via <a href="./KBoloConfig.html">KBoloConfig</a>.
+There might be a more sophisticated way in the future to handle this information
+Then via <a href="./KQUncertainty.html">KQUncertainty</a> the heat and ion channel uncertainties for all
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:MakeCanvases" href="src/KQDistribution.cxx.html#yQOgqD">MakeCanvases</a>()</span><br />
+<div class="funccomm"><pre>This method  creates also <a href="./KQDistribution.html#KQDistribution:fDrawCanvas" title="TCanvas* KQDistribution::fDrawCanvas">fDrawCanvas</a> which is used to store the images of histrograms in image files with format <span class="string">"fFileFormat"</span>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SaveGraphData" href="src/KQDistribution.cxx.html#TQnFlB">SaveGraphData</a>()</span><br />
+<div class="funccomm"><pre>This method creates ASCII files containing the <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> values from the gaussian fits and ERecoil mean values of the TH1D <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a>-ERecoil histograms
+these are the sourcefiles for subsequent graph creation
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:MakeGraphs" href="src/KQDistribution.cxx.html#HgXDmB">MakeGraphs</a>()</span><br />
+<div class="funccomm"><pre>This method  creates the graphs shown in the total <a href="./KQDistribution.html#KQDistribution:Q" title="const KQDistribution::DataType KQDistribution::Q">Q</a> plot,
+ <a href="./KQDistribution.html#KQDistribution:fQGammaErrorGraph" title="TGraphErrors* KQDistribution::fQGammaErrorGraph">fQGammaErrorGraph</a> with <a href="./KQDistribution.html#KQDistribution:fQGamma" title="Double_t* KQDistribution::fQGamma">fQGamma</a> +/- <a href="./KQDistribution.html#KQDistribution:fQGammaError" title="Double_t* KQDistribution::fQGammaError">fQGammaError</a>
+ <a href="./KQDistribution.html#KQDistribution:fQGammaTheoGraph" title="TGraphErrors* KQDistribution::fQGammaTheoGraph">fQGammaTheoGraph</a> with <a href="./KQDistribution.html#KQDistribution:fQGammaTheo" title="Double_t* KQDistribution::fQGammaTheo">fQGammaTheo</a> +/- <a href="./KQDistribution.html#KQDistribution:fQGammaTheoError" title="Double_t* KQDistribution::fQGammaTheoError">fQGammaTheoError</a>
+ <a href="./KQDistribution.html#KQDistribution:fQNeutronErrorGraph" title="TGraphErrors* KQDistribution::fQNeutronErrorGraph">fQNeutronErrorGraph</a> with <a href="./KQDistribution.html#KQDistribution:fQNeutron" title="Double_t* KQDistribution::fQNeutron">fQNeutron</a> +/ <a href="./KQDistribution.html#KQDistribution:fQNeutronError" title="Double_t* KQDistribution::fQNeutronError">fQNeutronError</a>
+ <a href="./KQDistribution.html#KQDistribution:fQNeutronTheoGraph" title="TGraphErrors* KQDistribution::fQNeutronTheoGraph">fQNeutronTheoGraph</a> with <a href="./KQDistribution.html#KQDistribution:fQNeutronTheo" title="Double_t* KQDistribution::fQNeutronTheo">fQNeutronTheo</a> +/- <a href="./KQDistribution.html#KQDistribution:fQNeutronTheoError" title="Double_t* KQDistribution::fQNeutronTheoError">fQNeutronTheoError</a>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:MakeAll" href="src/KQDistribution.cxx.html#lS.x.">MakeAll</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEventCategory, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aDetectorName, <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumProjections)</span><br />
+<div class="funccomm"><pre>This is the main routine, which reads and evaluates fSourcefile.ROOT by calling the other routines
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:Next" href="src/KQDistribution.h.html#cXa_b">Next</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:Previous" href="src/KQDistribution.h.html#Xnt9FD">Previous</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQDistribution:KQDistribution" href="src/KQDistribution.h.html#n143.D">KQDistribution</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aTargetDir, <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumProjections)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* <a class="funcname" name="KQDistribution:GetBoloConfigFile" href="src/KQDistribution.h.html#UA5Cc">GetBoloConfigFile</a>() const</span><br />
+<div class="funccomm"><pre>getters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fBoloConfigFile" title="string KQDistribution::fBoloConfigFile">fBoloConfigFile</a>.c_str(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KBoloConfig.html">KBoloConfig</a>* <a class="funcname" name="KQDistribution:GetBoloConfig" href="src/KQDistribution.h.html#VGOnJE">GetBoloConfig</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fBoloConfig" title="KBoloConfig* KQDistribution::fBoloConfig">fBoloConfig</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* <a class="funcname" name="KQDistribution:GetSourceFile" href="src/KQDistribution.h.html#AF5b1D">GetSourceFile</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fSourceFile" title="string KQDistribution::fSourceFile">fSourceFile</a>.c_str(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* <a class="funcname" name="KQDistribution:GetTargetDir" href="src/KQDistribution.h.html#Y2VO7D">GetTargetDir</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fTargetDir" title="string KQDistribution::fTargetDir">fTargetDir</a>.c_str(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* <a class="funcname" name="KQDistribution:GetDetectorName" href="src/KQDistribution.h.html#DEnAsD">GetDetectorName</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fDetectorName" title="string KQDistribution::fDetectorName">fDetectorName</a>.c_str();  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQDistribution:GetConfidenceInSigmas" href="src/KQDistribution.h.html#CXzQXE">GetConfidenceInSigmas</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fConfidenceInSigmas" title="Double_t KQDistribution::fConfidenceInSigmas">fConfidenceInSigmas</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KQDistribution:GetNumBinsERecoil" href="src/KQDistribution.h.html#hy.K5B">GetNumBinsERecoil</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fNumBinsERecoil" title="Int_t KQDistribution::fNumBinsERecoil">fNumBinsERecoil</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KQDistribution:GetNumBinsQ" href="src/KQDistribution.h.html#OoRBpC">GetNumBinsQ</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fNumBinsQ" title="Int_t KQDistribution::fNumBinsQ">fNumBinsQ</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQDistribution:GetERecoilMax" href="src/KQDistribution.h.html#ae_hzB">GetERecoilMax</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fERecoilMax" title="Double_t KQDistribution::fERecoilMax">fERecoilMax</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQDistribution:GetERecoilMin" href="src/KQDistribution.h.html#G3990B">GetERecoilMin</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fERecoilMin" title="Double_t KQDistribution::fERecoilMin">fERecoilMin</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQDistribution:GetQMax" href="src/KQDistribution.h.html#B57COE">GetQMax</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fQMax" title="Double_t KQDistribution::fQMax">fQMax</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQDistribution:GetQMin" href="src/KQDistribution.h.html#VgUWCC">GetQMin</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fQMin" title="Double_t KQDistribution::fQMin">fQMin</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KQDistribution:GetNumProjections" href="src/KQDistribution.h.html#BKmO5B">GetNumProjections</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fNumProjections" title="Int_t KQDistribution::fNumProjections">fNumProjections</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQDistribution:GetIsBatch" href="src/KQDistribution.h.html#yD_v1E">GetIsBatch</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fIsBatch" title="bool KQDistribution::fIsBatch">fIsBatch</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* <a class="funcname" name="KQDistribution:GetImageFormat" href="src/KQDistribution.h.html#H3GQpB">GetImageFormat</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fImageFormat" title="string KQDistribution::fImageFormat">fImageFormat</a>.c_str(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TCanvas* <a class="funcname" name="KQDistribution:GetDrawCanvas" href="src/KQDistribution.h.html#jGJY">GetDrawCanvas</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fDrawCanvas" title="TCanvas* KQDistribution::fDrawCanvas">fDrawCanvas</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KQDistribution:GetDataSize" href="src/KQDistribution.h.html#gvoSOB">GetDataSize</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQDistribution.html#KQDistribution:fDataSize" title="Int_t KQDistribution::fDataSize">fDataSize</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetBoloConfigFile" href="src/KQDistribution.h.html#TIHdD">SetBoloConfigFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aBoloConfigFile)</span><br />
+<div class="funccomm"><pre>setters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fBoloConfigFile" title="string KQDistribution::fBoloConfigFile">fBoloConfigFile</a> = aBoloConfigFile; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetSourceFile" href="src/KQDistribution.h.html#M_oPnE">SetSourceFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fSourceFile" title="string KQDistribution::fSourceFile">fSourceFile</a> = aSourceFile; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetTargetDir" href="src/KQDistribution.h.html#KUUel">SetTargetDir</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aTargetDir)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fTargetDir" title="string KQDistribution::fTargetDir">fTargetDir</a> = aTargetDir; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetDetectorName" href="src/KQDistribution.h.html#F8CYJE">SetDetectorName</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aDetectorName)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fDetectorName" title="string KQDistribution::fDetectorName">fDetectorName</a> = aDetectorName; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetConfidenceInSigmas" href="src/KQDistribution.h.html#lQByB">SetConfidenceInSigmas</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aConfidenceInSigmas)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fConfidenceInSigmas" title="Double_t KQDistribution::fConfidenceInSigmas">fConfidenceInSigmas</a> = aConfidenceInSigmas; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetNumBinsERecoil" href="src/KQDistribution.h.html#piWe4E">SetNumBinsERecoil</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNumBinsERecoil)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fNumBinsERecoil" title="Int_t KQDistribution::fNumBinsERecoil">fNumBinsERecoil</a> = aNumBinsERecoil; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetNumBinsQ" href="src/KQDistribution.h.html#XpbaTD">SetNumBinsQ</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNumBinsQ)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fNumBinsQ" title="Int_t KQDistribution::fNumBinsQ">fNumBinsQ</a> = aNumBinsQ; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetERecoilMax" href="src/KQDistribution.h.html#fCArY">SetERecoilMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anERecoilMax)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fERecoilMax" title="Double_t KQDistribution::fERecoilMax">fERecoilMax</a> = anERecoilMax; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetERecoilMin" href="src/KQDistribution.h.html#WQSrY">SetERecoilMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anERecoilMin)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fERecoilMin" title="Double_t KQDistribution::fERecoilMin">fERecoilMin</a> = anERecoilMin; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetQMax" href="src/KQDistribution.h.html#V4l8TD">SetQMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQMax)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fQMax" title="Double_t KQDistribution::fQMax">fQMax</a> = aQMax; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetQMin" href="src/KQDistribution.h.html#aqFaGC">SetQMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQMin)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fQMin" title="Double_t KQDistribution::fQMin">fQMin</a> = aQMin; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetNumProjections" href="src/KQDistribution.h.html#nPDsBC">SetNumProjections</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNumProjections)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fNumProjections" title="Int_t KQDistribution::fNumProjections">fNumProjections</a> = aNumProjections; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetIsBatch" href="src/KQDistribution.h.html#ak__OB">SetIsBatch</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> anIsBatch)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fIsBatch" title="bool KQDistribution::fIsBatch">fIsBatch</a> = anIsBatch; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQDistribution:SetImageFormat" href="src/KQDistribution.h.html#AbPzX">SetImageFormat</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* anImageFormat)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQDistribution.html#KQDistribution:fImageFormat" title="string KQDistribution::fImageFormat">fImageFormat</a> = anImageFormat; }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+<em>&raquo; Author: <a href="mailto:Daniel.Wegner@student.kit.edu"> Daniel Wegner </a> on 1/13/11. </em><em>&raquo; Copyright   2011 Karlsruhe Institute of Technology. All rights reserved.</em><br />
+<em>&raquo; Last changed: Tue Sep 25 14:34:47 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

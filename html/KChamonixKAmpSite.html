@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:44 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KChamonixKAmpSite</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KChamonixKAmpSite','','/Users/adam/softwareDev/kdata/kamping/KChamonixKAmpSite.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KChamonixKAmpSite.h.html">header file</a>
+<a class="descrheadentry" href="src/KChamonixKAmpSite.cxx.html">source file</a>
+<a class="descrheadentry" href="KChamonixKAmpSite_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KChamonixKAmpSite:description">class description</a> 
+<a class="descrheadentry" href="#KChamonixKAmpSite:Function_Members">function members</a>
+<a class="descrheadentry" href="#KChamonixKAmpSite:Data_Members">data members</a>
+<a class="descrheadentry" href="#KChamonixKAmpSite:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KAMPING_Index.html">KAMPING</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KChamonixKAmpSite</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KChamonixKAmpSite:description"></a>class KChamonixKAmpSite: public <a href="./KAmpSite.html">KAmpSite</a></h1>
+<div class="classdescr">
+<pre>
+ <a href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a>.cxx
+ KDataStructure
+
+ Created by Adam Cox
+ Copyright 2012 Karlsruhe Institute of Technology. All rights reserved.
+
+
+ analyzes both heat and ionization pulses using an optimal filter.
+
+ this kampsite assumes that the analysis is being performed on raw data where the settings
+ for the the DAQ and characteristics of pulses on each channel are the same throughout the set of data it analyzes.
+
+ The kampsite works in the following way.
+
+ First, the noise spectra for each channel must be determined. This kampsite currently uses the ERA style of pulse
+ detector to find <span class="string">"noise only"</span> events. However, this class will likely employ some wavelet decomposition for noise event
+ decisions. Additionally, the user may turn off noise spectrum determination (<a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:NeedScout" title="Bool_t KChamonixKAmpSite::NeedScout() or overloads">NeedScout</a>(<a href="./ListOfTypes.html#bool">false</a>)) and provide
+ a noise spectrum directly to an instance of this class.
+
+ Second, the windowing processors must be set up by providing the pulse size for heat channels and ionization channels,
+ There is only one heat window
+ and one ionization channel window. So, all channels should have the same data length for each type.
+ This is a bit of a drawback of this <a href="./KAmpSite.html">KAmpSite</a>, but for the most part, this is always <a href="./ListOfTypes.html#bool">true</a> for the data taken
+ in Edelweiss.
+
+ Third, a numerical pulse template for each channel must be supplied for each channel.
+ When the pulse template is supplied, it is first windowed, then should be shifted such that the start of the pulse
+ is at the first position in the template. The shift time is supplied by the user... which is typically equal to the
+ size of the pretrigger. The reason that the template pulse has a start-time that is set to the middle position of the full
+ length of the template pulse is so that windowing can first occur, then it is shifted. This is especially important for
+ wide signals such as the heat and bbv2 channels.
+
+ Important. This <a href="./KAmpSite.html">KAmpSite</a>, in order to minimize its memory footprint, requires that the lengths of all ionization pulses and
+ all heat pulses are the same. IF you need to handle data where the heat pulses are different for different detectors, simply
+ create a new <a href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a> for each pulse length that you need.
+
+ *** The pulse lengths of the ionization channel and heat channels are defined when you call <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:SetTemplate" title="Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,vector&lt;double&gt;&amp; pulse,int pulseShift,unsigned int pulseType)">SetTemplate</a> ** So, you MUST set
+ your numerical pulse template to have the same length as the length of the signals in the data ****
+
+
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KChamonixKAmpSite:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:KChamonixKAmpSite">KChamonixKAmpSite</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:KChamonixKAmpSite@1">KChamonixKAmpSite</a>(<span class="keyword">const</span> <a href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:_KChamonixKAmpSite">~KChamonixKAmpSite</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:CreateHeatWindow">CreateHeatWindow</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> pulseSize, <span class="keyword">double</span> tukeyWindowParam = 0.5)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:CreateIonWindow">CreateIonWindow</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> pulseSize, <span class="keyword">double</span> tukeyWindowParam = 0.1)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>*</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetBBv1IonPreProcessor">GetBBv1IonPreProcessor</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>*</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetBBv2IonPreProcessor">GetBBv2IonPreProcessor</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KHalfComplexPower.html">KHalfComplexPower</a>&amp;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetHalfComplexPower">GetHalfComplexPower</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KEraPeakFinder.html">KEraPeakFinder</a>&amp;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetHeatPeakDetector">GetHeatPeakDetector</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>*</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetHeatPreProcessor">GetHeatPreProcessor</a>()</td></tr>
+<tr class="func"><td class="funcret">set&lt;<span class="keyword">int</span>,less&lt;<span class="keyword">int</span>&gt;,allocator&lt;<span class="keyword">int</span>&gt; &gt;&amp;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetHeatPulseStampWidths">GetHeatPulseStampWidths</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* pRec)</td></tr>
+<tr class="func"><td class="funcret">set&lt;<span class="keyword">int</span>,less&lt;<span class="keyword">int</span>&gt;,allocator&lt;<span class="keyword">int</span>&gt; &gt;&amp;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetHeatPulseStampWidths@1">GetHeatPulseStampWidths</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetHeatPulseStampWidthsSize">GetHeatPulseStampWidthsSize</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KWindow.html">KWindow</a>*</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetHeatWindow">GetHeatWindow</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KWindow.html">KWindow</a>*</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetIonWindow">GetIonWindow</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KAmpSite.html#KAmpSite:GetName"><span class="baseclass">KAmpSite::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">vector&lt;<span class="keyword">double</span>&gt;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetNoisePower">GetNoisePower</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetNumNoiseEventsFound">GetNumNoiseEventsFound</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KOptimalKamper.html">KOptimalKamper</a>&amp;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetOptimalKamper">GetOptimalKamper</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KPulseShifter.html">KPulseShifter</a>&amp;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetPulseTemplateShifter">GetPulseTemplateShifter</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KRealToHalfComplexDFT.html">KRealToHalfComplexDFT</a>&amp;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetRealToHalfComplexDFT">GetRealToHalfComplexDFT</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetTemplateShift">GetTemplateShift</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">vector&lt;<span class="keyword">double</span>&gt;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetTemplateSpectrum">GetTemplateSpectrum</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:GetTrapDecayConstant">GetTrapDecayConstant</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:NeedScout">NeedScout</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:NeedScout@1">NeedScout</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a>&amp;</td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a>&amp;)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./KAmpSite.html#KAmpSite:PrepareKampSite"><span class="baseclass">KAmpSite::</span>PrepareKampSite</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:RunKampSite">RunKampSite</a>(<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* boloRaw, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpEvent.html">KAmpEvent</a>* ee)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:ScoutKampSite">ScoutKampSite</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* pRaw, <a href="./KRawEvent.html">KRawEvent</a>* e)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:SetEraNumRms">SetEraNumRms</a>(<a href="./ListOfTypes.html#Float_t">Float_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:SetEraOrder">SetEraOrder</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:SetEraPolarity">SetEraPolarity</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KAmpSite.html#KAmpSite:SetName"><span class="baseclass">KAmpSite::</span>SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:SetNoiseEventCounts">SetNoiseEventCounts</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, <span class="keyword">unsigned</span> <span class="keyword">int</span> n)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:SetNoisePower">SetNoisePower</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, vector&lt;<span class="keyword">double</span>&gt; power)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:SetTemplate">SetTemplate</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, vector&lt;<span class="keyword">double</span>&gt;&amp; pulse, <span class="keyword">int</span> pulseShift, <span class="keyword">unsigned</span> <span class="keyword">int</span> pulseType)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:SetTemplateShift">SetTemplateShift</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, <span class="keyword">int</span> value)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:SetTrapDecayConstant">SetTrapDecayConstant</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, <span class="keyword">double</span> value)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KAmpSite.html#KAmpSite:SetTRefLinksForKAmpEvent"><span class="baseclass">KAmpSite::</span>SetTRefLinksForKAmpEvent</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpBoloPulseRecord.html">KAmpBoloPulseRecord</a>* pAmp)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KChamonixKAmpSite:FillResults">FillResults</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;&amp; resMap)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KChamonixKAmpSite:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./KAmpSite.html#KAmpSite:fName"><span class="baseclass">KAmpSite::</span>fName</a></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>*</td><td class="dataname"><a name="KChamonixKAmpSite:fBBv1IonPreProcessor"></a>fBBv1IonPreProcessor</td><td class="datadesc">by default is a pulse analysis chain with baseline removal + 2x pattern removal. </td></tr>
+<tr class="data"><td class="datatype"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>*</td><td class="dataname"><a name="KChamonixKAmpSite:fBBv2IonPreProcessor"></a>fBBv2IonPreProcessor</td><td class="datadesc">by default is a pulse analysis chain with linear removal + pattern removal. </td></tr>
+<tr class="data"><td class="datatype">map&lt;std::string,<span class="keyword">double</span>&gt;</td><td class="dataname"><a name="KChamonixKAmpSite:fDecayValues"></a>fDecayValues</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KHalfComplexPower.html">KHalfComplexPower</a></td><td class="dataname"><a name="KChamonixKAmpSite:fHc2P"></a>fHc2P</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KEraPeakFinder.html">KEraPeakFinder</a></td><td class="dataname"><a name="KChamonixKAmpSite:fHeatPeakDetector"></a>fHeatPeakDetector</td><td class="datadesc">change this to a Wavelet decomposition based pulse detector in the future...?</td></tr>
+<tr class="data"><td class="datatype"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>*</td><td class="dataname"><a name="KChamonixKAmpSite:fHeatPreProcessor"></a>fHeatPreProcessor</td><td class="datadesc">by default is just a baseline removal</td></tr>
+<tr class="data"><td class="datatype">map&lt;std::string,std::set&lt;<span class="keyword">int</span>&gt; &gt;</td><td class="dataname"><a name="KChamonixKAmpSite:fHeatPulseStampWidths"></a>fHeatPulseStampWidths</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KWindow.html">KWindow</a>*</td><td class="dataname"><a name="KChamonixKAmpSite:fHeatWindow"></a>fHeatWindow</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KWindow.html">KWindow</a>*</td><td class="dataname"><a name="KChamonixKAmpSite:fIonWindow"></a>fIonWindow</td><td></td></tr>
+<tr class="data"><td class="datatype">map&lt;std::string,<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt;</td><td class="dataname"><a name="KChamonixKAmpSite:fNoiseEventCounts"></a>fNoiseEventCounts</td><td></td></tr>
+<tr class="data"><td class="datatype">map&lt;std::string,std::vector&lt;<span class="keyword">double</span>&gt; &gt;</td><td class="dataname"><a name="KChamonixKAmpSite:fNoiseSpectra"></a>fNoiseSpectra</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KOptimalKamper.html">KOptimalKamper</a></td><td class="dataname"><a name="KChamonixKAmpSite:fOptKamper"></a>fOptKamper</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KPulseShifter.html">KPulseShifter</a></td><td class="dataname"><a name="KChamonixKAmpSite:fPulseTemplateShifter"></a>fPulseTemplateShifter</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KRealToHalfComplexDFT.html">KRealToHalfComplexDFT</a></td><td class="dataname"><a name="KChamonixKAmpSite:fR2Hc"></a>fR2Hc</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KChamonixKAmpSite:fScoutData"></a>fScoutData</td><td></td></tr>
+<tr class="data"><td class="datatype">map&lt;std::string,<span class="keyword">int</span>&gt;</td><td class="dataname"><a name="KChamonixKAmpSite:fTemplateShift"></a>fTemplateShift</td><td></td></tr>
+<tr class="data"><td class="datatype">map&lt;std::string,std::vector&lt;<span class="keyword">double</span>&gt; &gt;</td><td class="dataname"><a name="KChamonixKAmpSite:fTemplateSpectra"></a>fTemplateSpectra</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KChamonixKAmpSite:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td>
+<center><tt><a name="KAmpSite" href="./KAmpSite.html">KAmpSite</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KChamonixKAmpSite" href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KChamonixKAmpSite:KChamonixKAmpSite@1" href="src/KChamonixKAmpSite.cxx.html#G2ziAB">KChamonixKAmpSite</a>(<span class="keyword">const</span> <a href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KChamonixKAmpSite:_KChamonixKAmpSite" href="src/KChamonixKAmpSite.cxx.html#O4VubE">~KChamonixKAmpSite</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre> SetHeatPreProcessor(0);
+ SetBBv1IonPreProcessor(0);
+ SetBBv2IonPreProcessor(0);
+ SetHeatWindow(0);
+ SetIonWindow(0);
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:CreateHeatWindow" href="src/KChamonixKAmpSite.cxx.html#D6VRjE">CreateHeatWindow</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> pulseSize, <span class="keyword">double</span> tukeyWindowParam = 0.5)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:CreateIonWindow" href="src/KChamonixKAmpSite.cxx.html#mHdNr">CreateIonWindow</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> pulseSize, <span class="keyword">double</span> tukeyWindowParam = 0.1)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KChamonixKAmpSite:RunKampSite" href="src/KChamonixKAmpSite.cxx.html#RscGV">RunKampSite</a>(<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* boloRaw, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpEvent.html">KAmpEvent</a>* ee)</span><br />
+<div class="funccomm"><pre><a href="./ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"running a kampsite"</span> &lt;&lt; endl;
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:FillResults" href="src/KChamonixKAmpSite.cxx.html#CocLpB">FillResults</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;&amp; resMap)</span><br />
+<div class="funccomm"><pre>fill results
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KChamonixKAmpSite:ScoutKampSite" href="src/KChamonixKAmpSite.cxx.html#Gdf5kD">ScoutKampSite</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* pRaw, <a href="./KRawEvent.html">KRawEvent</a>* e)</span><br />
+<div class="funccomm"><pre>run through the data, look for noise events, find their power spectra and then find the average
+noise power. use these noise spectra for the optimal filter.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KChamonixKAmpSite:SetTemplate" href="src/KChamonixKAmpSite.cxx.html#vsfxkE">SetTemplate</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, vector&lt;<span class="keyword">double</span>&gt;&amp; pulse, <span class="keyword">int</span> pulseShift, <span class="keyword">unsigned</span> <span class="keyword">int</span> pulseType)</span><br />
+<div class="funccomm"><pre>pulsetype, 0 = heat, 1 = ion
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">set&lt;<span class="keyword">int</span>&gt;&amp; <a class="funcname" name="KChamonixKAmpSite:GetHeatPulseStampWidths" href="src/KChamonixKAmpSite.cxx.html#oK5iVE">GetHeatPulseStampWidths</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* pRec)</span><br />
+<div class="funccomm"><pre>returns the set of unique heat pulse stamp widths for the bolometer associated with the <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>.
+The reason for a set is that there can
+be two NTDs per bolometer and they could have different or the same heat pulse widths. Using a set
+means that its not necessary to check if the NTDs have the same pulse widths.
+so, this is general enough to return all of the unique heat pulse
+widths for each NTD connected to each bolometer. This even works, of course, if there are more than
+two NTDs per bolometer.... (future R&amp;D?)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">set&lt;<span class="keyword">int</span>&gt;&amp; <a class="funcname" name="KChamonixKAmpSite:GetHeatPulseStampWidths@1" href="src/KChamonixKAmpSite.cxx.html#InYFXB">GetHeatPulseStampWidths</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName)</span><br />
+<div class="funccomm"><pre>returns a reference to the internal set of known heat pulse stamps for a particular channel. If <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:GetHeatPulseStampWidths" title="set&lt;int,less&lt;int&gt;,allocator&lt;int&gt; &gt;&amp; KChamonixKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord* pRec) or overloads">GetHeatPulseStampWidths</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>*)
+has not yet been called for this channel name, then this will return an empty set because this object doesn't yet
+know about this channel. Therefore, its better to use <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:GetHeatPulseStampWidths" title="set&lt;int,less&lt;int&gt;,allocator&lt;int&gt; &gt;&amp; KChamonixKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord* pRec) or overloads">GetHeatPulseStampWidths</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>*) instead.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="KChamonixKAmpSite:GetHeatPulseStampWidthsSize" href="src/KChamonixKAmpSite.cxx.html#Hr5VNC">GetHeatPulseStampWidthsSize</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<span class="keyword">double</span>&gt; <a class="funcname" name="KChamonixKAmpSite:GetTemplateSpectrum" href="src/KChamonixKAmpSite.cxx.html#SvrghD">GetTemplateSpectrum</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="KChamonixKAmpSite:GetTrapDecayConstant" href="src/KChamonixKAmpSite.cxx.html#Qx_gzC">GetTrapDecayConstant</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="KChamonixKAmpSite:GetNumNoiseEventsFound" href="src/KChamonixKAmpSite.cxx.html#ZG0sWB">GetNumNoiseEventsFound</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">int</span> <a class="funcname" name="KChamonixKAmpSite:GetTemplateShift" href="src/KChamonixKAmpSite.cxx.html#dyz0fB">GetTemplateShift</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<span class="keyword">double</span>&gt; <a class="funcname" name="KChamonixKAmpSite:GetNoisePower" href="src/KChamonixKAmpSite.cxx.html#m0vQv">GetNoisePower</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:SetNoisePower" href="src/KChamonixKAmpSite.cxx.html#AtcXb">SetNoisePower</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, vector&lt;<span class="keyword">double</span>&gt; power)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KChamonixKAmpSite:KChamonixKAmpSite@1" href="src/KChamonixKAmpSite.h.html#TwQ0eD">KChamonixKAmpSite</a>(<span class="keyword">const</span> <a href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KChamonixKAmpSite:NeedScout@1" href="src/KChamonixKAmpSite.h.html#UVRI0">NeedScout</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fScoutData" title="Bool_t KChamonixKAmpSite::fScoutData">fScoutData</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:NeedScout@1" href="src/KChamonixKAmpSite.h.html#n75.lD">NeedScout</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fScoutData" title="Bool_t KChamonixKAmpSite::fScoutData">fScoutData</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:SetEraOrder" href="src/KChamonixKAmpSite.h.html#iZa8x">SetEraOrder</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</span><br />
+<div class="funccomm"><pre>methods to set internal values for the various parameters for specific channels.
+these parameters should be available from the database
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fHeatPeakDetector" title="KEraPeakFinder KChamonixKAmpSite::fHeatPeakDetector">fHeatPeakDetector</a>.<a href="./KEraPeakFinder.html#KEraPeakFinder:SetOrder" title="void KEraPeakFinder::SetOrder(int aVal)">SetOrder</a>(aVal);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:SetEraNumRms" href="src/KChamonixKAmpSite.h.html#S8OJvB">SetEraNumRms</a>(<a href="./ListOfTypes.html#Float_t">Float_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fHeatPeakDetector" title="KEraPeakFinder KChamonixKAmpSite::fHeatPeakDetector">fHeatPeakDetector</a>.<a href="./KEraPeakFinder.html#KEraPeakFinder:SetNumRms" title="void KEraPeakFinder::SetNumRms(double aVal)">SetNumRms</a>(aVal);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:SetEraPolarity" href="src/KChamonixKAmpSite.h.html#MGtB1E">SetEraPolarity</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fHeatPeakDetector" title="KEraPeakFinder KChamonixKAmpSite::fHeatPeakDetector">fHeatPeakDetector</a>.<a href="./KEraPeakFinder.html#KEraPeakFinder:SetPolarity" title="void KEraPeakFinder::SetPolarity(int aVal)">SetPolarity</a>(aVal);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:SetTrapDecayConstant" href="src/KChamonixKAmpSite.h.html#XD7A1B">SetTrapDecayConstant</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, <span class="keyword">double</span> value)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fDecayValues" title="map&lt;std::string,double&gt; KChamonixKAmpSite::fDecayValues">fDecayValues</a>[channelName] = value;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:SetNoiseEventCounts" href="src/KChamonixKAmpSite.h.html#D.sdxC">SetNoiseEventCounts</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, <span class="keyword">unsigned</span> <span class="keyword">int</span> n)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fNoiseEventCounts" title="map&lt;std::string,unsigned int&gt; KChamonixKAmpSite::fNoiseEventCounts">fNoiseEventCounts</a>[channelName] = n;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KChamonixKAmpSite:SetTemplateShift" href="src/KChamonixKAmpSite.h.html#BzRhlB">SetTemplateShift</a>(<span class="keyword">const</span> <span class="keyword">char</span>* channelName, <span class="keyword">int</span> value)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fTemplateShift" title="map&lt;std::string,int&gt; KChamonixKAmpSite::fTemplateShift">fTemplateShift</a>[channelName] = value;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>* <a class="funcname" name="KChamonixKAmpSite:GetHeatPreProcessor" href="src/KChamonixKAmpSite.h.html#vE.isB">GetHeatPreProcessor</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fHeatPreProcessor" title="KPulseAnalysisChain* KChamonixKAmpSite::fHeatPreProcessor">fHeatPreProcessor</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>* <a class="funcname" name="KChamonixKAmpSite:GetBBv1IonPreProcessor" href="src/KChamonixKAmpSite.h.html#Q4gJa">GetBBv1IonPreProcessor</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fBBv1IonPreProcessor" title="KPulseAnalysisChain* KChamonixKAmpSite::fBBv1IonPreProcessor">fBBv1IonPreProcessor</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>* <a class="funcname" name="KChamonixKAmpSite:GetBBv2IonPreProcessor" href="src/KChamonixKAmpSite.h.html#EHSYr">GetBBv2IonPreProcessor</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre> <a href="./ListOfTypes.html#void">void</a> SetHeatPreProcessor(<a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>* pta);
+ <a href="./ListOfTypes.html#void">void</a> SetBBv1IonPreProcessor(<a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>* pta);
+ <a href="./ListOfTypes.html#void">void</a> SetBBv2IonPreProcessor(<a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a>* pta);
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fBBv2IonPreProcessor" title="KPulseAnalysisChain* KChamonixKAmpSite::fBBv2IonPreProcessor">fBBv2IonPreProcessor</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KWindow.html">KWindow</a>* <a class="funcname" name="KChamonixKAmpSite:GetHeatWindow" href="src/KChamonixKAmpSite.h.html#qdAZED">GetHeatWindow</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fHeatWindow" title="KWindow* KChamonixKAmpSite::fHeatWindow">fHeatWindow</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KWindow.html">KWindow</a>* <a class="funcname" name="KChamonixKAmpSite:GetIonWindow" href="src/KChamonixKAmpSite.h.html#Wp2cCC">GetIonWindow</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fIonWindow" title="KWindow* KChamonixKAmpSite::fIonWindow">fIonWindow</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KOptimalKamper.html">KOptimalKamper</a>&amp; <a class="funcname" name="KChamonixKAmpSite:GetOptimalKamper" href="src/KChamonixKAmpSite.h.html#KBfK1D">GetOptimalKamper</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre> <a href="./ListOfTypes.html#void">void</a> SetHeatWindow(<a href="./KWindow.html">KWindow</a>* pta);
+ <a href="./ListOfTypes.html#void">void</a> SetIonWindow(<a href="./KWindow.html">KWindow</a>* pta);
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fOptKamper" title="KOptimalKamper KChamonixKAmpSite::fOptKamper">fOptKamper</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KRealToHalfComplexDFT.html">KRealToHalfComplexDFT</a>&amp; <a class="funcname" name="KChamonixKAmpSite:GetRealToHalfComplexDFT" href="src/KChamonixKAmpSite.h.html#NVugVE">GetRealToHalfComplexDFT</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fR2Hc" title="KRealToHalfComplexDFT KChamonixKAmpSite::fR2Hc">fR2Hc</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHalfComplexPower.html">KHalfComplexPower</a>&amp; <a class="funcname" name="KChamonixKAmpSite:GetHalfComplexPower" href="src/KChamonixKAmpSite.h.html#e4SPED">GetHalfComplexPower</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fHc2P" title="KHalfComplexPower KChamonixKAmpSite::fHc2P">fHc2P</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KEraPeakFinder.html">KEraPeakFinder</a>&amp; <a class="funcname" name="KChamonixKAmpSite:GetHeatPeakDetector" href="src/KChamonixKAmpSite.h.html#ijpRPD">GetHeatPeakDetector</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fHeatPeakDetector" title="KEraPeakFinder KChamonixKAmpSite::fHeatPeakDetector">fHeatPeakDetector</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KPulseShifter.html">KPulseShifter</a>&amp; <a class="funcname" name="KChamonixKAmpSite:GetPulseTemplateShifter" href="src/KChamonixKAmpSite.h.html#Xyyz9C">GetPulseTemplateShifter</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KChamonixKAmpSite.html#KChamonixKAmpSite:fPulseTemplateShifter" title="KPulseShifter KChamonixKAmpSite::fPulseTemplateShifter">fPulseTemplateShifter</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:44 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

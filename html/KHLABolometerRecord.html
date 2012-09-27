@@ -1,0 +1,777 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:45 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KHLABolometerRecord</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KHLABolometerRecord','','/Users/adam/softwareDev/kdata/kds/KHLABolometerRecord.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KHLABolometerRecord.h.html">header file</a>
+<a class="descrheadentry" href="src/KHLABolometerRecord.cxx.html">source file</a>
+<a class="descrheadentry" href="KHLABolometerRecord_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KHLABolometerRecord:description">class description</a> 
+<a class="descrheadentry" href="#KHLABolometerRecord:Function_Members">function members</a>
+<a class="descrheadentry" href="#KHLABolometerRecord:Data_Members">data members</a>
+<a class="descrheadentry" href="#KHLABolometerRecord:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KDS_Index.html">KDS</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KHLABolometerRecord</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KHLABolometerRecord:description"></a>class KHLABolometerRecord: public <a href="./KBolometerRecord.html">KBolometerRecord</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>.cxx
+ KDataStructure
+
+ Author: Adam Cox &lt;mailto:adam.cox@ik.fzk.de&gt; on 3/25/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ The HLA class for Single Bolo Sub Records. It stores a significant amount
+ of information for each recorded bolometer event. It contains all of the
+ calculated values from the ERA processing. See the descriptions below
+ of each of the parameters.
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KHLABolometerRecord:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:KHLABolometerRecord">KHLABolometerRecord</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:KHLABolometerRecord@1">KHLABolometerRecord</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:_KHLABolometerRecord">~KHLABolometerRecord</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:AddPulseRecord">AddPulseRecord</a>(<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* aPulseRecord)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:Class">Class</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:Clear">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">"C"</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:Clone"><span class="baseclass">TObject::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:Compact">Compact</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Compare"><span class="baseclass">TObject::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Copy"><span class="baseclass">TObject::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; object) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Delete"><span class="baseclass">TObject::</span>Delete</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:DistancetoPrimitive"><span class="baseclass">TObject::</span>DistancetoPrimitive</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Draw"><span class="baseclass">TObject::</span>Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DrawClass"><span class="baseclass">TObject::</span>DrawClass</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:DrawClone"><span class="baseclass">TObject::</span>DrawClone</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Dump"><span class="baseclass">TObject::</span>Dump</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Error"><span class="baseclass">TObject::</span>Error</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute"><span class="baseclass">TObject::</span>Execute</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute@1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetBaselineIonFiducial">GetBaselineIonFiducial</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetBaselineNoiseCollectrode">GetBaselineNoiseCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetBaselineNoiseGuard">GetBaselineNoiseGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetBaselineNoiseHeat">GetBaselineNoiseHeat</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetBaselineNoiseIonFiducial">GetBaselineNoiseIonFiducial</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetBaselineNoiseVeto">GetBaselineNoiseVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetChi2Flag">GetChi2Flag</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetCollectrodePulse">GetCollectrodePulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TBits*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetCuts">GetCuts</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="./KBolometerRecord.html#KBolometerRecord:GetDetectorName"><span class="baseclass">KBolometerRecord::</span>GetDetectorName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyBaselineCollectrode">GetEnergyBaselineCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyBaselineGuard">GetEnergyBaselineGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyBaselineHeat">GetEnergyBaselineHeat</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyBaselineVeto">GetEnergyBaselineVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyCollectrode">GetEnergyCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyGuard">GetEnergyGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyHeat">GetEnergyHeat</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyIon">GetEnergyIon</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyIonFiducial">GetEnergyIonFiducial</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyRecoil">GetEnergyRecoil</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergySumIonChannels">GetEnergySumIonChannels</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyVeto">GetEnergyVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEventCategory">GetEventCategory</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEventFlag">GetEventFlag</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetGuardPulse">GetGuardPulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetHeatPulse">GetHeatPulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> TBits*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetIonFlags">GetIonFlags</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetIonPulseTimeOffset">GetIonPulseTimeOffset</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBolometerRecord.html#KBolometerRecord:GetMass"><span class="baseclass">KBolometerRecord::</span>GetMass</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetName"><span class="baseclass">TObject::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetNumPulseRecords">GetNumPulseRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetPulseRecord">GetPulseRecord</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetQvalue">GetQvalue</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLASambaRecord.html">KHLASambaRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetSambaRecord">GetSambaRecord</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetTitle"><span class="baseclass">TObject::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetVetoPulse">GetVetoPulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetVoltageFlag">GetVoltageFlag</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Hash"><span class="baseclass">TObject::</span>Hash</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Info"><span class="baseclass">TObject::</span>Info</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> <span class="keyword">char</span>* classname) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom@1"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> TClass* cl) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Inspect"><span class="baseclass">TObject::</span>Inspect</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:InvertBit"><span class="baseclass">TObject::</span>InvertBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./KBolometerRecord.html#KBolometerRecord:IsDetector"><span class="baseclass">KBolometerRecord::</span>IsDetector</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:IsSame">IsSame</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Obsolete"><span class="baseclass">TObject::</span>Obsolete</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* asOfVers, <span class="keyword">const</span> <span class="keyword">char</span>* removedFromVers) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete@1"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]@1"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new@1"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]@1"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:operator!_">operator!=</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp;</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:operator__">operator==</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Print"><span class="baseclass">TObject::</span>Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TRefArray&amp;</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:pulseRecords">pulseRecords</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(<a href="./ListOfTypes.html#ostream">ostream</a>&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetBaselineIonFiducial">SetBaselineIonFiducial</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetBaselineNoiseIonFiducial">SetBaselineNoiseIonFiducial</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit@1"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> set)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetChi2Flag">SetChi2Flag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetCuts">SetCuts</a>(<span class="keyword">const</span> TBits* mCuts)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetCutsBit">SetCutsBit</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal = <span class="keyword">true</span>)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBolometerRecord.html#KBolometerRecord:SetDetectorName"><span class="baseclass">KBolometerRecord::</span>SetDetectorName</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aWord)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDrawOption"><span class="baseclass">TObject::</span>SetDrawOption</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetEnergyIon">SetEnergyIon</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetEnergyIonFiducial">SetEnergyIonFiducial</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetEnergyRecoil">SetEnergyRecoil</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetEnergySumIonChannels">SetEnergySumIonChannels</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetEventFlag">SetEventFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetIonFlag">SetIonFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> index, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> value = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetIonFlags">SetIonFlags</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a>* anArray, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetIonPulseTimeOffset">SetIonPulseTimeOffset</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBolometerRecord.html#KBolometerRecord:SetMass"><span class="baseclass">KBolometerRecord::</span>SetMass</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetQvalue">SetQvalue</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetSambaRecord">SetSambaRecord</a>(<a href="./KHLASambaRecord.html">KHLASambaRecord</a>* aRec)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetUniqueID"><span class="baseclass">TObject::</span>SetUniqueID</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> uid)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:SetVoltageFlag">SetVoltageFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SysError"><span class="baseclass">TObject::</span>SysError</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBit"><span class="baseclass">TObject::</span>TestBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBits"><span class="baseclass">TObject::</span>TestBits</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:TestCutsBit">TestCutsBit</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:TestIonFlag">TestIonFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> index) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:UseCurrentStyle"><span class="baseclass">TObject::</span>UseCurrentStyle</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Warning"><span class="baseclass">TObject::</span>Warning</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write@1"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0) <span class="keyword">const</span></td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DoError"><span class="baseclass">TObject::</span>DoError</a>(<span class="keyword">int</span> level, <span class="keyword">const</span> <span class="keyword">char</span>* location, <span class="keyword">const</span> <span class="keyword">char</span>* fmt, va_list va) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MakeZombie"><span class="baseclass">TObject::</span>MakeZombie</a>()</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:CopyLocalMembers">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetBaselineNoise">GetBaselineNoise</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel, <a href="./ListOfTypes.html#Int_t">Int_t</a> aType) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergy">GetEnergy</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel, <a href="./ListOfTypes.html#Int_t">Int_t</a> aType) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetEnergyBaseline">GetEnergyBaseline</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel, <a href="./ListOfTypes.html#Int_t">Int_t</a> aType) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:GetPulseRecord@1">GetPulseRecord</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> channel, <a href="./ListOfTypes.html#Int_t">Int_t</a> aType) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLABolometerRecord:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KHLABolometerRecord:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span>EStatusBits { </td><td class="dataname"><a href="#TObject:kCanDelete">kCanDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kMustCleanup">kMustCleanup</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kObjInCanvas">kObjInCanvas</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kIsReferenced">kIsReferenced</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kHasUUID">kHasUUID</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kCannotPick">kCannotPick</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNoContextMenu">kNoContextMenu</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kInvalidObject">kInvalidObject</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span><i>[unnamed]</i> { </td><td class="dataname"><a href="#TObject:kIsOnHeap">kIsOnHeap</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNotDeleted">kNotDeleted</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kZombie">kZombie</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kBitMask">kBitMask</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kSingleKey">kSingleKey</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kOverwrite">kOverwrite</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kWriteDelete">kWriteDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fBaselineNoiseIonFiducial"></a>fBaselineNoiseIonFiducial</td><td class="datadesc">baseline noise amplitude of the fiducial signal (the weighted average of the fEnergyCollectrode)</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fChi2Flag"></a>fChi2Flag</td><td class="datadesc">set to 1 if the chi2 of all relevant channesl is okay (different from cuts.CutChi2)</td></tr>
+<tr class="data"><td class="datatype">TBits</td><td class="dataname"><a name="KHLABolometerRecord:fCuts"></a>fCuts</td><td class="datadesc">|| //set the TestCutsBitNumber method for a list of which bit corresponds to which cut.</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fEnergyIon"></a>fEnergyIon</td><td class="datadesc">calculation based upon event category.</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fEnergyIonFiducial"></a>fEnergyIonFiducial</td><td class="datadesc">energy of the fiducial signal (the weighted average of the fEnergyCollectrode)</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fEnergyIonSum"></a>fEnergyIonSum</td><td class="datadesc">the sum of energy on all ionization channels that have a signal (calucaled by ERA)</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fEnergyRecoil"></a>fEnergyRecoil</td><td class="datadesc">calculation based upon event category</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fEventFlag"></a>fEventFlag</td><td class="datadesc">0 = noise, 1 = heat only, 2 = fiducial, 3 = surface, 4 = pure guard, 5 = other.. calculated by ERA</td></tr>
+<tr class="data"><td class="datatype">TBits</td><td class="dataname"><a name="KHLABolometerRecord:fIonFlags"></a>fIonFlags</td><td class="datadesc">||  //don't split</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fIonPulseTimeOffset"></a>fIonPulseTimeOffset</td><td class="datadesc">the time offset of the peak of the ion pulse relative to the peak of the heat pulse, in units of stamp (10 microseonds)</td></tr>
+<tr class="data"><td class="datatype">TRefArray</td><td class="dataname"><a name="KHLABolometerRecord:fPulseRecords"></a>fPulseRecords</td><td class="datadesc">holds an array of pointers to the BoloPulse sub records associated with this bolometer event</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fQvalue"></a>fQvalue</td><td class="datadesc">calculation based upon event category (heat, fiducial, surface, etc...)</td></tr>
+<tr class="data"><td class="datatype">TRef</td><td class="dataname"><a name="KHLABolometerRecord:fSambaRecord"></a>fSambaRecord</td><td class="datadesc">holds a pointer to the associated Samba record</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KHLABolometerRecord:fVoltageFlag"></a>fVoltageFlag</td><td class="datadesc">Set to the voltage configuration value, as found in era/Scripts/params_id_run12.C .</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KHLABolometerRecord:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td><table><tr>
+<td bgcolor="#efefef" align="right">
+<table><tr><td><table><tr>
+<td bgcolor="#e7e7e7" align="right">
+<tt>TObject</tt></td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><tt><a name="KSubRecord" href="./KSubRecord.html">KSubRecord</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><tt><a name="KBolometerRecord" href="./KBolometerRecord.html">KBolometerRecord</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KHLABolometerRecord" href="./KHLABolometerRecord.html">KHLABolometerRecord</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KHLABolometerRecord:KHLABolometerRecord@1" href="src/KHLABolometerRecord.cxx.html#vxYgsB">KHLABolometerRecord</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>standard constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KHLABolometerRecord:KHLABolometerRecord@1" href="src/KHLABolometerRecord.cxx.html#BfZx.D">KHLABolometerRecord</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>copy constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; <a class="funcname" name="KHLABolometerRecord:operator_" href="src/KHLABolometerRecord.cxx.html#ATbE5B">operator=</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:CopyLocalMembers" href="src/KHLABolometerRecord.cxx.html#VVboHC">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>copies local data members
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KHLABolometerRecord:_KHLABolometerRecord" href="src/KHLABolometerRecord.cxx.html#lqj3.D">~KHLABolometerRecord</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>destructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:Clear" href="src/KHLABolometerRecord.cxx.html#g4cMs">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">"C"</span>)</span><br />
+<div class="funccomm"><pre><a href="./KHLABolometerRecord.html#KHLABolometerRecord:Clear" title="void KHLABolometerRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a> the base classes and then clear/delete any local
+members. Its necessary for this <a href="./KHLABolometerRecord.html#KHLABolometerRecord:Clear" title="void KHLABolometerRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a> method to exist
+in the case that instances of this object are stored
+inside of a TClonesArray
+Also, if this class holds any TClonesArrays, it must call
+TClonesArray::<a href="./KHLABolometerRecord.html#KHLABolometerRecord:Clear" title="void KHLABolometerRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a>(<span class="string">"C"</span>)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:InitializeMembers" href="src/KHLABolometerRecord.cxx.html#VG6cS">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>init local data members
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLABolometerRecord:SetIonFlags" href="src/KHLABolometerRecord.cxx.html#oSPc4D">SetIonFlags</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a>* anArray, <a href="./ListOfTypes.html#Int_t">Int_t</a> aSize)</span><br />
+<div class="funccomm"><pre>Set the TBits ion flags using an array of integers. If the integer
+is greater than 1, the bit flag is set to <a href="./ListOfTypes.html#bool">true</a>.
+If anArray is zero, it returns <a href="./ListOfTypes.html#bool">false</a> and the local ion flags are
+not changed.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLABolometerRecord:IsSame" href="src/KHLABolometerRecord.cxx.html#dLKnhB">IsSame</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) const</span><br />
+<div class="funccomm"><pre>Compares two objects and their member variables to test for equality.
+If bPrint is set to <a href="./ListOfTypes.html#bool">true</a>, then a message for each member variable that is different
+will print to standard out. Otherwise, this method will return <a href="./ListOfTypes.html#bool">false</a> and quit
+checking member variables as soon as it finds a unequal data member.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a class="funcname" name="KHLABolometerRecord:GetPulseRecord@1" href="src/KHLABolometerRecord.cxx.html#AQ1qUD">GetPulseRecord</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> channel, <a href="./ListOfTypes.html#Int_t">Int_t</a> aType) const</span><br />
+<div class="funccomm"><pre>this is a private method
+
+returns a pointer to a <a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>. channel is the channel number (1, 2, ...) and
+a type is either heat, collectrode, veto or guard. The integers associated
+with those types do not need to be known. Instead call the static functions
+<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>::<a href="./KHLABoloPulseRecord.html#KHLABoloPulseRecord:GetHeatType" title="Int_t KHLABoloPulseRecord::GetHeatType()">GetHeatType</a>()
+<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>::<a href="./KHLABoloPulseRecord.html#KHLABoloPulseRecord:GetVetoType" title="Int_t KHLABoloPulseRecord::GetVetoType()">GetVetoType</a>()
+<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>::<a href="./KHLABoloPulseRecord.html#KHLABoloPulseRecord:GetCollectrodeType" title="Int_t KHLABoloPulseRecord::GetCollectrodeType()">GetCollectrodeType</a>()
+<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>::<a href="./KHLABoloPulseRecord.html#KHLABoloPulseRecord:GetGuardType" title="Int_t KHLABoloPulseRecord::GetGuardType()">GetGuardType</a>()
+
+However, its much easier to use the methods <a href="./KHLABolometerRecord.html#KHLABolometerRecord:GetHeatPulse" title="KHLABoloPulseRecord* KHLABolometerRecord::GetHeatPulse(Int_t aChannel)">GetHeatPulse</a>, <a href="./KHLABolometerRecord.html#KHLABolometerRecord:GetCollectrodePulse" title="KHLABoloPulseRecord* KHLABolometerRecord::GetCollectrodePulse(Int_t aChannel)">GetCollectrodePulse</a>, etc...
+that are found in this class
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a class="funcname" name="KHLABolometerRecord:GetHeatPulse" href="src/KHLABolometerRecord.cxx.html#vHwMfC">GetHeatPulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns a pointer to a Heat pulse record that is associated with this bolometer record.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a class="funcname" name="KHLABolometerRecord:GetCollectrodePulse" href="src/KHLABolometerRecord.cxx.html#LevjSD">GetCollectrodePulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns a pointer to a Collectrode pulse record that is associated with this bolometer record.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a class="funcname" name="KHLABolometerRecord:GetVetoPulse" href="src/KHLABolometerRecord.cxx.html#lWxMfE">GetVetoPulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns a pointer to a Veto pulse record that is associated with this bolometer record.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a class="funcname" name="KHLABolometerRecord:GetGuardPulse" href="src/KHLABolometerRecord.cxx.html#TPWpDC">GetGuardPulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns a pointer to a Guard pulse record that is associated with this bolometer record.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergy" href="src/KHLABolometerRecord.cxx.html#VOmIVD">GetEnergy</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel, <a href="./ListOfTypes.html#Int_t">Int_t</a> aType) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy (in keV) on aChannel of pulse type aType, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2. To determine the correct
+value for aType, use the static fuctions
+
+<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>::<a href="./KHLABoloPulseRecord.html#KHLABoloPulseRecord:GetHeatType" title="Int_t KHLABoloPulseRecord::GetHeatType()">GetHeatType</a>()
+<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>::<a href="./KHLABoloPulseRecord.html#KHLABoloPulseRecord:GetCollectrodeType" title="Int_t KHLABoloPulseRecord::GetCollectrodeType()">GetCollectrodeType</a>()
+<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>::<a href="./KHLABoloPulseRecord.html#KHLABoloPulseRecord:GetVetoType" title="Int_t KHLABoloPulseRecord::GetVetoType()">GetVetoType</a>()
+<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>::<a href="./KHLABoloPulseRecord.html#KHLABoloPulseRecord:GetGuardType" title="Int_t KHLABoloPulseRecord::GetGuardType()">GetGuardType</a>()
+
+Or, you can just use the methods <a href="./KHLABolometerRecord.html#KHLABolometerRecord:GetEnergyHeat" title="Double32_t KHLABolometerRecord::GetEnergyHeat(Int_t aChannel)">GetEnergyHeat</a>(aChannel), <a href="./KHLABolometerRecord.html#KHLABolometerRecord:GetEnergyCollectrode" title="Double32_t KHLABolometerRecord::GetEnergyCollectrode(Int_t aChannel)">GetEnergyCollectrode</a>(aChannel),
+<a href="./KHLABolometerRecord.html#KHLABolometerRecord:GetEnergyVeto" title="Double32_t KHLABolometerRecord::GetEnergyVeto(Int_t aChannel)">GetEnergyVeto</a>(aChannel) and <a href="./KHLABolometerRecord.html#KHLABolometerRecord:GetEnergyGuard" title="Double32_t KHLABolometerRecord::GetEnergyGuard(Int_t aChannel)">GetEnergyGuard</a>(aChannel)
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyCollectrode" href="src/KHLABolometerRecord.cxx.html#BtnE.">GetEnergyCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy (in keV) on a collecltrode channel, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyVeto" href="src/KHLABolometerRecord.cxx.html#VTW59D">GetEnergyVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy (in keV) on a veto channel, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyGuard" href="src/KHLABolometerRecord.cxx.html#w4RqB">GetEnergyGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy (in keV) on a guard channel, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyHeat" href="src/KHLABolometerRecord.cxx.html#BM0b3E">GetEnergyHeat</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy (in keV) on a heat channel, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyBaseline" href="src/KHLABolometerRecord.cxx.html#A13ZAE">GetEnergyBaseline</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel, <a href="./ListOfTypes.html#Int_t">Int_t</a> aType) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyBaselineCollectrode" href="src/KHLABolometerRecord.cxx.html#ni_TgB">GetEnergyBaselineCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy along the baseline (in keV) on a collecltrode channel, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyBaselineVeto" href="src/KHLABolometerRecord.cxx.html#fiTVH">GetEnergyBaselineVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy along the baseline (in keV) on a veto channel, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyBaselineGuard" href="src/KHLABolometerRecord.cxx.html#Zf1GbB">GetEnergyBaselineGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy along the baseline (in keV) on a guard channel, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyBaselineHeat" href="src/KHLABolometerRecord.cxx.html#XMTVDB">GetEnergyBaselineHeat</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse energy along the baseline (in keV) on a heat channel, as
+calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetBaselineNoise" href="src/KHLABolometerRecord.cxx.html#kvKYFE">GetBaselineNoise</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel, <a href="./ListOfTypes.html#Int_t">Int_t</a> aType) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetBaselineNoiseCollectrode" href="src/KHLABolometerRecord.cxx.html#aaFaCC">GetBaselineNoiseCollectrode</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse RMS noise (in keV) along the baseline
+on a collecltrode channel, as calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetBaselineNoiseVeto" href="src/KHLABolometerRecord.cxx.html#YToukB">GetBaselineNoiseVeto</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse RMS noise (in keV) along the baseline
+on a veto channel, as calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetBaselineNoiseGuard" href="src/KHLABolometerRecord.cxx.html#Qcmg2">GetBaselineNoiseGuard</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse RMS noise (in keV) along the baseline
+on a guard channel, as calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetBaselineNoiseHeat" href="src/KHLABolometerRecord.cxx.html#zwKtIE">GetBaselineNoiseHeat</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aChannel) const</span><br />
+<div class="funccomm"><pre>returns the calibrated pulse RMS noise (in keV) along the baseline
+on a heat channel, as calculated by the ERA processor.
+
+Note that aChannel should be 1 or 2.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetCuts" href="src/KHLABolometerRecord.cxx.html#yKboaE">SetCuts</a>(<span class="keyword">const</span> TBits* mCuts)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:Compact" href="src/KHLABolometerRecord.cxx.html#nhI9V">Compact</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>make the event class as small as possible. this calls '<a href="./KHLABolometerRecord.html#KHLABolometerRecord:Compact" title="void KHLABolometerRecord::Compact()">Compact</a>' for all member
+variables that are KDS classes, member variables that can be compacted (such as TBits)
+and base classes
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLABolometerRecord:TestCutsBit" href="src/KHLABolometerRecord.cxx.html#DRxvsE">TestCutsBit</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) const</span><br />
+<div class="funccomm"><pre>The ERA cuts file for each bolometer has been read and each cut has been packed into this
+TBits object. The cuts correspond to the various cuts listed below.
+A value of <span class="string">'1'</span> indicates that this bolometer record was NOT CUT due to
+that particular cut. If the value is <span class="string">'0'</span>, then the event didn't pass
+the cut and should be excluded from WIMP analysis.
+
+cuts.CutChi2Col1 -- bit 0
+cuts.CutChi2Col2 -- bit 1
+cuts.CutChi2Vet1 -- bit 2
+cuts.CutChi2Vet2 -- 3
+cuts.CutChi2Gar1 -- 4
+cuts.CutChi2Gar2 -- 5
+cuts.CutChi2Heat -- 6
+cuts.CutChi2     -- 7
+cuts.CutCol1Base -- 8 //the baseline <span class="string">"too large"</span> check
+cuts.CutCol2Base -- 9
+cuts.CutVet1Base -- 10
+cuts.CutVet2Base -- 11
+cuts.CutGar1Base -- 12
+cuts.CutGar2Base -- 13
+cuts.CutHeatBase -- 14
+cuts.CutBases    -- 15
+cuts.CutRun      -- 16
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLABolometerRecord:TestIonFlag" href="src/KHLABolometerRecord.cxx.html#vV1n5B">TestIonFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> index) const</span><br />
+<div class="funccomm"><pre>each element in this array corresponds to a particular ion channel
+(collectrode 1, 2, veto 1, 2, and guard 1, 2). When the value is set,
+there was a pulse seen on that channel, as defined by the ERA.
+Your analysis may be different, however, and you may define an event
+on the ion channel with a different set of conditions.
+
+i = 0, Collectrode 1
+i = 1, Collectrode 2
+i = 2, Veto 1
+i = 3, Veto 2
+i = 4, Guard 1
+i = 5, Guard 2
+i = 6, ??
+i = 7, ??
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KHLABolometerRecord:GetEventCategory" href="src/KHLABolometerRecord.cxx.html#j2MTP">GetEventCategory</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>returns a string corresponding the the name of the event category
+as stored in the return value of <a href="./KHLABolometerRecord.html#KHLABolometerRecord:GetEventFlag" title="Int_t KHLABolometerRecord::GetEventFlag()">GetEventFlag</a>()
+event categories are noise (0), heat only (1), fiducial (2),
+surface (3), pure guard (4), and other (5)
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:AddPulseRecord" href="src/KHLABolometerRecord.cxx.html#jzoUHE">AddPulseRecord</a>(<a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* aPulseRecord)</span><br />
+<div class="funccomm"><pre>add a pulse record to this object
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a class="funcname" name="KHLABolometerRecord:GetPulseRecord" href="src/KHLABolometerRecord.cxx.html#hGFMkB">GetPulseRecord</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) const</span><br />
+<div class="funccomm"><pre>this returns the i^th pulse record for this particular bolometer record.
+regardless of channel number, or pulse record type (collectrode, veto, guard, heat)
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLABolometerRecord:operator__" href="src/KHLABolometerRecord.h.html#CHEUPD">operator==</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:IsSame" title="Bool_t KHLABolometerRecord::IsSame(const KHLABolometerRecord&amp; aRec,Bool_t bPrint=false)">IsSame</a>(aRec,<span class="keyword">false</span>); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLABolometerRecord:operator!_" href="src/KHLABolometerRecord.h.html#DA11hC">operator!=</a>(<span class="keyword">const</span> <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>&amp; aRec) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> !(*<span class="keyword">this</span>==aRec); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetQvalue" href="src/KHLABolometerRecord.h.html#r0hGz">GetQvalue</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>getters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fQvalue" title="Double32_t KHLABolometerRecord::fQvalue">fQvalue</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyRecoil" href="src/KHLABolometerRecord.h.html#C4rI5B">GetEnergyRecoil</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEnergyRecoil" title="Double32_t KHLABolometerRecord::fEnergyRecoil">fEnergyRecoil</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyIon" href="src/KHLABolometerRecord.h.html#dTqukD">GetEnergyIon</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEnergyIon" title="Double32_t KHLABolometerRecord::fEnergyIon">fEnergyIon</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLABolometerRecord:GetEventFlag" href="src/KHLABolometerRecord.h.html#mfZR_">GetEventFlag</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEventFlag" title="Int_t KHLABolometerRecord::fEventFlag">fEventFlag</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLABolometerRecord:GetChi2Flag" href="src/KHLABolometerRecord.h.html#CoDW_C">GetChi2Flag</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fChi2Flag" title="Int_t KHLABolometerRecord::fChi2Flag">fChi2Flag</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> TBits* <a class="funcname" name="KHLABolometerRecord:GetIonFlags" href="src/KHLABolometerRecord.h.html#s8AkFE">GetIonFlags</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> &amp;<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fIonFlags" title="TBits KHLABolometerRecord::fIonFlags">fIonFlags</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLABolometerRecord:GetVoltageFlag" href="src/KHLABolometerRecord.h.html#kVP5eB">GetVoltageFlag</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre><a href="./ListOfTypes.html#Bool_t">Bool_t</a> TestIonFlags(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> mask) const;
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fVoltageFlag" title="Int_t KHLABolometerRecord::fVoltageFlag">fVoltageFlag</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLABolometerRecord:GetIonPulseTimeOffset" href="src/KHLABolometerRecord.h.html#f6DYiE">GetIonPulseTimeOffset</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fIonPulseTimeOffset" title="Int_t KHLABolometerRecord::fIonPulseTimeOffset">fIonPulseTimeOffset</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLASambaRecord.html">KHLASambaRecord</a>* <a class="funcname" name="KHLABolometerRecord:GetSambaRecord" href="src/KHLABolometerRecord.h.html#NRVPrC">GetSambaRecord</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> (<a href="./KHLASambaRecord.html">KHLASambaRecord</a>*)<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fSambaRecord" title="TRef KHLABolometerRecord::fSambaRecord">fSambaRecord</a>.GetObject();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLABolometerRecord:GetNumPulseRecords" href="src/KHLABolometerRecord.h.html#QZh0rB">GetNumPulseRecords</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> (<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fPulseRecords" title="TRefArray KHLABolometerRecord::fPulseRecords">fPulseRecords</a>.GetEntriesFast());}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergyIonFiducial" href="src/KHLABolometerRecord.h.html#I8XVOB">GetEnergyIonFiducial</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEnergyIonFiducial" title="Double32_t KHLABolometerRecord::fEnergyIonFiducial">fEnergyIonFiducial</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetEnergySumIonChannels" href="src/KHLABolometerRecord.h.html#AHUshD">GetEnergySumIonChannels</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEnergyIonSum" title="Double32_t KHLABolometerRecord::fEnergyIonSum">fEnergyIonSum</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetBaselineIonFiducial" href="src/KHLABolometerRecord.h.html#WF6.YE">GetBaselineIonFiducial</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fBaselineNoiseIonFiducial" title="Double32_t KHLABolometerRecord::fBaselineNoiseIonFiducial">fBaselineNoiseIonFiducial</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KHLABolometerRecord:GetBaselineNoiseIonFiducial" href="src/KHLABolometerRecord.h.html#ijgH1B">GetBaselineNoiseIonFiducial</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:GetBaselineIonFiducial" title="Double32_t KHLABolometerRecord::GetBaselineIonFiducial()">GetBaselineIonFiducial</a>();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TBits* <a class="funcname" name="KHLABolometerRecord:GetCuts" href="src/KHLABolometerRecord.h.html#XUlwm">GetCuts</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> &amp;<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fCuts" title="TBits KHLABolometerRecord::fCuts">fCuts</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetQvalue" href="src/KHLABolometerRecord.h.html#RRv9YB">SetQvalue</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</span><br />
+<div class="funccomm"><pre>setters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fQvalue" title="Double32_t KHLABolometerRecord::fQvalue">fQvalue</a> = aWord;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetEnergyRecoil" href="src/KHLABolometerRecord.h.html#WG3vlC">SetEnergyRecoil</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEnergyRecoil" title="Double32_t KHLABolometerRecord::fEnergyRecoil">fEnergyRecoil</a> = aWord;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetEnergyIon" href="src/KHLABolometerRecord.h.html#cAjt8C">SetEnergyIon</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aWord)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEnergyIon" title="Double32_t KHLABolometerRecord::fEnergyIon">fEnergyIon</a> = aWord;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetEventFlag" href="src/KHLABolometerRecord.h.html#nYYIE">SetEventFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEventFlag" title="Int_t KHLABolometerRecord::fEventFlag">fEventFlag</a> = aWord;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetChi2Flag" href="src/KHLABolometerRecord.h.html#mBPNSD">SetChi2Flag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fChi2Flag" title="Int_t KHLABolometerRecord::fChi2Flag">fChi2Flag</a> = aWord;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetIonFlag" href="src/KHLABolometerRecord.h.html#LM4XmE">SetIonFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> index, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> value = <span class="keyword">true</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fIonFlags" title="TBits KHLABolometerRecord::fIonFlags">fIonFlags</a>.SetBitNumber(index, value);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetVoltageFlag" href="src/KHLABolometerRecord.h.html#uY30bD">SetVoltageFlag</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fVoltageFlag" title="Int_t KHLABolometerRecord::fVoltageFlag">fVoltageFlag</a> = aWord;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetIonPulseTimeOffset" href="src/KHLABolometerRecord.h.html#tTRQTC">SetIonPulseTimeOffset</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWord)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fIonPulseTimeOffset" title="Int_t KHLABolometerRecord::fIonPulseTimeOffset">fIonPulseTimeOffset</a> = aWord;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetSambaRecord" href="src/KHLABolometerRecord.h.html#XUECWC">SetSambaRecord</a>(<a href="./KHLASambaRecord.html">KHLASambaRecord</a>* aRec)</span><br />
+<div class="funccomm"><pre><a href="./ListOfTypes.html#void">void</a> SetFiducialVolume(<a href="./ListOfTypes.html#Double_t">Double_t</a> aWord) {fFiducialVolume = aWord;}
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fSambaRecord" title="TRef KHLABolometerRecord::fSambaRecord">fSambaRecord</a> = aRec;	}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetEnergyIonFiducial" href="src/KHLABolometerRecord.h.html#B1hD4C">SetEnergyIonFiducial</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEnergyIonFiducial" title="Double32_t KHLABolometerRecord::fEnergyIonFiducial">fEnergyIonFiducial</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetEnergySumIonChannels" href="src/KHLABolometerRecord.h.html#OFMhuC">SetEnergySumIonChannels</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fEnergyIonSum" title="Double32_t KHLABolometerRecord::fEnergyIonSum">fEnergyIonSum</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetBaselineIonFiducial" href="src/KHLABolometerRecord.h.html#k7p7hB">SetBaselineIonFiducial</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fBaselineNoiseIonFiducial" title="Double32_t KHLABolometerRecord::fBaselineNoiseIonFiducial">fBaselineNoiseIonFiducial</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetBaselineNoiseIonFiducial" href="src/KHLABolometerRecord.h.html#ZiaF4C">SetBaselineNoiseIonFiducial</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KHLABolometerRecord.html#KHLABolometerRecord:SetBaselineIonFiducial" title="void KHLABolometerRecord::SetBaselineIonFiducial(Double32_t aVal)">SetBaselineIonFiducial</a>(aVal);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLABolometerRecord:SetCutsBit" href="src/KHLABolometerRecord.h.html#rtPAME">SetCutsBit</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal = <span class="keyword">true</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLABolometerRecord.html#KHLABolometerRecord:fCuts" title="TBits KHLABolometerRecord::fCuts">fCuts</a>.SetBitNumber(i, aVal);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TRefArray&amp; <a class="funcname" name="KHLABolometerRecord:pulseRecords" href="src/KHLABolometerRecord.h.html#LHj3uE">pulseRecords</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLABolometerRecord.html#KHLABolometerRecord:fPulseRecords" title="TRefArray KHLABolometerRecord::fPulseRecords">fPulseRecords</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:45 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

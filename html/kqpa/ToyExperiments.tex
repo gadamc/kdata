@@ -1,0 +1,18 @@
+\section{Toy experiments}
+In order to test the goodness of this density function, one can do monte carlo simulation.This can be done in ROOT by creating many events $(E_{Recoil},Q)$ from Gaussian distributed quantities $E_{Ion}$ with uncertainty $\sigma_{E_{Ion}}$ and $E_{Heat}$ with uncertainty $\sigma_{E_{Heat}}$ and fixed parameters $V$, $\epsilon$,
+where
+\begin{gather}
+E_{Recoil} = \left( 1 + \frac{V}{\epsilon} \right) E_{Heat} - \frac{V}{\epsilon} E_{Ion} \\
+Q = \frac{E_{Ion}}{E_{Recoil}}
+\end{gather}
+Then by filling a TH2D histogram with these events and compare it to another TH2D histogram created from the propability density function (pdf) $g(E_{Recoil},Q)$ by the TH2D::FillRandom() method, one can do a $\chi^2$ test to test the null hypothesis $H_0$, that both samples origin from the same distribution.
+For each bin the quantity
+\begin{gather}
+z_i = \frac{n_{pdf,i} - n_{mc,i}}{\sqrt{n_{pdf,i}+n_{mc,i}}}
+\end{gather}
+can be determined which should be standard normally distributed for high numbers of events $n_{pdf,i}$ and $n_{mc,i}$.
+The test then is applied on
+\begin{gather}
+\chi^2 = \sum_i z_i^2
+\end{gather}
+where the sum goes over all bins with more than a certain number of events, which should be high enough to be normally distributed in good approximation. \\

@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:45 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KFileTransfer</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KFileTransfer','','/Users/adam/softwareDev/kdata/kera/KFileTransfer.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KFileTransfer.h.html">header file</a>
+<a class="descrheadentry" href="src/KFileTransfer.cxx.html">source file</a>
+<a class="descrheadentry" href="KFileTransfer_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KFileTransfer:description">class description</a> 
+<a class="descrheadentry" href="#KFileTransfer:Function_Members">function members</a>
+<a class="descrheadentry" href="#KFileTransfer:Data_Members">data members</a>
+<a class="descrheadentry" href="#KFileTransfer:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KERA_Index.html">KERA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KFileTransfer</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KFileTransfer:description"></a>class KFileTransfer</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KFileTransfer.html">KFileTransfer</a>.cxx
+ KDataStructure
+
+ Author: Daniel Wegner &lt;mailto:Daniel.Wegner@student.kit.edu&gt; on 8/26/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ A class that performs rsyncs of files between a local directory and a
+ remote server. By default, the remote server is ccali.in2p3.fr and
+ the remote directory is <span class="string">"/sps/edelweis/kdata/data/rootevts/"</span>. See <a href="./KFileTransfer.html#KFileTransfer:SetDefaultValues" title="void KFileTransfer::SetDefaultValues()">SetDefaultValues</a>()
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KFileTransfer:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KFileTransfer:KFileTransfer">KFileTransfer</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KFileTransfer:KFileTransfer@1">KFileTransfer</a>(string aUser)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KFileTransfer:KFileTransfer@2">KFileTransfer</a>(<span class="keyword">const</span> <a href="./KFileTransfer.html">KFileTransfer</a>&amp; aTrans)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KFileTransfer:KFileTransfer@3">KFileTransfer</a>(string aUser, string aServer, string aSourcePath, string aTargetPath)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KFileTransfer:_KFileTransfer">~KFileTransfer</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KFileTransfer:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:FileExists">FileExists</a>(string aFilename)</td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KFileTransfer:GetExtraRsyncOptions">GetExtraRsyncOptions</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KFileTransfer:GetServer">GetServer</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KFileTransfer:GetSourcePath">GetSourcePath</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KFileTransfer:GetTargetPath">GetTargetPath</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KFileTransfer:GetUser">GetUser</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KFileTransfer:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KFileTransfer.html">KFileTransfer</a>&amp;</td><td class="funcname"><a class="funcname" href="#KFileTransfer:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KFileTransfer.html">KFileTransfer</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:SetDefaultValues">SetDefaultValues</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:SetExtraRsyncOptions">SetExtraRsyncOptions</a>(string anOption)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:SetServer">SetServer</a>(string aServer)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:SetSourcePath">SetSourcePath</a>(string aSourcePath)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:SetTargetPath">SetTargetPath</a>(string aTargetPath)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:SetUser">SetUser</a>(string aUser)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFileTransfer:Transfer">Transfer</a>(string aFileName)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KFileTransfer:Data_Members"></a>Data Members</h2>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KFileTransfer:fExtraRsyncOptions"></a>fExtraRsyncOptions</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KFileTransfer:fServer"></a>fServer</td><td class="datadesc">Server name</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KFileTransfer:fSourcePath"></a>fSourcePath</td><td class="datadesc">Source path</td></tr>
+<tr class="data"><td class="datatype">TSystem*</td><td class="dataname"><a name="KFileTransfer:fSystem"></a>fSystem</td><td class="datadesc">Local TSystem object executing rsync commands</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KFileTransfer:fTargetPath"></a>fTargetPath</td><td class="datadesc">Target path</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KFileTransfer:fUser"></a>fUser</td><td class="datadesc">User name</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KFileTransfer:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KFileTransfer" href="./KFileTransfer.html">KFileTransfer</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KFileTransfer:KFileTransfer" href="src/KFileTransfer.cxx.html#zwUBqC">KFileTransfer</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>constructor with no username specified
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KFileTransfer:KFileTransfer@1" href="src/KFileTransfer.cxx.html#rI..DC">KFileTransfer</a>(string aUser)</span><br />
+<div class="funccomm"><pre>constructor using default values and sets the user name
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KFileTransfer:KFileTransfer@3" href="src/KFileTransfer.cxx.html#LjSaBB">KFileTransfer</a>(string aUser, string aServer, string aSourcePath, string aTargetPath)</span><br />
+<div class="funccomm"><pre>Constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KFileTransfer:KFileTransfer@2" href="src/KFileTransfer.cxx.html#DSkCnD">KFileTransfer</a>(<span class="keyword">const</span> <a href="./KFileTransfer.html">KFileTransfer</a>&amp; aTrans)</span><br />
+<div class="funccomm"><pre>Copy constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KFileTransfer:_KFileTransfer" href="src/KFileTransfer.cxx.html#ryDLlC">~KFileTransfer</a>()</span><br />
+<div class="funccomm"><pre>Destructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFileTransfer:SetDefaultValues" href="src/KFileTransfer.cxx.html#zwYdM">SetDefaultValues</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>The default values are set to
+<a href="./KFileTransfer.html#KFileTransfer:fServer" title="string KFileTransfer::fServer">fServer</a> = <span class="string">"ccali.in2p3.fr"</span>;
+<a href="./KFileTransfer.html#KFileTransfer:fSourcePath" title="string KFileTransfer::fSourcePath">fSourcePath</a> = <span class="string">"/sps/edelweis/kdata/data/rootevts/"</span>;
+<a href="./KFileTransfer.html#KFileTransfer:fTargetPath" title="string KFileTransfer::fTargetPath">fTargetPath</a> = <span class="string">"/tmp/"</span>;
+which assumes that you are looking to find an ERA rootevts file!.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFileTransfer:Transfer" href="src/KFileTransfer.cxx.html#BcHqx">Transfer</a>(string aFileName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KFileTransfer:FileExists" href="src/KFileTransfer.cxx.html#LYCdhB">FileExists</a>(string aFilename)</span><br />
+<div class="funccomm"><pre>Checks if file <span class="string">"aFilename"</span> exists.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KFileTransfer:GetUser" href="src/KFileTransfer.h.html#zdvdDC">GetUser</a>() const</span><br />
+<div class="funccomm"><pre>getters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KFileTransfer.html#KFileTransfer:fUser" title="string KFileTransfer::fUser">fUser</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KFileTransfer:GetServer" href="src/KFileTransfer.h.html#zcxyuC">GetServer</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KFileTransfer.html#KFileTransfer:fServer" title="string KFileTransfer::fServer">fServer</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KFileTransfer:GetSourcePath" href="src/KFileTransfer.h.html#QFbRFD">GetSourcePath</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KFileTransfer.html#KFileTransfer:fSourcePath" title="string KFileTransfer::fSourcePath">fSourcePath</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KFileTransfer:GetTargetPath" href="src/KFileTransfer.h.html#MlsoDB">GetTargetPath</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KFileTransfer.html#KFileTransfer:fTargetPath" title="string KFileTransfer::fTargetPath">fTargetPath</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KFileTransfer:GetExtraRsyncOptions" href="src/KFileTransfer.h.html#eCy2MD">GetExtraRsyncOptions</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KFileTransfer.html#KFileTransfer:fExtraRsyncOptions" title="string KFileTransfer::fExtraRsyncOptions">fExtraRsyncOptions</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFileTransfer:SetUser" href="src/KFileTransfer.h.html#TbWLcB">SetUser</a>(string aUser)</span><br />
+<div class="funccomm"><pre>setters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <a href="./KFileTransfer.html#KFileTransfer:fUser" title="string KFileTransfer::fUser">fUser</a> = aUser; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFileTransfer:SetServer" href="src/KFileTransfer.h.html#LdclHD">SetServer</a>(string aServer)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KFileTransfer.html#KFileTransfer:fServer" title="string KFileTransfer::fServer">fServer</a> = aServer; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFileTransfer:SetSourcePath" href="src/KFileTransfer.h.html#iuqSlD">SetSourcePath</a>(string aSourcePath)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KFileTransfer.html#KFileTransfer:fSourcePath" title="string KFileTransfer::fSourcePath">fSourcePath</a> = aSourcePath; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFileTransfer:SetTargetPath" href="src/KFileTransfer.h.html#gNnOVD">SetTargetPath</a>(string aTargetPath)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KFileTransfer.html#KFileTransfer:fTargetPath" title="string KFileTransfer::fTargetPath">fTargetPath</a> = aTargetPath; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFileTransfer:SetExtraRsyncOptions" href="src/KFileTransfer.h.html#qReBdD">SetExtraRsyncOptions</a>(string anOption)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KFileTransfer.html#KFileTransfer:fExtraRsyncOptions" title="string KFileTransfer::fExtraRsyncOptions">fExtraRsyncOptions</a> = anOption; }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:45 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

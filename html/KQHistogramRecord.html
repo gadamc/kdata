@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:47 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KQHistogramRecord</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KQHistogramRecord','','/Users/adam/softwareDev/kdata/kqpa/KQHistogramRecord.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KQHistogramRecord.h.html">header file</a>
+<a class="descrheadentry" href="src/KQHistogramRecord.cxx.html">source file</a>
+<a class="descrheadentry" href="KQHistogramRecord_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KQHistogramRecord:description">class description</a> 
+<a class="descrheadentry" href="#KQHistogramRecord:Function_Members">function members</a>
+<a class="descrheadentry" href="#KQHistogramRecord:Data_Members">data members</a>
+<a class="descrheadentry" href="#KQHistogramRecord:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KQPA_Index.html">KQPA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KQHistogramRecord</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KQHistogramRecord:description"></a>class KQHistogramRecord</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KQDataRecord.html">KQDataRecord</a>.cxx
+ KDataStructure
+
+ Author: Daniel Wegner &lt;mailto:Daniel.Wegner@student.kit.edu&gt; on 3/10/11.
+
+ * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+
+ This class stores all information associated with one TH2D Q-ERecoil-histogram
+ These are the histogram itself, the theoretical and empirical gamma and nuclear
+ bands
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KQHistogramRecord:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:KQHistogramRecord">KQHistogramRecord</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:KQHistogramRecord@1">KQHistogramRecord</a>(<span class="keyword">const</span> <a href="./KQHistogramRecord.html">KQHistogramRecord</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:_KQHistogramRecord">~KQHistogramRecord</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetEnergyRecoilError">GetEnergyRecoilError</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetEnergyRecoilMean">GetEnergyRecoilMean</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TH2D*</td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetHistogram">GetHistogram</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetQGamma">GetQGamma</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetQGammaError">GetQGammaError</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetQGammaTheo">GetQGammaTheo</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetQGammaTheoError">GetQGammaTheoError</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetQNeutron">GetQNeutron</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetQNeutronError">GetQNeutronError</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetQNeutronTheo">GetQNeutronTheo</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:GetQNeutronTheoError">GetQNeutronTheoError</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KQHistogramRecord.html">KQHistogramRecord</a>&amp;</td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KQHistogramRecord.html">KQHistogramRecord</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetEnergyRecoilError">SetEnergyRecoilError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilError)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetEnergyRecoilMean">SetEnergyRecoilMean</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMean)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetHistogram">SetHistogram</a>(TH2D* aTH2D)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetQGamma">SetQGamma</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQGamma)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetQGammaError">SetQGammaError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQGammaError)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetQGammaTheo">SetQGammaTheo</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQGammaTheo)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetQGammaTheoError">SetQGammaTheoError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQGammaTheoError)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetQNeutron">SetQNeutron</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQNeutron)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetQNeutronError">SetQNeutronError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQNeutronError)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetQNeutronTheo">SetQNeutronTheo</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQNeutronTheo)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:SetQNeutronTheoError">SetQNeutronTheoError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQNeutronTheoError)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQHistogramRecord:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KQHistogramRecord:Data_Members"></a>Data Members</h2>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fEnergyRecoilError"></a>fEnergyRecoilError</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fEnergyRecoilMean"></a>fEnergyRecoilMean</td><td></td></tr>
+<tr class="data"><td class="datatype">TH2D*</td><td class="dataname"><a name="KQHistogramRecord:fHistogram"></a>fHistogram</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fQGamma"></a>fQGamma</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fQGammaError"></a>fQGammaError</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fQGammaTheo"></a>fQGammaTheo</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fQGammaTheoError"></a>fQGammaTheoError</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fQNeutron"></a>fQNeutron</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fQNeutronError"></a>fQNeutronError</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fQNeutronTheo"></a>fQNeutronTheo</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQHistogramRecord:fQNeutronTheoError"></a>fQNeutronTheoError</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KQHistogramRecord:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KQHistogramRecord" href="./KQHistogramRecord.html">KQHistogramRecord</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQHistogramRecord:KQHistogramRecord" href="src/KQHistogramRecord.cxx.html#yJJC7C">KQHistogramRecord</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQHistogramRecord:_KQHistogramRecord" href="src/KQHistogramRecord.cxx.html#dMVYAB">~KQHistogramRecord</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQHistogramRecord:KQHistogramRecord" href="src/KQHistogramRecord.h.html#FX_6VB">KQHistogramRecord</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TH2D* <a class="funcname" name="KQHistogramRecord:GetHistogram" href="src/KQHistogramRecord.h.html#iBKZO">GetHistogram</a>()</span><br />
+<div class="funccomm"><pre>getters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fHistogram" title="TH2D* KQHistogramRecord::fHistogram">fHistogram</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetEnergyRecoilMean" href="src/KQHistogramRecord.h.html#tSgJTC">GetEnergyRecoilMean</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fEnergyRecoilMean" title="Double_t KQHistogramRecord::fEnergyRecoilMean">fEnergyRecoilMean</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetEnergyRecoilError" href="src/KQHistogramRecord.h.html#O4lXZD">GetEnergyRecoilError</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fEnergyRecoilError" title="Double_t KQHistogramRecord::fEnergyRecoilError">fEnergyRecoilError</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetQNeutron" href="src/KQHistogramRecord.h.html#k883PB">GetQNeutron</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fQNeutron" title="Double_t KQHistogramRecord::fQNeutron">fQNeutron</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetQNeutronError" href="src/KQHistogramRecord.h.html#MH9VkE">GetQNeutronError</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fQNeutronError" title="Double_t KQHistogramRecord::fQNeutronError">fQNeutronError</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetQGamma" href="src/KQHistogramRecord.h.html#z3CvsD">GetQGamma</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fQGamma" title="Double_t KQHistogramRecord::fQGamma">fQGamma</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetQGammaError" href="src/KQHistogramRecord.h.html#Zlr26C">GetQGammaError</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fQGammaError" title="Double_t KQHistogramRecord::fQGammaError">fQGammaError</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetQNeutronTheo" href="src/KQHistogramRecord.h.html#zTCnN">GetQNeutronTheo</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fQNeutronTheo" title="Double_t KQHistogramRecord::fQNeutronTheo">fQNeutronTheo</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetQNeutronTheoError" href="src/KQHistogramRecord.h.html#Qp3vGD">GetQNeutronTheoError</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fQNeutronTheoError" title="Double_t KQHistogramRecord::fQNeutronTheoError">fQNeutronTheoError</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetQGammaTheo" href="src/KQHistogramRecord.h.html#nSDeFD">GetQGammaTheo</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fQGammaTheo" title="Double_t KQHistogramRecord::fQGammaTheo">fQGammaTheo</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQHistogramRecord:GetQGammaTheoError" href="src/KQHistogramRecord.h.html#YoJgmC">GetQGammaTheoError</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQHistogramRecord.html#KQHistogramRecord:fQGammaTheoError" title="Double_t KQHistogramRecord::fQGammaTheoError">fQGammaTheoError</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetHistogram" href="src/KQHistogramRecord.h.html#nkHcvC">SetHistogram</a>(TH2D* aTH2D)</span><br />
+<div class="funccomm"><pre>setters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fHistogram" title="TH2D* KQHistogramRecord::fHistogram">fHistogram</a> = aTH2D; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetEnergyRecoilMean" href="src/KQHistogramRecord.h.html#yoF3o">SetEnergyRecoilMean</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMean)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fEnergyRecoilMean" title="Double_t KQHistogramRecord::fEnergyRecoilMean">fEnergyRecoilMean</a> = anEnergyRecoilMean; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetEnergyRecoilError" href="src/KQHistogramRecord.h.html#uUvPPE">SetEnergyRecoilError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilError)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fEnergyRecoilError" title="Double_t KQHistogramRecord::fEnergyRecoilError">fEnergyRecoilError</a> = anEnergyRecoilError; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetQNeutron" href="src/KQHistogramRecord.h.html#ogeAPD">SetQNeutron</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQNeutron)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fQNeutron" title="Double_t KQHistogramRecord::fQNeutron">fQNeutron</a> = aQNeutron; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetQNeutronError" href="src/KQHistogramRecord.h.html#F51gDC">SetQNeutronError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQNeutronError)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fQNeutronError" title="Double_t KQHistogramRecord::fQNeutronError">fQNeutronError</a> = aQNeutronError; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetQGamma" href="src/KQHistogramRecord.h.html#a11HuE">SetQGamma</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQGamma)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fQGamma" title="Double_t KQHistogramRecord::fQGamma">fQGamma</a> = aQGamma; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetQGammaError" href="src/KQHistogramRecord.h.html#wrj0qC">SetQGammaError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQGammaError)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fQGammaError" title="Double_t KQHistogramRecord::fQGammaError">fQGammaError</a> = aQGammaError; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetQNeutronTheo" href="src/KQHistogramRecord.h.html#yiTcDC">SetQNeutronTheo</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQNeutronTheo)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fQNeutronTheo" title="Double_t KQHistogramRecord::fQNeutronTheo">fQNeutronTheo</a> = aQNeutronTheo; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetQNeutronTheoError" href="src/KQHistogramRecord.h.html#X9ohdB">SetQNeutronTheoError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQNeutronTheoError)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fQNeutronTheoError" title="Double_t KQHistogramRecord::fQNeutronTheoError">fQNeutronTheoError</a> = aQNeutronTheoError; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetQGammaTheo" href="src/KQHistogramRecord.h.html#RXLdNE">SetQGammaTheo</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQGammaTheo)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fQGammaTheo" title="Double_t KQHistogramRecord::fQGammaTheo">fQGammaTheo</a> = aQGammaTheo; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQHistogramRecord:SetQGammaTheoError" href="src/KQHistogramRecord.h.html#AJICcC">SetQGammaTheoError</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQGammaTheoError)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQHistogramRecord.html#KQHistogramRecord:fQGammaTheoError" title="Double_t KQHistogramRecord::fQGammaTheoError">fQGammaTheoError</a> = aQGammaTheoError; }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+<em>&raquo; Author: <a href="mailto:Daniel.Wegner@student.kit.edu"> Daniel Wegner </a> on 3/10/11. </em><em>&raquo; Copyright   2011 Karlsruhe Institute of Technology. All rights reserved.</em><br />
+<em>&raquo; Last changed: Tue Sep 25 14:34:47 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

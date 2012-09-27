@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:44 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KCurl</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KCurl','','KCurl.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KCurl.h.html">header file</a>
+<a class="descrheadentry" href="src/KCurl.cxx.html">source file</a>
+<a class="descrheadentry" href="KCurl_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KCurl:description">class description</a> 
+<a class="descrheadentry" href="#KCurl:Function_Members">function members</a>
+<a class="descrheadentry" href="#KCurl:Data_Members">data members</a>
+<a class="descrheadentry" href="#KCurl:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KDATABASE_Index.html">KDATABASE</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KCurl</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KCurl:description"></a>class KCurl</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KCurl.html">KCurl</a>.cxx
+ Author: Adam Cox &lt;mailto:adam.cox@kit.edu&gt;
+
+ *Copyright 2011 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+
+ Created Friday 04. February 2011
+
+
+ This is a wrapper class for using simple libcurl commands in
+ KData in order to facilitate using the edelweiss couchdb.
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KCurl:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KCurl:KCurl">KCurl</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KCurl:KCurl@1">KCurl</a>(<span class="keyword">const</span> <a href="./KCurl.html">KCurl</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KCurl:_KCurl">~KCurl</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KCurl:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KCurl:Get">Get</a>(<span class="keyword">const</span> <span class="keyword">char</span>* url, <span class="keyword">const</span> <span class="keyword">char</span>* item, <span class="keyword">const</span> <span class="keyword">char</span>* opt = <span class="string">"-a"</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KCurl:GetReturn">GetReturn</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#size_t">size_t</a></td><td class="funcname"><a class="funcname" href="#KCurl:GetReturnSize">GetReturnSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KCurl:GetVerbose">GetVerbose</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KCurl:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KCurl.html">KCurl</a>&amp;</td><td class="funcname"><a class="funcname" href="#KCurl:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KCurl.html">KCurl</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KCurl:Put">Put</a>(<span class="keyword">const</span> <span class="keyword">char</span>* url, <span class="keyword">const</span> <span class="keyword">char</span>* item, <span class="keyword">const</span> <span class="keyword">char</span>* opt = <span class="string">"-a"</span>, <span class="keyword">const</span> <span class="keyword">char</span>* thedoc = 0)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KCurl:SetVerbose">SetVerbose</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KCurl:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KCurl:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KCurl:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KCurl:DoAcceptSSLCertificate">DoAcceptSSLCertificate</a>(<span class="keyword">const</span> <span class="keyword">char</span>* opt)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#size_t">size_t</a></td><td class="funcname"><a class="funcname" href="#KCurl:ReadBufferCallback">ReadBufferCallback</a>(<span class="keyword">char</span>* bufptr, <a href="./ListOfTypes.html#size_t">size_t</a> size, <a href="./ListOfTypes.html#size_t">size_t</a> nitems, <span class="keyword">void</span>* userp)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#size_t">size_t</a></td><td class="funcname"><a class="funcname" href="#KCurl:WriteMemoryCallback">WriteMemoryCallback</a>(<span class="keyword">void</span>* ptr, <a href="./ListOfTypes.html#size_t">size_t</a> size, <a href="./ListOfTypes.html#size_t">size_t</a> nmemb, <span class="keyword">void</span>* data)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KCurl:Data_Members"></a>Data Members</h2>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KCurl:fReturn"></a>fReturn</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KCurl:fVerbose"></a>fVerbose</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KCurl:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KCurl" href="./KCurl.html">KCurl</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KCurl:KCurl@1" href="src/KCurl.cxx.html#s8qqfE">KCurl</a>(<span class="keyword">const</span> <a href="./KCurl.html">KCurl</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KCurl:_KCurl" href="src/KCurl.cxx.html#YP9JAB">~KCurl</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KCurl:Get" href="src/KCurl.cxx.html#KrxjzC">Get</a>(<span class="keyword">const</span> <span class="keyword">char</span>* url, <span class="keyword">const</span> <span class="keyword">char</span>* item, <span class="keyword">const</span> <span class="keyword">char</span>* opt = <span class="string">"-a"</span>)</span><br />
+<div class="funccomm"><pre>Gets the response from the following HTTP GET command
+HTTP GET url/item
+If you need to use authentication, then you should
+set url to be <span class="string">"http://username:password@address"</span>, for example
+<span class="string">"http://user:secret@127.0.0.1:5984"</span>
+This will call
+HTTP GET http://user:secret@127.0.0.1:5984/item<span class="string">"</span>
+
+This is exactly the same as using the UNIX program 'curl' from the
+command line
+
+ $&gt; curl url/item
+
+ If you want to use SSL with HTTP, use https:
+ For CouchDB, the SSL port is 6984. In order to ignore self-signed SSL
+ certificates, use the -a option.
+
+For Edelweiss CouchDB access, typical values are
+ url = https://edwdbik.fzk.de:6984 (the database is readable by all, but you must use a username/password to write)
+ item = (a docid, a view, or even _all_docs).
+     If you are accessing a database, your item should look something like
+     <span class="string">"databasename/item"</span>
+     see the couchdb documentation
+
+ opt is a string of characters separated by a space (<span class="string">' '</span>) and preceded with a dash (<span class="string">'-'</span>)
+   -a  = accept the SSL certificate without a Certified Authorization. This is needed for self-signed certificates.
+
+The return value is the value received from libcurl. You can get the full
+string response by calling <a href="./KCurl.html#KCurl:GetReturn" title="const char* KCurl::GetReturn()">GetReturn</a>. If the return is 0, then
+the curl transaction seems to have worked without error.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KCurl:Put" href="src/KCurl.cxx.html#c41Vg">Put</a>(<span class="keyword">const</span> <span class="keyword">char</span>* url, <span class="keyword">const</span> <span class="keyword">char</span>* item, <span class="keyword">const</span> <span class="keyword">char</span>* opt = <span class="string">"-a"</span>, <span class="keyword">const</span> <span class="keyword">char</span>* thedoc = 0)</span><br />
+<div class="funccomm"><pre>calls the following
+HTTP PUT url/item -d <span class="string">"thedoc"</span>
+If you need to use authentication, then you should
+set url to be <span class="string">"username:password@url"</span>, for example
+<span class="string">"http://user:secret@127.0.0.1:5984"</span>
+This will call
+HTTP PUT http://user:secret@url/item
+
+If thedoc == 0, then the ' -d <span class="string">"thedoc"</span> ' is excluded.
+
+
+ If you want to use SSL with HTTP, use https:
+ For CouchDB, the SSL port is 6984. In order to ignore self-signed SSL
+ certificates, use the -a option.
+
+For Edelweiss CouchDB access, typical values are
+ url = https://edwdbik.fzk.de:6984 (the database is readable by all, but you must use a username/password to write)
+ item = (a docid, a view, or even _all_docs).
+     If you are putting a file on the database, your item should look something like
+     <span class="string">"databasename/docid"</span>.
+     If you are trying to create a new database, your item should be
+     <span class="string">"databasename"</span> and the <span class="string">"thedoc"</span> should be a NULL pointer.
+     see the couchdb documentation
+
+ thedoc = a JSON document that you will likely be puting on a couchdb.
+          NOTE: You must be sure that 'thedoc' is in proper JSON format
+          This method does not check the format for you. If it is not in proper
+          JSON format, then you will see an error in the returned string (<a href="./KCurl.html">KCurl</a>::<a href="./KCurl.html#KCurl:GetReturn" title="const char* KCurl::GetReturn()">GetReturn</a>())
+
+ opt = currently this function just supports one option.
+   -a  = accept the SSL certificate without a Certified Authorization. This is needed for self-signed certificates.
+
+The return value is the value received from libcurl.
+You can get the full string by calling <a href="./KCurl.html#KCurl:GetReturn" title="const char* KCurl::GetReturn()">GetReturn</a>. If the return is 0, then
+the curl transaction seems to have worked without error.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KCurl:DoAcceptSSLCertificate" href="src/KCurl.cxx.html#DfRhOC">DoAcceptSSLCertificate</a>(<span class="keyword">const</span> <span class="keyword">char</span>* opt)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KCurl:KCurl@1" href="src/KCurl.h.html#lKKHB">KCurl</a>(<span class="keyword">const</span> <a href="./KCurl.html">KCurl</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KCurl:GetReturn" href="src/KCurl.h.html#IYOXsE">GetReturn</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KCurl.html#KCurl:fReturn" title="string KCurl::fReturn">fReturn</a>.c_str();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#size_t">size_t</a> <a class="funcname" name="KCurl:GetReturnSize" href="src/KCurl.h.html#JwTpBD">GetReturnSize</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>string&amp; <a href="./KCurl.html#KCurl:GetReturn" title="const char* KCurl::GetReturn()">GetReturn</a>(<a href="./ListOfTypes.html#void">void</a>) const {return <a href="./KCurl.html#KCurl:fReturn" title="string KCurl::fReturn">fReturn</a>;}
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KCurl.html#KCurl:fReturn" title="string KCurl::fReturn">fReturn</a>.size();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KCurl:GetVerbose" href="src/KCurl.h.html#D4njbD">GetVerbose</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KCurl.html#KCurl:fVerbose" title="Bool_t KCurl::fVerbose">fVerbose</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KCurl:SetVerbose" href="src/KCurl.h.html#kLVdcC">SetVerbose</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal = <span class="keyword">true</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KCurl.html#KCurl:fVerbose" title="Bool_t KCurl::fVerbose">fVerbose</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#size_t">size_t</a> <a class="funcname" name="KCurl:WriteMemoryCallback" href="src/KCurl.h.html#pDR4X">WriteMemoryCallback</a>(<span class="keyword">void</span>* ptr, <a href="./ListOfTypes.html#size_t">size_t</a> size, <a href="./ListOfTypes.html#size_t">size_t</a> nmemb, <span class="keyword">void</span>* data)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#size_t">size_t</a> <a class="funcname" name="KCurl:ReadBufferCallback" href="src/KCurl.h.html#dIZw8B">ReadBufferCallback</a>(<span class="keyword">char</span>* bufptr, <a href="./ListOfTypes.html#size_t">size_t</a> size, <a href="./ListOfTypes.html#size_t">size_t</a> nitems, <span class="keyword">void</span>* userp)</span><br />
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:44 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

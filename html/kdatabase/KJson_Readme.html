@@ -1,0 +1,256 @@
+<pre>/*
+  Copyright (c) 2009 Dave Gamble
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the <span class="string">"Software"</span>), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED <span class="string">"AS IS"</span>, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+*/</span>
+
+//April 28, 2011.-----------------------------------------
+
+This code/document was modified by Adam Cox on April 28 to incorporate 
+this library into KData. All of the names, cJSON were changed to <a href="../KJson.html">KJson</a> in
+order to make this easily integrate into the KData build system and to <span class="string">"naturally"</span>
+fit into the rest of the KData framework. All strings found in the code and 
+in this documentation that are <span class="string">"KJson"</span>, were originally <span class="string">"cJSON"</span>.
+
+If you want to compile a program that uses <a href="../KJson.html">KJson</a>, 
+you don't need to do anything special. Just include the the header as normal.
+
+Read below for the documentation on using <a href="../KJson.html">KJson</a>/cJSON. Also, check out the .h file
+for a list of the available functions
+https://edwdev-ik.fzk.de/kdata_dev_ref/src/<a href="../KJson.html">KJson</a>.h.html
+
+
+//--------------------------------------------------------
+
+
+
+
+Welcome to <a href="../KJson.html">KJson</a>. (AKA cJSON)
+
+<a href="../KJson.html">KJson</a> aims to be the dumbest possible parser that you can get your job done with.
+It's a single file of C, and a single header file.
+
+JSON is described best here: http://www.json.org/
+It's like XML, but fat-free. You use it to move data around, store things, or just
+generally represent your program's state.
+
+As a library, <a href="../KJson.html">KJson</a> exists to take away as much legwork as it can, but not get in your way.
+As a point of pragmatism (i.e. ignoring the truth), I'm going to say that you can use it
+in one of two modes: Auto and Manual. Let's have a quick run-through.
+
+
+I lifted some JSON from this page: http://www.json.org/fatfree.html
+That page inspired me to write <a href="../KJson.html">KJson</a>, which is a parser that tries to share the same
+philosophy as JSON itself. Simple, dumb, out of the way.
+
+Some JSON:
+{
+    <span class="string">"name"</span>: <span class="string">"Jack (\"Bee\") Nimble"</span>, 
+    <span class="string">"format"</span>: {
+        <span class="string">"type"</span>:       <span class="string">"rect"</span>, 
+        <span class="string">"width"</span>:      1920, 
+        <span class="string">"height"</span>:     1080, 
+        <span class="string">"interlace"</span>:  <a href="../ListOfTypes.html#bool">false</a>, 
+        <span class="string">"frame rate"</span>: 24
+    }
+}
+
+Assume that you got this from a file, a webserver, or magic JSON elves, whatever,
+you have a <a href="../ListOfTypes.html#char">char</a> * to it. Everything is a <a href="../KJson.html">KJson</a> struct.
+Get it parsed:
+	<a href="../KJson.html">KJson</a> *root = <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:Parse" title="KJson* KJson::Parse(const char* value)">Parse</a>(my_json_string);
+
+This is an object. We're in C. We don't have objects. But we do have structs.
+What's the framerate?
+
+	<a href="../KJson.html">KJson</a> *format = <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:GetObjectItem" title="KJson* KJson::GetObjectItem(KJson* object,const char* string)">GetObjectItem</a>(root,<span class="string">"format"</span>);
+	<a href="../ListOfTypes.html#int">int</a> framerate = <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:GetObjectItem" title="KJson* KJson::GetObjectItem(KJson* object,const char* string)">GetObjectItem</a>(format,<span class="string">"frame rate"</span>)-><a href="../KJson.html#KJson:valueint" title="int KJson::valueint">valueint</a>;
+
+
+Want to change the framerate?
+	<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:GetObjectItem" title="KJson* KJson::GetObjectItem(KJson* object,const char* string)">GetObjectItem</a>(format,<span class="string">"frame rate"</span>)-><a href="../KJson.html#KJson:valueint" title="int KJson::valueint">valueint</a>=25;
+	
+Back to disk?
+	<a href="../ListOfTypes.html#char">char</a> *rendered=<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:Print" title="char* KJson::Print(KJson* item)">Print</a>(root);
+
+Finished? <a href="../KJson.html#KJson:Delete" title="void KJson::Delete(KJson* c)">Delete</a> the root (this takes care of everything else).
+	<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:Delete" title="void KJson::Delete(KJson* c)">Delete</a>(root);
+
+That's AUTO mode. If you're going to use Auto mode, you really ought to check pointers
+before you dereference them. If you want to see how you'd build this struct in code?
+	<a href="../KJson.html">KJson</a> *root,*fmt;
+	root=<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateObject" title="KJson* KJson::CreateObject()">CreateObject</a>();	
+	<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:AddItemToObject" title="void KJson::AddItemToObject(KJson* object,const char* key,KJson* item)">AddItemToObject</a>(root, <span class="string">"name"</span>, <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateString" title="KJson* KJson::CreateString(const char* key)">CreateString</a>(<span class="string">"Jack (\"Bee\") Nimble"</span>));
+	<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:AddItemToObject" title="void KJson::AddItemToObject(KJson* object,const char* key,KJson* item)">AddItemToObject</a>(root, <span class="string">"format"</span>, fmt=<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateObject" title="KJson* KJson::CreateObject()">CreateObject</a>());
+  <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:AddItemToObject" title="void KJson::AddItemToObject(KJson* object,const char* key,KJson* item)">AddItemToObject</a>(fmt, <span class="string">"type"</span>, <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateString" title="KJson* KJson::CreateString(const char* key)">CreateString</a>(<span class="string">"type"</span>) );
+  <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:AddItemToObject" title="void KJson::AddItemToObject(KJson* object,const char* key,KJson* item)">AddItemToObject</a>(fmt, <span class="string">"width"</span>, <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateNumber" title="KJson* KJson::CreateNumber(double num)">CreateNumber</a>(1920) );
+  <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:AddItemToObject" title="void KJson::AddItemToObject(KJson* object,const char* key,KJson* item)">AddItemToObject</a>(fmt, <span class="string">"height"</span>, <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateNumber" title="KJson* KJson::CreateNumber(double num)">CreateNumber</a>(1080) );
+  <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:AddItemToObject" title="void KJson::AddItemToObject(KJson* object,const char* key,KJson* item)">AddItemToObject</a>(fmt, <span class="string">"interlace"</span>, <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateFalse" title="KJson* KJson::CreateFalse()">CreateFalse</a>() );
+  <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:AddItemToObject" title="void KJson::AddItemToObject(KJson* object,const char* key,KJson* item)">AddItemToObject</a>(fmt, <span class="string">"frame rate"</span>, <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateNumber" title="KJson* KJson::CreateNumber(double num)">CreateNumber</a>(24) );
+ 
+
+Hopefully we can agree that's not a lot of code? There's no overhead, no unnecessary setup.
+Look at test.c for a bunch of nice examples, mostly all ripped off the json.org site, and
+a few from elsewhere.
+
+What about manual mode? First up you need some detail.
+Let's cover how the <a href="../KJson.html">KJson</a> objects represent the JSON data.
+<a href="../KJson.html">KJson</a> doesn't distinguish arrays from objects in handling; just <a href="../KJson.html#KJson:type" title="int KJson::type">type</a>.
+Each <a href="../KJson.html">KJson</a> has, potentially, a <a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a>, siblings, value, a name.
+
+The root object has: Object Type and a Child
+The Child has name <span class="string">"name"</span>, with value <span class="string">"Jack ("</span>Bee<span class="string">") Nimble"</span>, and a sibling:
+Sibling has <a href="../KJson.html#KJson:type" title="int KJson::type">type</a> Object, name <span class="string">"format"</span>, and a <a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a>.
+That <a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a> has <a href="../KJson.html#KJson:type" title="int KJson::type">type</a> String, name <span class="string">"type"</span>, value <span class="string">"rect"</span>, and a sibling:
+Sibling has <a href="../KJson.html#KJson:type" title="int KJson::type">type</a> Number, name <span class="string">"width"</span>, value 1920, and a sibling:
+Sibling has <a href="../KJson.html#KJson:type" title="int KJson::type">type</a> Number, name <span class="string">"height"</span>, value 1080, and a sibling:
+Sibling hs <a href="../KJson.html#KJson:type" title="int KJson::type">type</a> False, name <span class="string">"interlace"</span>, and a sibling:
+Sibling has <a href="../KJson.html#KJson:type" title="int KJson::type">type</a> Number, name <span class="string">"frame rate"</span>, value 24
+
+Here's the structure:
+typedef struct <a href="../KJson.html">KJson</a> {
+	struct <a href="../KJson.html">KJson</a> *<a href="../KJson.html#KJson:next" title="KJson* KJson::next">next</a>,*<a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a>;
+	struct <a href="../KJson.html">KJson</a> *<a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a>;
+
+	<a href="../ListOfTypes.html#int">int</a> <a href="../KJson.html#KJson:type" title="int KJson::type">type</a>;
+
+	<a href="../ListOfTypes.html#char">char</a> *<a href="../KJson.html#KJson:valuestring" title="char* KJson::valuestring">valuestring</a>;
+	<a href="../ListOfTypes.html#int">int</a> <a href="../KJson.html#KJson:valueint" title="int KJson::valueint">valueint</a>;
+	<a href="../ListOfTypes.html#double">double</a> <a href="../KJson.html#KJson:valuedouble" title="double KJson::valuedouble">valuedouble</a>;
+
+	<a href="../ListOfTypes.html#char">char</a> *<a href="../KJson.html#KJson:key" title="char* KJson::key">key</a>;
+} <a href="../KJson.html">KJson</a>;
+
+By default all values are 0 unless set by virtue of being meaningful.
+
+<a href="../KJson.html#KJson:next" title="KJson* KJson::next">next</a>/<a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a> is a doubly linked list of siblings. <a href="../KJson.html#KJson:next" title="KJson* KJson::next">next</a> takes you to your sibling,
+<a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a> takes you back from your sibling to you.
+Only objects and arrays have a <span class="string">"child"</span>, and it's the head of the doubly linked list.
+A <span class="string">"child"</span> entry will have <a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a>==0, but <a href="../KJson.html#KJson:next" title="KJson* KJson::next">next</a> potentially points on. The last sibling has <a href="../KJson.html#KJson:next" title="KJson* KJson::next">next</a>=0.
+The <a href="../KJson.html#KJson:type" title="int KJson::type">type</a> expresses Null/True/False/Number/String/Array/Object, all of which are #defined in
+<a href="../KJson.html">KJson</a>.h
+
+A Number has <a href="../KJson.html#KJson:valueint" title="int KJson::valueint">valueint</a> and <a href="../KJson.html#KJson:valuedouble" title="double KJson::valuedouble">valuedouble</a>. If you're expecting an <a href="../ListOfTypes.html#int">int</a>, read <a href="../KJson.html#KJson:valueint" title="int KJson::valueint">valueint</a>, if not read
+<a href="../KJson.html#KJson:valuedouble" title="double KJson::valuedouble">valuedouble</a>.
+
+Any entry which is in the linked list which is the <a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a> of an object will have a <span class="string">"key"</span>
+which is the <span class="string">"name"</span> of the entry. When I said <span class="string">"name"</span> in the above example, that's <span class="string">"key"</span>.
+<span class="string">"key"</span> is the JSON name for the 'variable name' if you will.
+
+Now you can trivially walk the lists, recursively, and parse as you please.
+You can invoke <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:Parse" title="KJson* KJson::Parse(const char* value)">Parse</a> to get <a href="../KJson.html">KJson</a> to parse for you, and then you can take
+the root object, and traverse the structure (which is, formally, an N-tree),
+and tokenise as you please. If you wanted to build a callback style parser, this is how
+you'd do it (just an example, since these things are very specific):
+
+<a href="../ListOfTypes.html#void">void</a> parse_and_callback(<a href="../KJson.html">KJson</a> *item,const <a href="../ListOfTypes.html#char">char</a> *prefix)
+{
+	while (item)
+	{
+		<a href="../ListOfTypes.html#char">char</a> *newprefix=malloc(strlen(prefix)+strlen(item-&gt;name)+2);
+		sprintf(newprefix,<span class="string">"%s/%s"</span>,prefix,item-&gt;name);
+		<a href="../ListOfTypes.html#int">int</a> dorecurse=callback(newprefix, item-&gt;<a href="../KJson.html#KJson:type" title="int KJson::type">type</a>, item);
+		if (item-&gt;<a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a> &amp;&amp; dorecurse) parse_and_callback(item-&gt;<a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a>,newprefix);
+		item=item-&gt;<a href="../KJson.html#KJson:next" title="KJson* KJson::next">next</a>;
+		free(newprefix);
+	}
+}
+
+The prefix process will build you a separated list, to simplify your callback handling.
+The 'dorecurse' flag would let the callback decide to handle sub-arrays on it's own, or
+let you invoke it per-item. For the item above, your callback might look like this:
+
+<a href="../ListOfTypes.html#int">int</a> callback(const <a href="../ListOfTypes.html#char">char</a> *name,<a href="../ListOfTypes.html#int">int</a> <a href="../KJson.html#KJson:type" title="int KJson::type">type</a>,<a href="../KJson.html">KJson</a> *item)
+{
+	if (!strcmp(name,<span class="string">"name"</span>))	{ /* populate name */</span> }
+	else if (!strcmp(name,<span class="string">"format/type"</span>)	{ /* handle <span class="string">"rect"</span> */</span> }
+	else if (!strcmp(name,<span class="string">"format/width"</span>)	{ /* 800 */</span> }
+	else if (!strcmp(name,<span class="string">"format/height"</span>)	{ /* 600 */</span> }
+	else if (!strcmp(name,<span class="string">"format/interlace"</span>)	{ /* <a href="../ListOfTypes.html#bool">false</a> */</span> }
+	else if (!strcmp(name,<span class="string">"format/frame rate"</span>)	{ /* 24 */</span> }
+	return 1;
+}
+
+Alternatively, you might like to parse iteratively.
+You'd use:
+
+<a href="../ListOfTypes.html#void">void</a> parse_object(<a href="../KJson.html">KJson</a> *item)
+{
+	<a href="../ListOfTypes.html#int">int</a> i; for (i=0;i&lt;<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:GetArraySize" title="int KJson::GetArraySize(KJson* array)">GetArraySize</a>(item);i++)
+	{
+		<a href="../KJson.html">KJson</a> *subitem=<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:GetArrayItem" title="KJson* KJson::GetArrayItem(KJson* array,int item)">GetArrayItem</a>(item,i);
+		// handle subitem.	
+	}
+}
+
+Or, for PROPER manual mode:
+
+<a href="../ListOfTypes.html#void">void</a> parse_object(<a href="../KJson.html">KJson</a> *item)
+{
+	<a href="../KJson.html">KJson</a> *subitem=item-&gt;<a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a>;
+	while (subitem)
+	{
+		// handle subitem
+		if (subitem-&gt;<a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a>) parse_object(subitem-&gt;<a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a>);
+		
+		subitem=subitem-&gt;<a href="../KJson.html#KJson:next" title="KJson* KJson::next">next</a>;
+	}
+}
+
+Of course, this should look familiar, since this is just a stripped-down version
+of the callback-parser.
+
+This should cover most uses you'll find for parsing. The rest should be possible
+to infer.. and if in doubt, read the source! There's not a lot of it! ;)
+
+
+In terms of constructing JSON data, the example code above is the right way to do it.
+You can, of course, hand your sub-objects to other functions to populate.
+Also, if you find a use for it, you can manually build the objects.
+For instance, suppose you wanted to build an array of objects?
+
+<a href="../KJson.html">KJson</a> *objects[24];
+
+<a href="../KJson.html">KJson</a> *Create_array_of_anything(<a href="../KJson.html">KJson</a> **items,<a href="../ListOfTypes.html#int">int</a> num)
+{
+	<a href="../ListOfTypes.html#int">int</a> i;<a href="../KJson.html">KJson</a> *<a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a>, *root=<a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:CreateArray" title="KJson* KJson::CreateArray()">CreateArray</a>();
+	for (i=0;i&lt;24;i++)
+	{
+		if (!i)	root-&gt;<a href="../KJson.html#KJson:child" title="KJson* KJson::child">child</a>=objects[i];
+		else	<a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a>-><a href="../KJson.html#KJson:next" title="KJson* KJson::next">next</a>=objects[i], objects[i]-&gt;<a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a>=<a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a>;
+		<a href="../KJson.html#KJson:prev" title="KJson* KJson::prev">prev</a>=objects[i];
+	}
+	return root;
+}
+	
+and simply: Create_array_of_anything(objects,24);
+
+<a href="../KJson.html">KJson</a> doesn't make any assumptions about what order you create things in.
+You can attach the objects, as above, and later add children to each
+of those objects.
+
+As soon as you call <a href="../KJson.html">KJson</a>::<a href="../KJson.html#KJson:Print" title="char* KJson::Print(KJson* item)">Print</a>, it renders the structure to text.
+
+
+
+Enjoy <a href="../KJson.html">KJson</a>!
+
+
+- Dave Gamble, Aug 2009
+</pre>

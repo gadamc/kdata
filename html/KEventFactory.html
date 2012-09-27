@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:45 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KEventFactory</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KEventFactory','','/Users/adam/softwareDev/kdata/kds/KEventFactory.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KEventFactory.h.html">header file</a>
+<a class="descrheadentry" href="src/KEventFactory.cxx.html">source file</a>
+<a class="descrheadentry" href="KEventFactory_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KEventFactory:description">class description</a> 
+<a class="descrheadentry" href="#KEventFactory:Function_Members">function members</a>
+<a class="descrheadentry" href="#KEventFactory:Data_Members">data members</a>
+<a class="descrheadentry" href="#KEventFactory:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KDS_Index.html">KDS</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KEventFactory</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KEventFactory:description"></a>class KEventFactory</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KEventFactory.html">KEventFactory</a>.cxx
+ KDataStructure
+
+ Author: Adam Cox &lt;mailto:adam.cox@ik.fzk.de&gt; on 5/11/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ This is an 'low-level' class and probably won't be useful to standard
+ users and those doing data analysis. This factory class is used mostly
+ by <a href="./KEvent.html">KEvent</a> developers.
+
+ Ideally, one would use this class whenever they want to create
+ some type of Event class that derives from <a href="./KEvent.html">KEvent</a>. When
+ an event class is created that derives from <a href="./KEvent.html">KEvent</a>, the author
+ must make sure to declare GetClassName method
+ their class. See the <a href="./KHLAEvent.html">KHLAEvent</a>, <a href="./KAmpEvent.html">KAmpEvent</a> and <a href="./KRawEvent.html">KRawEvent</a> source files for
+ an example.
+
+ To use this class, one simply asks the object for a new event of
+ whatever type of even is needed. Also, the methods which produce
+ a new event are static methods, which means an instance of a <a href="./KEventFactory.html">KEventFactory</a>
+ is not needed to use the method.
+
+ For example,
+
+ <a href="./KHLAEvent.html">KHLAEvent</a> *myEvent = <a href="./KEventFactory.html">KEventFactory</a>::<a href="./KEventFactory.html#KEventFactory:NewHLAEvent" title="KHLAEvent* KEventFactory::NewHLAEvent()">NewHLAEvent</a>();
+
+ KDS Developer's Note: If you want the <a href="./KDataReader.html">KDataReader</a> and <a href="./KDataWriter.html">KDataWriter</a> classes
+ to recognize your <a href="./KEvent.html">KEvent</a>-based class, after you derive from <a href="./KEvent.html">KEvent</a>,
+ you must implement your class here.
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KEventFactory:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEventFactory:KEventFactory">KEventFactory</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEventFactory:KEventFactory@1">KEventFactory</a>(<span class="keyword">const</span> <a href="./KEventFactory.html">KEventFactory</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KEventFactory:_KEventFactory">~KEventFactory</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KEventFactory:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEventFactory:DeleteEvent">DeleteEvent</a>(<a href="./KEvent.html">KEvent</a>* event)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KEventFactory:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">static <a href="./KAmpEvent.html">KAmpEvent</a>*</td><td class="funcname"><a class="funcname" href="#KEventFactory:NewAmpEvent">NewAmpEvent</a>()</td></tr>
+<tr class="func"><td class="funcret">static <a href="./KEvent.html">KEvent</a>*</td><td class="funcname"><a class="funcname" href="#KEventFactory:NewEvent">NewEvent</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* type)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./KEvent.html">KEvent</a>*</td><td class="funcname"><a class="funcname" href="#KEventFactory:NewEvent@1">NewEvent</a>(<span class="keyword">const</span> <a href="./KEvent.html">KEvent</a>* event)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./KHLAEvent.html">KHLAEvent</a>*</td><td class="funcname"><a class="funcname" href="#KEventFactory:NewHLAEvent">NewHLAEvent</a>()</td></tr>
+<tr class="func"><td class="funcret">static <a href="./KRawEvent.html">KRawEvent</a>*</td><td class="funcname"><a class="funcname" href="#KEventFactory:NewRawEvent">NewRawEvent</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KEventFactory.html">KEventFactory</a>&amp;</td><td class="funcname"><a class="funcname" href="#KEventFactory:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KEventFactory.html">KEventFactory</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventFactory:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventFactory:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventFactory:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEventFactory:BuildEvent">BuildEvent</a>(<a href="./KEvent.html">KEvent</a>* event)</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KEventFactory:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KEventFactory" href="./KEventFactory.html">KEventFactory</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEventFactory:KEventFactory@1" href="src/KEventFactory.cxx.html#gL0YLC">KEventFactory</a>(<span class="keyword">const</span> <a href="./KEventFactory.html">KEventFactory</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEventFactory:_KEventFactory" href="src/KEventFactory.cxx.html#wQRvJC">~KEventFactory</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KEvent.html">KEvent</a>* <a class="funcname" name="KEventFactory:NewEvent" href="src/KEventFactory.cxx.html#YjP8bE">NewEvent</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* type)</span><br />
+<div class="funccomm"><pre>Allocates memory for a new <a href="./KEvent.html">KEvent</a> of a particular 'type'.
+Use <a href="./KEvent.html">KEvent</a>::<a href="./KEvent.html#KEvent:Class" title="TClass* KEvent::Class()">Class</a>()
+ For example,
+ <a href="./KHLAEvent.html">KHLAEvent</a> *e = <a href="./KEventFactory.html">KEventFactory</a>::<a href="./KEventFactory.html#KEventFactory:NewEvent" title="KEvent* KEventFactory::NewEvent(const Char_t* type) or overloads">NewEvent</a>( <a href="./KHLAEvent.html">KHLAEvent</a>::<a href="./KHLAEvent.html#KHLAEvent:GetClassName" title="const char* KHLAEvent::GetClassName()">GetClassName</a>() );
+
+Most users will want to use the <a href="./KEventFactory.html#KEventFactory:NewHLAEvent" title="KHLAEvent* KEventFactory::NewHLAEvent()">NewHLAEvent</a> and <a href="./KEventFactory.html#KEventFactory:NewRawEvent" title="KRawEvent* KEventFactory::NewRawEvent()">NewRawEvent</a> method, if
+they are even using this class.
+
+you own the memory pointed to by this pointer, so you must delete it.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLAEvent.html">KHLAEvent</a>* <a class="funcname" name="KEventFactory:NewHLAEvent" href="src/KEventFactory.cxx.html#CltQzD">NewHLAEvent</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>returns a pointer to an <a href="./KHLAEvent.html">KHLAEvent</a> object. You own the memory, so
+you must delete it.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KRawEvent.html">KRawEvent</a>* <a class="funcname" name="KEventFactory:NewRawEvent" href="src/KEventFactory.cxx.html#Eo3Lo">NewRawEvent</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>returns a pointer to an <a href="./KRawEvent.html">KRawEvent</a> object. You own the memory, so
+you must delete it.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KAmpEvent.html">KAmpEvent</a>* <a class="funcname" name="KEventFactory:NewAmpEvent" href="src/KEventFactory.cxx.html#Wbjf8B">NewAmpEvent</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>returns a pointer to a <a href="./KAmpEvent.html">KAmpEvent</a> object. You own the memory, so
+you must delete it.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEventFactory:DeleteEvent" href="src/KEventFactory.cxx.html#J3Ra9C">DeleteEvent</a>(<a href="./KEvent.html">KEvent</a>* event)</span><br />
+<div class="funccomm"><pre>can use this method to delete objects if you like. This might be
+useful in the future if the objects become more complicated.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KEvent.html">KEvent</a>* <a class="funcname" name="KEventFactory:NewEvent@1" href="src/KEventFactory.cxx.html#jE3vfE">NewEvent</a>(<span class="keyword">const</span> <a href="./KEvent.html">KEvent</a>* event)</span><br />
+<div class="funccomm"><pre>make a new Event object, but copy it from an already existing event.
+This method checks which type of <a href="./KEvent.html">KEvent</a> you passed in,
+then creates a new Event of that type and returns a pointer. The return
+here is <a href="./KEvent.html">KEvent</a>, but you can cast that pointer to whatever
+<a href="./KEvent.html">KEvent</a>-derived object type you really have (<a href="./KRawEvent.html">KRawEvent</a>, or <a href="./KHLAEvent.html">KHLAEvent</a>).
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEventFactory:BuildEvent" href="src/KEventFactory.cxx.html#s49UZE">BuildEvent</a>(<a href="./KEvent.html">KEvent</a>* event)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEventFactory:KEventFactory@1" href="src/KEventFactory.h.html#mtYh5">KEventFactory</a>(<span class="keyword">const</span> <a href="./KEventFactory.html">KEventFactory</a>&amp; )</span><br />
+<div class="funccomm"><pre>eventually, I should use the Boost libraries
+and make the pointers returned by this class
+to be shared pointers, which will then
+make them safer to delete.
+when an instance of the factory is destroyed,
+it will attempt to delete all of the events that it created
+unless another client is using it. then it won't delete it.
+when that client wants to delete the event they
+will call <a href="./KEventFactory.html">KEventFactory</a>::<a href="./KEventFactory.html#KEventFactory:DeleteEvent" title="Bool_t KEventFactory::DeleteEvent(KEvent* event)">DeleteEvent</a>(<a href="./KEvent.html">KEvent</a>*);
+or just let it go out of scope
+However, c++ will soon be updated to include smart pointers
+which could be implemented here without the need for boost.
+Constructors
+</pre></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:45 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

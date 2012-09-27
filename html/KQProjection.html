@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:47 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KQProjection</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KQProjection','','/Users/adam/softwareDev/kdata/kqpa/KQProjection.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KQProjection.h.html">header file</a>
+<a class="descrheadentry" href="src/KQProjection.cxx.html">source file</a>
+<a class="descrheadentry" href="KQProjection_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KQProjection:description">class description</a> 
+<a class="descrheadentry" href="#KQProjection:Function_Members">function members</a>
+<a class="descrheadentry" href="#KQProjection:Data_Members">data members</a>
+<a class="descrheadentry" href="#KQProjection:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KQPA_Index.html">KQPA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KQProjection</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KQProjection:description"></a>class KQProjection</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KQProjection.html">KQProjection</a>.cxx
+ KDataStructure
+
+ Author: Daniel Wegner &lt;mailto:Daniel.Wegner@student.kit.edu&gt; on 3/10/11.
+
+ * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+
+ This class fills a TH2D histogram with (ERecoil, Q)-tuples of bolometer events
+ The events are read from a ROOT file with KEvents, and only those filled in
+ the histogram which are in the range of the histogram [Emin,Emax]
+
+ By calling the <a href="./KQProjection.html#KQProjection:ReadData" title="Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,Double_t anEnergyRecoilMax)">ReadData</a>() method the user can fill
+ respectively refill the  histogram
+ Then with the methods <a href="./KQProjection.html#KQProjection:GetHistogram" title="TH2D* KQProjection::GetHistogram()">GetHistogram</a>(), <a href="./KQProjection.html#KQProjection:GetProjection" title="TH1D* KQProjection::GetProjection()">GetProjection</a>() the TH2D or its
+ projection on the Q axis can be retrieved
+
+ example:
+
+ <a href="./KQProjection.html">KQProjection</a> aQProjection(<span class="string">"/kalinka/storage/edelweiss/Bolo/Run12/Eds/Final/Gamma/Kds_Run12_v3.0_skim.root"</span>,
+                           <span class="string">"FID401"</span>,
+                           <span class="string">"fiducial"</span>);
+
+ <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin = 0;
+ <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax = 1000;
+ aQProjection.<a href="./KQProjection.html#KQProjection:ReadData" title="Bool_t KQProjection::ReadData(Double_t anEnergyRecoilMin,Double_t anEnergyRecoilMax)">ReadData</a>(anEnergyRecoilMin,anEnergyRecoilMax);
+ aQProjection.<a href="./KQProjection.html#KQProjection:MakeHistogram" title="Bool_t KQProjection::MakeHistogram()">MakeHistogram</a>();
+ TH1D* aHistogram = aQProjection.<a href="./KQProjection.html#KQProjection:GetProjection" title="TH1D* KQProjection::GetProjection()">GetProjection</a>();
+ aHistogram-&gt;Draw();
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KQProjection:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQProjection:KQProjection">KQProjection</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQProjection:KQProjection@1">KQProjection</a>(<span class="keyword">const</span> <a href="./KQProjection.html">KQProjection</a>&amp; anotherKQProjection)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQProjection:KQProjection@2">KQProjection</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aBoloName, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aCategoryName = <span class="string">"fiducial"</span>, <a href="./ListOfTypes.html#Double_t">Double_t</a> aNumBinsEnergyRecoil = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> aNumBinsQ = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQMax = 2, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aHistogramName = <span class="string">"hist"</span>)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KQProjection:_KQProjection">~KQProjection</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KQProjection:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:Fill">Fill</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> x, <a href="./ListOfTypes.html#Double_t">Double_t</a> y, <a href="./ListOfTypes.html#Double_t">Double_t</a> w = 1)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:Fit">Fit</a>(TF1* aFunction)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="#KQProjection:GetBoloName">GetBoloName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetEnergyRecoilMax">GetEnergyRecoilMax</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetEnergyRecoilMin">GetEnergyRecoilMin</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetEntries">GetEntries</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetEventCategory">GetEventCategory</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>*</td><td class="funcname"><a class="funcname" href="#KQProjection:GetEventCategoryName">GetEventCategoryName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TH2D*</td><td class="funcname"><a class="funcname" href="#KQProjection:GetHistogram">GetHistogram</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetNumBinsEnergyRecoil">GetNumBinsEnergyRecoil</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetNumBinsQ">GetNumBinsQ</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TH1D*</td><td class="funcname"><a class="funcname" href="#KQProjection:GetProjection">GetProjection</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetQMax">GetQMax</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetQMin">GetQMin</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:GetVerbose">GetVerbose</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KQProjection:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:IsDataRead">IsDataRead</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:MakeHistogram">MakeHistogram</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KQProjection.html">KQProjection</a>&amp;</td><td class="funcname"><a class="funcname" href="#KQProjection:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KQProjection.html">KQProjection</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQProjection:ReadData">ReadData</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetBoloName">SetBoloName</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aBoloName)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetEnergyRecoilMax">SetEnergyRecoilMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetEnergyRecoilMin">SetEnergyRecoilMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetEventCategory">SetEventCategory</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEventCategory)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetEventCategory@1">SetEventCategory</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* anEventCategory)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetHistogram">SetHistogram</a>(TH2D* aHistogram)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetNumBinsEnergyRecoil">SetNumBinsEnergyRecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNumBinsEnergyRecoil)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetNumBinsQ">SetNumBinsQ</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNumBinsQ)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetQMax">SetQMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQMax)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetQMin">SetQMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQMin)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:SetVerbose">SetVerbose</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aVerbose)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQProjection:ResetHistogram">ResetHistogram</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KQProjection:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQProjection:fBoloName"></a>fBoloName</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./KQDataRecord.html">KQDataRecord</a>&gt;</td><td class="dataname"><a name="KQProjection:fData"></a>fData</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQProjection:fEnergyRecoilMax"></a>fEnergyRecoilMax</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQProjection:fEnergyRecoilMin"></a>fEnergyRecoilMin</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KQProjection:fEventCategory"></a>fEventCategory</td><td></td></tr>
+<tr class="data"><td class="datatype">TH2D*</td><td class="dataname"><a name="KQProjection:fHistogram"></a>fHistogram</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQProjection:fIsDataRead"></a>fIsDataRead</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQProjection:fNumBinsEnergyRecoil"></a>fNumBinsEnergyRecoil</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQProjection:fNumBinsQ"></a>fNumBinsQ</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQProjection:fQMax"></a>fQMax</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQProjection:fQMin"></a>fQMin</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQProjection:fSourceFile"></a>fSourceFile</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQProjection:fVerbose"></a>fVerbose</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KQProjection:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KQProjection" href="./KQProjection.html">KQProjection</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td>&larr;</td><td><table><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KQLindhardProjection" href="./KQLindhardProjection.html">KQLindhardProjection</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr></table></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQProjection:KQProjection" href="src/KQProjection.cxx.html#GuyjbD">KQProjection</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQProjection:KQProjection@1" href="src/KQProjection.cxx.html#SB5pqC">KQProjection</a>(<span class="keyword">const</span> <a href="./KQProjection.html">KQProjection</a>&amp; anotherKQProjection)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQProjection:KQProjection@2" href="src/KQProjection.cxx.html#zAONGB">KQProjection</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aSourceFile, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aBoloName, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aCategoryName = <span class="string">"fiducial"</span>, <a href="./ListOfTypes.html#Double_t">Double_t</a> aNumBinsEnergyRecoil = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> aNumBinsQ = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQMax = 2, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aHistogramName = <span class="string">"hist"</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQProjection:_KQProjection" href="src/KQProjection.cxx.html#lMpZQD">~KQProjection</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQProjection:ReadData" href="src/KQProjection.cxx.html#RwwUjB">ReadData</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQProjection:MakeHistogram" href="src/KQProjection.cxx.html#gjwVz">MakeHistogram</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetEventCategory@1" href="src/KQProjection.cxx.html#hKPXWE">SetEventCategory</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* anEventCategory)</span><br />
+<div class="funccomm"><pre> sets an event category
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* <a class="funcname" name="KQProjection:GetEventCategoryName" href="src/KQProjection.cxx.html#XloPUE">GetEventCategoryName</a>() const</span><br />
+<div class="funccomm"><pre> gets a C string for current event category
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:Fit" href="src/KQProjection.cxx.html#uTo7eB">Fit</a>(TF1* aFunction)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KQProjection:Fill" href="src/KQProjection.cxx.html#TNACH">Fill</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> x, <a href="./ListOfTypes.html#Double_t">Double_t</a> y, <a href="./ListOfTypes.html#Double_t">Double_t</a> w = 1)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:ResetHistogram" href="src/KQProjection.h.html#vXriF">ResetHistogram</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQProjection:IsDataRead" href="src/KQProjection.h.html#d9bzYC">IsDataRead</a>() const</span><br />
+<div class="funccomm"><pre>getters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fIsDataRead" title="Double_t KQProjection::fIsDataRead">fIsDataRead</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQProjection:GetVerbose" href="src/KQProjection.h.html#Be57tD">GetVerbose</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fVerbose" title="Double_t KQProjection::fVerbose">fVerbose</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TH2D* <a class="funcname" name="KQProjection:GetHistogram" href="src/KQProjection.h.html#eHhnHC">GetHistogram</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> (TH2D*)<a href="./KQProjection.html#KQProjection:fHistogram" title="TH2D* KQProjection::fHistogram">fHistogram</a>-&gt;Clone(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TH1D* <a class="funcname" name="KQProjection:GetProjection" href="src/KQProjection.h.html#UOxKAB">GetProjection</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> (TH1D*)<a href="./KQProjection.html#KQProjection:fHistogram" title="TH2D* KQProjection::fHistogram">fHistogram</a>-&gt;ProjectionY()-&gt;Clone(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KQProjection:GetEntries" href="src/KQProjection.h.html#FqUPxE">GetEntries</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fHistogram" title="TH2D* KQProjection::fHistogram">fHistogram</a>-&gt;<a href="./KQProjection.html#KQProjection:GetEntries" title="Int_t KQProjection::GetEntries()">GetEntries</a>(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQProjection:GetEnergyRecoilMin" href="src/KQProjection.h.html#zD0L1C">GetEnergyRecoilMin</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fEnergyRecoilMin" title="Double_t KQProjection::fEnergyRecoilMin">fEnergyRecoilMin</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQProjection:GetEnergyRecoilMax" href="src/KQProjection.h.html#KE0LlB">GetEnergyRecoilMax</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fEnergyRecoilMax" title="Double_t KQProjection::fEnergyRecoilMax">fEnergyRecoilMax</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQProjection:GetNumBinsEnergyRecoil" href="src/KQProjection.h.html#xQZzFB">GetNumBinsEnergyRecoil</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fNumBinsEnergyRecoil" title="Double_t KQProjection::fNumBinsEnergyRecoil">fNumBinsEnergyRecoil</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQProjection:GetNumBinsQ" href="src/KQProjection.h.html#eY79dC">GetNumBinsQ</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fNumBinsQ" title="Double_t KQProjection::fNumBinsQ">fNumBinsQ</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQProjection:GetQMin" href="src/KQProjection.h.html#VgUWCC">GetQMin</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fQMin" title="Double_t KQProjection::fQMin">fQMin</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQProjection:GetQMax" href="src/KQProjection.h.html#B57COE">GetQMax</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fQMax" title="Double_t KQProjection::fQMax">fQMax</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* <a class="funcname" name="KQProjection:GetBoloName" href="src/KQProjection.h.html#nkp6E">GetBoloName</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fBoloName" title="string KQProjection::fBoloName">fBoloName</a>.c_str(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KQProjection:GetEventCategory" href="src/KQProjection.h.html#Ot.m6D">GetEventCategory</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQProjection.html#KQProjection:fEventCategory" title="Int_t KQProjection::fEventCategory">fEventCategory</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetVerbose" href="src/KQProjection.h.html#snKJ4">SetVerbose</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aVerbose)</span><br />
+<div class="funccomm"><pre>setters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <a href="./KQProjection.html#KQProjection:fVerbose" title="Double_t KQProjection::fVerbose">fVerbose</a> = aVerbose; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetHistogram" href="src/KQProjection.h.html#IpRehC">SetHistogram</a>(TH2D* aHistogram)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQProjection.html#KQProjection:fHistogram" title="TH2D* KQProjection::fHistogram">fHistogram</a> = aHistogram; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetEnergyRecoilMin" href="src/KQProjection.h.html#rYtFqE">SetEnergyRecoilMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetEnergyRecoilMax" href="src/KQProjection.h.html#LA4gqE">SetEnergyRecoilMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetNumBinsEnergyRecoil" href="src/KQProjection.h.html#DYJBsE">SetNumBinsEnergyRecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNumBinsEnergyRecoil)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetNumBinsQ" href="src/KQProjection.h.html#QVR3yE">SetNumBinsQ</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNumBinsQ)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetQMin" href="src/KQProjection.h.html#edRXMB">SetQMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQMin)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetQMax" href="src/KQProjection.h.html#KWjcMB">SetQMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQMax)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetBoloName" href="src/KQProjection.h.html#JgP7kD">SetBoloName</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aBoloName)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQProjection.html#KQProjection:fBoloName" title="string KQProjection::fBoloName">fBoloName</a> = aBoloName; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQProjection:SetEventCategory" href="src/KQProjection.h.html#a23MGB">SetEventCategory</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEventCategory)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KQProjection.html#KQProjection:fEventCategory" title="Int_t KQProjection::fEventCategory">fEventCategory</a> = anEventCategory; }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+<em>&raquo; Author: <a href="mailto:Daniel.Wegner@student.kit.edu"> Daniel Wegner </a> on 3/10/11. </em><em>&raquo; Copyright   2011 Karlsruhe Institute of Technology. All rights reserved.</em><br />
+<em>&raquo; Last changed: Tue Sep 25 14:34:47 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

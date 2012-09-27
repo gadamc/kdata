@@ -1,0 +1,488 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:44 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KBoloPulseRecord</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KBoloPulseRecord','','/Users/adam/softwareDev/kdata/kds/KBoloPulseRecord.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KBoloPulseRecord.h.html">header file</a>
+<a class="descrheadentry" href="src/KBoloPulseRecord.cxx.html">source file</a>
+<a class="descrheadentry" href="KBoloPulseRecord_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KBoloPulseRecord:description">class description</a> 
+<a class="descrheadentry" href="#KBoloPulseRecord:Function_Members">function members</a>
+<a class="descrheadentry" href="#KBoloPulseRecord:Data_Members">data members</a>
+<a class="descrheadentry" href="#KBoloPulseRecord:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KDS_Index.html">KDS</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KBoloPulseRecord</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KBoloPulseRecord:description"></a>class KBoloPulseRecord: public <a href="./KSubRecord.html">KSubRecord</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>.cxx
+ KDataStructure
+
+ Author: Adam Cox &lt;mailto:adam.cox@ik.fzk.de&gt; on 3/25/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ The base class for all <a href="./Pulse.html">Pulse</a> Sub Records. This class holds the channel number (1 or 2)
+ and the pulse type information (heat, collectrode, veto, guard). Typically,
+ one will work with a <a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a> or <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>, which are
+ derived from this class.
+
+ So you don't have to memorize the numerical value that corresponds
+ to each pulse type, the methods GetHeatType(), GetCollectrodeType(),
+ GetVetoType() and GetGuardType() are available to return the numeric value
+ stored in a local enum structure.
+ however, for your information, the structure is
+
+ enum kPulseChannelType {
+   kCollectrodeType = 1,
+   kVetoType = 2,
+   kGuardType = 3,
+   kHeatType = 4
+  };
+
+ The channel number should be either 1 or 2, corresponding to both channels
+ in the bolometer data. Note, there is no channel 0. In principle, there could
+ be 3 or more channels of a particular type as well (in the case of a future
+ bolometer design?).
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KBoloPulseRecord:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:KBoloPulseRecord">KBoloPulseRecord</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:KBoloPulseRecord@1">KBoloPulseRecord</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:_KBoloPulseRecord">~KBoloPulseRecord</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:Class">Class</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:Clear">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt = <span class="string">"C"</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:Clone"><span class="baseclass">TObject::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:Compact">Compact</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Compare"><span class="baseclass">TObject::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Copy"><span class="baseclass">TObject::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; object) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Delete"><span class="baseclass">TObject::</span>Delete</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:DistancetoPrimitive"><span class="baseclass">TObject::</span>DistancetoPrimitive</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Draw"><span class="baseclass">TObject::</span>Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DrawClass"><span class="baseclass">TObject::</span>DrawClass</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:DrawClone"><span class="baseclass">TObject::</span>DrawClone</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Dump"><span class="baseclass">TObject::</span>Dump</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Error"><span class="baseclass">TObject::</span>Error</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute"><span class="baseclass">TObject::</span>Execute</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute@1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetBoloBoxVersion">GetBoloBoxVersion</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetBoloGain">GetBoloGain</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetChannelName">GetChannelName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetConvergencePeriod">GetConvergencePeriod</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetFetDac">GetFetDac</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetGain">GetGain</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetName"><span class="baseclass">TObject::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetNegativeTriggerAmp">GetNegativeTriggerAmp</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetPolarity">GetPolarity</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetPositiveTriggerAmp">GetPositiveTriggerAmp</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetRelay1Status">GetRelay1Status</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetRelay2Status">GetRelay2Status</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:GetState">GetState</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetTitle"><span class="baseclass">TObject::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Hash"><span class="baseclass">TObject::</span>Hash</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Info"><span class="baseclass">TObject::</span>Info</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> <span class="keyword">char</span>* classname) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom@1"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> TClass* cl) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Inspect"><span class="baseclass">TObject::</span>Inspect</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:InvertBit"><span class="baseclass">TObject::</span>InvertBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:IsSame">IsSame</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Obsolete"><span class="baseclass">TObject::</span>Obsolete</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* asOfVers, <span class="keyword">const</span> <span class="keyword">char</span>* removedFromVers) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete@1"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]@1"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new@1"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]@1"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:operator!_">operator!=</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp;</td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:operator__">operator==</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Print"><span class="baseclass">TObject::</span>Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(<a href="./ListOfTypes.html#ostream">ostream</a>&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit@1"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> set)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetBoloBoxVersion">SetBoloBoxVersion</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetBoloGain">SetBoloGain</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetChannelName">SetChannelName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetConvergencePeriod">SetConvergencePeriod</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDrawOption"><span class="baseclass">TObject::</span>SetDrawOption</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetFetDac">SetFetDac</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetGain">SetGain</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetNegativeTriggerAmp">SetNegativeTriggerAmp</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetPolarity">SetPolarity</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetPositiveTriggerAmp">SetPositiveTriggerAmp</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetRelay1Status">SetRelay1Status</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetRelay2Status">SetRelay2Status</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:SetState">SetState</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetUniqueID"><span class="baseclass">TObject::</span>SetUniqueID</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> uid)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SysError"><span class="baseclass">TObject::</span>SysError</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBit"><span class="baseclass">TObject::</span>TestBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBits"><span class="baseclass">TObject::</span>TestBits</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:UseCurrentStyle"><span class="baseclass">TObject::</span>UseCurrentStyle</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Warning"><span class="baseclass">TObject::</span>Warning</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write@1"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0) <span class="keyword">const</span></td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DoError"><span class="baseclass">TObject::</span>DoError</a>(<span class="keyword">int</span> level, <span class="keyword">const</span> <span class="keyword">char</span>* location, <span class="keyword">const</span> <span class="keyword">char</span>* fmt, va_list va) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MakeZombie"><span class="baseclass">TObject::</span>MakeZombie</a>()</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:CopyLocalMembers">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KBoloPulseRecord:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KBoloPulseRecord:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span>EStatusBits { </td><td class="dataname"><a href="#TObject:kCanDelete">kCanDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kMustCleanup">kMustCleanup</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kObjInCanvas">kObjInCanvas</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kIsReferenced">kIsReferenced</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kHasUUID">kHasUUID</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kCannotPick">kCannotPick</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNoContextMenu">kNoContextMenu</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kInvalidObject">kInvalidObject</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span><i>[unnamed]</i> { </td><td class="dataname"><a href="#TObject:kIsOnHeap">kIsOnHeap</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNotDeleted">kNotDeleted</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kZombie">kZombie</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kBitMask">kBitMask</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kSingleKey">kSingleKey</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kOverwrite">kOverwrite</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kWriteDelete">kWriteDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KBoloPulseRecord:fBoloBoxVersion"></a>fBoloBoxVersion</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KBoloPulseRecord:fBoloGain"></a>fBoloGain</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KBoloPulseRecord:fChannelName"></a>fChannelName</td><td class="datadesc">the name of the channel. for example: "chaleur ID4"</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KBoloPulseRecord:fConvergencePeriod"></a>fConvergencePeriod</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KBoloPulseRecord:fFetDac"></a>fFetDac</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KBoloPulseRecord:fGain"></a>fGain</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KBoloPulseRecord:fNegativeTriggerAmp"></a>fNegativeTriggerAmp</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KBoloPulseRecord:fPolarity"></a>fPolarity</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KBoloPulseRecord:fPositiveTriggerAmp"></a>fPositiveTriggerAmp</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KBoloPulseRecord:fRelay1Status"></a>fRelay1Status</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KBoloPulseRecord:fRelay2Status"></a>fRelay2Status</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KBoloPulseRecord:fState"></a>fState</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KBoloPulseRecord:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td><table><tr>
+<td bgcolor="#efefef" align="right">
+<tt>TObject</tt></td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><tt><a name="KSubRecord" href="./KSubRecord.html">KSubRecord</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KBoloPulseRecord" href="./KBoloPulseRecord.html">KBoloPulseRecord</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td>&larr;</td><td><table><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KAmpBoloPulseRecord" href="./KAmpBoloPulseRecord.html">KAmpBoloPulseRecord</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KHLABoloPulseRecord" href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KRawBoloPulseRecord" href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr></table></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KBoloPulseRecord:KBoloPulseRecord@1" href="src/KBoloPulseRecord.cxx.html#J76JO">KBoloPulseRecord</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>standard constructors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KBoloPulseRecord:KBoloPulseRecord@1" href="src/KBoloPulseRecord.cxx.html#EsKlRB">KBoloPulseRecord</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>copy constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; <a class="funcname" name="KBoloPulseRecord:operator_" href="src/KBoloPulseRecord.cxx.html#V.kXn">operator=</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>assignment operator
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:CopyLocalMembers" href="src/KBoloPulseRecord.cxx.html#sxIGJD">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>used by the assignment operator to copy local members (fPulseType and
+fChanneNumber)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KBoloPulseRecord:_KBoloPulseRecord" href="src/KBoloPulseRecord.cxx.html#YZau7">~KBoloPulseRecord</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>destructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:Clear" href="src/KBoloPulseRecord.cxx.html#swby6C">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt = <span class="string">"C"</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:InitializeMembers" href="src/KBoloPulseRecord.cxx.html#VJhyzD">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>init local members to default values (-99)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KBoloPulseRecord:IsSame" href="src/KBoloPulseRecord.cxx.html#fHTmpB">IsSame</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) const</span><br />
+<div class="funccomm"><pre>Compares two objects and their member variables to test for equality.
+If bPrint is set to <a href="./ListOfTypes.html#bool">true</a>, then a message for each member variable that is different
+will print to standard out. Otherwise, this method will return <a href="./ListOfTypes.html#bool">false</a> and quit
+checking member variables as soon as it finds a unequal data member.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:Compact" href="src/KBoloPulseRecord.cxx.html#h5uPAE">Compact</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>make the event class as small as possible. this calls '<a href="./KBoloPulseRecord.html#KBoloPulseRecord:Compact" title="void KBoloPulseRecord::Compact()">Compact</a>' for all member
+variables that are KDS classes, member variables that can be compacted (such as TBits)
+and base classes
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KBoloPulseRecord:operator__" href="src/KBoloPulseRecord.h.html#LhJxnE">operator==</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:IsSame" title="Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord&amp; aRec,Bool_t bPrint=false)">IsSame</a>(aRec,<span class="keyword">false</span>); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KBoloPulseRecord:operator!_" href="src/KBoloPulseRecord.h.html#XNqM3D">operator!=</a>(<span class="keyword">const</span> <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>&amp; aRec) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> !(*<span class="keyword">this</span>==aRec); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KBoloPulseRecord:GetChannelName" href="src/KBoloPulseRecord.h.html#hDutwE">GetChannelName</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fChannelName" title="string KBoloPulseRecord::fChannelName">fChannelName</a>.c_str();  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KBoloPulseRecord:GetPositiveTriggerAmp" href="src/KBoloPulseRecord.h.html#xohvvB">GetPositiveTriggerAmp</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fPositiveTriggerAmp" title="Double32_t KBoloPulseRecord::fPositiveTriggerAmp">fPositiveTriggerAmp</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KBoloPulseRecord:GetNegativeTriggerAmp" href="src/KBoloPulseRecord.h.html#kz_ZgE">GetNegativeTriggerAmp</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fNegativeTriggerAmp" title="Double32_t KBoloPulseRecord::fNegativeTriggerAmp">fNegativeTriggerAmp</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KBoloPulseRecord:GetState" href="src/KBoloPulseRecord.h.html#VxMFhE">GetState</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fState" title="string KBoloPulseRecord::fState">fState</a>.c_str();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KBoloPulseRecord:GetPolarity" href="src/KBoloPulseRecord.h.html#Cdp.">GetPolarity</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fPolarity" title="Double32_t KBoloPulseRecord::fPolarity">fPolarity</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KBoloPulseRecord:GetGain" href="src/KBoloPulseRecord.h.html#XexTRE">GetGain</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fGain" title="Double32_t KBoloPulseRecord::fGain">fGain</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KBoloPulseRecord:GetBoloBoxVersion" href="src/KBoloPulseRecord.h.html#Gk7os">GetBoloBoxVersion</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fBoloBoxVersion" title="Double32_t KBoloPulseRecord::fBoloBoxVersion">fBoloBoxVersion</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KBoloPulseRecord:GetConvergencePeriod" href="src/KBoloPulseRecord.h.html#tshbwD">GetConvergencePeriod</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fConvergencePeriod" title="Double32_t KBoloPulseRecord::fConvergencePeriod">fConvergencePeriod</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KBoloPulseRecord:GetRelay1Status" href="src/KBoloPulseRecord.h.html#uf9alE">GetRelay1Status</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fRelay1Status" title="string KBoloPulseRecord::fRelay1Status">fRelay1Status</a>.c_str();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KBoloPulseRecord:GetRelay2Status" href="src/KBoloPulseRecord.h.html#iypuRE">GetRelay2Status</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fRelay2Status" title="string KBoloPulseRecord::fRelay2Status">fRelay2Status</a>.c_str();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KBoloPulseRecord:GetFetDac" href="src/KBoloPulseRecord.h.html#I.Or5E">GetFetDac</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fFetDac" title="Double32_t KBoloPulseRecord::fFetDac">fFetDac</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KBoloPulseRecord:GetBoloGain" href="src/KBoloPulseRecord.h.html#BUsh5C">GetBoloGain</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KBoloPulseRecord.html#KBoloPulseRecord:fBoloGain" title="Double32_t KBoloPulseRecord::fBoloGain">fBoloGain</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetChannelName" href="src/KBoloPulseRecord.h.html#gXh7gC">SetChannelName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fChannelName" title="string KBoloPulseRecord::fChannelName">fChannelName</a> = name;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetPositiveTriggerAmp" href="src/KBoloPulseRecord.h.html#PqVjGC">SetPositiveTriggerAmp</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fPositiveTriggerAmp" title="Double32_t KBoloPulseRecord::fPositiveTriggerAmp">fPositiveTriggerAmp</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetNegativeTriggerAmp" href="src/KBoloPulseRecord.h.html#aHamEB">SetNegativeTriggerAmp</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fNegativeTriggerAmp" title="Double32_t KBoloPulseRecord::fNegativeTriggerAmp">fNegativeTriggerAmp</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetState" href="src/KBoloPulseRecord.h.html#qxwp2B">SetState</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fState" title="string KBoloPulseRecord::fState">fState</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetPolarity" href="src/KBoloPulseRecord.h.html#FiMfBC">SetPolarity</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fPolarity" title="Double32_t KBoloPulseRecord::fPolarity">fPolarity</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetGain" href="src/KBoloPulseRecord.h.html#ZGcmgE">SetGain</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fGain" title="Double32_t KBoloPulseRecord::fGain">fGain</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetBoloBoxVersion" href="src/KBoloPulseRecord.h.html#c.ke4C">SetBoloBoxVersion</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fBoloBoxVersion" title="Double32_t KBoloPulseRecord::fBoloBoxVersion">fBoloBoxVersion</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetConvergencePeriod" href="src/KBoloPulseRecord.h.html#gfDvND">SetConvergencePeriod</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fConvergencePeriod" title="Double32_t KBoloPulseRecord::fConvergencePeriod">fConvergencePeriod</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetRelay1Status" href="src/KBoloPulseRecord.h.html#pjTmuD">SetRelay1Status</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fRelay1Status" title="string KBoloPulseRecord::fRelay1Status">fRelay1Status</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetRelay2Status" href="src/KBoloPulseRecord.h.html#pjTmuD">SetRelay2Status</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fRelay2Status" title="string KBoloPulseRecord::fRelay2Status">fRelay2Status</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetFetDac" href="src/KBoloPulseRecord.h.html#TsEeO">SetFetDac</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fFetDac" title="Double32_t KBoloPulseRecord::fFetDac">fFetDac</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KBoloPulseRecord:SetBoloGain" href="src/KBoloPulseRecord.h.html#HUVhzD">SetBoloGain</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KBoloPulseRecord.html#KBoloPulseRecord:fBoloGain" title="Double32_t KBoloPulseRecord::fBoloGain">fBoloGain</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:44 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

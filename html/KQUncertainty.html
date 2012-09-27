@@ -1,0 +1,302 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:47 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KQUncertainty</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KQUncertainty','','/Users/adam/softwareDev/kdata/kqpa/KQUncertainty.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KQUncertainty.h.html">header file</a>
+<a class="descrheadentry" href="src/KQUncertainty.cxx.html">source file</a>
+<a class="descrheadentry" href="KQUncertainty_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KQUncertainty:description">class description</a> 
+<a class="descrheadentry" href="#KQUncertainty:Function_Members">function members</a>
+<a class="descrheadentry" href="#KQUncertainty:Data_Members">data members</a>
+<a class="descrheadentry" href="#KQUncertainty:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KQPA_Index.html">KQPA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KQUncertainty</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KQUncertainty:description"></a>class KQUncertainty</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KQUncertainty.html">KQUncertainty</a>.cxx
+ Author: Adam Cox &lt;mailto:adam.cox@kit.edu&gt;
+
+ *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+
+
+ This class will calculate the width of the EM and NR bands in the Q-plot
+ for a given recoil energy. You must, however, provide the energy
+ resolutions of the ion and heat channels. Here is an example of how to
+ use this class.
+
+ Suppose you have an event where the measured recoil energy is E_r,
+ the energy on the ion channel is E_i, the energy on the heat
+ channel is E_h, and the q value, Q. You also know the uncertainty of the ion and heat channels
+ at zero energy and at the 133Ba calibration energy, and the voltage
+ bias of the bolometer
+ sigma_ion_zero, sigma_ion_calib, sigma_heat_zero, sigma_heat_calib, voltBias.
+
+ <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIon = <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>(E_i, sigma_ion_zero, sigma_ion_calib);
+ <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeat = <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>(E_h, sigma_heat_zero, sigma_heat_calib);
+
+ <a href="./ListOfTypes.html#Double_t">Double_t</a> nuclearRecoilBandWidth = <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:GetNuclRecWidth" title="Double_t KQUncertainty::GetNuclRecWidth(Double_t energy,Double_t ionUncer,Double_t heatUncer,Double_t voltageBias,Double_t epsilon=3.0,Double_t inherentWidth=0.04)">GetNuclRecWidth</a>(E_r, uncerIon, uncerHeat, voltBias);
+ <a href="./ListOfTypes.html#Double_t">Double_t</a> emBandWidth = <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:GetElecRecoilWidth" title="Double_t KQUncertainty::GetElecRecoilWidth(Double_t energy,Double_t ionUncer,Double_t heatUncer,Double_t voltageBias,Double_t epsilon=3.0)">GetElecRecoilWidth</a>(E_r, uncerIon, uncerHeat, voltBias);
+
+ You may want to know if your event is within the Nuclear Recoil band or if its within the
+ EM Recoil Band. You can use this class:
+
+ <a href="./ListOfTypes.html#Bool_t">Bool_t</a> isInNRBand = <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:IsInNuclearRecoilBand" title="Bool_t KQUncertainty::IsInNuclearRecoilBand(Double_t myQvalue,Double_t myEnergy,Double_t nuclRecWidth,Double_t confidenceLevel=0.90) or overloads">IsInNuclearRecoilBand</a>(Q, E_r,  nuclearRecoilBandWidth);
+ <a href="./ListOfTypes.html#Bool_t">Bool_t</a> isInEMBand = <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:IsInElecRecoilBand" title="Bool_t KQUncertainty::IsInElecRecoilBand(Double_t myQvalue,Double_t emWidth,Double_t confidenceLevel=0.99) or overloads">IsInElecRecoilBand</a>(Q, emBandWidth);
+
+ Alternatively, this method is overloaded and you can skip all of the steps by calling
+
+ <a href="./ListOfTypes.html#Bool_t">Bool_t</a> isInNrBand = <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:IsInNuclearRecoilBand" title="Bool_t KQUncertainty::IsInNuclearRecoilBand(Double_t myQvalue,Double_t myEnergy,Double_t nuclRecWidth,Double_t confidenceLevel=0.90) or overloads">IsInNuclearRecoilBand</a>(Q, E_r, E_i, E_h, sigma_ion_zero, sigma_ion_calib,
+                                                          sigma_heat_zero, sigma_heat_calib, voltBias)
+
+ <a href="./ListOfTypes.html#Bool_t">Bool_t</a> isInEmBand = <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:IsInElecRecoilBand" title="Bool_t KQUncertainty::IsInElecRecoilBand(Double_t myQvalue,Double_t emWidth,Double_t confidenceLevel=0.99) or overloads">IsInElecRecoilBand</a>(Q, E_r, E_i, E_h, sigma_ion_zero, sigma_ion_calib,
+                                                          sigma_heat_zero, sigma_heat_calib, voltBias)
+
+ The calculations of the uncertainties in this class are based on the formula presented
+ in the Edelweiss Calibrations Paper
+
+       Martineau O, Benoit a, Berge L, et al.
+       Calibration of the EDELWEISS cryogenic heat-and-ionization germanium detectors for dark matter search.
+       Nuclear Instruments and Methods in Physics Research Section A.
+       2004;530(3):426-439.
+       Available at: http://linkinghub.elsevier.com/retrieve/pii/S0168900204010162
+
+ except for equation 11 in that paper. I believe this equation is wrong and should
+ be written as
+
+
+<span class="latex"><img class="latex" alt="#sigma_{total} = #sqrt{#sigma_{o}^{2} + C^{2}}" title="LATEX" src="LATEX_KQUncertainty_0_sigma_totalsqrtsigma_oC.gif" /></span>
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KQUncertainty:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQUncertainty:KQUncertainty">KQUncertainty</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQUncertainty:KQUncertainty@1">KQUncertainty</a>(<span class="keyword">const</span> <a href="./KQUncertainty.html">KQUncertainty</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KQUncertainty:_KQUncertainty">~KQUncertainty</a>()</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KQUncertainty:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:GetChannelUncertainty">GetChannelUncertainty</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> energy, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerCalibEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> calibEnergy = 356.0)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:GetCovarianceQERecoil">GetCovarianceQERecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anIonEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> aHeatEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> anIonUncertainty, <a href="./ListOfTypes.html#Double_t">Double_t</a> aHeatUncertainty, <a href="./ListOfTypes.html#Double_t">Double_t</a> aVoltageBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEpsilon, <a href="./ListOfTypes.html#Double_t">Double_t</a> aRowIndex = 1, <a href="./ListOfTypes.html#Double_t">Double_t</a> aColumnIndex = 1)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:GetElecRecoilWidth">GetElecRecoilWidth</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> energy, <a href="./ListOfTypes.html#Double_t">Double_t</a> ionUncer, <a href="./ListOfTypes.html#Double_t">Double_t</a> heatUncer, <a href="./ListOfTypes.html#Double_t">Double_t</a> voltageBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> epsilon = 3.0)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:GetNuclRecWidth">GetNuclRecWidth</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> energy, <a href="./ListOfTypes.html#Double_t">Double_t</a> ionUncer, <a href="./ListOfTypes.html#Double_t">Double_t</a> heatUncer, <a href="./ListOfTypes.html#Double_t">Double_t</a> voltageBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> epsilon = 3.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> inherentWidth = 0.04)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:GetQMeanValue">GetQMeanValue</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyUncertainty)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:GetQValue">GetQValue</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> energy)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:GetQValueLowerBound">GetQValueLowerBound</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> qValue, <a href="./ListOfTypes.html#Double_t">Double_t</a> width, <a href="./ListOfTypes.html#Double_t">Double_t</a> conflevel = 0.90)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:GetQValueUpperBound">GetQValueUpperBound</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> qValue, <a href="./ListOfTypes.html#Double_t">Double_t</a> width, <a href="./ListOfTypes.html#Double_t">Double_t</a> conflevel = 0.90)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KQUncertainty:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:IsInElecRecoilBand">IsInElecRecoilBand</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> myQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> emWidth, <a href="./ListOfTypes.html#Double_t">Double_t</a> confidenceLevel = 0.99)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:IsInElecRecoilBand@1">IsInElecRecoilBand</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> myQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> Erecoil, <a href="./ListOfTypes.html#Double_t">Double_t</a> Eion, <a href="./ListOfTypes.html#Double_t">Double_t</a> Eheat, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIonZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIonCalib, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeatZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeatCalib, <a href="./ListOfTypes.html#Double_t">Double_t</a> voltBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> confidenceLevel = 0.99, <a href="./ListOfTypes.html#Double_t">Double_t</a> epsilon = 3.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> ionCalibEnergy = 356.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> heatCalibEnergy = 356.0)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:IsInNuclearRecoilBand">IsInNuclearRecoilBand</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> myQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> myEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> nuclRecWidth, <a href="./ListOfTypes.html#Double_t">Double_t</a> confidenceLevel = 0.90)</td></tr>
+<tr class="func"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KQUncertainty:IsInNuclearRecoilBand@1">IsInNuclearRecoilBand</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> myQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> Erecoil, <a href="./ListOfTypes.html#Double_t">Double_t</a> Eion, <a href="./ListOfTypes.html#Double_t">Double_t</a> Eheat, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIonZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIonCalib, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeatZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeatCalib, <a href="./ListOfTypes.html#Double_t">Double_t</a> voltBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> confidenceLevel = 0.90, <a href="./ListOfTypes.html#Double_t">Double_t</a> epsilon = 3.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> ionCalibEnergy = 356.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> heatCalibEnergy = 356.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> inherentWidth = 0.04)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KQUncertainty.html">KQUncertainty</a>&amp;</td><td class="funcname"><a class="funcname" href="#KQUncertainty:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KQUncertainty.html">KQUncertainty</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQUncertainty:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQUncertainty:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQUncertainty:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KQUncertainty:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KQUncertainty" href="./KQUncertainty.html">KQUncertainty</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQUncertainty:KQUncertainty@1" href="src/KQUncertainty.cxx.html#rD8p3D">KQUncertainty</a>(<span class="keyword">const</span> <a href="./KQUncertainty.html">KQUncertainty</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQUncertainty:_KQUncertainty" href="src/KQUncertainty.cxx.html#MJWdx">~KQUncertainty</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQUncertainty:GetQValue" href="src/KQUncertainty.cxx.html#xl_pD">GetQValue</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> energy)</span><br />
+<div class="funccomm"><pre>This method returns the Q value for a nuclear recoil event with specified
+recoil energy
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQUncertainty:GetQMeanValue" href="src/KQUncertainty.cxx.html#skR4wD">GetQMeanValue</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyUncertainty)</span><br />
+<div class="funccomm"><pre>This method returns the Q mean value for binned data of nuclear recoil
+events for specified mean and uncertainty
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQUncertainty:GetCovarianceQERecoil" href="src/KQUncertainty.cxx.html#N2wjzE">GetCovarianceQERecoil</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anIonEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> aHeatEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> anIonUncertainty, <a href="./ListOfTypes.html#Double_t">Double_t</a> aHeatUncertainty, <a href="./ListOfTypes.html#Double_t">Double_t</a> aVoltageBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEpsilon, <a href="./ListOfTypes.html#Double_t">Double_t</a> aRowIndex = 1, <a href="./ListOfTypes.html#Double_t">Double_t</a> aColumnIndex = 1)</span><br />
+<div class="funccomm"><pre>This method returns the covariance matrix of q =(ERecoil,Q)
+of a single fiducial event
+
+If the vectors
+
+<span class="latex"><img class="latex" alt="#vec{q} = #(){#splitline{E_{Recoil}}{Q}}" title="LATEX" src="LATEX_KQUncertainty_GetCovarianceQERecoil_1_0_vecqsplitlineE_RecoilQ.gif" /></span>
+
+<span class="latex"><img class="latex" alt="#vec{r} = #(){#splitline{E_{Ion}}{E_{Heat}}}" title="LATEX" src="LATEX_KQUncertainty_GetCovarianceQERecoil_1_1_vecrsplitlineE_IonE_Heat.gif" /></span>
+ and the Jacobian
+
+<span class="latex"><img class="latex" alt="J = #frac{ #partial #vec{q}}{#partial #vec{r}}" title="LATEX" src="LATEX_KQUncertainty_GetCovarianceQERecoil_1_2_Jfracpartialvecqpartialvecr.gif" /></span>
+ is given, then the covariance matrix is calculated then by error propagation
+
+<span class="latex"><img class="latex" alt="V(#vec{q})=J * V(#vec{r}) * J^{T}" title="LATEX" src="LATEX_KQUncertainty_GetCovarianceQERecoil_1_3_VvecqJVvecrJT.gif" /></span>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQUncertainty:GetChannelUncertainty" href="src/KQUncertainty.cxx.html#qs7mX">GetChannelUncertainty</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> energy, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerCalibEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> calibEnergy = 356.0)</span><br />
+<div class="funccomm"><pre>This method returns the linearly interpolated (and extrapolated) energy
+resolution on a channel (either ion channel or heat channel). You must provide
+the energy on the channel, the uncertainty on the energy at E = 0 (uncerZero),
+the uncertainty on the energy at the calibration energy (uncerCalibEnergy).
+Optionally you can provide the calibration energy if it is different than the
+standard 356 keV gamma peak from 133Ba.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQUncertainty:GetNuclRecWidth" href="src/KQUncertainty.cxx.html#o1SgeE">GetNuclRecWidth</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> energy, <a href="./ListOfTypes.html#Double_t">Double_t</a> ionUncer, <a href="./ListOfTypes.html#Double_t">Double_t</a> heatUncer, <a href="./ListOfTypes.html#Double_t">Double_t</a> voltageBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> epsilon = 3.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> inherentWidth = 0.04)</span><br />
+<div class="funccomm"><pre>This method returns the width of the Nuclear Recoil Q-plot band at a particular recoil energy (energy), given
+the ion and heat channel measured uncertainty for this particular energy, and the voltage bias of the bolometer.
+Additionally, one may specify the average potential for an electron-ion pair to be formed in Germanium (default is 3V).
+
+The ionUncer and heatUncer values can be obtained by using
+<a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQUncertainty:GetElecRecoilWidth" href="src/KQUncertainty.cxx.html#FrFbdB">GetElecRecoilWidth</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> energy, <a href="./ListOfTypes.html#Double_t">Double_t</a> ionUncer, <a href="./ListOfTypes.html#Double_t">Double_t</a> heatUncer, <a href="./ListOfTypes.html#Double_t">Double_t</a> voltageBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> epsilon = 3.0)</span><br />
+<div class="funccomm"><pre>This method returns the width of the Electromagetic Q-plot band at a particular recoil energy (energy), given
+the ion and heat channel measured uncertainty for this particular energy, and the voltage bias of the bolometer.
+Additionally, one may specify the average potential for an electron-ion pair to be formed in Germanium (default is 3V).
+
+The ionUncer and heatUncer values can be obtained by using
+<a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQUncertainty:GetQValueUpperBound" href="src/KQUncertainty.cxx.html#wP.gcB">GetQValueUpperBound</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> qValue, <a href="./ListOfTypes.html#Double_t">Double_t</a> width, <a href="./ListOfTypes.html#Double_t">Double_t</a> conflevel = 0.90)</span><br />
+<div class="funccomm"><pre>At the moment, this assumes that Q is normally distributed about its mean. However, we know this
+is not <a href="./ListOfTypes.html#bool">true</a> since Q = Eion/Erecoil and if Eion and Erecoil are guassian distributions, then the
+ratio of two guassian distributions is NOT a gaussian. We are currently approximating it to be a
+gaussian, but this code should be modified.
+
+The Confidence level (conflevel) should be between 0 and 1. returns -1 if it is not.
+
+Otherwise, this function returns qValue + sqrt(2) * TMath::ErfInverse(conflevel)*uncer;
+
+sqrt(2) * TMath::ErfInverse(conflevel) is the number of <span class="string">"sigma"</span> away from the mean for a gaussian distribution
+
+ (so in reality, this method works for ANY guassian distributed variable)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQUncertainty:GetQValueLowerBound" href="src/KQUncertainty.cxx.html#YnmZdD">GetQValueLowerBound</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> qValue, <a href="./ListOfTypes.html#Double_t">Double_t</a> width, <a href="./ListOfTypes.html#Double_t">Double_t</a> conflevel = 0.90)</span><br />
+<div class="funccomm"><pre>At the moment, this assumes that Q is normally distributed about its mean. However, we know this
+is not <a href="./ListOfTypes.html#bool">true</a> since Q = Eion/Erecoil and if Eion and Erecoil are guassian distributions, then the
+ratio of two guassian distributions is NOT a gaussian. We are currently approximating it to be a
+gaussian, but this code should be modified.
+
+The Confidence level (conflevel) should be between 0 and 1. returns -1 if it is not.
+
+Otherwise, this function returns qValue - sqrt(2) * TMath::ErfInverse(conflevel)*uncer;
+
+sqrt(2) * TMath::ErfInverse(conflevel) is the number of <span class="string">"sigma"</span> away from the mean for a gaussian distribution
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQUncertainty:IsInNuclearRecoilBand" href="src/KQUncertainty.cxx.html#gDX5GE">IsInNuclearRecoilBand</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> myQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> myEnergy, <a href="./ListOfTypes.html#Double_t">Double_t</a> nuclRecWidth, <a href="./ListOfTypes.html#Double_t">Double_t</a> confidenceLevel = 0.90)</span><br />
+<div class="funccomm"><pre>compares myQvalue to the allowed range of Q values for myEnergy and the channel energy resolution
+you must provide
+1. the q value of your event (myQvalue)
+2. the recoil energy of your event (myEnergy)
+3. the width of the nuclear recoil band for this particular energy (nuclRecWidth).
+    nuclRecWidth can be obtained from <a href="./KQUncertainty.html">KQUncertainty</a>::<a href="./KQUncertainty.html#KQUncertainty:GetNuclRecWidth" title="Double_t KQUncertainty::GetNuclRecWidth(Double_t energy,Double_t ionUncer,Double_t heatUncer,Double_t voltageBias,Double_t epsilon=3.0,Double_t inherentWidth=0.04)">GetNuclRecWidth</a>()
+4. optionally, you can specify the confidenceLevel for the nuclear recoil band. Default is the 90% CL.
+
+returns <a href="./ListOfTypes.html#bool">true</a> if your q value / energy are insie the Nuclear Recoil band, <a href="./ListOfTypes.html#bool">false</a> otherwise.
+
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQUncertainty:IsInNuclearRecoilBand@1" href="src/KQUncertainty.cxx.html#PseSq">IsInNuclearRecoilBand</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> myQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> Erecoil, <a href="./ListOfTypes.html#Double_t">Double_t</a> Eion, <a href="./ListOfTypes.html#Double_t">Double_t</a> Eheat, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIonZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIonCalib, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeatZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeatCalib, <a href="./ListOfTypes.html#Double_t">Double_t</a> voltBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> confidenceLevel = 0.90, <a href="./ListOfTypes.html#Double_t">Double_t</a> epsilon = 3.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> ionCalibEnergy = 356.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> heatCalibEnergy = 356.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> inherentWidth = 0.04)</span><br />
+<div class="funccomm"><pre>Does everything for you.
+<a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIon = <a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>(Eion, uncerIonZero, uncerIonCalib, ionCalibEnergy);
+<a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeat = <a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>(Eheat, uncerHeatZero, uncerHeatCalib, heatCalibEnergy);
+<a href="./ListOfTypes.html#Double_t">Double_t</a> nuclRecWidth =  <a href="./KQUncertainty.html#KQUncertainty:GetNuclRecWidth" title="Double_t KQUncertainty::GetNuclRecWidth(Double_t energy,Double_t ionUncer,Double_t heatUncer,Double_t voltageBias,Double_t epsilon=3.0,Double_t inherentWidth=0.04)">GetNuclRecWidth</a>(Erecoil, uncerIon, uncerHeat, voltBias, epsilon, inherentWidth);
+
+return <a href="./KQUncertainty.html#KQUncertainty:IsInNuclearRecoilBand" title="Bool_t KQUncertainty::IsInNuclearRecoilBand(Double_t myQvalue,Double_t myEnergy,Double_t nuclRecWidth,Double_t confidenceLevel=0.90) or overloads">IsInNuclearRecoilBand</a>(myQvalue, Erecoil, nuclRecWidth, confidenceLevel);
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQUncertainty:IsInElecRecoilBand" href="src/KQUncertainty.cxx.html#JwuOlB">IsInElecRecoilBand</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> myQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> emWidth, <a href="./ListOfTypes.html#Double_t">Double_t</a> confidenceLevel = 0.99)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KQUncertainty:IsInElecRecoilBand@1" href="src/KQUncertainty.cxx.html#tPBjRC">IsInElecRecoilBand</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> myQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> Erecoil, <a href="./ListOfTypes.html#Double_t">Double_t</a> Eion, <a href="./ListOfTypes.html#Double_t">Double_t</a> Eheat, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIonZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIonCalib, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeatZero, <a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeatCalib, <a href="./ListOfTypes.html#Double_t">Double_t</a> voltBias, <a href="./ListOfTypes.html#Double_t">Double_t</a> confidenceLevel = 0.99, <a href="./ListOfTypes.html#Double_t">Double_t</a> epsilon = 3.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> ionCalibEnergy = 356.0, <a href="./ListOfTypes.html#Double_t">Double_t</a> heatCalibEnergy = 356.0)</span><br />
+<div class="funccomm"><pre>Does everything in one shot.
+
+<a href="./ListOfTypes.html#Double_t">Double_t</a> uncerIon = <a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>(Eion, uncerIonZero, uncerIonCalib, ionCalibEnergy);
+<a href="./ListOfTypes.html#Double_t">Double_t</a> uncerHeat = <a href="./KQUncertainty.html#KQUncertainty:GetChannelUncertainty" title="Double_t KQUncertainty::GetChannelUncertainty(Double_t energy,Double_t uncerZero,Double_t uncerCalibEnergy,Double_t calibEnergy=356.0)">GetChannelUncertainty</a>(Eheat, uncerHeatZero, uncerHeatCalib, heatCalibEnergy);
+<a href="./ListOfTypes.html#Double_t">Double_t</a> emWidth =  <a href="./KQUncertainty.html#KQUncertainty:GetElecRecoilWidth" title="Double_t KQUncertainty::GetElecRecoilWidth(Double_t energy,Double_t ionUncer,Double_t heatUncer,Double_t voltageBias,Double_t epsilon=3.0)">GetElecRecoilWidth</a>(Erecoil, uncerIon, uncerHeat, voltBias, epsilon);
+
+return <a href="./KQUncertainty.html#KQUncertainty:IsInElecRecoilBand" title="Bool_t KQUncertainty::IsInElecRecoilBand(Double_t myQvalue,Double_t emWidth,Double_t confidenceLevel=0.99) or overloads">IsInElecRecoilBand</a>(myQvalue, Erecoil, emWidth, confidenceLevel);
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQUncertainty:KQUncertainty@1" href="src/KQUncertainty.h.html#dTm.4B">KQUncertainty</a>(<span class="keyword">const</span> <a href="./KQUncertainty.html">KQUncertainty</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors
+</pre></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:47 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

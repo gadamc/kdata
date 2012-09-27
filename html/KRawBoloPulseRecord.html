@@ -1,0 +1,660 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:47 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KRawBoloPulseRecord</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KRawBoloPulseRecord','','/Users/adam/softwareDev/kdata/kds/KRawBoloPulseRecord.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KRawBoloPulseRecord.h.html">header file</a>
+<a class="descrheadentry" href="src/KRawBoloPulseRecord.cxx.html">source file</a>
+<a class="descrheadentry" href="KRawBoloPulseRecord_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KRawBoloPulseRecord:description">class description</a> 
+<a class="descrheadentry" href="#KRawBoloPulseRecord:Function_Members">function members</a>
+<a class="descrheadentry" href="#KRawBoloPulseRecord:Data_Members">data members</a>
+<a class="descrheadentry" href="#KRawBoloPulseRecord:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KDS_Index.html">KDS</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KRawBoloPulseRecord</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KRawBoloPulseRecord:description"></a>class KRawBoloPulseRecord: public <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>.cxx
+ Author: Adam Cox &lt;mailto:adam.cox@kit.edu&gt;
+
+ *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+ Holds the Raw-level pulse information, including the pulse trace
+ This class is based on <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a> (which stores the channel
+ number and type).
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KRawBoloPulseRecord:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:KRawBoloPulseRecord">KRawBoloPulseRecord</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:KRawBoloPulseRecord@1">KRawBoloPulseRecord</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:_KRawBoloPulseRecord">~KRawBoloPulseRecord</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:Class">Class</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:Clear">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">"C"</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:Clone"><span class="baseclass">TObject::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:Compact">Compact</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Compare"><span class="baseclass">TObject::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Copy"><span class="baseclass">TObject::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; object) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Delete"><span class="baseclass">TObject::</span>Delete</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:DistancetoPrimitive"><span class="baseclass">TObject::</span>DistancetoPrimitive</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Draw"><span class="baseclass">TObject::</span>Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DrawClass"><span class="baseclass">TObject::</span>DrawClass</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:DrawClone"><span class="baseclass">TObject::</span>DrawClone</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Dump"><span class="baseclass">TObject::</span>Dump</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Error"><span class="baseclass">TObject::</span>Error</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute"><span class="baseclass">TObject::</span>Execute</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute@1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:FillGraph">FillGraph</a>(TGraph&amp; graph)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:FillHistogram">FillHistogram</a>(TH1&amp; hist)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetAmplitude">GetAmplitude</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetAmplitudeBaseline">GetAmplitudeBaseline</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetAmplitudeBaselineNoise">GetAmplitudeBaselineNoise</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetAmplModul">GetAmplModul</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetAmplModulation">GetAmplModulation</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetBoloBoxVersion"><span class="baseclass">KBoloPulseRecord::</span>GetBoloBoxVersion</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetBoloGain"><span class="baseclass">KBoloPulseRecord::</span>GetBoloGain</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>*</td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetBolometerRecord">GetBolometerRecord</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetChannelName"><span class="baseclass">KBoloPulseRecord::</span>GetChannelName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetCompModul">GetCompModul</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetCompModulation">GetCompModulation</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetConvergencePeriod"><span class="baseclass">KBoloPulseRecord::</span>GetConvergencePeriod</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetCorrPied">GetCorrPied</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetCorrTrngl">GetCorrTrngl</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetCryoPosition">GetCryoPosition</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetFetDac"><span class="baseclass">KBoloPulseRecord::</span>GetFetDac</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetFilterSize">GetFilterSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetGain"><span class="baseclass">KBoloPulseRecord::</span>GetGain</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetHeatPulseStampWidth">GetHeatPulseStampWidth</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetIsHeatPulse">GetIsHeatPulse</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetName"><span class="baseclass">TObject::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetNegativeTriggerAmp"><span class="baseclass">KBoloPulseRecord::</span>GetNegativeTriggerAmp</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetNyquistFrequency">GetNyquistFrequency</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetPolarFet">GetPolarFet</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetPolarity"><span class="baseclass">KBoloPulseRecord::</span>GetPolarity</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetPositiveTriggerAmp"><span class="baseclass">KBoloPulseRecord::</span>GetPositiveTriggerAmp</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetPretriggerSize">GetPretriggerSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetPulseLength">GetPulseLength</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetPulseRiseTime">GetPulseRiseTime</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetPulseTimeWidth">GetPulseTimeWidth</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetRelay1Status"><span class="baseclass">KBoloPulseRecord::</span>GetRelay1Status</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetRelay2Status"><span class="baseclass">KBoloPulseRecord::</span>GetRelay2Status</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetSampleFrequency">GetSampleFrequency</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:GetState"><span class="baseclass">KBoloPulseRecord::</span>GetState</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetTitle"><span class="baseclass">TObject::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> vector&lt;<a href="./ListOfTypes.html#Short_t">Short_t</a>&gt;&amp;</td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetTrace">GetTrace</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetTrace@1">GetTrace</a>(<span class="keyword">double</span>* p)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetTrace@2">GetTrace</a>(<span class="keyword">float</span>* p)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetTrace@3">GetTrace</a>(<span class="keyword">int</span>* p)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:GetTrace@4">GetTrace</a>(<span class="keyword">short</span>* p)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Hash"><span class="baseclass">TObject::</span>Hash</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Info"><span class="baseclass">TObject::</span>Info</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> <span class="keyword">char</span>* classname) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom@1"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> TClass* cl) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Inspect"><span class="baseclass">TObject::</span>Inspect</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:InvertBit"><span class="baseclass">TObject::</span>InvertBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:IsSame">IsSame</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Obsolete"><span class="baseclass">TObject::</span>Obsolete</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* asOfVers, <span class="keyword">const</span> <span class="keyword">char</span>* removedFromVers) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete@1"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]@1"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new@1"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]@1"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:operator!_">operator!=</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp;</td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:operator__">operator==</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Print"><span class="baseclass">TObject::</span>Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(<a href="./ListOfTypes.html#ostream">ostream</a>&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetAmplitude">SetAmplitude</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetAmplitudeBaseline">SetAmplitudeBaseline</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetAmplitudeBaselineNoise">SetAmplitudeBaselineNoise</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetAmplModul">SetAmplModul</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetAmplModulation">SetAmplModulation</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit@1"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> set)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetBoloBoxVersion"><span class="baseclass">KBoloPulseRecord::</span>SetBoloBoxVersion</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetBoloGain"><span class="baseclass">KBoloPulseRecord::</span>SetBoloGain</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetBolometerRecord">SetBolometerRecord</a>(<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* aRec)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetChannelName"><span class="baseclass">KBoloPulseRecord::</span>SetChannelName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetCompModul">SetCompModul</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetCompModulation">SetCompModulation</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetConvergencePeriod"><span class="baseclass">KBoloPulseRecord::</span>SetConvergencePeriod</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetCorrPied">SetCorrPied</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetCorrTrngl">SetCorrTrngl</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetCryoPosition">SetCryoPosition</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDrawOption"><span class="baseclass">TObject::</span>SetDrawOption</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetFetDac"><span class="baseclass">KBoloPulseRecord::</span>SetFetDac</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetFilterSize">SetFilterSize</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetGain"><span class="baseclass">KBoloPulseRecord::</span>SetGain</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetHeatPulseStampWidth">SetHeatPulseStampWidth</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetIsHeatPulse">SetIsHeatPulse</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetNegativeTriggerAmp"><span class="baseclass">KBoloPulseRecord::</span>SetNegativeTriggerAmp</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetPolarFet">SetPolarFet</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetPolarity"><span class="baseclass">KBoloPulseRecord::</span>SetPolarity</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetPositiveTriggerAmp"><span class="baseclass">KBoloPulseRecord::</span>SetPositiveTriggerAmp</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetPretriggerSize">SetPretriggerSize</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetPulseLength">SetPulseLength</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetPulseRiseTime">SetPulseRiseTime</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetPulseTimeWidth">SetPulseTimeWidth</a>(<a href="./ListOfTypes.html#ULong_t">ULong_t</a> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetRelay1Status"><span class="baseclass">KBoloPulseRecord::</span>SetRelay1Status</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetRelay2Status"><span class="baseclass">KBoloPulseRecord::</span>SetRelay2Status</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KBoloPulseRecord.html#KBoloPulseRecord:SetState"><span class="baseclass">KBoloPulseRecord::</span>SetState</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetTrace">SetTrace</a>(<span class="keyword">const</span> vector&lt;<a href="./ListOfTypes.html#Short_t">Short_t</a>&gt;&amp; aTrace)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:SetTrace@1">SetTrace</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> size, <span class="keyword">const</span> <a href="./ListOfTypes.html#Short_t">Short_t</a>* aData)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetUniqueID"><span class="baseclass">TObject::</span>SetUniqueID</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> uid)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SysError"><span class="baseclass">TObject::</span>SysError</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBit"><span class="baseclass">TObject::</span>TestBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBits"><span class="baseclass">TObject::</span>TestBits</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:UseCurrentStyle"><span class="baseclass">TObject::</span>UseCurrentStyle</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Warning"><span class="baseclass">TObject::</span>Warning</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write@1"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0) <span class="keyword">const</span></td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DoError"><span class="baseclass">TObject::</span>DoError</a>(<span class="keyword">int</span> level, <span class="keyword">const</span> <span class="keyword">char</span>* location, <span class="keyword">const</span> <span class="keyword">char</span>* fmt, va_list va) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MakeZombie"><span class="baseclass">TObject::</span>MakeZombie</a>()</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:CopyLocalMembers">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KRawBoloPulseRecord:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KRawBoloPulseRecord:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span>EStatusBits { </td><td class="dataname"><a href="#TObject:kCanDelete">kCanDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kMustCleanup">kMustCleanup</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kObjInCanvas">kObjInCanvas</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kIsReferenced">kIsReferenced</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kHasUUID">kHasUUID</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kCannotPick">kCannotPick</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNoContextMenu">kNoContextMenu</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kInvalidObject">kInvalidObject</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span><i>[unnamed]</i> { </td><td class="dataname"><a href="#TObject:kIsOnHeap">kIsOnHeap</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNotDeleted">kNotDeleted</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kZombie">kZombie</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kBitMask">kBitMask</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kSingleKey">kSingleKey</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kOverwrite">kOverwrite</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kWriteDelete">kWriteDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fAmplModul"></a>fAmplModul</td><td class="datadesc">amplitude of heat modulation</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fAmplitude"></a>fAmplitude</td><td class="datadesc">the pulse amplitude calcuated by the DAQ</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fAmplitudeBaseline"></a>fAmplitudeBaseline</td><td class="datadesc">the baseline amplitude calculated by DAQ</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fAmplitudeBaselineNoise"></a>fAmplitudeBaselineNoise</td><td class="datadesc">the width of the distribution of the baseline amplitude for this run period, calculated by DAQ</td></tr>
+<tr class="data"><td class="datatype">TRef</td><td class="dataname"><a name="KRawBoloPulseRecord:fBolometerRecord"></a>fBolometerRecord</td><td class="datadesc">the value of this is the pointer to KRawBolometerRecord object that this pulse belongs to.</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fCompModul"></a>fCompModul</td><td class="datadesc">heat modulation compensation(?)</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fCorrPied"></a>fCorrPied</td><td class="datadesc">heat modulation paramter</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fCorrTrngl"></a>fCorrTrngl</td><td class="datadesc">heat modultion parameter</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fCryoPosition"></a>fCryoPosition</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fFilterSize"></a>fFilterSize</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fHeatPulseStampWidth"></a>fHeatPulseStampWidth</td><td class="datadesc">heat pulse only - size of the heat sample size for this bolometer in stamps (same as D2 in Samba) </td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fIsHeatPulse"></a>fIsHeatPulse</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KRawBoloPulseRecord:fPolarFet"></a>fPolarFet</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fPretriggerSize"></a>fPretriggerSize</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fPulseLength"></a>fPulseLength</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double32_t">Double32_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fPulseRiseTime"></a>fPulseRiseTime</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="dataname"><a name="KRawBoloPulseRecord:fPulseTimeWidth"></a>fPulseTimeWidth</td><td class="datadesc">holds the number of ns for each point.  = 1 / f. Default is 10.080 micro sec</td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./ListOfTypes.html#Short_t">Short_t</a>&gt;</td><td class="dataname"><a name="KRawBoloPulseRecord:fTrace"></a>fTrace</td><td class="datadesc">the raw trace.</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KRawBoloPulseRecord:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td><table><tr>
+<td bgcolor="#efefef" align="right">
+<table><tr><td><table><tr>
+<td bgcolor="#e7e7e7" align="right">
+<tt>TObject</tt></td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><tt><a name="KSubRecord" href="./KSubRecord.html">KSubRecord</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><tt><a name="KBoloPulseRecord" href="./KBoloPulseRecord.html">KBoloPulseRecord</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KRawBoloPulseRecord" href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KRawBoloPulseRecord:KRawBoloPulseRecord@1" href="src/KRawBoloPulseRecord.cxx.html#WuzRcE">KRawBoloPulseRecord</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>standard constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KRawBoloPulseRecord:KRawBoloPulseRecord@1" href="src/KRawBoloPulseRecord.cxx.html#Tx9FFB">KRawBoloPulseRecord</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>copy constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; <a class="funcname" name="KRawBoloPulseRecord:operator_" href="src/KRawBoloPulseRecord.cxx.html#JSf5GD">operator=</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:CopyLocalMembers" href="src/KRawBoloPulseRecord.cxx.html#WVAUmB">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec)</span><br />
+<div class="funccomm"><pre>used in the assignment operator method, this copies over the local
+data members. It also set sets <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fBolometerRecord" title="TRef KRawBoloPulseRecord::fBolometerRecord">fBolometerRecord</a> (the TRef pointer) to zero.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KRawBoloPulseRecord:_KRawBoloPulseRecord" href="src/KRawBoloPulseRecord.cxx.html#ApDkg">~KRawBoloPulseRecord</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>destructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:Clear" href="src/KRawBoloPulseRecord.cxx.html#NaZjQE">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">"C"</span>)</span><br />
+<div class="funccomm"><pre><a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:Clear" title="void KRawBoloPulseRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a> the base classes and then clear/delete any local
+members. Its necessary for this <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:Clear" title="void KRawBoloPulseRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a> method to exist
+in the case that instances of this object are stored
+inside of a TClonesArray
+Also, if this class holds any TClonesArrays, it must call
+TClonesArray::<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:Clear" title="void KRawBoloPulseRecord::Clear(Option_t* opt=&quot;C&quot;)">Clear</a>(<span class="string">"C"</span>)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:InitializeMembers" href="src/KRawBoloPulseRecord.cxx.html#rtqtL">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>init local members.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KRawBoloPulseRecord:IsSame" href="src/KRawBoloPulseRecord.cxx.html#hxWIcB">IsSame</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) const</span><br />
+<div class="funccomm"><pre>Compares two objects and their member variables to test for equality.
+If bPrint is set to <a href="./ListOfTypes.html#bool">true</a>, then a message for each member variable that is different
+will print to standard out. Otherwise, this method will return <a href="./ListOfTypes.html#bool">false</a> and quit
+checking member variables as soon as it finds a unequal data member.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:Compact" href="src/KRawBoloPulseRecord.cxx.html#YUMop">Compact</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>make the event class as small as possible. this calls '<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:Compact" title="void KRawBoloPulseRecord::Compact()">Compact</a>' for all member
+variables that are KDS classes, member variables that can be compacted (such as TBits)
+and base classes
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetTrace@1" href="src/KRawBoloPulseRecord.cxx.html#m.mbrC">SetTrace</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> size, <span class="keyword">const</span> <a href="./ListOfTypes.html#Short_t">Short_t</a>* aData)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:FillHistogram" href="src/KRawBoloPulseRecord.cxx.html#XxhiGB">FillHistogram</a>(TH1&amp; hist)</span><br />
+<div class="funccomm"><pre>Fills hist with data found from the pulse trace. Then you can more easily plot it.
+The TH1 must be a TH1I, S, F or D.
+
+developers note: This method shouldn't be a part of this class
+Rather, there should be some sort of data manipulation / data visualization
+set of classes to perform these types of tasks. Otherwise, data storage object
+could become flooded with data visualization tools.
+I leave this here for now, but heed this warning.
+
+Of course, the other option is the leave this entirely up to the user. ROOT already
+has the TH1 histograms and its trivial to fill the histogram or a TGraph with
+a vector of shorts
+
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:FillGraph" href="src/KRawBoloPulseRecord.cxx.html#gXJj_D">FillGraph</a>(TGraph&amp; graph)</span><br />
+<div class="funccomm"><pre>Fills hist with data found from the pulse trace. Then you can more easily plot it.
+
+developers note: This method shouldn't probably be a part of this class
+Rather, there should be some sort of data manipulation / data visualization
+set of classes to perform these types of tasks. Otherwise, data storage object
+could become flooded with data visualization tools.
+I leave this here for now, but heed this warning.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KRawBoloPulseRecord:operator__" href="src/KRawBoloPulseRecord.h.html#M_osAD">operator==</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:IsSame" title="Bool_t KRawBoloPulseRecord::IsSame(const KRawBoloPulseRecord&amp; aRec,Bool_t bPrint=false)">IsSame</a>(aRec,<span class="keyword">false</span>); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KRawBoloPulseRecord:operator!_" href="src/KRawBoloPulseRecord.h.html#FKmgDE">operator!=</a>(<span class="keyword">const</span> <a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>&amp; aRec) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> !(*<span class="keyword">this</span>==aRec); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#UInt_t">UInt_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetPulseTimeWidth" href="src/KRawBoloPulseRecord.h.html#NRUsV">GetPulseTimeWidth</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPulseTimeWidth" title="UInt_t KRawBoloPulseRecord::fPulseTimeWidth">fPulseTimeWidth</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> vector&lt;<a href="./ListOfTypes.html#Short_t">Short_t</a>&gt;&amp; <a class="funcname" name="KRawBoloPulseRecord:GetTrace" href="src/KRawBoloPulseRecord.h.html#QbyW_">GetTrace</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fTrace" title="vector&lt;Short_t&gt; KRawBoloPulseRecord::fTrace">fTrace</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:GetTrace@1" href="src/KRawBoloPulseRecord.h.html#ZRo.KB">GetTrace</a>(<span class="keyword">double</span>* p)</span><br />
+
+<div class="code"><code class="inlinecode">{CopyTraceToMem(p);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:GetTrace@2" href="src/KRawBoloPulseRecord.h.html#eH5SEC">GetTrace</a>(<span class="keyword">float</span>* p)</span><br />
+
+<div class="code"><code class="inlinecode">{CopyTraceToMem(p);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:GetTrace@3" href="src/KRawBoloPulseRecord.h.html#UjSTsC">GetTrace</a>(<span class="keyword">int</span>* p)</span><br />
+
+<div class="code"><code class="inlinecode">{CopyTraceToMem(p);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:GetTrace@4" href="src/KRawBoloPulseRecord.h.html#GVWVdB">GetTrace</a>(<span class="keyword">short</span>* p)</span><br />
+
+<div class="code"><code class="inlinecode">{CopyTraceToMem(p);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetAmplitude" href="src/KRawBoloPulseRecord.h.html#b4rSm">GetAmplitude</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fAmplitude" title="Double32_t KRawBoloPulseRecord::fAmplitude">fAmplitude</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetAmplitudeBaseline" href="src/KRawBoloPulseRecord.h.html#O00PdE">GetAmplitudeBaseline</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fAmplitudeBaseline" title="Double32_t KRawBoloPulseRecord::fAmplitudeBaseline">fAmplitudeBaseline</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetAmplitudeBaselineNoise" href="src/KRawBoloPulseRecord.h.html#Hr2o8B">GetAmplitudeBaselineNoise</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fAmplitudeBaselineNoise" title="Double32_t KRawBoloPulseRecord::fAmplitudeBaselineNoise">fAmplitudeBaselineNoise</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetPretriggerSize" href="src/KRawBoloPulseRecord.h.html#yumeHB">GetPretriggerSize</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPretriggerSize" title="Int_t KRawBoloPulseRecord::fPretriggerSize">fPretriggerSize</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetPulseRiseTime" href="src/KRawBoloPulseRecord.h.html#ZNMzUB">GetPulseRiseTime</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPulseRiseTime" title="Double32_t KRawBoloPulseRecord::fPulseRiseTime">fPulseRiseTime</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetFilterSize" href="src/KRawBoloPulseRecord.h.html#fb2N5D">GetFilterSize</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fFilterSize" title="Int_t KRawBoloPulseRecord::fFilterSize">fFilterSize</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#UInt_t">UInt_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetPulseLength" href="src/KRawBoloPulseRecord.h.html#MFXDOC">GetPulseLength</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPulseLength" title="UInt_t KRawBoloPulseRecord::fPulseLength">fPulseLength</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetHeatPulseStampWidth" href="src/KRawBoloPulseRecord.h.html#xaKNhB">GetHeatPulseStampWidth</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fHeatPulseStampWidth" title="Double32_t KRawBoloPulseRecord::fHeatPulseStampWidth">fHeatPulseStampWidth</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetSampleFrequency" href="src/KRawBoloPulseRecord.h.html#R4ShsE">GetSampleFrequency</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> 1./(<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:GetPulseTimeWidth" title="UInt_t KRawBoloPulseRecord::GetPulseTimeWidth()">GetPulseTimeWidth</a>()*1.e-9);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetNyquistFrequency" href="src/KRawBoloPulseRecord.h.html#q_fYTE">GetNyquistFrequency</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:GetSampleFrequency" title="Double32_t KRawBoloPulseRecord::GetSampleFrequency()">GetSampleFrequency</a>()/2.;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetCryoPosition" href="src/KRawBoloPulseRecord.h.html#MzoVOC">GetCryoPosition</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fCryoPosition" title="Int_t KRawBoloPulseRecord::fCryoPosition">fCryoPosition</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KRawBoloPulseRecord:GetPolarFet" href="src/KRawBoloPulseRecord.h.html#uB_ksB">GetPolarFet</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPolarFet" title="string KRawBoloPulseRecord::fPolarFet">fPolarFet</a>.c_str();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetCorrPied" href="src/KRawBoloPulseRecord.h.html#k07t5B">GetCorrPied</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fCorrPied" title="Double32_t KRawBoloPulseRecord::fCorrPied">fCorrPied</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetCompModul" href="src/KRawBoloPulseRecord.h.html#auKWFD">GetCompModul</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fCompModul" title="Double32_t KRawBoloPulseRecord::fCompModul">fCompModul</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetCompModulation" href="src/KRawBoloPulseRecord.h.html#XEMdYD">GetCompModulation</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:GetCompModul" title="Double32_t KRawBoloPulseRecord::GetCompModul()">GetCompModul</a>();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetCorrTrngl" href="src/KRawBoloPulseRecord.h.html#GjnE_D">GetCorrTrngl</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fCorrTrngl" title="Double32_t KRawBoloPulseRecord::fCorrTrngl">fCorrTrngl</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetAmplModul" href="src/KRawBoloPulseRecord.h.html#DMxcAE">GetAmplModul</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fAmplModul" title="Double32_t KRawBoloPulseRecord::fAmplModul">fAmplModul</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double32_t">Double32_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetAmplModulation" href="src/KRawBoloPulseRecord.h.html#fqHNXC">GetAmplModulation</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:GetAmplModul" title="Double32_t KRawBoloPulseRecord::GetAmplModul()">GetAmplModul</a>();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KRawBoloPulseRecord:GetIsHeatPulse" href="src/KRawBoloPulseRecord.h.html#fExfOE">GetIsHeatPulse</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fIsHeatPulse" title="Bool_t KRawBoloPulseRecord::fIsHeatPulse">fIsHeatPulse</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetPulseTimeWidth" href="src/KRawBoloPulseRecord.h.html#VWlWQ">SetPulseTimeWidth</a>(<a href="./ListOfTypes.html#ULong_t">ULong_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPulseTimeWidth" title="UInt_t KRawBoloPulseRecord::fPulseTimeWidth">fPulseTimeWidth</a> = aVal;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetTrace" href="src/KRawBoloPulseRecord.h.html#bcRjpC">SetTrace</a>(<span class="keyword">const</span> vector&lt;<a href="./ListOfTypes.html#Short_t">Short_t</a>&gt;&amp; aTrace)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fTrace" title="vector&lt;Short_t&gt; KRawBoloPulseRecord::fTrace">fTrace</a> = aTrace; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetAmplitude" href="src/KRawBoloPulseRecord.h.html#jWK2zB">SetAmplitude</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fAmplitude" title="Double32_t KRawBoloPulseRecord::fAmplitude">fAmplitude</a> = aVal;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetAmplitudeBaseline" href="src/KRawBoloPulseRecord.h.html#dQxR6C">SetAmplitudeBaseline</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fAmplitudeBaseline" title="Double32_t KRawBoloPulseRecord::fAmplitudeBaseline">fAmplitudeBaseline</a> = aVal;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetAmplitudeBaselineNoise" href="src/KRawBoloPulseRecord.h.html#h_HH0C">SetAmplitudeBaselineNoise</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fAmplitudeBaselineNoise" title="Double32_t KRawBoloPulseRecord::fAmplitudeBaselineNoise">fAmplitudeBaselineNoise</a> = aVal;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetPretriggerSize" href="src/KRawBoloPulseRecord.h.html#MrKqNB">SetPretriggerSize</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPretriggerSize" title="Int_t KRawBoloPulseRecord::fPretriggerSize">fPretriggerSize</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetPulseRiseTime" href="src/KRawBoloPulseRecord.h.html#GtIqfD">SetPulseRiseTime</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPulseRiseTime" title="Double32_t KRawBoloPulseRecord::fPulseRiseTime">fPulseRiseTime</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetFilterSize" href="src/KRawBoloPulseRecord.h.html#qww6I">SetFilterSize</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fFilterSize" title="Int_t KRawBoloPulseRecord::fFilterSize">fFilterSize</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetPulseLength" href="src/KRawBoloPulseRecord.h.html#w94oTD">SetPulseLength</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPulseLength" title="UInt_t KRawBoloPulseRecord::fPulseLength">fPulseLength</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetHeatPulseStampWidth" href="src/KRawBoloPulseRecord.h.html#qB0ih">SetHeatPulseStampWidth</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fHeatPulseStampWidth" title="Double32_t KRawBoloPulseRecord::fHeatPulseStampWidth">fHeatPulseStampWidth</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetCryoPosition" href="src/KRawBoloPulseRecord.h.html#KmJXCB">SetCryoPosition</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fCryoPosition" title="Int_t KRawBoloPulseRecord::fCryoPosition">fCryoPosition</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetPolarFet" href="src/KRawBoloPulseRecord.h.html#Pg9Y_B">SetPolarFet</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fPolarFet" title="string KRawBoloPulseRecord::fPolarFet">fPolarFet</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetCorrPied" href="src/KRawBoloPulseRecord.h.html#JmbBVE">SetCorrPied</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fCorrPied" title="Double32_t KRawBoloPulseRecord::fCorrPied">fCorrPied</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetCompModul" href="src/KRawBoloPulseRecord.h.html#uVT86B">SetCompModul</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fCompModul" title="Double32_t KRawBoloPulseRecord::fCompModul">fCompModul</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetCompModulation" href="src/KRawBoloPulseRecord.h.html#BRLxGB">SetCompModulation</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:SetCompModul" title="void KRawBoloPulseRecord::SetCompModul(Double32_t aVal)">SetCompModul</a>(aVal);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetCorrTrngl" href="src/KRawBoloPulseRecord.h.html#EEFz_C">SetCorrTrngl</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fCorrTrngl" title="Double32_t KRawBoloPulseRecord::fCorrTrngl">fCorrTrngl</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetAmplModul" href="src/KRawBoloPulseRecord.h.html#bmWUSB">SetAmplModul</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fAmplModul" title="Double32_t KRawBoloPulseRecord::fAmplModul">fAmplModul</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetAmplModulation" href="src/KRawBoloPulseRecord.h.html#ZqLGp">SetAmplModulation</a>(<a href="./ListOfTypes.html#Double32_t">Double32_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:SetAmplModul" title="void KRawBoloPulseRecord::SetAmplModul(Double32_t aVal)">SetAmplModul</a>(aVal);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetIsHeatPulse" href="src/KRawBoloPulseRecord.h.html#xlmPKB">SetIsHeatPulse</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fIsHeatPulse" title="Bool_t KRawBoloPulseRecord::fIsHeatPulse">fIsHeatPulse</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* <a class="funcname" name="KRawBoloPulseRecord:GetBolometerRecord" href="src/KRawBoloPulseRecord.h.html#Ijvp1D">GetBolometerRecord</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> (<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>*)<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fBolometerRecord" title="TRef KRawBoloPulseRecord::fBolometerRecord">fBolometerRecord</a>.GetObject();	}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KRawBoloPulseRecord:SetBolometerRecord" href="src/KRawBoloPulseRecord.h.html#Tug8mC">SetBolometerRecord</a>(<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* aRec)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KRawBoloPulseRecord.html#KRawBoloPulseRecord:fBolometerRecord" title="TRef KRawBoloPulseRecord::fBolometerRecord">fBolometerRecord</a> = aRec;	}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:47 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

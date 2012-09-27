@@ -1,0 +1,365 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:44 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KEraEventFinder</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KEraEventFinder','','/Users/adam/softwareDev/kdata/kera/KEraEventFinder.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KEraEventFinder.h.html">header file</a>
+<a class="descrheadentry" href="src/KEraEventFinder.cxx.html">source file</a>
+<a class="descrheadentry" href="KEraEventFinder_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KEraEventFinder:description">class description</a> 
+<a class="descrheadentry" href="#KEraEventFinder:Function_Members">function members</a>
+<a class="descrheadentry" href="#KEraEventFinder:Data_Members">data members</a>
+<a class="descrheadentry" href="#KEraEventFinder:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KERA_Index.html">KERA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KEraEventFinder</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KEraEventFinder:description"></a>class KEraEventFinder</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KEraRawEventReader.html">KEraRawEventReader</a>.cxx
+ KDataStructure
+
+ Author: Daniel Wegner &lt;mailto:Daniel.Wegner@student.kit.edu&gt; on 9/1/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ The basic purpose of this class is to find the ERA <a href="./EdwEvent.html">EdwEvent</a> record
+ that corresponds to a particular <a href="./KBolometerRecord.html">KBolometerRecord</a>.
+ This class will search in local directories, which you can specify,
+ and will rsync to a remote server (default is ccali.in2p3.fr, which
+ is defined in the <a href="./KFileTransfer.html">KFileTransfer</a> class), also searching in directory
+ locations you can specify (default is /sps/edelweis/kdata/data/rootevts/,
+ as specified by <a href="./KFileTransfer.html">KFileTransfer</a>).
+ The user can also specify a list of local and remote directories
+ to search for events. Use the <a href="./KEraEventFinder.html#KEraEventFinder:AddPathToSearch" title="void KEraEventFinder::AddPathToSearch(const char* aPath)">AddPathToSearch</a> method.
+
+ Because the ERA outputs do not specifiy exactly which file an event
+ can be found, this class searches the ERA raw events for the file. Soon
+ this should be fixed and it will provide the exact file to find the event
+
+ In addition, this class contains some rudimentary display capabilities
+ via the <a href="./KEraEventFinder.html#KEraEventFinder:DisplayEvent" title="void KEraEventFinder::DisplayEvent() or overloads">DisplayEvent</a> and <a href="./KEraEventFinder.html#KEraEventFinder:DisplayPower" title="void KEraEventFinder::DisplayPower() or overloads">DisplayPower</a> methods.
+
+ This class's behavior initializes differently depending upon which
+ constructor you use. If you use the default constructor with no
+ user name, it will assume that you are using this program on ccali
+ and will just look in the directories that you tell it. If you provide
+ a username, it will assume this is your ccali username and then proceed
+ to search the ccali default location for an event if it doesn't find
+ the event in you local directories.
+
+ A pointer to the <a href="./EdwEvent.html">EdwEvent</a> object can be obtained via the <a href="./KEraEventFinder.html#KEraEventFinder:TransferEvent" title="EdwEvent* KEraEventFinder::TransferEvent()">TransferEvent</a> method
+ or the <a href="./KEraEventFinder.html#KEraEventFinder:GetEvent" title="EdwEvent* KEraEventFinder::GetEvent()">GetEvent</a> method (which gives the pointer to most recently transferred event).
+ So, if you call <a href="./KEraEventFinder.html#KEraEventFinder:TransferEvent" title="EdwEvent* KEraEventFinder::TransferEvent()">TransferEvent</a>() and then call <a href="./EdwEvent.html">EdwEvent</a> *e = <a href="./KEraEventFinder.html#KEraEventFinder:GetEvent" title="EdwEvent* KEraEventFinder::GetEvent()">GetEvent</a>(), the same event will be
+ returned as if you just called <a href="./EdwEvent.html">EdwEvent</a> *e = <a href="./KEraEventFinder.html#KEraEventFinder:TransferEvent" title="EdwEvent* KEraEventFinder::TransferEvent()">TransferEvent</a>().
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KEraEventFinder:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:KEraEventFinder">KEraEventFinder</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:KEraEventFinder@1">KEraEventFinder</a>(string aUser)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:KEraEventFinder@2">KEraEventFinder</a>(<span class="keyword">const</span> <a href="./KEraEventFinder.html">KEraEventFinder</a>&amp; aFinder)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:KEraEventFinder@3">KEraEventFinder</a>(<a href="./KSambaRecord.html">KSambaRecord</a>* aSambaRecord, <a href="./KBolometerRecord.html">KBolometerRecord</a>* aBoloRecord, string aUser, string aServer, string aSourceDir, string aTargetDir)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:_KEraEventFinder">~KEraEventFinder</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:AddPathToSearch">AddPathToSearch</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aPath)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:ClearSearchPaths">ClearSearchPaths</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:DisplayEvent">DisplayEvent</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:DisplayEvent@1">DisplayEvent</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a>* aRec)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:DisplayPower">DisplayPower</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:DisplayPower@1">DisplayPower</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a>* aRec)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KBolometerRecord.html">KBolometerRecord</a>*</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:GetBolo">GetBolo</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KEventDisplay.html">KEventDisplay</a>*</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:GetDisplay">GetDisplay</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./EdwEvent.html">EdwEvent</a>*</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:GetEvent">GetEvent</a>()</td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:GetNextFileName">GetNextFileName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KSambaRecord.html">KSambaRecord</a>*</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:GetSamba">GetSamba</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:IsForceRemoteSearch">IsForceRemoteSearch</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:IsSearchLocally">IsSearchLocally</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KEraEventFinder.html">KEraEventFinder</a>&amp;</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KEraEventFinder.html">KEraEventFinder</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SetAlwaysKeepSearching">SetAlwaysKeepSearching</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> anOpt = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SetApplyPulseProcessing">SetApplyPulseProcessing</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> anOpt = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SetBolo">SetBolo</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a>* aRec)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SetForceRemoteSearch">SetForceRemoteSearch</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aChoice = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SetSamba">SetSamba</a>(<a href="./KSambaRecord.html">KSambaRecord</a>* aRec)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SetSearchLocally">SetSearchLocally</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aChoice = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SetTargetPath">SetTargetPath</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aPath)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SetUser">SetUser</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aUser)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="func"><td class="funcret"><a href="./EdwEvent.html">EdwEvent</a>*</td><td class="funcname"><a class="funcname" href="#KEraEventFinder:TransferEvent">TransferEvent</a>()</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:DoesCurrentFileHaveEvent">DoesCurrentFileHaveEvent</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:GetEventFile">GetEventFile</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aPath, <span class="keyword">const</span> <span class="keyword">char</span>* aFileName, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> searchLocal)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:Initialize">Initialize</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:OpenEventFile">OpenEventFile</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filePath, <span class="keyword">const</span> <span class="keyword">char</span>* fileName)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SearchDirectoryList">SearchDirectoryList</a>(string&amp; aStartingFile)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraEventFinder:SearchTargetDirectory">SearchTargetDirectory</a>(string&amp; aStartingFile)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KEraEventFinder:Data_Members"></a>Data Members</h2>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KEraEventFinder:fAlwaysKeepSearching"></a>fAlwaysKeepSearching</td><td class="datadesc">if this is set to true, they it won't ask you if you want to download the next file</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KEraEventFinder:fApplyPulseProcessing"></a>fApplyPulseProcessing</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KBolometerRecord.html">KBolometerRecord</a>*</td><td class="dataname"><a name="KEraEventFinder:fBoloRecord"></a>fBoloRecord</td><td></td></tr>
+<tr class="data"><td class="datatype">list&lt;string&gt;</td><td class="dataname"><a name="KEraEventFinder:fDirNames"></a>fDirNames</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KEventDisplay.html">KEventDisplay</a>*</td><td class="dataname"><a name="KEraEventFinder:fDisplay"></a>fDisplay</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KEraEventFinder:fEventHasBeenTransfered"></a>fEventHasBeenTransfered</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KEraEventFinder:fForceRemoteSearch"></a>fForceRemoteSearch</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KEraRawEventReader.html">KEraRawEventReader</a>*</td><td class="dataname"><a name="KEraEventFinder:fReader"></a>fReader</td><td class="datadesc">Reads the files</td></tr>
+<tr class="data"><td class="datatype"><a href="./KSambaRecord.html">KSambaRecord</a>*</td><td class="dataname"><a name="KEraEventFinder:fSambaRecord"></a>fSambaRecord</td><td class="datadesc">Contains the samba event number in the KDATA structure</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KEraEventFinder:fSearchLocally"></a>fSearchLocally</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KEraEventFinder:fTargetPath"></a>fTargetPath</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KFileTransfer.html">KFileTransfer</a>*</td><td class="dataname"><a name="KEraEventFinder:fTrans"></a>fTrans</td><td class="datadesc">Handles the data transfer</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KEraEventFinder:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KEraEventFinder" href="./KEraEventFinder.html">KEraEventFinder</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEraEventFinder:KEraEventFinder" href="src/KEraEventFinder.cxx.html#K7_lnE">KEraEventFinder</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>constructor with no user defined.
+Using this constructor, it is assumed
+that you are searching for ERA events on the local computer, such as ccali.
+Use the other contructor if you want this object automatically set up
+to search for files on ccali.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEraEventFinder:KEraEventFinder@1" href="src/KEraEventFinder.cxx.html#hSZSBD">KEraEventFinder</a>(string aUser)</span><br />
+<div class="funccomm"><pre>constructor with aUser. aUser should be your username to an account
+on ccali where the raw data files are found.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEraEventFinder:KEraEventFinder@2" href="src/KEraEventFinder.cxx.html#zGilgC">KEraEventFinder</a>(<span class="keyword">const</span> <a href="./KEraEventFinder.html">KEraEventFinder</a>&amp; aFinder)</span><br />
+<div class="funccomm"><pre>Copy constructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEraEventFinder:KEraEventFinder@3" href="src/KEraEventFinder.cxx.html#lJ6N1C">KEraEventFinder</a>(<a href="./KSambaRecord.html">KSambaRecord</a>* aSambaRecord, <a href="./KBolometerRecord.html">KBolometerRecord</a>* aBoloRecord, string aUser, string aServer, string aSourceDir, string aTargetDir)</span><br />
+<div class="funccomm"><pre>constructor to fill all attributes
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEraEventFinder:_KEraEventFinder" href="src/KEraEventFinder.cxx.html#UghO3E">~KEraEventFinder</a>()</span><br />
+<div class="funccomm"><pre>Default destructor
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:Initialize" href="src/KEraEventFinder.cxx.html#FXQ8KE">Initialize</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>init all data members
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KEraEventFinder:GetNextFileName" href="src/KEraEventFinder.cxx.html#w6DyWC">GetNextFileName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0)</span><br />
+<div class="funccomm"><pre>returns the next root filename corresponding to fSambaRecords's event number
+If you pass in a null pointer (or zero), the method will return the
+first filename.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./EdwEvent.html">EdwEvent</a>* <a class="funcname" name="KEraEventFinder:TransferEvent" href="src/KEraEventFinder.cxx.html#EhCoaB">TransferEvent</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>This searches for the next event and then returns a pointer
+when/if it finds the corresponding event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraEventFinder:SearchTargetDirectory" href="src/KEraEventFinder.cxx.html#GWiDSD">SearchTargetDirectory</a>(string&amp; aStartingFile)</span><br />
+<div class="funccomm"><pre>this SHOULD ONLY get called if <a href="./KEraEventFinder.html#KEraEventFinder:fSearchLocally" title="Bool_t KEraEventFinder::fSearchLocally">fSearchLocally</a> == <a href="./ListOfTypes.html#bool">false</a> &amp;&amp; ForceRemoteSearch == <a href="./ListOfTypes.html#bool">false</a>
+this searches the target transfer directory for the era raw event file
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraEventFinder:SearchDirectoryList" href="src/KEraEventFinder.cxx.html#Awq21C">SearchDirectoryList</a>(string&amp; aStartingFile)</span><br />
+<div class="funccomm"><pre>search through the list of directories for the file. returns <a href="./ListOfTypes.html#bool">true</a>
+if the event is found.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraEventFinder:DoesCurrentFileHaveEvent" href="src/KEraEventFinder.cxx.html#Y8PqK">DoesCurrentFileHaveEvent</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraEventFinder:GetEventFile" href="src/KEraEventFinder.cxx.html#lUWrHC">GetEventFile</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aPath, <span class="keyword">const</span> <span class="keyword">char</span>* aFileName, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> searchLocal)</span><br />
+<div class="funccomm"><pre>gets a particular file from the local directory or from the remote directory
+and returns <a href="./ListOfTypes.html#bool">true</a> if it finds the file or successfully transfer it.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraEventFinder:OpenEventFile" href="src/KEraEventFinder.cxx.html#CUd0_">OpenEventFile</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filePath, <span class="keyword">const</span> <span class="keyword">char</span>* fileName)</span><br />
+<div class="funccomm"><pre>opens the fileName that is located in filePath. returns <a href="./ListOfTypes.html#bool">true</a> if sucesseful
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./EdwEvent.html">EdwEvent</a>* <a class="funcname" name="KEraEventFinder:GetEvent" href="src/KEraEventFinder.cxx.html#SxVaNC">GetEvent</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>returns a pointer to the event found in the local <a href="./KEraRawEventReader.html">KEraRawEventReader</a> object,
+<a href="./KEraEventFinder.html#KEraEventFinder:fReader" title="KEraRawEventReader* KEraEventFinder::fReader">fReader</a>. If <a href="./KEraEventFinder.html#KEraEventFinder:fReader" title="KEraRawEventReader* KEraEventFinder::fReader">fReader</a> is zero, then this returns zero.
+you do not own the memory pointed to by this pointer.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraEventFinder:SetBolo" href="src/KEraEventFinder.cxx.html#eIX8ZB">SetBolo</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a>* aRec)</span><br />
+<div class="funccomm"><pre>Set the bolometer record that defines which raw <a href="./EdwEvent.html">EdwEvent</a>
+the class will search for.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:DisplayEvent@1" href="src/KEraEventFinder.cxx.html#bzLZyB">DisplayEvent</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a>* aRec)</span><br />
+<div class="funccomm"><pre>Displays the event in two TCanvas objects. First, it will search for
+the <a href="./EdwEvent.html">EdwEvent</a> that corresponds to aRec and then if it finds it,
+will display the event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:DisplayEvent@1" href="src/KEraEventFinder.cxx.html#e6SjTD">DisplayEvent</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a>* aRec)</span><br />
+<div class="funccomm"><pre>displays the most recently found event
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:DisplayPower@1" href="src/KEraEventFinder.cxx.html#t65CP">DisplayPower</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a>* aRec)</span><br />
+<div class="funccomm"><pre>same as <a href="./KEraEventFinder.html#KEraEventFinder:DisplayEvent" title="void KEraEventFinder::DisplayEvent() or overloads">DisplayEvent</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a> *aRec) except that it performs a FFT on the waveform
+and shows the power spectrum on a log-log plot for each waveform in
+the event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:DisplayPower@1" href="src/KEraEventFinder.cxx.html#OwXp.D">DisplayPower</a>(<a href="./KBolometerRecord.html">KBolometerRecord</a>* aRec)</span><br />
+<div class="funccomm"><pre>same as <a href="./KEraEventFinder.html#KEraEventFinder:DisplayEvent" title="void KEraEventFinder::DisplayEvent() or overloads">DisplayEvent</a>(<a href="./ListOfTypes.html#void">void</a>) except that it performs a FFT on the waveform
+and shows the power spectrum on a log-log plot for each waveform in
+the most recently found event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:SetUser" href="src/KEraEventFinder.cxx.html#Rqkig">SetUser</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aUser)</span><br />
+<div class="funccomm"><pre>sets the username
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:SetSearchLocally" href="src/KEraEventFinder.cxx.html#kSwatD">SetSearchLocally</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aChoice = <span class="keyword">true</span>)</span><br />
+<div class="funccomm"><pre>Set this to only search in local directories (as specified by the <a href="./KEraEventFinder.html#KEraEventFinder:fDirNames" title="list&lt;string&gt; KEraEventFinder::fDirNames">fDirNames</a>)
+Also, this will SetAlwaysKeepSearch(<a href="./ListOfTypes.html#bool">true</a>) so that it doesn't prompt the user
+to continue searching for files.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:SetForceRemoteSearch" href="src/KEraEventFinder.cxx.html#OTo65D">SetForceRemoteSearch</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aChoice = <span class="keyword">true</span>)</span><br />
+<div class="funccomm"><pre>Force the search for files on the remote server. This
+also sets <a href="./KEraEventFinder.html#KEraEventFinder:SetSearchLocally" title="void KEraEventFinder::SetSearchLocally(Bool_t aChoice=true)">SetSearchLocally</a>(<a href="./ListOfTypes.html#bool">false</a>).
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:AddPathToSearch" href="src/KEraEventFinder.h.html#T4AvO">AddPathToSearch</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aPath)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KEraEventFinder.html#KEraEventFinder:fDirNames" title="list&lt;string&gt; KEraEventFinder::fDirNames">fDirNames</a>.push_back(aPath);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:ClearSearchPaths" href="src/KEraEventFinder.h.html#HT_ii">ClearSearchPaths</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KEraEventFinder.html#KEraEventFinder:fDirNames" title="list&lt;string&gt; KEraEventFinder::fDirNames">fDirNames</a>.clear(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KSambaRecord.html">KSambaRecord</a>* <a class="funcname" name="KEraEventFinder:GetSamba" href="src/KEraEventFinder.h.html#sPbg7">GetSamba</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>getters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KEraEventFinder.html#KEraEventFinder:fSambaRecord" title="KSambaRecord* KEraEventFinder::fSambaRecord">fSambaRecord</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KBolometerRecord.html">KBolometerRecord</a>* <a class="funcname" name="KEraEventFinder:GetBolo" href="src/KEraEventFinder.h.html#pMHVSB">GetBolo</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KEraEventFinder.html#KEraEventFinder:fBoloRecord" title="KBolometerRecord* KEraEventFinder::fBoloRecord">fBoloRecord</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraEventFinder:IsSearchLocally" href="src/KEraEventFinder.h.html#VluVaE">IsSearchLocally</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEraEventFinder.html#KEraEventFinder:fSearchLocally" title="Bool_t KEraEventFinder::fSearchLocally">fSearchLocally</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraEventFinder:IsForceRemoteSearch" href="src/KEraEventFinder.h.html#BOttJC">IsForceRemoteSearch</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEraEventFinder.html#KEraEventFinder:fForceRemoteSearch" title="Bool_t KEraEventFinder::fForceRemoteSearch">fForceRemoteSearch</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KEventDisplay.html">KEventDisplay</a>* <a class="funcname" name="KEraEventFinder:GetDisplay" href="src/KEraEventFinder.h.html#WO6bCC">GetDisplay</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEraEventFinder.html#KEraEventFinder:fDisplay" title="KEventDisplay* KEraEventFinder::fDisplay">fDisplay</a>;  }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:SetSamba" href="src/KEraEventFinder.h.html#rsGfpB">SetSamba</a>(<a href="./KSambaRecord.html">KSambaRecord</a>* aRec)</span><br />
+<div class="funccomm"><pre>setters
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <a href="./KEraEventFinder.html#KEraEventFinder:fSambaRecord" title="KSambaRecord* KEraEventFinder::fSambaRecord">fSambaRecord</a> = aRec; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:SetTargetPath" href="src/KEraEventFinder.h.html#FeB83C">SetTargetPath</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aPath)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KEraEventFinder.html#KEraEventFinder:fTargetPath" title="string KEraEventFinder::fTargetPath">fTargetPath</a> = aPath;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:SetApplyPulseProcessing" href="src/KEraEventFinder.h.html#qq6OY">SetApplyPulseProcessing</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> anOpt = <span class="keyword">true</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KEraEventFinder.html#KEraEventFinder:fApplyPulseProcessing" title="Bool_t KEraEventFinder::fApplyPulseProcessing">fApplyPulseProcessing</a> = anOpt; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraEventFinder:SetAlwaysKeepSearching" href="src/KEraEventFinder.h.html#VGnw7B">SetAlwaysKeepSearching</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> anOpt = <span class="keyword">true</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KEraEventFinder.html#KEraEventFinder:fAlwaysKeepSearching" title="Bool_t KEraEventFinder::fAlwaysKeepSearching">fAlwaysKeepSearching</a> = anOpt; }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:44 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

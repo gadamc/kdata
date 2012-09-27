@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:46 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KPeakDetectorProto</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KPeakDetectorProto','','/Users/adam/softwareDev/kdata/kpta/KPeakDetectorProto.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KPeakDetectorProto.h.html">header file</a>
+<a class="descrheadentry" href="src/KPeakDetectorProto.cxx.html">source file</a>
+<a class="descrheadentry" href="KPeakDetectorProto_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KPeakDetectorProto:description">class description</a> 
+<a class="descrheadentry" href="#KPeakDetectorProto:Function_Members">function members</a>
+<a class="descrheadentry" href="#KPeakDetectorProto:Data_Members">data members</a>
+<a class="descrheadentry" href="#KPeakDetectorProto:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KPTA_Index.html">KPTA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KPeakDetectorProto</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KPeakDetectorProto:description"></a>class KPeakDetectorProto</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>.cxx
+ Author: Michael Unrau
+
+ *Copyright 2011 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KPeakDetectorProto:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:KPeakDetectorProto">KPeakDetectorProto</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:KPeakDetectorProto@1">KPeakDetectorProto</a>(<span class="keyword">const</span> <a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:_KPeakDetectorProto">~KPeakDetectorProto</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:AddFilteringProcess">AddFilteringProcess</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> aRiseTime, <span class="keyword">unsigned</span> <span class="keyword">int</span> aFlatTop, <span class="keyword">double</span> aThreshold, <span class="keyword">unsigned</span> <span class="keyword">int</span> aDerivative = 1, <span class="keyword">unsigned</span> <span class="keyword">int</span> aProcessType = 0, <span class="keyword">bool</span> aMultiplePeaks = <span class="keyword">false</span>, <span class="keyword">bool</span> aAdjustConstrains = <span class="keyword">true</span>, <span class="keyword">bool</span> aNormalize = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret">vector&lt;std::vector&lt;<span class="keyword">double</span>&gt; &gt;</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:CalculateDerivatives">CalculateDerivatives</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse)</td></tr>
+<tr class="func"><td class="funcret">virtual vector&lt;<span class="keyword">double</span>&gt;</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:ConvertToVector">ConvertToVector</a>(<span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> aSize)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>::PeakRegion</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:FindMaximum">FindMaximum</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, <span class="keyword">double</span> aThreshold, <span class="keyword">int</span> aPolarity = 1, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>::PeakRegion&gt;</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:FindMultipleMaxima">FindMultipleMaxima</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, <span class="keyword">double</span> aThreshold, <span class="keyword">int</span> aPolarity = 1, <span class="keyword">unsigned</span> <span class="keyword">int</span> aMinRegionSize = 4, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</td></tr>
+<tr class="func"><td class="funcret">virtual vector&lt;<span class="keyword">double</span>&gt;</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:GetCorrelation">GetCorrelation</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, vector&lt;<span class="keyword">double</span>&gt; aPattern, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</td></tr>
+<tr class="func"><td class="funcret">virtual vector&lt;<span class="keyword">double</span>&gt;</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:GetCorrelationCoefficient">GetCorrelationCoefficient</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, vector&lt;<span class="keyword">double</span>&gt; aPattern, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</td></tr>
+<tr class="func"><td class="funcret">virtual vector&lt;std::vector&lt;<span class="keyword">double</span>&gt; &gt;</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:GetRemainingPeaks">GetRemainingPeaks</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:InitializeMembers">InitializeMembers</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual vector&lt;<span class="keyword">double</span>&gt;</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:Normalize">Normalize</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>&amp;</td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:RunProcess">RunProcess</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:SetDecayTimeConstant">SetDecayTimeConstant</a>(<span class="keyword">double</span> aDecayTimeConstant)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:SetInputPulse">SetInputPulse</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:SetInputPulse@1">SetInputPulse</a>(<span class="keyword">double</span>* aInputPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> aSize)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPeakDetectorProto:SetPolarity">SetPolarity</a>(<span class="keyword">int</span> aPolarity)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KPeakDetectorProto:Data_Members"></a>Data Members</h2>
+<div class="access" id="datapubl"><b>public:</b>
+<table class="data" id="tabdatapubl" cellspacing="0">
+<tr class="data"><td class="datatype">vector&lt;std::vector&lt;<span class="keyword">double</span>&gt; &gt;</td><td class="dataname"><a name="KPeakDetectorProto:dCorrInputs"></a>dCorrInputs</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;std::vector&lt;<span class="keyword">double</span>&gt; &gt;</td><td class="dataname"><a name="KPeakDetectorProto:dCorrelations"></a>dCorrelations</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;std::vector&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt; &gt;</td><td class="dataname"><a name="KPeakDetectorProto:dPeakRegions"></a>dPeakRegions</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;std::vector&lt;<span class="keyword">double</span>&gt; &gt;</td><td class="dataname"><a name="KPeakDetectorProto:dTrapOutputs"></a>dTrapOutputs</td><td></td></tr>
+
+</table></div>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KPeakDetectorProto:fDecayTimeConstant"></a>fDecayTimeConstant</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;<span class="keyword">double</span>&gt;</td><td class="dataname"><a name="KPeakDetectorProto:fInputPulse"></a>fInputPulse</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;<span class="keyword">double</span>&gt;</td><td class="dataname"><a name="KPeakDetectorProto:fOutputPulse"></a>fOutputPulse</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">int</span></td><td class="dataname"><a name="KPeakDetectorProto:fPolarity"></a>fPolarity</td><td class="datadesc">-1 or 1</td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>::FilteringProcess&gt;</td><td class="dataname"><a name="KPeakDetectorProto:fProcesses"></a>fProcesses</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;std::vector&lt;<span class="keyword">double</span>&gt; &gt;</td><td class="dataname"><a name="KPeakDetectorProto:fRemainingPeaks"></a>fRemainingPeaks</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KPeakDetectorProto:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KPeakDetectorProto" href="./KPeakDetectorProto.html">KPeakDetectorProto</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KPeakDetectorProto:KPeakDetectorProto@1" href="src/KPeakDetectorProto.cxx.html#mFqnHB">KPeakDetectorProto</a>(<span class="keyword">const</span> <a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KPeakDetectorProto:_KPeakDetectorProto" href="src/KPeakDetectorProto.cxx.html#UGrn_D">~KPeakDetectorProto</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPeakDetectorProto:InitializeMembers" href="src/KPeakDetectorProto.cxx.html#LwQ.l">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>   fPeaks.clear();
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::vector&lt;<span class="keyword">double</span>&gt; <a class="funcname" name="KPeakDetectorProto:GetCorrelationCoefficient" href="src/KPeakDetectorProto.cxx.html#tMUVhB">GetCorrelationCoefficient</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, vector&lt;<span class="keyword">double</span>&gt; aPattern, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</span><br />
+<div class="funccomm"><pre> Returns a correlation coefficient of the input pulse with the pattern
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::vector&lt;<span class="keyword">double</span>&gt; <a class="funcname" name="KPeakDetectorProto:GetCorrelation" href="src/KPeakDetectorProto.cxx.html#AuoCmC">GetCorrelation</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, vector&lt;<span class="keyword">double</span>&gt; aPattern, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</span><br />
+<div class="funccomm"><pre> Returns a correlation of the input pulse with the pattern
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::vector&lt;<span class="keyword">double</span>&gt; <a class="funcname" name="KPeakDetectorProto:ConvertToVector" href="src/KPeakDetectorProto.cxx.html#KgiA_D">ConvertToVector</a>(<span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> aSize)</span><br />
+<div class="funccomm"><pre> Stores a trace at the address aPulse with the size aSize into a std::vector&lt;<a href="./ListOfTypes.html#double">double</a>&gt;
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::vector &lt; std::vector&lt;<span class="keyword">double</span>&gt; &gt; <a class="funcname" name="KPeakDetectorProto:CalculateDerivatives" href="src/KPeakDetectorProto.cxx.html#CUrRnD">CalculateDerivatives</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse)</span><br />
+<div class="funccomm"><pre> Calculates the first and the second derivatives of the input trace
+ Returns a vector, which first element is a trace with the first derivative and the second element
+ is a trace with the second derivative
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::vector&lt;<span class="keyword">double</span>&gt; <a class="funcname" name="KPeakDetectorProto:Normalize" href="src/KPeakDetectorProto.cxx.html#MyK1d">Normalize</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</span><br />
+<div class="funccomm"><pre> Normalizes the trace by its root mean square
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KPeakDetectorProto:AddFilteringProcess" href="src/KPeakDetectorProto.cxx.html#TFaCaE">AddFilteringProcess</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> aRiseTime, <span class="keyword">unsigned</span> <span class="keyword">int</span> aFlatTop, <span class="keyword">double</span> aThreshold, <span class="keyword">unsigned</span> <span class="keyword">int</span> aDerivative = 1, <span class="keyword">unsigned</span> <span class="keyword">int</span> aProcessType = 0, <span class="keyword">bool</span> aMultiplePeaks = <span class="keyword">false</span>, <span class="keyword">bool</span> aAdjustConstrains = <span class="keyword">true</span>, <span class="keyword">bool</span> aNormalize = <span class="keyword">true</span>)</span><br />
+<div class="funccomm"><pre> This function adds a filtering process into the processing chain. The first process in the chain is allowed to
+ return multiple peaks. All following processes are working on the peak regions returned by the first
+ process. The processes can adjust the upper and lower limits of the peak region (and the maximum position) or
+ just work as a filter which either rejects a peak region or passes it to the next process without adjusting
+ the peak region constrains.
+  Parameters:
+    aRiseTime   - rise time of the applied trapezoidal filter
+    aFlatTop    - flat top width of the applied trapezoidal filter
+    aThreshold  - a threshold value which a peak has to reach to be accepted
+    aDerivative - pulse to which the correlation will be applied:
+                      0:  output of the trapezoidal filter
+                      1:  first derivative of the trapezoidal filter
+                      2:  second derivative of the trapezoidal filter
+    aProcessType  - type of correlation function:
+                      0:  correlation
+                      1:  correlation coefficient
+    aMultiplePeaks  - <span class="string">"true"</span> for search of multiple peaks in one trace (only allowed for the first process in the chain
+                      <span class="string">"false"</span> for search of the global maximum
+    aAdjustConstrains - Constrains adjustment / peak region filtering mode:
+                      <span class="string">"true"</span>: if the peak region passes the process, when its upper/lower limit and the maximum value
+                              will be adjusted before passing to the next process
+                      <span class="string">"false"</span>: the peak region will be either accepted or rejected, in the case of acceptance
+                              the peak region properties will passed unchanged to the next process
+    aNormalize  - if <span class="string">"true"</span> then pulse will be normalized by its root mean square before applying the correlation
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KPeakDetectorProto:RunProcess" href="src/KPeakDetectorProto.cxx.html#sOuZED">RunProcess</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre> Main process, which applies the filter processing chain and stores peak regions which passed through
+ all processes in fRemainingRegions (first element - maximal value, second element - lower limit of
+ the corresponding peak region, third element - upper limit of the corresponding peak region.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KPeakDetectorProto:KPeakDetectorProto@1" href="src/KPeakDetectorProto.h.html#rgMYCD">KPeakDetectorProto</a>(<span class="keyword">const</span> <a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPeakDetectorProto:SetInputPulse" href="src/KPeakDetectorProto.h.html#urUKBB">SetInputPulse</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KPeakDetectorProto.html#KPeakDetectorProto:fInputPulse" title="vector&lt;double&gt; KPeakDetectorProto::fInputPulse">fInputPulse</a> = aInputPulse; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPeakDetectorProto:SetInputPulse@1" href="src/KPeakDetectorProto.h.html#rKYroC">SetInputPulse</a>(<span class="keyword">double</span>* aInputPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> aSize)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KPeakDetectorProto.html#KPeakDetectorProto:fInputPulse" title="vector&lt;double&gt; KPeakDetectorProto::fInputPulse">fInputPulse</a> = <a href="./KPeakDetectorProto.html#KPeakDetectorProto:ConvertToVector" title="vector&lt;double&gt; KPeakDetectorProto::ConvertToVector(double* aPulse,unsigned int aSize)">ConvertToVector</a>(aInputPulse,aSize);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPeakDetectorProto:SetPolarity" href="src/KPeakDetectorProto.h.html#ltRpbE">SetPolarity</a>(<span class="keyword">int</span> aPolarity)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KPeakDetectorProto.html#KPeakDetectorProto:fPolarity" title="int KPeakDetectorProto::fPolarity">fPolarity</a> = aPolarity; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPeakDetectorProto:SetDecayTimeConstant" href="src/KPeakDetectorProto.h.html#neln3C">SetDecayTimeConstant</a>(<span class="keyword">double</span> aDecayTimeConstant)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./KPeakDetectorProto.html#KPeakDetectorProto:fDecayTimeConstant" title="double KPeakDetectorProto::fDecayTimeConstant">fDecayTimeConstant</a> = (aDecayTimeConstant&gt;0) ? aDecayTimeConstant : 0; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">PeakRegion <a class="funcname" name="KPeakDetectorProto:FindMaximum" href="src/KPeakDetectorProto.h.html#m6j4YD">FindMaximum</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, <span class="keyword">double</span> aThreshold, <span class="keyword">int</span> aPolarity = 1, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">std::vector&lt;<a href="./KPeakDetectorProto.html">KPeakDetectorProto</a>::PeakRegion&gt; <a class="funcname" name="KPeakDetectorProto:FindMultipleMaxima" href="src/KPeakDetectorProto.h.html#pKtivC">FindMultipleMaxima</a>(vector&lt;<span class="keyword">double</span>&gt; aInputPulse, <span class="keyword">double</span> aThreshold, <span class="keyword">int</span> aPolarity = 1, <span class="keyword">unsigned</span> <span class="keyword">int</span> aMinRegionSize = 4, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStart = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> aStop = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">std::vector&lt; std::vector&lt;<span class="keyword">double</span>&gt; &gt; <a class="funcname" name="KPeakDetectorProto:GetRemainingPeaks" href="src/KPeakDetectorProto.h.html#oyiy2B">GetRemainingPeaks</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KPeakDetectorProto.html#KPeakDetectorProto:fRemainingPeaks" title="vector&lt;std::vector&lt;double&gt; &gt; KPeakDetectorProto::fRemainingPeaks">fRemainingPeaks</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:46 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

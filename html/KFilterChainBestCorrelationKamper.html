@@ -1,0 +1,317 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:45 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KFilterChainBestCorrelationKamper</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KFilterChainBestCorrelationKamper','','/Users/adam/softwareDev/kdata/kamping/KFilterChainBestCorrelationKamper.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KFilterChainBestCorrelationKamper.h.html">header file</a>
+<a class="descrheadentry" href="src/KFilterChainBestCorrelationKamper.cxx.html">source file</a>
+<a class="descrheadentry" href="KFilterChainBestCorrelationKamper_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KFilterChainBestCorrelationKamper:description">class description</a> 
+<a class="descrheadentry" href="#KFilterChainBestCorrelationKamper:Function_Members">function members</a>
+<a class="descrheadentry" href="#KFilterChainBestCorrelationKamper:Data_Members">data members</a>
+<a class="descrheadentry" href="#KFilterChainBestCorrelationKamper:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KAMPING_Index.html">KAMPING</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KFilterChainBestCorrelationKamper</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KFilterChainBestCorrelationKamper:description"></a>class KFilterChainBestCorrelationKamper: private <a href="./KAmper.html">KAmper</a></h1>
+<div class="classdescr">
+<pre>
+ <a href="./KFilterChainBestCorrelationKamper.html">KFilterChainBestCorrelationKamper</a>.cxx
+ KDataStructure
+
+ Created by Adam Cox
+ Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+
+ Definition of map returned by <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:MakeKamp" title="map&lt;std::string,KResult&gt; KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord* rawPulseRecord) or overloads">MakeKamp</a>  (myResults is of type map&lt;string, <a href="./KResult.html">KResult</a>&gt;)
+
+ myResults[<span class="string">"amp"</span>]
+        amplitude estimate from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
+
+ myResults[<span class="string">"peakPosition"</span>]
+        estimated pulse peak position from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
+
+ myResults[<span class="string">"chiSq"</span>]
+        ChiSq returned by ROOT fit routine from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
+
+ myResults[<span class="string">"ndfFloat"</span>]
+        NDF of the fit -- fit with floating start time
+
+ myResults[<span class="string">"fitResult"</span>]
+        ROOT's TMinuit Fit return output - 0=good fit.
+
+ myResults[<span class="string">"baselineRmsPostProc"</span>]
+        RMS of the first 40% of the post-processed pulse
+
+ myResults[<span class="string">"rmsPreProc"</span>]
+        RMS of entire preprocessed pulse
+
+ myResults[<span class="string">"rmsPostProc"</span>]
+        RMS of entire post-processed pulse
+
+ myResults[<span class="string">"ampFixHeatPosition"</span>]
+        amplitude estimate of the fit with a fixed start time set to <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fBaselinePosition" title="unsigned int KFilterChainBestCorrelationKamper::fBaselinePosition">fBaselinePosition</a>.
+
+ myResults[<span class="string">"fixHeatPosition"</span>]
+        <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fBaselinePosition" title="unsigned int KFilterChainBestCorrelationKamper::fBaselinePosition">fBaselinePosition</a> - the fixed position of the pulse peak time in the above amplitude estimate fit..
+
+ myResults[<span class="string">"fitResults_fixHeatPosition"</span>]
+        fit result -- ROOT's TMinuit Fit return output for baseline fit
+
+ myResults[<span class="string">"ampFixedPositionFromIon"</span>]
+        Heat channel amplitude estimate from the fit with the peak time fixed to the estimated Ionization pulse time.
+        Heat channel only. This element of the map will not exist for ionization channels
+
+ myResults[<span class="string">"fixedPositionFromIon"</span>]
+        Fixed pulse time -- the estimated Ionization pulse time used in the fit.
+        This element of the map will not exist for ionization channels
+
+ myResults[<span class="string">"fitResults_fixedPositionFromIon"</span>]
+        fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time.
+
+ myResults[<span class="string">"baselineRemoved"</span>]
+        the value removed from baseline removal object found in the PreProcessor object (if the preProcessor is a chain)
+ myResults[<span class="string">"slopeRemoved"</span>]
+        the linear slope removed from the baseline removal object. If a <a href="./KBaselineRemoval.html">KBaselineRemoval</a> object was used
+        then this element will not exist -- only if a <a href="./KLinearRemoval.html">KLinearRemoval</a> object was found in the PreProcessor
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KFilterChainBestCorrelationKamper:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:KFilterChainBestCorrelationKamper">KFilterChainBestCorrelationKamper</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:KFilterChainBestCorrelationKamper@1">KFilterChainBestCorrelationKamper</a>(<span class="keyword">const</span> <a href="./KFilterChainBestCorrelationKamper.html">KFilterChainBestCorrelationKamper</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:_KFilterChainBestCorrelationKamper">~KFilterChainBestCorrelationKamper</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetBaselinePosition">GetBaselinePosition</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KCorrelation.html">KCorrelation</a>&amp;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetCorrelation">GetCorrelation</a>()</td></tr>
+<tr class="func"><td class="funcret">TF1*</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetFitFunction">GetFitFunction</a>()</td></tr>
+<tr class="func"><td class="funcret">TH1D*</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetFitHistogram">GetFitHistogram</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetName">GetName</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetPositionOfMaxAbsValue">GetPositionOfMaxAbsValue</a>(<span class="keyword">double</span>* input, <span class="keyword">unsigned</span> <span class="keyword">int</span> size, <span class="keyword">unsigned</span> <span class="keyword">int</span> from = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> to = 0)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KPtaProcessor.html">KPtaProcessor</a>*</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetPostProcessor">GetPostProcessor</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KPtaProcessor.html">KPtaProcessor</a>*</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetPreprocessor">GetPreprocessor</a>()</td></tr>
+<tr class="func"><td class="funcret">vector&lt;<span class="keyword">double</span>&gt;&amp;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:GetTemplate">GetTemplate</a>()</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp">MakeKamp</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* rawPulseRecord)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp@1">MakeKamp</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* rawPulseRecord, <span class="keyword">double</span> fixPeakPosition)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp@2">MakeKamp</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp@3">MakeKamp</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp@4">MakeKamp</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp@5">MakeKamp</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp@6">MakeKamp</a>(<span class="keyword">const</span> vector&lt;<a href="./ListOfTypes.html#Double32_t">Double32_t</a>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_Double32_t_">MakeKamp&lt;Double32_t&gt;</a>(<span class="keyword">const</span> vector&lt;<a href="./ListOfTypes.html#Double32_t">Double32_t</a>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_double_">MakeKamp&lt;double&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_Double_t_">MakeKamp&lt;Double_t&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_float_">MakeKamp&lt;float&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_Float_t_">MakeKamp&lt;Float_t&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_int_">MakeKamp&lt;int&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_Int_t_">MakeKamp&lt;Int_t&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_short_">MakeKamp&lt;short&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">map&lt;std::string,<a href="./KResult.html">KResult</a>&gt;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:MakeKamp_Short_t_">MakeKamp&lt;Short_t&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KFilterChainBestCorrelationKamper.html">KFilterChainBestCorrelationKamper</a>&amp;</td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KFilterChainBestCorrelationKamper.html">KFilterChainBestCorrelationKamper</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:SetBaselinePosition">SetBaselinePosition</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> pos)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:SetName">SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:SetPeakPositionSearchRange">SetPeakPositionSearchRange</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> min, <span class="keyword">unsigned</span> <span class="keyword">int</span> max)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:SetPostProcessor">SetPostProcessor</a>(<a href="./KPtaProcessor.html">KPtaProcessor</a>* p)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:SetPreprocessor">SetPreprocessor</a>(<a href="./KPtaProcessor.html">KPtaProcessor</a>* p)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:SetTemplate">SetTemplate</a>(vector&lt;<span class="keyword">double</span>&gt;&amp; templ, <span class="keyword">double</span> AmpEstimatorTimeInTemplate, <span class="keyword">double</span> PulseStartTimeInTemplate, <span class="keyword">double</span> maxValue)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KFilterChainBestCorrelationKamper:TemplateFitFunction">TemplateFitFunction</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KFilterChainBestCorrelationKamper:Data_Members"></a>Data Members</h2>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fAmpEstPos"></a>fAmpEstPos</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fAmpEstimatorTimeInTemplate"></a>fAmpEstimatorTimeInTemplate</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fBaselinePosition"></a>fBaselinePosition</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KCorrelation.html">KCorrelation</a></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fCorrelation"></a>fCorrelation</td><td></td></tr>
+<tr class="data"><td class="datatype">TF1*</td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fFitBase"></a>fFitBase</td><td></td></tr>
+<tr class="data"><td class="datatype">TF1*</td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fFitFunc"></a>fFitFunc</td><td></td></tr>
+<tr class="data"><td class="datatype">TH1D*</td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fFitHist"></a>fFitHist</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fMaxAbsValueInTemplate"></a>fMaxAbsValueInTemplate</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fName"></a>fName</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fPeakPos"></a>fPeakPos</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fPosRangeMax"></a>fPosRangeMax</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fPosRangeMin"></a>fPosRangeMin</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KPtaProcessor.html">KPtaProcessor</a>*</td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fPostProcessor"></a>fPostProcessor</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./KPtaProcessor.html">KPtaProcessor</a>*</td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fPreProcessor"></a>fPreProcessor</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fPulseStartTimeInTemplate"></a>fPulseStartTimeInTemplate</td><td></td></tr>
+<tr class="data"><td class="datatype">vector&lt;<span class="keyword">double</span>&gt;</td><td class="dataname"><a name="KFilterChainBestCorrelationKamper:fTemplate"></a>fTemplate</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KFilterChainBestCorrelationKamper:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td>
+<center><tt><a name="KAmper" href="./KAmper.html">KAmper</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KFilterChainBestCorrelationKamper" href="./KFilterChainBestCorrelationKamper.html">KFilterChainBestCorrelationKamper</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KFilterChainBestCorrelationKamper:KFilterChainBestCorrelationKamper@1" href="src/KFilterChainBestCorrelationKamper.cxx.html#kBD7pC">KFilterChainBestCorrelationKamper</a>(<span class="keyword">const</span> <a href="./KFilterChainBestCorrelationKamper.html">KFilterChainBestCorrelationKamper</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KFilterChainBestCorrelationKamper:_KFilterChainBestCorrelationKamper" href="src/KFilterChainBestCorrelationKamper.cxx.html#zNdvTD">~KFilterChainBestCorrelationKamper</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">std::map&lt;std::string, <a href="./KResult.html">KResult</a>&gt; <a class="funcname" name="KFilterChainBestCorrelationKamper:MakeKamp@1" href="src/KFilterChainBestCorrelationKamper.cxx.html#cvwsRC">MakeKamp</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* rawPulseRecord, <span class="keyword">double</span> fixPeakPosition)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="KFilterChainBestCorrelationKamper:GetPositionOfMaxAbsValue" href="src/KFilterChainBestCorrelationKamper.cxx.html#wRtadC">GetPositionOfMaxAbsValue</a>(<span class="keyword">double</span>* input, <span class="keyword">unsigned</span> <span class="keyword">int</span> size, <span class="keyword">unsigned</span> <span class="keyword">int</span> from = 0, <span class="keyword">unsigned</span> <span class="keyword">int</span> to = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFilterChainBestCorrelationKamper:SetTemplate" href="src/KFilterChainBestCorrelationKamper.cxx.html#EWSDKD">SetTemplate</a>(vector&lt;<span class="keyword">double</span>&gt;&amp; templ, <span class="keyword">double</span> AmpEstimatorTimeInTemplate, <span class="keyword">double</span> PulseStartTimeInTemplate, <span class="keyword">double</span> maxValue)</span><br />
+<div class="funccomm"><pre>the template should be of positive polarity....
+
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KFilterChainBestCorrelationKamper:TemplateFitFunction" href="src/KFilterChainBestCorrelationKamper.cxx.html#b.0XAE">TemplateFitFunction</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a>* x, <a href="./ListOfTypes.html#Double_t">Double_t</a>* par)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt; std::map&lt;std::string, <a href="./KResult.html">KResult</a>&gt; <a class="funcname" name="KFilterChainBestCorrelationKamper:MakeKamp" href="src/KFilterChainBestCorrelationKamper.h.html#yt2HJC">MakeKamp</a>(<span class="keyword">const</span> std::vector&lt;T&gt; &amp;aPulse, <span class="keyword">double</span> fixPeakPosition, <span class="keyword">const</span> <span class="keyword">char</span>* channelName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KFilterChainBestCorrelationKamper:KFilterChainBestCorrelationKamper@1" href="src/KFilterChainBestCorrelationKamper.h.html#fx9oIE">KFilterChainBestCorrelationKamper</a>(<span class="keyword">const</span> <a href="./KFilterChainBestCorrelationKamper.html">KFilterChainBestCorrelationKamper</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">std::map&lt;std::string, <a href="./KResult.html">KResult</a>&gt; <a class="funcname" name="KFilterChainBestCorrelationKamper:MakeKamp" href="src/KFilterChainBestCorrelationKamper.h.html#vPFKPE">MakeKamp</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* rawPulseRecord)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:MakeKamp" title="map&lt;std::string,KResult&gt; KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord* rawPulseRecord) or overloads">MakeKamp</a>(rawPulseRecord, -1.0);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::map&lt;std::string, <a href="./KResult.html">KResult</a>&gt; <a class="funcname" name="KFilterChainBestCorrelationKamper:MakeKamp@1" href="src/KFilterChainBestCorrelationKamper.h.html#JLAH6B">MakeKamp</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* rawPulseRecord, <span class="keyword">double</span> fixPeakPosition)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt; std::map&lt;std::string, <a href="./KResult.html">KResult</a>&gt; <a class="funcname" name="KFilterChainBestCorrelationKamper:MakeKamp" href="src/KFilterChainBestCorrelationKamper.h.html#tcbMk">MakeKamp</a>(<span class="keyword">const</span> std::vector&lt;T&gt; &amp;aPulse, <span class="keyword">double</span> fixPeakPosition = -1.0, <span class="keyword">const</span> <span class="keyword">char</span>* channelName = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFilterChainBestCorrelationKamper:SetName" href="src/KFilterChainBestCorrelationKamper.h.html#wid8ZC">SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fName" title="string KFilterChainBestCorrelationKamper::fName">fName</a> = name;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KFilterChainBestCorrelationKamper:GetName" href="src/KFilterChainBestCorrelationKamper.h.html#XFA6FC">GetName</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fName" title="string KFilterChainBestCorrelationKamper::fName">fName</a>.c_str();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFilterChainBestCorrelationKamper:SetPreprocessor" href="src/KFilterChainBestCorrelationKamper.h.html#RvPM5B">SetPreprocessor</a>(<a href="./KPtaProcessor.html">KPtaProcessor</a>* p)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fPreProcessor" title="KPtaProcessor* KFilterChainBestCorrelationKamper::fPreProcessor">fPreProcessor</a> = p;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFilterChainBestCorrelationKamper:SetPostProcessor" href="src/KFilterChainBestCorrelationKamper.h.html#WPTAS">SetPostProcessor</a>(<a href="./KPtaProcessor.html">KPtaProcessor</a>* p)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fPostProcessor" title="KPtaProcessor* KFilterChainBestCorrelationKamper::fPostProcessor">fPostProcessor</a> = p;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFilterChainBestCorrelationKamper:SetPeakPositionSearchRange" href="src/KFilterChainBestCorrelationKamper.h.html#m1yhC">SetPeakPositionSearchRange</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> min, <span class="keyword">unsigned</span> <span class="keyword">int</span> max)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fPosRangeMin" title="unsigned int KFilterChainBestCorrelationKamper::fPosRangeMin">fPosRangeMin</a> = min; <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fPosRangeMax" title="unsigned int KFilterChainBestCorrelationKamper::fPosRangeMax">fPosRangeMax</a> = max;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KFilterChainBestCorrelationKamper:SetBaselinePosition" href="src/KFilterChainBestCorrelationKamper.h.html#md0yGE">SetBaselinePosition</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> pos)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fBaselinePosition" title="unsigned int KFilterChainBestCorrelationKamper::fBaselinePosition">fBaselinePosition</a> = pos;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KPtaProcessor.html">KPtaProcessor</a>* <a class="funcname" name="KFilterChainBestCorrelationKamper:GetPreprocessor" href="src/KFilterChainBestCorrelationKamper.h.html#MBrL4D">GetPreprocessor</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fPreProcessor" title="KPtaProcessor* KFilterChainBestCorrelationKamper::fPreProcessor">fPreProcessor</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KCorrelation.html">KCorrelation</a>&amp; <a class="funcname" name="KFilterChainBestCorrelationKamper:GetCorrelation" href="src/KFilterChainBestCorrelationKamper.h.html#NIjzV">GetCorrelation</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fCorrelation" title="KCorrelation KFilterChainBestCorrelationKamper::fCorrelation">fCorrelation</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KPtaProcessor.html">KPtaProcessor</a>* <a class="funcname" name="KFilterChainBestCorrelationKamper:GetPostProcessor" href="src/KFilterChainBestCorrelationKamper.h.html#z8r0m">GetPostProcessor</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fPostProcessor" title="KPtaProcessor* KFilterChainBestCorrelationKamper::fPostProcessor">fPostProcessor</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="KFilterChainBestCorrelationKamper:GetBaselinePosition" href="src/KFilterChainBestCorrelationKamper.h.html#NUP18">GetBaselinePosition</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fBaselinePosition" title="unsigned int KFilterChainBestCorrelationKamper::fBaselinePosition">fBaselinePosition</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TF1* <a class="funcname" name="KFilterChainBestCorrelationKamper:GetFitFunction" href="src/KFilterChainBestCorrelationKamper.h.html#rwZ_qC">GetFitFunction</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fFitFunc" title="TF1* KFilterChainBestCorrelationKamper::fFitFunc">fFitFunc</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TH1D* <a class="funcname" name="KFilterChainBestCorrelationKamper:GetFitHistogram" href="src/KFilterChainBestCorrelationKamper.h.html#eSJZZC">GetFitHistogram</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fFitHist" title="TH1D* KFilterChainBestCorrelationKamper::fFitHist">fFitHist</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">std::vector&lt;<span class="keyword">double</span>&gt;&amp; <a class="funcname" name="KFilterChainBestCorrelationKamper:GetTemplate" href="src/KFilterChainBestCorrelationKamper.h.html#vDau2E">GetTemplate</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KFilterChainBestCorrelationKamper.html#KFilterChainBestCorrelationKamper:fTemplate" title="vector&lt;double&gt; KFilterChainBestCorrelationKamper::fTemplate">fTemplate</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt; std::map&lt;std::string, <a href="./KResult.html">KResult</a>&gt; <a class="funcname" name="KFilterChainBestCorrelationKamper:MakeKamp" href="src/KFilterChainBestCorrelationKamper.h.html#yt2HJC">MakeKamp</a>(<span class="keyword">const</span> std::vector&lt;T&gt; &amp;aPulse, <span class="keyword">double</span> fixPeakPosition, <span class="keyword">const</span> <span class="keyword">char</span>* channelName)</span><br />
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:45 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

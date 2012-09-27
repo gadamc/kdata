@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:44 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KAmpSite</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KAmpSite','','/Users/adam/softwareDev/kdata/kamping/KAmpSite.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KAmpSite.h.html">header file</a>
+<a class="descrheadentry" href="src/KAmpSite.cxx.html">source file</a>
+<a class="descrheadentry" href="KAmpSite_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KAmpSite:description">class description</a> 
+<a class="descrheadentry" href="#KAmpSite:Function_Members">function members</a>
+<a class="descrheadentry" href="#KAmpSite:Data_Members">data members</a>
+<a class="descrheadentry" href="#KAmpSite:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KAMPING_Index.html">KAMPING</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KAmpSite</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KAmpSite:description"></a>class KAmpSite</h1>
+<div class="classdescr">
+<pre>
+ <a href="./KAmpSite.html">KAmpSite</a>.cxx
+ KDataStructure
+
+ Created by Adam Cox
+ Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+
+ A <a href="./KAmpSite.html">KAmpSite</a> is responsible for taking Raw <a href="./Pulse.html">Pulse</a> traces, passing those pulses to its KAmpers to
+ estimate the pulse amplitudes and peak positions, then to fill the KAmpEvents with the appropriate
+ results. The appropriate results can be any number of KPulseAnalysisRecords added to the <a href="./KAmpEvent.html">KAmpEvent</a>.
+ Additionally, the <a href="./KAmpSite.html">KAmpSite</a> MUST manage the TRef links between the Bolometer/BoloPulse/PulseAnalysis records.
+
+ A <a href="./KAmpSite.html">KAmpSite</a> will be used in a routine or program that's main goal is to take a RAW-level KData file and
+ convert it into an AMP-level KData file that is filled with pulse characteristic estimates (amplitudes, start times,
+ pulse widths, chi^2, etc...).
+
+ As a first example, see the <a href="./KBackyardKampSite.html">KBackyardKampSite</a> and code inside <a href="./KAmpSite.html#KAmpSite:RunKampSite" title="Bool_t KAmpSite::RunKampSite(KRawBolometerRecord* boloRaw,KAmpBolometerRecord* boloAmp,KAmpEvent* ee)">RunKampSite</a>
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KAmpSite:Function_Members"></a>Function Members (Methods)</h2>
+&nbsp;<br /><b>&nbsp;&nbsp;&nbsp;&nbsp;This is an abstract class, constructors will not be documented.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Look at the <a href="KAmpSite.h">header</a> to check for available constructors.</b><br />
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KAmpSite:_KAmpSite">~KAmpSite</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KAmpSite:GetName">GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KAmpSite:NeedScout">NeedScout</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KAmpSite.html">KAmpSite</a>&amp;</td><td class="funcname"><a class="funcname" href="#KAmpSite:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KAmpSite.html">KAmpSite</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KAmpSite:PrepareKampSite">PrepareKampSite</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KAmpSite:RunKampSite">RunKampSite</a>(<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* boloRaw, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpEvent.html">KAmpEvent</a>* ee)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KAmpSite:ScoutKampSite">ScoutKampSite</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* pRaw, <a href="./KRawEvent.html">KRawEvent</a>* e)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KAmpSite:SetName">SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KAmpSite:SetTRefLinksForKAmpEvent">SetTRefLinksForKAmpEvent</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpBoloPulseRecord.html">KAmpBoloPulseRecord</a>* pAmp)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KAmpSite:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KAmpSite:fName"></a>fName</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KAmpSite:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KAmpSite" href="./KAmpSite.html">KAmpSite</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td>&larr;</td><td><table><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KBackyardKampSite" href="./KBackyardKampSite.html">KBackyardKampSite</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KBlackForestKAmpSite" href="./KBlackForestKAmpSite.html">KBlackForestKAmpSite</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KChamonixKAmpSite" href="./KChamonixKAmpSite.html">KChamonixKAmpSite</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KFeldbergKAmpSite" href="./KFeldbergKAmpSite.html">KFeldbergKAmpSite</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KGrandCanyonKAmpSite" href="./KGrandCanyonKAmpSite.html">KGrandCanyonKAmpSite</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KLibertyBellKAmpSite" href="./KLibertyBellKAmpSite.html">KLibertyBellKAmpSite</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr></table></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KAmpSite:_KAmpSite" href="src/KAmpSite.cxx.html#Hk5MwE">~KAmpSite</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KAmpSite:SetTRefLinksForKAmpEvent" href="src/KAmpSite.cxx.html#XIhD_B">SetTRefLinksForKAmpEvent</a>(<a href="./KPulseAnalysisRecord.html">KPulseAnalysisRecord</a>* rec, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpBoloPulseRecord.html">KAmpBoloPulseRecord</a>* pAmp)</span><br />
+<div class="funccomm"><pre>as a KampSite - you want to create a valid <a href="./KAmpEvent.html">KAmpEvent</a>, so you MUST set the TRef links.
+This method simply does the following
+
+ rec-&gt;SetBolometerRecord(boloAmp);
+ rec-&gt;SetBoloPulseRecord(pAmp);
+ pAmp-&gt;AddPulseAnalysisRecord(rec);
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KAmpSite:RunKampSite" href="src/KAmpSite.h.html#aHFAGD">RunKampSite</a>(<a href="./KRawBolometerRecord.html">KRawBolometerRecord</a>* boloRaw, <a href="./KAmpBolometerRecord.html">KAmpBolometerRecord</a>* boloAmp, <a href="./KAmpEvent.html">KAmpEvent</a>* ee)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KAmpSite:PrepareKampSite" href="src/KAmpSite.h.html#lGaDDD">PrepareKampSite</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <span class="keyword">true</span>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KAmpSite:ScoutKampSite" href="src/KAmpSite.h.html#sS8kW">ScoutKampSite</a>(<a href="./KRawBoloPulseRecord.html">KRawBoloPulseRecord</a>* pRaw, <a href="./KRawEvent.html">KRawEvent</a>* e)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KAmpSite:NeedScout" href="src/KAmpSite.h.html#Ag1YUD">NeedScout</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span> * <a class="funcname" name="KAmpSite:GetName" href="src/KAmpSite.h.html#JtyYu">GetName</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KAmpSite.html#KAmpSite:fName" title="string KAmpSite::fName">fName</a>.c_str();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KAmpSite:SetName" href="src/KAmpSite.h.html#lbkfd">SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KAmpSite.html#KAmpSite:fName" title="string KAmpSite::fName">fName</a> = name;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:44 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

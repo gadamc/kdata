@@ -1,0 +1,120 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\newcommand{\changefont}[3]{
+\fontfamily{#1} \fontseries{#2} \fontshape{#3} \selectfont}
+\usepackage{palatino}
+\usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{graphicx}
+%\usepackage{dsfont}
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage{lscape}
+\usepackage{float}
+%\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage[colorlinks, pdfpagelabels, pdfstartview={FitH}, pdfpagelayout={OneColumn}, bookmarksopen=true, bookmarksopenlevel=1, bookmarksnumbered=true, linkcolor=black, hyperindex, plainpages=false, hypertexnames=false, citecolor=black]{hyperref}
+%\usepackage{scrpage2}
+\usepackage{geometry}
+\geometry{hmargin=2cm,top=2cm,bottom=2cm}
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy} %eigener Seitenstil
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\fancyhead[C]{$E_{recoil}$-$Q$-Distribution}
+\setlength{\headheight}{18pt}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\newcounter{asdf}
+
+\renewcommand{\labelenumi}{\alph{enumi}) \hspace{1cm}}
+%\setlength{\textwidth}{10cm}
+%\setlength{\textheight}{23cm}
+%\setlength{\oddsidemargin}{-0.5cm}
+%\setlength{\topmargin}{-2cm}
+
+\newcommand{\bracket}[3]{\left \langle #1 \middle | #2 \middle | #3 \right \rangle}
+\newcommand{\braket}[2]{\left \langle #1 \middle | #2 \right \rangle}
+\newcommand{\ket}[1]{\left| #1 \right \rangle}
+\newcommand{\bra}[1]{\left \langle #1 \right|}
+\newcommand{\mean}[1]{\left \langle #1 \right \rangle}
+
+\title{$E_{recoil}$-$Q$-Distribution}
+\author{Daniel Wegner}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\input{Derivation.tex}
+\input{MarginalDistributions.tex}
+\input{StatisticalMoments.tex}
+\input{Interpretation.tex}
+\input{ToyExperiments.tex}
+\input{IntegralErrorEstimation.tex}
+
+
+
+
+
+
+
+
+
+\begin{minipage}{\textwidth}
+
+\captionof{table}{$\chi^2$ values for the corresponding parameter combinations and acceptance of the null hypothesis $H_0$}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|} \hline
+$\overline{E_{Ion}}$ & $\overline{E_{heat}}$ & $\sigma_{E_{Ion}}$ & $\sigma_{E_{Heat}}$ & $\chi^2$ value & ndf & $n_{min}$ & TMath::Prop($\chi^2$,ndf) & CL of pdf &  $H_0$ \\ \hline \hline
+100 & 100 & 1 & 1 & 57179 & 57110 & 400 & 0.418 & 90.1\% &  yes \\ \hline
+100 & 100 & 5 & 1 & 34762.5 & 34576 & 400 & 0.239 & 95.3\% & yes \\ \hline
+100 & 100 & 1 & 5 & 29530 & 29038 & 400 & 0.020 & 96.2\%  & yes \\ \hline
+100 & 50 & 1 & 1 & 65629 & 64877 & 400 & 0.019 & 87.4\%  & yes \\ \hline
+100 & 50 & 5 & 1 & 51710 & 51732 & 400 & 0.526 & 91.2\% & yes \\ \hline
+100 & 50 & 1 & 5 & 29035 & 29322 & 400 & 0.882 & 96.4\% & yes \\ \hline
+50 & 100 & 1 & 1 & 90959 & 90805 & 400 & 0.358 & 68.7\% & yes \\ \hline
+50 & 100 & 1 & 5 & 73109 & 73203 & 400 & 0.597 & 83.8\% & yes \\ \hline
+50 & 100 & 5 & 1 & 61415 & 61112 & 400 & 0.193 & 88.7\% & yes \\ \hline
+20 & 20 & 5 & 5 & 58015 & 58449 & 400 & 0.898 & 84.7\% & yes \\ \hline
+20 & 20 & 1 & 5 & 31008 & 30129 & 400 & 0.0002 & 89.3\% & no \\ \hline
+20 & 20 & 5 & 1 & 34082 & 33851 & 400 & 0.188 & 86.5\% & yes \\ \hline
+
+\end{tabular} \\[1cm]
+
+\end{minipage}
+
+The confidence level of the propability density function (CL of pdf) gives the percentage of the events in the $\chi^2$ sum to the total sum of all monte carlo events.
+For the acceptance of the null hypothesis $H_0$, a significance level of 1\% is assumed. That means it is accepted if TMath::Prob($\chi^2$,ndf)>0.01.
+So in one case out of 12 the null hypothesis $H_0$ has to be rejected. 
+
+\input{Script.tex}
+\input{UnsolvedIssues.tex}
+\input{Bibliography.tex}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:46 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KLinearRemoval</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KLinearRemoval','','/Users/adam/softwareDev/kdata/kpta/KLinearRemoval.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KLinearRemoval.h.html">header file</a>
+<a class="descrheadentry" href="src/KLinearRemoval.cxx.html">source file</a>
+<a class="descrheadentry" href="KLinearRemoval_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KLinearRemoval:description">class description</a> 
+<a class="descrheadentry" href="#KLinearRemoval:Function_Members">function members</a>
+<a class="descrheadentry" href="#KLinearRemoval:Data_Members">data members</a>
+<a class="descrheadentry" href="#KLinearRemoval:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KPTA_Index.html">KPTA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KLinearRemoval</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KLinearRemoval:description"></a>class KLinearRemoval: public <a href="./KPtaProcessor.html">KPtaProcessor</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KLinearRemoval.html">KLinearRemoval</a>.cxx
+ Author: Adam Cox &lt;mailto:adam.cox@kit.edu&gt;
+
+ *Copyright 2011 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+ Substracts the baseline level from a pulse.
+ Use SetBaselineStart and <a href="./KLinearRemoval.html#KLinearRemoval:SetBaselineStop" title="void KLinearRemoval::SetBaselineStop(double aVal)">SetBaselineStop</a> to set the region of the pulse
+ that is used to calculate the baseline. This assumes you are calculating the line from
+ the beginning to the pulse up to some percentage of the full pulse length. By default,
+ the line is calculated up to 40% of the full pulse. This means this object can be used
+ for ion and heat pulses without adjusting any parameters. Of course, since the ion pulses
+ are located closer to the end of the pulse, the <a href="./KLinearRemoval.html#KLinearRemoval:fBaselineStop" title="double KLinearRemoval::fBaselineStop">fBaselineStop</a> value could be set to a higher value
+ if desired.
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KLinearRemoval:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:KLinearRemoval">KLinearRemoval</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:KLinearRemoval@2">KLinearRemoval</a>(<span class="keyword">const</span> <a href="./KLinearRemoval.html">KLinearRemoval</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:KLinearRemoval@1">KLinearRemoval</a>(<span class="keyword">double</span>* inPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> inSize, <span class="keyword">double</span>* outPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> outsize)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KLinearRemoval:_KLinearRemoval">~KLinearRemoval</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:AllocateArrays"><span class="baseclass">KPtaProcessor::</span>AllocateArrays</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:CalculateLine">CalculateLine</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DeleteInputPulse"><span class="baseclass">KPtaProcessor::</span>DeleteInputPulse</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DeleteOutputPulse"><span class="baseclass">KPtaProcessor::</span>DeleteOutputPulse</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DoNotDeletePulses"><span class="baseclass">KPtaProcessor::</span>DoNotDeletePulses</a>(<span class="keyword">bool</span> opt)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:GetBaselineStop">GetBaselineStop</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">double</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetInputPulse"><span class="baseclass">KPtaProcessor::</span>GetInputPulse</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetInputPulseSize"><span class="baseclass">KPtaProcessor::</span>GetInputPulseSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetName"><span class="baseclass">KPtaProcessor::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetNumProcessors"><span class="baseclass">KPtaProcessor::</span>GetNumProcessors</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:GetOffset">GetOffset</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">double</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetOutputPulse"><span class="baseclass">KPtaProcessor::</span>GetOutputPulse</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetOutputPulseSize"><span class="baseclass">KPtaProcessor::</span>GetOutputPulseSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./KPtaProcessor.html">KPtaProcessor</a>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetProcessor"><span class="baseclass">KPtaProcessor::</span>GetProcessor</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span>)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">double</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:GetSlope">GetSlope</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KLinearRemoval.html">KLinearRemoval</a>&amp;</td><td class="funcname"><a class="funcname" href="#KLinearRemoval:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KLinearRemoval.html">KLinearRemoval</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:RunProcess">RunProcess</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:SetBaselineStop">SetBaselineStop</a>(<span class="keyword">double</span> aVal)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:SetDefaultSettings">SetDefaultSettings</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<a href="./KPtaProcessor.html">KPtaProcessor</a>* pta)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aFile)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@2"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">double</span>* aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@3"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@5"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@7"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@9"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@4"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@6"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@8"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@10"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@11"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@12"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@13"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@14"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_double_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;double&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_double_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;double&gt;</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_float_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;float&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_float_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;float&gt;</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_int_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;int&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_int_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;int&gt;</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_short_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;short&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_short_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;short&gt;</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulseSize"><span class="baseclass">KPtaProcessor::</span>SetInputPulseSize</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> s)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetName"><span class="baseclass">KPtaProcessor::</span>SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aName)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:SetOffset">SetOffset</a>(<span class="keyword">double</span> offset)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetOutputPulse"><span class="baseclass">KPtaProcessor::</span>SetOutputPulse</a>(<span class="keyword">double</span>* aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetOutputPulseSize"><span class="baseclass">KPtaProcessor::</span>SetOutputPulseSize</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> s)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:SetSlope">SetSlope</a>(<span class="keyword">double</span> slope)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:Subtract">Subtract</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:Subtract@1">Subtract</a>(<span class="keyword">double</span> aSlope, <span class="keyword">double</span> aOffset, <span class="keyword">unsigned</span> <span class="keyword">int</span> i)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KLinearRemoval:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KLinearRemoval:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="datainh"><td class="datatype"><span class="keyword">bool</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fDoNotDelete"><span class="baseclass">KPtaProcessor::</span>fDoNotDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">double</span>*</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fInputPulse"><span class="baseclass">KPtaProcessor::</span>fInputPulse</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fInputSize"><span class="baseclass">KPtaProcessor::</span>fInputSize</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">double</span>*</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fOutputPulse"><span class="baseclass">KPtaProcessor::</span>fOutputPulse</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fOutputSize"><span class="baseclass">KPtaProcessor::</span>fOutputSize</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fProcessorName"><span class="baseclass">KPtaProcessor::</span>fProcessorName</a></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KLinearRemoval:fBaselineStop"></a>fBaselineStop</td><td class="datadesc">stoping position of region to be averaged for line subtraction, in percent of the total pulse length</td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KLinearRemoval:fOffset"></a>fOffset</td><td class="datadesc">calculated offset</td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span></td><td class="dataname"><a name="KLinearRemoval:fSlope"></a>fSlope</td><td class="datadesc">calculated slope of the line. </td></tr>
+
+</table></div>
+</div>
+<h2><a id="KLinearRemoval:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td>
+<center><tt><a name="KPtaProcessor" href="./KPtaProcessor.html">KPtaProcessor</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KLinearRemoval" href="./KLinearRemoval.html">KLinearRemoval</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KLinearRemoval:KLinearRemoval@2" href="src/KLinearRemoval.cxx.html#o6ZctD">KLinearRemoval</a>(<span class="keyword">const</span> <a href="./KLinearRemoval.html">KLinearRemoval</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KLinearRemoval:KLinearRemoval@1" href="src/KLinearRemoval.cxx.html#TbMQKC">KLinearRemoval</a>(<span class="keyword">double</span>* inPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> inSize, <span class="keyword">double</span>* outPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> outsize)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KLinearRemoval:_KLinearRemoval" href="src/KLinearRemoval.cxx.html#yXP6gC">~KLinearRemoval</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KLinearRemoval:InitializeMembers" href="src/KLinearRemoval.cxx.html#SIh9tC">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>initialize members.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KLinearRemoval:SetDefaultSettings" href="src/KLinearRemoval.cxx.html#qgZ8ZC">SetDefaultSettings</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KLinearRemoval:RunProcess" href="src/KLinearRemoval.cxx.html#vWD5ED">RunProcess</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre><a href="./ListOfTypes.html#ostream">cout</a> &lt;&lt; <span class="string">"Run Process: "</span> &lt;&lt; <a href="./KPtaProcessor.html#KPtaProcessor:GetName" title="const char* KPtaProcessor::GetName()">GetName</a>() &lt;&lt; endl;
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KLinearRemoval:CalculateLine" href="src/KLinearRemoval.cxx.html#fqM0yC">CalculateLine</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>calculates the slope of the line from the start of the pulse
+to the stop point, set by <a href="./KLinearRemoval.html#KLinearRemoval:fBaselineStop" title="double KLinearRemoval::fBaselineStop">fBaselineStop</a>. (The offset of the line
+will always be the first element of the pulse.) The slope is calculated
+by linear regression.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KLinearRemoval:Subtract@1" href="src/KLinearRemoval.cxx.html#SrxGuD">Subtract</a>(<span class="keyword">double</span> aSlope, <span class="keyword">double</span> aOffset, <span class="keyword">unsigned</span> <span class="keyword">int</span> i)</span><br />
+<div class="funccomm"><pre>This subtracts fInputPulse a line calculated
+as output_i = aSlope * i - offset
+where offset is the first element of fInputPulse
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KLinearRemoval:Subtract" href="src/KLinearRemoval.cxx.html#HtXL3D">Subtract</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>This subtracts fInputPulse a line calculated
+as output_i = aSlope * i - offset for all i in the pulse
+where offset is the first element of fInputPulse
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KLinearRemoval:KLinearRemoval@2" href="src/KLinearRemoval.h.html#Kgg90E">KLinearRemoval</a>(<span class="keyword">const</span> <a href="./KLinearRemoval.html">KLinearRemoval</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="KLinearRemoval:GetBaselineStop" href="src/KLinearRemoval.h.html#o4IdTD">GetBaselineStop</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KLinearRemoval.html#KLinearRemoval:fBaselineStop" title="double KLinearRemoval::fBaselineStop">fBaselineStop</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KLinearRemoval:SetBaselineStop" href="src/KLinearRemoval.h.html#YbBVYB">SetBaselineStop</a>(<span class="keyword">double</span> aVal)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KLinearRemoval.html#KLinearRemoval:fBaselineStop" title="double KLinearRemoval::fBaselineStop">fBaselineStop</a> = aVal;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KLinearRemoval:SetSlope" href="src/KLinearRemoval.h.html#vQ4BPD">SetSlope</a>(<span class="keyword">double</span> slope)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KLinearRemoval.html#KLinearRemoval:fSlope" title="double KLinearRemoval::fSlope">fSlope</a> = slope;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KLinearRemoval:SetOffset" href="src/KLinearRemoval.h.html#QMmmmD">SetOffset</a>(<span class="keyword">double</span> offset)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KLinearRemoval.html#KLinearRemoval:fOffset" title="double KLinearRemoval::fOffset">fOffset</a> = offset;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="KLinearRemoval:GetSlope" href="src/KLinearRemoval.h.html#jjP9V">GetSlope</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KLinearRemoval.html#KLinearRemoval:fSlope" title="double KLinearRemoval::fSlope">fSlope</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span> <a class="funcname" name="KLinearRemoval:GetOffset" href="src/KLinearRemoval.h.html#mTCwHD">GetOffset</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KLinearRemoval.html#KLinearRemoval:fOffset" title="double KLinearRemoval::fOffset">fOffset</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:46 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

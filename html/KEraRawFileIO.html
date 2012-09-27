@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:44 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KEraRawFileIO</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KEraRawFileIO','','/Users/adam/softwareDev/kdata/kera/KEraRawFileIO.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KEraRawFileIO.h.html">header file</a>
+<a class="descrheadentry" href="src/KEraRawFileIO.cxx.html">source file</a>
+<a class="descrheadentry" href="KEraRawFileIO_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KEraRawFileIO:description">class description</a> 
+<a class="descrheadentry" href="#KEraRawFileIO:Function_Members">function members</a>
+<a class="descrheadentry" href="#KEraRawFileIO:Data_Members">data members</a>
+<a class="descrheadentry" href="#KEraRawFileIO:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KERA_Index.html">KERA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KEraRawFileIO</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KEraRawFileIO:description"></a>class KEraRawFileIO</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KEraRawFileIO.html">KEraRawFileIO</a>.cxx
+ KDataStructure
+
+ Author: Daniel Wegner &lt;mailto: Daniel.Wegner@student.kit.edu&gt; on 8/26/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ The base class for the <a href="./KEraRawEventReader.html">KEraRawEventReader</a> and KEraRawEventWriter classes. This class
+ does the basic tasks of opening the TFile and setting the branch addresses
+ The user should not interact directly with this class, except for the public
+ methods that <a href="./KDataReader.html">KDataReader</a>/Writer inherit. However, using the methods in this
+ class shouldn't be necessary to perform an analysis of the data stored in an
+ KDS file.
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KEraRawFileIO:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:KEraRawFileIO@1">KEraRawFileIO</a>(<span class="keyword">const</span> <a href="./KEraRawFileIO.html">KEraRawFileIO</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:Close">Close</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetBranchName">GetBranchName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetEntries">GetEntries</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetEventClassName">GetEventClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetFileName">GetFileName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TFile*</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetTFile">GetTFile</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetTreeName">GetTreeName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetTreeTitle">GetTreeTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TTree*</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetTTree">GetTTree</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:ls">ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KEraRawFileIO.html">KEraRawFileIO</a>&amp;</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KEraRawFileIO.html">KEraRawFileIO</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:KEraRawFileIO">KEraRawFileIO</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:Delete">Delete</a>()</td></tr>
+<tr class="func"><td class="funcret">TFile*</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:OpenFileForReading">OpenFileForReading</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* name)</td></tr>
+<tr class="func"><td class="funcret">TFile*</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:OpenFileForWriting">OpenFileForWriting</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* name, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* option = <span class="string">"recreate"</span>, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* title = <span class="string">""</span>)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret">(unknown)</td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:"></a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:CreateTree">CreateTree</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:GetTreePointerInFile">GetTreePointerInFile</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KEraRawFileIO:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KEraRawFileIO:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="data"><td class="datatype">TFile*</td><td class="dataname"><a name="KEraRawFileIO:fFile"></a>fFile</td><td></td></tr>
+<tr class="data"><td class="datatype">TTree*</td><td class="dataname"><a name="KEraRawFileIO:fTree"></a>fTree</td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KEraRawFileIO:fBranchName"></a>fBranchName</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KEraRawFileIO:fTreeName"></a>fTreeName</td><td></td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KEraRawFileIO:fTreeTitle"></a>fTreeTitle</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KEraRawFileIO:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td>
+<center><big><b><tt><a name="KEraRawFileIO" href="./KEraRawFileIO.html">KEraRawFileIO</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td>&larr;</td><td><table><tr>
+<td bgcolor="#f7f7f7"><table><tr><td>
+<center><tt><a name="KEraRawEventReader" href="./KEraRawEventReader.html">KEraRawEventReader</a></tt></center></td>
+<td></td>
+</tr></table></td>
+</tr></table></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEraRawFileIO:KEraRawFileIO@1" href="src/KEraRawFileIO.cxx.html#oKSX_C">KEraRawFileIO</a>(<span class="keyword">const</span> <a href="./KEraRawFileIO.html">KEraRawFileIO</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraRawFileIO:InitializeMembers" href="src/KEraRawFileIO.cxx.html#iyUGZB">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
+ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraRawFileIO:Delete" href="src/KEraRawFileIO.cxx.html#kfQcX">Delete</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraRawFileIO:CreateTree" href="src/KEraRawFileIO.cxx.html#beWcME">CreateTree</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraRawFileIO:GetTreePointerInFile" href="src/KEraRawFileIO.cxx.html#gCJM5B">GetTreePointerInFile</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KEraRawFileIO:Close" href="src/KEraRawFileIO.cxx.html#ovxd2C">Close</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>every time we close the file, we delete the Event pointer.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">TFile* <a class="funcname" name="KEraRawFileIO:OpenFileForWriting" href="src/KEraRawFileIO.cxx.html#FT0PH">OpenFileForWriting</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* name, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* option = <span class="string">"recreate"</span>, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* title = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TFile* <a class="funcname" name="KEraRawFileIO:OpenFileForReading" href="src/KEraRawFileIO.cxx.html#FfbGxB">OpenFileForReading</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* name)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KEraRawFileIO:GetEntries" href="src/KEraRawFileIO.cxx.html#OhSnPE">GetEntries</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KEraRawFileIO:GetFileName" href="src/KEraRawFileIO.cxx.html#EOyO1C">GetFileName</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KEraRawFileIO:GetEventClassName" href="src/KEraRawFileIO.cxx.html#rNQ0QD">GetEventClassName</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KEraRawFileIO:ls" href="src/KEraRawFileIO.cxx.html#Xt0q3">ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KEraRawFileIO:KEraRawFileIO@1" href="src/KEraRawFileIO.h.html#OcTosC">KEraRawFileIO</a>(<span class="keyword">const</span> <a href="./KEraRawFileIO.html">KEraRawFileIO</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors -- This class is the base for the KTreeWriter and KTreeReader classes
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KEraRawFileIO:GetTreeName" href="src/KEraRawFileIO.h.html#ZjU1vB">GetTreeName</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEraRawFileIO.html#KEraRawFileIO:fTreeName" title="string KEraRawFileIO::fTreeName">fTreeName</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KEraRawFileIO:GetTreeTitle" href="src/KEraRawFileIO.h.html#v2LnIB">GetTreeTitle</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEraRawFileIO.html#KEraRawFileIO:fTreeTitle" title="string KEraRawFileIO::fTreeTitle">fTreeTitle</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">string <a class="funcname" name="KEraRawFileIO:GetBranchName" href="src/KEraRawFileIO.h.html#rUOUqD">GetBranchName</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEraRawFileIO.html#KEraRawFileIO:fBranchName" title="string KEraRawFileIO::fBranchName">fBranchName</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TFile* <a class="funcname" name="KEraRawFileIO:GetTFile" href="src/KEraRawFileIO.h.html#z9Q1HC">GetTFile</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEraRawFileIO.html#KEraRawFileIO:fFile" title="TFile* KEraRawFileIO::fFile">fFile</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TTree* <a class="funcname" name="KEraRawFileIO:GetTTree" href="src/KEraRawFileIO.h.html#YeSdG">GetTTree</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KEraRawFileIO.html#KEraRawFileIO:fTree" title="TTree* KEraRawFileIO::fTree">fTree</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:44 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+\subsection{Integral error estimation}
+The exact way to determine the expected bin contents would be to integrate $g(E_{recoil,Q}$ over the ranges of the bin and multiply with the total number of entries $n_{entries}$:
+\begin{gather}
+n_{i,pdf} = n_{entries} \cdot \int_{E_{recoil,i,min}}^{E_{recoil,i,max}} dE_{recoil} \int_{Q_{i,min}}^{Q_{i,max}} dQ \, g(E_{recoil},Q)
+\end{gather}
+As these integrations are very time-consuming the effort can be reduced by taylor-expanding $g(E_{recoil},Q$ at the centers of the bins.
+Then with $\vec{a}_i = \begin{pmatrix} E_{recoil,i,min} \\ Q_{i,min} \end{pmatrix}$ and $\vec{b}_i = \begin{pmatrix} E_{recoil,i,max} \\ Q_{i,max} \end{pmatrix}$ we have
+\begin{gather}
+n_{i,pdf} = n_{entries} \cdot \int_{E_{recoil,i,min}}^{E_{recoil,i,max}} dE_{recoil} \int_{Q_{i,min}}^{Q_{i,max}} dQ \, g(E_{recoil},Q) \\
+ = n_{entries} \cdot \int_{E_{recoil,i,min}}^{E_{recoil,i,max}} dE_{recoil} \int_{Q_{i,min}}^{Q_{i,max}} dQ \sum_{n_{E_{recoil}} = 0}^\infty \sum_{n_{Q} = 0}^\infty
+\frac{\left( \vec{x} - \frac{\vec{b}_i + \vec{a}_i}{2} \right)^{n_{E_{recoil}}} \left( \vec{x} - \frac{\vec{b}_i + \vec{a}_i}{2} \right)^{n_{Q}}}{n_{E_{recoil}}! n_Q!}
+\cdot \frac{\partial^{n_{E_{recoil}}}}{\partial E_{recoil} ^{n_{E_{recoil}}}} \frac{\partial^{n_{Q}}}{\partial Q^{n_{Q}}} g(E_{recoil,i},Q_i)
+\end{gather}
+In the double for all terms where $n_{E_{recoil}}$ and $n_{Q}$ are even the integral vanish as the indefinite integrals are odd with respect to the center of the bin:
+\begin{gather}
+n_{i,pdf} = n_{entries} \cdot \left(  \left| \vec{b}_i - \vec{a}_i \right| g(E_{recoil,i},Q) \right. \\
++ \frac{1}{6} \frac{\partial^2}{\partial E_{recoil}^2} g(E_{recoil,i},Q_i) \cdot \left( \frac{E_{recoil,i,max} - E_{recoil,i,min}}{2} \right)^3 
++ \frac{1}{6} \frac{\partial^2}{\partial Q^2} g(E_{recoil,i},Q_i) \cdot \left( \frac{Q_{i,max} - Q_{i,min}}{2} \right)^3  \\
++ \left. \mathcal O \left( \left( \frac{E_{recoil,i,max} - E_{recoil,i,min}}{2} \right)^3 \left( \frac{Q_{i,max} - Q_{i,min}}{2} \right)^3 \right) \right)
+\end{gather}
+This procedure is applied for some examples in the following: \\[0.5cm]
+\captionof{figure}{Histograms with Monte Carlo events for some parameter combinations of $\bar{E_{Ion}}$,$\bar{E_{Heat}}$, $\sigma_{E_{Ion}}$, and $\sigma_{E_{Heat}}$ fitted with the pdf $f(E_{Recoil},Q) = c \cdot g(E_{Recoil},Q)$ and distribution of $z_i$ for minimal number of pdf events $n_{min}>400$}

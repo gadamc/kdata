@@ -1,0 +1,298 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:46 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KPatternRemoval</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KPatternRemoval','','/Users/adam/softwareDev/kdata/kpta/KPatternRemoval.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KPatternRemoval.h.html">header file</a>
+<a class="descrheadentry" href="src/KPatternRemoval.cxx.html">source file</a>
+<a class="descrheadentry" href="KPatternRemoval_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KPatternRemoval:description">class description</a> 
+<a class="descrheadentry" href="#KPatternRemoval:Function_Members">function members</a>
+<a class="descrheadentry" href="#KPatternRemoval:Data_Members">data members</a>
+<a class="descrheadentry" href="#KPatternRemoval:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KPTA_Index.html">KPTA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KPatternRemoval</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KPatternRemoval:description"></a>class KPatternRemoval: public <a href="./KPtaProcessor.html">KPtaProcessor</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KPatternRemoval.html">KPatternRemoval</a>.cxx
+ Author: Adam Cox &lt;mailto:adam.cox@kit.edu&gt;
+
+ *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
+
+ This class subtracts an average <span class="string">"pattern"</span> from a waveform.
+ The pattern is calcuated from a particular region of waveform.
+ You can set this region via the SetPatternStart and SetPatternStop
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KPatternRemoval:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:KPatternRemoval">KPatternRemoval</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:KPatternRemoval@2">KPatternRemoval</a>(<span class="keyword">const</span> <a href="./KPatternRemoval.html">KPatternRemoval</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:KPatternRemoval@1">KPatternRemoval</a>(<span class="keyword">double</span>* inPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> inSize, <span class="keyword">double</span>* outPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> outsize)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KPatternRemoval:_KPatternRemoval">~KPatternRemoval</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:AllocateArrays"><span class="baseclass">KPtaProcessor::</span>AllocateArrays</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:CalculatePattern">CalculatePattern</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DeleteInputPulse"><span class="baseclass">KPtaProcessor::</span>DeleteInputPulse</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DeleteOutputPulse"><span class="baseclass">KPtaProcessor::</span>DeleteOutputPulse</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:DoNotDeletePulses"><span class="baseclass">KPtaProcessor::</span>DoNotDeletePulses</a>(<span class="keyword">bool</span> opt)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:GetBaselineStart">GetBaselineStart</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:GetBaselineStop">GetBaselineStop</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">double</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetInputPulse"><span class="baseclass">KPtaProcessor::</span>GetInputPulse</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetInputPulseSize"><span class="baseclass">KPtaProcessor::</span>GetInputPulseSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetName"><span class="baseclass">KPtaProcessor::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetNumProcessors"><span class="baseclass">KPtaProcessor::</span>GetNumProcessors</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">double</span>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetOutputPulse"><span class="baseclass">KPtaProcessor::</span>GetOutputPulse</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetOutputPulseSize"><span class="baseclass">KPtaProcessor::</span>GetOutputPulseSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">double</span>*</td><td class="funcname"><a class="funcname" href="#KPatternRemoval:GetPattern">GetPattern</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:GetPatternLength">GetPatternLength</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./KPtaProcessor.html">KPtaProcessor</a>*</td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:GetProcessor"><span class="baseclass">KPtaProcessor::</span>GetProcessor</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span>)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:GetUseExternalPattern">GetUseExternalPattern</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KPatternRemoval.html">KPatternRemoval</a>&amp;</td><td class="funcname"><a class="funcname" href="#KPatternRemoval:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KPatternRemoval.html">KPatternRemoval</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:RunProcess">RunProcess</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:SetBaselineStart">SetBaselineStart</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> aVal)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:SetBaselineStop">SetBaselineStop</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> aVal)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<a href="./KPtaProcessor.html">KPtaProcessor</a>* pta)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aFile)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@2"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">double</span>* aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@3"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@5"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@7"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@9"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@4"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@6"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@8"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@10"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@11"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@12"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@13"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse@14"><span class="baseclass">KPtaProcessor::</span>SetInputPulse</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_double_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;double&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">double</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_double_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;double&gt;</a>(<span class="keyword">const</span> <span class="keyword">double</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_float_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;float&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">float</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_float_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;float&gt;</a>(<span class="keyword">const</span> <span class="keyword">float</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_int_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;int&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">int</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_int_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;int&gt;</a>(<span class="keyword">const</span> <span class="keyword">int</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_short_"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;short&gt;</a>(<span class="keyword">const</span> vector&lt;<span class="keyword">short</span>&gt;&amp; aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulse_short_@1"><span class="baseclass">KPtaProcessor::</span>SetInputPulse&lt;short&gt;</a>(<span class="keyword">const</span> <span class="keyword">short</span>* aPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> size)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetInputPulseSize"><span class="baseclass">KPtaProcessor::</span>SetInputPulseSize</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> s)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetName"><span class="baseclass">KPtaProcessor::</span>SetName</a>(<span class="keyword">const</span> <span class="keyword">char</span>* aName)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetOutputPulse"><span class="baseclass">KPtaProcessor::</span>SetOutputPulse</a>(<span class="keyword">double</span>* aPulse)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KPtaProcessor.html#KPtaProcessor:SetOutputPulseSize"><span class="baseclass">KPtaProcessor::</span>SetOutputPulseSize</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> s)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:SetPatternLength">SetPatternLength</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> aLength)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:SetUseExternalPattern">SetUseExternalPattern</a>(<span class="keyword">bool</span> opt)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">bool</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:SubtractPattern">SubtractPattern</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:SubtractPattern@1">SubtractPattern</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i, <span class="keyword">unsigned</span> <span class="keyword">int</span> patternPos)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KPatternRemoval:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KPatternRemoval:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="datainh"><td class="datatype"><span class="keyword">bool</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fDoNotDelete"><span class="baseclass">KPtaProcessor::</span>fDoNotDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">double</span>*</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fInputPulse"><span class="baseclass">KPtaProcessor::</span>fInputPulse</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fInputSize"><span class="baseclass">KPtaProcessor::</span>fInputSize</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">double</span>*</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fOutputPulse"><span class="baseclass">KPtaProcessor::</span>fOutputPulse</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fOutputSize"><span class="baseclass">KPtaProcessor::</span>fOutputSize</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./KPtaProcessor.html#KPtaProcessor:fProcessorName"><span class="baseclass">KPtaProcessor::</span>fProcessorName</a></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a name="KPatternRemoval:fBaselineStart"></a>fBaselineStart</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a name="KPatternRemoval:fBaselineStop"></a>fBaselineStop</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">double</span>*</td><td class="dataname"><a name="KPatternRemoval:fPattern"></a>fPattern</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">unsigned</span> <span class="keyword">int</span></td><td class="dataname"><a name="KPatternRemoval:fPatternLength"></a>fPatternLength</td><td></td></tr>
+<tr class="data"><td class="datatype"><span class="keyword">bool</span></td><td class="dataname"><a name="KPatternRemoval:fUseExternalPattern"></a>fUseExternalPattern</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KPatternRemoval:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td>
+<center><tt><a name="KPtaProcessor" href="./KPtaProcessor.html">KPtaProcessor</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KPatternRemoval" href="./KPatternRemoval.html">KPatternRemoval</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KPatternRemoval:KPatternRemoval@2" href="src/KPatternRemoval.cxx.html#mNKUED">KPatternRemoval</a>(<span class="keyword">const</span> <a href="./KPatternRemoval.html">KPatternRemoval</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KPatternRemoval:KPatternRemoval@1" href="src/KPatternRemoval.cxx.html#p8XQOE">KPatternRemoval</a>(<span class="keyword">double</span>* inPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> inSize, <span class="keyword">double</span>* outPulse, <span class="keyword">unsigned</span> <span class="keyword">int</span> outsize)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KPatternRemoval:_KPatternRemoval" href="src/KPatternRemoval.cxx.html#zn7cED">~KPatternRemoval</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPatternRemoval:InitializeMembers" href="src/KPatternRemoval.cxx.html#cAqnvD">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>sets the initial values
+default pattern length = 100 points
+default baseline start is point 0
+default baseline stop is 20*pattern length (2000 points)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KPatternRemoval:RunProcess" href="src/KPatternRemoval.cxx.html#b8ym">RunProcess</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Calls <a href="./KPatternRemoval.html#KPatternRemoval:CalculatePattern" title="bool KPatternRemoval::CalculatePattern()">CalculatePattern</a> and then, if successful, subtracts that
+pattern from the input pulse and assigns the result to the output pulse.
+If <a href="./KPatternRemoval.html#KPatternRemoval:fUseExternalPattern" title="bool KPatternRemoval::fUseExternalPattern">fUseExternalPattern</a> is <a href="./ListOfTypes.html#bool">true</a>, then it will not call <a href="./KPatternRemoval.html#KPatternRemoval:CalculatePattern" title="bool KPatternRemoval::CalculatePattern()">CalculatePattern</a>, but instead
+use whatever pattern is already stored.
+This means, the following are equivalent.
+ SetPattern(aPattern);
+ <a href="./KPatternRemoval.html#KPatternRemoval:RunProcess" title="bool KPatternRemoval::RunProcess()">RunProcess</a>();
+
+ and
+
+ <a href="./KPatternRemoval.html#KPatternRemoval:RunProcess" title="bool KPatternRemoval::RunProcess()">RunProcess</a>(aPattern);
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KPatternRemoval:CalculatePattern" href="src/KPatternRemoval.cxx.html#Z0KRbD">CalculatePattern</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>This calculates the average pattern (of length <a href="./KPatternRemoval.html#KPatternRemoval:fPatternLength" title="unsigned int KPatternRemoval::fPatternLength">fPatternLength</a>)
+as found along the baseline between the <a href="./KPatternRemoval.html#KPatternRemoval:fBaselineStart" title="unsigned int KPatternRemoval::fBaselineStart">fBaselineStart</a> and <a href="./KPatternRemoval.html#KPatternRemoval:fBaselineStop" title="unsigned int KPatternRemoval::fBaselineStop">fBaselineStop</a> values.
+The average pattern is saved locally in the <a href="./KPatternRemoval.html#KPatternRemoval:fPattern" title="double* KPatternRemoval::fPattern">fPattern</a>.
+If the range between <a href="./KPatternRemoval.html#KPatternRemoval:fBaselineStart" title="unsigned int KPatternRemoval::fBaselineStart">fBaselineStart</a> and <a href="./KPatternRemoval.html#KPatternRemoval:fBaselineStop" title="unsigned int KPatternRemoval::fBaselineStop">fBaselineStop</a> is smaller than the <a href="./KPatternRemoval.html#KPatternRemoval:fPatternLength" title="unsigned int KPatternRemoval::fPatternLength">fPatternLength</a>
+then this returns <a href="./ListOfTypes.html#bool">false</a>. Otherwise, it calculates the number of full
+patterns available in the range (numPatterns) and then calculates the average pattern
+between <a href="./KPatternRemoval.html#KPatternRemoval:fBaselineStart" title="unsigned int KPatternRemoval::fBaselineStart">fBaselineStart</a> and <a href="./KPatternRemoval.html#KPatternRemoval:fBaselineStart" title="unsigned int KPatternRemoval::fBaselineStart">fBaselineStart</a>+numPatterns*<a href="./KPatternRemoval.html#KPatternRemoval:fPatternLength" title="unsigned int KPatternRemoval::fPatternLength">fPatternLength</a>.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KPatternRemoval:SubtractPattern" href="src/KPatternRemoval.cxx.html#frOcJ">SubtractPattern</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>This subtracts the calculated <a href="./KPatternRemoval.html#KPatternRemoval:fPattern" title="double* KPatternRemoval::fPattern">fPattern</a> from the fInputPulse and assigns the
+result to the fOutputPulse
+
+If <a href="./KPatternRemoval.html#KPatternRemoval:fPatternLength" title="unsigned int KPatternRemoval::fPatternLength">fPatternLength</a> is set to zero, the input pulse is copied to the output pulse.
+This could be useful when dealing with heat pulses (where there should be no pattern)
+but this processor is part of a <a href="./KPulseAnalysisChain.html">KPulseAnalysisChain</a> and you just want to set
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPatternRemoval:SubtractPattern@1" href="src/KPatternRemoval.cxx.html#ueTg4B">SubtractPattern</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i, <span class="keyword">unsigned</span> <span class="keyword">int</span> patternPos)</span><br />
+<div class="funccomm"><pre>you must make sure that i and patternPos are not out of bounds.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPatternRemoval:SetBaselineStart" href="src/KPatternRemoval.cxx.html#h8icVE">SetBaselineStart</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> aVal)</span><br />
+<div class="funccomm"><pre>set's the absolute start point for defining where the average
+pattern is calculated.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPatternRemoval:SetBaselineStop" href="src/KPatternRemoval.cxx.html#zSy2QC">SetBaselineStop</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> aVal)</span><br />
+<div class="funccomm"><pre>set's the absolute stop point for defining where the average
+pattern is calculated.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KPatternRemoval:SetPatternLength" href="src/KPatternRemoval.cxx.html#YK4lxD">SetPatternLength</a>(<span class="keyword">unsigned</span> <span class="keyword">int</span> aLength)</span><br />
+<div class="funccomm"><pre>sets the length of the pattern. This allocates memory and
+destroys the previous pattern if aLength is different from the
+current pattern length.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KPatternRemoval:KPatternRemoval@2" href="src/KPatternRemoval.h.html#z8Fn.D">KPatternRemoval</a>(<span class="keyword">const</span> <a href="./KPatternRemoval.html">KPatternRemoval</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">double</span>* <a class="funcname" name="KPatternRemoval:GetPattern" href="src/KPatternRemoval.h.html#elfGWC">GetPattern</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KPatternRemoval.html#KPatternRemoval:fPattern" title="double* KPatternRemoval::fPattern">fPattern</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="KPatternRemoval:GetPatternLength" href="src/KPatternRemoval.h.html#ECJmAB">GetPatternLength</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KPatternRemoval.html#KPatternRemoval:fPatternLength" title="unsigned int KPatternRemoval::fPatternLength">fPatternLength</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="KPatternRemoval:GetBaselineStart" href="src/KPatternRemoval.h.html#zHOdkD">GetBaselineStart</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KPatternRemoval.html#KPatternRemoval:fBaselineStart" title="unsigned int KPatternRemoval::fBaselineStart">fBaselineStart</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="funcname" name="KPatternRemoval:GetBaselineStop" href="src/KPatternRemoval.h.html#rVlddC">GetBaselineStop</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KPatternRemoval.html#KPatternRemoval:fBaselineStop" title="unsigned int KPatternRemoval::fBaselineStop">fBaselineStop</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KPatternRemoval:SetUseExternalPattern" href="src/KPatternRemoval.h.html#sNeOP">SetUseExternalPattern</a>(<span class="keyword">bool</span> opt)</span><br />
+
+<div class="code"><code class="inlinecode">{opt = <a href="./KPatternRemoval.html#KPatternRemoval:fUseExternalPattern" title="bool KPatternRemoval::fUseExternalPattern">fUseExternalPattern</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">bool</span> <a class="funcname" name="KPatternRemoval:GetUseExternalPattern" href="src/KPatternRemoval.h.html#Yh.Y7D">GetUseExternalPattern</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KPatternRemoval.html#KPatternRemoval:fUseExternalPattern" title="bool KPatternRemoval::fUseExternalPattern">fUseExternalPattern</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:46 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

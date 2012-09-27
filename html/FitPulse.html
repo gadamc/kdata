@@ -1,0 +1,491 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:43 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>FitPulse</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class FitPulse','','FitPulse.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/FitPulse.h.html">header file</a>
+<a class="descrheadentry" href="src/FitPulse.cxx.html">source file</a>
+<a class="descrheadentry" href="FitPulse_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#FitPulse:description">class description</a> 
+<a class="descrheadentry" href="#FitPulse:Function_Members">function members</a>
+<a class="descrheadentry" href="#FitPulse:Data_Members">data members</a>
+<a class="descrheadentry" href="#FitPulse:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./ERA_Index.html">ERA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">FitPulse</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="FitPulse:description"></a>class FitPulse: public <a href="./Pulse.html">Pulse</a></h1>
+<div class="classdescr">
+</div>
+</div></div>
+
+<div id="functions">
+<h2><a id="FitPulse:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#FitPulse:FitPulse">FitPulse</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#FitPulse:FitPulse@2">FitPulse</a>(<span class="keyword">const</span> <a href="./FitPulse.html">FitPulse</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#FitPulse:FitPulse@1">FitPulse</a>(<span class="keyword">const</span> <a href="./EdwPulse.html">EdwPulse</a>*, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aBasicPreprocess = 0)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#FitPulse:_FitPulse">~FitPulse</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:ApplyWindow">ApplyWindow</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWidth = 0)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:BasicPreprocess">BasicPreprocess</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aCheckPeak = 0)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:BasicPreprocessed">BasicPreprocessed</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
+<tr class="funcinh"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:Channel"><span class="baseclass">Pulse::</span>Channel</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#FitPulse:Class">Class</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Clear"><span class="baseclass">TObject::</span>Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:ClearTrace"><span class="baseclass">Pulse::</span>ClearTrace</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:Clone"><span class="baseclass">TObject::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Compare"><span class="baseclass">TObject::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:ComputeNoise">ComputeNoise</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:ComputeTraceFFT">ComputeTraceFFT</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aWindowFlag = 1)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Copy"><span class="baseclass">TObject::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; object) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Delete"><span class="baseclass">TObject::</span>Delete</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:DetectSinglePulse">DetectSinglePulse</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:DistancetoPrimitive"><span class="baseclass">TObject::</span>DistancetoPrimitive</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Draw"><span class="baseclass">TObject::</span>Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DrawClass"><span class="baseclass">TObject::</span>DrawClass</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:DrawClone"><span class="baseclass">TObject::</span>DrawClone</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Dump"><span class="baseclass">TObject::</span>Dump</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Error"><span class="baseclass">TObject::</span>Error</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute"><span class="baseclass">TObject::</span>Execute</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute@1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:FilterTrace">FilterTrace</a>(vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; aDirect, vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; aInverse)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:FindPeaks">FindPeaks</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aCriterium, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> AnySign = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> aLength = FP_LENGTH)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:FindPeaks@1">FindPeaks</a>(<a href="./ListOfTypes.html#Float_t">Float_t</a> aSensitivity, <a href="./ListOfTypes.html#Int_t">Int_t</a> aLength, <a href="./ListOfTypes.html#Int_t">Int_t</a> aOrder, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> AnySign = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:GetFallTime">GetFallTime</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracLow = 0.3, <span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracHigh = 0.9, <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSmooth = PULSESHAPE_SMOOTHING, string aPlot = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#FitPulse:GetFitAmpl">GetFitAmpl</a>(vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; aTemplate, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aFitTime = 1, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aInterpolTime = 1, <a href="./ListOfTypes.html#Float_t">Float_t</a> aTimeOffsetMin = 0, <a href="./ListOfTypes.html#Float_t">Float_t</a> aTimeOffsetMax = 0, string aPlotFit = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#FitPulse:GetFitWiener">GetFitWiener</a>(<span class="keyword">const</span> <a href="./OffsetFFT.html">OffsetFFT</a>* aTemplateFFTs, <span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aNoise, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aFast = 1, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aSubBin = 1, <a href="./ListOfTypes.html#Float_t">Float_t</a> aOffsetMin = 0, <a href="./ListOfTypes.html#Float_t">Float_t</a> aOffsetMax = 0, <a href="./ListOfTypes.html#Float_t">Float_t</a> aOffsetStep = 0, string aPlotFit = <span class="string">""</span>, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aNoFixSign = 0)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:GetFWHM">GetFWHM</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracWidth = 0.5, <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSmooth = PULSESHAPE_SMOOTHING, string aPlot = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:GetIntegral">GetIntegral</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> xmin, <a href="./ListOfTypes.html#Int_t">Int_t</a> xmax) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:GetMax">GetMax</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:GetMin">GetMin</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetName"><span class="baseclass">TObject::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Int_t">Int_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#FitPulse:GetPeakBins">GetPeakBins</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:GetRiseTime">GetRiseTime</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracLow = 0.2, <span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracHigh = 0.9, <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSmooth = PULSESHAPE_SMOOTHING, string aPlot = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:GetSimpleAmpl">GetSimpleAmpl</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:GetSimpleAmplBin">GetSimpleAmplBin</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetTitle"><span class="baseclass">TObject::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#FitPulse:GetWienerAmpl">GetWienerAmpl</a>(<span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aTemplateFFT, <span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aNoise, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aDoFFT = 0, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aChi2Switch = 0, string aPlotFilter = <span class="string">""</span>, string aPlotFit = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Hash"><span class="baseclass">TObject::</span>Hash</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Info"><span class="baseclass">TObject::</span>Info</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> <span class="keyword">char</span>* classname) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom@1"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> TClass* cl) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Inspect"><span class="baseclass">TObject::</span>Inspect</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:InvertBit"><span class="baseclass">TObject::</span>InvertBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#FitPulse:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:IsExpoBaseline">IsExpoBaseline</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:IsHeat"><span class="baseclass">Pulse::</span>IsHeat</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:IsSaturated"><span class="baseclass">Pulse::</span>IsSaturated</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:MeanBase">MeanBase</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Obsolete"><span class="baseclass">TObject::</span>Obsolete</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* asOfVers, <span class="keyword">const</span> <span class="keyword">char</span>* removedFromVers) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete@1"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]@1"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new@1"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]@1"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="func"><td class="funcret"><a href="./FitPulse.html">FitPulse</a>&amp;</td><td class="funcname"><a class="funcname" href="#FitPulse:operator_">operator=</a>(<span class="keyword">const</span> <a href="./FitPulse.html">FitPulse</a>&amp;)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#FitPulse:Pattern">Pattern</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#UShort_t">UShort_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:PatternLength">PatternLength</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:PlotPattern">PlotPattern</a>(string aPlotName)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:PlotPeaks">PlotPeaks</a>(string aPlotName)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:PlotRawTrace"><span class="baseclass">Pulse::</span>PlotRawTrace</a>(string aPlotName)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:PlotTrace">PlotTrace</a>(string aPlotName)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Print"><span class="baseclass">TObject::</span>Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./FloatVect.html">FloatVect</a></td><td class="funcname"><a class="funcname" href="#FitPulse:ProcessedTrace">ProcessedTrace</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./FloatVect.html">FloatVect</a></td><td class="funcname"><a class="funcname" href="#FitPulse:ProcessedTraceFFT">ProcessedTraceFFT</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:RemoveBaseline">RemoveBaseline</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:RemoveExpoBaseline">RemoveExpoBaseline</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aRemove = 1, <a href="./ListOfTypes.html#Float_t">Float_t</a> aAmplMin = EXPOBASE_AMPLMIN)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:RemoveLinearBase">RemoveLinearBase</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:RemovePattern">RemovePattern</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNbPatternPts)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:RemoveSaturatedSpikes">RemoveSaturatedSpikes</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> maxlength = 3)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:Sampling_ns"><span class="baseclass">Pulse::</span>Sampling_ns</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(<a href="./ListOfTypes.html#ostream">ostream</a>&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:SetBaseFromPeakBin">SetBaseFromPeakBin</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aBin)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:SetBaseStart">SetBaseStart</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aStart)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:SetBaseStop">SetBaseStop</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aStop)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit@1"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> set)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:SetChannel"><span class="baseclass">Pulse::</span>SetChannel</a>(string ch)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDrawOption"><span class="baseclass">TObject::</span>SetDrawOption</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:SetPatternLength">SetPatternLength</a>(<a href="./ListOfTypes.html#UShort_t">UShort_t</a> aLength)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:SetSampling_ns"><span class="baseclass">Pulse::</span>SetSampling_ns</a>(<a href="./ListOfTypes.html#ULong_t">ULong_t</a> aSampling)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:SetSign">SetSign</a>(<a href="./ListOfTypes.html#Short_t">Short_t</a> aSign)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:SetTrace"><span class="baseclass">Pulse::</span>SetTrace</a>(<span class="keyword">const</span> vector&lt;<a href="./ListOfTypes.html#Short_t">Short_t</a>&gt;&amp; aTrace)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:SetTrace@1"><span class="baseclass">Pulse::</span>SetTrace</a>(<a href="./ListOfTypes.html#UShort_t">UShort_t</a> n, <span class="keyword">const</span> <a href="./ListOfTypes.html#Short_t">Short_t</a>* aData)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetUniqueID"><span class="baseclass">TObject::</span>SetUniqueID</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> uid)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Short_t">Short_t</a></td><td class="funcname"><a class="funcname" href="#FitPulse:Sign">Sign</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#FitPulse:SmoothedAmpl">SmoothedAmpl</a>(<span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aSmoothTrace) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./FloatVect.html">FloatVect</a></td><td class="funcname"><a class="funcname" href="#FitPulse:SmoothedTrace">SmoothedTrace</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSmoothing) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SysError"><span class="baseclass">TObject::</span>SysError</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBit"><span class="baseclass">TObject::</span>TestBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBits"><span class="baseclass">TObject::</span>TestBits</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Short_t">Short_t</a>&gt;</td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:Trace"><span class="baseclass">Pulse::</span>Trace</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Short_t">Short_t</a></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:Trace@1"><span class="baseclass">Pulse::</span>Trace</a>(<a href="./ListOfTypes.html#Short_t">Short_t</a> pt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./Pulse.html#Pulse:TraceSize"><span class="baseclass">Pulse::</span>TraceSize</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#FitPulse:TranslateTrace">TranslateTrace</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aShiftBins)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:UseCurrentStyle"><span class="baseclass">TObject::</span>UseCurrentStyle</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Warning"><span class="baseclass">TObject::</span>Warning</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#FitPulse:WienerFast">WienerFast</a>(<span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aKernel, <span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aDenom, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aDoFFT = 0)</td></tr>
+<tr class="func"><td class="funcret">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt;</td><td class="funcname"><a class="funcname" href="#FitPulse:WienerLoop">WienerLoop</a>(<span class="keyword">const</span> <a href="./OffsetFFT.html">OffsetFFT</a>* aTemplateFFTs, <span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aNoise, <a href="./ListOfTypes.html#Float_t">Float_t</a> aMin, <a href="./ListOfTypes.html#Float_t">Float_t</a> aMax, <a href="./ListOfTypes.html#Float_t">Float_t</a> aStep, <a href="./ListOfTypes.html#Float_t">Float_t</a> aAmpl, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aFast, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aDoFFT, <a href="./ListOfTypes.html#Short_t">Short_t</a> aSignChange)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write@1"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0) <span class="keyword">const</span></td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DoError"><span class="baseclass">TObject::</span>DoError</a>(<span class="keyword">int</span> level, <span class="keyword">const</span> <span class="keyword">char</span>* location, <span class="keyword">const</span> <span class="keyword">char</span>* fmt, va_list va) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MakeZombie"><span class="baseclass">TObject::</span>MakeZombie</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="FitPulse:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span>EStatusBits { </td><td class="dataname"><a href="#TObject:kCanDelete">kCanDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kMustCleanup">kMustCleanup</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kObjInCanvas">kObjInCanvas</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kIsReferenced">kIsReferenced</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kHasUUID">kHasUUID</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kCannotPick">kCannotPick</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNoContextMenu">kNoContextMenu</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kInvalidObject">kInvalidObject</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span><i>[unnamed]</i> { </td><td class="dataname"><a href="#TObject:kIsOnHeap">kIsOnHeap</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNotDeleted">kNotDeleted</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kZombie">kZombie</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kBitMask">kBitMask</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kSingleKey">kSingleKey</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kOverwrite">kOverwrite</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kWriteDelete">kWriteDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./Pulse.html#Pulse:fChannel"><span class="baseclass">Pulse::</span>fChannel</a></td><td class="datadesc">*&lt; Channel */</td></tr>
+<tr class="datainh"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a href="./Pulse.html#Pulse:fIsHeat"><span class="baseclass">Pulse::</span>fIsHeat</a></td><td class="datadesc">*&lt; heat channel or not */</td></tr>
+<tr class="datainh"><td class="datatype"><a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="dataname"><a href="./Pulse.html#Pulse:fSampling_ns"><span class="baseclass">Pulse::</span>fSampling_ns</a></td><td class="datadesc">*&lt; Sampling frequency */</td></tr>
+<tr class="datainh"><td class="datatype">vector&lt;<a href="./ListOfTypes.html#Short_t">Short_t</a>&gt;</td><td class="dataname"><a href="./Pulse.html#Pulse:fTrace"><span class="baseclass">Pulse::</span>fTrace</a></td><td class="datadesc">*&lt; Raw trace */</td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="FitPulse:fBaseStart"></a>fBaseStart</td><td class="datadesc">*&lt; Pretrigger */</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="FitPulse:fBaseStop"></a>fBaseStop</td><td class="datadesc">*&lt; Pretrigger */</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="FitPulse:fBasicPreprocessed"></a>fBasicPreprocessed</td><td class="datadesc">*&lt; Set to 1 if baseline substraction, depatterning.. were already done for that pulse */</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="FitPulse:fIsExpoBaseline"></a>fIsExpoBaseline</td><td class="datadesc">*&lt; expo baselien */</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="dataname"><a name="FitPulse:fMeanBase"></a>fMeanBase</td><td class="datadesc">*&lt; Average value of the baseline from the pretrigger region */</td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt;</td><td class="dataname"><a name="FitPulse:fPattern"></a>fPattern</td><td class="datadesc">*&lt; Pattern */</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#UShort_t">UShort_t</a></td><td class="dataname"><a name="FitPulse:fPatternLength"></a>fPatternLength</td><td class="datadesc">*&lt; Pattern */</td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./ListOfTypes.html#Int_t">Int_t</a>&gt;</td><td class="dataname"><a name="FitPulse:fPeakBins"></a>fPeakBins</td><td class="datadesc">*&lt; Position of peaks detected by the raw peakfinder algorithm */</td></tr>
+<tr class="data"><td class="datatype"><a href="./FloatVect.html">FloatVect</a></td><td class="dataname"><a name="FitPulse:fProcessedTrace"></a>fProcessedTrace</td><td class="datadesc">*&lt; Processed trace (initialized to the raw trace, then may undergo baseline substraction, depatterning, filtering.. */</td></tr>
+<tr class="data"><td class="datatype"><a href="./FloatVect.html">FloatVect</a></td><td class="dataname"><a name="FitPulse:fProcessedTraceFFT"></a>fProcessedTraceFFT</td><td class="datadesc">*&lt; FFT of the processed trace */</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Short_t">Short_t</a></td><td class="dataname"><a name="FitPulse:fSign"></a>fSign</td><td class="datadesc">*&lt; Pulse sign (defined a priori) */</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="dataname"><a name="FitPulse:fSimpleAmpl"></a>fSimpleAmpl</td><td class="datadesc">*&lt; Raw amplitude */</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Float_t">Float_t</a></td><td class="dataname"><a name="FitPulse:fSimpleAmplBin"></a>fSimpleAmplBin</td><td class="datadesc">*&lt; Raw amplitude */</td></tr>
+
+</table></div>
+</div>
+<h2><a id="FitPulse:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td><table><tr>
+<td bgcolor="#efefef" align="right">
+<tt>TObject</tt></td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><tt><a name="Pulse" href="./Pulse.html">Pulse</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="FitPulse" href="./FitPulse.html">FitPulse</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="FitPulse:FitPulse" href="src/FitPulse.cxx.html#SfKH_D">FitPulse</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="FitPulse:_FitPulse" href="src/FitPulse.cxx.html#VYwcOE">~FitPulse</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="FitPulse:FitPulse@1" href="src/FitPulse.cxx.html#BSuxIB">FitPulse</a>(<span class="keyword">const</span> <a href="./EdwPulse.html">EdwPulse</a>* , <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aBasicPreprocess = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:PlotTrace" href="src/FitPulse.cxx.html#FVQVZC">PlotTrace</a>(string aPlotName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:PlotPattern" href="src/FitPulse.cxx.html#b87rhC">PlotPattern</a>(string aPlotName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:PlotPeaks" href="src/FitPulse.cxx.html#tjxCnB">PlotPeaks</a>(string aPlotName)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:ComputeNoise" href="src/FitPulse.cxx.html#bYQWzC">ComputeNoise</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:RemoveSaturatedSpikes" href="src/FitPulse.cxx.html#WAy7FB">RemoveSaturatedSpikes</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> maxlength = 3)</span><br />
+<div class="funccomm"><pre> This step should take place before any other preprocessing (eg. pattern, baseline etc..)
+ Replace saturated points by a linear interpolation of their nearest neighboors.
+ Do this only if the saturation takes place on less than maxlength points.
+ This is a <span class="string">"spike removal"</span> procedure, NOT a processing of saturation due to a real signal.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:RemoveBaseline" href="src/FitPulse.cxx.html#XkFs6D">RemoveBaseline</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:RemoveLinearBase" href="src/FitPulse.cxx.html#K6nRQD">RemoveLinearBase</a>()</span><br />
+<div class="funccomm"><pre> subtract y=ax+b
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="FitPulse:RemoveExpoBaseline" href="src/FitPulse.cxx.html#tbbuCC">RemoveExpoBaseline</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aRemove = 1, <a href="./ListOfTypes.html#Float_t">Float_t</a> aAmplMin = EXPOBASE_AMPLMIN)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:RemovePattern" href="src/FitPulse.cxx.html#RRJZjE">RemovePattern</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNbPatternPts)</span><br />
+<div class="funccomm"><pre> Allows to remove a noise with perfectly known period and which remains with a constant
+ phase all over the event (better than single filtering)
+ Especially useful to correct for the heat modulation noise in the ionisation channels
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:SetBaseFromPeakBin" href="src/FitPulse.cxx.html#KfZfBE">SetBaseFromPeakBin</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aBin)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:ApplyWindow" href="src/FitPulse.cxx.html#QLzPfE">ApplyWindow</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aWidth = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:SetSign" href="src/FitPulse.cxx.html#SZ8wQE">SetSign</a>(<a href="./ListOfTypes.html#Short_t">Short_t</a> aSign)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:BasicPreprocess" href="src/FitPulse.cxx.html#rqnlvE">BasicPreprocess</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aCheckPeak = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:ComputeTraceFFT" href="src/FitPulse.cxx.html#kiBwWC">ComputeTraceFFT</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> aWindowFlag = 1)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:GetSimpleAmpl" href="src/FitPulse.cxx.html#l8vpdC">GetSimpleAmpl</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:TranslateTrace" href="src/FitPulse.cxx.html#KBJDHD">TranslateTrace</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aShiftBins)</span><br />
+<div class="funccomm"><pre> pulse(t) --&gt; pulse(t-t0)
+ That is, if shift &lt; 0 the pulse is advanced; if shift &gt; 0 the pulse is delayed
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:FindPeaks" href="src/FitPulse.cxx.html#qBy3xE">FindPeaks</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aCriterium, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> AnySign = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> aLength = FP_LENGTH)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:FindPeaks@1" href="src/FitPulse.cxx.html#V2S6QE">FindPeaks</a>(<a href="./ListOfTypes.html#Float_t">Float_t</a> aSensitivity, <a href="./ListOfTypes.html#Int_t">Int_t</a> aLength, <a href="./ListOfTypes.html#Int_t">Int_t</a> aOrder, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> AnySign = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="FitPulse:DetectSinglePulse" href="src/FitPulse.cxx.html#pYY_FC">DetectSinglePulse</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./FloatVect.html">FloatVect</a> <a class="funcname" name="FitPulse:SmoothedTrace" href="src/FitPulse.cxx.html#O3sw.B">SmoothedTrace</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSmoothing) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; <a class="funcname" name="FitPulse:SmoothedAmpl" href="src/FitPulse.cxx.html#qMy7h">SmoothedAmpl</a>(<span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aSmoothTrace) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:GetRiseTime" href="src/FitPulse.cxx.html#SwauXB">GetRiseTime</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracLow = 0.2, <span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracHigh = 0.9, <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSmooth = PULSESHAPE_SMOOTHING, string aPlot = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:GetFallTime" href="src/FitPulse.cxx.html#oijkRB">GetFallTime</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracLow = 0.3, <span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracHigh = 0.9, <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSmooth = PULSESHAPE_SMOOTHING, string aPlot = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:GetFWHM" href="src/FitPulse.cxx.html#l.1vv">GetFWHM</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aFracWidth = 0.5, <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSmooth = PULSESHAPE_SMOOTHING, string aPlot = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:FilterTrace" href="src/FitPulse.cxx.html#BvUJDB">FilterTrace</a>(vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; aDirect, vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; aInverse)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; <a class="funcname" name="FitPulse:GetFitAmpl" href="src/FitPulse.cxx.html#csJWHD">GetFitAmpl</a>(vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; aTemplate, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aFitTime = 1, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aInterpolTime = 1, <a href="./ListOfTypes.html#Float_t">Float_t</a> aTimeOffsetMin = 0, <a href="./ListOfTypes.html#Float_t">Float_t</a> aTimeOffsetMax = 0, string aPlotFit = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; <a class="funcname" name="FitPulse:GetWienerAmpl" href="src/FitPulse.cxx.html#EUTbFD">GetWienerAmpl</a>(<span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aTemplateFFT, <span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aNoise, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aDoFFT = 0, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aChi2Switch = 0, string aPlotFilter = <span class="string">""</span>, string aPlotFit = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre> Optimal filtering in Fourier space
+ aTemplateFFT = fft of the template in <span class="string">"semi-complex"</span> form
+ aNoise = power spectrum of the noise
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; <a class="funcname" name="FitPulse:WienerFast" href="src/FitPulse.cxx.html#WjY9GE">WienerFast</a>(<span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aKernel, <span class="keyword">const</span> <a href="./ListOfTypes.html#Float_t">Float_t</a> aDenom, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aDoFFT = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; <a class="funcname" name="FitPulse:GetFitWiener" href="src/FitPulse.cxx.html#lmBohC">GetFitWiener</a>(<span class="keyword">const</span> <a href="./OffsetFFT.html">OffsetFFT</a>* aTemplateFFTs, <span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aNoise, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aFast = 1, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aSubBin = 1, <a href="./ListOfTypes.html#Float_t">Float_t</a> aOffsetMin = 0, <a href="./ListOfTypes.html#Float_t">Float_t</a> aOffsetMax = 0, <a href="./ListOfTypes.html#Float_t">Float_t</a> aOffsetStep = 0, string aPlotFit = <span class="string">""</span>, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aNoFixSign = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; <a class="funcname" name="FitPulse:WienerLoop" href="src/FitPulse.cxx.html#ireBXC">WienerLoop</a>(<span class="keyword">const</span> <a href="./OffsetFFT.html">OffsetFFT</a>* aTemplateFFTs, <span class="keyword">const</span> <a href="./FloatVect.html">FloatVect</a>&amp; aNoise, <a href="./ListOfTypes.html#Float_t">Float_t</a> aMin, <a href="./ListOfTypes.html#Float_t">Float_t</a> aMax, <a href="./ListOfTypes.html#Float_t">Float_t</a> aStep, <a href="./ListOfTypes.html#Float_t">Float_t</a> aAmpl, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aFast, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> aDoFFT, <a href="./ListOfTypes.html#Short_t">Short_t</a> aSignChange)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="FitPulse:FitPulse" href="src/FitPulse.h.html#lIx1UB">FitPulse</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./FloatVect.html">FloatVect</a> <a class="funcname" name="FitPulse:ProcessedTrace" href="src/FitPulse.h.html#QuGisE">ProcessedTrace</a>() const</span><br />
+<div class="funccomm"><pre>&lt; The processed trace 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fProcessedTrace" title="FloatVect FitPulse::fProcessedTrace">fProcessedTrace</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./FloatVect.html">FloatVect</a> <a class="funcname" name="FitPulse:ProcessedTraceFFT" href="src/FitPulse.h.html#Zhtp0">ProcessedTraceFFT</a>() const</span><br />
+<div class="funccomm"><pre>&lt; FFT of the processed trace (ROOT FFT format) 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fProcessedTraceFFT" title="FloatVect FitPulse::fProcessedTraceFFT">fProcessedTraceFFT</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:MeanBase" href="src/FitPulse.h.html#hdhoIB">MeanBase</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fMeanBase" title="Float_t FitPulse::fMeanBase">fMeanBase</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Float_t">Float_t</a>&gt; <a class="funcname" name="FitPulse:Pattern" href="src/FitPulse.h.html#BfvLDC">Pattern</a>() const</span><br />
+<div class="funccomm"><pre>&lt; Returns the pattern which is computed within the <a href="./FitPulse.html#FitPulse:RemovePattern" title="void FitPulse::RemovePattern(Int_t aNbPatternPts)">RemovePattern</a>() function 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fPattern" title="vector&lt;Float_t&gt; FitPulse::fPattern">fPattern</a> ; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">vector&lt;<a href="./ListOfTypes.html#Int_t">Int_t</a>&gt; <a class="funcname" name="FitPulse:GetPeakBins" href="src/FitPulse.h.html#TZ9tGE">GetPeakBins</a>() const</span><br />
+<div class="funccomm"><pre>&lt; Returns the positions of peaks found in the trace with the <a href="./FitPulse.html#FitPulse:FindPeaks" title="void FitPulse::FindPeaks(Int_t aCriterium,Bool_t AnySign=0,Int_t aLength=FP_LENGTH) or overloads">FindPeaks</a>() function 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fPeakBins" title="vector&lt;Int_t&gt; FitPulse::fPeakBins">fPeakBins</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="FitPulse:BasicPreprocessed" href="src/FitPulse.h.html#ZafxLC">BasicPreprocessed</a>()</span><br />
+<div class="funccomm"><pre>&lt; Simple amplitude estimator: maximum or minimum of the standard preprocessed trace 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fBasicPreprocessed" title="Bool_t FitPulse::fBasicPreprocessed">fBasicPreprocessed</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:GetMax" href="src/FitPulse.h.html#d3TASD">GetMax</a>() const</span><br />
+<div class="funccomm"><pre>&lt; True if the trace was already preprocessed with the standard preprocessing algorithm 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fProcessedTrace" title="FloatVect FitPulse::fProcessedTrace">fProcessedTrace</a>.<a href="./FloatVect.html#FloatVect:Max" title="Float_t FloatVect::Max()">Max</a>(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:GetMin" href="src/FitPulse.h.html#d3TsnE">GetMin</a>() const</span><br />
+<div class="funccomm"><pre>&lt; Maximum of the trace 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fProcessedTrace" title="FloatVect FitPulse::fProcessedTrace">fProcessedTrace</a>.<a href="./FloatVect.html#FloatVect:Min" title="Float_t FloatVect::Min()">Min</a>(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:GetSimpleAmplBin" href="src/FitPulse.h.html#xkohQB">GetSimpleAmplBin</a>() const</span><br />
+<div class="funccomm"><pre>&lt; Min of the trace 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fSimpleAmplBin" title="Float_t FitPulse::fSimpleAmplBin">fSimpleAmplBin</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Float_t">Float_t</a> <a class="funcname" name="FitPulse:GetIntegral" href="src/FitPulse.h.html#EX9ptE">GetIntegral</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> xmin, <a href="./ListOfTypes.html#Int_t">Int_t</a> xmax) const</span><br />
+<div class="funccomm"><pre>&lt; Integral of the trace in a given range 
+</pre></div>
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fProcessedTrace" title="FloatVect FitPulse::fProcessedTrace">fProcessedTrace</a>.<a href="./FloatVect.html#FloatVect:Integral" title="Float_t FloatVect::Integral(Int_t xmin,Int_t xmax) or overloads">Integral</a>(xmin,xmax); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Short_t">Short_t</a> <a class="funcname" name="FitPulse:Sign" href="src/FitPulse.h.html#d20ZHC">Sign</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fSign" title="Short_t FitPulse::fSign">fSign</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:SetPatternLength" href="src/FitPulse.h.html#Dw86CD">SetPatternLength</a>(<a href="./ListOfTypes.html#UShort_t">UShort_t</a> aLength)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./FitPulse.html#FitPulse:fPatternLength" title="UShort_t FitPulse::fPatternLength">fPatternLength</a> = aLength; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#UShort_t">UShort_t</a> <a class="funcname" name="FitPulse:PatternLength" href="src/FitPulse.h.html#O2.80B">PatternLength</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fPatternLength" title="UShort_t FitPulse::fPatternLength">fPatternLength</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="FitPulse:IsExpoBaseline" href="src/FitPulse.h.html#hXTjPB">IsExpoBaseline</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./FitPulse.html#FitPulse:fIsExpoBaseline" title="Bool_t FitPulse::fIsExpoBaseline">fIsExpoBaseline</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:SetBaseStart" href="src/FitPulse.h.html#fL3JPC">SetBaseStart</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aStart)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./FitPulse.html#FitPulse:fBaseStart" title="Int_t FitPulse::fBaseStart">fBaseStart</a> = aStart; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="FitPulse:SetBaseStop" href="src/FitPulse.h.html#KM0_RD">SetBaseStop</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aStop)</span><br />
+
+<div class="code"><code class="inlinecode">{ <a href="./FitPulse.html#FitPulse:fBaseStop" title="Int_t FitPulse::fBaseStop">fBaseStop</a> = aStop; }</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:43 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

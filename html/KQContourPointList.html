@@ -1,0 +1,418 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:47 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KQContourPointList</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KQContourPointList','','/Users/adam/softwareDev/kdata/kqpa/KQContourPointList.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KQContourPointList.h.html">header file</a>
+<a class="descrheadentry" href="src/KQContourPointList.cxx.html">source file</a>
+<a class="descrheadentry" href="KQContourPointList_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KQContourPointList:description">class description</a> 
+<a class="descrheadentry" href="#KQContourPointList:Function_Members">function members</a>
+<a class="descrheadentry" href="#KQContourPointList:Data_Members">data members</a>
+<a class="descrheadentry" href="#KQContourPointList:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KQPA_Index.html">KQPA</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KQContourPointList</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KQContourPointList:description"></a>class KQContourPointList: public TObject</h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KQContourPointList.html">KQContourPointList</a>.cxx
+ KDataStructure
+
+ Author: Daniel Wegner &lt;mailto:Daniel.Wegner@student.kit.edu&gt; on 5/26/11.
+
+ * Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
+
+ This class is used to draw multiple KQContourPoints in the same frame
+ The user can manually add events by calling
+   <a href="./ListOfTypes.html#void">void</a> <a href="./KQContourPointList.html">KQContourPointList</a>::<a href="./KQContourPointList.html#KQContourPointList:AddPoint" title="void KQContourPointList::AddPoint(Double_t aQvalue,Double_t anEnergyRecoil,Double_t aSigmaIon,Double_t aSigmaHeat)">AddPoint</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalue,
+             <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoil,
+             <a href="./ListOfTypes.html#Double_t">Double_t</a> aSigmaIon,
+             <a href="./ListOfTypes.html#Double_t">Double_t</a> aSigmaHeat)
+
+  or he can read ASCII files by calling
+    <a href="./ListOfTypes.html#void">void</a> <a href="./KQContourPointList.html">KQContourPointList</a>::<a href="./KQContourPointList.html#KQContourPointList:ReadASCIIFile" title="void KQContourPointList::ReadASCIIFile(const Char_t* aFileName=&quot;&quot;,const Char_t* aMode=&quot;QErecoil&quot;,Int_t aMaxNumEntries=INT_MAX,TF1* aFunction=0)">ReadASCIIFile</a>(const <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFileName,
+                                       const <a href="./ListOfTypes.html#Char_t">Char_t</a> aMode)
+
+ Then he can draw the events by calling
+        <a href="./ListOfTypes.html#void">void</a> <a href="./KQContourPointList.html#KQContourPointList:Draw" title="void KQContourPointList::Draw(Option_t* anOption=&quot;&quot;)">Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOption = <span class="string">""</span>);
+  or print the events by calling
+   <a href="./ListOfTypes.html#void">void</a> <a href="./KQContourPointList.html">KQContourPointList</a>::<a href="./KQContourPointList.html#KQContourPointList:ShowPoints" title="void KQContourPointList::ShowPoints()">ShowPoints</a>()
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KQContourPointList:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQContourPointList:KQContourPointList@1">KQContourPointList</a>(<span class="keyword">const</span> <a href="./KQContourPointList.html">KQContourPointList</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KQContourPointList:KQContourPointList">KQContourPointList</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aMode = <span class="string">"QErecoil"</span>, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFileName = <span class="string">""</span>, <a href="./ListOfTypes.html#Double_t">Double_t</a> aConfidenceLevel = 0.9, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMax = 2)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KQContourPointList:_KQContourPointList">~KQContourPointList</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:AddPoint">AddPoint</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoil, <a href="./ListOfTypes.html#Double_t">Double_t</a> aSigmaIon, <a href="./ListOfTypes.html#Double_t">Double_t</a> aSigmaHeat)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KQContourPointList:Class">Class</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Clear"><span class="baseclass">TObject::</span>Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:ClearPoints">ClearPoints</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:Clone"><span class="baseclass">TObject::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Compare"><span class="baseclass">TObject::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Copy"><span class="baseclass">TObject::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; object) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Delete"><span class="baseclass">TObject::</span>Delete</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:DistancetoPrimitive"><span class="baseclass">TObject::</span>DistancetoPrimitive</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:Draw">Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOption = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DrawClass"><span class="baseclass">TObject::</span>DrawClass</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:DrawClone"><span class="baseclass">TObject::</span>DrawClone</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Dump"><span class="baseclass">TObject::</span>Dump</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Error"><span class="baseclass">TObject::</span>Error</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute"><span class="baseclass">TObject::</span>Execute</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute@1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetConfidenceLevel">GetConfidenceLevel</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TF2*</td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetCummulativeProbDensity">GetCummulativeProbDensity</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFunctionName = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">TH1D*</td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetDistributionOfTrueValuesMergeProb">GetDistributionOfTrueValuesMergeProb</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aHistogramName = <span class="string">"NumTrueValues"</span>, TF2* anIndicatorFunction = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumElements = -1, ROOT::Math::IntegrationMultiDim::Type anIntegrationMethod = ROOT::Math::IntegrationMultiDim::kVEGAS, <a href="./ListOfTypes.html#Double_t">Double_t</a> anIntegrationTolerance = 0.0001)</td></tr>
+<tr class="func"><td class="funcret">TH1D*</td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetDistributionOfTrueValuesMonteCarlo">GetDistributionOfTrueValuesMonteCarlo</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aHistogramName = <span class="string">"NumTrueValues"</span>, TF1* aLowerBoundary = 0, TF1* anUpperBoundary = 0, <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aMonteCarloSize = 10000, <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumElements = -1)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KQContourPoint.html">KQContourPoint</a>*</td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetElement">GetElement</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> anIndex) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TF2*</td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetEmptyFrame">GetEmptyFrame</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetEnergyRecoilMax">GetEnergyRecoilMax</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetEnergyRecoilMin">GetEnergyRecoilMin</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetEntries">GetEntries</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetName"><span class="baseclass">TObject::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">TF2*</td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetProbabilityOfAtLeastOneEvent">GetProbabilityOfAtLeastOneEvent</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFunctionName = <span class="string">""</span>, <a href="./ListOfTypes.html#Double_t">Double_t</a> aTolerance = 0.0001)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetQvalueMax">GetQvalueMax</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KQContourPointList:GetQvalueMin">GetQvalueMin</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetTitle"><span class="baseclass">TObject::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Hash"><span class="baseclass">TObject::</span>Hash</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Info"><span class="baseclass">TObject::</span>Info</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> <span class="keyword">char</span>* classname) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom@1"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> TClass* cl) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Inspect"><span class="baseclass">TObject::</span>Inspect</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:InvertBit"><span class="baseclass">TObject::</span>InvertBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KQContourPointList:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Obsolete"><span class="baseclass">TObject::</span>Obsolete</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* asOfVers, <span class="keyword">const</span> <span class="keyword">char</span>* removedFromVers) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete@1"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]@1"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new@1"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]@1"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KQContourPointList.html">KQContourPointList</a>&amp;</td><td class="funcname"><a class="funcname" href="#KQContourPointList:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KQContourPointList.html">KQContourPointList</a>&amp;)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Print"><span class="baseclass">TObject::</span>Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:ReadASCIIFile">ReadASCIIFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFileName = <span class="string">""</span>, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aMode = <span class="string">"QErecoil"</span>, <a href="./ListOfTypes.html#Int_t">Int_t</a> aMaxNumEntries = INT_MAX, TF1* aFunction = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:RemovePoint">RemovePoint</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> anINdex = 0)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(<a href="./ListOfTypes.html#ostream">ostream</a>&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit@1"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> set)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:SetConfidenceLevel">SetConfidenceLevel</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aConfidenceLevel)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDrawOption"><span class="baseclass">TObject::</span>SetDrawOption</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:SetEnergyRecoilMax">SetEnergyRecoilMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:SetEnergyRecoilMin">SetEnergyRecoilMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:SetNpx">SetNpx</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anNpx)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:SetQvalueMax">SetQvalueMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMax)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:SetQvalueMin">SetQvalueMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMin)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetUniqueID"><span class="baseclass">TObject::</span>SetUniqueID</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> uid)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:ShowPoints">ShowPoints</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SysError"><span class="baseclass">TObject::</span>SysError</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBit"><span class="baseclass">TObject::</span>TestBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBits"><span class="baseclass">TObject::</span>TestBits</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:UseCurrentStyle"><span class="baseclass">TObject::</span>UseCurrentStyle</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Warning"><span class="baseclass">TObject::</span>Warning</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write@1"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0) <span class="keyword">const</span></td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DoError"><span class="baseclass">TObject::</span>DoError</a>(<span class="keyword">int</span> level, <span class="keyword">const</span> <span class="keyword">char</span>* location, <span class="keyword">const</span> <span class="keyword">char</span>* fmt, va_list va) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MakeZombie"><span class="baseclass">TObject::</span>MakeZombie</a>()</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KQContourPointList:UpdateFunctions">UpdateFunctions</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KQContourPointList:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span>EStatusBits { </td><td class="dataname"><a href="#TObject:kCanDelete">kCanDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kMustCleanup">kMustCleanup</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kObjInCanvas">kObjInCanvas</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kIsReferenced">kIsReferenced</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kHasUUID">kHasUUID</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kCannotPick">kCannotPick</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNoContextMenu">kNoContextMenu</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kInvalidObject">kInvalidObject</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span><i>[unnamed]</i> { </td><td class="dataname"><a href="#TObject:kIsOnHeap">kIsOnHeap</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNotDeleted">kNotDeleted</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kZombie">kZombie</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kBitMask">kBitMask</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kSingleKey">kSingleKey</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kOverwrite">kOverwrite</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kWriteDelete">kWriteDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQContourPointList:fConfidenceLevel"></a>fConfidenceLevel</td><td class="datadesc">confidence level</td></tr>
+<tr class="data"><td class="datatype">TF2*</td><td class="dataname"><a name="KQContourPointList:fEmptyFrame"></a>fEmptyFrame</td><td class="datadesc">function representing the empty frame</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQContourPointList:fEnergyRecoilMax"></a>fEnergyRecoilMax</td><td class="datadesc">maximal recoil energy of the empty frame</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQContourPointList:fEnergyRecoilMin"></a>fEnergyRecoilMin</td><td class="datadesc">minimal recoil energy of the empty frame</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQContourPointList:fFileName"></a>fFileName</td><td class="datadesc">ASCII filename</td></tr>
+<tr class="data"><td class="datatype">string</td><td class="dataname"><a name="KQContourPointList:fMode"></a>fMode</td><td class="datadesc">file reading mode</td></tr>
+<tr class="data"><td class="datatype">vector&lt;<a href="./KQContourPoint.html">KQContourPoint</a>*&gt;</td><td class="dataname"><a name="KQContourPointList:fPoints"></a>fPoints</td><td class="datadesc">data points</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQContourPointList:fQvalueMax"></a>fQvalueMax</td><td class="datadesc">maximal Q value of the empty frame</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KQContourPointList:fQvalueMin"></a>fQvalueMin</td><td class="datadesc">minimal Q value of the empty frame</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KQContourPointList:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<tt>TObject</tt></td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KQContourPointList" href="./KQContourPointList.html">KQContourPointList</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQContourPointList:KQContourPointList" href="src/KQContourPointList.cxx.html#cKIuDB">KQContourPointList</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aMode = <span class="string">"QErecoil"</span>, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFileName = <span class="string">""</span>, <a href="./ListOfTypes.html#Double_t">Double_t</a> aConfidenceLevel = 0.9, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMax = 2)</span><br />
+<div class="funccomm"><pre> The constructor generates an empty frame with the specified range
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQContourPointList:_KQContourPointList" href="src/KQContourPointList.cxx.html#vhL2PD">~KQContourPointList</a>()</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:UpdateFunctions" href="src/KQContourPointList.cxx.html#G04qJ">UpdateFunctions</a>()</span><br />
+<div class="funccomm"><pre> This method updates the empty frame if the ranges change
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:ReadASCIIFile" href="src/KQContourPointList.cxx.html#QtHpgD">ReadASCIIFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFileName = <span class="string">""</span>, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aMode = <span class="string">"QErecoil"</span>, <a href="./ListOfTypes.html#Int_t">Int_t</a> aMaxNumEntries = INT_MAX, TF1* aFunction = 0)</span><br />
+<div class="funccomm"><pre> This method reads an ASCII file and builds a list of KQContourPoints
+ Depending form the specified mode a different format of the lines is
+ expected:
+
+ aMode = <span class="string">"QErecoil"</span>:    &lt; Q &gt; &lt;E_recoil&gt; &lt;sigma_ion&gt; &lt;sigma_heat&gt;
+ aMode = <span class="string">"IonHeat"</span>: &lt;E_ion&gt; &lt;E_heat&gt; &lt;sigma_ion&gt; &lt;sigma_heat&gt;
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:Draw" href="src/KQContourPointList.cxx.html#K.KW9D">Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOption = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>This method draws all events in the list (marker + contour line)
+in the empty frame
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:SetNpx" href="src/KQContourPointList.cxx.html#gg9_9">SetNpx</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anNpx)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:AddPoint" href="src/KQContourPointList.cxx.html#EjpFHB">AddPoint</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalue, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoil, <a href="./ListOfTypes.html#Double_t">Double_t</a> aSigmaIon, <a href="./ListOfTypes.html#Double_t">Double_t</a> aSigmaHeat)</span><br />
+<div class="funccomm"><pre>This method adds a point to the list of events
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:ClearPoints" href="src/KQContourPointList.cxx.html#Pc9ugD">ClearPoints</a>()</span><br />
+<div class="funccomm"><pre> This method clears the events
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:RemovePoint" href="src/KQContourPointList.cxx.html#ckPSXD">RemovePoint</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> anINdex = 0)</span><br />
+<div class="funccomm"><pre> This method removes a single event from the list
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:ShowPoints" href="src/KQContourPointList.cxx.html#yj0Er">ShowPoints</a>()</span><br />
+<div class="funccomm"><pre>This methods prints the parameters of all events in the list
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">TF2* <a class="funcname" name="KQContourPointList:GetCummulativeProbDensity" href="src/KQContourPointList.cxx.html#MATWD">GetCummulativeProbDensity</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFunctionName = <span class="string">""</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TF2* <a class="funcname" name="KQContourPointList:GetProbabilityOfAtLeastOneEvent" href="src/KQContourPointList.cxx.html#rOMZZD">GetProbabilityOfAtLeastOneEvent</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFunctionName = <span class="string">""</span>, <a href="./ListOfTypes.html#Double_t">Double_t</a> aTolerance = 0.0001)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname">TH1D* <a class="funcname" name="KQContourPointList:GetDistributionOfTrueValuesMonteCarlo" href="src/KQContourPointList.cxx.html#J18FzC">GetDistributionOfTrueValuesMonteCarlo</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aHistogramName = <span class="string">"NumTrueValues"</span>, TF1* aLowerBoundary = 0, TF1* anUpperBoundary = 0, <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aMonteCarloSize = 10000, <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumElements = -1)</span><br />
+<div class="funccomm"><pre>This method returns a histogram showing the distribution of the number of
+ <a href="./ListOfTypes.html#bool">true</a> events within an area between boundary values given by
+ aLowerBoundary and anUpperBoundary
+ for the measured events of this <a href="./KQContourPointList.html">KQContourPointList</a>
+ This histogram is created by generating random events, one for each <a href="./KQContourPoint.html">KQContourPoint</a>
+ in the list, from their pdfs, incrementing a counter for each event which
+ lies in the specified area and then filling the histogram with this counter
+ This procedure is repeated &lt;aMonteCarloSize&gt; times.
+ Only one or none boundary functions can be specified, then the area
+ is regarded unrestricted upwards, downwards or on both sides.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">TH1D* <a class="funcname" name="KQContourPointList:GetDistributionOfTrueValuesMergeProb" href="src/KQContourPointList.cxx.html#dCC1rE">GetDistributionOfTrueValuesMergeProb</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aHistogramName = <span class="string">"NumTrueValues"</span>, TF2* anIndicatorFunction = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> aNumElements = -1, ROOT::Math::IntegrationMultiDim::Type anIntegrationMethod = ROOT::Math::IntegrationMultiDim::kVEGAS, <a href="./ListOfTypes.html#Double_t">Double_t</a> anIntegrationTolerance = 0.0001)</span><br />
+<div class="funccomm"><pre> This method returns a histogram showing the distribution of the number of
+ <a href="./ListOfTypes.html#bool">true</a> events within an selected area determined by an indicator function
+ First by integrating the contour functions of single events in the list
+ over the selected area, the probabilties for the single events to having
+ occured in this area are calculated. Then this probabilites are merged
+ and convoluted pairwise, successivly in blocks of 2, 4, 8, 16 elements
+ until the full list size is reached
+ (<a href="./ListOfTypes.html#Double_t">Double_t</a>* <a href="./KErecoilQDensity.html">KErecoilQDensity</a>::<a href="./KErecoilQDensity.html#KErecoilQDensity:GetDistributionOfMultipleEvents" title="vector&lt;Double_t&gt; KErecoilQDensity::GetDistributionOfMultipleEvents(vector&lt;Double_t&gt; aVector) or overloads">GetDistributionOfMultipleEvents</a>(
+                                 <a href="./ListOfTypes.html#UInt_t">UInt_t</a> aSize, <a href="./ListOfTypes.html#Double_t">Double_t</a>* aVector))
+
+ Available integration routines are
+   ROOT::Math::IntegrationMultiDim::kVEGAS (default)
+   ROOT::Math::IntegrationMultiDim::kADAPTIVE
+   ROOT::Math::IntegrationMultiDim::kPLAIN
+   ROOT::Math::IntegrationMultiDim::kMISER
+
+ Example:
+
+ <a href="./KQContourPointList.html">KQContourPointList</a> list;
+ list.<a href="./KQContourPointList.html#KQContourPointList:ReadASCIIFile" title="void KQContourPointList::ReadASCIIFile(const Char_t* aFileName=&quot;&quot;,const Char_t* aMode=&quot;QErecoil&quot;,Int_t aMaxNumEntries=INT_MAX,TF1* aFunction=0)">ReadASCIIFile</a>(<span class="string">"&lt;anASCIIFile&gt;"</span>,<span class="string">"QErecoil"</span>);
+ TF2 anIndicator(<span class="string">"ind"</span>,<span class="string">"&lt;condition of area&gt; ? 1 : 0"</span>);
+ TH1D* hist = list.<a href="./KQContourPointList.html#KQContourPointList:GetDistributionOfTrueValuesMergeProb" title="TH1D* KQContourPointList::GetDistributionOfTrueValuesMergeProb(const Char_t* aHistogramName=&quot;NumTrueValues&quot;,TF2* anIndicatorFunction=0,Int_t aNumElements=-1,ROOT::Math::IntegrationMultiDim::Type anIntegrationMethod=ROOT::Math::IntegrationMultiDim::kVEGAS,Double_t anIntegrationTolerance=0.0001)">GetDistributionOfTrueValuesMergeProb</a>(
+                                 <span class="string">"&lt;aHistogramName&gt;"</span>,
+                                 &amp;anIndicator,
+                                 &lt;aNumberOfElements&gt;,
+                                 &lt;anIntegrationTolerance&gt;);
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KQContourPointList:KQContourPointList" href="src/KQContourPointList.h.html#puMFV">KQContourPointList</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aMode = <span class="string">"QErecoil"</span>, <span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* aFileName = <span class="string">""</span>, <a href="./ListOfTypes.html#Double_t">Double_t</a> aConfidenceLevel = 0.9, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax = 1000, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMin = 0, <a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMax = 2)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:SetEnergyRecoilMin" href="src/KQContourPointList.h.html#rYtFqE">SetEnergyRecoilMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMin)</span><br />
+<div class="funccomm"><pre>setters
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:SetEnergyRecoilMax" href="src/KQContourPointList.h.html#LA4gqE">SetEnergyRecoilMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> anEnergyRecoilMax)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:SetQvalueMin" href="src/KQContourPointList.h.html#oxqTj">SetQvalueMin</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMin)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:SetQvalueMax" href="src/KQContourPointList.h.html#h7mY_">SetQvalueMax</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aQvalueMax)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KQContourPointList:SetConfidenceLevel" href="src/KQContourPointList.h.html#SISNSD">SetConfidenceLevel</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aConfidenceLevel)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQContourPointList:GetEnergyRecoilMin" href="src/KQContourPointList.h.html#zD0L1C">GetEnergyRecoilMin</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQContourPointList.html#KQContourPointList:fEnergyRecoilMin" title="Double_t KQContourPointList::fEnergyRecoilMin">fEnergyRecoilMin</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQContourPointList:GetEnergyRecoilMax" href="src/KQContourPointList.h.html#KE0LlB">GetEnergyRecoilMax</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQContourPointList.html#KQContourPointList:fEnergyRecoilMax" title="Double_t KQContourPointList::fEnergyRecoilMax">fEnergyRecoilMax</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQContourPointList:GetQvalueMin" href="src/KQContourPointList.h.html#Xb5WO">GetQvalueMin</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQContourPointList.html#KQContourPointList:fQvalueMin" title="Double_t KQContourPointList::fQvalueMin">fQvalueMin</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQContourPointList:GetQvalueMax" href="src/KQContourPointList.h.html#oZ5WO">GetQvalueMax</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQContourPointList.html#KQContourPointList:fQvalueMax" title="Double_t KQContourPointList::fQvalueMax">fQvalueMax</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KQContourPointList:GetConfidenceLevel" href="src/KQContourPointList.h.html#NDhXzC">GetConfidenceLevel</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQContourPointList.html#KQContourPointList:fConfidenceLevel" title="Double_t KQContourPointList::fConfidenceLevel">fConfidenceLevel</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#UInt_t">UInt_t</a> <a class="funcname" name="KQContourPointList:GetEntries" href="src/KQContourPointList.h.html#dVzcQB">GetEntries</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQContourPointList.html#KQContourPointList:fPoints" title="vector&lt;KQContourPoint*&gt; KQContourPointList::fPoints">fPoints</a>.size(); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TF2* <a class="funcname" name="KQContourPointList:GetEmptyFrame" href="src/KQContourPointList.h.html#JJSBh">GetEmptyFrame</a>() const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KQContourPointList.html#KQContourPointList:fEmptyFrame" title="TF2* KQContourPointList::fEmptyFrame">fEmptyFrame</a>; }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KQContourPoint.html">KQContourPoint</a>* <a class="funcname" name="KQContourPointList:GetElement" href="src/KQContourPointList.h.html#a2ZuXD">GetElement</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> anIndex) const</span><br />
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+<em>&raquo; Author: <a href="mailto:Daniel.Wegner@student.kit.edu"> Daniel Wegner </a> on 5/26/11. </em><em>&raquo; Copyright   2011 Karlsruhe Institute of Technology. All rights reserved.</em><br />
+<em>&raquo; Last changed: Tue Sep 25 14:34:47 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

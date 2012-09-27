@@ -1,0 +1,344 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:44 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KDataReader</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KDataReader','','/Users/adam/softwareDev/kdata/kds/KDataReader.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KDataReader.h.html">header file</a>
+<a class="descrheadentry" href="src/KDataReader.cxx.html">source file</a>
+<a class="descrheadentry" href="KDataReader_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KDataReader:description">class description</a> 
+<a class="descrheadentry" href="#KDataReader:Function_Members">function members</a>
+<a class="descrheadentry" href="#KDataReader:Data_Members">data members</a>
+<a class="descrheadentry" href="#KDataReader:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KDS_Index.html">KDS</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KDataReader</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KDataReader:description"></a>class KDataReader: public <a href="./KDataFileIO.html">KDataFileIO</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KDataReader.html">KDataReader</a>.cxx
+ KDataStructure
+
+ Author: Adam Cox &lt;mailto:adam.cox@ik.fzk.de&gt; on 4/30/10.
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ This class reads in a KData file and provides some basic functionality
+ to access the Event data and to loop through the file, event-by-event.
+ It will return a pointer to the event object in memory where each
+ event's data is stored.
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KDataReader:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KDataReader:KDataReader">KDataReader</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KDataReader:KDataReader@2">KDataReader</a>(<span class="keyword">const</span> <a href="./KDataReader.html">KDataReader</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KDataReader:KDataReader@1">KDataReader</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName, <a href="./KEvent.html">KEvent</a>** anEvent = 0, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> useCache = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KDataReader:_KDataReader">~KDataReader</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:cd">cd</a>(<span class="keyword">const</span> <span class="keyword">char</span>* path = 0)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KDataReader:Class">Class</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:Close">Close</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret">virtual TObject*</td><td class="funcname"><a class="funcname" href="#KDataReader:Get">Get</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* namecycle) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="./KDataFileIO.html#KDataFileIO:GetBranchName"><span class="baseclass">KDataFileIO::</span>GetBranchName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetCurrentEntryNumber">GetCurrentEntryNumber</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetEntries">GetEntries</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetEntry">GetEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetEntryWithGSEventNumber">GetEntryWithGSEventNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KEvent.html">KEvent</a>*</td><td class="funcname"><a class="funcname" href="#KDataReader:GetEvent">GetEvent</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KDataReader:GetEventClassName">GetEventClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KDataReader:GetFileName">GetFileName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetNextBoloEntry">GetNextBoloEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry = -1)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetNextEntry">GetNextEntry</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetNextMuonEntry">GetNextMuonEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry = -1)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetPreviousBoloEntry">GetPreviousBoloEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry = -1)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetPreviousEntry">GetPreviousEntry</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:GetPreviousMuonEntry">GetPreviousMuonEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry = -1)</td></tr>
+<tr class="func"><td class="funcret">virtual TFile*</td><td class="funcname"><a class="funcname" href="#KDataReader:GetTFile">GetTFile</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="./KDataFileIO.html#KDataFileIO:GetTreeName"><span class="baseclass">KDataFileIO::</span>GetTreeName</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">string</td><td class="funcname"><a class="funcname" href="./KDataFileIO.html#KDataFileIO:GetTreeTitle"><span class="baseclass">KDataFileIO::</span>GetTreeTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TTree*</td><td class="funcname"><a class="funcname" href="#KDataReader:GetTTree">GetTTree</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KDataReader:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataReader:ls">ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KDataReader.html">KDataReader</a>&amp;</td><td class="funcname"><a class="funcname" href="#KDataReader:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KDataReader.html">KDataReader</a>&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataReader:SetUseInternalCache">SetUseInternalCache</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> bOption = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataReader:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataReader:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataReader:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataReader:GetTreePointerInFile">GetTreePointerInFile</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KDataReader:InitializeMembers">InitializeMembers</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:OpenFile">OpenFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName, <a href="./KEvent.html">KEvent</a>** anEvent = 0, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> useCache = <span class="keyword">true</span>)</td></tr>
+<tr class="func"><td class="funcret">TFile*</td><td class="funcname"><a class="funcname" href="#KDataReader:OpenFileForReading">OpenFileForReading</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* name)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KDataReader:SetBranchAddress">SetBranchAddress</a>(<a href="./KEvent.html">KEvent</a>** anEvent = 0)</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KDataReader:Data_Members"></a>Data Members</h2>
+<div class="access" id="dataprot"><b>protected:</b>
+<table class="data" id="tabdataprot" cellspacing="0">
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./KDataFileIO.html#KDataFileIO:fBranchName"><span class="baseclass">KDataFileIO::</span>fBranchName</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./KDataFileIO.html#KDataFileIO:fTreeName"><span class="baseclass">KDataFileIO::</span>fTreeName</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">string</td><td class="dataname"><a href="./KDataFileIO.html#KDataFileIO:fTreeTitle"><span class="baseclass">KDataFileIO::</span>fTreeTitle</a></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KDataReader:fCurrentEntry"></a>fCurrentEntry</td><td class="datadesc">current entry number in the tree</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KDataReader:fEntries"></a>fEntries</td><td class="datadesc">number of entries in the tree</td></tr>
+<tr class="data"><td class="datatype">TFile*</td><td class="dataname"><a name="KDataReader:fFile"></a>fFile</td><td></td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="dataname"><a name="KDataReader:fGSEventIndex"></a>fGSEventIndex</td><td class="datadesc">the global software event number index</td></tr>
+<tr class="data"><td class="datatype"><a href="./KEvent.html">KEvent</a>*</td><td class="dataname"><a name="KDataReader:fLocalEvent"></a>fLocalEvent</td><td></td></tr>
+<tr class="data"><td class="datatype">TTree*</td><td class="dataname"><a name="KDataReader:fTree"></a>fTree</td><td></td></tr>
+
+</table></div>
+</div>
+<h2><a id="KDataReader:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td>
+<center><tt><a name="KDataFileIO" href="./KDataFileIO.html">KDataFileIO</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KDataReader" href="./KDataReader.html">KDataReader</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KDataReader:KDataReader@2" href="src/KDataReader.cxx.html#R2PLK">KDataReader</a>(<span class="keyword">const</span> <a href="./KDataReader.html">KDataReader</a>&amp; )</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KDataReader:KDataReader@1" href="src/KDataReader.cxx.html#czAxgE">KDataReader</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName, <a href="./KEvent.html">KEvent</a>** anEvent = 0, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> useCache = <span class="keyword">true</span>)</span><br />
+<div class="funccomm"><pre>standard constructor. You must at least provide a fileName. If you
+have a particular object in memory where you want the data to be
+stored, then you should pass in the address of the pointer to that
+event, anEvent. For example
+
+<a href="./KHLAEvent.html">KHLAEvent</a> *e = <a href="./KEventFactory.html">KEventFactory</a>::<a href="./KEventFactory.html#KEventFactory:NewHLAEvent" title="KHLAEvent* KEventFactory::NewHLAEvent()">NewHLAEvent</a>();
+<a href="./KDataReader.html">KDataReader</a> file(<span class="string">"/path/to/a/KHLAEventfile.root"</span>, &amp;e);
+
+This object can open high level files (which hold KHLAEvents)
+and raw level files (which hold KRawEvents)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KDataReader:_KDataReader" href="src/KDataReader.cxx.html#nuula">~KDataReader</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KDataReader:InitializeMembers" href="src/KDataReader.cxx.html#FfU37D">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KDataReader:OpenFile" href="src/KDataReader.cxx.html#FBg6hE">OpenFile</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName, <a href="./KEvent.html">KEvent</a>** anEvent = 0, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> useCache = <span class="keyword">true</span>)</span><br />
+<div class="funccomm"><pre>closes any file that is already open and then opens fileName.
+Also, the pointer to the event returned by <a href="./KDataReader.html#KDataReader:GetEvent" title="KEvent* KDataReader::GetEvent()">GetEvent</a> could change after calling this method,
+so its best to call <a href="./KDataReader.html#KDataReader:GetEvent" title="KEvent* KDataReader::GetEvent()">GetEvent</a> again before you try to access the event data.
+returns <a href="./ListOfTypes.html#bool">true</a> if successful.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">TFile* <a class="funcname" name="KDataReader:OpenFileForReading" href="src/KDataReader.cxx.html#VqAI2D">OpenFileForReading</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* name)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KDataReader:GetTreePointerInFile" href="src/KDataReader.cxx.html#GQXmOE">GetTreePointerInFile</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KDataReader:Close" href="src/KDataReader.cxx.html#Hc8Ca">Close</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>)</span><br />
+<div class="funccomm"><pre>close the file with option opt. See TFile::<a href="./KDataReader.html#KDataReader:Close" title="Bool_t KDataReader::Close(Option_t* opt=&quot;&quot;)">Close</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>*)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KDataReader:SetUseInternalCache" href="src/KDataReader.cxx.html#qnYWtD">SetUseInternalCache</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> bOption = <span class="keyword">true</span>)</span><br />
+<div class="funccomm"><pre>This method calls the new TTree::AddBranchToCache method
+which speeds up reading of the data. However, it does add to the
+memory overhead by around 30 Mb. If you do not want to use cacheing,
+you must declare so in the <a href="./KDataReader.html">KDataReader</a> constructor, or when using
+the <a href="./KDataReader.html">KDataReader</a>::<a href="./KDataReader.html#KDataReader:OpenFile" title="Bool_t KDataReader::OpenFile(const Char_t* fileName,KEvent** anEvent=0,Bool_t useCache=true)">OpenFile</a> method.
+
+Currenly, there's no way of telling ROOT to undo this.
+If you've previously called this method with option = <a href="./ListOfTypes.html#bool">true</a>, then
+all branches in the tree are added to the cache.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KDataReader:SetBranchAddress" href="src/KDataReader.cxx.html#xMpUM">SetBranchAddress</a>(<a href="./KEvent.html">KEvent</a>** anEvent = 0)</span><br />
+<div class="funccomm"><pre>set the branch address to anEvent.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KEvent.html">KEvent</a>* <a class="funcname" name="KDataReader:GetEvent" href="src/KDataReader.cxx.html#HNrjbE">GetEvent</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Once you've opened your KDataFile, use this method to get a
+pointer to the event object. This method returns a <a href="./KEvent.html">KEvent</a>*, but
+you will probably want to cast that pointer into the appropriate type
+either a <a href="./KRawEvent.html">KRawEvent</a> or <a href="./KHLAEvent.html">KHLAEvent</a>. For example, let's say you're
+doing analysis with a <a href="./KHLAEvent.html">KHLAEvent</a>, you would do the following
+
+<a href="./KDataReader.html">KDataReader</a> myFile(<span class="string">"/path/to/myKHLADataFile.root"</span>);
+<a href="./KHLAEvent.html">KHLAEvent</a> *e = (<a href="./KHLAEvent.html">KHLAEvent</a> *)myFile.<a href="./KDataReader.html#KDataReader:GetEvent" title="KEvent* KDataReader::GetEvent()">GetEvent</a>();
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetNextEntry" href="src/KDataReader.cxx.html#Q7F2YC">GetNextEntry</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Loads the event with data from the next entry in the tree
+returns the size of the event in bytes.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetPreviousEntry" href="src/KDataReader.cxx.html#AN8rJC">GetPreviousEntry</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Loads the event with data from the previous entry in the tree
+returns the size of the event in bytes.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetEntry" href="src/KDataReader.cxx.html#itytD">GetEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry)</span><br />
+<div class="funccomm"><pre>will load Entry number 'anEntry' and
+if successful, will set the <a href="./KDataReader.html#KDataReader:fCurrentEntry" title="Int_t KDataReader::fCurrentEntry">fCurrentEntry</a> value to
+anEntry.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetEntryWithGSEventNumber" href="src/KDataReader.cxx.html#SGwU3E">GetEntryWithGSEventNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry)</span><br />
+<div class="funccomm"><pre>will load (if possible) Entry cooresponding to GSEventNumber'anEntry' and
+if successful, will set the <a href="./KDataReader.html#KDataReader:fCurrentEntry" title="Int_t KDataReader::fCurrentEntry">fCurrentEntry</a> value to
+anEntry. Otherwise returnvalue should be -1.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname">TObject* <a class="funcname" name="KDataReader:Get" href="src/KDataReader.cxx.html#AUfU8B">Get</a>(<span class="keyword">const</span> <a href="./ListOfTypes.html#Char_t">Char_t</a>* namecycle) const</span><br />
+<div class="funccomm"><pre>this simply calls TFile::<a href="./KDataReader.html#KDataReader:Get" title="TObject* KDataReader::Get(const Char_t* namecycle)">Get</a> and returns an object found in the file.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KDataReader:GetEventClassName" href="src/KDataReader.cxx.html#Mx3QU">GetEventClassName</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KDataReader:GetFileName" href="src/KDataReader.cxx.html#bKsscE">GetFileName</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KDataReader:ls" href="src/KDataReader.cxx.html#EFcXdE">ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* opt = <span class="string">""</span>) const</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KDataReader:cd" href="src/KDataReader.cxx.html#Q8iKfE">cd</a>(<span class="keyword">const</span> <span class="keyword">char</span>* path = 0)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetNextMuonEntry" href="src/KDataReader.cxx.html#MWU71E">GetNextMuonEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry = -1)</span><br />
+<div class="funccomm"><pre>Loads the event with data from the next entry in the tree that
+has at least one muon module subrecord in the event.
+returns the size of the event in bytes.
+returns zero when it reaches the end of the file, if no other
+events are found.
+if anEntry !=0, it will search for the next muon entry after anEntry
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetPreviousMuonEntry" href="src/KDataReader.cxx.html#iMULWC">GetPreviousMuonEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry = -1)</span><br />
+<div class="funccomm"><pre>Loads the event with data from the previous entry in the tree that
+has at least one muon module subrecord in the event.
+returns the size of the event in bytes.
+returns zero when it reaches the beginning of the file, if no other
+events are found.
+if anEntry !=0, it will search for the previous muon entry before anEntry
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetNextBoloEntry" href="src/KDataReader.cxx.html#eCoU1E">GetNextBoloEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry = -1)</span><br />
+<div class="funccomm"><pre>Loads the event with data from the next entry in the tree that
+has at least one bolometer subrecord in the event.
+returns the size of the event in bytes.
+returns zero when it reaches the end of the file, if no other
+events are found.
+if anEntry !=0, it will search for the next bolometer entry after anEntry
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetPreviousBoloEntry" href="src/KDataReader.cxx.html#kHZzWC">GetPreviousBoloEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> anEntry = -1)</span><br />
+<div class="funccomm"><pre>Loads the event with data from the previous entry in the tree that
+has at least one bolometer subrecord in the event.
+returns the size of the event in bytes.
+returns zero when it reaches the beginning of the file, if no other
+events are found.
+if anEntry !=0, it will search for the previous bolometer entry before anEntry
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KDataReader:KDataReader@2" href="src/KDataReader.h.html#EnC2tC">KDataReader</a>(<span class="keyword">const</span> <a href="./KDataReader.html">KDataReader</a>&amp; )</span><br />
+<div class="funccomm"><pre>Constructors
+<a href="./KDataReader.html">KDataReader</a>(const <a href="./ListOfTypes.html#Char_t">Char_t</a>* fileName);
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetCurrentEntryNumber" href="src/KDataReader.h.html#aV.rx">GetCurrentEntryNumber</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KDataReader.html#KDataReader:fCurrentEntry" title="Int_t KDataReader::fCurrentEntry">fCurrentEntry</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KDataReader:GetEntries" href="src/KDataReader.h.html#yfxCT">GetEntries</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KDataReader.html#KDataReader:fEntries" title="Int_t KDataReader::fEntries">fEntries</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TFile* <a class="funcname" name="KDataReader:GetTFile" href="src/KDataReader.h.html#aLyWMD">GetTFile</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KDataReader.html#KDataReader:fFile" title="TFile* KDataReader::fFile">fFile</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname">TTree* <a class="funcname" name="KDataReader:GetTTree" href="src/KDataReader.h.html#t1uz8D">GetTTree</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KDataReader.html#KDataReader:fTree" title="TTree* KDataReader::fTree">fTree</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:44 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>

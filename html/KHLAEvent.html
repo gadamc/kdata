@@ -1,0 +1,640 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--                                             -->
+<!-- Author: KData                               -->
+<!--                                             -->
+<!--   Date: Tue Sep 25 14:34:45 2012            -->
+<!--                                             -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>KHLAEvent</title>
+<meta name="rating" content="General" />
+<meta name="objecttype" content="Manual" />
+<meta name="keywords" content="software development, oo" />
+<meta name="description" content="KData - data structure and analysis package for Edelweiss" />
+<link rel="stylesheet" type="text/css" href="ROOT.css" id="ROOTstyle" />
+<script type="text/javascript" src="ROOT.js"></script>
+</head>
+<body  onload="javascript:SetValuesFromCookie();"><div id="body_content">
+<div id="kdata_header" align="center"><img src="kdata-logo.jpg" width="800" alt="Kdata + Edelweiss logo"/></div>
+<a name="TopOfPage"></a>
+<script type="text/javascript">WriteFollowPageBox('class KHLAEvent','','/Users/adam/softwareDev/kdata/kds/KHLAEvent.h');</script>
+<div id="toplinks">
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Quick Links:</span>
+<a class="descrheadentry" href="https://edwdev-ik.fzk.de">KData</a>
+<a class="descrheadentry" href="http://root.cern.ch">ROOT Homepage</a>
+<a class="descrheadentry" href="./ClassIndex.html">Class Index</a>
+<a class="descrheadentry" href="./ClassHierarchy.html">Class Hierarchy</a></div>
+<script type="text/javascript">
+function onSearch() {
+var s='http://www.google.com/search?q=%s+site%3A%u+-site%3A%u%2Fsrc%2F+-site%3A%u%2Fexamples%2F';
+var ref=String(document.location.href).replace(/https?:\/\//,'').replace(/\/[^\/]*$/,'').replace(/\//g,'%2F');
+window.location.href=s.replace(/%u/ig,ref).replace(/%s/ig,escape(document.searchform.t.value));
+return false;}
+</script>
+<form id="searchform" name="searchform" onsubmit="return onSearch()" action="javascript:onSearch();" method="post">
+<input name="t" size="30" value="Search documentation..." onfocus="if (document.searchform.t.value=='Search documentation...') document.searchform.t.value='';"></input>
+<a id="searchlink"  title="www.google.com"  href="javascript:onSearch();" onclick="return onSearch()">Search</a></form>
+</div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Source:</span>
+<a class="descrheadentry" href="src/KHLAEvent.h.html">header file</a>
+<a class="descrheadentry" href="src/KHLAEvent.cxx.html">source file</a>
+<a class="descrheadentry" href="KHLAEvent_Tree.pdf">inheritance tree (.pdf)</a> 
+</div></div>
+<div class="descrhead"><div class="descrheadcontent">
+<span class="descrtitle">Sections:</span>
+<a class="descrheadentry" href="#KHLAEvent:description">class description</a> 
+<a class="descrheadentry" href="#KHLAEvent:Function_Members">function members</a>
+<a class="descrheadentry" href="#KHLAEvent:Data_Members">data members</a>
+<a class="descrheadentry" href="#KHLAEvent:Class_Charts">class charts</a>
+</div></div>
+</div>
+<div class="location">
+<a class="locationlevel" href="index.html">KData</a>
+ &#187; <a class="locationlevel" href="./KDS_Index.html">KDS</a>
+ &#187; <a class="locationlevel" href="#TopOfPage">KHLAEvent</a>
+</div>
+<div class="dropshadow"><div class="withshadow"><h1><a name="KHLAEvent:description"></a>class KHLAEvent: public <a href="./KEvent.html">KEvent</a></h1>
+<div class="classdescr">
+<pre>
+
+ <a href="./KHLAEvent.html">KHLAEvent</a>.cxx
+ KDataStructure
+
+ Author: Adam Cox &lt;mailto:adam.cox@ik.fzk.de&gt;
+
+ * Copyright 2010 Karlsruhe Institute of Technology. All rights reserved.
+
+ This is the main Event class for High Level Analysis. One typically
+ begins all analysis by getting a pointer to this object from
+ the <a href="./KDataReader.html">KDataReader</a> object.
+
+ root[0]: <a href="./KDataReader.html">KDataReader</a> f(<span class="string">"Kds_Run12_v3.0.root"</span>);
+ root[1]: <a href="./KHLAEvent.html">KHLAEvent</a> *e = f.GetEvent();
+
+ By calling <a href="./KDataReader.html">KDataReader</a>::<a href="./KDataReader.html#KDataReader:GetEntry" title="Int_t KDataReader::GetEntry(Int_t anEntry)">GetEntry</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) within a for-loop
+ or <a href="./KDataReader.html">KDataReader</a>::<a href="./KDataReader.html#KDataReader:GetNextEntry" title="Int_t KDataReader::GetNextEntry()">GetNextEntry</a>, one can loop through the KDS data
+ file and examine each event separately. Whenever GetEntry or GetNextEntry
+ are called, the values stored in the <a href="./KHLAEvent.html">KHLAEvent</a> object are updated with
+ the values for that entry. From this <a href="./KHLAEvent.html">KHLAEvent</a> object
+ one can obtain pointers to they Muon and Bolometer System Records
+ <a href="./KHLAEvent.html#KHLAEvent:GetBoloSystemRecord" title="KHLABoloSysRecord* KHLAEvent::GetBoloSystemRecord()">GetBoloSystemRecord</a>(<a href="./ListOfTypes.html#void">void</a>), GetMuonVetoSystemRecord()
+ and to each of the event's Sub Records. (<a href="./KHLAEvent.html#KHLAEvent:GetBolo" title="KBolometerRecord* KHLAEvent::GetBolo(Int_t i) or overloads">GetBolo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i), GetMuonModule(<a href="./ListOfTypes.html#Int_t">Int_t</a> i))
+
+</pre></div>
+</div></div>
+
+<div id="functions">
+<h2><a id="KHLAEvent:Function_Members"></a>Function Members (Methods)</h2>
+<div class="access" id="funcpubl"><b>public:</b>
+<table class="func" id="tabfuncpubl" cellspacing="0">
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KHLAEvent:KHLAEvent">KHLAEvent</a>()</td></tr>
+<tr class="func"><td class="funcret"></td><td class="funcname"><a class="funcname" href="#KHLAEvent:KHLAEvent@1">KHLAEvent</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</td></tr>
+<tr class="func"><td class="funcret"> virtual</td><td class="funcname"><a class="funcname" href="#KHLAEvent:_KHLAEvent">~KHLAEvent</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AbstractMethod"><span class="baseclass">TObject::</span>AbstractMethod</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddBolo">AddBolo</a>()</td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddBoloPulse">AddBoloPulse</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddBoloSubRecord">AddBoloSubRecord</a>(<span class="keyword">const</span> <a href="./KBolometerRecord.html">KBolometerRecord</a>&amp; inBolo)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddBoloSubRecords">AddBoloSubRecords</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> skim = <span class="keyword">false</span>)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddMuonModule">AddMuonModule</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddMuonModuleSubRecord">AddMuonModuleSubRecord</a>(<span class="keyword">const</span> <a href="./KMuonModuleRecord.html">KMuonModuleRecord</a>&amp; inMuonModule)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddMuonModuleSubRecords">AddMuonModuleSubRecords</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLASambaRecord.html">KHLASambaRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddSamba">AddSamba</a>()</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:AddSubRecords">AddSubRecords</a>(<span class="keyword">const</span> <a href="./KEvent.html">KEvent</a>&amp; anEvent)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:AddTriggerType"><span class="baseclass">KEvent::</span>AddTriggerType</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:AppendPad"><span class="baseclass">TObject::</span>AppendPad</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:boloPulseRecords">boloPulseRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:boloRecords">boloRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Browse"><span class="baseclass">TObject::</span>Browse</a>(TBrowser* b)</td></tr>
+<tr class="func"><td class="funcret">static TClass*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:Class">Class</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:ClassName"><span class="baseclass">TObject::</span>ClassName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:Clear">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">"C"</span>)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:ClearArrays">ClearArrays</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOption = <span class="string">"C"</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:Clone"><span class="baseclass">TObject::</span>Clone</a>(<span class="keyword">const</span> <span class="keyword">char</span>* newname = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:Compact">Compact</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Compare"><span class="baseclass">TObject::</span>Compare</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Copy"><span class="baseclass">TObject::</span>Copy</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>&amp; object) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:CopyClonesArrays">CopyClonesArrays</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:CopyLocalMembers">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Delete"><span class="baseclass">TObject::</span>Delete</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:DistancetoPrimitive"><span class="baseclass">TObject::</span>DistancetoPrimitive</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Draw"><span class="baseclass">TObject::</span>Draw</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DrawClass"><span class="baseclass">TObject::</span>DrawClass</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:DrawClone"><span class="baseclass">TObject::</span>DrawClone</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Dump"><span class="baseclass">TObject::</span>Dump</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Error"><span class="baseclass">TObject::</span>Error</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute"><span class="baseclass">TObject::</span>Execute</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Execute@1"><span class="baseclass">TObject::</span>Execute</a>(TMethod* method, TObjArray* params, <a href="./ListOfTypes.html#Int_t">Int_t</a>* error = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ExecuteEvent"><span class="baseclass">TObject::</span>ExecuteEvent</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> event, <a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Fatal"><span class="baseclass">TObject::</span>Fatal</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>*</td><td class="funcname"><a class="funcname" href="#TObject:FindObject@1"><span class="baseclass">TObject::</span>FindObject</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KBolometerRecord.html">KBolometerRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetBolo">GetBolo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KBolometerRecord.html">KBolometerRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetBolo@1">GetBolo</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetBoloPulse">GetBoloPulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KBoloPulseRecord.html">KBoloPulseRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetBoloPulse@1">GetBoloPulse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetBoloPulseRecords">GetBoloPulseRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetBoloRecords">GetBoloRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./KHLABoloSysRecord.html">KHLABoloSysRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetBoloSystemRecord">GetBoloSystemRecord</a>()</td></tr>
+<tr class="func"><td class="funcret">static <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetClassName">GetClassName</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetDrawOption"><span class="baseclass">TObject::</span>GetDrawOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Long_t">Long_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetDtorOnly"><span class="baseclass">TObject::</span>GetDtorOnly</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Long64_t">Long64_t</a></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:GetEventTriggerStamp"><span class="baseclass">KEvent::</span>GetEventTriggerStamp</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetEventTriggerTime">GetEventTriggerTime</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetGSEventNumber">GetGSEventNumber</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetIconName"><span class="baseclass">TObject::</span>GetIconName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KMuonModuleRecord.html">KMuonModuleRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetMuonModule">GetMuonModule</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetMuonModuleRecords">GetMuonModuleRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KMuonVetoSystemRecord.html">KMuonVetoSystemRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetMuonVetoSystemRecord">GetMuonVetoSystemRecord</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetName"><span class="baseclass">TObject::</span>GetName</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetNumBoloPulses">GetNumBoloPulses</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetNumBolos">GetNumBolos</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetNumMuonModules">GetNumMuonModules</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetNumSambas">GetNumSambas</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetObjectInfo"><span class="baseclass">TObject::</span>GetObjectInfo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> px, <a href="./ListOfTypes.html#Int_t">Int_t</a> py) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetObjectStat"><span class="baseclass">TObject::</span>GetObjectStat</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Option_t">Option_t</a>*</td><td class="funcname"><a class="funcname" href="#TObject:GetOption"><span class="baseclass">TObject::</span>GetOption</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetRunEndTime">GetRunEndTime</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetRunNumber">GetRunNumber</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetRunStartTime">GetRunStartTime</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KSambaRecord.html">KSambaRecord</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetSamba">GetSamba</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetSambaRecords">GetSambaRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:GetSecPerStamp"><span class="baseclass">KEvent::</span>GetSecPerStamp</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Long64_t">Long64_t</a></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:GetStamp"><span class="baseclass">KEvent::</span>GetStamp</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:GetStampTime"><span class="baseclass">KEvent::</span>GetStampTime</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetSumBoloEnergyIon">GetSumBoloEnergyIon</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetSumBoloEnergyRecoil">GetSumBoloEnergyRecoil</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">const</span> <span class="keyword">char</span>*</td><td class="funcname"><a class="funcname" href="#TObject:GetTitle"><span class="baseclass">TObject::</span>GetTitle</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:GetTriggerType"><span class="baseclass">KEvent::</span>GetTriggerType</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#TObject:GetUniqueID"><span class="baseclass">TObject::</span>GetUniqueID</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:HandleTimer"><span class="baseclass">TObject::</span>HandleTimer</a>(TTimer* timer)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#ULong_t">ULong_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Hash"><span class="baseclass">TObject::</span>Hash</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Info"><span class="baseclass">TObject::</span>Info</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> <span class="keyword">char</span>* classname) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:InheritsFrom@1"><span class="baseclass">TObject::</span>InheritsFrom</a>(<span class="keyword">const</span> TClass* cl) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Inspect"><span class="baseclass">TObject::</span>Inspect</a>() <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:InvertBit"><span class="baseclass">TObject::</span>InvertBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret">virtual TClass*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:IsA">IsA</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:IsBlind"><span class="baseclass">KEvent::</span>IsBlind</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsEqual"><span class="baseclass">TObject::</span>IsEqual</a>(<span class="keyword">const</span> <a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsFolder"><span class="baseclass">TObject::</span>IsFolder</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsOnHeap"><span class="baseclass">TObject::</span>IsOnHeap</a>() <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:IsSame">IsSame</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsSortable"><span class="baseclass">TObject::</span>IsSortable</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:IsZombie"><span class="baseclass">TObject::</span>IsZombie</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ls"><span class="baseclass">TObject::</span>ls</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MayNotUse"><span class="baseclass">TObject::</span>MayNotUse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:muonModuleRecords">muonModuleRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Notify"><span class="baseclass">TObject::</span>Notify</a>()</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Obsolete"><span class="baseclass">TObject::</span>Obsolete</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* asOfVers, <span class="keyword">const</span> <span class="keyword">char</span>* removedFromVers) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete@1"><span class="baseclass">TObject::</span>operator delete</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:operator_delete[]@1"><span class="baseclass">TObject::</span>operator delete[]</a>(<span class="keyword">void</span>* ptr, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new@1"><span class="baseclass">TObject::</span>operator new</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span>*</td><td class="funcname"><a class="funcname" href="#TObject:operator_new[]@1"><span class="baseclass">TObject::</span>operator new[]</a>(<a href="./ListOfTypes.html#size_t">size_t</a> sz, <span class="keyword">void</span>* vp)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:operator!_">operator!=</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent) <span class="keyword">const</span></td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KEvent.html">KEvent</a>&amp;</td><td class="funcname"><a class="funcname" href="#KHLAEvent:operator_">operator=</a>(<span class="keyword">const</span> <a href="./KEvent.html">KEvent</a>&amp; anEvent)</td></tr>
+<tr class="func"><td class="funcret">virtual <a href="./KHLAEvent.html">KHLAEvent</a>&amp;</td><td class="funcname"><a class="funcname" href="#KHLAEvent:operator_@1">operator=</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:operator__">operator==</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Paint"><span class="baseclass">TObject::</span>Paint</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Pop"><span class="baseclass">TObject::</span>Pop</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Print"><span class="baseclass">TObject::</span>Print</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Read"><span class="baseclass">TObject::</span>Read</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:RecursiveRemove"><span class="baseclass">TObject::</span>RecursiveRemove</a>(<a href="./#TObject:TObject" title="TObject TObject::TObject() or overloads">TObject</a>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:ResetBit"><span class="baseclass">TObject::</span>ResetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>*</td><td class="funcname"><a class="funcname" href="#KHLAEvent:sambaRecords">sambaRecords</a>() <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SaveAs"><span class="baseclass">TObject::</span>SaveAs</a>(<span class="keyword">const</span> <span class="keyword">char</span>* filename = <span class="string">""</span>, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>) <span class="keyword">const</span><span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SavePrimitive"><span class="baseclass">TObject::</span>SavePrimitive</a>(<a href="./ListOfTypes.html#ostream">ostream</a>&amp; out, <a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit@1"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetBit"><span class="baseclass">TObject::</span>SetBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> set)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDrawOption"><span class="baseclass">TObject::</span>SetDrawOption</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">""</span>)<span class="funcprop"><abbr title="has a popup menu entry">MENU</abbr> </span></td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetDtorOnly"><span class="baseclass">TObject::</span>SetDtorOnly</a>(<span class="keyword">void</span>* obj)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:SetEventTriggerStamp"><span class="baseclass">KEvent::</span>SetEventTriggerStamp</a>(<a href="./ListOfTypes.html#Long64_t">Long64_t</a> aStamp)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:SetGSEventNumber">SetGSEventNumber</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> aNum)</td></tr>
+<tr class="funcinh"><td class="funcret">static <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetObjectStat"><span class="baseclass">TObject::</span>SetObjectStat</a>(<a href="./ListOfTypes.html#Bool_t">Bool_t</a> stat)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:SetRunEndTime">SetRunEndTime</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:SetRunNumber">SetRunNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:SetRunStartTime">SetRunStartTime</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="./KEvent.html#KEvent:SetStamp"><span class="baseclass">KEvent::</span>SetStamp</a>(<a href="./ListOfTypes.html#Long64_t">Long64_t</a> aStamp)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SetUniqueID"><span class="baseclass">TObject::</span>SetUniqueID</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> uid)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:ShowMembers">ShowMembers</a>(TMemberInspector&amp;)</td></tr>
+<tr class="func"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:Streamer">Streamer</a>(TBuffer&amp;)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:StreamerNVirtual">StreamerNVirtual</a>(TBuffer&amp; ClassDef_StreamerNVirtual_b)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:SysError"><span class="baseclass">TObject::</span>SysError</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Bool_t">Bool_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBit"><span class="baseclass">TObject::</span>TestBit</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:TestBits"><span class="baseclass">TObject::</span>TestBits</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> f) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:UseCurrentStyle"><span class="baseclass">TObject::</span>UseCurrentStyle</a>()</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:Warning"><span class="baseclass">TObject::</span>Warning</a>(<span class="keyword">const</span> <span class="keyword">char</span>* method, <span class="keyword">const</span> <span class="keyword">char</span>* msgfmt) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0)</td></tr>
+<tr class="funcinh"><td class="funcret">virtual <a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="funcname"><a class="funcname" href="#TObject:Write@1"><span class="baseclass">TObject::</span>Write</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> option = 0, <a href="./ListOfTypes.html#Int_t">Int_t</a> bufsize = 0) <span class="keyword">const</span></td></tr>
+
+</table></div>
+<div class="access" id="funcprot"><b>protected:</b>
+<table class="func" id="tabfuncprot" cellspacing="0">
+<tr class="funcinh"><td class="funcret">virtual <span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:DoError"><span class="baseclass">TObject::</span>DoError</a>(<span class="keyword">int</span> level, <span class="keyword">const</span> <span class="keyword">char</span>* location, <span class="keyword">const</span> <span class="keyword">char</span>* fmt, va_list va) <span class="keyword">const</span></td></tr>
+<tr class="funcinh"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#TObject:MakeZombie"><span class="baseclass">TObject::</span>MakeZombie</a>()</td></tr>
+
+</table></div>
+<div class="access" id="funcpriv"><b>private:</b>
+<table class="func" id="tabfuncpriv" cellspacing="0">
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:ClearArray">ClearArray</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt, TClonesArray* mArray)</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:CreateArrays">CreateArrays</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:DeleteArray">DeleteArray</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt, TClonesArray* mArray)</td></tr>
+<tr class="func"><td class="funcret"><a href="./ListOfTypes.html#UInt_t">UInt_t</a></td><td class="funcname"><a class="funcname" href="#KHLAEvent:GetLargestUniqueIDNumber">GetLargestUniqueIDNumber</a>()</td></tr>
+<tr class="func"><td class="funcret"><span class="keyword">void</span></td><td class="funcname"><a class="funcname" href="#KHLAEvent:InitializeMembers">InitializeMembers</a>()</td></tr>
+
+</table></div>
+</div>
+
+<div id="datamembers">
+<h2><a name="KHLAEvent:Data_Members"></a>Data Members</h2>
+<div class="access" id="enumpubl"><b>public:</b>
+<table class="data" id="tabenumpubl" cellspacing="0">
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">KEvent::</span>kTriggerTypes { </td><td class="dataname"><a href="./KEvent.html#KEvent:kBoloTriggerType">kBoloTriggerType</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="./KEvent.html#KEvent:kMuonVetoTriggerType">kMuonVetoTriggerType</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="./KEvent.html#KEvent:kNCTriggerType">kNCTriggerType</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span>EStatusBits { </td><td class="dataname"><a href="#TObject:kCanDelete">kCanDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kMustCleanup">kMustCleanup</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kObjInCanvas">kObjInCanvas</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kIsReferenced">kIsReferenced</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kHasUUID">kHasUUID</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kCannotPick">kCannotPick</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNoContextMenu">kNoContextMenu</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kInvalidObject">kInvalidObject</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+<tr class="datainh"><td class="datatype">enum <span class="baseclass">TObject::</span><i>[unnamed]</i> { </td><td class="dataname"><a href="#TObject:kIsOnHeap">kIsOnHeap</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kNotDeleted">kNotDeleted</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kZombie">kZombie</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kBitMask">kBitMask</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kSingleKey">kSingleKey</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kOverwrite">kOverwrite</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype"></td><td class="dataname"><a href="#TObject:kWriteDelete">kWriteDelete</a></td><td></td></tr>
+<tr class="datainh"><td class="datatype">};</td><td></td><td></td></tr>
+
+</table></div>
+<div class="access" id="datapriv"><b>private:</b>
+<table class="data" id="tabdatapriv" cellspacing="0">
+<tr class="data"><td class="datatype">TClonesArray*</td><td class="dataname"><a name="KHLAEvent:fBolo"></a>fBolo</td><td class="datadesc">-&gt;  pointer to the array of Single Bolo Sub Records</td></tr>
+<tr class="data"><td class="datatype">TClonesArray*</td><td class="dataname"><a name="KHLAEvent:fBoloPulse"></a>fBoloPulse</td><td class="datadesc">-&gt; pointer to the array of Bolo Pulse Sub Records</td></tr>
+<tr class="data"><td class="datatype"><a href="./KHLABoloSysRecord.html">KHLABoloSysRecord</a></td><td class="dataname"><a name="KHLAEvent:fBoloSystem"></a>fBoloSystem</td><td class="datadesc">the Bolometer System Record..??</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KHLAEvent:fGSEventNumber"></a>fGSEventNumber</td><td class="datadesc">Global Software Event Number. starts from 1 with each new Run</td></tr>
+<tr class="data"><td class="datatype">TClonesArray*</td><td class="dataname"><a name="KHLAEvent:fMuonModule"></a>fMuonModule</td><td class="datadesc">-&gt; pointer to the array of Muon Module Sub Records</td></tr>
+<tr class="data"><td class="datatype"><a href="./KHLAMuonVetoSysRecord.html">KHLAMuonVetoSysRecord</a></td><td class="dataname"><a name="KHLAEvent:fMuonSystem"></a>fMuonSystem</td><td class="datadesc">Muon Veto System Record</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KHLAEvent:fRunEndTime"></a>fRunEndTime</td><td class="datadesc">end of the Big Run</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Int_t">Int_t</a></td><td class="dataname"><a name="KHLAEvent:fRunNumber"></a>fRunNumber</td><td class="datadesc">big Run number. the small run number is found in the Bolometer data record</td></tr>
+<tr class="data"><td class="datatype"><a href="./ListOfTypes.html#Double_t">Double_t</a></td><td class="dataname"><a name="KHLAEvent:fRunStartTime"></a>fRunStartTime</td><td class="datadesc">begining of the Big Run </td></tr>
+<tr class="data"><td class="datatype">TClonesArray*</td><td class="dataname"><a name="KHLAEvent:fSamba"></a>fSamba</td><td class="datadesc">-&gt;  pointer to the array of Samba Sub Records</td></tr>
+
+</table></div>
+</div>
+<h2><a id="KHLAEvent:Class_Charts"></a>Class Charts</h2>
+<!--INHERITANCE TREE-->
+<table><tr><td width="10%"></td><td width="70%"><a href="ClassHierarchy.html">Inheritance Chart</a>:</td></tr><tr class="inhtree"><td width="10%"></td><td width="70%"><table class="inhtree"><tr><td>
+<table width="100%" border="0" cellpadding ="0" cellspacing="2"><tr>
+<td><table><tr>
+<td bgcolor="#f7f7f7" align="right">
+<table><tr><td><table><tr>
+<td bgcolor="#efefef" align="right">
+<tt>TObject</tt></td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><tt><a name="KEvent" href="./KEvent.html">KEvent</a></tt></center>
+</td>
+</tr></table>
+</td>
+</tr></table></td>
+<td>&larr;</td><td>
+<center><big><b><tt><a name="KHLAEvent" href="./KHLAEvent.html">KHLAEvent</a></tt></b></big></center>
+</td>
+<td><table><tr>
+<td></td>
+</tr></table></td>
+</tr></table>
+</td></tr></table></td></tr></table>
+<h2>Function documentation</h2>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KHLAEvent:KHLAEvent@1" href="src/KHLAEvent.cxx.html#IE1e.D">KHLAEvent</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</span><br />
+<div class="funccomm"><pre>Default Constructor. This allocates memory for the KClonesArrays
+and this might be a bug/memory leak. According to the ROOT documentation
+no memory should be allocated by the default constructor. This needs
+to be checked.
+
+If you are creating your own <a href="./KHLAEvent.html">KHLAEvent</a> object for use outside
+of ROOT I/O, it is strongly encouraged that you use the <a href="./KEventFactory.html">KEventFactory</a>
+to make the object for you. It is intended that if the <a href="./KHLAEvent.html">KHLAEvent</a>
+needs to be built in a more complex way, by always asking the <a href="./KEventFactory.html">KEventFactory</a>
+to build an event object for you, you are guaranteed to get a fully
+created object (assuming that the <a href="./KEventFactory.html">KEventFactory</a> is properly coded. :)
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KHLAEvent:KHLAEvent@1" href="src/KHLAEvent.cxx.html#KZdn0E">KHLAEvent</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</span><br />
+<div class="funccomm"><pre><a href="./#TObject:Copy" title="void TObject::Copy(TObject&amp; object)">Copy</a> Constructor. The TRefs will point to newly created objects
+and not to the data members of the <a href="./KHLAEvent.html">KHLAEvent</a> object you passed in.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"> <a class="funcname" name="KHLAEvent:_KHLAEvent" href="src/KHLAEvent.cxx.html#CLqHID">~KHLAEvent</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KEvent.html">KEvent</a>&amp; <a class="funcname" name="KHLAEvent:operator_" href="src/KHLAEvent.cxx.html#OaPISD">operator=</a>(<span class="keyword">const</span> <a href="./KEvent.html">KEvent</a>&amp; anEvent)</span><br />
+<div class="funccomm"><pre>assignment operator
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLAEvent.html">KHLAEvent</a>&amp; <a class="funcname" name="KHLAEvent:operator_@1" href="src/KHLAEvent.cxx.html#yxNWDD">operator=</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</span><br />
+<div class="funccomm"><pre>sets anEvent to this.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#UInt_t">UInt_t</a> <a class="funcname" name="KHLAEvent:GetLargestUniqueIDNumber" href="src/KHLAEvent.cxx.html#k4W24D">GetLargestUniqueIDNumber</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>returns the largest unique ID number for TRefs in this
+event. This is used for adding new subrecords to events, which
+is needed in order to <span class="string">"merge"</span> the data.
+
+ Note to developers: the structure of KData should be rethought
+ and this method, along with the AddSubRecord method, should probably
+ be put into a separate EventBuilder class, which could be used
+ by the <a href="./KEventFactory.html">KEventFactory</a>. Or, perhaps just add it to the factory.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLAEvent:AddBoloSubRecords" href="src/KHLAEvent.cxx.html#JFpTlD">AddBoloSubRecords</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> skim = <span class="keyword">false</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLAEvent:AddMuonModuleSubRecords" href="src/KHLAEvent.cxx.html#r3p1gD">AddMuonModuleSubRecords</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLAEvent:AddSubRecords" href="src/KHLAEvent.cxx.html#uENUnD">AddSubRecords</a>(<span class="keyword">const</span> <a href="./KEvent.html">KEvent</a>&amp; anEvent)</span><br />
+<div class="funccomm"><pre>Adds the sub records of 'anEvent' to *this.
+returns the number of sub records added to *this.
+Even though the argument for this method says you can pass in any type of <a href="./KEvent.html">KEvent</a>,
+you must pass an object that is a <a href="./KHLAEvent.html">KHLAEvent</a> in order for the
+sub records to actually be added to the event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLAEvent:AddMuonModuleSubRecord" href="src/KHLAEvent.cxx.html#z_smf">AddMuonModuleSubRecord</a>(<span class="keyword">const</span> <a href="./KMuonModuleRecord.html">KMuonModuleRecord</a>&amp; inMuonModule)</span><br />
+<div class="funccomm"><pre>Add a MuonModuleRecord to this <a href="./KHLAEvent.html">KHLAEvent</a>. You must add a <a href="./KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>
+despite the argument type of this method.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLAEvent:AddBoloSubRecord" href="src/KHLAEvent.cxx.html#YkJhIB">AddBoloSubRecord</a>(<span class="keyword">const</span> <a href="./KBolometerRecord.html">KBolometerRecord</a>&amp; inBolo)</span><br />
+<div class="funccomm"><pre>Add rhs to this <a href="./KHLAEvent.html">KHLAEvent</a>. This also automatically adds the Samba record that it points
+to and the <a href="./Pulse.html">Pulse</a> Records. If no Samba record is associated with rhs (via GetSambaRecord),
+this method returns <a href="./ListOfTypes.html#bool">false</a>. If an invalid pointer to a <a href="./Pulse.html">Pulse</a> Record is found,
+this method returns <a href="./ListOfTypes.html#bool">false</a>. This ensures that the event is built properly.
+Even though the argument for this method says you can pass in any type of <a href="./KBolometerRecord.html">KBolometerRecord</a>,
+you must pass an object that is a <a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:CopyClonesArrays" href="src/KHLAEvent.cxx.html#aftWDC">CopyClonesArrays</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</span><br />
+<div class="funccomm"><pre>
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:CopyLocalMembers" href="src/KHLAEvent.cxx.html#sn7c_D">CopyLocalMembers</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent)</span><br />
+<div class="funccomm"><pre>fDataCleaningWord = anEvent.fDataCleaningWord;
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:ClearArrays" href="src/KHLAEvent.cxx.html#Q0GFLE">ClearArrays</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOption = <span class="string">"C"</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:Clear" href="src/KHLAEvent.cxx.html#rEDx9B">Clear</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* option = <span class="string">"C"</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:InitializeMembers" href="src/KHLAEvent.cxx.html#AYmouC">InitializeMembers</a>(<span class="keyword">void</span>)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:CreateArrays" href="src/KHLAEvent.cxx.html#ctUHBE">CreateArrays</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Allocates memory for the KClonesArrays if they haven't already
+been allocated.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:DeleteArray" href="src/KHLAEvent.cxx.html#BedGPD">DeleteArray</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt, TClonesArray* mArray)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:ClearArray" href="src/KHLAEvent.cxx.html#b4WaVC">ClearArray</a>(<a href="./ListOfTypes.html#Option_t">Option_t</a>* anOpt, TClonesArray* mArray)</span><br />
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLASambaRecord.html">KHLASambaRecord</a>* <a class="funcname" name="KHLAEvent:AddSamba" href="src/KHLAEvent.cxx.html#YWjamE">AddSamba</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Use this event only when creating an event and you want to add
+a new SubRecord.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABolometerRecord.html">KHLABolometerRecord</a>* <a class="funcname" name="KHLAEvent:AddBolo" href="src/KHLAEvent.cxx.html#oqwKx">AddBolo</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Use this event only when creating an event and you want to add
+a new SubRecord.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABoloPulseRecord.html">KHLABoloPulseRecord</a>* <a class="funcname" name="KHLAEvent:AddBoloPulse" href="src/KHLAEvent.cxx.html#fJPVDB">AddBoloPulse</a>()</span><br />
+<div class="funccomm"><pre>Use this event only when creating an event and you want to add
+a new SubRecord.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLAMuonModuleRecord.html">KHLAMuonModuleRecord</a>* <a class="funcname" name="KHLAEvent:AddMuonModule" href="src/KHLAEvent.cxx.html#bhKNyE">AddMuonModule</a>()</span><br />
+<div class="funccomm"><pre>Use this event only when creating an event and you want to add
+a new SubRecord.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KSambaRecord.html">KSambaRecord</a> * <a class="funcname" name="KHLAEvent:GetSamba" href="src/KHLAEvent.cxx.html#B45vlE">GetSamba</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) const</span><br />
+<div class="funccomm"><pre> Return the i'th Samba Sub Record for this event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KBolometerRecord.html">KBolometerRecord</a> * <a class="funcname" name="KHLAEvent:GetBolo" href="src/KHLAEvent.cxx.html#fdxC1E">GetBolo</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) const</span><br />
+<div class="funccomm"><pre> Return the i'th Bolometer Sub Record for this event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KBoloPulseRecord.html">KBoloPulseRecord</a> * <a class="funcname" name="KHLAEvent:GetBoloPulse" href="src/KHLAEvent.cxx.html#YxA5sD">GetBoloPulse</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) const</span><br />
+<div class="funccomm"><pre> Return the i'th Bolometer <a href="./Pulse.html">Pulse</a> Sub Record for this event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KBolometerRecord.html">KBolometerRecord</a> * <a class="funcname" name="KHLAEvent:GetBolo@1" href="src/KHLAEvent.cxx.html#jtHcgE">GetBolo</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) const</span><br />
+<div class="funccomm"><pre>Return the first found Bolometer Sub Record with detector name == name.
+this searches in order from i = 0 to i = <a href="./KHLAEvent.html#KHLAEvent:GetNumBolos" title="Int_t KHLAEvent::GetNumBolos()">GetNumBolos</a>()-1
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KBoloPulseRecord.html">KBoloPulseRecord</a> * <a class="funcname" name="KHLAEvent:GetBoloPulse@1" href="src/KHLAEvent.cxx.html#UkbzVE">GetBoloPulse</a>(<span class="keyword">const</span> <span class="keyword">char</span>* name) const</span><br />
+<div class="funccomm"><pre>Return the first found Bolometer <a href="./Pulse.html">Pulse</a> Record with channel name == name.
+this searches in order from i = 0 to i = <a href="./KHLAEvent.html#KHLAEvent:GetNumBoloPulses" title="Int_t KHLAEvent::GetNumBoloPulses()">GetNumBoloPulses</a>()-1
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KMuonModuleRecord.html">KMuonModuleRecord</a> * <a class="funcname" name="KHLAEvent:GetMuonModule" href="src/KHLAEvent.cxx.html#ZKzMPB">GetMuonModule</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> i) const</span><br />
+<div class="funccomm"><pre> Return the i'th Muon Module Sub Record for this event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLAEvent:IsSame" href="src/KHLAEvent.cxx.html#HLVd7">IsSame</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent, <a href="./ListOfTypes.html#Bool_t">Bool_t</a> bPrint = <span class="keyword">false</span>) const</span><br />
+<div class="funccomm"><pre>Compares two KHLAEvents and their member variables to test for equality.
+If bPrint is set to <a href="./ListOfTypes.html#bool">true</a>, then a message for each member variable that is different
+will print to standard out. Otherwise, this method will return <a href="./ListOfTypes.html#bool">false</a> and quit
+checking member variables as soon as it finds a unequal data member.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:Compact" href="src/KHLAEvent.cxx.html#UU5sm">Compact</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Make the event class as small as possible. This calls '<a href="./KHLAEvent.html#KHLAEvent:Compact" title="void KHLAEvent::Compact()">Compact</a>' for all member
+variables that are KDS classes, member variables that can be compacted (such as TBits)
+and base classes
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KHLAEvent:GetSumBoloEnergyRecoil" href="src/KHLAEvent.cxx.html#U6Fnx">GetSumBoloEnergyRecoil</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Returns the sum of the recoil energies for all
+bolometer sub-records in the event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KHLAEvent:GetSumBoloEnergyIon" href="src/KHLAEvent.cxx.html#U0aNIC">GetSumBoloEnergyIon</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Returns the sum of the fEnergyIon for all
+bolometer sub-records in the event. Note that in the ERA
+processors, the calculation of fEnergyIon depends upon
+the category of the event.
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KHLAEvent:GetEventTriggerTime" href="src/KHLAEvent.cxx.html#acan8C">GetEventTriggerTime</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>This method is provided for backwards compatibility for some programs
+and should NOT be used when writing new programs!!
+
+Searches the Bolometer subrecords and any Muon Veto data and returns
+the *earliest* PC time found in those records.
+
+
+You should deal with event times in a different way since eventually
+this method will be removed.
+
+</pre></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLAEvent:operator__" href="src/KHLAEvent.h.html#icGx9C">operator==</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:IsSame" title="Bool_t KHLAEvent::IsSame(const KHLAEvent&amp; anEvent,Bool_t bPrint=false)">IsSame</a>(anEvent,<span class="keyword">false</span>); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Bool_t">Bool_t</a> <a class="funcname" name="KHLAEvent:operator!_" href="src/KHLAEvent.h.html#w.J7IC">operator!=</a>(<span class="keyword">const</span> <a href="./KHLAEvent.html">KHLAEvent</a>&amp; anEvent) const</span><br />
+
+<div class="code"><code class="inlinecode">{ <span class="keyword">return</span> !(*<span class="keyword">this</span>==anEvent); }</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <span class="keyword">char</span>* <a class="funcname" name="KHLAEvent:GetClassName" href="src/KHLAEvent.h.html#E2IqCB">GetClassName</a>()</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <span class="string">"KHLAEvent"</span>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KHLABoloSysRecord.html">KHLABoloSysRecord</a>* <a class="funcname" name="KHLAEvent:GetBoloSystemRecord" href="src/KHLAEvent.h.html#JFyb8">GetBoloSystemRecord</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> &amp;<a href="./KHLAEvent.html#KHLAEvent:fBoloSystem" title="KHLABoloSysRecord KHLAEvent::fBoloSystem">fBoloSystem</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>* <a class="funcname" name="KHLAEvent:GetSambaRecords" href="src/KHLAEvent.h.html#IqjS1B">GetSambaRecords</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>pointers to KClonesArrays of SubRecord objects.
+unless you need some specific informaton from the <a href="./KClonesArray.html">KClonesArray</a>
+its best to use the methods above to get pointers
+directly to the subRecords
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<a href="./KClonesArray.html">KClonesArray</a> *&gt;(<a href="./KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>* <a class="funcname" name="KHLAEvent:GetBoloRecords" href="src/KHLAEvent.h.html#A7xsUB">GetBoloRecords</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<a href="./KClonesArray.html">KClonesArray</a> *&gt;(<a href="./KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>* <a class="funcname" name="KHLAEvent:GetBoloPulseRecords" href="src/KHLAEvent.h.html#YERu_C">GetBoloPulseRecords</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<a href="./KClonesArray.html">KClonesArray</a> *&gt;(<a href="./KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>* <a class="funcname" name="KHLAEvent:GetMuonModuleRecords" href="src/KHLAEvent.h.html#aTTXMC">GetMuonModuleRecords</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<a href="./KClonesArray.html">KClonesArray</a> *&gt;(<a href="./KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>);}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>* <a class="funcname" name="KHLAEvent:sambaRecords" href="src/KHLAEvent.h.html#flJDqB">sambaRecords</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>more pythonic looking methdos
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:GetSambaRecords" title="const KClonesArray* KHLAEvent::GetSambaRecords()">GetSambaRecords</a>();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>* <a class="funcname" name="KHLAEvent:boloRecords" href="src/KHLAEvent.h.html#Kq7u8B">boloRecords</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:GetBoloRecords" title="const KClonesArray* KHLAEvent::GetBoloRecords()">GetBoloRecords</a>();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>* <a class="funcname" name="KHLAEvent:boloPulseRecords" href="src/KHLAEvent.h.html#wrvy1B">boloPulseRecords</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:GetBoloPulseRecords" title="const KClonesArray* KHLAEvent::GetBoloPulseRecords()">GetBoloPulseRecords</a>();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">const</span> <a href="./KClonesArray.html">KClonesArray</a>* <a class="funcname" name="KHLAEvent:muonModuleRecords" href="src/KHLAEvent.h.html#JeeJ1">muonModuleRecords</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:GetMuonModuleRecords" title="const KClonesArray* KHLAEvent::GetMuonModuleRecords()">GetMuonModuleRecords</a>();}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLAEvent:GetRunNumber" href="src/KHLAEvent.h.html#nxkLJD">GetRunNumber</a>(<span class="keyword">void</span>)</span><br />
+<div class="funccomm"><pre>Setters to local members
+</pre></div>
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:fRunNumber" title="Int_t KHLAEvent::fRunNumber">fRunNumber</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KHLAEvent:GetRunStartTime" href="src/KHLAEvent.h.html#IOkT0E">GetRunStartTime</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:fRunStartTime" title="Double_t KHLAEvent::fRunStartTime">fRunStartTime</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Double_t">Double_t</a> <a class="funcname" name="KHLAEvent:GetRunEndTime" href="src/KHLAEvent.h.html#GjwVME">GetRunEndTime</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:fRunEndTime" title="Double_t KHLAEvent::fRunEndTime">fRunEndTime</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#UInt_t">UInt_t</a> <a class="funcname" name="KHLAEvent:GetGSEventNumber" href="src/KHLAEvent.h.html#TErJvE">GetGSEventNumber</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <a href="./KHLAEvent.html#KHLAEvent:fGSEventNumber" title="Int_t KHLAEvent::fGSEventNumber">fGSEventNumber</a>;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:SetRunNumber" href="src/KHLAEvent.h.html#eIJ4Y">SetRunNumber</a>(<a href="./ListOfTypes.html#Int_t">Int_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLAEvent.html#KHLAEvent:fRunNumber" title="Int_t KHLAEvent::fRunNumber">fRunNumber</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:SetRunStartTime" href="src/KHLAEvent.h.html#ggS4TD">SetRunStartTime</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLAEvent.html#KHLAEvent:fRunStartTime" title="Double_t KHLAEvent::fRunStartTime">fRunStartTime</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:SetRunEndTime" href="src/KHLAEvent.h.html#T5dtPE">SetRunEndTime</a>(<a href="./ListOfTypes.html#Double_t">Double_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLAEvent.html#KHLAEvent:fRunEndTime" title="Double_t KHLAEvent::fRunEndTime">fRunEndTime</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><span class="keyword">void</span> <a class="funcname" name="KHLAEvent:SetGSEventNumber" href="src/KHLAEvent.h.html#gH_oG">SetGSEventNumber</a>(<a href="./ListOfTypes.html#UInt_t">UInt_t</a> aNum)</span><br />
+
+<div class="code"><code class="inlinecode">{<a href="./KHLAEvent.html#KHLAEvent:fGSEventNumber" title="Int_t KHLAEvent::fGSEventNumber">fGSEventNumber</a> = aNum;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLAEvent:GetNumSambas" href="src/KHLAEvent.h.html#CdCRhB">GetNumSambas</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> (<a href="./KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>) ? <a href="./KHLAEvent.html#KHLAEvent:fSamba" title="TClonesArray* KHLAEvent::fSamba">fSamba</a>-&gt;GetEntriesFast() : 0;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLAEvent:GetNumBolos" href="src/KHLAEvent.h.html#a6gIe">GetNumBolos</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> (<a href="./KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>) ? <a href="./KHLAEvent.html#KHLAEvent:fBolo" title="TClonesArray* KHLAEvent::fBolo">fBolo</a>-&gt;GetEntriesFast() : 0;;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLAEvent:GetNumBoloPulses" href="src/KHLAEvent.h.html#Xu7sd">GetNumBoloPulses</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> (<a href="./KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>) ? <a href="./KHLAEvent.html#KHLAEvent:fBoloPulse" title="TClonesArray* KHLAEvent::fBoloPulse">fBoloPulse</a>-&gt;GetEntriesFast() : 0;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./ListOfTypes.html#Int_t">Int_t</a> <a class="funcname" name="KHLAEvent:GetNumMuonModules" href="src/KHLAEvent.h.html#PAGLnB">GetNumMuonModules</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> (<a href="./KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>) ? <a href="./KHLAEvent.html#KHLAEvent:fMuonModule" title="TClonesArray* KHLAEvent::fMuonModule">fMuonModule</a>-&gt;GetEntriesFast() : 0;}</code></div>
+<div style="clear:both;"></div>
+</div>
+<div class="funcdoc"><span class="funcname"><a href="./KMuonVetoSystemRecord.html">KMuonVetoSystemRecord</a>* <a class="funcname" name="KHLAEvent:GetMuonVetoSystemRecord" href="src/KHLAEvent.h.html#JAsMTB">GetMuonVetoSystemRecord</a>(<span class="keyword">void</span>)</span><br />
+
+<div class="code"><code class="inlinecode">{<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<a href="./KMuonVetoSystemRecord.html">KMuonVetoSystemRecord</a> *&gt;(&amp;<a href="./KHLAEvent.html#KHLAEvent:fMuonSystem" title="KHLAMuonVetoSysRecord KHLAEvent::fMuonSystem">fMuonSystem</a>);}</code></div>
+<div style="clear:both;"></div>
+</div>
+
+<br />
+<!--SIGNATURE-->
+<div id="footer">
+
+<em>&raquo; Last changed: Tue Sep 25 14:34:45 2012 </em><em>&raquo; Last generated: 2012-09-25 14:34</em><br />
+<em>This page has been automatically generated. For comments or suggestions regarding the documentation or ROOT in general please send a mail to <a href="mailto:rootdev@root.cern.ch">ROOT support</a>.</em>
+</div>
+</div>
+</body>
+</html>
