@@ -10,10 +10,22 @@ try:
   gSystem.Load('libkds')
   gSystem.Load('libkpta')
   gSystem.Load('libkamping')
- 
+
 except Exception as e: 
   print 'failed to load KDataPy.util'
   raise e
+
+import libPyROOT as _libpyroot
+
+def _KEvent_iter__(self):
+  i = 0
+  while self.GetEntry(i):
+    yield self.GetEvent()                   
+    i += 1
+
+_libpyroot.MakeRootClass( "KDataReader" ).__iter__    = _KEvent_iter__
+
+ 
 
 #small utility functions  
 def get_as_nparray(c_pointer, size):

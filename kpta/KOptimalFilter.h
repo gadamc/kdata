@@ -37,29 +37,34 @@ public:
   virtual unsigned int GetOptimalFilterSize(void){return fOptFilterSize;}
   
   virtual void SetToRecalculate(bool option = true){fRecalculate= option;}
-  
-  virtual void SetNoiseSpectrum(std::vector<double> &r){SetTheNoiseSpectrum(r);}
-  virtual void SetNoiseSpectrum(std::vector<float> &r){SetTheNoiseSpectrum(r);}
-  virtual void SetNoiseSpectrum(std::vector<int> &r){SetTheNoiseSpectrum(r);}
-  virtual void SetNoiseSpectrum(std::vector<short> &r){SetTheNoiseSpectrum(r);}
+  template <class T> void SetNoiseSpectrum(std::vector<T> &r);
+  template <class T> void SetNoiseSpectrum(const T* resp, unsigned int size);
 
-  virtual void SetNoiseSpectrum(const double* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
-  virtual void SetNoiseSpectrum(const float* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
-  virtual void SetNoiseSpectrum(const int* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
-  virtual void SetNoiseSpectrum(const short* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
+  // virtual void SetNoiseSpectrum(std::vector<double> &r){SetTheNoiseSpectrum(r);}
+  // virtual void SetNoiseSpectrum(std::vector<float> &r){SetTheNoiseSpectrum(r);}
+  // virtual void SetNoiseSpectrum(std::vector<int> &r){SetTheNoiseSpectrum(r);}
+  // virtual void SetNoiseSpectrum(std::vector<short> &r){SetTheNoiseSpectrum(r);}
+
+  // virtual void SetNoiseSpectrum(const double* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
+  // virtual void SetNoiseSpectrum(const float* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
+  // virtual void SetNoiseSpectrum(const int* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
+  // virtual void SetNoiseSpectrum(const short* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
   
   virtual void SetNoiseSpectrum(double* resp);
   virtual void SetNoiseSpectrumSize(unsigned int size);
   
-  virtual void SetTemplateDFT(std::vector<double> &r){SetTheTemplateDFT(r);}
-  virtual void SetTemplateDFT(std::vector<float> &r){SetTheTemplateDFT(r);}
-  virtual void SetTemplateDFT(std::vector<int> &r){SetTheTemplateDFT(r);}
-  virtual void SetTemplateDFT(std::vector<short> &r){SetTheTemplateDFT(r);}
+  template <class T> void SetTemplateDFT(std::vector<T> &r);
+  template <class T> void SetTemplateDFT(const T* resp, unsigned int size);
 
-  virtual void SetTemplateDFT(const double* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
-  virtual void SetTemplateDFT(const float* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
-  virtual void SetTemplateDFT(const int* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
-  virtual void SetTemplateDFT(const short* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
+  // virtual void SetTemplateDFT(std::vector<double> &r){SetTheTemplateDFT(r);}
+  // virtual void SetTemplateDFT(std::vector<float> &r){SetTheTemplateDFT(r);}
+  // virtual void SetTemplateDFT(std::vector<int> &r){SetTheTemplateDFT(r);}
+  // virtual void SetTemplateDFT(std::vector<short> &r){SetTheTemplateDFT(r);}
+
+  // virtual void SetTemplateDFT(const double* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
+  // virtual void SetTemplateDFT(const float* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
+  // virtual void SetTemplateDFT(const int* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
+  // virtual void SetTemplateDFT(const short* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
   
   virtual void SetTemplateDFT(double* resp);
   virtual void SetTemplateDFTSize(unsigned int size);
@@ -72,13 +77,13 @@ public:
 protected:
   double *fNoiseSpectrum;
   unsigned int fNoiseSpectrumSize;
-  template <class T> void SetTheNoiseSpectrum(std::vector<T> &resp);
-  template <class T> void SetTheNoiseSpectrum(const T* resp, unsigned int size);
+  //template <class T> void SetTheNoiseSpectrum(std::vector<T> &resp);
+  //template <class T> void SetTheNoiseSpectrum(const T* resp, unsigned int size);
   
   double *fTemplateDFT;
   unsigned int fTemplateDFTSize;
-  template <class T> void SetTheTemplateDFT(std::vector<T> &resp);
-  template <class T> void SetTheTemplateDFT(const T* resp, unsigned int size);
+  //template <class T> void SetTheTemplateDFT(std::vector<T> &resp);
+  //template <class T> void SetTheTemplateDFT(const T* resp, unsigned int size);
   
   double *fOptFilter;
   unsigned int fOptFilterSize;
@@ -104,7 +109,7 @@ private:
 };
 
 
-template <class T> void KOptimalFilter::SetTheNoiseSpectrum(std::vector<T> &resp)
+template <class T> void KOptimalFilter::SetNoiseSpectrum(std::vector<T> &resp)
 {
   if (resp.size() != fNoiseSpectrumSize){
     if(fNoiseSpectrum) delete [] fNoiseSpectrum;
@@ -116,9 +121,10 @@ template <class T> void KOptimalFilter::SetTheNoiseSpectrum(std::vector<T> &resp
     *(fNoiseSpectrum+i) = resp[i];
   
   fRecalculate = true;
+  //std::copy(resp.begin(), resp.end(), fNoiseSpectrum);
 }
 
-template <class T> void KOptimalFilter::SetTheNoiseSpectrum(const T* resp, unsigned int size)
+template <class T> void KOptimalFilter::SetNoiseSpectrum(const T* resp, unsigned int size)
 {
   if (size != fNoiseSpectrumSize){
     if(fNoiseSpectrum) delete [] fNoiseSpectrum;
@@ -135,7 +141,7 @@ template <class T> void KOptimalFilter::SetTheNoiseSpectrum(const T* resp, unsig
 
 
 
-template <class T> void KOptimalFilter::SetTheTemplateDFT(std::vector<T> &resp)
+template <class T> void KOptimalFilter::SetTemplateDFT(std::vector<T> &resp)
 {
   if (resp.size() != fTemplateDFTSize){
     if(fTemplateDFT) delete [] fTemplateDFT;
@@ -147,16 +153,16 @@ template <class T> void KOptimalFilter::SetTheTemplateDFT(std::vector<T> &resp)
     *(fTemplateDFT+i) = resp[i];
 
   fRecalculate=true;
+  //std::copy(resp.begin(), resp.end(), fNoiseSpectrum);
 }
 
-template <class T> void KOptimalFilter::SetTheTemplateDFT(const T* resp, unsigned int size)
+template <class T> void KOptimalFilter::SetTemplateDFT(const T* resp, unsigned int size)
 {
   if (size != fTemplateDFTSize){
     if(fTemplateDFT) delete [] fTemplateDFT;
     fTemplateDFTSize = size;
     fTemplateDFT = new double[fTemplateDFTSize];    
   }
-  
   
   for(unsigned int i = 0; i < fTemplateDFTSize; i++)
     *(fTemplateDFT+i) = resp[i];

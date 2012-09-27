@@ -15,7 +15,7 @@
 // 
 // First, the noise spectra for each channel must be determined. This kampsite currently uses the ERA style of pulse
 // detector to find "noise only" events. However, this class will likely employ some wavelet decomposition for noise event 
-// decisions. Additionally, the user may turn off noise spectrum determination (SetNeedScout(false)) and provide
+// decisions. Additionally, the user may turn off noise spectrum determination (NeedScout(false)) and provide
 // a noise spectrum directly to an instance of this class. 
 //
 // Second, the windowing processors must be set up by providing the pulse size for heat channels and ionization channels,
@@ -74,14 +74,13 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
 
   fBBv1IonPreProcessor  = new KPulseAnalysisChain();
   fBBv1IonPreProcessor->SetIsOwner();
-  fBBv1IonPreProcessor->AddProcessor( new KLinearRemoval() );
+  fBBv1IonPreProcessor->AddProcessor( new KBaselineRemoval() );
   fBBv1IonPreProcessor->AddProcessor( new KPatternRemoval() ); 
   fBBv1IonPreProcessor->AddProcessor( new KPatternRemoval() ); //yes, i make two...  see below.
 
   fBBv2IonPreProcessor  = new KPulseAnalysisChain();
-  fBBv2IonPreProcessor = new KPulseAnalysisChain();
   fBBv2IonPreProcessor->SetIsOwner();
-  fBBv2IonPreProcessor->AddProcessor( new KBaselineRemoval() );
+  fBBv2IonPreProcessor->AddProcessor( new KLinearRemoval() );
   KPatternRemoval *pta = new KPatternRemoval();
   pta->SetPatternLength(10);  //just fixed for now!!!
   fBBv2IonPreProcessor->AddProcessor( pta ); 
@@ -225,7 +224,7 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
     if(pRaw->GetPulseLength() == 0) continue;
-    if(pRaw->GetIsHeatPulse()) continue;
+    if(pRaw->GetIsHeatPulse()) continue;  //first loop through the ionization pulses...
     
     if(fTemplateSpectra.find(pRaw->GetChannelName()) == fTemplateSpectra.end()) {
       continue;
@@ -242,8 +241,8 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     
     KOptimalFilter& filter = fOptKamper.GetOptimalFilter();
     
-    filter.SetTemplateDFT( fTemplateSpectra.find(pRaw->GetChannelName())->second );
-    filter.SetNoiseSpectrum( fNoiseSpectra.find(pRaw->GetChannelName())->second );
+    filter.SetTemplateDFT( fTemplateSpectra.find(pRaw->GetChannelName())->second ); //this is extremely slow and will have to be optimized
+    filter.SetNoiseSpectrum( fNoiseSpectra.find(pRaw->GetChannelName())->second ); //this is extremely slow as well. don't want to copy over data
     filter.SetToRecalculate(); //tell the filter to recalculate its kernel
     
     fOptKamper.SetWindow( fIonWindow ); //tell the optimal filter kamper to use this window function.
@@ -465,31 +464,31 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
 {
   //pulsetype, 0 = heat, 1 = ion
   //
-  KPtaProcessor *theWindow = 0;
+  KPtaProcessor *theWindowProcessor = 0;
   switch (pulseType) {
     case 0:
     if(fHeatWindow == 0)
       CreateHeatWindow(pulse.size());
-    theWindow = fHeatWindow;
+    theWindowProcessor = fHeatWindow;
     break;
     case 1:
     if(fIonWindow == 0)
       CreateIonWindow(pulse.size());
-    theWindow = fIonWindow;
+    theWindowProcessor = fIonWindow;
     break;
     default:
     cout << "unknown pulse type" << endl;
     return false;
   }
 
-  if(theWindow == 0){
-    cout << "theWindow pointer is null for this pulse type " << pulseType << endl;
+  if(theWindowProcessor == 0){
+    cout << "theWindowProcessor pointer is null for this pulse type " << pulseType << endl;
     return false;
   }
 
-  theWindow->SetInputPulse(pulse);
-  if(!theWindow->RunProcess()){
-    cout << "theWindow failed" << endl; 
+  theWindowProcessor->SetInputPulse(pulse);
+  if(!theWindowProcessor->RunProcess()){
+    cout << "theWindowProcessor failed" << endl; 
     cout << "your pulse template was not set" << endl;
     return false;
   }
@@ -497,14 +496,14 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   SetTemplateShift(channelName, pulseShift);
 
   fPulseTemplateShifter.SetShift(pulseShift);
-  fPulseTemplateShifter.SetInputPulse(theWindow->GetOutputPulse());
-  fPulseTemplateShifter.SetInputPulseSize(theWindow->GetOutputPulseSize());
-  fPulseTemplateShifter.SetOutputPulse(theWindow->GetOutputPulse());
-  fPulseTemplateShifter.SetOutputPulseSize(theWindow->GetOutputPulseSize());
+  fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetOutputPulse());
+  fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetOutputPulseSize());
+  fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetOutputPulse());
+  fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetOutputPulseSize());
   fPulseTemplateShifter.SetMode(2);
   fPulseTemplateShifter.RunProcess();
   
-  fR2Hc.SetInputPulse( theWindow);
+  fR2Hc.SetInputPulse( theWindowProcessor);
   if(!fR2Hc.RunProcess()){
     cout << "fR2Hc failed" << endl; return false;
   }
@@ -521,41 +520,60 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   return true;
 }
 
-set<int> KChamonixKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord *pRaw)
+set<int>& KChamonixKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord *pRaw)
 {
-  //returns the set of heat pulse stamp widths. The reason for a set is that there can 
-  //be two NTDs per bolometer and they could have the same heat pulse widths. Using a set
-  //means that I don't have to check if the NTDs have the same pulse widths. 
+  //returns the set of unique heat pulse stamp widths for the bolometer associated with the KRawBoloPulseRecord. 
+  //The reason for a set is that there can 
+  //be two NTDs per bolometer and they could have different or the same heat pulse widths. Using a set
+  //means that its not necessary to check if the NTDs have the same pulse widths. 
   //so, this is general enough to return all of the unique heat pulse
-  //widths for each NTD connected to each bolometer. This even works if there are more than
-  //two NTDs per bolometer, which might be kinda cool... but probably not.
+  //widths for each NTD connected to each bolometer. This even works, of course, if there are more than
+  //two NTDs per bolometer.... (future R&D?)
 
-  //assume that the data does NOT change!!!
-  set<int> stampwidths  = GetHeatPulseStampWidths(pRaw->GetChannelName());
+  //assume that the data does NOT change throughout the data file!!!
 
-  if(stampwidths.size() != 0) return stampwidths;
+  if(GetHeatPulseStampWidthsSize(pRaw->GetChannelName()) != 0) 
+    return GetHeatPulseStampWidths(pRaw->GetChannelName());
+
+  set<int> stampwidths;
 
   KRawBolometerRecord *bolo = pRaw->GetBolometerRecord();
 
   for(int i = 0; i < bolo->GetNumPulseRecords(); i++){
     KRawBoloPulseRecord *p = bolo->GetPulseRecord(i);
     if(p->GetIsHeatPulse())
-      stampwidths.insert( (int)(p->GetHeatPulseStampWidth()) );  
+      stampwidths.insert( (p->GetHeatPulseStampWidth()) );  
   }
 
   fHeatPulseStampWidths[pRaw->GetChannelName()] = stampwidths;
   
-  return stampwidths;
+  return GetHeatPulseStampWidths(pRaw->GetChannelName());
 }
 
-set<int> KChamonixKAmpSite::GetHeatPulseStampWidths(const char* channelName) const
+set<int>& KChamonixKAmpSite::GetHeatPulseStampWidths(const char* channelName)
 {
+  //returns a reference to the internal set of known heat pulse stamps for a particular channel. If GetHeatPulseStampWidths(KRawBoloPulseRecord*)
+  //has not yet been called for this channel name, then this will return an empty set because this object doesn't yet
+  //know about this channel. Therefore, its better to use GetHeatPulseStampWidths(KRawBoloPulseRecord*) instead.
+  //
+
   if (fHeatPulseStampWidths.find(channelName) != fHeatPulseStampWidths.end())
     return fHeatPulseStampWidths.find(channelName)->second;
 
+  else { //instantiate an empty set for this channel
+    fHeatPulseStampWidths[channelName] = set<int>();
+    return fHeatPulseStampWidths[channelName];
+  }
+
+}
+
+unsigned int KChamonixKAmpSite::GetHeatPulseStampWidthsSize(const char* channelName) const
+{
+  if (fHeatPulseStampWidths.find(channelName) != fHeatPulseStampWidths.end())
+    return fHeatPulseStampWidths.find(channelName)->second.size();
+
   else {
-    set<int> empty;
-    return empty;
+    return 0;
   }
 
 }

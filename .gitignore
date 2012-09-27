@@ -82,5 +82,3 @@ temp.py
 *_Dict.h
 *.DS_Store
 /kData.xcodeproj/project.xcworkspace/xcuserdata/adam.xcuserdatad/UserInterfaceState.xcuserstate
-/htmlpy/_build/
-/html/

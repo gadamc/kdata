@@ -40,8 +40,8 @@ public:
   virtual Bool_t RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee); //this runs the data processing on each event. 
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e);  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void){ return fScoutData;}
-  
-  void SetNeedScout(Bool_t aVal){fScoutData = aVal;}
+  void NeedScout(Bool_t aVal){fScoutData = aVal;}
+
   //methods to set internal values for the various parameters for specific channels.
   //these parameters should be available from the database
   void SetEraOrder(Int_t aVal){fHeatPeakDetector.SetOrder(aVal);}
@@ -85,12 +85,13 @@ public:
   
   void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.5);
   void CreateIonWindow(unsigned int pulseSize, double tukeyWindowParam = 0.1);
-  std::set<int> GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
+  std::set<int>& GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
+  std::set<int>& GetHeatPulseStampWidths(const char* channelName); 
+  unsigned int GetHeatPulseStampWidthsSize(const char* channelName) const;
 
 private:
 
   void FillResults(KPulseAnalysisRecord* rec, std::map<std::string, KResult> &resMap);
-  std::set<int> GetHeatPulseStampWidths(const char* channelName) const;
 
   
   KEraPeakFinder fHeatPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
@@ -110,7 +111,7 @@ private:
   std::map<std::string, unsigned int> fNoiseEventCounts;
   std::map<std::string, std::vector<double> > fNoiseSpectra;
   std::map<std::string, std::vector<double> > fTemplateSpectra;
-  std::map<std::string, std::set<double> > fIonPatternRemovalSize;
+  //std::map<std::string, std::set<double> > fIonPatternRemovalSize;
   std::map<std::string, double> fDecayValues;
   std::map<std::string, std::set<int> > fHeatPulseStampWidths;
 

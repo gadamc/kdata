@@ -47,7 +47,25 @@
 #pragma link C++ class KMultiEraPeakFinder+;
 #pragma link C++ class KNoiseWhitening+;
 #pragma link C++ class KNullProcessor+;
+
 #pragma link C++ class KOptimalFilter+;
+#pragma link C++ function KOptimalFilter::SetNoiseSpectrum<double>;
+#pragma link C++ function KOptimalFilter::SetNoiseSpectrum<float>;
+#pragma link C++ function KOptimalFilter::SetNoiseSpectrum<int>;
+#pragma link C++ function KOptimalFilter::SetNoiseSpectrum<short>;
+#pragma link C++ function KOptimalFilter::SetNoiseSpectrum(double*, unsigned int );
+#pragma link C++ function KOptimalFilter::SetNoiseSpectrum(float*, unsigned int );
+#pragma link C++ function KOptimalFilter::SetNoiseSpectrum(int*, unsigned int );
+#pragma link C++ function KOptimalFilter::SetNoiseSpectrum(short*, unsigned int );
+#pragma link C++ function KOptimalFilter::SetTemplateDFT<double>;
+#pragma link C++ function KOptimalFilter::SetTemplateDFT<float>;
+#pragma link C++ function KOptimalFilter::SetTemplateDFT<int>;
+#pragma link C++ function KOptimalFilter::SetTemplateDFT<short>;
+#pragma link C++ function KOptimalFilter::SetTemplateDFT(double*, unsigned int );
+#pragma link C++ function KOptimalFilter::SetTemplateDFT(float*, unsigned int );
+#pragma link C++ function KOptimalFilter::SetTemplateDFT(int*, unsigned int );
+#pragma link C++ function KOptimalFilter::SetTemplateDFT(short*, unsigned int );
+
 #pragma link C++ class KOrderFilter+;
 #pragma link C++ class KPatternRemoval+;
 #pragma link C++ class KPeakDetectorProto+;
