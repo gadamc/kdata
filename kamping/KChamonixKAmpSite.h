@@ -92,7 +92,7 @@ private:
   void FillResults(KPulseAnalysisRecord* rec, std::map<std::string, KResult> &resMap);
 
   
-  KEraPeakFinder fHeatPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future... 
+  KEraPeakFinder fHeatPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
   Bool_t fScoutData;
 
   KPulseAnalysisChain* fHeatPreProcessor;  //by default is just a baseline removal
