@@ -32,6 +32,7 @@ public:
   template <class T> void SetInputPulse(const std::vector<T> &aPulse);
   template <class T> void SetInputPulse(const T* aPulse, unsigned int size);
   virtual void SetInputPulse(KPtaProcessor *pta) {SetInputPulse(pta->GetOutputPulse(), pta->GetOutputPulseSize());}
+  virtual void SetInputPulse(const KPtaProcessor &pta) {SetInputPulse(pta.GetOutputPulse(), pta.GetOutputPulseSize());}
   virtual void SetInputPulse(const char* aFile);
 
   //for the memory-savy programmers. 

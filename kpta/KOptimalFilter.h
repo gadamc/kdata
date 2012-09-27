@@ -40,31 +40,13 @@ public:
   template <class T> void SetNoiseSpectrum(std::vector<T> &r);
   template <class T> void SetNoiseSpectrum(const T* resp, unsigned int size);
 
-  // virtual void SetNoiseSpectrum(std::vector<double> &r){SetTheNoiseSpectrum(r);}
-  // virtual void SetNoiseSpectrum(std::vector<float> &r){SetTheNoiseSpectrum(r);}
-  // virtual void SetNoiseSpectrum(std::vector<int> &r){SetTheNoiseSpectrum(r);}
-  // virtual void SetNoiseSpectrum(std::vector<short> &r){SetTheNoiseSpectrum(r);}
 
-  // virtual void SetNoiseSpectrum(const double* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
-  // virtual void SetNoiseSpectrum(const float* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
-  // virtual void SetNoiseSpectrum(const int* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
-  // virtual void SetNoiseSpectrum(const short* resp, unsigned int size){SetTheNoiseSpectrum(resp, size);}
-  
   virtual void SetNoiseSpectrum(double* resp);
   virtual void SetNoiseSpectrumSize(unsigned int size);
   
   template <class T> void SetTemplateDFT(std::vector<T> &r);
   template <class T> void SetTemplateDFT(const T* resp, unsigned int size);
 
-  // virtual void SetTemplateDFT(std::vector<double> &r){SetTheTemplateDFT(r);}
-  // virtual void SetTemplateDFT(std::vector<float> &r){SetTheTemplateDFT(r);}
-  // virtual void SetTemplateDFT(std::vector<int> &r){SetTheTemplateDFT(r);}
-  // virtual void SetTemplateDFT(std::vector<short> &r){SetTheTemplateDFT(r);}
-
-  // virtual void SetTemplateDFT(const double* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
-  // virtual void SetTemplateDFT(const float* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
-  // virtual void SetTemplateDFT(const int* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
-  // virtual void SetTemplateDFT(const short* resp, unsigned int size){SetTheTemplateDFT(resp, size);}
   
   virtual void SetTemplateDFT(double* resp);
   virtual void SetTemplateDFTSize(unsigned int size);
@@ -77,14 +59,10 @@ public:
 protected:
   double *fNoiseSpectrum;
   unsigned int fNoiseSpectrumSize;
-  //template <class T> void SetTheNoiseSpectrum(std::vector<T> &resp);
-  //template <class T> void SetTheNoiseSpectrum(const T* resp, unsigned int size);
   
   double *fTemplateDFT;
   unsigned int fTemplateDFTSize;
-  //template <class T> void SetTheTemplateDFT(std::vector<T> &resp);
-  //template <class T> void SetTheTemplateDFT(const T* resp, unsigned int size);
-  
+ 
   double *fOptFilter;
   unsigned int fOptFilterSize;
   bool fRecalculate;

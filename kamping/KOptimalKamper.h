@@ -33,9 +33,11 @@ public:
 
   void SetPulseAmplitudeShift(int a){fPulseAmplitudeShift = a;}
   void SetPulseTemplateShiftFromPreTrigger(double aVal){fPulseTemplateShift = -1*aVal;}
-  void SetAmplitudeEstimatorSearchRange(double aVal){fAmplitudeEstimatorSearchRange = aVal;}
+  void SetAmplitudeEstimatorSearchRangeMin(double aVal){fAmplitudeEstimatorSearchRangeMin = aVal;}
+  void SetAmplitudeEstimatorSearchRangeMax(double aVal){fAmplitudeEstimatorSearchRangeMax = aVal;}
   double GetPulseTemplateShiftFromPreTrigger(void) const {return fPulseTemplateShift;}
-  double GetAmplitudeEstimatorSearchRange(void) const {return fAmplitudeEstimatorSearchRange;}
+  double GetAmplitudeEstimatorSearchRangeMin(void) const {return fAmplitudeEstimatorSearchRangeMin;}
+  double GetAmplitudeEstimatorSearchRangeMax(void) const {return fAmplitudeEstimatorSearchRangeMax;}
   int GetPulseAmplitudeShift(void){return fPulseAmplitudeShift;}
   void SetIonPulseStartTime(double peakPos){fIonPulsePeakPos = peakPos;}
 
@@ -46,7 +48,8 @@ private:
   KWindow *fWindow; //set the window pointer - this lets you choose different windows via KWindowDesign
 
   double fPulseTemplateShift;
-  double fAmplitudeEstimatorSearchRange;
+  double fAmplitudeEstimatorSearchRangeMin;  //minimum value of pulse amplitude search range, relative to the pulse shift. that is, if you set -10, then the fPulseTeplateShift-10 is the minimum value of the range searched
+  double fAmplitudeEstimatorSearchRangeMax;  //maximum value of pulse amplitude search range, relative to the pulse shift. that is, if you set 100, then the fPulseTeplateShift+100 is the maximum value of the range searched
   int fPulseAmplitudeShift;
   double fIonPulsePeakPos;
   

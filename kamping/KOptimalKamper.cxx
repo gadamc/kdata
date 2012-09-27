@@ -48,7 +48,9 @@ KOptimalKamper::KOptimalKamper(void)
 {
 
   fPulseTemplateShift = 0;
-  fAmplitudeEstimatorSearchRange = 0.10;
+  fAmplitudeEstimatorSearchRangeMin = 0;
+  fAmplitudeEstimatorSearchRangeMax = 50;  //initialized for each pulses...
+                                      //ionization pulses should have a max ~600
   fPulseAmplitudeShift = 10;
   
 }
@@ -107,7 +109,7 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
     cout << "KOptimalKamper::MakeKamp. fR2Hc failed" << endl; return myResults;
   }
   
-  fOptimalFilter.SetInputPulse( &fR2Hc);
+  fOptimalFilter.SetInputPulse( fR2Hc);
   
   if(!fOptimalFilter.RunProcess()){
     cout << "KOptimalKamper::MakeKamp. fOptimalFilter failed" << endl; return myResults;
@@ -128,8 +130,8 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
   if(fixPeakPosition < 0){  //search for it
     
     //figure out start and stop positions
-    UInt_t start = fPulseTemplateShift - fOptimalFilter.GetOutputPulseSize()*fAmplitudeEstimatorSearchRange > 0 ? fPulseTemplateShift - fOptimalFilter.GetOutputPulseSize()*fAmplitudeEstimatorSearchRange : 0;
-    UInt_t stop = fPulseTemplateShift + fOptimalFilter.GetOutputPulseSize()*fAmplitudeEstimatorSearchRange < fOptimalFilter.GetOutputPulseSize() ? fPulseTemplateShift + fOptimalFilter.GetOutputPulseSize()*fAmplitudeEstimatorSearchRange : fOptimalFilter.GetOutputPulseSize(); 
+    UInt_t start = fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMin > 0 ? fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMin : 0;
+    UInt_t stop = fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMax < fOptimalFilter.GetOutputPulseSize() ? fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMax : fOptimalFilter.GetOutputPulseSize(); 
     
     //the amplitude estimator and the chi^2 should be cyclical in time, so, one could write the code
     //here to cycle through the beginning/end of the pulse trace to properly search for the start time of 

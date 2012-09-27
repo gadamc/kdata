@@ -42,18 +42,11 @@ public:
   virtual Bool_t NeedScout(void){ return fScoutData;}
   void NeedScout(Bool_t aVal){fScoutData = aVal;}
 
-  //methods to set internal values for the various parameters for specific channels.
-  //these parameters should be available from the database
-  void SetEraOrder(Int_t aVal){fHeatPeakDetector.SetOrder(aVal);}
-  void SetEraNumRms(Float_t aVal){fHeatPeakDetector.SetNumRms(aVal);}
-  void SetEraPolarity(Int_t aVal){fHeatPeakDetector.SetPolarity(aVal);}
   
   //these parameters should be available from the database 
   Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse, int pulseShift, unsigned int pulseType);
   std::vector<double> GetTemplateSpectrum(const char* channelName) const;
   
-  void SetTrapDecayConstant(const char* channelName, double value){fDecayValues[channelName] = value;}
-  double GetTrapDecayConstant(const char* channelName) const;
   
   unsigned int GetNumNoiseEventsFound(const char* channelName) const;
   std::vector<double> GetNoisePower(const char* channelName) const;
@@ -81,10 +74,12 @@ public:
   KRealToHalfComplexDFT& GetRealToHalfComplexDFT(void){return fR2Hc;}
   KHalfComplexPower& GetHalfComplexPower(void){return fHc2P;}
   KEraPeakFinder& GetHeatPeakDetector(void){return fHeatPeakDetector;}
+  KEraPeakFinder& GetBBv1IonPeakDetector(void){return fBBv1IonPeakDetector;}
+  KEraPeakFinder& GetBBv2IonPeakDetector(void){return fBBv2IonPeakDetector;}
   KPulseShifter& GetPulseTemplateShifter(void){return fPulseTemplateShifter;}
   
-  void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.5);
-  void CreateIonWindow(unsigned int pulseSize, double tukeyWindowParam = 0.1);
+  void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.75);
+  void CreateIonWindow(unsigned int pulseSize, double tukeyWindowParam = 0.5);
   std::set<int>& GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
   std::set<int>& GetHeatPulseStampWidths(const char* channelName); 
   unsigned int GetHeatPulseStampWidthsSize(const char* channelName) const;
@@ -95,6 +90,9 @@ private:
 
   
   KEraPeakFinder fHeatPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
+  KEraPeakFinder fBBv1IonPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
+  KEraPeakFinder fBBv2IonPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
+ 
   Bool_t fScoutData;
 
   KPulseAnalysisChain* fHeatPreProcessor;  //by default is just a baseline removal
@@ -111,8 +109,6 @@ private:
   std::map<std::string, unsigned int> fNoiseEventCounts;
   std::map<std::string, std::vector<double> > fNoiseSpectra;
   std::map<std::string, std::vector<double> > fTemplateSpectra;
-  //std::map<std::string, std::set<double> > fIonPatternRemovalSize;
-  std::map<std::string, double> fDecayValues;
   std::map<std::string, std::set<int> > fHeatPulseStampWidths;
 
   KOptimalKamper fOptKamper;
