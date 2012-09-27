@@ -10,22 +10,25 @@
 #ifndef __KResult_H_
 #define __KResult_H_
 
+//#include "Rtypes.h"
 #include <string>
 #include <map>
-#include "KPulseAnalysisRecord.h"
-class KPulseAnalysisRecord;
+//#include <iostream>
+//#include "KPulseAnalysisRecord.h"
+//class KPulseAnalysisRecord;
 
 class KResult {
 
 public:
   KResult();
-	KResult(std::string name, double value, std::string unit="");
-	virtual ~KResult(void);
+  KResult(std::string name, double value, std::string unit="");
+  virtual ~KResult(void);
   std::string fName;
   double fValue;
   std::string fUnit;
   
-  
+  //friend std::ostream& operator<<(std::ostream& Ostr, const KResult& R);
+
 
 };
 

@@ -31,8 +31,12 @@
 // length of the template pulse is so that windowing can first occur, then it is shifted. This is especially important for 
 // wide signals such as the heat and bbv2 channels. 
 // 
-// IF
+// Important. This KAmpSite, in order to minimize its memory footprint, requires that the lengths of all ionization pulses and 
+// all heat pulses are the same. IF you need to handle data where the heat pulses are different for different detectors, simply
+// create a new KChamonixKAmpSite for each pulse length that you need. 
 //
+// *** The pulse lengths of the ionization channel and heat channels are defined when you call SetTemplate ** So, you MUST set
+// your numerical pulse template to have the same length as the length of the signals in the data ****
 // 
 //
 //
@@ -80,6 +84,9 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
   fBBv2IonPreProcessor->AddProcessor( new KBaselineRemoval() );
   KPatternRemoval *pta = new KPatternRemoval();
   pta->SetPatternLength(10);  //just fixed for now!!!
+  fBBv2IonPreProcessor->AddProcessor( pta ); 
+  pta = new KPatternRemoval();
+  pta->SetPatternLength(20);  //just fixed for now!!!
   fBBv2IonPreProcessor->AddProcessor( pta ); 
 
   fHeatWindow = 0;
@@ -453,12 +460,7 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   return true;
 }  
 
-//
-//
-//Get and Set template and decay constant parameters
-//
-//
-//
+
 Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<double>& pulse, int pulseShift, unsigned int pulseType)
 {
   //pulsetype, 0 = heat, 1 = ion
@@ -466,9 +468,13 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   KPtaProcessor *theWindow = 0;
   switch (pulseType) {
     case 0:
+    if(fHeatWindow == 0)
+      CreateHeatWindow(pulse.size());
     theWindow = fHeatWindow;
     break;
     case 1:
+    if(fIonWindow == 0)
+      CreateIonWindow(pulse.size());
     theWindow = fIonWindow;
     break;
     default:
@@ -483,7 +489,9 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
 
   theWindow->SetInputPulse(pulse);
   if(!theWindow->RunProcess()){
-    cout << "theWindow failed" << endl; return false;
+    cout << "theWindow failed" << endl; 
+    cout << "your pulse template was not set" << endl;
+    return false;
   }
     
   SetTemplateShift(channelName, pulseShift);
@@ -513,7 +521,7 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   return true;
 }
 
-std::set<int> KChamonixKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord *pRaw)
+set<int> KChamonixKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord *pRaw)
 {
   //returns the set of heat pulse stamp widths. The reason for a set is that there can 
   //be two NTDs per bolometer and they could have the same heat pulse widths. Using a set
@@ -522,18 +530,35 @@ std::set<int> KChamonixKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord *pR
   //widths for each NTD connected to each bolometer. This even works if there are more than
   //two NTDs per bolometer, which might be kinda cool... but probably not.
 
+  //assume that the data does NOT change!!!
+  set<int> stampwidths  = GetHeatPulseStampWidths(pRaw->GetChannelName());
+
+  if(stampwidths.size() != 0) return stampwidths;
+
   KRawBolometerRecord *bolo = pRaw->GetBolometerRecord();
 
-  std::set<int> HeatPulseStampWidths;
-  
   for(int i = 0; i < bolo->GetNumPulseRecords(); i++){
     KRawBoloPulseRecord *p = bolo->GetPulseRecord(i);
     if(p->GetIsHeatPulse())
-      HeatPulseStampWidths.insert( (int)(p->GetHeatPulseStampWidth()) );  
+      stampwidths.insert( (int)(p->GetHeatPulseStampWidth()) );  
   }
-  return HeatPulseStampWidths;
+
+  fHeatPulseStampWidths[pRaw->GetChannelName()] = stampwidths;
+  
+  return stampwidths;
 }
 
+set<int> KChamonixKAmpSite::GetHeatPulseStampWidths(const char* channelName) const
+{
+  if (fHeatPulseStampWidths.find(channelName) != fHeatPulseStampWidths.end())
+    return fHeatPulseStampWidths.find(channelName)->second;
+
+  else {
+    set<int> empty;
+    return empty;
+  }
+
+}
 
 vector<double> KChamonixKAmpSite::GetTemplateSpectrum(const char* channelName) const
 {

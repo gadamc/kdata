@@ -1,4 +1,7 @@
 import couchdbkit
+
+def getDbList():
+  return['http://localhost:5984', 'http://edwdbik.fzk.de:5984']
   
 def getdatabase(database, serverName='http://edwdbik.fzk.de:5984'):
   '''

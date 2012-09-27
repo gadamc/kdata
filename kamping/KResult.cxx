@@ -29,3 +29,4 @@ KResult::~KResult(void)
 }
 
 
+//std::ostream& operator<<(std::ostream& Ostr, const KResult& R){ Ostr  << R.fName << ": " << R.fValue << " " << R.fUnit; return Ostr;}

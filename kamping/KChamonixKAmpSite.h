@@ -90,6 +90,7 @@ public:
 private:
 
   void FillResults(KPulseAnalysisRecord* rec, std::map<std::string, KResult> &resMap);
+  std::set<int> GetHeatPulseStampWidths(const char* channelName) const;
 
   
   KEraPeakFinder fHeatPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
@@ -111,7 +112,8 @@ private:
   std::map<std::string, std::vector<double> > fTemplateSpectra;
   std::map<std::string, std::set<double> > fIonPatternRemovalSize;
   std::map<std::string, double> fDecayValues;
-  
+  std::map<std::string, std::set<int> > fHeatPulseStampWidths;
+
   KOptimalKamper fOptKamper;
   // Bool_t fFirstPulse; 
   

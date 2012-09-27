@@ -58,7 +58,7 @@ double* KWindowDesign::GetTukeyWindow(unsigned int size, double alpha, int middl
     int shift = middle - width/2;
     if(shift != 0 || width != 0 || width != size){
       double* output = new double[size];
-      for(int i = 0; i < size; i++)
+      for(unsigned int i = 0; i < size; i++)
         if((i-shift)>=0){
           if((i < (width+shift)) && (i > shift))
             *(output+i) = *(coef+i-shift);
@@ -88,7 +88,7 @@ double* KWindowDesign::GetBlackmanWindow(unsigned int size, double alpha, int mi
   if(size != 0){
     width = (width > 0) ? width : size;
     coef = new double[width];
-    for(int i = 0; i < width; i++)
+    for(unsigned int i = 0; i < width; i++)
       *(coef+i) = (1-alpha)/2.0 - 0.5*cos(2*PI*i/(double)(width-1))+0.5*alpha*cos(4*PI*i/(double)(width-1));
     
     //Shift the window
