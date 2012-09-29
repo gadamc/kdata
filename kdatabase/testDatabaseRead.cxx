@@ -18,7 +18,7 @@ int main (int /*argc*/, char** argv)
   //usage:
   //testread <url> <item>
   //
-  // <url>  -- the CouchDB URL (https://edwdbik.fzk.de:6984)
+  // <url>  -- the CouchDB URL (https://edelweiss.cloudant.com)
   //
   // <item> --  the CouchDB API call.
   //      so, something like this. <database name>/<doc_id> 

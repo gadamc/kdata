@@ -16,9 +16,9 @@ def main(*argv, **kwargs):
       This routine will update the database document with the metadata results of this process. 
 
       For example:                                                                                                                                                                            
-      ./batchRunProc2.py https://edwdbuser:password@edwdbik.fzk.de:6984 datadb /sps/edelweis/kdata/dataprocessing/schedule/ key=lg23b002 
+      ./batchRunProc2.py https://edwdbuser:password@edelweiss.cloudant.com datadb /sps/edelweis/kdata/dataprocessing/schedule/ key=lg23b002 
 
-      ./batchRunProc2.py https://edwdbuser:password@edwdbik.fzk.de:6984 datadb /sps/edelweis/kdata/dataprocessing/schedule/ startkey=lg23b002  endkey=lh18c005                                                                                         
+      ./batchRunProc2.py https://edwdbuser:password@edelweiss.cloudant.com datadb /sps/edelweis/kdata/dataprocessing/schedule/ startkey=lg23b002  endkey=lh18c005                                                                                         
   '''
   
   s = Server(argv[0])

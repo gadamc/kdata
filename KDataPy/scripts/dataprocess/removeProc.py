@@ -44,25 +44,13 @@ def deleteFromView(server, databaseName, procname, **kwargs):
 if __name__ == '__main__':
 
   parser = argparse.ArgumentParser()
-  parser.add_argument('password', help='you must supply the password')
   parser.add_argument('procname', help='the name of the process key you wish to remove')
   parser.add_argument('startkey', help='the name of the samba run that defines the beginning of the range of runs')
   parser.add_argument('endkey', help='the name of the samba run that defines the end of the range of runs')
-  parser.add_argument('-u', '--username', default='edwdbuser')
   parser.add_argument('-db', '--database', help='select the database you wish to you. "datadb" is the default', default='datadb')
-  parser.add_argument('-s', '--server', help='select the couchdb server you wish to you.', default='edwdbik.fzk.de')
-  parser.add_argument('-p', '--port', help='select the couchdb server you wish to you.', default='6984')
+  parser.add_argument('-s', '--server', help='select the couchdb server you wish to use. You must supply the username and password.', default='https://edelweiss.cloudant.com')
 
   args = parser.parse_args()
 
-  mykwargs = {}
-  mykwargs['startkey'] = args.startkey
-  mykwargs['endkey'] = args.endkey
-
-  protocol = 'https'
-  if args.port == '5984':
-    protocol = 'http'
-  server = '%s://%s:%s@%s:%s' % (protocol, args.username, args.password, args.server, args.port)
-  
-  deleteFromView(server, args.database, args.procname, **mykwargs)
+  deleteFromView(args.server, args.database, args.procname, startkey=args.startkey, endkey=args.endkey)
 

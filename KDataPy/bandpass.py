@@ -25,7 +25,7 @@ def uploadIIRFilter(binwidth, order, docid, freqs, filtertype="butter", bandtype
   binwidth is in nanoseconds
   freqs is either a scalar or a list of size two.
   '''
-  db = KDataPy.database.kmultiprocdb(serverName='https://edwdbuser:3000kgd@edwdbik.fzk.de:6984')
+  db = KDataPy.database.kmultiprocdb(serverName='https://edelweiss:3000kgd@edelweiss.cloudant.com')
   doc = getBlankDoc()
   doc['frequencies'] = freqs
   doc['binwidth_ns'] = binwidth

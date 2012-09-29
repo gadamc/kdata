@@ -50,7 +50,7 @@ Int_t KCurl::Get(const char* url, const char* item, const char* opt)
   // certificates, use the -a option. 
   //
   //For Edelweiss CouchDB access, typical values are
-  // url = https://edwdbik.fzk.de:6984 (the database is readable by all, but you must use a username/password to write)
+  // url = https://edelweiss.cloudant.com (the database is readable by all, but you must use a username/password to write)
   // item = (a docid, a view, or even _all_docs). 
   //     If you are accessing a database, your item should look something like
   //     "databasename/item"
@@ -130,7 +130,7 @@ Int_t KCurl::Put(const char* url, const char* item, const char* thedoc, const ch
   // certificates, use the -a option. 
   //
   //For Edelweiss CouchDB access, typical values are
-  // url = https://edwdbik.fzk.de:6984 (the database is readable by all, but you must use a username/password to write)
+  // url = https://edelweiss.cloudant.com (the database is readable by all, but you must use a username/password to write)
   // item = (a docid, a view, or even _all_docs). 
   //     If you are putting a file on the database, your item should look something like
   //     "databasename/docid".
