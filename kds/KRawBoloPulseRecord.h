@@ -19,6 +19,7 @@
 using namespace std;
 
 class TH1;
+class TH1D;
 class TGraph;
 
 class KRawBoloPulseRecord : public KBoloPulseRecord { 
@@ -85,6 +86,9 @@ public:
 
   void FillHistogram(TH1 &hist);
   void FillGraph(TGraph &graph);
+  
+  TH1D* GetHist(void);
+  TGraph* GetGraph(void);
 
   KRawBolometerRecord* GetBolometerRecord(void) const {return (KRawBolometerRecord*)fBolometerRecord.GetObject();	}
 	void SetBolometerRecord(KRawBolometerRecord *aRec) {fBolometerRecord = aRec;	}

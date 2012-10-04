@@ -14,6 +14,7 @@
 #include "KRawBoloPulseRecord.h"
 #include "TH1.h"
 #include "TGraph.h"
+#include "TH1D.h"
 #include <iostream>
 #include <typeinfo>
 
@@ -385,4 +386,26 @@ void KRawBoloPulseRecord::FillGraph(TGraph &graph)
   for(UInt_t i = 0; i < fTrace.size(); i++) graph.SetPoint(i, i, fTrace[i]);
 }
 
+TH1D* KRawBoloPulseRecord::GetHist(void)
+{
+  //create and return a pointer to a TH1D histogram filled with the pulse trace
+  //you own the memory, so you MUST delete.
+
+  TH1D *h = new TH1D();
+  h->SetTitle(GetChannelName());
+  h->SetName(GetChannelName());
+  FillHistogram(*h);
+  return h;
+}
+
+TGraph* KRawBoloPulseRecord::GetGraph()
+{
+  //create and return a pointer to a TGraph filled with the pulse trace
+  //you own the memory, so you MUST delete.
+  
+  TGraph *g = new TGraph();
+  g->SetName(GetChannelName());
+  FillGraph(*g);
+  return g;
+}
 
