@@ -108,14 +108,48 @@ and you provide the analysis function.</p>
   
   <span class="k">for</span> <span class="n">pulse</span> <span class="ow">in</span> <span class="n">boloRecord</span><span class="o">.</span><span class="n">pulseRecords</span><span class="p">():</span>
     <span class="k">print</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">()</span>
-    <span class="o">....</span> <span class="n">do</span> <span class="n">some</span> <span class="n">analysis</span><span class="o">....</span>
+      <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;myExtraOptions&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;condition1&#39;</span><span class="p">:</span>
+        <span class="o">....</span> <span class="n">do</span> <span class="n">some</span> <span class="n">analysis</span><span class="o">....</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="o">....</span> <span class="n">do</span> <span class="n">something</span> <span class="n">different</span><span class="o">....</span>
     
     
 <span class="n">util</span><span class="o">.</span><span class="n">loopbolo</span><span class="p">(</span><span class="s">&#39;/path/to/file.root&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;FID&quot;</span><span class="p">,</span> <span class="n">analysisFunction</span><span class="o">=</span><span class="n">myFunction</span><span class="p">,</span> <span class="n">myExtraOptions</span><span class="o">=</span><span class="s">&quot;condition1&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>will loop through the file and return to you any bolometer with a GetDetectorName that
-contains &#8220;FID&#8221; and pass that bolo record to your myFunction(bolo).</p>
+<p>Besides strings, you can pass in ANYTHING via the kwargs, even objects</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">myFunction</span><span class="p">(</span><span class="n">boloRecord</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+  <span class="k">print</span> <span class="n">boloRecord</span><span class="o">.</span><span class="n">GetDetectorName</span><span class="p">()</span>
+  
+  <span class="n">hAna</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;heatAna&#39;</span><span class="p">]</span>
+  <span class="n">ionAna</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;ionAna&#39;</span><span class="p">]</span>
+
+  <span class="k">for</span> <span class="n">pulse</span> <span class="ow">in</span> <span class="n">boloRecord</span><span class="o">.</span><span class="n">pulseRecords</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">()</span>
+
+    <span class="c">#pick the correct analysis object</span>
+    <span class="k">if</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetIsHeatPulse</span><span class="p">():</span>
+      <span class="n">theAna</span> <span class="o">=</span> <span class="n">hAna</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">theAna</span> <span class="o">=</span> <span class="n">ionAna</span>
+
+    <span class="n">theAna</span><span class="o">.</span><span class="n">SetInputPulse</span><span class="p">(</span><span class="n">pulse</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">())</span>
+    <span class="n">theAna</span><span class="o">.</span><span class="n">RunProcess</span><span class="p">()</span>
+    <span class="n">outTrace</span> <span class="o">=</span> <span class="n">KDataPy</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">get_out</span><span class="p">(</span><span class="n">theAna</span><span class="p">)</span>
+      <span class="o">...</span> <span class="n">do</span> <span class="n">something</span> <span class="o">...</span>
+
+
+    
+<span class="n">chainHeat</span> <span class="o">=</span> <span class="n">KPulseAnalysisChain</span><span class="p">()</span>
+<span class="n">chainHeat</span><span class="o">.</span><span class="n">AddProcessor</span><span class="p">(</span> <span class="n">KBaselineRemoval</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="n">chainIon</span> <span class="o">=</span> <span class="n">KPulseAnalysisChain</span><span class="p">()</span>
+<span class="n">chainIon</span><span class="o">.</span><span class="n">AddProcessor</span><span class="p">(</span> <span class="n">KBaselineRemoval</span><span class="p">()</span> <span class="p">)</span>
+<span class="n">chainIon</span><span class="o">.</span><span class="n">AddProcessor</span><span class="p">(</span> <span class="n">KPatternRemoval</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="n">util</span><span class="o">.</span><span class="n">loopbolo</span><span class="p">(</span><span class="s">&#39;/path/to/file.root&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;FID&quot;</span><span class="p">,</span> <span class="n">analysisFunction</span><span class="o">=</span><span class="n">myFunction</span><span class="p">,</span> <span class="n">heatAna</span> <span class="o">=</span> <span class="n">chainHeat</span><span class="p">,</span> <span class="n">ionAna</span> <span class="o">=</span> <span class="n">chainIon</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">

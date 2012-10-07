@@ -207,14 +207,52 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
       
       for pulse in boloRecord.pulseRecords():
         print pulse.GetChannelName()
-        .... do some analysis....
+          if kwargs['myExtraOptions'] == 'condition1':
+            .... do some analysis....
+          else:
+            .... do something different....
         
         
     util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, myExtraOptions="condition1")
     
-  will loop through the file and return to you any bolometer with a GetDetectorName that
-  contains "FID" and pass that bolo record to your myFunction(bolo).
-  
+ 
+  Besides strings, you can pass in ANYTHING via the kwargs, even objects
+
+  .. code-block:: python
+
+    def myFunction(boloRecord, **kwargs):
+      print boloRecord.GetDetectorName()
+      
+      hAna = kwargs['heatAna']
+      ionAna = kwargs['ionAna']
+
+      for pulse in boloRecord.pulseRecords():
+        print pulse.GetChannelName()
+
+        #pick the correct analysis object
+        if pulse.GetIsHeatPulse():
+          theAna = hAna
+        else:
+          theAna = ionAna
+
+        theAna.SetInputPulse(pulse.GetTrace())
+        theAna.RunProcess()
+        outTrace = KDataPy.util.get_out(theAna)
+          ... do something ...
+
+
+        
+    chainHeat = KPulseAnalysisChain()
+    chainHeat.AddProcessor( KBaselineRemoval() )
+
+    chainIon = KPulseAnalysisChain()
+    chainIon.AddProcessor( KBaselineRemoval() )
+    chainIon.AddProcessor( KPatternRemoval() )
+
+    util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, heatAna = chainHeat, ionAna = chainIon)
+
+
+
   '''
   if analysisFunction==None:
     print 'You must provide an analysis function'
