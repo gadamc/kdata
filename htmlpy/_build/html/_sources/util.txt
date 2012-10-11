@@ -1,4 +1,4 @@
-kdatapy utility functions
+KDataPy Utility functions
 =========================
 
 This module also extends the KDataReader class and the family of KPtaProcessor classes to be iterable. This module also provides easy functions to create numpy arrays from KPtaProcessors and to provide event looping functions, allowing you to hook in an analysis function to the loop. This way you don't have to write those chunks of code ever again.

@@ -1,5 +1,6 @@
-kdatapy database access
-=======================
+KDataPy Database Access Functions
+=================================
+
 This module facilitates connections to our various CouchDB databases. It saves you a few lines of code
 because these calls are generally quite common. Also, it will connect to the default Edelweiss database
 server (edelweiss.cloudant.com) for you automatically. However, you may specify a particular database if you wish.
