@@ -3,8 +3,7 @@ kdatapy utility functions
 
 This module also extends the KDataReader class and the family of KPtaProcessor classes to be iterable. This module also provides easy functions to create numpy arrays from KPtaProcessors and to provide event looping functions, allowing you to hook in an analysis function to the loop. This way you don't have to write those chunks of code ever again.
 
-The KDataReader class itself is iterable and returns a pointer to the KEvent class (KRawEvent, KAmpEvent, KHLAEvent).  The KRawBoloPulseRecord class is also iterable, returning each value of the pulse trace itself.
-However, its recommended that you use the getnumpy() utility function to get a numpy array. An example is shown below.
+The KDataReader class itself is iterable and returns a pointer to the KEvent class (KRawEvent, KAmpEvent, KHLAEvent).  The KRawBoloPulseRecord class has been extended in Pyhon. The method getnumpy() was added, which returns a numpy array. An example is shown below.
 
 .. code-block:: python
 
@@ -29,11 +28,7 @@ Since TClonesArrays are iterable objects, you can then write simple Pythonic loo
      	  for pulse in bolo.pulseRecords():
      		#do something with the event  
 
-     		#create a C++ std vector
-     		vp = ROOT.std.vector("double")()
-     		for val in pulse: vp.push_back(val)
-     		
-     		#or, perhaps better, get a numpy array
+     		#get a numpy array
      		np = pulse.getnumpy()
 
 However, why write an event loop ever again? KDataPy.util already does this for you and gives you an easy
