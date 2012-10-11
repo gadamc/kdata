@@ -40,8 +40,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'kdatapy'
-copyright = u'2012, adam cox, kit'
+project = u'KDataPy'
+copyright = u'2012, Adam Cox, KIT'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -183,8 +183,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'kdatapy.tex', u'kdatapy Documentation',
-   u'adam cox, kit', 'manual'),
+  ('index', 'kdatapy.tex', u'KDataPy Documentation',
+   u'Adam Cox, KIT', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -213,8 +213,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'kdatapy', u'kdatapy Documentation',
-     [u'adam cox, kit'], 1)
+    ('index', 'KDataPy', u'KDataPy Documentation',
+     [u'Adam Cox, KIT'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'kdatapy', u'kdatapy Documentation',
-   u'adam cox, kit', 'kdatapy', 'One line description of project.',
+  ('index', 'KDataPy', u'KDataPy Documentation',
+   u'Adam Cox, KIT', 'KDataPy', 'One line description of project.',
    'Miscellaneous'),
 ]
 

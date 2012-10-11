@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to KDataPy's documentation!
-===================================
+KDataPy 
+========
 
 KDataPy is a set of Python tools that were crammed into KData. Many of these tools are scripts that perform specific operations, such as uploading .csv files to the database. In reality, these scripts should live in a different code repository (and they may be moved out).
 
@@ -20,7 +20,7 @@ Contents:
    :maxdepth: 2
 
    code
-   
+
    extraDocs
 
 Indices and tables

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>KDataPy Utility functions &mdash; kdatapy 4.8 documentation</title>
+    <title>KDataPy Utility functions &mdash; KDataPy 4.8 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="kdatapy 4.8 documentation" href="index.html" />
+    <link rel="top" title="KDataPy 4.8 documentation" href="index.html" />
     <link rel="up" title="KDataPy Modules" href="code.html" />
     <link rel="next" title="KDataPy Database Access Functions" href="database.html" />
     <link rel="prev" title="KDataPy Modules" href="code.html" /> 
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="code.html" title="KDataPy Modules"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">kdatapy 4.8 documentation</a> &raquo;</li>
+        <li><a href="index.html">KDataPy 4.8 documentation</a> &raquo;</li>
           <li><a href="code.html" accesskey="U">KDataPy Modules</a> &raquo;</li> 
       </ul>
     </div>  
@@ -58,42 +58,46 @@
             
   <div class="section" id="kdatapy-utility-functions">
 <h1>KDataPy Utility functions<a class="headerlink" href="#kdatapy-utility-functions" title="Permalink to this headline">¶</a></h1>
-<p>This module also extends the KDataReader class and the family of KPtaProcessor classes to be iterable. This module also provides easy functions to create numpy arrays from KPtaProcessors and to provide event looping functions, allowing you to hook in an analysis function to the loop. This way you don&#8217;t have to write those chunks of code ever again.</p>
-<p>The KDataReader class itself is iterable and returns a pointer to the KEvent class (KRawEvent, KAmpEvent, KHLAEvent).  The KRawBoloPulseRecord class has been extended in Pyhon. The method getnumpy() was added, which returns a numpy array. An example is shown below.</p>
+<p>This module extends the KDataReader class, the KRawBoloPulseRecords class and the family of KPtaProcessor classes.  It add iteration, provides easy functions to create numpy arrays from KPtaProcessors, and provides event looping functions, allowing you to hook in an analysis function to the loop. This way you don&#8217;t have to write those chunks of code ever again.</p>
+<p>The KDataReader class is now iterable and returns a pointer to the KEvent class (KRawEvent, KAmpEvent, KHLAEvent).  The KRawBoloPulseRecord class has been extended in Python. The method getnumpy() was added, which returns a numpy array. An example is shown below.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">KDataPy.util</span>
 <span class="kn">import</span> <span class="nn">ROOT</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">KDataReader</span><span class="p">(</span><span class="s">&quot;path/to/file/ma22a000_000.root&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+
+<span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>  <span class="c">#KDataReader is iterable, so you can write for loops like this</span>
 
    <span class="c">#do something with the event</span>
 </pre></div>
 </div>
-<p>Since TClonesArrays are iterable objects, you can then write simple Pythonic loops</p>
+<p>Since TClonesArrays are also iterable objects, you can then write simple Pythonic loops</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">KDataPy.util</span>
 <span class="kn">import</span> <span class="nn">ROOT</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">KDataReader</span><span class="p">(</span><span class="s">&quot;path/to/file/ma22a000_000.root&quot;</span><span class="p">)</span>
+
 <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
    <span class="k">for</span> <span class="n">bolo</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">boloRecords</span><span class="p">():</span>
      <span class="k">for</span> <span class="n">pulse</span> <span class="ow">in</span> <span class="n">bolo</span><span class="o">.</span><span class="n">pulseRecords</span><span class="p">():</span>
-           <span class="c">#do something with the event</span>
 
-           <span class="c">#get a numpy array</span>
+           <span class="c">#do something with the data</span>
+
+           <span class="c">#such, as get a numpy array of the pulse trace</span>
            <span class="n">np</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">getnumpy</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>However, why write an event loop ever again? KDataPy.util already does this for you and gives you an easy
-way to hook in an analysis function for each pulse or bolometer record.  See the looppulse and loopbolo functions below.</p>
+way to hook in an analysis function for each pulse or bolometer record.  See the looppulse and loopbolo functions below!</p>
 <p>Another useful iteration that has been added is for the KPtaProcessor-based classes (KBaselineRemoval, KIIRFilter, KConvolution, KPulseAnalysisChain, etc....). One can iterate over the input and output pulses for each object.</p>
 <p>Here&#8217;s how you would use the iteratble KPtaProcessor.output and KPtaProcessor.input functions</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">KDataPy.util</span>
 <span class="kn">import</span> <span class="nn">ROOT</span>
 
-<span class="c">#create a dummy pulse</span>
+<span class="c">#create some dummy pulse for this example</span>
 <span class="n">bas</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">KBaselineRemoval</span><span class="p">()</span>
 <span class="n">vp</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">std</span><span class="o">.</span><span class="n">vector</span><span class="p">(</span><span class="s">&quot;double&quot;</span><span class="p">)()</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span> <span class="n">vp</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">bas</span><span class="o">.</span><span class="n">SetInputPulse</span><span class="p">(</span><span class="n">vp</span><span class="p">)</span>
 <span class="n">bas</span><span class="o">.</span><span class="n">RunProcess</span><span class="p">()</span>
 <span class="c">#</span>
 
@@ -119,7 +123,7 @@ way to hook in an analysis function for each pulse or bolometer record.  See the
 </div>
 <span class="target" id="module-KDataPy.util"></span><dl class="function">
 <dt id="KDataPy.util.getRootHistFromOutput">
-<tt class="descclassname">KDataPy.util.</tt><tt class="descname">getRootHistFromOutput</tt><big>(</big><em>pta</em><big>)</big><a class="headerlink" href="#KDataPy.util.getRootHistFromOutput" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">KDataPy.util.</tt><tt class="descname">getRootHistFromOutput</tt><big>(</big><em>pta</em><big>)</big><a class="reference internal" href="_modules/KDataPy/util.html#getRootHistFromOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.util.getRootHistFromOutput" title="Permalink to this definition">¶</a></dt>
 <dd><p>return a ROOT TH1D histogram from the output pulse of a KPtaProcessor (pta)</p>
 </dd></dl>
 
@@ -387,12 +391,12 @@ nice event viewere just to look at the data.</p>
         <li class="right" >
           <a href="code.html" title="KDataPy Modules"
              >previous</a> |</li>
-        <li><a href="index.html">kdatapy 4.8 documentation</a> &raquo;</li>
+        <li><a href="index.html">KDataPy 4.8 documentation</a> &raquo;</li>
           <li><a href="code.html" >KDataPy Modules</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, adam cox, kit.
+        &copy; Copyright 2012, Adam Cox, KIT.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

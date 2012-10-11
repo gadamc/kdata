@@ -1,5 +1,5 @@
-KDataPy Introduction
-====================
+KDataPy External Documentation
+==============================
 
 Link to the Wiki Page containing some information:
 
