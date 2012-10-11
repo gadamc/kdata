@@ -62,7 +62,7 @@ def getRootHistFromOutput(pta):
   
   '''
   h = TH1D(pta.GetName(), pta.GetName(), pta.GetOutputPulseSize(), 0, pta.GetOutputPulseSize())
-  for i in range( pta.GetOutputPulseSize() )
+  for i in range( pta.GetOutputPulseSize() ):
     h.SetBinContent(i+1, pta.GetOutputPulse()[i])
   return h
 
