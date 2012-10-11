@@ -25,7 +25,39 @@ def _KEvent_iter__(self):
 
 _libpyroot.MakeRootClass( "KDataReader" ).__iter__    = _KEvent_iter__
 
- 
+def _KptaProc_input_iter__(self):
+  i = 0
+  while i < self.GetInputPulseSize():
+    yield self.GetInputPulse()[i]                 
+    i += 1
+
+_libpyroot.MakeRootClass( "KPtaProcessor" ).input    = property(_KptaProc_input_iter__)
+
+def _KptaProc_output_iter__(self):
+  i = 0
+  while i < self.GetOutputPulseSize():
+    yield self.GetOutputPulse()[i]                  
+    i += 1
+
+_libpyroot.MakeRootClass( "KPtaProcessor" ).output    = property(_KptaProc_output_iter__)
+
+
+def _KptaProc_input_iter_index__(self):
+  i = 0
+  while i < self.GetInputPulseSize():
+    yield self.GetInputPulse()[i],i                 
+    i += 1
+
+_libpyroot.MakeRootClass( "KPtaProcessor" ).input_index    = property(_KptaProc_input_iter_index__)
+
+def _KptaProc_output_iter_index__(self):
+  i = 0
+  while i < self.GetOutputPulseSize():
+    yield self.GetOutputPulse()[i],i                
+    i += 1
+
+_libpyroot.MakeRootClass( "KPtaProcessor" ).output_index    = property(_KptaProc_output_iter_index__)
+
 
 #small utility functions  
 def get_as_nparray(c_pointer, size):
@@ -62,8 +94,7 @@ def getRootHistFromOutput(pta):
   
   '''
   h = TH1D(pta.GetName(), pta.GetName(), pta.GetOutputPulseSize(), 0, pta.GetOutputPulseSize())
-  for i in range( pta.GetOutputPulseSize() ):
-    h.SetBinContent(i+1, pta.GetOutputPulse()[i])
+  for val,i in pta.output_index: h.SetBinContent(i+1, val)
   return h
 
 
