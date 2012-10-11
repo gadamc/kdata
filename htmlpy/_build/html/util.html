@@ -157,10 +157,10 @@ and you provide the analysis function.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<em>string path to file or KDataReader object</em>) &#8211; The data file to use.</li>
 <li><strong>name</strong> (<em>string</em>) &#8211; The bolometer name you want to analyze</li>
-<li><strong>match</strong> (<em>int</em>) &#8211; if match is True, then the bolometer name needs to exactly match &#8216;name&#8217;. Otherwise, if the pulse channel name starts with &#8216;name&#8217;, then the data will be analyzed. For example, if you set &#8216;name&#8217;=&#8217;chal&#8217;, then you will probably analyze all heat channels</li>
-<li><strong>analysisFunction</strong> (<em>function pointer</em>) &#8211; the function that you will define to analyze your pulse. This is a sort of &#8216;callback&#8217; function. Your function must have three arguments(KRawPulseRecord, <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs).</li>
+<li><strong>match</strong> (<em>int</em>) &#8211; if match is True, then the bolometer name needs to exactly match &#8216;name&#8217;. Otherwise, if the bolometer name contains &#8216;name&#8217;, then the data will be analyzed. For example, if you set &#8216;name&#8217;=&#8217;FID&#8217;, then your analysis function will be called for each FID detector in the file</li>
+<li><strong>analysisFunction</strong> (<em>function pointer</em>) &#8211; the function that you will define to analyze your pulse. This is a sort of &#8216;callback&#8217; function. Your function will be passed the following arguments: KBolometerRecord, <a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs.</li>
 <li><strong>maxEvents</strong> &#8211; if maxEvents != None, stops looping after maxEvents events.</li>
-<li><strong>kwargs</strong> (<em>keyword argument list</em>) &#8211; all kwargs are pass to the analysisFunction</li>
+<li><strong>kwargs</strong> (<em>keyword argument list</em>) &#8211; all remaining kwargs are pass to the analysisFunction</li>
 </ul>
 </td>
 </tr>
@@ -181,10 +181,17 @@ and you provide the analysis function.</p>
 <span class="n">util</span><span class="o">.</span><span class="n">loopbolo</span><span class="p">(</span><span class="s">&#39;/path/to/file.root&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;FID&quot;</span><span class="p">,</span> <span class="n">analysisFunction</span><span class="o">=</span><span class="n">myFunction</span><span class="p">,</span> <span class="n">myExtraOptions</span><span class="o">=</span><span class="s">&quot;condition1&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Besides strings, you can pass in ANYTHING via the kwargs, even objects</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">myFunction</span><span class="p">(</span><span class="n">boloRecord</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<p>Besides strings, you can pass ANYTHING via the kwargs, in any order, even objects, and pointers to other functions!</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">callMe</span><span class="p">():</span>
+  <span class="k">print</span> <span class="s">&#39;I can be called&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">myFunction</span><span class="p">(</span><span class="n">boloRecord</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
   <span class="k">print</span> <span class="n">boloRecord</span><span class="o">.</span><span class="n">GetDetectorName</span><span class="p">()</span>
   
+  <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;firstCall&#39;</span><span class="p">]:</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;firstCall&#39;</span><span class="p">]()</span>
+
   <span class="n">hAna</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;heatAna&#39;</span><span class="p">]</span>
   <span class="n">ionAna</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;ionAna&#39;</span><span class="p">]</span>
 
@@ -211,7 +218,7 @@ and you provide the analysis function.</p>
 <span class="n">chainIon</span><span class="o">.</span><span class="n">AddProcessor</span><span class="p">(</span> <span class="n">KBaselineRemoval</span><span class="p">()</span> <span class="p">)</span>
 <span class="n">chainIon</span><span class="o">.</span><span class="n">AddProcessor</span><span class="p">(</span> <span class="n">KPatternRemoval</span><span class="p">()</span> <span class="p">)</span>
 
-<span class="n">util</span><span class="o">.</span><span class="n">loopbolo</span><span class="p">(</span><span class="s">&#39;/path/to/file.root&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;FID&quot;</span><span class="p">,</span> <span class="n">analysisFunction</span><span class="o">=</span><span class="n">myFunction</span><span class="p">,</span> <span class="n">heatAna</span> <span class="o">=</span> <span class="n">chainHeat</span><span class="p">,</span> <span class="n">ionAna</span> <span class="o">=</span> <span class="n">chainIon</span><span class="p">)</span>
+<span class="n">util</span><span class="o">.</span><span class="n">loopbolo</span><span class="p">(</span><span class="s">&#39;/path/to/file.root&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;FID&quot;</span><span class="p">,</span> <span class="n">analysisFunction</span><span class="o">=</span><span class="n">myFunction</span><span class="p">,</span> <span class="n">heatAna</span> <span class="o">=</span> <span class="n">chainHeat</span><span class="p">,</span> <span class="n">ionAna</span> <span class="o">=</span> <span class="n">chainIon</span><span class="p">,</span> <span class="n">firstCall</span> <span class="o">=</span> <span class="n">callMe</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -229,7 +236,7 @@ and then call the analysisFunction, passing in the pulseRecord, the pta, and all
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<em>string path to file or KDataReader object</em>) &#8211; The data file to use.</li>
 <li><strong>name</strong> (<em>string</em>) &#8211; The channel name you want to analyze</li>
-<li><strong>match</strong> (<em>int</em>) &#8211; if match is True, then the pulse channel name needs to exactly match &#8216;name&#8217;. Otherwise, if the pulse channel name starts with &#8216;name&#8217;, then the data will be analyzed. For example, if you set &#8216;name&#8217;=&#8217;chal&#8217;, then you will probably analyze all heat channels</li>
+<li><strong>match</strong> (<em>int</em>) &#8211; if match is True, then the detector name needs to exactly match &#8216;name&#8217;. Otherwise, if the pulse channel name contains &#8216;name&#8217;, then the data will be analyzed. For example, if you set &#8216;name&#8217;=&#8217;chal&#8217;, then you will probably analyze all heat channels</li>
 <li><strong>pta</strong> (<em>KPtaProcessor object</em>) &#8211; a KPtaProcessor that will be automatically called for each pulse</li>
 <li><strong>analysisFunction</strong> (<em>function pointer</em>) &#8211; the function that you will define to analyze your pulse. This is a sort of &#8216;callback&#8217; function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, <a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs). The KPtaProcessor will be the same object that you pass into pta</li>
 <li><strong>maxEvents</strong> &#8211; if maxEvents != None, stops looping after maxEvents events.</li>
@@ -309,7 +316,7 @@ and then call the analysisFunction, passing in the pulseRecord, the pta, and all
 <span class="n">chain</span><span class="o">.</span><span class="n">AddProcessor</span><span class="p">(</span><span class="n">pat</span><span class="p">)</span>
 <span class="n">chain</span><span class="o">.</span><span class="n">AddProcessor</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
 
-<span class="n">util</span><span class="o">.</span><span class="n">plotpulse</span><span class="p">(</span><span class="s">&#39;/sps/edelweis/kdata/data/raw/me20a010_010.root&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;ZM1&#39;</span><span class="p">,</span> <span class="n">pta</span> <span class="o">=</span> <span class="n">chain</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="n">myAnalysis</span><span class="p">,</span> <span class="n">myExtraOption</span><span class="o">=</span><span class="s">&quot;printMin&quot;</span><span class="p">)</span>
+<span class="n">util</span><span class="o">.</span><span class="n">looppulse</span><span class="p">(</span><span class="s">&#39;/sps/edelweis/kdata/data/raw/me20a010_010.root&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;ZM1&#39;</span><span class="p">,</span> <span class="n">pta</span> <span class="o">=</span> <span class="n">chain</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="n">myAnalysis</span><span class="p">,</span> <span class="n">myExtraOption</span><span class="o">=</span><span class="s">&quot;printMin&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -320,7 +327,7 @@ and then call the analysisFunction, passing in the pulseRecord, the pta, and all
 <dd><p>Exactly like looppulse, but will plot each pulse on screen and wait for you to hit the &#8216;Enter&#8217;
 key in the shell before continuing. In fact, this function calls looppulse. This is a nice way to visualize what is happening
 to the pulses. Additionally, if you don&#8217;t provide any analysisFunction, it will be a
-nice event viewere just to look at the data.</p>
+nice event viewer just to look at the data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -328,7 +335,7 @@ nice event viewere just to look at the data.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<em>string path to file or KDataReader object</em>) &#8211; The data file to use.</li>
 <li><strong>name</strong> (<em>string</em>) &#8211; The channel name you want to analyze</li>
-<li><strong>match</strong> (<em>int</em>) &#8211; if match is True, then the pulse channel name needs to exactly match &#8216;name&#8217;. Otherwise, if the pulse channel name starts with &#8216;name&#8217;, then the data will be analyzed. For example, if you set &#8216;name&#8217;=&#8217;chal&#8217;, then you will probably analyze all heat channels</li>
+<li><strong>match</strong> (<em>int</em>) &#8211; if match is True, then the pulse channel name needs to exactly match &#8216;name&#8217;. Otherwise, if the pulse channel name contains &#8216;name&#8217;, then the data will be analyzed. For example, if you set &#8216;name&#8217;=&#8217;chal&#8217;, then you will probably analyze all heat channels</li>
 <li><strong>pta</strong> (<em>KPtaProcessor object</em>) &#8211; a KPtaProcessor that will be automatically called for each pulse</li>
 <li><strong>analysisFunction</strong> (<em>function pointer</em>) &#8211; the function that you will define to analyze your pulse. This is a sort of &#8216;callback&#8217; function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, <a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs). The KPtaProcessor will be the same object that you pass into pta</li>
 <li><strong>maxEvents</strong> &#8211; if maxEvents != None, stops looping after maxEvents events.</li>
@@ -338,6 +345,7 @@ nice event viewere just to look at the data.</p>
 </tr>
 </tbody>
 </table>
+<p>Example Event Viewer. This will just print to screen every pulse shape for any channel with &#8220;ZM&#8221; in its name</p>
 </dd></dl>
 
 </div>

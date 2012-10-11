@@ -119,7 +119,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
   :type data: string path to file or KDataReader object
   :param name: The channel name you want to analyze
   :type name: string
-  :param match: if match is True, then the pulse channel name needs to exactly match 'name'. Otherwise, if the pulse channel name starts with 'name', then the data will be analyzed. For example, if you set 'name'='chal', then you will probably analyze all heat channels
+  :param match: if match is True, then the detector name needs to exactly match 'name'. Otherwise, if the pulse channel name contains 'name', then the data will be analyzed. For example, if you set 'name'='chal', then you will probably analyze all heat channels
   :type match: bool
   :param pta: a KPtaProcessor that will be automatically called for each pulse
   :type pta: KPtaProcessor object
@@ -213,7 +213,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
     chain.AddProcessor(pat)
     chain.AddProcessor(filter)
 
-    util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myAnalysis, myExtraOption="printMin")
+    util.looppulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM1', pta = chain, analysisFunction = myAnalysis, myExtraOption="printMin")
       
   
   '''
@@ -247,13 +247,13 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
   :type data: string path to file or KDataReader object
   :param name: The bolometer name you want to analyze
   :type name: string
-  :param match: if match is True, then the bolometer name needs to exactly match 'name'. Otherwise, if the pulse channel name starts with 'name', then the data will be analyzed. For example, if you set 'name'='chal', then you will probably analyze all heat channels
+  :param match: if match is True, then the bolometer name needs to exactly match 'name'. Otherwise, if the bolometer name contains 'name', then the data will be analyzed. For example, if you set 'name'='FID', then your analysis function will be called for each FID detector in the file
   :type match: bool
-  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KRawPulseRecord, **kwargs). 
+  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function will be passed the following arguments: KBolometerRecord, **kwargs. 
   :type analysisFunction: function pointer
   :param maxEvents: if maxEvents != None, stops looping after maxEvents events. 
   :type match: int
-  :param kwargs: all kwargs are pass to the analysisFunction
+  :param kwargs: all remaining kwargs are pass to the analysisFunction
   :type kwargs: keyword argument list
 
   For example
@@ -274,13 +274,20 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
     util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, myExtraOptions="condition1")
     
  
-  Besides strings, you can pass in ANYTHING via the kwargs, even objects
+  Besides strings, you can pass ANYTHING via the kwargs, in any order, even objects, and pointers to other functions!
 
   .. code-block:: python
+
+    def callMe():
+      print 'I can be called'
+
 
     def myFunction(boloRecord, **kwargs):
       print boloRecord.GetDetectorName()
       
+      if kwargs['firstCall']:
+        kwargs['firstCall']()
+
       hAna = kwargs['heatAna']
       ionAna = kwargs['ionAna']
 
@@ -307,7 +314,7 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
     chainIon.AddProcessor( KBaselineRemoval() )
     chainIon.AddProcessor( KPatternRemoval() )
 
-    util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, heatAna = chainHeat, ionAna = chainIon)
+    util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, heatAna = chainHeat, ionAna = chainIon, firstCall = callMe)
 
 
 
@@ -336,13 +343,13 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     Exactly like looppulse, but will plot each pulse on screen and wait for you to hit the 'Enter'
     key in the shell before continuing. In fact, this function calls looppulse. This is a nice way to visualize what is happening
     to the pulses. Additionally, if you don't provide any analysisFunction, it will be a
-    nice event viewere just to look at the data.
+    nice event viewer just to look at the data.
     
     :param data: The data file to use.
     :type data: string path to file or KDataReader object
     :param name: The channel name you want to analyze
     :type name: string
-    :param match: if match is True, then the pulse channel name needs to exactly match 'name'. Otherwise, if the pulse channel name starts with 'name', then the data will be analyzed. For example, if you set 'name'='chal', then you will probably analyze all heat channels
+    :param match: if match is True, then the pulse channel name needs to exactly match 'name'. Otherwise, if the pulse channel name contains 'name', then the data will be analyzed. For example, if you set 'name'='chal', then you will probably analyze all heat channels
     :type match: bool
     :param pta: a KPtaProcessor that will be automatically called for each pulse
     :type pta: KPtaProcessor object
@@ -352,6 +359,14 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     :type match: int
     :param kwargs: all kwargs are pass to the analysisFunction
     :type kwargs: keyword argument list
+
+
+    Example Event Viewer. This will just print to screen every pulse shape for any channel with "ZM" in its name
+
+    .. code-block:: python
+      from KDataPy import util
+
+      util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM')
 
     '''
         
