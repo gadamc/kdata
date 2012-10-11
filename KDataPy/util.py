@@ -49,6 +49,14 @@ def get_in(pta):
   '''
   return get_as_nparray(pta.GetInputPulse(), pta.GetInputPulseSize())
     
+def getRootHistFromOutput(pta):
+  '''
+  return a ROOT TH1D histogram from the output pulse of a KPtaProcessor (pta)
+  '''
+  h = TH1D(pta.GetName(), pta.GetName(), pta.GetOutputPulseSize(), 0, pta.GetOutputPulseSize())
+  for i in range( pta.GetOutputPulseSize() )
+    h.SetBinContent(i+1, pta.GetOutputPulse()[i])
+  return h
 
 
 def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, maxEvents=None, **kwargs):
