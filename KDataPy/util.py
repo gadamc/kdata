@@ -30,7 +30,9 @@ _libpyroot.MakeRootClass( "KDataReader" ).__iter__    = _KEvent_iter__
 #small utility functions  
 def get_as_nparray(c_pointer, size):
   '''
+  
   return a numpy array from a pointer to data of length 'size'
+  
   '''
   data = np.zeros(size)
   for i in range(size):
@@ -39,19 +41,25 @@ def get_as_nparray(c_pointer, size):
 
 def get_out(pta):
   '''
+  
   return a numpy array from the output pulse of a KPtaProcessor (pta)
+  
   '''
   return get_as_nparray(pta.GetOutputPulse(), pta.GetOutputPulseSize())
 
 def get_in(pta):
   '''
+
   return a numpy array from the input pulse of a KPtaProcessor (pta)
+  
   '''
   return get_as_nparray(pta.GetInputPulse(), pta.GetInputPulseSize())
     
 def getRootHistFromOutput(pta):
   '''
+  
   return a ROOT TH1D histogram from the output pulse of a KPtaProcessor (pta)
+  
   '''
   h = TH1D(pta.GetName(), pta.GetName(), pta.GetOutputPulseSize(), 0, pta.GetOutputPulseSize())
   for i in range( pta.GetOutputPulseSize() )
@@ -61,6 +69,7 @@ def getRootHistFromOutput(pta):
 
 def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, maxEvents=None, **kwargs):
   '''
+  
   This function provides you with automatic looping code and gives you the chance for pulse processing. 
   This function will loop through a datafile, apply the KPulseProcessor that you provide (in pta), 
   and then call the analysisFunction, passing in the pulseRecord, the pta, and all **kwargs. 
