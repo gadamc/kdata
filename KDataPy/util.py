@@ -364,9 +364,11 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     Example Event Viewer. This will just print to screen every pulse shape for any channel with "ZM" in its name
 
     .. code-block:: python
+
       from KDataPy import util
 
       util.plotpulse('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'ZM')
+
 
     '''
         
