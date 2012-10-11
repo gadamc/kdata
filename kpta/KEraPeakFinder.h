@@ -50,7 +50,7 @@ private:
   double fBaselineStop; //stoping position of region to be averaged for baseline subtraction, in percent of the total pulse length
   int fOrder;
   double fNumRms;
-  int fPolarity;
+  int fPolarity; //if set to 0, then this object searches for pulses in both directions. otherwise, it only looks for the polarity you give it
   std::vector<int> fPeakBins;
   
   KOrderFilter fOrderFilter;

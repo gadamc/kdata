@@ -12,6 +12,9 @@
 // and places the results in this object's outputPulse. Thus, the outputPulse of this processor is a "smoothed" 
 // pulse. This should be considered if you want to place this processor within a KPulseAnalyisChain
 // 
+// You can SetPolarity( -1, +1, or 0). If set to 0, then this object searches for pulses 
+// in both directions. otherwise, it only looks for pulses with the polarity you indicated.
+//
 
 #include <iostream>
 #include "KEraPeakFinder.h"

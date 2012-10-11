@@ -445,7 +445,8 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   //   if(foundPeaks.size() > 0) return false; //we found a peak, so this is not noise.
   
   
-  thePeakDetector->SetPolarity( KPulsePolarityCalculator::GetExpectedPolarity(pRaw));
+  //thePeakDetector->SetPolarity( KPulsePolarityCalculator::GetExpectedPolarity(pRaw));
+  thePeakDetector->SetPolarity( 0 ); //always search for pulse in both polarities
   thePeakDetector->SetInputPulse(thePreProc);
   if( !thePeakDetector->RunProcess()){
       cout << "KChamonixKAmpSite::ScoutKampSite. fHeatPeakDetector failed" << endl;
