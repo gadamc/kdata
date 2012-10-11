@@ -33,7 +33,7 @@ def _KRawBoloPulseRecord_GetTrace_iter__(self):
   while i < self.GetPulseLength():
     yield self.GetTrace()[i]                 
     i += 1
-_libpyroot.MakeRootClass( "KRawBoloPulseRecord" ).__iter__    = _KRawBoloPulseRecord_GetTrace_iter_
+_libpyroot.MakeRootClass( "KRawBoloPulseRecord" ).__iter__    = _KRawBoloPulseRecord_GetTrace_iter__
 
 
 def _KRawBoloPulseRecord_getNumpArray__(self):
