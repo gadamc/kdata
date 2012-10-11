@@ -56,9 +56,14 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-KDataPy.database">
-<span id="kdatapy-database-access"></span><h1>kdatapy database access<a class="headerlink" href="#module-KDataPy.database" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+  <div class="section" id="kdatapy-database-access">
+<h1>kdatapy database access<a class="headerlink" href="#kdatapy-database-access" title="Permalink to this headline">¶</a></h1>
+<p>This module facilitates connections to our various CouchDB databases. It saves you a few lines of code
+because these calls are generally quite common. Also, it will connect to the default Edelweiss database
+server (edelweiss.cloudant.com) for you automatically. However, you may specify a particular database if you wish.</p>
+<p>Unfortunately, there are not yet any helper methods for some of the common tasks. You will have to know which CouchDB &#8220;View&#8221; to call and how to iterate through the results of that call in order to find what you want.
+Ask me (<a class="reference external" href="mailto:adam&#46;cox&#37;&#52;&#48;kit&#46;edu">adam<span>&#46;</span>cox<span>&#64;</span>kit<span>&#46;</span>edu</a> / <a class="reference external" href="mailto:gadamc&#37;&#52;&#48;gmail&#46;com">gadamc<span>&#64;</span>gmail<span>&#46;</span>com</a>) for help!</p>
+<span class="target" id="module-KDataPy.database"></span><dl class="function">
 <dt id="KDataPy.database.analysis">
 <tt class="descclassname">KDataPy.database.</tt><tt class="descname">analysis</tt><big>(</big><em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns an instance of couchdbkit.Database initialized to the &#8216;analysis&#8217; database</p>
@@ -86,7 +91,8 @@ which contains all of the cryostat recorded data.</p>
 <dl class="function">
 <dt id="KDataPy.database.getdatabase">
 <tt class="descclassname">KDataPy.database.</tt><tt class="descname">getdatabase</tt><big>(</big><em>database</em>, <em>serverName=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/database.html#getdatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.database.getdatabase" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns an instance of couchdbkit.Database</p>
+<dd><p>returns an instance of couchdbkit.Database. If you don&#8217;t give a serverName, this will
+attempt to connect to one of the default Edelweiss database servers.</p>
 </dd></dl>
 
 <dl class="function">
