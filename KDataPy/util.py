@@ -28,14 +28,6 @@ def _KEvent_iter__(self):
 _libpyroot.MakeRootClass( "KDataReader" ).__iter__    = _KEvent_iter__
 
 
-def _KRawBoloPulseRecord_GetTrace_iter__(self):
-  i = 0
-  while i < self.GetPulseLength():
-    yield self.GetTrace()[i]                 
-    i += 1
-_libpyroot.MakeRootClass( "KRawBoloPulseRecord" ).__iter__    = _KRawBoloPulseRecord_GetTrace_iter__
-
-
 def _KRawBoloPulseRecord_getNumpArray__(self):
   return np.array(self.GetTrace())
 _libpyroot.MakeRootClass( "KRawBoloPulseRecord" ).getnumpy    = _KRawBoloPulseRecord_getNumpArray__
