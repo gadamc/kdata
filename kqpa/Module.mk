@@ -51,14 +51,14 @@ KQPA_DIRI   := $(MODDIR)
 
 #only need to put the ERAINCS here because ERA files are NOT copied
 # to the projects include directory! This should be changed.
-KQPA_XTRAINCS := $(ERAINCS)
+KQPA_XTRAINCS := #-I$(ERAINCS)
 
 #list all external module libs that this module depends on
 #if this module depends on other modules in this project you MUST
 #make sure that this MODNAME is listed AFTER all of the MODNAMEs
 #that it depends on.
-KQPA_XTRALIBS := $(ERALIBS) $(KDSLIBS) $(KPTALIBS)
-KQPA_LIBDEP   := $(ERA_LIB) $(KDS_LIB) $(KPTA_LIB)
+KQPA_XTRALIBS :=  $(KDSLIBS) $(KPTALIBS)
+KQPA_LIBDEP   :=  $(KDS_LIB) $(KPTA_LIB)
 
 # Uncomment this to use the LinkDef file when generating the dictionary
 #KQPA_LH     := $(KQPA_DIRI)/$(MODNAME)_LinkDef.h
@@ -107,7 +107,7 @@ $(KDATAINCDIR)/%.h:    $(KQPA_DIRI)/%.h
 
 # rule for compiling our source files
 $(KQPA_DIRS)/%.$(ObjSuf):    $(KQPA_DIRS)/%.cxx
-	$(CXX) $(KQPA_FLAGS) -I$(KQPA_XTRAINCS) -o $@ -c $< 
+	$(CXX) $(KQPA_FLAGS) $(KQPA_XTRAINCS) -o $@ -c $< 
 
 # rule for building executables
 $(KDATABINDIR)/%: $(KQPA_DIRS)/%.$(ObjSuf) $(KDATAED_LIB) $(KQPA_LIBDEP)
@@ -116,11 +116,11 @@ $(KDATABINDIR)/%: $(KQPA_DIRS)/%.$(ObjSuf) $(KDATAED_LIB) $(KQPA_LIBDEP)
 
 # rules for building dictionary
 $(KQPA_DO):         $(KQPA_DC)
-	$(CXX) $(NOOPT) $(KQPA_FLAGS) $(ROOTINCS) -I. -I$(KQPA_XTRAINCS) -o $@ -c $< 
+	$(CXX) $(NOOPT) $(KQPA_FLAGS) $(ROOTINCS) -I. $(KQPA_XTRAINCS) -o $@ -c $< 
 
 $(KQPA_DC):         $(KQPA_EH) $(KQPA_LH)
 	@echo "Generating dictionary $@..."
-	$(ROOTCINT) -f $@ -c -I$(KQPA_XTRAINCS)  $(KQPA_DICTH) $(KQPA_LH) 
+	$(ROOTCINT) -f $@ -c $(KQPA_XTRAINCS)  $(KQPA_DICTH) $(KQPA_LH) 
 
 # rule for building library
 $(KQPA_LIB):        $(KQPA_EO) $(KQPA_DO) $(KQPA_LIBDEP)
