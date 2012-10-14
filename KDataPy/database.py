@@ -92,13 +92,13 @@ def bolohardwaremap(serverName=None):
   '''
   return getdatabase('bolohardwaremap',serverName)
 
-def radondb(serverName=None):
+def radon(serverName=None):
   '''
   
   returns an instance of couchdbkit.Database initialized to the 'radondb' database
   
   '''
-  return getdatabase('radondb',serverName)
+  return getdatabase('radon',serverName)
 
 
 def automat(serverName=None):
