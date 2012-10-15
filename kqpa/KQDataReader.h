@@ -36,6 +36,8 @@ class KQDataReader {
                  const Char_t* aBoloConfigFile = "",
                  const Char_t* aBoloName = "ALL",
                  const Char_t* aCategoryName = "fiducial"); 
+    virtual ~KQDataReader(void){}
+
     Bool_t ReadEvents(const Char_t* aSourceFile = "",
                       const Char_t* aBoloConfigFile = "",
                       const Char_t* aBoloName = "ALL",

@@ -34,6 +34,7 @@
 #include "KOptimalKamper.h"
 #include "KBaselineRemoval.h"
 #include "KLinearRemoval.h"
+#include "KPulseAnalysisChain.h"
 #include "KWindow.h"
 #include "KPulseAnalysisRecord.h"
 #include "KRawBoloPulseRecord.h"
@@ -211,8 +212,29 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
     if( dynamic_cast<KBaselineRemoval*>(fPreProcessor) != 0)
       myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KBaselineRemoval*>(fPreProcessor))->GetBaselineOffset(), "ADU");
       
-    else if( dynamic_cast<KLinearRemoval*>(fPreProcessor) != 0)
+    else if( dynamic_cast<KLinearRemoval*>(fPreProcessor) != 0) {
       myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetOffset(), "ADU");
+      myResults["slope"] = KResult("slope", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetSlope(), "ADU/bin");
+    } 
+
+    //if the preprocessor is a chain, go through the chain to find
+    //any baseline removal or linear removal processors
+    //quit searching when one of them is found.
+    else if ( dynamic_cast<KPulseAnalysisChain*>(fPreProcessor) != 0) {
+
+      for(unsigned int i = 0; i < (dynamic_cast<KPulseAnalysisChain*>(fPreProcessor))->GetNumProcessors(); i++){
+        KPtaProcessor *aProc = (dynamic_cast<KPulseAnalysisChain*>(fPreProcessor))->GetProcessor(i);
+        if( dynamic_cast<KBaselineRemoval*>(aProc) != 0){
+          myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KBaselineRemoval*>(aProc))->GetBaselineOffset(), "ADU");
+          break;
+        }
+        else if( dynamic_cast<KLinearRemoval*>(aProc) != 0) {
+          myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(aProc))->GetOffset(), "ADU");
+          myResults["slope"] = KResult("slope", (dynamic_cast<KLinearRemoval*>(aProc))->GetSlope(), "ADU/bin");
+          break;
+        }   
+      }
+    }
   }
   catch (exception& e) {
     cout << "Exception: " << e.what() << endl;

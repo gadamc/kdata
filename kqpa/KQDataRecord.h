@@ -29,6 +29,7 @@ class KQDataRecord {
                  : fEnergyRecoil(anEnergyRecoil),fEnergyIon(anEnergyIon),
                  fEnergyHeat(anEnergyHeat), fQ(aQ),fSigmaIon(aSigmaIon),
                  fSigmaHeat(aSigmaHeat) { }
+    virtual ~KQDataRecord(void){}
 
     //getters
     Double_t GetEnergyRecoil() const { return fEnergyRecoil; }

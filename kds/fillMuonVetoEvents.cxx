@@ -509,7 +509,7 @@ Bool_t fillEvents(void)
 		KMuonVetoSystemRecord *mMvSysRec = mEvent->GetMuonVetoSystemRecord();
 		
 		mMvSysRec->SetRunNumber(mMuonVetoData.fRun);
-		mMvSysRec->SetIsSystemOn(true);
+		mMvSysRec->SetSystemOn(true);
 		mMvSysRec->SetDistanceEst(mMuonVetoData.fDistEst);
 		mMvSysRec->SetDistanceNemo(mMuonVetoData.fDistNemo);
 		mMvSysRec->SetEventNumber(mMuonVetoData.fEventNo);

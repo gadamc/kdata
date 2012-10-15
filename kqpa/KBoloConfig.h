@@ -34,7 +34,8 @@ class KBoloConfig {
 
   public:
     KBoloConfig(const Char_t* aBoloName,const Char_t* aFileName);
-    
+    virtual ~KBoloConfig(void){}
+
     Bool_t Load(const Char_t* aBoloName = "",const Char_t* aFileName = "");
 
     const char* GetBoloName() const { return fBoloName.c_str(); }

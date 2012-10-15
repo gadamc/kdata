@@ -49,8 +49,9 @@ Bool_t KQDataEvaluator::FillHistograms(Int_t aNumHistograms)
   }
   if(!fQHistogramManager)
     fQHistogramManager = new KQHistogramManager(fQDataReader);
-    else
+  else
     fQHistogramManager->SetQDataReader(fQDataReader);
   fQHistogramManager->Fill(aNumHistograms);
   
+  return true;
 }

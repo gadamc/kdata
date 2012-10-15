@@ -525,7 +525,7 @@ Double_t KErecoilQDensity::MultiEventCummulativeProbDensity(Double_t* x,Double_t
   
 }
 
-Double_t KErecoilQDensity::MultiEventProbabilityOfAtLeastOneEvent(Double_t* x,Double_t* par)
+Double_t KErecoilQDensity::MultiEventProbabilityOfAtLeastOneEvent(Double_t* /*x*/,Double_t* par)
 {
   // This function represents the propability that there exists at least one true event
   //  in an arbitrary area Omega of rectangular shape in the E_recoil-Q plane

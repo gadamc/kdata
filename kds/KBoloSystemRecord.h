@@ -10,13 +10,12 @@
 #ifndef __KBOLOSYSTEMRECORD_H__
 #define __KBOLOSYSTEMRECORD_H__
 
-#include "KSystemRecord.h"
 #include <string>
 #include <cstdlib>
-
+#include "RTypes.h"
 using namespace std;
 
-class KBoloSystemRecord : public KSystemRecord { 
+class KBoloSystemRecord  { 
 
 public:
 	//Constructors
@@ -36,7 +35,7 @@ private:
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KBoloSystemRecord &aRec);
 
-  ClassDef(KBoloSystemRecord,2);
+  ClassDef(KBoloSystemRecord,3);
 };
 
 

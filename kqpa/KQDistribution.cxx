@@ -184,7 +184,7 @@ void KQDistribution::DrawHistogram(TPad* aPad,Int_t aHistogramCounter)
 
 
 void KQDistribution::SetBoundaries(TH1D* aHistogram,
-                                   Double_t aNumSigmas,Double_t aFirstValue, Double_t aSecondValue,
+                                   Double_t aNumSigmas, Double_t /*aFirstValue*/, Double_t /*aSecondValue*/,
                                    Double_t aFirstError, Double_t aSecondError)
 {
   // searches and sets the boundaries for the two gaussian fits

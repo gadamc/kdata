@@ -37,8 +37,8 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   fSigmaEnergyIon(aSigmaEnergyIon),
   fSigmaEnergyHeat(aSigmaEnergyHeat), fSigmaEnergyIonHeat(aSigmaEnergyIonHeat),
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
-  fConfidenceLevel(aConfidenceLevel), fNumBinsX(aNumBinsX),
-  fNumBinsY(aNumBinsY), fNumSigmas(aNumSigmas), fConfidenceFunctionValue(-1)
+  fConfidenceLevel(aConfidenceLevel), fConfidenceFunctionValue(-1), fNumBinsX(aNumBinsX),
+   fNumBinsY(aNumBinsY),fNumSigmas(aNumSigmas)
 {
   // The constructor generates the pdf g(E_recoil,Q)
   // (documentation in ~/doc/ERecoiLQDistribution.pdf)

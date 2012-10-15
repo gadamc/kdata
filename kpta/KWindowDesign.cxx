@@ -55,12 +55,13 @@ double* KWindowDesign::GetTukeyWindow(unsigned int size, double alpha, int middl
     //Shift the window
     if(middle == -9999)
       return coef;
-    int shift = middle - width/2;
+    int shift = middle - (int)(width)/2;
     if(shift != 0 || width != 0 || width != size){
       double* output = new double[size];
+      
       for(unsigned int i = 0; i < size; i++)
-        if((i-shift)>=0){
-          if((i < (width+shift)) && (i > shift))
+        if( (int)i-shift >= 0){
+          if( (i < (width+shift)) && ( (int)i > shift))
             *(output+i) = *(coef+i-shift);
           else
             *(output+i) = 0;
@@ -94,12 +95,12 @@ double* KWindowDesign::GetBlackmanWindow(unsigned int size, double alpha, int mi
     //Shift the window
     if(middle == -9999)
       return coef;
-    int shift = middle - width/2;
+    int shift = middle - (int)(width)/2;
     if(shift != 0 || width != 0 || width != size){
       double* output = new double[size];
-      for(int i = 0; i<size; i++)
-        if((i-shift)>=0){
-          if((i < (width+shift)) && (i > shift))
+      for(unsigned int i = 0; i < size; i++)
+        if( (int)i-shift >= 0){
+          if((i < ( width+shift)) && ((int)i > shift))
             *(output+i) = *(coef+i-shift);
           else
             *(output+i) = 0;

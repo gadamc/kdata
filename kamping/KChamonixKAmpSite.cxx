@@ -69,10 +69,13 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
   
   fHeatPeakDetector.SetOrder(5);
   fHeatPeakDetector.SetNumRms(2.3);
+  
   fBBv1IonPeakDetector.SetOrder(2);
   fBBv1IonPeakDetector.SetNumRms(7);
-  fBBv2IonPeakDetector.SetOrder(2);
-  fBBv2IonPeakDetector.SetNumRms(7);
+  fBBv2IonPeakDetector.SetOrder(5);
+  fBBv2IonPeakDetector.SetNumRms(4);
+
+  //need something completely different here!
 
   fHeatPreProcessor = new KPulseAnalysisChain();
   fHeatPreProcessor->SetIsOwner();
@@ -382,6 +385,8 @@ void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResu
   if(resMap.find("ionPulseStartTime") != resMap.end())          rec->SetExtra(resMap["ionPulseStartTime"].fValue, 10);
   if(resMap.find("ampAtIonPulseStartTime") != resMap.end())     rec->SetExtra(resMap["ampAtIonPulseStartTime"].fValue, 11);
   if(resMap.find("chi2AtIonPulseStartTime") != resMap.end())    rec->SetExtra(resMap["chi2AtIonPulseStartTime"].fValue, 12);
+  if(resMap.find("slope") != resMap.end())                      rec->SetExtra(resMap["slope"].fValue, 13);
+
 
   rec->SetName(GetName());
 }
@@ -401,11 +406,12 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   KPtaProcessor *thePreProc = 0;
   KPtaProcessor *theWindow = 0;
   KEraPeakFinder* thePeakDetector = 0;
+  KPtaProcessor* theProcToTheFFT = 0;
 
   if(pRaw->GetIsHeatPulse()){
     thePreProc = fHeatPreProcessor;
     if (fHeatWindow == 0) CreateHeatWindow(pRaw->GetPulseLength());
-    theWindow = fHeatWindow;
+    theWindow = theProcToTheFFT = fHeatWindow;
     thePeakDetector = &fHeatPeakDetector;
   }
   else if(pRaw->GetBoloBoxVersion() > 2.1)
@@ -414,13 +420,13 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   else if(pRaw->GetBoloBoxVersion() > 1.99){  //avoid direct comparison of floating point number  
       thePreProc = fBBv2IonPreProcessor;
       if (fIonWindow == 0) CreateIonWindow(pRaw->GetPulseLength());
-      theWindow = fIonWindow;
+      theProcToTheFFT = thePreProc;
       thePeakDetector = &fBBv2IonPeakDetector;
   }
   else if(pRaw->GetBoloBoxVersion() > 0.9){
       thePreProc = fBBv1IonPreProcessor;
       if (fIonWindow == 0) CreateIonWindow(pRaw->GetPulseLength());
-      theWindow = fIonWindow;
+      theWindow =  theProcToTheFFT = fIonWindow;
       thePeakDetector = &fBBv1IonPeakDetector;
   }
 
@@ -447,6 +453,7 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   
   //thePeakDetector->SetPolarity( KPulsePolarityCalculator::GetExpectedPolarity(pRaw));
   thePeakDetector->SetPolarity( 0 ); //always search for pulse in both polarities
+
   thePeakDetector->SetInputPulse(thePreProc);
   if( !thePeakDetector->RunProcess()){
       cout << "KChamonixKAmpSite::ScoutKampSite. fHeatPeakDetector failed" << endl;
@@ -455,12 +462,14 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   if(thePeakDetector->GetPeakBins().size() > 0) {return false;} //we found a peak, so this is not noise.
       
   //we found noise, now window it, find its power spectrum and then add it to the running average power spectrum  
-  theWindow->SetInputPulse(thePreProc);
-  if(!theWindow->RunProcess()){
-    cout << "KChamonixKAmpSite::ScoutKampSite. theWindow failed" << endl; return false;
+  if(theWindow){
+    theWindow->SetInputPulse(thePreProc);
+    if(!theWindow->RunProcess()){
+      cout << "KChamonixKAmpSite::ScoutKampSite. theWindow failed" << endl; return false;
+    }
   }
 
-  fR2Hc.SetInputPulse(theWindow);
+  fR2Hc.SetInputPulse(theProcToTheFFT);
   if(!fR2Hc.RunProcess()){
     cout << "KChamonixKAmpSite::ScoutKampSite. fR2Hc failed" << endl; return false;
   }
@@ -513,6 +522,7 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
     if(fIonWindow == 0)
       CreateIonWindow(pulse.size());
     theWindowProcessor = fIonWindow;
+
     break;
     default:
     cout << "unknown pulse type" << endl;
@@ -543,10 +553,18 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   SetTemplateShift(channelName, pulseShift);
 
   fPulseTemplateShifter.SetShift(pulseShift);
-  fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetOutputPulse());
-  fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetOutputPulseSize());
-  fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetOutputPulse());
-  fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetOutputPulseSize());
+  //fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetOutputPulse());
+  //fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetOutputPulseSize());
+  //fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetOutputPulse());
+  //fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetOutputPulseSize());
+
+  //super hack!!!
+  fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetInputPulse());
+  fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetInputPulseSize());
+  fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetInputPulse());
+  fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetInputPulseSize());
+  
+
   fPulseTemplateShifter.SetMode(2);
   fPulseTemplateShifter.RunProcess();
   

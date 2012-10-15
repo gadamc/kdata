@@ -10,12 +10,12 @@
 #ifndef __KMUONVETOSYSTEMRECORD_H__
 #define __KMUONVETOSYSTEMRECORD_H__
 
-#include "KSystemRecord.h"
 #include "TBits.h"
+#include "RTypes.h"
 
 //const Int_t kSizeOfChannelArrays = 97;
 
-class KMuonVetoSystemRecord : public KSystemRecord { 
+class KMuonVetoSystemRecord  { 
 
 public:
   //Constructors
@@ -33,7 +33,7 @@ public:
 	Bool_t IsGoodMuonVetoData(void) const;
 
 	//getters
-	Bool_t GetIsMuonSystemOn(void) const {return IsSystemOn();}
+	Bool_t IsSystemOn(void) const {return fSystemOn;}
 	Int_t GetMultiADC(void) const {return fMultiADC;}	
 	Double_t GetDistanceEst(void) const {return fDistanceEst;}	
 	Double_t GetDistanceNemo(void) const {return fDistanceNemo;}	
@@ -55,7 +55,7 @@ public:
 	Double_t GetFileEndTime(void) const {return fFileEndTime;}
 
 	//setters
-	void SetIsMuonSystemOn(Bool_t a) {SetIsSystemOn(a);}
+	void SetSystemOn(Bool_t a) {fSystemOn = a;}
 	void SetMultiADC(Int_t a) {fMultiADC = a;}
 	void SetDistanceEst(Double_t a) {fDistanceEst = a;}
 	void SetDistanceNemo(Double_t a) {fDistanceNemo = a;}
@@ -89,7 +89,7 @@ private:
 	Double_t fRunStartTime; //start time, in unix time, for the beginning of the current system run
 	Double_t fRunEndTime; //end time, in unix time, for the beginning of the current system run
 	Double_t fFileStartTime; //start time, in unix time, for the beginning of the current "file"
-  Double_t fFileEndTime; //end time, in unix time, for the beginning of the current "file"
+  	Double_t fFileEndTime; //end time, in unix time, for the beginning of the current "file"
   
 	//Int_t fAdcA[kSizeOfChannelArrays]; //****MOVE TO RAW*****// 
 	//Int_t fTdcA[kSizeOfChannelArrays]; //****MOVE TO RAW*****//
@@ -98,11 +98,12 @@ private:
 
 	static const Int_t kReconstructedTimeRunBoundary; //make it static so that it is not written to the tree
 	
+	Bool_t fSystemOn;
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KMuonVetoSystemRecord &aRec);
 
-  ClassDef(KMuonVetoSystemRecord,4);
+  ClassDef(KMuonVetoSystemRecord,5);
 };
 
 

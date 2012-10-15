@@ -26,7 +26,6 @@ KMuonVetoSystemRecord::KMuonVetoSystemRecord(void)
 }
 
 KMuonVetoSystemRecord::KMuonVetoSystemRecord(const KMuonVetoSystemRecord &aRec)
-:KSystemRecord(aRec)
 {
 	CopyLocalMembers(aRec);
 }
@@ -35,7 +34,6 @@ KMuonVetoSystemRecord& KMuonVetoSystemRecord::operator=(const KMuonVetoSystemRec
 {
 	if(&aRec == this) return *this;
 	
-	this->KSystemRecord::operator=(aRec);
 	CopyLocalMembers(aRec);
 	return *this;
 }
@@ -59,7 +57,7 @@ void KMuonVetoSystemRecord::CopyLocalMembers(const KMuonVetoSystemRecord &aRec)
 	
 	fRunStartTime = aRec.fRunStartTime;
 	fRunEndTime = aRec.fRunEndTime;
-  fFileStartTime = aRec.fFileStartTime;
+  	fFileStartTime = aRec.fFileStartTime;
 	fFileEndTime = aRec.fFileEndTime;
 	
 }
@@ -71,7 +69,7 @@ KMuonVetoSystemRecord::~KMuonVetoSystemRecord(void)
 
 }
 
-void KMuonVetoSystemRecord::Clear(Option_t *opt)
+void KMuonVetoSystemRecord::Clear(Option_t * /*opt*/)
 {
   //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
@@ -79,7 +77,6 @@ void KMuonVetoSystemRecord::Clear(Option_t *opt)
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-	KSystemRecord::Clear(opt);
 	
   //Clear and delete local objects here. 
 
@@ -108,7 +105,7 @@ void KMuonVetoSystemRecord::InitializeMembers(void)
 	fEventQuality.Clear();
 	fRunStartTime = -99.;
 	fRunEndTime = -99.;
-  fFileStartTime = -99.;
+  	fFileStartTime = -99.;
 	fFileEndTime = -99.;
 }
 
@@ -139,16 +136,11 @@ Bool_t KMuonVetoSystemRecord::IsSame(const KMuonVetoSystemRecord &aRec, Bool_t b
 	//If bPrint is set to true, then a message for each member variable that is different
 	//will print to standard out. Otherwise, this method will return false and quit
 	//checking member variables as soon as it finds a unequal data member.
+	//
+	//These IsSame methods are crazy stupid. We should use TClass tools to compare objects
 	
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
-	//call the base class's IsSame methods
-	if(!this->KSystemRecord::IsSame(aRec,bPrint)){
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}
 	
 	if(fRunNumber != aRec.fRunNumber){
 		bIsEqual = false;
@@ -294,7 +286,6 @@ void KMuonVetoSystemRecord::Compact(void)
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
 	//and base classes
 	
-	KSystemRecord::Compact();
 	
 	fEventQuality.Compact();
 }

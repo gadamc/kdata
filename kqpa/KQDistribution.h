@@ -177,7 +177,8 @@ class KQDistribution {
   public:
 
     KQDistribution(const Char_t* aSourceFile,const Char_t* aTargetDir,Int_t aNumProjections);
-    
+    virtual ~KQDistribution(void){}
+
     //getters
     const Char_t* GetBoloConfigFile() const  { return fBoloConfigFile.c_str(); }
     KBoloConfig* GetBoloConfig() const { return fBoloConfig; }

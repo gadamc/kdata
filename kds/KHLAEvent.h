@@ -11,7 +11,6 @@
 
 #include "KEvent.h"
 //system record forward declarations
-#include "KHLABoloSysRecord.h"
 #include "KHLAMuonVetoSysRecord.h"
 #include "KClonesArray.h"
 #include "TRef.h"
@@ -56,7 +55,6 @@ public:
   //Double_t GetSumBoloEnergyHeat(void);
   Double_t GetSumBoloEnergyIon(void) const;
 
-  KHLABoloSysRecord* GetBoloSystemRecord(void) {return &fBoloSystem;}
 
   //pointers to KClonesArrays of SubRecord objects. 
   //unless you need some specific informaton from the KClonesArray
@@ -120,7 +118,6 @@ public:
 
 private: 
 
-  KHLABoloSysRecord fBoloSystem;  //the Bolometer System Record..??
   KHLAMuonVetoSysRecord fMuonSystem; //Muon Veto System Record
 
 

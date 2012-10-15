@@ -69,7 +69,7 @@ Bool_t KQLindhardProjection::MakeHistogram()
   Double_t theDataY[fData.size()];
   KLindhard aLindhard;
   
-  for(Int_t k = 0; k< fData.size(); ++k) {
+  for(UInt_t k = 0; k< fData.size(); ++k) {
     theDataX[k] = KLindhard::GetArcLength(fData[k].GetEnergyRecoil(),
                                           fEnergyRecoilMax - fEnergyRecoilMin,
                                           fEnergyRecoilMin);
@@ -94,7 +94,7 @@ Bool_t KQLindhardProjection::MakeHistogram()
                                               fEnergyRecoilMin),
                       fNumBinsQ,fQMin,fQMax);
                                  
-  for(Int_t k = 0; k< fData.size(); ++k)
+  for(UInt_t k = 0; k< fData.size(); ++k)
     fHistogram->Fill(theDataX[k],theDataY[k]);
   
   return true;

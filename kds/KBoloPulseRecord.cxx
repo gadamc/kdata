@@ -48,7 +48,6 @@ KBoloPulseRecord::KBoloPulseRecord(void)
 }
 
 KBoloPulseRecord::KBoloPulseRecord(const KBoloPulseRecord &aRec)
-  : KSubRecord(aRec)
 {
   //copy constructor 
 
@@ -62,7 +61,6 @@ KBoloPulseRecord& KBoloPulseRecord::operator=(const KBoloPulseRecord &aRec)
 
   if(&aRec == this) return *this;
 
-  this->KSubRecord::operator=(aRec);
   CopyLocalMembers(aRec);
 
   return *this;
@@ -96,16 +94,17 @@ KBoloPulseRecord::~KBoloPulseRecord(void)
 
 }
 
-void KBoloPulseRecord::Clear(Option_t *anopt)
+void KBoloPulseRecord::Clear(Option_t * /*anopt*/)
 {
 
   //Clear the base classes and then clear/delete any local
-  //members. Its necessary for this Clear method to exist
+  //members. 
+
+  //Its necessary for this Clear method to exist
   //in the case that instances of this object are stored
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-  KSubRecord::Clear(anopt);
 
   //Clear and delete local objects here. 
 
@@ -146,14 +145,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
 
   Bool_t bIsEqual = true; //assume its true, then test for differences
 
-  //call the base class's IsSame methods
-  if(!this->KSubRecord::IsSame(aRec,bPrint)){
-    bIsEqual = false;
-    if(!bPrint)
-      return false;  //if we're not printing out, just return false at first failure
-    //the operator== method uses this functionality.
-  }
-
+  
   if(fChannelName != aRec.fChannelName){
     bIsEqual = false;
     if (bPrint) 
@@ -273,5 +265,4 @@ void KBoloPulseRecord::Compact(void)
   //variables that are KDS classes, member variables that can be compacted (such as TBits)
   //and base classes
 
-  KSubRecord::Compact();
 }

@@ -53,7 +53,7 @@ private:
 	void CopyLocalMembers(const KAmpBolometerRecord &aRec);
 
 
-  ClassDef(KAmpBolometerRecord,1);
+  ClassDef(KAmpBolometerRecord,2);
 };
 
 

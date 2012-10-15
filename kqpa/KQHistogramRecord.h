@@ -32,7 +32,7 @@ class KQHistogramRecord {
     
   public:
     KQHistogramRecord();
-    ~KQHistogramRecord();
+    virtual ~KQHistogramRecord();
     
     //getters
     TH2D* GetHistogram() { return fHistogram; }

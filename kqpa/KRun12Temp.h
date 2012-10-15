@@ -26,6 +26,7 @@ class KRun12Temp {
 
   public:
     KRun12Temp(const Char_t* aFileName = "");
+    virtual ~KRun12Temp(void){}
     
     Bool_t ReadCalibrationFile(const char* aFileName = "");
     Int_t GetCalibrationEntry(const char* aBoloName = "");

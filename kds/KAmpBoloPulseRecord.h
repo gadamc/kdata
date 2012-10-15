@@ -112,7 +112,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KAmpBoloPulseRecord &aRec);
 
-  ClassDef(KAmpBoloPulseRecord,1);
+  ClassDef(KAmpBoloPulseRecord,2);
 };
 
 

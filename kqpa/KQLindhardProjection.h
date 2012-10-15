@@ -45,7 +45,8 @@ class KQLindhardProjection : public KQProjection {
              
               
     virtual Bool_t MakeHistogram();
-    
+    virtual ~KQLindhardProjection(void){}
+
     //setters
     void SetMinimizer(const Char_t* aMinimizer,const Char_t* aMethod) 
     {

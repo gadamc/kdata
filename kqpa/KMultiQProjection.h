@@ -45,7 +45,7 @@ class KMultiQProjection {
                       Double_t aNumBinsQ = 1000,
                       Double_t aQMin = 0,
                       Double_t aQMax = 2);
-    ~KMultiQProjection();
+    virtual ~KMultiQProjection();
                       
     //getters
     Bool_t GetVerbose() const { return fVerbose; }

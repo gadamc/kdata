@@ -26,40 +26,38 @@ KBolometerRecord::KBolometerRecord(void)
 {
   //constructor 
   
-	InitializeMembers();
-	
-	//we must take care of members on the heap outside of 
-	//InitializeMembers...
-	
+  InitializeMembers();
+  
+  //we must take care of members on the heap outside of 
+  //InitializeMembers...
+  
 }
 
 KBolometerRecord::KBolometerRecord(const KBolometerRecord &aRec)
-: KSubRecord(aRec)
 {
-	//copy constructor 
+  //copy constructor 
   
-	CopyLocalMembers(aRec);
-	
+  CopyLocalMembers(aRec);
+  
 }
 
 KBolometerRecord& KBolometerRecord::operator=(const KBolometerRecord &aRec)
 {
   //assignment operator
   
-	if(&aRec == this) return *this;
-	
-	this->KSubRecord::operator=(aRec);
-	CopyLocalMembers(aRec);
-	
-	
-	return *this;
+  if(&aRec == this) return *this;
+  
+  CopyLocalMembers(aRec);
+  
+  
+  return *this;
 }
 
 void KBolometerRecord::CopyLocalMembers(const KBolometerRecord &aRec)
 {
-	
-	SetDetectorName(aRec.fDetectorName.c_str());
-	SetMass(aRec.GetMass());
+  
+  SetDetectorName(aRec.fDetectorName.c_str());
+  SetMass(aRec.GetMass());
   
 }
 
@@ -67,26 +65,25 @@ KBolometerRecord::~KBolometerRecord(void)
 {
   //destructor 
   
-	//Does calling clear at destruction take too much computing time?
+  //Does calling clear at destruction take too much computing time?
   Clear("C");
-	
+  
   
 }
 
-void KBolometerRecord::Clear(Option_t *opt)
+void KBolometerRecord::Clear(Option_t * /*opt*/)
 {
-	//Clear the base classes and then clear/delete any local
+  //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
   //in the case that instances of this object are stored
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-	KSubRecord::Clear(opt);
-	
+  
   
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
-	
+  
 }
 
 void KBolometerRecord::InitializeMembers(void)
@@ -97,12 +94,12 @@ void KBolometerRecord::InitializeMembers(void)
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
   fDetectorName.resize(0);
   fMass = 0;
-	
+  
 }
 
 void KBolometerRecord::SetDetectorName(const Char_t* aWord)
 {
-	fDetectorName = aWord;
+  fDetectorName = aWord;
 }
 
 const Char_t* KBolometerRecord::GetDetectorName(void) const 
@@ -113,49 +110,41 @@ const Char_t* KBolometerRecord::GetDetectorName(void) const
 
 Bool_t KBolometerRecord::IsSame(const KBolometerRecord &aRec, Bool_t bPrint) const
 {
-	//Compares two objects and their member variables to test for equality.
-	//If bPrint is set to true, then a message for each member variable that is different
-	//will print to standard out. Otherwise, this method will return false and quit
-	//checking member variables as soon as it finds a unequal data member.
-	
-	Bool_t bIsEqual = true; //assume its true, then test for differences
-	
-	//call the base class's IsSame methods
-	if(!this->KSubRecord::IsSame(aRec,bPrint)){
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}
-
-	if(fDetectorName != aRec.fDetectorName){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KBolometerRecord fDetectorName Not Equal. lhs: " 
-			<< fDetectorName << " != rhs " << aRec.fDetectorName << endl;		
-		else
-			return false;  
-	}
+  //Compares two objects and their member variables to test for equality.
+  //If bPrint is set to true, then a message for each member variable that is different
+  //will print to standard out. Otherwise, this method will return false and quit
+  //checking member variables as soon as it finds a unequal data member.
+  
+  Bool_t bIsEqual = true; //assume its true, then test for differences
+  
+  
+  if(fDetectorName != aRec.fDetectorName){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBolometerRecord fDetectorName Not Equal. lhs: " 
+      << fDetectorName << " != rhs " << aRec.fDetectorName << endl;   
+    else
+      return false;  
+  }
   if(fMass != aRec.fMass){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KBolometerRecord fMass Not Equal. lhs: " 
-			<< fMass << " != rhs " << aRec.fMass << endl;		
-		else
-			return false;  
-	}
-		
-	return bIsEqual;
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBolometerRecord fMass Not Equal. lhs: " 
+      << fMass << " != rhs " << aRec.fMass << endl;   
+    else
+      return false;  
+  }
+    
+  return bIsEqual;
 }
 
 
 void KBolometerRecord::Compact(void)
 {
-	//make the event class as small as possible. this calls 'Compact' for all member
-	//variables that are KDS classes, member variables that can be compacted (such as TBits)
-	//and base classes
-	
-	KSubRecord::Compact();
+  //make the event class as small as possible. this calls 'Compact' for all member
+  //variables that are KDS classes, member variables that can be compacted (such as TBits)
+  //and base classes
+  
 }
 
 Bool_t KBolometerRecord::IsDetector(const char* name)

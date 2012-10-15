@@ -67,7 +67,7 @@ class KQContourPoint : public TObject {
                    Double_t aNumSigmas = 10
                   );
     KQContourPoint(const KQContourPoint& anotherPoint);
-    ~KQContourPoint();
+    virtual ~KQContourPoint();
 
     void CalculateContour();
     void ResetMarker();

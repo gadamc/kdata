@@ -41,7 +41,8 @@ class KQHistogramManager {
     vector<KQHistogramRecord> fHistogramRecords;
   public:
     KQHistogramManager(KQDataReader* aKQDataReader = 0);
-    
+    virtual ~KQHistogramManager(void){}
+
     void SetNumBinsEnergyRecoil(Int_t aNumBinsEnergyRecoil)
     { fNumBinsEnergyRecoil = aNumBinsEnergyRecoil; }
     void SetNumBinsQ(Int_t aNumBinsQ)

@@ -55,7 +55,7 @@ class KQContourPointList : public TObject {
                        Double_t aQvalueMin = 0,
                        Double_t aQvalueMax = 2
     );
-    ~KQContourPointList();
+    virtual ~KQContourPointList();
     
     //setters
     void SetEnergyRecoilMin(Double_t anEnergyRecoilMin)

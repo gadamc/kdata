@@ -58,10 +58,10 @@ bool KPulseShifter::RunProcess(void)
       {
         // Shifting and filling the unknown points at the edge with the first/last values in the trace
         for(unsigned int i = 0 ; i < fOutputSize; i++)
-          if( (int)(i - fPulseShift)>=0 &&  (int)(i-fPulseShift)<(int)fOutputSize)
+          if( (int)i - fPulseShift >= 0 &&  (int)i-fPulseShift < (int)fOutputSize)
             *(fOutputPulse+i) = *(fInputPulse+i-fPulseShift);
           else{
-            if((i - fPulseShift)<0)
+            if( (int)i - fPulseShift < 0)
               *(fOutputPulse+i) = *(fInputPulse);
             else
               *(fOutputPulse+i) = *(fInputPulse+fOutputSize-1);

@@ -42,7 +42,7 @@ class KQContour  {
               Double_t aNumBinsY = 1000,
               Double_t aNumEntries = 100000000 );
     
-    ~KQContour();
+    virtual ~KQContour();
     
      void SetNumBinsX(Double_t aNumBinsX)
     { 

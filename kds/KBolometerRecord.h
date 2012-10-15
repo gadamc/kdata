@@ -10,46 +10,46 @@
 #ifndef __KBOLOMETERRECORD_H__
 #define __KBOLOMETERRECORD_H__
 
-#include "KSubRecord.h"
+#include "TObject.h"
 #include <string>
 
 using namespace std;
 
-class KBolometerRecord : public KSubRecord {
+class KBolometerRecord : public TObject {
 
 public:
   //Constructors
   KBolometerRecord(void);
-	KBolometerRecord(const KBolometerRecord &aRec);
-	KBolometerRecord& operator=(const KBolometerRecord &aRec);
+  KBolometerRecord(const KBolometerRecord &aRec);
+  KBolometerRecord& operator=(const KBolometerRecord &aRec);
   virtual ~KBolometerRecord(void);
-	virtual void Clear(Option_t *opt = "C");
-	Bool_t IsSame(const KBolometerRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KBolometerRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KBolometerRecord &aRec) const { return !(*this==aRec); }
+  virtual void Clear(Option_t *opt = "C");
+  Bool_t IsSame(const KBolometerRecord &aRec, Bool_t bPrint = false) const;
+  Bool_t operator==(const KBolometerRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KBolometerRecord &aRec) const { return !(*this==aRec); }
   
   Bool_t IsDetector(const char* name);
-	
+  
   virtual void Compact(void);
-	
-	//getters
-	const Char_t* GetDetectorName(void) const;
-	Double32_t GetMass(void) const { return fMass;}
+  
+  //getters
+  const Char_t* GetDetectorName(void) const;
+  Double32_t GetMass(void) const { return fMass;}
 
-	//setters
-	void SetDetectorName(const Char_t* aWord); 
+  //setters
+  void SetDetectorName(const Char_t* aWord); 
   void SetMass(Double32_t aVal) {fMass = aVal;}
 
 private:
-		
-	string fDetectorName; 
-	Double32_t fMass;
+    
+  string fDetectorName; 
+  Double32_t fMass;
 
-	//private methods
+  //private methods
   void InitializeMembers(void);
-	void CopyLocalMembers(const KBolometerRecord &aRec);
-	
-  ClassDef(KBolometerRecord,3);
+  void CopyLocalMembers(const KBolometerRecord &aRec);
+  
+  ClassDef(KBolometerRecord,4);
 };
 
 

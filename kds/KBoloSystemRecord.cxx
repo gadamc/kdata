@@ -36,7 +36,6 @@ KBoloSystemRecord::~KBoloSystemRecord(void)
 }
 
 KBoloSystemRecord::KBoloSystemRecord(const KBoloSystemRecord &aRec)
-:KSystemRecord(aRec)
 {
   //copy constructor 
   
@@ -49,7 +48,6 @@ KBoloSystemRecord& KBoloSystemRecord::operator=(const KBoloSystemRecord &aRec)
   
 	if(&aRec == this) return *this;
 	
-	this->KSystemRecord::operator=(aRec);
 	CopyLocalMembers(aRec);
 	return *this;
 }
@@ -61,13 +59,14 @@ void KBoloSystemRecord::CopyLocalMembers(const KBoloSystemRecord &/*aRec*/)
 
 }
 
-void KBoloSystemRecord::Clear(Option_t *opt)
+void KBoloSystemRecord::Clear(Option_t * /*opt*/)
 {
 	//Clear the base classes and then clear/delete any local
-	//members. Its necessary for this Clear method to exist
+	//members. 
+
+	//Its necessary for this Clear method to exist
 	//in the case that instances of this object are stored
 	//inside of a TClonesArray
-	KSystemRecord::Clear(opt);
 	
 	//Clear and delete local objects here. 
 	
@@ -98,17 +97,10 @@ void KBoloSystemRecord::SetTimeSinceLastBoloSysEvent(Double_t aTime)
 }
 */
 
-Bool_t KBoloSystemRecord::IsSame(const KBoloSystemRecord &aRec, Bool_t bPrint) const
+Bool_t KBoloSystemRecord::IsSame(const KBoloSystemRecord & /*aRec*/, Bool_t /*bPrint*/) const
 {
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
-	//call the base class's IsSame methods
-	if(!this->KSystemRecord::IsSame(aRec,bPrint)){
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}
 	
 	/*if(fRunName != aRec.fRunName){
 		bIsEqual = false;
@@ -130,6 +122,5 @@ void KBoloSystemRecord::Compact(void)
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
 	//and base classes
 	
-	KSystemRecord::Compact();
 	
 }

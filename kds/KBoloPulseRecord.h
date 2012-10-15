@@ -9,11 +9,11 @@
 #ifndef __KBOLOPULSERECORD_H__
 #define __KBOLOPULSERECORD_H__
 
-#include "KSubRecord.h"
+#include "TObject.h"
 #include <string>
 using namespace std;
 
-class KBoloPulseRecord : public KSubRecord { 
+class KBoloPulseRecord : public TObject { 
 
 public:
   //Constructors
@@ -74,7 +74,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KBoloPulseRecord &aRec);
 
-  ClassDef(KBoloPulseRecord,7);
+  ClassDef(KBoloPulseRecord,8);
 };
 
 

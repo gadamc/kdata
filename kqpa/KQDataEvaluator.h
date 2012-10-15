@@ -18,7 +18,7 @@ class KQDataEvaluator {
     KQHistogramManager* fQHistogramManager;
   public:
     KQDataEvaluator();
-    ~KQDataEvaluator();
+    virtual ~KQDataEvaluator();
     
     Bool_t ReadEvents(const Char_t* aSourceFile = "",
                       const Char_t* aBoloConfigFile = "",

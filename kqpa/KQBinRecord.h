@@ -23,6 +23,7 @@ class KQBinRecord {
     KQBinRecord(Int_t anX = 0,
                 Int_t anY = 0,
                 Double_t aBinContent = 0);
+    virtual ~KQBinRecord(void){}
 
     void SetX(Int_t anX) { fX = anX; }
     void SetY(Int_t anY) { fY = anY; }

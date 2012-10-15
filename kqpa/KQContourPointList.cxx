@@ -397,7 +397,7 @@ TH1D* KQContourPointList::GetDistributionOfTrueValuesMonteCarlo(
   {
       cout << "iteration " << k << endl;
     aTrueEventCounter = 0;
-    for(UInt_t l = 0; l<aNumElements; ++l) {
+    for(UInt_t l = 0; l<(UInt_t)aNumElements; ++l) {
       cout << "point " << l << endl;
       this->GetElement(l)->GetFunction()->GetRandom2(anEnergyRecoil,aQvalue);
       switch(aFunctionFlag) {

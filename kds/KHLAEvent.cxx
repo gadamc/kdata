@@ -433,7 +433,6 @@ void KHLAEvent::CopyClonesArrays(const KHLAEvent &anEvent)
 void KHLAEvent::CopyLocalMembers(const KHLAEvent &anEvent)
 {
   //fDataCleaningWord = anEvent.fDataCleaningWord;
-  fBoloSystem = anEvent.fBoloSystem; 
   fMuonSystem = anEvent.fMuonSystem;
 
   fRunNumber = anEvent.fRunNumber;
@@ -462,7 +461,6 @@ void KHLAEvent::Clear(Option_t *anOption)
 
   //Call the System Record clears in case they need to clean up
   //or to reset initial values of member variables
-  fBoloSystem.Clear(anOption);
   fMuonSystem.Clear(anOption);
 
   //reset member variables to zero
@@ -624,14 +622,6 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
     //the operator== method uses this functionality.
   }
 
-
-  if(!fBoloSystem.IsSame(anEvent.fBoloSystem, bPrint)){
-    if (bPrint) 
-      cout << "KHLAEvent fBoloSystem Not Equal" << endl;		
-    bIsEqual = false;
-    if(!bPrint)
-      return false;
-  }
 
   if(!fMuonSystem.IsSame(anEvent.fMuonSystem, bPrint)){
     if (bPrint) 
@@ -801,7 +791,6 @@ void KHLAEvent::Compact(void)
 
   KEvent::Compact();
 
-  fBoloSystem.Compact();
   fMuonSystem.Compact();
 
 
