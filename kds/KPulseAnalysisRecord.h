@@ -95,7 +95,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KPulseAnalysisRecord &aRec);
   
-  ClassDef(KPulseAnalysisRecord,3);
+  ClassDef(KPulseAnalysisRecord,4);
 };
 
 
