@@ -458,8 +458,42 @@
     
         
         
-            
-        
+</div>
+<div class="viewcode-block" id="concatKdataFiles"><a class="viewcode-back" href="../../util.html#KDataPy.util.concatKdataFiles">[docs]</a><span class="k">def</span> <span class="nf">concatKdataFiles</span><span class="p">(</span><span class="n">fileList</span><span class="p">,</span> <span class="n">outputFileName</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function performs a very simple operation. Given a list of KData file names (full path), fileList, it will merge the TTrees</span>
+<span class="sd">    within these files into a single output file with name &quot;outputFileName&quot;. This function should work for all types of KData files (Raw, Amp, HLA)</span>
+<span class="sd">    </span>
+<span class="sd">    :param fileList: The KData files to merge</span>
+<span class="sd">    :type fileList: list of full paths to the files</span>
+<span class="sd">    :param outputFileName: The name of the output KData file</span>
+<span class="sd">    :type name: string</span>
+
+<span class="sd">    [Developer&#39;s note: This assumes that the name of the TTree within the KData file is called &#39;t&#39;]</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+
+  <span class="n">listOfTFiles</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">listOfTrees</span> <span class="o">=</span> <span class="n">TList</span><span class="p">()</span>
+
+  <span class="k">print</span> <span class="s">&#39;atempting to merge the following files&#39;</span>
+  <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">fileList</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">fname</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">TFile</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">listOfTFiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">print</span> <span class="s">&#39;doesnt appear to be a kdata file. no tree with name &quot;t&quot; found. quiting.&#39;</span>
+      <span class="k">return</span>
+    <span class="n">listOfTrees</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">))</span>
+  
+  <span class="k">print</span> <span class="s">&#39;output file:&#39;</span><span class="p">,</span> <span class="n">outputFileName</span>
+  <span class="n">fout</span> <span class="o">=</span> <span class="n">TFile</span><span class="p">(</span><span class="n">outputFileName</span><span class="p">,</span> <span class="s">&#39;recreate&#39;</span><span class="p">)</span>
+  <span class="k">print</span> <span class="s">&#39;starting the merge...&#39;</span>
+  <span class="n">outTree</span> <span class="o">=</span> <span class="n">TTree</span><span class="o">.</span><span class="n">MergeTrees</span><span class="p">(</span><span class="n">listOfTrees</span><span class="p">,</span> <span class="s">&#39;fast&#39;</span><span class="p">)</span>
+  <span class="n">outTree</span><span class="o">.</span><span class="n">Write</span><span class="p">()</span>
+  <span class="n">fout</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+  <span class="k">print</span> <span class="s">&#39;done&#39;</span>
+
 
   
   

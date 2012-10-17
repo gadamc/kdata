@@ -122,6 +122,26 @@ way to hook in an analysis function for each pulse or bolometer record.  See the
 </pre></div>
 </div>
 <span class="target" id="module-KDataPy.util"></span><dl class="function">
+<dt id="KDataPy.util.concatKdataFiles">
+<tt class="descclassname">KDataPy.util.</tt><tt class="descname">concatKdataFiles</tt><big>(</big><em>fileList</em>, <em>outputFileName</em><big>)</big><a class="reference internal" href="_modules/KDataPy/util.html#concatKdataFiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.util.concatKdataFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function performs a very simple operation. Given a list of KData file names (full path), fileList, it will merge the TTrees
+within these files into a single output file with name &#8220;outputFileName&#8221;. This function should work for all types of KData files (Raw, Amp, HLA)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fileList</strong> (<em>list of full paths to the files</em>) &#8211; The KData files to merge</li>
+<li><strong>outputFileName</strong> &#8211; The name of the output KData file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>[Developer&#8217;s note: This assumes that the name of the TTree within the KData file is called &#8216;t&#8217;]</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="KDataPy.util.getRootHistFromOutput">
 <tt class="descclassname">KDataPy.util.</tt><tt class="descname">getRootHistFromOutput</tt><big>(</big><em>pta</em><big>)</big><a class="reference internal" href="_modules/KDataPy/util.html#getRootHistFromOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.util.getRootHistFromOutput" title="Permalink to this definition">¶</a></dt>
 <dd><p>return a ROOT TH1D histogram from the output pulse of a KPtaProcessor (pta)</p>
