@@ -31,6 +31,9 @@ public:
   
   virtual double GetBaselineStop(void) const {return fBaselineStop;}
   virtual void SetBaselineStop(double aVal) {fBaselineStop = aVal;}
+  virtual double GetBaselineStart(void) const {return fBaselineStart;}
+  virtual void SetBaselineStart(double aVal) {fBaselineStart = aVal;}
+
   virtual void SetSlope(double slope){fSlope = slope;}
   virtual void SetOffset(double offset){fOffset = offset;}
   virtual double GetSlope(void) const {return fSlope;}
@@ -40,6 +43,7 @@ public:
 private:
 
   double fBaselineStop; //stoping position of region to be averaged for line subtraction, in percent of the total pulse length
+  double fBaselineStart; //starting position of region to be averaged for line subtraction, in percent of the total pulse length
   double fSlope;  //calculated slope of the line. 
   double fOffset;  //calculated offset
   

@@ -420,6 +420,9 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   else if(pRaw->GetBoloBoxVersion() > 1.99){  //avoid direct comparison of floating point number  
       thePreProc = fBBv2IonPreProcessor;
       if (fIonWindow == 0) CreateIonWindow(pRaw->GetPulseLength());
+      //keep theWindow pointer set to NULL for BBv2 channels
+      //in the code below theWindow pointer is checked
+      //theProcToTheFFT now points to thePreProc for BBv2
       theProcToTheFFT = thePreProc;
       thePeakDetector = &fBBv2IonPeakDetector;
   }

@@ -407,8 +407,42 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     
         
         
-            
-        
+
+def concatKdataFiles(fileList, outputFileName):
+  '''
+    This function performs a very simple operation. Given a list of KData file names (full path), fileList, it will merge the TTrees
+    within these files into a single output file with name "outputFileName". This function should work for all types of KData files (Raw, Amp, HLA)
+    
+    :param fileList: The KData files to merge
+    :type fileList: list of full paths to the files
+    :param outputFileName: The name of the output KData file
+    :type name: string
+
+    [Developer's note: This assumes that the name of the TTree within the KData file is called 't']
+  '''
+
+
+  listOfTFiles = []
+  listOfTrees = TList()
+
+  print 'atempting to merge the following files'
+  for fname in fileList:
+    print fname
+    f = TFile(fname)
+    listOfTFiles.append(f)
+    if f.Get('t') == 0:
+      print 'doesnt appear to be a kdata file. no tree with name "t" found. quiting.'
+      return
+    listOfTrees.Add(f.Get('t'))
+  
+  print 'output file:', outputFileName
+  fout = TFile(outputFileName, 'recreate')
+  print 'starting the merge...'
+  outTree = TTree.MergeTrees(listOfTrees, 'fast')
+  outTree.Write()
+  fout.Close()
+  print 'done'
+
 
   
   

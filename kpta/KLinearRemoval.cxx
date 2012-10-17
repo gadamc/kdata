@@ -45,6 +45,7 @@ void KLinearRemoval::InitializeMembers(void)
   //initialize members. 
 
   fBaselineStop = 0.40;
+  fBaselineStart = 0.0;
   fSlope = 0;
   fOffset = 0;
 }
@@ -53,6 +54,8 @@ void KLinearRemoval::InitializeMembers(void)
 void KLinearRemoval::SetDefaultSettings(void)
 {
   fBaselineStop = 0.40;
+  fBaselineStart = 0.0;
+
 }
 
 
@@ -83,12 +86,14 @@ bool KLinearRemoval::CalculateLine(void)
   if(fBaselineStop < 0) return false;
   if(fBaselineStop > 1.0) return false;
 
-  unsigned int size = (fBaselineStop*fInputSize);
+  unsigned int range = (fBaselineStop*fInputSize) - (fBaselineStart*fInputSize);
   double xy(0), y(0);
   //double x(0), xx(0);
-  for(unsigned int i = 0; i< size; i++){
+  double size = 0.0;
+  for(unsigned int i = fBaselineStart*fInputSize; i < range; i++){
     xy += *(fInputPulse+i) * i;
     y += *(fInputPulse+i);
+    size += 1;
     //x += i;
     //xx += i*i;
   }
@@ -97,7 +102,7 @@ bool KLinearRemoval::CalculateLine(void)
   //fOffset = (xx*y - x*xy) / (size*xx - x*x);
   
   //fast calculation based upon known series calculations
-  double Sii = ((double)size*(double)size*(double)size/3.) - ((double)size*(double)size/2.) + ((double)size/6.);
+  double Sii = ( size * size * size/3.) - ( size * size/2.) + (size/6.);
   double Si = size*(size - 1) / 2.;
   double denom = size*Sii - (Si*Si);
   fSlope =  (size*xy - Si * y) / denom;
