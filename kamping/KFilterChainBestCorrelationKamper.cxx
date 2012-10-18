@@ -178,11 +178,11 @@ Double_t KFilterChainBestCorrelationKamper::TemplateFitFunction(Double_t *x, Dou
   if(quadr_interp){
     // quadratic interpolation around template maximum
     double x0 = (double) x_m-1;
-    double y0 = fTemplate[x0];
+    double y0 = fTemplate[(int)x0];
     double x1 = (double) x_m;
-    double y1 = fTemplate[x1];
+    double y1 = fTemplate[(int)x1];
     double x2 = (double) x_m+1;
-    double y2 = fTemplate[x2];
+    double y2 = fTemplate[(int)x2];
     
     double a = ((y2-y1)-((y0-y1)*(x1-x2))/(x1-x0))/(x2*x2 - x1*x1 - ((x0*x0-x1*x1)*(x1-x2)/(x2-x1)));
     double b = (y0-y1)/(2*a*(x1-x0))-(x0*x0-x1*x1)/(2*(x1-x0));

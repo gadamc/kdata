@@ -91,3 +91,4 @@ class KQAdjustPanel : public TGMainFrame {
 };
 
 #endif
+

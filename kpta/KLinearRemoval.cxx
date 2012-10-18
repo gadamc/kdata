@@ -86,11 +86,11 @@ bool KLinearRemoval::CalculateLine(void)
   if(fBaselineStop < 0) return false;
   if(fBaselineStop > 1.0) return false;
 
-  unsigned int range = (fBaselineStop*fInputSize) - (fBaselineStart*fInputSize);
+  unsigned int range = (unsigned int)(fBaselineStop*fInputSize - fBaselineStart*fInputSize);
   double xy(0), y(0);
   //double x(0), xx(0);
   double size = 0.0;
-  for(unsigned int i = fBaselineStart*fInputSize; i < range; i++){
+  for(unsigned int i = (unsigned int)(fBaselineStart*fInputSize); i < range; i++){
     xy += *(fInputPulse+i) * i;
     y += *(fInputPulse+i);
     size += 1;

@@ -48,10 +48,10 @@ KQProjection::KQProjection()
   
   fHistogram = new TH2D("hist", //name
                         "hist", //title
-                        fNumBinsEnergyRecoil, //recoil energy bins
+                        (Int_t)fNumBinsEnergyRecoil, //recoil energy bins
                         fEnergyRecoilMin, // minimal recoil energy
                         fEnergyRecoilMax, //maximal recoil energy
-                        fNumBinsQ, // Q bins
+                        (Int_t)fNumBinsQ, // Q bins
                         fQMin, // minimal Q
                         fQMax); // maximal Q
 }
@@ -101,8 +101,8 @@ KQProjection::KQProjection(const Char_t* aSourceFile,
   fHistogram = new TH2D(aHistogramName,
                         TString::Format("E_{Recoil}: %lf .. %lf",fEnergyRecoilMin,
                                 fEnergyRecoilMax).Data(),
-                        fNumBinsEnergyRecoil,fEnergyRecoilMin,
-                        fEnergyRecoilMax, fNumBinsQ,fQMin,fQMax);
+                        (Int_t)fNumBinsEnergyRecoil,fEnergyRecoilMin,
+                        fEnergyRecoilMax, (Int_t)fNumBinsQ,fQMin,fQMax);
   
 
 }

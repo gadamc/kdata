@@ -85,14 +85,14 @@ Bool_t KQLindhardProjection::MakeHistogram()
     aLindhard.GetQValue(fData[k].GetEnergyRecoil())<fData[k].GetQvalue() ? 1 : -1;
   }
   
-  fHistogram->SetBins(fNumBinsEnergyRecoil,
+  fHistogram->SetBins((Int_t)fNumBinsEnergyRecoil,
                       KLindhard::GetArcLength(fData[0].GetEnergyRecoil(),
                                               fEnergyRecoilMax-fEnergyRecoilMin,
                                               fEnergyRecoilMin),
                       KLindhard::GetArcLength(fData[fData.size()-1].GetEnergyRecoil(),
                                               fEnergyRecoilMax-fEnergyRecoilMin,
                                               fEnergyRecoilMin),
-                      fNumBinsQ,fQMin,fQMax);
+                      (Int_t)fNumBinsQ,fQMin,fQMax);
                                  
   for(UInt_t k = 0; k< fData.size(); ++k)
     fHistogram->Fill(theDataX[k],theDataY[k]);

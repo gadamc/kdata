@@ -94,8 +94,6 @@
 #pragma link C++ function KRootMeanSquare::GetStdDev(int*, unsigned int, unsigned int );
 #pragma link C++ function KRootMeanSquare::GetStdDev(short*, unsigned int, unsigned int );
 
-#pragma link C++ class KSimpleHighPassFilter+;
-#pragma link C++ class KSimpleLowPassFilter+;
 #pragma link C++ class KSpecialFunctions+;
 #pragma link C++ class KTrapezoidalFilter+;
 #pragma link C++ class KTrapezoidalPeakDetector+;

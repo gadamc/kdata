@@ -36,7 +36,7 @@ public:
 	Bool_t operator!=(const KRawBoloPulseRecord &aRec) const { return !(*this==aRec); }
 	virtual void Compact(void);
   
-  UInt_t GetPulseTimeWidth(void) const {return fPulseTimeWidth;  }
+  Double32_t GetPulseTimeWidth(void) const {return fPulseTimeWidth;  }
   const vector<Short_t>& GetTrace(void) const {return fTrace;  }
   void GetTrace(double *p){CopyTraceToMem(p);}
   void GetTrace(float *p){CopyTraceToMem(p);}
@@ -63,7 +63,7 @@ public:
   Double32_t GetAmplModulation(void) const { return GetAmplModul();}
   Bool_t GetIsHeatPulse(void) const { return fIsHeatPulse;}
 
-  void SetPulseTimeWidth(ULong_t aVal) {fPulseTimeWidth = aVal;  }
+  void SetPulseTimeWidth(Double32_t aVal) {fPulseTimeWidth = aVal;  }
   void SetTrace(const vector<Short_t> & aTrace) { fTrace = aTrace; }
   void SetTrace(UInt_t size, const Short_t* aData); 
   void SetAmplitude(Double32_t aVal){fAmplitude = aVal;  }
@@ -97,7 +97,7 @@ private:
 
   TRef fBolometerRecord;  //the value of this is the pointer to KRawBolometerRecord object that this pulse belongs to.
 
-  UInt_t fPulseTimeWidth; //holds the number of ns for each point.  = 1 / f. Default is 10.080 micro sec
+  Double32_t fPulseTimeWidth; //holds the number of ns for each point.  = 1 / f. Default is 10.080 micro sec
   vector<Short_t> fTrace; //the raw trace.
   Double32_t fAmplitude; //the pulse amplitude calcuated by the DAQ
   Double32_t fAmplitudeBaseline; //the baseline amplitude calculated by DAQ

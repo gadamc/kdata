@@ -46,17 +46,17 @@ class KQContour  {
     
      void SetNumBinsX(Double_t aNumBinsX)
     { 
-      fNumBinsX = aNumBinsX;
+      fNumBinsX = (Int_t)aNumBinsX;
       RefillHistogram();
     }
     void SetNumBinsY(Double_t aNumBinsY)
     {
-      fNumBinsY = aNumBinsY;
+      fNumBinsY = (Int_t)aNumBinsY;
       RefillHistogram();
     }
     void SetNumEntries(Double_t aNumEntries)
     { 
-      fNumEntries = aNumEntries;
+      fNumEntries = (Int_t)aNumEntries;
       RefillHistogram();
     }
    void SetFunction(TF2* aFunction)

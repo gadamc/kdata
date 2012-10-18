@@ -36,7 +36,7 @@ public:
 
 
   const char* GetChannelName(void) const {return fChannelName.c_str();  }
-  UInt_t GetPulseTimeWidth(void) const {return fPulseTimeWidth;  }
+  Double32_t GetPulseTimeWidth(void) const {return fPulseTimeWidth;  }
   Int_t GetPretriggerSize(void) const { return fPretriggerSize;}
   Int_t GetFilterSize(void) const { return fFilterSize;}
   UInt_t GetPulseLength(void) const { return fPulseLength;}
@@ -54,7 +54,7 @@ public:
   Bool_t GetIsHeatPulse(void) const { return fIsHeatPulse;}
 
   void SetChannelName(const char* name) {fChannelName = name;  } 
-  void SetPulseTimeWidth(ULong_t aVal) {fPulseTimeWidth = aVal;  }
+  void SetPulseTimeWidth(Double32_t aVal) {fPulseTimeWidth = aVal;  }
   void SetPretriggerSize(Int_t aVal) {fPretriggerSize = aVal;}
   void SetFilterSize(Int_t aVal) {fFilterSize = aVal;}
   void SetPulseLength(UInt_t aVal) {fPulseLength = aVal;}
@@ -83,7 +83,7 @@ private:
   TRef fBolometerRecord;  //the value of this is the pointer to KAmpBoloPulseRecord object that this pulse belongs to.
 
   std::string fChannelName;  //the name of the channel. for example: "chaleur ID4"
-  UInt_t fPulseTimeWidth; //holds the number of ns for each point.  = 1 / f. Default is 10.080 micro sec
+  Double32_t fPulseTimeWidth; //holds the number of ns for each point.  = 1 / f. Default is 10.080 micro sec
 
   //move these into a separate amplitude record
   //Double32_t fAmplitude; //the pulse amplitude calcuated by the DAQ
@@ -112,7 +112,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KAmpBoloPulseRecord &aRec);
 
-  ClassDef(KAmpBoloPulseRecord,2);
+  ClassDef(KAmpBoloPulseRecord,3);
 };
 
 

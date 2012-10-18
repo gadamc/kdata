@@ -320,7 +320,7 @@ TF2* KQContourPointList::GetCummulativeProbDensity(
   aFunction->SetNpx(1000);
   aFunction->SetNpy(1000);
   aFunction->SetLineStyle(1);
-  aFunction->SetLineWidth(0.5);
+  //aFunction->SetLineWidth(0.5);
   return aFunction;
 }
 

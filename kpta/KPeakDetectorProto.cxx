@@ -125,9 +125,9 @@ std::vector < std::vector<double> > KPeakDetectorProto::CalculateDerivatives(std
   KOrderFilter ord1;
   KOrderFilter ord2;
   ord1.SetOrder(1);
-  ord1.SetInitOutputValue(0.0);
+  ord1.SetInitOutputValue(0);
   ord2.SetOrder(1);
-  ord2.SetInitOutputValue(0.0);
+  ord2.SetInitOutputValue(0);
   
   ord1.SetInputPulse(aInputPulse);
   ord1.RunProcess();
@@ -340,7 +340,7 @@ bool KPeakDetectorProto::RunProcess(void)
   vector<double> trapOutput, corrInput, pattern, corrResult;
   std::vector < std::vector<double> > derivatives;
   unsigned int temp_from,temp_to;
-  double minRegionSize = 4;
+  int minRegionSize = 4;
   
   //fine tuning and debugging
   dCorrelations.resize(fProcesses.size());
@@ -423,8 +423,8 @@ bool KPeakDetectorProto::RunProcess(void)
     dCorrelations[proc].assign(fInputPulse.size(),0.0);
     for(unsigned int n = 0; n < peaks.size(); n++){
       if((peaks[n].from - peaks[n].to) < 3*pattern.size()){
-        temp_from = ((peaks[n].maxPos - 1.5*pattern.size()) > 0) ? peaks[n].maxPos - 1.5*pattern.size() : 0;
-        temp_to = peaks[n].maxPos + 1.5*pattern.size();
+        temp_from = ((peaks[n].maxPos - 1.5*pattern.size()) > 0) ? (unsigned int)(peaks[n].maxPos - 1.5*pattern.size()) : 0;
+        temp_to = (unsigned int)(peaks[n].maxPos + 1.5*pattern.size());
       }
       else{
         temp_from = peaks[n].from;
@@ -491,3 +491,4 @@ bool KPeakDetectorProto::RunProcess(void)
   
   return true;
 }
+

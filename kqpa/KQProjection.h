@@ -51,10 +51,10 @@ class KQProjection {
     void ResetHistogram()
     {
       if(fHistogram)
-        fHistogram->SetBins(fNumBinsEnergyRecoil,
+        fHistogram->SetBins((Int_t)fNumBinsEnergyRecoil,
                             fEnergyRecoilMin,
                             fEnergyRecoilMax,
-                            fNumBinsQ,
+                            (Int_t)fNumBinsQ,
                             fQMin,
                             fQMax);
     }
@@ -78,7 +78,7 @@ class KQProjection {
     Bool_t GetVerbose() const { return fVerbose; }
     TH2D* GetHistogram() { return (TH2D*)fHistogram->Clone(); }
     TH1D* GetProjection() { return (TH1D*)fHistogram->ProjectionY()->Clone(); }
-    Int_t GetEntries() { return fHistogram->GetEntries(); }
+    Double_t GetEntries() { return fHistogram->GetEntries(); }
     Double_t GetEnergyRecoilMin() const { return fEnergyRecoilMin; }
     Double_t GetEnergyRecoilMax() const { return fEnergyRecoilMax; }
     Double_t GetNumBinsEnergyRecoil() const { return fNumBinsEnergyRecoil; }

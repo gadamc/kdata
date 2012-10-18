@@ -610,7 +610,7 @@ set<int>& KChamonixKAmpSite::GetHeatPulseStampWidths(KRawBoloPulseRecord *pRaw)
   for(int i = 0; i < bolo->GetNumPulseRecords(); i++){
     KRawBoloPulseRecord *p = bolo->GetPulseRecord(i);
     if(p->GetIsHeatPulse())
-      stampwidths.insert( (p->GetHeatPulseStampWidth()) );  
+      stampwidths.insert( (int)(p->GetHeatPulseStampWidth()) );  
   }
 
   fHeatPulseStampWidths[pRaw->GetChannelName()] = stampwidths;

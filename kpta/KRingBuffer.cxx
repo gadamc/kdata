@@ -54,7 +54,7 @@ void KRingBuffer::SetBufferSize(unsigned int BufferSize)
       else
         fBuffer = 0;
     }
-    memset(fBuffer, 0.0, fBufferSize*fInputSize*sizeof(double));
+    memset(fBuffer, 0, fBufferSize*fInputSize*sizeof(double));
 
 }
 

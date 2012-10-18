@@ -127,3 +127,4 @@ void KDataProcessingInfo::SetAllCommands( const std::string& cmds )
   fCommandsCalled.clear();
   while (std::getline(os, temp)) fCommandsCalled.push_back(temp);
 }
+

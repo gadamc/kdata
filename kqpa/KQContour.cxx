@@ -25,8 +25,8 @@ KQContour::KQContour(TF2* aFunction,
                      Double_t aNumBinsX,
                      Double_t aNumBinsY,
                      Double_t aNumEntries)
-: fFunction(aFunction), fNumBinsX(aNumBinsX),
-fNumBinsY(aNumBinsY), fNumEntries(aNumEntries)
+  : fFunction(aFunction), fNumBinsX((Int_t)aNumBinsX),
+    fNumBinsY((Int_t)aNumBinsY), fNumEntries((Int_t)aNumEntries)
 {
   // This constructor creates a histogram  and fills it with the expected
   // numbers for each bin according the the specified 
@@ -118,7 +118,7 @@ Double_t KQContour::GetConfidence(Double_t aValue)
  //
  // END_LATEX
   
-  Int_t aSum = 0;
+  Double_t aSum = 0;
   
   Int_t anIndex = 0;
   while(fBins[anIndex].GetBinContent()>aValue *
@@ -126,7 +126,7 @@ Double_t KQContour::GetConfidence(Double_t aValue)
              fHistogram->GetYaxis()->GetBinWidth(0) * 
              fNumEntries)
   {
-       aSum +=fBins[anIndex].GetBinContent();
+    aSum +=fBins[anIndex].GetBinContent();
   }
      
   Double_t aResult = (Double_t)aSum/fNumEntries;
@@ -179,7 +179,7 @@ Double_t KQContour::GetContour(Double_t aConfidenceLevel)
   Int_t aSum = 0;
   Int_t anIndex = fBins.size()-1;
   for(;anIndex>=0 && aSum < aConfidenceLevel*fNumEntries; --anIndex)
-    aSum += fBins[anIndex].GetBinContent();
+    aSum += (Int_t)fBins[anIndex].GetBinContent();
   
   if(anIndex<0)
     ++anIndex;
@@ -212,7 +212,7 @@ TH2D* KQContour::GetContourHistogram(Double_t aConfidenceLevel)
   Int_t aSum = 0;
   Int_t anIndex = fBins.size()-1;
   for(;anIndex>=0 && aSum < aConfidenceLevel*fNumEntries; --anIndex) {
-    aSum += fBins[anIndex].GetBinContent();
+    aSum += (Int_t)fBins[anIndex].GetBinContent();
     aContourHistogram->SetBinContent(fBins[anIndex].GetX(),
                                      fBins[anIndex].GetY(),
                                      1);

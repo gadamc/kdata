@@ -69,7 +69,7 @@ bool KBaselineRemoval::CalculateAverage(void)
     {std::cerr << "KBaselineRemoval returning false. fBaselineStart/fBaselineStop: " << fBaselineStart << "/" <<  fBaselineStop << std::endl; return false;}
  
   double stop = fBaselineStop*fInputSize;
-  unsigned int start = fBaselineStart*fInputSize;
+  unsigned int start = (unsigned int)(fBaselineStart*fInputSize);
   unsigned int i = start;
   for( ; i < stop; i++){
     fBaseline += *(fInputPulse+i);

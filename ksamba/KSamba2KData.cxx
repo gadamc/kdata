@@ -274,7 +274,7 @@ Bool_t KSamba2KData::ReadSambaHeaderGeneral(void)
     
     else if(fSambaFileLine.BeginsWith("Bolo.nb") ){
       TObjArray *arr = fSambaFileLine.Tokenize("=#");
-      fSambaHeader.SetNumBolos( GetFloatFromTokenizedStringResult(arr, 1) );
+      fSambaHeader.SetNumBolos( GetIntegerFromTokenizedStringResult(arr, 1) );
       delete arr;
     }
     
@@ -1336,7 +1336,7 @@ Bool_t KSamba2KData::ReadSambaRunHeader(void)
     fSambaFileLine.ReadToDelim(fSambaFileStream);
   }
   
-  fSambaHeader.SetRunStartTriggerStamp(gigaStampStartRun*(1e9) + smallStampStartRun);
+  fSambaHeader.SetRunStartTriggerStamp( (Long64_t)(gigaStampStartRun*(1e9) + smallStampStartRun) );
 
   return !fSambaFileStream.eof();
 }
@@ -1524,7 +1524,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
             }
             else if(fSambaFileLine.BeginsWith("Pretrigger")){
               arr = fSambaFileLine.Tokenize("=#");
-              pulse->SetPretriggerSize( GetFloatFromTokenizedStringResult(arr, 1) );
+              pulse->SetPretriggerSize( GetIntegerFromTokenizedStringResult(arr, 1) );
               delete arr;
             }
             else if(fSambaFileLine.BeginsWith("Montee")){
@@ -1597,7 +1597,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
       //here because the while loop above found the start of the next
       //event. so,  finally save all of the event information that's been collected
       
-      event->SetEventTriggerStamp(gigaStamp*(1e9) + smallStamp);
+      event->SetEventTriggerStamp((Long64_t)(gigaStamp*(1e9) + smallStamp));
       fKdataOutput.Fill();
       eventCount++;
       //cout << eventCount << endl;

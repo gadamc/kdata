@@ -132,3 +132,4 @@ class KQContourPoint : public TObject {
 };
 
 #endif
+

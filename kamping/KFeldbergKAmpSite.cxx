@@ -111,7 +111,7 @@ Bool_t KFeldbergKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     if(precNum != -1){      
       KRawBoloPulseRecord *pRawIon = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(precNum);
       if(PeakPos != -1){
-        heatPeakPos = (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()));
+        heatPeakPos = (int)(  (double) pRaw->GetPretriggerSize()+(pRawIon->GetPulseTimeWidth()*(PeakPos - (double)pRawIon->GetPretriggerSize())/((double)pRaw->GetPulseTimeWidth()))  );
       }
     } 
 
@@ -232,8 +232,8 @@ Bool_t KFeldbergKAmpSite::SetupFCKamp(KRawBoloPulseRecord* pRaw)
   else  return false;
 
   if(fTemplate.find(pRaw->GetChannelName()) != fTemplate.end())
-    fFCKamp.SetTemplate(fTemplate[pRaw->GetChannelName()],fAmpEstimatorTimeInTemplate[pRaw->GetChannelName()],
-      fPulseStartTimeInTemplate[pRaw->GetChannelName()], fTemplate[ pRaw->GetChannelName() ][ fAmpEstimatorTimeInTemplate[pRaw->GetChannelName() ] ]);
+    fFCKamp.SetTemplate( fTemplate[pRaw->GetChannelName()], fAmpEstimatorTimeInTemplate[pRaw->GetChannelName()],
+			 fPulseStartTimeInTemplate[pRaw->GetChannelName()], fTemplate[ pRaw->GetChannelName() ][ (int)fAmpEstimatorTimeInTemplate[pRaw->GetChannelName() ] ]);
   else return false; 
 
   if((fPosRangeMin.find(pRaw->GetChannelName()) != fPosRangeMin.end()) && (fPosRangeMax.find(pRaw->GetChannelName()) != fPosRangeMax.end()))

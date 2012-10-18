@@ -86,3 +86,4 @@ void KQAdjustPanel::Adjust() {
 void KQAdjustPanel::Save(Int_t anIndex) {
 	fStoreImage(anIndex);
 }
+

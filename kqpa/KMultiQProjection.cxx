@@ -45,8 +45,8 @@ KMultiQProjection::KMultiQProjection(const Char_t* aSourceFile,
   fSourceFile = aSourceFile;
   fBoloName = aBoloName;
   SetEventCategory(anEventCategory);
-  fNumBinsEnergyRecoil = aNumBinsEnergyRecoil;
-  fNumBinsQ = aNumBinsQ;
+  fNumBinsEnergyRecoil = (Int_t)aNumBinsEnergyRecoil;
+  fNumBinsQ = (Int_t)aNumBinsQ;
   fQMin = aQMin;
   fQMax = aQMax;
 

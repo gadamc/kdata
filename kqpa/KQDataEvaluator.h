@@ -30,3 +30,4 @@ class KQDataEvaluator {
     
   ClassDef(KQDataEvaluator,1);
 };
+

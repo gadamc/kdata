@@ -11,7 +11,7 @@
 #define __KMUONVETOSYSTEMRECORD_H__
 
 #include "TBits.h"
-#include "RTypes.h"
+#include "Rtypes.h"
 
 //const Int_t kSizeOfChannelArrays = 97;
 

@@ -131,8 +131,8 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
   if(fixPeakPosition < 0){  //search for it
     
     //figure out start and stop positions
-    UInt_t start = fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMin > 0 ? fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMin : 0;
-    UInt_t stop = fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMax < fOptimalFilter.GetOutputPulseSize() ? fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMax : fOptimalFilter.GetOutputPulseSize(); 
+    UInt_t start = fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMin > 0 ? (UInt_t)(fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMin) : 0;
+    UInt_t stop = fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMax < fOptimalFilter.GetOutputPulseSize() ? (UInt_t)(fPulseTemplateShift + fAmplitudeEstimatorSearchRangeMax) : fOptimalFilter.GetOutputPulseSize(); 
     
     //the amplitude estimator and the chi^2 should be cyclical in time, so, one could write the code
     //here to cycle through the beginning/end of the pulse trace to properly search for the start time of 

@@ -41,8 +41,8 @@ KTrapKamperProto::KTrapKamperProto(void)
   fDefaultTrapHeatAmplitudeParameters.push_back(10.0); //rise time
   fDefaultTrapHeatAmplitudeParameters.push_back(30.0); //width
   fTrapAmplitude.SetParams(fDefaultTrapHeatAmplitudeParameters[0], 
-                              fDefaultTrapHeatAmplitudeParameters[1],
-                              fDefaultTrapHeatAmplitudeParameters[2]);
+			   (unsigned int)fDefaultTrapHeatAmplitudeParameters[1],
+			   (unsigned int)fDefaultTrapHeatAmplitudeParameters[2]);
 
   //AddTrapIonTime(400., 3, 40);
   //AddTrapIonTime(400., 7, 40);
@@ -56,18 +56,18 @@ KTrapKamperProto::KTrapKamperProto(void)
   fDefaultTrapIonAmplitudeParameters.push_back(50.0); //rise time
   fDefaultTrapIonAmplitudeParameters.push_back(200.0); //width
   fTrapAmplitude.SetParams(fDefaultTrapIonAmplitudeParameters[0], 
-                              fDefaultTrapIonAmplitudeParameters[1],
-                              fDefaultTrapIonAmplitudeParameters[2]);
+			   (unsigned int)fDefaultTrapIonAmplitudeParameters[1],
+			   (unsigned int)fDefaultTrapIonAmplitudeParameters[2]);
 
   fOrderFilter1Heat.SetOrder(1);
   fOrderFilter2Heat.SetOrder(1);
   fOrderFilter1Ion.SetOrder(1);
   fOrderFilter2Ion.SetOrder(1);
 
-  fOrderFilter1Heat.SetInitOutputValue(0.0);
-  fOrderFilter2Heat.SetInitOutputValue(0.0);
-  fOrderFilter1Ion.SetInitOutputValue(0.0);
-  fOrderFilter2Ion.SetInitOutputValue(0.0);
+  fOrderFilter1Heat.SetInitOutputValue(0);
+  fOrderFilter2Heat.SetInitOutputValue(0);
+  fOrderFilter1Ion.SetInitOutputValue(0);
+  fOrderFilter2Ion.SetInitOutputValue(0);
 
   fPeakPositionSearchAmplifier = 2.7;
   
@@ -244,7 +244,7 @@ void KTrapKamperProto::FillTrapAmplitudeParameters(const char* channelName, bool
     decayConst = GetTrapAmplitudeDecayConstant(channelName);
   }
   
-  fTrapAmplitude.SetParams(decayConst,riseTime, width);
+  fTrapAmplitude.SetParams(decayConst, (unsigned int)riseTime, (unsigned int)width);
 }
 
 double KTrapKamperProto::GetTrapAmplitudeDecayConstant(const char* channelName) const
@@ -264,7 +264,7 @@ void KTrapKamperProto::FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrape
   unsigned int riseTime = trap->GetRiseTime();
   unsigned int flatTopTime = trap->GetFlatTopWidth();
   
-  double amp = polarity * fPeakPositionSearchAmplifier * fRms.GetStdDev(secondOrderPulse, 0, secondOrderPulseSize/3.);
+  double amp = polarity * fPeakPositionSearchAmplifier * fRms.GetStdDev(secondOrderPulse, 0, (unsigned int)(secondOrderPulseSize/3.));
   
   unsigned int resultSize = secondOrderPulseSize - 2*riseTime- flatTopTime;
   

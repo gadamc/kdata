@@ -12,7 +12,7 @@
 
 #include <string>
 #include <cstdlib>
-#include "RTypes.h"
+#include "Rtypes.h"
 using namespace std;
 
 class KBoloSystemRecord  { 

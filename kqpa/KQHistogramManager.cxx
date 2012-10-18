@@ -210,3 +210,4 @@ Double_t KQHistogramManager::GetConfidenceLevel()
   //This method returns the current confidence level
   return TMath::Erf(fConfidenceInSigmas/TMath::Sqrt(2));
 }
+

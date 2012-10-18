@@ -37,8 +37,8 @@ KQContourPoint::KQContourPoint(Double_t aQvalueOrEnergyIon,
   fSigmaEnergyIon(aSigmaEnergyIon),
   fSigmaEnergyHeat(aSigmaEnergyHeat), fSigmaEnergyIonHeat(aSigmaEnergyIonHeat),
   fVoltageBias(aVoltageBias), fEpsilon(anEpsilon),
-  fConfidenceLevel(aConfidenceLevel), fConfidenceFunctionValue(-1), fNumBinsX(aNumBinsX),
-   fNumBinsY(aNumBinsY),fNumSigmas(aNumSigmas)
+    fConfidenceLevel(aConfidenceLevel), fConfidenceFunctionValue(-1), fNumBinsX((Int_t)aNumBinsX),
+    fNumBinsY((Int_t)aNumBinsY),fNumSigmas((Int_t)aNumSigmas)
 {
   // The constructor generates the pdf g(E_recoil,Q)
   // (documentation in ~/doc/ERecoiLQDistribution.pdf)
@@ -178,7 +178,7 @@ fVoltageBias/fEpsilon*fQvalue/fEnergyRecoil)*
   fFunction->SetNpx(1000);
   fFunction->SetNpy(1000);
   fFunction->SetLineStyle(1);
-  fFunction->SetLineWidth(0.5);
+  //fFunction->SetLineWidth(0.5);
 }
   
   
@@ -486,7 +486,7 @@ void KQContourPoint::SetNumSigmas(Double_t aNumSigmas)
 {
   // This method sets the number of sigmas determining the ranges of the 
   // histogram used to calculate the contour
-  fNumSigmas = aNumSigmas;
+  fNumSigmas = (Int_t)aNumSigmas;
 }
 
 Bool_t operator!=(KQContourPoint& aPoint,

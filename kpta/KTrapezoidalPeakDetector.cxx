@@ -45,9 +45,9 @@ void KTrapezoidalPeakDetector::InitializeMembers(void)
 {
   fDecayTimeConstant = 0.0;
   fOrderFilter1.SetOrder(1);
-  fOrderFilter1.SetInitOutputValue(0.0);
+  fOrderFilter1.SetInitOutputValue(0);
   fOrderFilter2.SetOrder(1);
-  fOrderFilter1.SetInitOutputValue(0.0);
+  fOrderFilter1.SetInitOutputValue(0);
   maxWidth = 0;
   fThreshold = 0.95;
   
@@ -93,7 +93,7 @@ bool KTrapezoidalPeakDetector::RunProcess(void)
   fDerivative = new double[fOutputSize];
   fCorrelation = new double[fOutputSize];
   double *sqsumDerivative = new double[fOutputSize];
-  double sqsumPattern;
+  double sqsumPattern = 0.0;
   double denom = 0.0;
 	for(it = fTrapFilters.begin(); it< fTrapFilters.end(); it++){
 		rise = (*it)->GetRiseTime();
