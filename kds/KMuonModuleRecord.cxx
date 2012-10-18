@@ -34,7 +34,6 @@ KMuonModuleRecord::~KMuonModuleRecord(void)
 }
 
 KMuonModuleRecord::KMuonModuleRecord(const KMuonModuleRecord &aRec)
-: KSubRecord(aRec)
 {
   //copy constructor
   
@@ -48,7 +47,6 @@ KMuonModuleRecord& KMuonModuleRecord::operator=(const KMuonModuleRecord &aRec)
   
 	if(&aRec == this) return *this;
 	
-	this->KSubRecord::operator=(aRec);
 	CopyLocalMembers(aRec);
 	
 	return *this;
@@ -72,7 +70,8 @@ void KMuonModuleRecord::Clear(Option_t *anopt)
   //inside of a TClonesArray
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
-	KSubRecord::Clear(anopt);
+
+  TObject::Clear(anopt);
 	
   //Clear and delete local objects here. 
 	
@@ -171,13 +170,7 @@ Bool_t KMuonModuleRecord::IsSame(const KMuonModuleRecord &aRec, Bool_t bPrint) c
   
 	Bool_t bIsEqual = true; //assume its true, then test for differences
 	
-	//call the base class's IsSame methods
-	if(!this->KSubRecord::IsSame(aRec,bPrint)){
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
-		//the operator== method uses this functionality.
-	}
+	
 	
 	if(fModuleNumber != aRec.fModuleNumber){
 		bIsEqual = false;
@@ -236,7 +229,6 @@ void KMuonModuleRecord::Compact(void)
 	//variables that are KDS classes, member variables that can be compacted (such as TBits)
 	//and base classes
 	
-	KSubRecord::Compact();
 }
 
 Bool_t KMuonModuleRecord::IsHardTrigger()

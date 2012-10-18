@@ -10,14 +10,14 @@
 #ifndef __KSAMBARECORD_H__
 #define __KSAMBARECORD_H__
 
-#include "KSubRecord.h"
+#include "TObject.h"
 #include <string>
 #include <cstdlib>
 #include "TString.h"
 
 using namespace std;
 
-class KSambaRecord : public KSubRecord { 
+class KSambaRecord : public TObject { 
 
 public:
   //Constructors

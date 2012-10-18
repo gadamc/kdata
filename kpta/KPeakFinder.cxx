@@ -74,11 +74,11 @@ bool KPeakFinder::RunProcess(void)
   //no memcpy operation is performed. 
   
   EraseVectors();
-  double rms = fRms.GetRms( fInputPulse, 0, fInputSize);
+  double stdDev = fRms.GetStdDev( fInputPulse, 0, fInputSize);
   
-  double xweakThresh = fPolarity ? rms*fExtraWeakAmp : -rms*fExtraWeakAmp;
-  double weakThresh = fPolarity ? rms*fWeakAmp : -rms*fWeakAmp;
-  double strictThresh = fPolarity ? rms*fStrictAmp : -rms*fStrictAmp;
+  double xweakThresh = fPolarity ? stdDev*fExtraWeakAmp : -stdDev*fExtraWeakAmp;
+  double weakThresh = fPolarity ? stdDev*fWeakAmp : -stdDev*fWeakAmp;
+  double strictThresh = fPolarity ? stdDev*fStrictAmp : -stdDev*fStrictAmp;
   
   
   if(fPolarity){

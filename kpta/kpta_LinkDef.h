@@ -77,6 +77,23 @@
 #pragma link C++ class KRealToHalfComplexDFT+;
 #pragma link C++ class KRingBuffer+;
 #pragma link C++ class KRootMeanSquare+;
+#pragma link C++ function KRootMeanSquare::GetRms<double>;
+#pragma link C++ function KRootMeanSquare::GetRms<float>;
+#pragma link C++ function KRootMeanSquare::GetRms<int>;
+#pragma link C++ function KRootMeanSquare::GetRms<short>;
+#pragma link C++ function KRootMeanSquare::GetRms(double*, unsigned int, unsigned int );
+#pragma link C++ function KRootMeanSquare::GetRms(float*, unsigned int, unsigned int );
+#pragma link C++ function KRootMeanSquare::GetRms(int*, unsigned int, unsigned int );
+#pragma link C++ function KRootMeanSquare::GetRms(short*, unsigned int, unsigned int );
+#pragma link C++ function KRootMeanSquare::GetStdDev<double>;
+#pragma link C++ function KRootMeanSquare::GetStdDev<float>;
+#pragma link C++ function KRootMeanSquare::GetStdDev<int>;
+#pragma link C++ function KRootMeanSquare::GetStdDev<short>;
+#pragma link C++ function KRootMeanSquare::GetStdDev(double*, unsigned int, unsigned int );
+#pragma link C++ function KRootMeanSquare::GetStdDev(float*, unsigned int, unsigned int );
+#pragma link C++ function KRootMeanSquare::GetStdDev(int*, unsigned int, unsigned int );
+#pragma link C++ function KRootMeanSquare::GetStdDev(short*, unsigned int, unsigned int );
+
 #pragma link C++ class KSimpleHighPassFilter+;
 #pragma link C++ class KSimpleLowPassFilter+;
 #pragma link C++ class KSpecialFunctions+;

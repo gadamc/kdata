@@ -89,7 +89,7 @@ bool KEraPeakFinder::FindPeaks(void)
     
   fPeakBins.erase(fPeakBins.begin(), fPeakBins.end());  //this should, from what I understand, keep the memory allocated, which would be faster than deallocation and reallocation for each pulse
   
-  double threshold = fNumRms* fRms.GetRms(GetOutputPulse(), (unsigned int)(fBaselineStart*GetOutputPulseSize()), (unsigned int)(fBaselineStop*GetOutputPulseSize()) );
+  double threshold = fNumRms* fRms.GetStdDev(GetOutputPulse(), (unsigned int)(fBaselineStart*GetOutputPulseSize()), (unsigned int)(fBaselineStop*GetOutputPulseSize()) );
   
   if (fPolarity == 0){
     for (unsigned int i = 0; i < GetOutputPulseSize(); i++) {

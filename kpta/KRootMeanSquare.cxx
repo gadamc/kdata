@@ -8,7 +8,7 @@
 // GetRms calculates the square root of the mean of the square of the elements
 // of the vector passed to the method. This is inclusive of the start value, but
 // exclusive of the stop value. That is
-//  GetRms(double *a, 4, 8) = a[4]**2 + a[5]**2 + a[6]**2 + a[7]**2
+//  GetRms(double *a, 4, 8) = sqrt( (a[4]**2 + a[5]**2 + a[6]**2 + a[7]**2)/(8.-4.) )
 //
 
 

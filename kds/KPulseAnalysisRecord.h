@@ -9,7 +9,7 @@
 #ifndef __KPULSEANALYSISRECORD_H__
 #define __KPULSEANALYSISRECORD_H__
 
-#include "KSubRecord.h"
+#include "TObject.h"
 #include "TRef.h"
 
 #include "KAmpBolometerRecord.h"
@@ -18,7 +18,7 @@
 
 #define KPULSEANARECORD_EXTRA_SIZE 15
 
-class KPulseAnalysisRecord : public KSubRecord { 
+class KPulseAnalysisRecord : public TObject { 
 
 public:
   //Constructors

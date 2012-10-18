@@ -316,7 +316,7 @@ void KTrapKamperProto1::FillPeakPositionResult(KOrderFilter& fOrderFilter, KTrap
   unsigned int riseTime = trap->GetRiseTime();
   unsigned int flatTopTime = trap->GetFlatTopWidth();
   
-  double amp = polarity * fPeakPositionSearchAmplifier * fRms.GetRms(secondOrderPulse, 0, secondOrderPulseSize/3.);
+  double amp = polarity * fPeakPositionSearchAmplifier * fRms.GetStdDev(secondOrderPulse, 0, secondOrderPulseSize/3.);
   
   unsigned int resultSize = secondOrderPulseSize - 2*riseTime- flatTopTime;
   

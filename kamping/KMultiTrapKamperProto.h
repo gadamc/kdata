@@ -16,7 +16,6 @@
 #include "KTrapezoidalFilter.h"
 #include "KOrderFilter.h"
 #include "KPeakDetectorProto.h"
-#include "KRootMeanSquare.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -52,7 +51,6 @@ private:
   KBaselineRemoval fBaseRemovalHeat;
   KBaselineRemoval fBaseRemovalIon;
   KPatternRemoval fPatRemoval;
-  KRootMeanSquare fRms;
   
   KTrapezoidalFilter fTrapAmplitudeIon;
   KTrapezoidalFilter fTrapAmplitudeHeat1;

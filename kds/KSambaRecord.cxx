@@ -35,7 +35,6 @@ KSambaRecord::KSambaRecord(void)
 
 
 KSambaRecord::KSambaRecord(const KSambaRecord &aRec)
-  : KSubRecord(aRec)
 {
   //copy constructor
 
@@ -50,7 +49,6 @@ KSambaRecord& KSambaRecord::operator=(const KSambaRecord &aRec)
 
   if(&aRec == this) return *this;
 
-  this->KSubRecord::operator=(aRec);
   CopyLocalMembers(aRec);
 
   return *this;
@@ -99,7 +97,7 @@ void KSambaRecord::Clear(Option_t *opt)
   //Also, if this class holds any TClonesArrays, it must call
   //TClonesArray::Clear("C")
 
-  KSubRecord::Clear(opt);
+  TObject::Clear(opt);
 
   //Clear and delete local objects here. 
   //delete local stuff here
@@ -167,12 +165,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
   Bool_t bIsEqual = true; //assume its true, then test for differences
 
   //call the base class's IsSame methods
-  if(!this->KSubRecord::IsSame(aRec,bPrint)){
-    bIsEqual = false;
-    if(!bPrint)
-      return false;  //if we're not printing out, just return false at first failure
-    //the operator== method uses this functionality.
-  }
+  
 
   if(fSambaEventNumber != aRec.fSambaEventNumber){
     bIsEqual = false;
@@ -353,7 +346,6 @@ void KSambaRecord::Compact(void)
   //variables that are KDS classes, member variables that can be compacted (such as TBits)
   //and base classes
 
-  KSubRecord::Compact();
 }
 
 void KSambaRecord::print(void)

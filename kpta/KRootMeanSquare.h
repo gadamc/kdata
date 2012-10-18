@@ -21,42 +21,28 @@ public:
   KRootMeanSquare(void);
   virtual ~KRootMeanSquare(void);
 
-  virtual double GetRms(std::vector<double> &r,  unsigned int start = 0,  int stop = -1){return Rms(r, start, stop);}
-  virtual double GetRms(std::vector<float> &r,  unsigned int start = 0,  int stop = -1){return Rms(r, start, stop);}
-  virtual double GetRms(std::vector<int> &r, unsigned int start = 0,  int stop = -1){return Rms(r, start, stop);}
-  virtual double GetRms(std::vector<short> &r, unsigned int start = 0,  int stop = -1){return Rms(r, start, stop);}
+  template <class T> double GetStdDev(std::vector<T> &r, unsigned int start = 0,  int stop = -1);
+  template <class T> double GetStdDev(const T* r, unsigned int start = 0,  unsigned int stop = 0);
 
-  virtual double GetRms(const double* r, unsigned int start,  unsigned int stop){return Rms(r, start, stop);}
-  virtual double GetRms(const float* r, unsigned int start,  unsigned int stop){return Rms(r, start, stop);}
-  virtual double GetRms(const int* r, unsigned int start,  unsigned int stop){return Rms(r, start, stop);}
-  virtual double GetRms(const short* r, unsigned int start,  unsigned int stop){return Rms(r, start, stop);}
+  template <class T> double GetRms(std::vector<T> &r, unsigned int start = 0,  int stop = -1);
+  template <class T> double GetRms(const T* r, unsigned int start = 0,  unsigned int stop = 0);
   
 private:
 
   void InitializeMembers(void);
-  template <class T> double Rms(std::vector<T> &r, unsigned int start = 0,  int stop = -1);
-  template <class T> double Rms(const T* r, unsigned int start = 0,  unsigned int stop = 0);
+
   
   //ClassDef(KRootMeanSquare,1);
   
 };
 
-template <class T> double KRootMeanSquare::Rms(std::vector<T> &r, unsigned int start, int stop )
+template <class T> double KRootMeanSquare::GetStdDev(std::vector<T> &r, unsigned int start, int stop )
 {
-  if (stop < 0) stop = r.size();
-  double val2 = 0, val = 0;
-  int i = start;
-  for(; i < stop; i++){
-    val2 += r[i]*r[i];
-    val += r[i];
-  }
-  val = val/double(i-start);
-
-  return sqrt( fabs(val*val - val2/(double)(i-start)) );
-
+  if (stop < 0) stop = r.size();  
+  return GetStdDev( &r[0], start, stop);
 }
 
-template <class T> double KRootMeanSquare::Rms(const T* r, unsigned int start, unsigned int stop)
+template <class T> double KRootMeanSquare::GetStdDev(const T* r, unsigned int start, unsigned int stop)
 {
   if (start >= stop) return 0.0;
   
@@ -69,6 +55,26 @@ template <class T> double KRootMeanSquare::Rms(const T* r, unsigned int start, u
   val = val/double(i-start);
 
   return sqrt( fabs(val*val - val2/(double)(i-start)) );
+
+}
+
+template <class T> double KRootMeanSquare::GetRms(std::vector<T> &r, unsigned int start, int stop )
+{
+  if (stop < 0) stop = r.size();
+  return GetRms( &r[0], start, stop);
+}
+
+template <class T> double KRootMeanSquare::GetRms(const T* r, unsigned int start, unsigned int stop)
+{
+  if (start >= stop) return 0.0;
+  
+  double val2 = 0;
+  unsigned int i = start;
+  for(; i < stop; i++){
+    val2 += *(r+i) * *(r+i);
+  }
+
+  return sqrt( val2/(double)(i-start));
 
 }
 

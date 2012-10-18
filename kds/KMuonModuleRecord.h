@@ -10,11 +10,11 @@
 #ifndef __KMUONMODULERECORD_H__
 #define __KMUONMODULERECORD_H__
 
-#include "KSubRecord.h"
+#include "TObject.h"
 
 const Int_t kNumPmtsPerMuonModule = 2;
 
-class KMuonModuleRecord : public KSubRecord  { 
+class KMuonModuleRecord : public TObject  { 
 
 public:
   //Constructors
