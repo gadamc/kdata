@@ -128,7 +128,9 @@ map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
 
   //do heat pulse analysis
   if(pRec->GetIsHeatPulse()){
-    pRec->GetTrace(fHeatPulse);
+    for(UInt_t ii = 0; ii < pRec->GetPulseLength() && ii < 512; ii++)
+      fHeatPulse[ii]  = pRec->GetTrace()[ii];
+    //pRec->GetTrace(fHeatPulse);
     if(fLinRemovalHeat.RunProcess()){
       if(fIir4Heat.RunProcess()){
         if(fPeakFindHeat.RunProcess()){
@@ -161,7 +163,9 @@ map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
   
   //do ion pulse analysis
   else{
-    pRec->GetTrace(fIonPulse);
+    for(UInt_t ii = 0; ii < pRec->GetPulseLength() && ii < 8196; ii++)
+      fIonPulse[ii]  = pRec->GetTrace()[ii];
+    //pRec->GetTrace(fIonPulse);
     fPeakFindIon.SetPolarity(pRec->GetPolarity() >= 0 ? 0 : 1);
     
     if(fLinRemovalIon.RunProcess()){

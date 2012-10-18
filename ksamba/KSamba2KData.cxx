@@ -1499,17 +1499,17 @@ Bool_t KSamba2KData::ReadSambaData(void)
             }
             else if(fSambaFileLine.BeginsWith("Base")){
               arr = fSambaFileLine.Tokenize("=#");
-              pulse->SetAmplitudeBaseline( GetFloatFromTokenizedStringResult(arr, 1) );
+              pulse->SetDaqAmplitudeBaseline( GetFloatFromTokenizedStringResult(arr, 1) );
               delete arr;
             }
             else if(fSambaFileLine.BeginsWith("Bruit")){
               arr = fSambaFileLine.Tokenize("=#");
-              pulse->SetAmplitudeBaselineNoise( GetFloatFromTokenizedStringResult(arr, 1) );
+              pulse->SetDaqAmplitudeBaselineNoise( GetFloatFromTokenizedStringResult(arr, 1) );
               delete arr;
             }
             else if(fSambaFileLine.BeginsWith("Amplitude")){
               arr = fSambaFileLine.Tokenize("=#");
-              pulse->SetAmplitude( GetFloatFromTokenizedStringResult(arr, 1) );
+              pulse->SetDaqAmplitude( GetFloatFromTokenizedStringResult(arr, 1) );
               delete arr;
             }
             else if(fSambaFileLine.BeginsWith("Trigger.ampl.pos")){

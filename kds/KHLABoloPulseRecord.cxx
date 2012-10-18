@@ -18,11 +18,27 @@
 // (fEnergyBaseline), and the standard deviation of the distribution of energies measured in the 
 // baseline region for this particular analysis period (fBaselineNoise). 
 //
-// The type of the pulse (heat, collectrode, veto, guard), and the channel number (1 or 2),
-// are stored in data members of the baseclass KBoloPulseRecord. 
+// So you don't have to memorize the numerical value that corresponds
+// to each pulse type, the methods GetHeatType(), GetCollectrodeType(),
+// GetVetoType() and GetGuardType() are available to return the numeric value
+// stored in a local enum structure. 
+// however, for your information, the structure is
+//
+// enum kPulseChannelType {
+//   kCollectrodeType = 1,
+//   kVetoType = 2,
+//   kGuardType = 3,
+//   kHeatType = 4
+//  };
+//
+// The channel number should be either 1 or 2, corresponding to both channels
+// in the bolometer data. Note, there is no channel 0. In principle, there could
+// be 3 or more channels of a particular type as well (in the case of a future
+// bolometer design?). 
 //
 // In addition, there is a TRef object that will point you back to the 
 // KHLABolometerRecord that this pulse record is associated with.
+
 
 #include "KHLABoloPulseRecord.h"
 #include <iostream>
@@ -60,12 +76,9 @@ KHLABoloPulseRecord& KHLABoloPulseRecord::operator=(const KHLABoloPulseRecord &a
 void KHLABoloPulseRecord::CopyLocalMembers(const KHLABoloPulseRecord &aRec)
 {
 	//used in the assignment operator method, this copies over the local 
-  //data members. It also set sets fBolometerRecord (the TRef pointer) to zero.
-  
-	//fBolometerRecordNum = aRec.fBolometerRecordNum;  have to set this value manually
-	fBolometerRecord = 0;
-	
-	fEnergy = aRec.fEnergy;
+  //data members. 
+
+  	fEnergy = aRec.fEnergy;
 	fEnergyBaseline = aRec.fEnergyBaseline;
 	fBaselineNoise = aRec.fBaselineNoise;
   
@@ -108,7 +121,6 @@ void KHLABoloPulseRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 	
-	fBolometerRecord = 0; 
 	
 	fEnergy = -99;
 	fEnergyBaseline = -99;

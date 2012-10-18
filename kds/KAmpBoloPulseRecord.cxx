@@ -52,29 +52,12 @@ KAmpBoloPulseRecord& KAmpBoloPulseRecord::operator=(const KAmpBoloPulseRecord &a
   return *this;
 }
 
-void KAmpBoloPulseRecord::CopyLocalMembers(const KAmpBoloPulseRecord &aRec)
+void KAmpBoloPulseRecord::CopyLocalMembers(const KAmpBoloPulseRecord &/*aRec*/)
 {
   //used in the assignment operator method, this copies over the local 
   //data members. It also set sets fBolometerRecord (the TRef pointer) to zero.
 
-  //fBolometerRecordNum = aRec.fBolometerRecordNum;  have to set this value manually
-  fBolometerRecord = 0;
-
-  fChannelName = aRec.fChannelName;  
-  fPulseTimeWidth = aRec.fPulseTimeWidth;  
-  fFilterSize = aRec.fFilterSize;
-  fPulseLength = aRec.fPulseLength;
-  fHeatPulseStampWidth = aRec.fHeatPulseStampWidth;
-  fCryoPosition = aRec.fCryoPosition;
-  fPolarFet = aRec.fPolarFet;
-  fCorrPied = aRec.fCorrPied;
-  fCompModul = aRec.fCompModul;
-  fCorrTrngl = aRec.fCorrTrngl;
-  fAmplModul = aRec.fAmplModul;
-  fIsHeatPulse = aRec.fIsHeatPulse;
-
   fPulseAnaRecords.Delete();
-
 
 }
 
@@ -108,20 +91,6 @@ void KAmpBoloPulseRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
 
-  fChannelName.resize(0);  //the name of the channel. for example: "chaleur ID4"
-  fPulseTimeWidth = 10; //returns number of ns for each point.  = 1 / f
-  fPretriggerSize = -99;
-  fFilterSize = -99;
-  fPulseLength = 0;
-  fHeatPulseStampWidth = -99;
-  fCryoPosition = -99;
-  fPolarFet.resize(0);
-  fCorrPied = -99;
-  fCompModul = -99;
-  fCorrTrngl = -99;
-  fAmplModul = -99;
-  fIsHeatPulse = -99;
-  fBolometerRecord = 0;
   fPulseAnaRecords.Delete();
 }
 
@@ -141,129 +110,6 @@ Bool_t KAmpBoloPulseRecord::IsSame(const KAmpBoloPulseRecord &aRec, Bool_t bPrin
       return false;  //if we're not printing out, just return false at first failure
                      //the operator== method uses this functionality.
   }
-
-  //HMM...if the following lines of code produce a lot of Not Equal messages to cout, its probably
-  //because I'm asking if two floating point values are exactly the same!
-  //this is inherently dangerous.  its probably better to specify an allowed 
-  //range that's on the order of machine error. 
-
-  if(fChannelName != aRec.fChannelName){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fChannelName Not Equal. lhs: " 
-      << fChannelName << " != rhs " << aRec.fChannelName << endl;		
-    else
-      return false;  
-  }
-
-  if(fPulseTimeWidth != aRec.fPulseTimeWidth){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fPulseTimeWidth Not Equal. lhs: " 
-      << fPulseTimeWidth << " != rhs " << aRec.fPulseTimeWidth << endl;		
-    else
-      return false;  
-  }
-
-  if(fPretriggerSize != aRec.fPretriggerSize){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fPretriggerSize Not Equal. lhs: " 
-      << fPretriggerSize << " != rhs " << aRec.fPretriggerSize << endl;		
-    else
-      return false;  
-  }
-
-  if(fFilterSize != aRec.fFilterSize){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fFilterSize Not Equal. lhs: " 
-      << fFilterSize << " != rhs " << aRec.fFilterSize << endl;		
-    else
-      return false;  
-  }
-
-  if(fPulseLength != aRec.fPulseLength){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fPulseLength Not Equal. lhs: " 
-      << fPulseLength << " != rhs " << aRec.fPulseLength << endl;		
-    else
-      return false;  
-  }
-
-  if(fHeatPulseStampWidth != aRec.fHeatPulseStampWidth){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fHeatPulseStampWidth Not Equal. lhs: " 
-      << fHeatPulseStampWidth << " != rhs " << aRec.fHeatPulseStampWidth << endl;		
-    else
-      return false;  
-  }
-
-  if(fCryoPosition != aRec.fCryoPosition){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fCryoPosition Not Equal. lhs: " 
-      << fCryoPosition << " != rhs " << aRec.fCryoPosition << endl;		
-    else
-      return false;  
-  }
-
-  if(fPolarFet != aRec.fPolarFet){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fPolarFet Not Equal. lhs: " 
-      << fPolarFet << " != rhs " << aRec.fPolarFet << endl;		
-    else
-      return false;  
-  }
-
-  if(fCorrPied != aRec.fCorrPied){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fCorrPied Not Equal. lhs: " 
-      << fCorrPied << " != rhs " << aRec.fCorrPied << endl;		
-    else
-      return false;  
-  }
-
-  if(fCompModul != aRec.fCompModul){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fCompModul Not Equal. lhs: " 
-      << fCompModul << " != rhs " << aRec.fCompModul << endl;		
-    else
-      return false;  
-  }
-
-  if(fCorrTrngl != aRec.fCorrTrngl){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fCorrTrngl Not Equal. lhs: " 
-      << fCorrTrngl << " != rhs " << aRec.fCorrTrngl << endl;		
-    else
-      return false;  
-  }
-
-  if(fAmplModul != aRec.fAmplModul){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fAmplModul Not Equal. lhs: " 
-      << fAmplModul << " != rhs " << aRec.fAmplModul << endl;		
-    else
-      return false;  
-  }
-
-  if(fIsHeatPulse != aRec.fIsHeatPulse){
-    bIsEqual = false;
-    if (bPrint) 
-      cout << "KAmpBoloPulseRecord fIsHeatPulse Not Equal. lhs: " 
-      << fIsHeatPulse << " != rhs " << aRec.fIsHeatPulse << endl;		
-    else
-      return false;  
-  }
-
 
   return bIsEqual;
 }

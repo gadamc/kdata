@@ -58,7 +58,7 @@ private:
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KMuonModuleRecord &aRec);
-  ClassDef(KMuonModuleRecord,2);
+  ClassDef(KMuonModuleRecord,3);
 };
 
 

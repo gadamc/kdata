@@ -71,7 +71,6 @@ public:
   
 private:
 
-	TRef fBolometerRecord;  //the value of this is the pointer to KHLABolometerRecord object that this pulse belongs to.
 
 	Double32_t fEnergy;  //the energy of the pulse in keV.
 	Double32_t fEnergyBaseline; //the energy of the pulse in keV in the baseline region. 
@@ -86,7 +85,7 @@ private:
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KHLABoloPulseRecord &aRec);
 	
-  ClassDef(KHLABoloPulseRecord,4);
+  ClassDef(KHLABoloPulseRecord,5);
 };
 
 

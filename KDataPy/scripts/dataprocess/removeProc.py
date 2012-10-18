@@ -52,5 +52,7 @@ if __name__ == '__main__':
 
   args = parser.parse_args()
 
+  print 'Removing', args.procname, 'from database records on', args.server,'/',args.database, 'from startkey', args.startkey, 'to endkey', args.endkey
+
   deleteFromView(args.server, args.database, args.procname, startkey=args.startkey, endkey=args.endkey)
 

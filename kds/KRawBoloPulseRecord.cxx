@@ -54,27 +54,12 @@ void KRawBoloPulseRecord::CopyLocalMembers(const KRawBoloPulseRecord &aRec)
 {
 	//used in the assignment operator method, this copies over the local 
   //data members. It also set sets fBolometerRecord (the TRef pointer) to zero.
-  
-	//fBolometerRecordNum = aRec.fBolometerRecordNum;  have to set this value manually
-	fBolometerRecord = 0;
-	
-  fPulseTimeWidth = aRec.fPulseTimeWidth;  
+  	
   fTrace = aRec.fTrace;   
-  fAmplitude = aRec.fAmplitude;   
-  fAmplitudeBaseline = aRec.fAmplitudeBaseline;   
-  fAmplitudeBaselineNoise = aRec.fAmplitudeBaselineNoise;   
-  fPretriggerSize = aRec.fPretriggerSize;
+  fDaqAmplitude = aRec.fDaqAmplitude;   
+  fDaqAmplitudeBaseline = aRec.fDaqAmplitudeBaseline;   
+  fDaqAmplitudeBaselineNoise = aRec.fDaqAmplitudeBaselineNoise;   
   fPulseRiseTime = aRec.fPulseRiseTime;
-  fFilterSize = aRec.fFilterSize;
-  fPulseLength = aRec.fPulseLength;
-  fHeatPulseStampWidth = aRec.fHeatPulseStampWidth;
-  fCryoPosition = aRec.fCryoPosition;
-  fPolarFet = aRec.fPolarFet;
-  fCorrPied = aRec.fCorrPied;
-  fCompModul = aRec.fCompModul;
-  fCorrTrngl = aRec.fCorrTrngl;
-  fAmplModul = aRec.fAmplModul;
-  fIsHeatPulse = aRec.fIsHeatPulse;
   
 }
 
@@ -108,23 +93,14 @@ void KRawBoloPulseRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
   
-  fPulseTimeWidth = 10; //returns number of ns for each point.  = 1 / f
   fTrace.resize(0); //the raw trace.
-  fAmplitude = -99; //the pulse amplitude calcuated by the DAQ
-  fAmplitudeBaseline = -99; //the baseline amplitude calculated by DAQ
-  fAmplitudeBaselineNoise = -99; //the width of the distribution of the baseline amplitude for this run period, calculated by DAQ
-  fPretriggerSize = -99;
+  fDaqAmplitude = -99; //the pulse amplitude calcuated by the DAQ
+  fDaqAmplitudeBaseline = -99; //the baseline amplitude calculated by DAQ
+  fDaqAmplitudeBaselineNoise = -99; //the width of the distribution of the baseline amplitude for this run period, calculated by DAQ
   fPulseRiseTime = -99;
-  fFilterSize = -99;
-  fPulseLength = 0;
-  fHeatPulseStampWidth = -99;
-  fCryoPosition = -99;
-  fPolarFet.resize(0);
-  fCorrPied = -99;
-  fCompModul = -99;
-  fCorrTrngl = -99;
-  fAmplModul = -99;
-  fIsHeatPulse = -99;
+
+
+
   
 }
 
@@ -151,14 +127,7 @@ Bool_t KRawBoloPulseRecord::IsSame(const KRawBoloPulseRecord &aRec, Bool_t bPrin
 	//range that's on the order of machine error. 
 	
 
-	if(fPulseTimeWidth != aRec.fPulseTimeWidth){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fPulseTimeWidth Not Equal. lhs: " 
-			<< fPulseTimeWidth << " != rhs " << aRec.fPulseTimeWidth << endl;		
-		else
-			return false;  
-	}
+	
   
   if(fTrace != aRec.fTrace){
 		bIsEqual = false;
@@ -169,140 +138,42 @@ Bool_t KRawBoloPulseRecord::IsSame(const KRawBoloPulseRecord &aRec, Bool_t bPrin
 	}
   
 	
-	if(fAmplitude != aRec.fAmplitude){
+	if(fDaqAmplitude != aRec.fDaqAmplitude){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KRawBoloPulseRecord fAmplitude Not Equal. lhs: " 
-			<< fAmplitude << " != rhs " << aRec.fAmplitude << endl;		
+			cout << "KRawBoloPulseRecord fDaqAmplitude Not Equal. lhs: " 
+			<< fDaqAmplitude << " != rhs " << aRec.fDaqAmplitude << endl;		
 		else
 			return false;  
 	}
 	
-  if(fAmplitudeBaseline != aRec.fAmplitudeBaseline){
+  if(fDaqAmplitudeBaseline != aRec.fDaqAmplitudeBaseline){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KRawBoloPulseRecord fAmplitudeBaseline Not Equal. lhs: " 
-			<< fAmplitudeBaseline << " != rhs " << aRec.fAmplitudeBaseline << endl;		
+			cout << "KRawBoloPulseRecord fDaqAmplitudeBaseline Not Equal. lhs: " 
+			<< fDaqAmplitudeBaseline << " != rhs " << aRec.fDaqAmplitudeBaseline << endl;		
 		else
 			return false;  
 	}
   
-  if(fAmplitudeBaselineNoise != aRec.fAmplitudeBaselineNoise){
+  if(fDaqAmplitudeBaselineNoise != aRec.fDaqAmplitudeBaselineNoise){
 		bIsEqual = false;
 		if (bPrint) 
-			cout << "KRawBoloPulseRecord fAmplitudeBaselineNoise Not Equal. lhs: " 
-			<< fAmplitudeBaselineNoise << " != rhs " << aRec.fAmplitudeBaselineNoise << endl;		
+			cout << "KRawBoloPulseRecord fDaqAmplitudeBaselineNoise Not Equal. lhs: " 
+			<< fDaqAmplitudeBaselineNoise << " != rhs " << aRec.fDaqAmplitudeBaselineNoise << endl;		
 		else
 			return false;  
 	}
   
-  if(fPretriggerSize != aRec.fPretriggerSize){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fPretriggerSize Not Equal. lhs: " 
-			<< fPretriggerSize << " != rhs " << aRec.fPretriggerSize << endl;		
-		else
-			return false;  
-	}
-
   if(fPulseRiseTime != aRec.fPulseRiseTime){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fPulseRiseTime Not Equal. lhs: " 
-			<< fPulseRiseTime << " != rhs " << aRec.fPulseRiseTime << endl;		
-		else
-			return false;  
-	}
-
-  if(fFilterSize != aRec.fFilterSize){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fFilterSize Not Equal. lhs: " 
-			<< fFilterSize << " != rhs " << aRec.fFilterSize << endl;		
-		else
-			return false;  
-	}
-
-  if(fPulseLength != aRec.fPulseLength){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fPulseLength Not Equal. lhs: " 
-			<< fPulseLength << " != rhs " << aRec.fPulseLength << endl;		
-		else
-			return false;  
-	}
-
-  if(fHeatPulseStampWidth != aRec.fHeatPulseStampWidth){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fHeatPulseStampWidth Not Equal. lhs: " 
-			<< fHeatPulseStampWidth << " != rhs " << aRec.fHeatPulseStampWidth << endl;		
-		else
-			return false;  
-	}
-
-  if(fCryoPosition != aRec.fCryoPosition){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fCryoPosition Not Equal. lhs: " 
-			<< fCryoPosition << " != rhs " << aRec.fCryoPosition << endl;		
-		else
-			return false;  
-	}
-
-  if(fPolarFet != aRec.fPolarFet){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fPolarFet Not Equal. lhs: " 
-			<< fPolarFet << " != rhs " << aRec.fPolarFet << endl;		
-		else
-			return false;  
-	}
-
-  if(fCorrPied != aRec.fCorrPied){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fCorrPied Not Equal. lhs: " 
-			<< fCorrPied << " != rhs " << aRec.fCorrPied << endl;		
-		else
-			return false;  
-	}
-
-  if(fCompModul != aRec.fCompModul){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fCompModul Not Equal. lhs: " 
-			<< fCompModul << " != rhs " << aRec.fCompModul << endl;		
-		else
-			return false;  
-	}
-
-  if(fCorrTrngl != aRec.fCorrTrngl){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fCorrTrngl Not Equal. lhs: " 
-			<< fCorrTrngl << " != rhs " << aRec.fCorrTrngl << endl;		
-		else
-			return false;  
-	}
-
-  if(fAmplModul != aRec.fAmplModul){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fAmplModul Not Equal. lhs: " 
-			<< fAmplModul << " != rhs " << aRec.fAmplModul << endl;		
-		else
-			return false;  
-	}
-
-  if(fIsHeatPulse != aRec.fIsHeatPulse){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fIsHeatPulse Not Equal. lhs: " 
-			<< fIsHeatPulse << " != rhs " << aRec.fIsHeatPulse << endl;		
-		else
-			return false;  
-	}
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KRawBoloPulseRecord fPulseRiseTime Not Equal. lhs: " 
+      << fPulseRiseTime << " != rhs " << aRec.fPulseRiseTime << endl;   
+    else
+      return false;  
+  }
+  
   
 	
 	return bIsEqual;

@@ -588,11 +588,11 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(void)
 KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolometerRecord* boloAmp, Bool_t force)
 {
   //use this method to add an AmpBoloPulse Record, but then to also 
-  //copy the necessary data from the RawBolomPulseRecord. This includes
+  //copy the necessary data from the KRawBoloPulseRecord. This includes
   //transfering the Samba raw pulse data into a KPulseAnalysisRecord and setting the TRef links
   //This method is used in building the AMP-level KData file from 
   //from the RAW-level file.
-  
+  //
   //If force=False, this method returns an EXISTING KAmpBoloPulseRecord
   //found in this KAmpEvent with the same name if one is found!  
   //If force=True, it will create a new record in this KAmpEvent no matter 
@@ -614,34 +614,17 @@ KAmpBoloPulseRecord* KAmpEvent::AddBoloPulse(KRawBoloPulseRecord* pRaw, KAmpBolo
   mAmp->SetBolometerRecord(boloAmp); //link the TRef
   
   *(KBoloPulseRecord *)mAmp = *pRaw;  //copies the base class stuff.
-  
-  //copy the relevant information from the raw bolo pulse record to the amp pulse record.
-  //one day, if i can get some template classes defined, this stuff could be more automatic. 
-  //its certainly not very pretty. This should all be put in the base-class... 
-  mAmp->SetChannelName(pRaw->GetChannelName());
-  mAmp->SetPulseTimeWidth(pRaw->GetPulseTimeWidth());
-  mAmp->SetPretriggerSize(pRaw->GetPretriggerSize());
-  mAmp->SetFilterSize(pRaw->GetFilterSize());
-  mAmp->SetHeatPulseStampWidth(pRaw->GetHeatPulseStampWidth());
-  mAmp->SetCryoPosition(pRaw->GetCryoPosition());
-  mAmp->SetPolarFet(pRaw->GetPolarFet());
-  mAmp->SetCorrPied(pRaw->GetCorrPied());
-  mAmp->SetCompModul(pRaw->GetCompModul());
-  mAmp->SetCorrTrngl(pRaw->GetCorrTrngl());
-  mAmp->SetAmplModul(pRaw->GetAmplModul());
-  mAmp->SetIsHeatPulse(pRaw->GetIsHeatPulse());
-  mAmp->SetPulseLength(pRaw->GetPulseLength());
-  mAmp->SetCorrPied(pRaw->GetCorrPied());
-  
+    
   //move the samba data into a pulse analysis record. 
   KPulseAnalysisRecord *sambarec = AddPulseAnalysisRecord(); 
   
-  sambarec->SetAmp(pRaw->GetAmplitude());
+  sambarec->SetAmp(pRaw->GetDaqAmplitude());
   sambarec->SetName("samba");
-  sambarec->SetBaselineAmplitudeWidth(pRaw->GetAmplitudeBaselineNoise());
+  sambarec->SetBaselineAmplitudeWidth(pRaw->GetDaqAmplitudeBaselineNoise());
   sambarec->SetUnit(0);
-  sambarec->SetExtra(pRaw->GetAmplitudeBaseline(), 0);
-  
+  sambarec->SetExtra(pRaw->GetDaqAmplitudeBaseline(), 0);
+  sambarec->SetRisetime(pRaw->GetPulseRiseTime());
+
   sambarec->SetBolometerRecord(boloAmp);  //link the TRefs in the different objects. This is important
   sambarec->SetBoloPulseRecord(mAmp);
 

@@ -36,33 +36,23 @@ def resetStatus(server, databaseName, oldstatus, newstatus, **kwargs):
 if __name__ == '__main__':
 
   parser = argparse.ArgumentParser()
-  parser.add_argument('password', help='you must supply the password')
   parser.add_argument('oldstatus', help='current status')
   parser.add_argument('newstatus', help='new status')
   parser.add_argument('startkey', help='the name of the samba run that defines the beginning of the range of runs')
   parser.add_argument('endkey', help='the name of the samba run that defines the end of the range of runs')
-  parser.add_argument('-u', '--username', default='edwdbuser')
   parser.add_argument('-db', '--database', help='select the database you wish to you. "datadb" is the default', default='datadb')
-  parser.add_argument('-s', '--server', help='select the couchdb server you wish to you.', default='edwdbik.fzk.de')
-  parser.add_argument('-p', '--port', help='select the couchdb server you wish to you.', default='6984')
+  parser.add_argument('-s', '--server', help='select the couchdb server you wish to use. You must supply the username and password or this will not work.')
 
   args = parser.parse_args()
 
   mykwargs = {}
   mykwargs['startkey'] = args.startkey
   mykwargs['endkey'] = args.endkey
-
-
-  protocol = 'https'
-  if args.port == '5984':
-    protocol = 'http'
-  server = '%s://%s:%s@%s:%s' % (protocol, args.username, args.password, args.server, args.port)
  
-
   print server
   print args.oldstatus, '->', args.newstatus
   print mykwargs['startkey'], '->', mykwargs['endkey']
 
-  resetStatus(server, args.database, args.oldstatus, args.newstatus, **mykwargs)
+  resetStatus(args.server, args.database, args.oldstatus, args.newstatus, **mykwargs)
 
 

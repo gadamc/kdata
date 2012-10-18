@@ -12,23 +12,7 @@
 // one will work with a KHLABoloPulseRecord or KRawBoloPulseRecord, which are
 // derived from this class.
 // 
-// So you don't have to memorize the numerical value that corresponds
-// to each pulse type, the methods GetHeatType(), GetCollectrodeType(),
-// GetVetoType() and GetGuardType() are available to return the numeric value
-// stored in a local enum structure. 
-// however, for your information, the structure is
-//
-// enum kPulseChannelType {
-//   kCollectrodeType = 1,
-//   kVetoType = 2,
-//   kGuardType = 3,
-//   kHeatType = 4
-//  };
-//
-// The channel number should be either 1 or 2, corresponding to both channels
-// in the bolometer data. Note, there is no channel 0. In principle, there could
-// be 3 or more channels of a particular type as well (in the case of a future
-// bolometer design?). 
+
 
 #include "KBoloPulseRecord.h"
 #include <iostream>
@@ -70,6 +54,8 @@ void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
 {
   //used by the assignment operator to copy local members (fPulseType and
   //fChanneNumber)
+
+  fBolometerRecord = 0;
   fChannelName = aRec.fChannelName;  
   fPositiveTriggerAmp = aRec.fPositiveTriggerAmp;
   fNegativeTriggerAmp = aRec.fNegativeTriggerAmp;
@@ -83,6 +69,20 @@ void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
   fRelay2Status = aRec.fRelay2Status;
   fFetDac = aRec.fFetDac;
   fBoloGain = aRec.fBoloGain;
+
+  fPulseTimeWidth = aRec.fPulseTimeWidth;  
+
+  fPretriggerSize = aRec.fPretriggerSize;
+  fFilterSize = aRec.fFilterSize;
+  fPulseLength = aRec.fPulseLength;
+  fHeatPulseStampWidth = aRec.fHeatPulseStampWidth;
+  fCryoPosition = aRec.fCryoPosition;
+  fPolarFet = aRec.fPolarFet;
+  fCorrPied = aRec.fCorrPied;
+  fCompModul = aRec.fCompModul;
+  fCorrTrngl = aRec.fCorrTrngl;
+  fAmplModul = aRec.fAmplModul;
+  fIsHeatPulse = aRec.fIsHeatPulse;
 }
 
 KBoloPulseRecord::~KBoloPulseRecord(void)
@@ -133,6 +133,20 @@ void KBoloPulseRecord::InitializeMembers(void)
   fRelay2Status.resize(0);
   fFetDac = -99999;
   fBoloGain = -99999;
+
+  fPulseTimeWidth = -99; 
+
+  fPretriggerSize = 0;
+  fFilterSize = 0;
+  fPulseLength = 0;
+  fHeatPulseStampWidth = -99;
+  fCryoPosition = -99;
+  fPolarFet.resize(0);
+  fCorrPied = -99;
+  fCompModul = -99;
+  fCorrTrngl = -99;
+  fAmplModul = -99;
+  fIsHeatPulse = 0;
 }
 
 
@@ -255,6 +269,117 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
         return false;  
     }
    
+   if(fPulseTimeWidth != aRec.fPulseTimeWidth){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fPulseTimeWidth Not Equal. lhs: " 
+      << fPulseTimeWidth << " != rhs " << aRec.fPulseTimeWidth << endl;   
+    else
+      return false;  
+  }
+
+  if(fPretriggerSize != aRec.fPretriggerSize){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fPretriggerSize Not Equal. lhs: " 
+      << fPretriggerSize << " != rhs " << aRec.fPretriggerSize << endl;   
+    else
+      return false;  
+  }
+
+  
+
+  if(fFilterSize != aRec.fFilterSize){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fFilterSize Not Equal. lhs: " 
+      << fFilterSize << " != rhs " << aRec.fFilterSize << endl;   
+    else
+      return false;  
+  }
+
+  if(fPulseLength != aRec.fPulseLength){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fPulseLength Not Equal. lhs: " 
+      << fPulseLength << " != rhs " << aRec.fPulseLength << endl;   
+    else
+      return false;  
+  }
+
+  if(fHeatPulseStampWidth != aRec.fHeatPulseStampWidth){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fHeatPulseStampWidth Not Equal. lhs: " 
+      << fHeatPulseStampWidth << " != rhs " << aRec.fHeatPulseStampWidth << endl;   
+    else
+      return false;  
+  }
+
+  if(fCryoPosition != aRec.fCryoPosition){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fCryoPosition Not Equal. lhs: " 
+      << fCryoPosition << " != rhs " << aRec.fCryoPosition << endl;   
+    else
+      return false;  
+  }
+
+  if(fPolarFet != aRec.fPolarFet){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fPolarFet Not Equal. lhs: " 
+      << fPolarFet << " != rhs " << aRec.fPolarFet << endl;   
+    else
+      return false;  
+  }
+
+  if(fCorrPied != aRec.fCorrPied){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fCorrPied Not Equal. lhs: " 
+      << fCorrPied << " != rhs " << aRec.fCorrPied << endl;   
+    else
+      return false;  
+  }
+
+  if(fCompModul != aRec.fCompModul){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fCompModul Not Equal. lhs: " 
+      << fCompModul << " != rhs " << aRec.fCompModul << endl;   
+    else
+      return false;  
+  }
+
+  if(fCorrTrngl != aRec.fCorrTrngl){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fCorrTrngl Not Equal. lhs: " 
+      << fCorrTrngl << " != rhs " << aRec.fCorrTrngl << endl;   
+    else
+      return false;  
+  }
+
+  if(fAmplModul != aRec.fAmplModul){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fAmplModul Not Equal. lhs: " 
+      << fAmplModul << " != rhs " << aRec.fAmplModul << endl;   
+    else
+      return false;  
+  }
+
+  if(fIsHeatPulse != aRec.fIsHeatPulse){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KBoloPulseRecord fIsHeatPulse Not Equal. lhs: " 
+      << fIsHeatPulse << " != rhs " << aRec.fIsHeatPulse << endl;   
+    else
+      return false;  
+  }
+  
+
   return bIsEqual;
 }
 

@@ -82,7 +82,7 @@ private:
   Double32_t fBaselineRemoved; //amplitude of the baseline that was corrected in the analysis
   Double32_t fSlopeRemoved; //amplitude of the slope that was removed (=0 exactly if linear removal was not performed)
   
-  Double32_t fExtra[KPULSEANARECORD_EXTRA_SIZE];  //this array holds 10 floating-point numbers for the different calculations to fill as desired.
+  Double32_t fExtra[KPULSEANARECORD_EXTRA_SIZE];  //this array holds 15 floating-point numbers for the different calculations to fill as desired.
                                                   //this is a static sized array so that they are accessible from TTree::Draw and Scan
   
 
@@ -95,7 +95,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KPulseAnalysisRecord &aRec);
   
-  ClassDef(KPulseAnalysisRecord,4);
+  ClassDef(KPulseAnalysisRecord,5);
 };
 
 
