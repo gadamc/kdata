@@ -425,7 +425,7 @@ def concatKdataFiles(fileList, outputFileName):
   listOfTFiles = []
   listOfTrees = TList()
 
-  print 'atempting to merge the following files'
+  print 'attempting to merge the following files'
   for fname in fileList:
     print fname
     f = TFile(fname)
