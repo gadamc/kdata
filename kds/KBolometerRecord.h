@@ -48,7 +48,7 @@ private:
   //private methods
   void InitializeMembers(void);
   void CopyLocalMembers(const KBolometerRecord &aRec);
-  
+
   ClassDef(KBolometerRecord,4);
 };
 
