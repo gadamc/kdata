@@ -61,7 +61,7 @@ def send(username, password, item, path):
 
 def sendBoloData(username, password, item, path = '/sps/edelweis/kdata/data/raw/'):
     if os.path.isfile(item):
-        return send(item,path, username, password) 
+        return send(username, password, item , path) 
     else:
         print 'sftpToSps.sendBoloData can only send files, not directories.'
         return dict()

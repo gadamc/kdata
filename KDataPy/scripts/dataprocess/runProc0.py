@@ -70,6 +70,9 @@ def main(*argv):
 
     except Exception as e:
       print e
+      if doc.has_key('proc0') == False:
+          doc['proc0'] = {}
+        
       doc['proc0']['exception'] = str(type(e)) + ': ' + str(e)
       doc['status'] = 'proc0 failed'
       if doc.has_key('proc0'): del doc['proc0']
