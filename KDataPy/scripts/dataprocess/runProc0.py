@@ -2,18 +2,18 @@
 
 from KDataPy.scripts.dataprocess.DBProcess import *
 import os, sys, tempfile, shutil, datetime
-import KDataPy.scripts.dataprocess.scpToSps as scp
+import KDataPy.scripts.dataprocess.sftpToSps as scp
 
 def scpToLyon(*args, **kwargs):
   
-  if len(args) > 1:
-    print 'takes just one argument... the file name.'
+  if len(args) > 3:
+    print 'takes three args: username, password and filename.'
     sys.exit(-1)
     
   #now send it via secure copy!
-  print 'calling secure copy', args[0]
+  print 'calling secure copy', args[0], args[1], args[2]
 
-  scpRet = scp.sendBoloData(args[0])
+  scpRet = scp.sendBoloData(args[0], args[1], args[2])
   
   return scpRet
   
@@ -22,6 +22,8 @@ def main(*argv):
   '''
   argv[0] is the server (http://127.0.0.1:5984)
   argv[1] is the database (datadb)
+  argv[2] is the username to sftp to ccage
+  argv[3] is the password for the username
   '''
   
   print '\n', str(datetime.datetime.now()), ': starting runProc0.py \n'
@@ -39,7 +41,7 @@ def main(*argv):
     doc['status'] = 'proc0 in progress'
     myProc.upload(doc)
     try:
-      procDict = myProc.doprocess(doc['file']) #this step calls rootfiyAndScp
+      procDict = myProc.doprocess(argv[2], argv[3], doc['file']) #this step calls rootfiyAndScp
       print 'called process'
 
       if len(procDict) > 0:
@@ -47,10 +49,11 @@ def main(*argv):
         procDict['date'] = str(datetime.datetime.utcnow())
         procDict['processname'] = 'copySambaFileToSps'
       
-        if len(procDict['scpErrs']) > 0:
-          doc['status'] = 'proc0 failed'
-        else:
-          doc['status'] = 'good'
+        #if len(procDict['scpErrs']) > 0:
+        #  doc['status'] = 'proc0 failed'
+        #else:
+        
+        doc['status'] = 'good'
         #this step will add the procDict dictionary to the 
         #database document and then upload it to the DB
         if doc.has_key('proc0') == False:
@@ -67,7 +70,7 @@ def main(*argv):
 
     except Exception as e:
       print e
-      doc['exception'] = str(type(e)) + ': ' + str(e)
+      doc['proc0']['exception'] = str(type(e)) + ': ' + str(e)
       doc['status'] = 'proc0 failed'
       if doc.has_key('proc0'): del doc['proc0']
       myProc.upload(doc)
