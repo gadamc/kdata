@@ -35,6 +35,7 @@ KSambaRecord::KSambaRecord(void)
 
 
 KSambaRecord::KSambaRecord(const KSambaRecord &aRec)
+  :TObject()
 {
   //copy constructor
 

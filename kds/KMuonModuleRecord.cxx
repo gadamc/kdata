@@ -34,6 +34,7 @@ KMuonModuleRecord::~KMuonModuleRecord(void)
 }
 
 KMuonModuleRecord::KMuonModuleRecord(const KMuonModuleRecord &aRec)
+  :TObject()
 {
   //copy constructor
   

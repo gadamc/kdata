@@ -34,6 +34,7 @@ KBolometerRecord::KBolometerRecord(void)
 }
 
 KBolometerRecord::KBolometerRecord(const KBolometerRecord &aRec)
+  : TObject()
 {
   //copy constructor 
   

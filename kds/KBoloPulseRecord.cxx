@@ -32,6 +32,7 @@ KBoloPulseRecord::KBoloPulseRecord(void)
 }
 
 KBoloPulseRecord::KBoloPulseRecord(const KBoloPulseRecord &aRec)
+  :TObject()
 {
   //copy constructor 
 
