@@ -24,6 +24,7 @@ def main(*argv):
   argv[1] is the database (datadb)
   argv[2] is the username to sftp to ccage
   argv[3] is the password for the username
+  argv[4] - if set to 'limit', then this will only process one file
   '''
   
   print '\n', str(datetime.datetime.now()), ': starting runProc0.py \n'
@@ -32,7 +33,11 @@ def main(*argv):
   #document to the database
   myProc = DBProcess(argv[0], argv[1], scpToLyon)
   
-  vr = myProc.view('proc/proc0', reduce=False)
+  try:
+    if argv[4] == 'limit': 
+      vr = myProc.view('proc/proc0', reduce=False, limit=1)
+  except:
+    vr = myProc.view('proc/proc0', reduce=False)
   
   for row in vr:
     print row['id']

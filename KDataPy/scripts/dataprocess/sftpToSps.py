@@ -23,13 +23,16 @@ def send(username, password, item, path):
         theRet['command'] = 'put'
         theRet['file'] = spspath
         theRet['file_size'] = os.path.getsize(item)
+        theRet['file_size_mb'] = os.path.getsize(item)/1024./1024.
         theRet['hostname'] = 'ccage.in2p3.fr'
         theRet['localuname'] = os.uname()
         theRet['stdOut'] = ''
         
         startTime = datetime.datetime.now()
         print startTime
-        p = pexpect.spawn('/usr/bin/sftp %s@%s' % (username, theRet['hostname']) )
+        p = pexpect.spawn('/usr/bin/sftp %s@%s' % (username, theRet['hostname']) , timeout=3600*24)
+        fout = file('mylog.txt', 'w')
+        p.logfile = fout
         ssh_newkey = 'Are you sure you want to continue connecting'
         i=p.expect([ssh_newkey,'password:',pexpect.EOF])
         if i==0:
@@ -41,9 +44,14 @@ def send(username, password, item, path):
             p.sendline(password)
             p.expect('sftp> ')
             p.sendline("put %s %s" % (item, spspath) )
+            p.expect('sftp> ')
             theRet['pexpect_obj'] = p.__str__()
             p.sendline('bye')
+            fout.close()
             p.close()
+            with open('mylog.txt','r') as fff:
+                theRet['log'] = fff.read()
+            fff.close()
         elif i==2:
             theRet['scpStdOut'] = 'fail'
             print "I either got key or connection timeout"
