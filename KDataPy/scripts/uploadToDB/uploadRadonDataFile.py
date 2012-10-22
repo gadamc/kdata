@@ -22,6 +22,9 @@ def upload(*argv):
   doc['type'] = 'radondatafile'
   data = []
   
+  previousEventHour = fileEndTime.hour
+  dayAdjust = 0
+  
   while line:  
     if line.strip('\n\r\t') != '' and line != '':
       eventTimeAsci, adcValue = line.strip('\r\n').split('\t ')
@@ -31,8 +34,14 @@ def upload(*argv):
       eminute = int(eminute)
       esecond = int(esecond)
       ems = int(ems)
+  
+      if previousEventHour == 0 and ehour == 23:
+        dayAdjust += 1
+
+      previousEventHour = ehour
+
       eventDateTime = datetime.datetime(year = fileEndTime.year, month = fileEndTime.month,
-                                      day = fileEndTime.day, hour = ehour, minute = eminute, second = esecond, microsecond = 1000*ems)
+                                      day = fileEndTime.day - dayAdjust, hour = ehour, minute = eminute, second = esecond, microsecond = 1000*ems)
     
       eventEpoch = time.mktime(eventDateTime.timetuple()) + ems/1000. #have to add the milliseconds back manually because the timetuple truncates to seconds
     
