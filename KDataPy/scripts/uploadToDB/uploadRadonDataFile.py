@@ -23,7 +23,6 @@ def upload(*argv):
   data = []
   
   previousEventHour = fileEndTime.hour
-  dayAdjust = 0
   
   while line:  
     if line.strip('\n\r\t') != '' and line != '':
@@ -36,12 +35,12 @@ def upload(*argv):
       ems = int(ems)
   
       if previousEventHour == 0 and ehour == 23:
-        dayAdjust += 1
+        fileEndTime = fileEndTime - datetime.timedelta(days = 1)
 
       previousEventHour = ehour
-
+      
       eventDateTime = datetime.datetime(year = fileEndTime.year, month = fileEndTime.month,
-                                      day = fileEndTime.day - dayAdjust, hour = ehour, minute = eminute, second = esecond, microsecond = 1000*ems)
+                                      day = fileEndTime.day, hour = ehour, minute = eminute, second = esecond, microsecond = 1000*ems)
     
       eventEpoch = time.mktime(eventDateTime.timetuple()) + ems/1000. #have to add the milliseconds back manually because the timetuple truncates to seconds
     

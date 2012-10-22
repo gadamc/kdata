@@ -10,20 +10,24 @@ def main(*argv):
   dbname = 'radon'
   dataDir = '\\Radon\Data\\'  #this is where i will look for data files. we won't look recursively... just in this directory
   
-  s = Server(uri)
-  db = s[dbname]
-  
   prog = re.compile('[0-9]*?_[0-9]*?.txt')  #this is the expected string pattern
   
   while True:
     
     #we get the data file on the database that has the highest
-    #run number. 
+    #run number.
+    s = Server(uri)
+    db = s[dbname]
     vr = db.view('app/runNumber', reduce =False, limit = 1, descending=True)
     row = vr.first()
-    majorRun = row['key'][0]
-    minorRun = row['key'][1]
-
+    try:
+      majorRun = row['key'][0]
+      minorRun = row['key'][1]
+    except:
+      majorRun = -1
+      minorRun = -1
+      pass
+    
     print 'most recent data %d_%d' % (majorRun, minorRun)
     
     #now, see if any of the files in the data directory have 
