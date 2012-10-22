@@ -61,7 +61,7 @@ def main(*argv, **kwargs):
   scriptOut = os.path.join(scriptDir, 'qsubout')
   scriptErr = os.path.join(scriptDir, 'qsubout')
   
-  maxDocs = 30  #for process 1, we can submit up to 30 files to be processed
+  maxDocs = 100  #for process 1, we can submit up to 100 files to be processed
   #by a particular batch job. This is because this is a relatively fast process
   #to convert a Samba file to a KData file and we want to play nice with 
   #the batch system in Lyon
