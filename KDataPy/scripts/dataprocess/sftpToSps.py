@@ -58,7 +58,7 @@ def send(username, password, item, path):
     return theRet
 
   except Exception as e:
-    raise KDataTransfer('KDataTransfer. sftpToSps.py line64  ' + str(type(e)) + ' : ' + str(e) + '')
+    raise KDataTransfer('KDataTransfer. sftpToSps.py line64  \n' + str(type(e)) + ' : ' + str(e))
 
 
 
@@ -67,7 +67,7 @@ def sendBoloData(username, password, item, path = '/sps/edelweis/kdata/data/raw/
     try:
       return send(username, password, item , path) 
     except Exception as e:
-    raise KDataTransfer('KDataTransfer. sftpToSps.py line73  ' + str(type(e)) + ' : ' + str(e) + '\n')
+    raise KDataTransfer('KDataTransfer. sftpToSps.py line73  \n' + str(type(e)) + ' : ' + str(e))
   else:
     raise KDataTransfer('KDataTransfer. sftpToSps.py sftpToSps.sendBoloData can only send files, not directories.\n')
 

@@ -6,7 +6,7 @@
 '''
 
 import ROOT
-
+from KDataPy.exceptions import *
 import os, sys, glob
 
 def getSambaFilePattern():
@@ -17,20 +17,23 @@ def convertfile(input, output):
     converts input samba file into output kdata file. If successful, this returns the 'output',
     otherwise it returns an empty string ( '' )
   '''
-  ROOT.gSystem.Load('libkds')
-  ROOT.gSystem.Load('libksamba')
-  ROOT.gROOT.SetBatch(True)
+  try:
+    ROOT.gSystem.Load('libkds')
+    ROOT.gSystem.Load('libksamba')
+    ROOT.gROOT.SetBatch(True)
   
-  if os.path.isfile(input) and os.path.isdir(output)==False:
-    c = ROOT.KSamba2KData(input, output)
-    if c.ConvertFile():
-      print 'converted file to root file'
+    if os.path.isfile(input) and os.path.isdir(output)==False:
+      c = ROOT.KSamba2KData(input, output)
+      if c.ConvertFile():
+        print 'converted file to root file'
+      else:
+        raise KDataRootification('KDataTransfer. rootifySambaData.convertfile. Failed to convert root file but exited KSamba2KData gracefully.  KSamba2KData::ConvertFile returned False.\n')
     else:
-      print 'failed to convert file'
-      return ''
-  else:
-    print 'rootifySambaData.convertfile. Input must be a file path and Output cannot be a directory'
-    return ''
+      raise KDataRootification('KDataTransfer. rootifySambaData.convertfile. Input must be a file path and Output cannot be a directory  \n')
+      
+
+  except Exception as e:
+      raise KDataRootification('KDataTransfer. scpToSps.py line73  \n' + str(type(e)) + ' : ' + str(e))
   
   return output
     
@@ -45,6 +48,6 @@ def convertdir(input, output):
       rootFiles.append( convertfile(file, os.path.join(output, os.path.basename(file)+'.root')) )
     
   else:
-    print 'rootifySambaData.convertdir. Input and Output must be directory path'
+    raise KDataRootification('KDataTransfer. rootifySambaData.convertdir. Input and Output must be directory path  \n')
     
   return rootFiles

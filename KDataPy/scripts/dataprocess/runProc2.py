@@ -3,6 +3,7 @@
 from KDataPy.scripts.dataprocess.DBProcess import *
 import os, sys, tempfile, shutil, datetime, copy, socket
 from couchdbkit import Server, Database
+from KDataPy.exceptions import *
 
 import ROOT
 
@@ -166,6 +167,7 @@ def main(*argv):
   try:
     (doc, result) = processOne(doc)
   except Exception as e:
+    
     doc['exception'] = str(type(e)) + ': ' + str(e)
     doc['status']  = 'proc2 failed'
 

@@ -1,20 +1,23 @@
-#exceptions.py
+#KDataExceptions.py
+import traceback
 
-class KDataTransfer(Exception):
+class KDataException(Exception):
   def __init__(self, value):
-    self.value = value
-  def __str__(self):
-    return repr(self.value)
+    
+    stack = traceback.extract_stack()
+    self.value = value + '\n'.join(str(x) for x in stack[:len(stack)-1])
 
-
-class KDataRootification(Exception):
-  def __init__(self, value):
-    self.value = value
   def __str__(self):
-    return repr(self.value)
+    return str(self.value)
 
-class KDataSambaHeaderCouch(Exception):
-  def __init__(self, value):
-    self.value = value
-  def __str__(self):
-    return repr(self.value)
+class KDataTransfer(KDataException):
+  pass
+
+class KDataRootification(KDataException):
+  pass
+
+class KDataSambaHeaderCouch(KDataException):
+  pass
+
+class KDataKampingError(KDataException):
+  pass

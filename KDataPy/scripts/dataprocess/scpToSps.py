@@ -63,14 +63,14 @@ def send(item, path):
     return theRet
 
   except Exception as e:
-    raise KDataTransfer('KDataTransfer. scpToSps.py line65  ' + str(type(e)) + ' : ' + str(e) + '\n')
+    raise KDataTransfer('KDataTransfer. scpToSps.py line65  \n' + str(type(e)) + ' : ' + str(e))
 
 def sendBoloData(item, path = 'kdata/data/raw/'):
   if os.path.isfile(item):
     try:
       return send(item,path) 
     except Exception as e:
-      raise KDataTransfer('KDataTransfer. scpToSps.py line73  ' + str(type(e)) + ' : ' + str(e) + '\n')
+      raise KDataTransfer('KDataTransfer. scpToSps.py line73  \n' + str(type(e)) + ' : ' + str(e))
   else:
     raise KDataTransfer('KDataTransfer. scpToSps.py scpToSps.sendBoloData can only send files, not directories.\n')
     
