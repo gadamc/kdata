@@ -25,15 +25,8 @@ public:
   
   virtual ~KCorrelation(void);
 
-  virtual void SetResponse(std::vector<double> &r){SetTheResponse(r, true);}
-  virtual void SetResponse(std::vector<float> &r){SetTheResponse(r, true);}
-  virtual void SetResponse(std::vector<int> &r){SetTheResponse(r, true);}
-  virtual void SetResponse(std::vector<short> &r){SetTheResponse(r, true);}
-
-  virtual void SetResponse(const double* resp, unsigned int size){SetTheResponse(resp, size, true);}
-  virtual void SetResponse(const float* resp, unsigned int size){SetTheResponse(resp, size, true);}
-  virtual void SetResponse(const int* resp, unsigned int size){SetTheResponse(resp, size, true);}
-  virtual void SetResponse(const short* resp, unsigned int size){SetTheResponse(resp, size, true);}
+  template <class T> void SetResponse(std::vector<T> &resp){KConvolution::SetResponse<T>(resp,true);}
+  template <class T> void SetResponse(const T* resp, unsigned int size){KConvolution::SetResponse(resp, size, true);}
   
   
 protected:

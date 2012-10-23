@@ -31,6 +31,23 @@
 #pragma link C++ class KComplex+;
 #pragma link C++ class KConvolution+;
 #pragma link C++ class KCorrelation+;
+#pragma link C++ function KConvolution::SetResponse<double>;
+#pragma link C++ function KConvolution::SetResponse<float>;
+#pragma link C++ function KConvolution::SetResponse<int>;
+#pragma link C++ function KConvolution::SetResponse<short>;
+#pragma link C++ function KConvolution::SetResponse(double*, unsigned int, bool );
+#pragma link C++ function KConvolution::SetResponse(float*, unsigned int, bool );
+#pragma link C++ function KConvolution::SetResponse(int*, unsigned int, bool );
+#pragma link C++ function KConvolution::SetResponse(short*, unsigned int, bool );
+#pragma link C++ function KCorrelation::SetResponse<double>;
+#pragma link C++ function KCorrelation::SetResponse<float>;
+#pragma link C++ function KCorrelation::SetResponse<int>;
+#pragma link C++ function KCorrelation::SetResponse<short>;
+#pragma link C++ function KCorrelation::SetResponse(double*, unsigned int, bool );
+#pragma link C++ function KCorrelation::SetResponse(float*, unsigned int, bool );
+#pragma link C++ function KCorrelation::SetResponse(int*, unsigned int, bool );
+#pragma link C++ function KCorrelation::SetResponse(short*, unsigned int, bool );
+
 #pragma link C++ class KEraPeakFinder+;
 #pragma link C++ class KFIRFilter+;
 #pragma link C++ class KHalfComplexArray+;

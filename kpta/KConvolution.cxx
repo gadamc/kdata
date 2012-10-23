@@ -9,6 +9,10 @@
 // 
 // The output contains only the points for which the convolution can be proceeded completely
 // ('valid' mode of scipy.signal.convolve)
+//
+// If you call SetResponse, with bool reverse = true, then this performs a correlation!  Or you
+// can use the KCorrelation class and just call SetRepsonse
+//
 
 #include "KConvolution.h"
 #include <iostream>
@@ -61,9 +65,6 @@ bool KConvolution::RunProcess(void)
     fOutputSize = (fInputSize > fResponseSize) ? fInputSize-fResponseSize+1 : fResponseSize-fInputSize+1;
     fOutputPulse = new double[fOutputSize];
   }
-
-
-
 
 
   double* inptr = (fResponseSize > fInputSize) ? fResponse : fInputPulse; // swap input and coefficients in case that the number of coefficients is greater than the pulse lenth

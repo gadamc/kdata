@@ -7,7 +7,10 @@
 //
 // y[n] = Sum_k  x[k] * h[n+k]
 //
+// This class derives from KConvolution. When you call SetResponse, it automatically reverses the 
+// response function that you give it. 
 //
+
 
 #include "KCorrelation.h"
 
