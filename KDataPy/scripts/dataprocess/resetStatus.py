@@ -31,7 +31,7 @@ def resetStatus(server, databaseName, newstatus, **kwargs):
     if doc.has_key('status'):
       try:  
         if doc['status'] == kwargs['oldstatus']:
-          print '   changing', oldstatus, 'to', newstatus, 'for', doc['_id']
+          print '   changing', kwargs['oldstatus'], 'to', newstatus, 'for', doc['_id']
           doc['status'] = newstatus
           db.save_doc(doc)
       except KeyError:

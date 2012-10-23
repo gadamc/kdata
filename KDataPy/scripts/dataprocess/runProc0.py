@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from KDataPy.scripts.dataprocess.DBProcess import *
+from KDataPy.exceptions import *
 import os, sys, tempfile, shutil, datetime
 import KDataPy.scripts.dataprocess.sftpToSps as scp
 
@@ -12,9 +13,12 @@ def scpToLyon(*args, **kwargs):
     
   #now send it via secure copy!
   print 'calling secure copy', args[0], args[1], args[2]
-
-  scpRet = scp.sendBoloData(args[0], args[1], args[2])
   
+  try:
+    scpRet = scp.sendBoloData(args[0], args[1], args[2])
+  except Exception as e:
+    raise KDataTransfer('KDataTransfer. runProc0.py line 20  ' + str(type(e)) + ' : ' + str(e) + '\n')
+
   return scpRet
   
   
@@ -41,12 +45,14 @@ def main(*argv):
   
   for row in vr:
     print row['id']
-    doc = myProc.get(row['id'])
-    print 'have doc', row['id']
-    doc['status'] = 'proc0 in progress'
-    myProc.upload(doc)
+    
     try:
-      procDict = myProc.doprocess(argv[2], argv[3], doc['file']) #this step calls rootfiyAndScp
+      doc = myProc.get(row['id'])
+      print 'have doc', row['id']
+      doc['status'] = 'proc0 in progress'
+      myProc.upload(doc)
+
+      procDict = myProc.doprocess(argv[2], argv[3], doc['file']) #this step calls scpToLyon
       print 'called process'
 
       if len(procDict) > 0:

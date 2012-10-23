@@ -49,7 +49,7 @@ if __name__ == '__main__':
   parser.add_argument('endkey', help='the name of the samba run that defines the end of the range of runs')
   parser.add_argument('-db', '--database', help='select the database you wish to you. "datadb" is the default', default='datadb')
   parser.add_argument('-s', '--server', help='select the couchdb server you wish to use. You must supply the username and password.', default='https://edelweiss.cloudant.com')
-
+  #parser.add_argument('-v', '--viewname', help='with this option you can specify which couchdb mapReduce View to use to select data files', default='proc/daqdoc')
   args = parser.parse_args()
 
   print 'Removing', args.procname, 'from database records on', args.server,'/',args.database, 'from startkey', args.startkey, 'to endkey', args.endkey
