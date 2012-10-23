@@ -140,7 +140,7 @@ KAmpEvent& KAmpEvent::operator=(const KAmpEvent &anEvent)
   CopyLocalMembers(anEvent);
   CopyClonesArrays(anEvent);
 
-  return *this;	
+  return *this; 
 }
 
 
@@ -734,7 +734,7 @@ Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
 
   if(!fMuonSystem.IsSame(anEvent.fMuonSystem, bPrint)){
     if (bPrint) 
-      cout << "KAmpEvent fMuonSystem Not Equal" << endl;		
+      cout << "KAmpEvent fMuonSystem Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;
@@ -749,7 +749,7 @@ Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
       if(bolo != 0 && boloOther != 0){
         if(!bolo->IsSame(*boloOther, bPrint)){
           if (bPrint) 
-            cout << "KAmpEvent KAmpBolometerRecord number " << i << " Not Equal" << endl;		
+            cout << "KAmpEvent KAmpBolometerRecord number " << i << " Not Equal" << endl;   
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -803,7 +803,7 @@ Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
         }
         else {
           if(bPrint)
-            cout << "KAmpEvent KAmpBolometerRecord number " << i << " Number of Pulse Records Not Equal" << endl;	
+            cout << "KAmpEvent KAmpBolometerRecord number " << i << " Number of Pulse Records Not Equal" << endl; 
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -824,7 +824,7 @@ Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
   }
   else {
     if (bPrint) 
-      cout << "KAmpEvent size of Bolo Array Not Equal" << endl;		
+      cout << "KAmpEvent size of Bolo Array Not Equal" << endl;   
     bIsEqual = false;
     if(!bPrint)
       return false;
@@ -839,7 +839,7 @@ Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
       if(s != 0 && sOther != 0){
         if(!s->IsSame(*sOther, bPrint)){
           if (bPrint) 
-            cout << "KAmpEvent KRawMuonModuleRecord number " << i << " Not Equal" << endl;		
+            cout << "KAmpEvent KRawMuonModuleRecord number " << i << " Not Equal" << endl;    
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -849,7 +849,7 @@ Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
   }
   else {
     if (bPrint) 
-      cout << "KAmpEvent size of muon module array Not Equal" << endl;		
+      cout << "KAmpEvent size of muon module array Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;
@@ -863,7 +863,7 @@ Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
       if(s != 0 && sOther != 0){
         if(!s->IsSame(*sOther, bPrint)){
           if (bPrint) 
-            cout << "KAmpEvent KPulseAnalysisRecord number " << i << " Not Equal" << endl;		
+            cout << "KAmpEvent KPulseAnalysisRecord number " << i << " Not Equal" << endl;    
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -873,7 +873,7 @@ Bool_t KAmpEvent::IsSame(const KAmpEvent &anEvent, Bool_t bPrint) const
   }
   else {
     if (bPrint) 
-      cout << "KAmpEvent size of pulse amplitude array Not Equal" << endl;		
+      cout << "KAmpEvent size of pulse amplitude array Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;

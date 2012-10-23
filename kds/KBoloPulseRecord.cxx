@@ -21,7 +21,7 @@
 ClassImp(KBoloPulseRecord);
 
 KBoloPulseRecord::KBoloPulseRecord(void)
-{	
+{ 
   //standard constructors 
 
   InitializeMembers();
@@ -165,7 +165,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
     bIsEqual = false;
     if (bPrint) 
       cout << "KRawBoloPulseRecord fChannelName Not Equal. lhs: " 
-      << fChannelName << " != rhs " << aRec.fChannelName << endl;		
+      << fChannelName << " != rhs " << aRec.fChannelName << endl;   
     else
       return false;  
   }
@@ -174,7 +174,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fGain Not Equal. lhs: " 
-       << fGain << " != rhs " << aRec.fGain << endl;		
+       << fGain << " != rhs " << aRec.fGain << endl;    
      else
        return false;  
    }
@@ -183,7 +183,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fVoltage Not Equal. lhs: " 
-       << fVoltage << " != rhs " << aRec.fVoltage << endl;		
+       << fVoltage << " != rhs " << aRec.fVoltage << endl;    
      else
        return false;  
    }
@@ -192,7 +192,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fState Not Equal. lhs: " 
-       << fState << " != rhs " << aRec.fState << endl;		
+       << fState << " != rhs " << aRec.fState << endl;    
      else
        return false;  
    }
@@ -201,7 +201,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fNegativeTriggerAmp Not Equal. lhs: " 
-       << fNegativeTriggerAmp << " != rhs " << aRec.fNegativeTriggerAmp << endl;		
+       << fNegativeTriggerAmp << " != rhs " << aRec.fNegativeTriggerAmp << endl;    
      else
        return false;  
    }
@@ -210,7 +210,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fPositiveTriggerAmp Not Equal. lhs: " 
-       << fPositiveTriggerAmp << " != rhs " << aRec.fPositiveTriggerAmp << endl;		
+       << fPositiveTriggerAmp << " != rhs " << aRec.fPositiveTriggerAmp << endl;    
      else
        return false;  
    }
@@ -220,7 +220,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fBoloBoxVersion Not Equal. lhs: " 
-       << fBoloBoxVersion << " != rhs " << aRec.fBoloBoxVersion << endl;		
+       << fBoloBoxVersion << " != rhs " << aRec.fBoloBoxVersion << endl;    
      else
        return false;  
    }
@@ -229,7 +229,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fConvergencePeriod Not Equal. lhs: " 
-       << fConvergencePeriod << " != rhs " << aRec.fConvergencePeriod << endl;		
+       << fConvergencePeriod << " != rhs " << aRec.fConvergencePeriod << endl;    
      else
        return false;  
    }
@@ -238,7 +238,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fRelay1Status Not Equal. lhs: " 
-       << fRelay1Status << " != rhs " << aRec.fRelay1Status << endl;		
+       << fRelay1Status << " != rhs " << aRec.fRelay1Status << endl;    
      else
        return false;  
    }
@@ -247,7 +247,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fRelay2Status Not Equal. lhs: " 
-       << fRelay2Status << " != rhs " << aRec.fRelay2Status << endl;		
+       << fRelay2Status << " != rhs " << aRec.fRelay2Status << endl;    
      else
        return false;  
    }
@@ -256,7 +256,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
      bIsEqual = false;
      if (bPrint) 
        cout << "KBoloPulseRecord fFetDac Not Equal. lhs: " 
-       << fFetDac << " != rhs " << aRec.fFetDac << endl;		
+       << fFetDac << " != rhs " << aRec.fFetDac << endl;    
      else
        return false;  
    }
@@ -265,7 +265,7 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
       bIsEqual = false;
       if (bPrint) 
         cout << "KBoloPulseRecord fBoloGain Not Equal. lhs: " 
-        << fBoloGain << " != rhs " << aRec.fBoloGain << endl;		
+        << fBoloGain << " != rhs " << aRec.fBoloGain << endl;   
       else
         return false;  
     }

@@ -438,7 +438,7 @@ void KHLAEvent::CopyLocalMembers(const KHLAEvent &anEvent)
   fRunNumber = anEvent.fRunNumber;
   fRunStartTime = anEvent.fRunStartTime;
   fRunEndTime = anEvent.fRunEndTime;
-  fGSEventNumber = anEvent.fGSEventNumber;	
+  fGSEventNumber = anEvent.fGSEventNumber;  
 
 }
 
@@ -625,7 +625,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 
   if(!fMuonSystem.IsSame(anEvent.fMuonSystem, bPrint)){
     if (bPrint) 
-      cout << "KHLAEvent fMuonSystem Not Equal" << endl;		
+      cout << "KHLAEvent fMuonSystem Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;
@@ -640,7 +640,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
       if(bolo != 0 && boloOther != 0){
         if(!bolo->IsSame(*boloOther, bPrint)){
           if (bPrint) 
-            cout << "KHLAEvent KHLABolometerRecord number " << i << " Not Equal" << endl;		
+            cout << "KHLAEvent KHLABolometerRecord number " << i << " Not Equal" << endl;   
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -694,7 +694,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
         }
         else {
           if(bPrint)
-            cout << "KHLAEvent KHLABolometerRecord number " << i << " Number of Pulse Records Not Equal" << endl;	
+            cout << "KHLAEvent KHLABolometerRecord number " << i << " Number of Pulse Records Not Equal" << endl; 
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -715,7 +715,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
   }
   else {
     if (bPrint) 
-      cout << "KHLAEvent number of bolometer records Not Equal" << endl;		
+      cout << "KHLAEvent number of bolometer records Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;
@@ -730,7 +730,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
       if(s != 0 && sOther != 0){
         if(!s->IsSame(*sOther, bPrint)){
           if (bPrint) 
-            cout << "KHLAEvent KHLABoloPulseRecord number " << i << " Not Equal" << endl;		
+            cout << "KHLAEvent KHLABoloPulseRecord number " << i << " Not Equal" << endl;   
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -740,7 +740,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
   }
   else {
     if (bPrint) 
-      cout << "KHLAEvent number of MuonModule Not Equal" << endl;		
+      cout << "KHLAEvent number of MuonModule Not Equal" << endl;   
     bIsEqual = false;
     if(!bPrint)
       return false;
@@ -748,7 +748,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 
   if(fRunNumber != anEvent.fRunNumber){
     if (bPrint) 
-      cout << "KHLAEvent fRunNumber Not Equal" << endl;		
+      cout << "KHLAEvent fRunNumber Not Equal" << endl;   
     bIsEqual = false;
     if(!bPrint)
       return false;  
@@ -756,7 +756,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 
   if(fRunStartTime != anEvent.fRunStartTime){
     if (bPrint) 
-      cout << "KHLAEvent fRunStartTime Not Equal" << endl;		
+      cout << "KHLAEvent fRunStartTime Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;  
@@ -764,7 +764,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 
   if(fRunEndTime != anEvent.fRunEndTime){
     if (bPrint) 
-      cout << "KHLAEvent fRunEndTime Not Equal" << endl;		
+      cout << "KHLAEvent fRunEndTime Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;  
@@ -773,7 +773,7 @@ Bool_t KHLAEvent::IsSame(const KHLAEvent &anEvent, Bool_t bPrint) const
 
   if(fGSEventNumber != anEvent.fGSEventNumber){
     if (bPrint) 
-      cout << "KHLAEvent fGSEventNumber Not Equal" << endl;		
+      cout << "KHLAEvent fGSEventNumber Not Equal" << endl;   
     bIsEqual = false;
     if(!bPrint)
       return false;  

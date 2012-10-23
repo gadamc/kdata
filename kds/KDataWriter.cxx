@@ -50,7 +50,7 @@ KDataWriter::KDataWriter(void)
 
 KDataWriter::KDataWriter(const Char_t* name, const Char_t* eventType, 
   const Char_t* mode)
-{	
+{ 
   //standard constructor
   //name = file name 
   //eventType = KHLAEvent, KRawEvent, or HLaMC, plus any other objects based on KEvent.
@@ -79,7 +79,7 @@ KDataWriter::KDataWriter(const Char_t* name, KEvent** event,
   fLocalEvent = 0;
   fTree = 0;
   fFile = 0;
-  OpenFile(name, event, mode);	
+  OpenFile(name, event, mode);  
 }
 
 KDataWriter::~KDataWriter(void)

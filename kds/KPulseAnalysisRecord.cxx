@@ -16,7 +16,7 @@
 ClassImp(KPulseAnalysisRecord);
 
 KPulseAnalysisRecord::KPulseAnalysisRecord(void)
-{	
+{ 
   //standard constructors 
 
   InitializeMembers();
@@ -128,7 +128,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fAmp Not Equal." 
-      << fAmp << " != rhs " << aRec.fAmp << endl;		
+      << fAmp << " != rhs " << aRec.fAmp << endl;   
     else
       return false;  
   }
@@ -136,7 +136,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fName Not Equal. " 
-      << fName << " != rhs " << aRec.fName << endl;		
+      << fName << " != rhs " << aRec.fName << endl;   
     else
       return false;  
   }
@@ -144,7 +144,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fPeakPosition Not Equal. " 
-      << fPeakPosition << " != rhs " << aRec.fPeakPosition << endl;		
+      << fPeakPosition << " != rhs " << aRec.fPeakPosition << endl;   
     else
       return false;  
   }
@@ -153,7 +153,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fUnit Not Equal." 
-      << fUnit << " != rhs " << aRec.fUnit << endl;		
+      << fUnit << " != rhs " << aRec.fUnit << endl;   
     else
       return false;  
   }
@@ -161,7 +161,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fChiSq Not Equal." 
-      << fChiSq << " != rhs " << aRec.fChiSq << endl;		
+      << fChiSq << " != rhs " << aRec.fChiSq << endl;   
     else
       return false;  
   }
@@ -170,7 +170,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fBaselineAmplitudeWidth Not Equal." 
-      << fBaselineAmplitudeWidth << " != rhs " << aRec.fBaselineAmplitudeWidth << endl;		
+      << fBaselineAmplitudeWidth << " != rhs " << aRec.fBaselineAmplitudeWidth << endl;   
     else
       return false;  
   }
@@ -179,7 +179,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fRiseTime Not Equal." 
-      << fRiseTime << " != rhs " << aRec.fRiseTime << endl;		
+      << fRiseTime << " != rhs " << aRec.fRiseTime << endl;   
     else
       return false;  
   }
@@ -188,7 +188,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fPulseWidth Not Equal." 
-      << fPulseWidth << " != rhs " << aRec.fPulseWidth << endl;		
+      << fPulseWidth << " != rhs " << aRec.fPulseWidth << endl;   
     else
       return false;  
   }
@@ -197,7 +197,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fBaselineRemoved Not Equal." 
-      << fBaselineRemoved << " != rhs " << aRec.fBaselineRemoved << endl;		
+      << fBaselineRemoved << " != rhs " << aRec.fBaselineRemoved << endl;   
     else
       return false;  
   }
@@ -206,7 +206,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
     bIsEqual = false;
     if (bPrint) 
       cout << "KPulseAnalysisRecord fSlopeRemoved Not Equal." 
-      << fSlopeRemoved << " != rhs " << aRec.fSlopeRemoved << endl;		
+      << fSlopeRemoved << " != rhs " << aRec.fSlopeRemoved << endl;   
     else
       return false;  
   }
@@ -218,7 +218,7 @@ Bool_t KPulseAnalysisRecord::IsSame(const KPulseAnalysisRecord &aRec, Bool_t bPr
       bIsEqual = false;
       if (bPrint) 
         cout << "KPulseAnalysisRecord fExtra["<< xtr << "] Not Equal." 
-        << fExtra[xtr] << " != rhs " << aRec.fExtra[xtr] << endl;		
+        << fExtra[xtr] << " != rhs " << aRec.fExtra[xtr] << endl;   
       else
         return false;  
     }

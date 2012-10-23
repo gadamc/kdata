@@ -28,11 +28,11 @@ public:
   //for those records need to be rewritten. 
   
   static int GetExpectedPolarity(KRawBoloPulseRecord *p, KRawBolometerRecord* bolo = 0);
-	static int GetExpectedPolarity(KAmpBoloPulseRecord *p, KAmpBolometerRecord* bolo = 0);
-	//setters
+  static int GetExpectedPolarity(KAmpBoloPulseRecord *p, KAmpBolometerRecord* bolo = 0);
+  //setters
 private:
 
-	//private methods
+  //private methods
   static int GetExpectedPolarityFromFID(KRawBolometerRecord* bolo, KRawBoloPulseRecord *p);
   static int GetExpectedPolarityFromID(KRawBolometerRecord* bolo, KRawBoloPulseRecord *p);
   static int GetPolarityStandardCalculator(KRawBolometerRecord* bolo, KRawBoloPulseRecord *p);

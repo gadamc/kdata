@@ -172,7 +172,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fSambaEventNumber Not Equal. lhs: " 
-      << fSambaEventNumber << " != rhs " << aRec.fSambaEventNumber << endl;	
+      << fSambaEventNumber << " != rhs " << aRec.fSambaEventNumber << endl; 
     else
       return false;  
   }
@@ -181,7 +181,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fNtpDateSec Not Equal. lhs: " 
-      << fNtpDateSec << " != rhs " << aRec.fNtpDateSec << endl;		
+      << fNtpDateSec << " != rhs " << aRec.fNtpDateSec << endl;   
     else
       return false;  
   }
@@ -190,7 +190,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fNtpDateMicroSec Not Equal. lhs: " 
-      << fNtpDateMicroSec << " != rhs " << aRec.fNtpDateMicroSec << endl;		
+      << fNtpDateMicroSec << " != rhs " << aRec.fNtpDateMicroSec << endl;   
     else
       return false;  
   }
@@ -199,7 +199,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fSambaDAQNumber Not Equal. lhs: " 
-      << fSambaDAQNumber << " != rhs " << aRec.fSambaDAQNumber << endl;		
+      << fSambaDAQNumber << " != rhs " << aRec.fSambaDAQNumber << endl;   
     else
       return false;  
   }
@@ -208,7 +208,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fRegenerationFlag Not Equal. lhs: " 
-      << fRegenerationFlag << " != rhs " << aRec.fRegenerationFlag << endl;		
+      << fRegenerationFlag << " != rhs " << aRec.fRegenerationFlag << endl;   
     else
       return false;  
   }
@@ -216,7 +216,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fTotalDeadTimeSec Not Equal. lhs: " 
-      << fTotalDeadTimeSec << " != rhs " << aRec.fTotalDeadTimeSec << endl;		
+      << fTotalDeadTimeSec << " != rhs " << aRec.fTotalDeadTimeSec << endl;   
     else
       return false;  
   }
@@ -224,7 +224,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fTotalDeadTimeMicroSec Not Equal. lhs: " 
-      << fTotalDeadTimeMicroSec << " != rhs " << aRec.fTotalDeadTimeMicroSec << endl;		
+      << fTotalDeadTimeMicroSec << " != rhs " << aRec.fTotalDeadTimeMicroSec << endl;   
     else
       return false;  
   }
@@ -232,7 +232,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fTemperature Not Equal. lhs: " 
-      << fTemperature << " != rhs " << aRec.fTemperature << endl;		
+      << fTemperature << " != rhs " << aRec.fTemperature << endl;   
     else
       return false;  
   }
@@ -241,7 +241,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fRunName Not Equal. lhs: " 
-      << fRunName << " != rhs " << aRec.fRunName << endl;		
+      << fRunName << " != rhs " << aRec.fRunName << endl;   
     else
       return false;  
   }
@@ -250,7 +250,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fFileNumber Not Equal. lhs: " 
-      << fFileNumber << " != rhs " << aRec.fFileNumber << endl;		
+      << fFileNumber << " != rhs " << aRec.fFileNumber << endl;   
     else
       return false;  
   }
@@ -259,7 +259,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fRunType Not Equal. lhs: " 
-      << fRunType << " != rhs " << aRec.fRunType << endl;		
+      << fRunType << " != rhs " << aRec.fRunType << endl;   
     else
       return false;  
   }
@@ -268,7 +268,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fRunCondition Not Equal. lhs: " 
-      << fRunCondition << " != rhs " << aRec.fRunCondition << endl;		
+      << fRunCondition << " != rhs " << aRec.fRunCondition << endl;   
     else
       return false;  
   }
@@ -277,7 +277,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fRunStartPcTimeSec Not Equal. lhs: " 
-      << fRunStartPcTimeSec << " != rhs " << aRec.fRunStartPcTimeSec << endl;		
+      << fRunStartPcTimeSec << " != rhs " << aRec.fRunStartPcTimeSec << endl;   
     else
       return false;  
   }
@@ -286,7 +286,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fRunStartPcTimeMicroSec Not Equal. lhs: " 
-      << fRunStartPcTimeMicroSec << " != rhs " << aRec.fRunStartPcTimeMicroSec << endl;		
+      << fRunStartPcTimeMicroSec << " != rhs " << aRec.fRunStartPcTimeMicroSec << endl;   
     else
       return false;  
   }
@@ -295,7 +295,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fRunStartTriggerStamp Not Equal. lhs: " 
-      << fRunStartTriggerStamp << " != rhs " << aRec.fRunStartTriggerStamp << endl;		
+      << fRunStartTriggerStamp << " != rhs " << aRec.fRunStartTriggerStamp << endl;   
     else
       return false;  
   }
@@ -304,7 +304,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fSource1Regen Not Equal. lhs: " 
-      << fSource1Regen << " != rhs " << aRec.fSource1Regen << endl;		
+      << fSource1Regen << " != rhs " << aRec.fSource1Regen << endl;   
     else
       return false;  
   }
@@ -313,7 +313,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fSource2Regen Not Equal. lhs: " 
-      << fSource2Regen << " != rhs " << aRec.fSource2Regen << endl;		
+      << fSource2Regen << " != rhs " << aRec.fSource2Regen << endl;   
     else
       return false;  
   }
@@ -322,7 +322,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fSource1Calib Not Equal. lhs: " 
-      << fSource1Calib << " != rhs " << aRec.fSource1Calib << endl;		
+      << fSource1Calib << " != rhs " << aRec.fSource1Calib << endl;   
     else
       return false;  
   }
@@ -331,7 +331,7 @@ Bool_t KSambaRecord::IsSame(const KSambaRecord &aRec, Bool_t bPrint) const
     bIsEqual = false;
     if (bPrint) 
       cout << "KSambaRecord fSource2Calib Not Equal. lhs: " 
-      << fSource2Calib << " != rhs " << aRec.fSource2Calib << endl;		
+      << fSource2Calib << " != rhs " << aRec.fSource2Calib << endl;   
     else
       return false;  
   }

@@ -31,11 +31,11 @@ ClassImp(KEvent);
 
 KEvent::KEvent(void) 
 {
-	//constructor
-	
-	//note from the ROOT documentation
-/*	The Default Constructor
-	ROOT object I/O requires every class to have either a default constructor or an I/O constructor. 
+  //constructor
+  
+  //note from the ROOT documentation
+/*  The Default Constructor
+  ROOT object I/O requires every class to have either a default constructor or an I/O constructor. 
  A default constructor is a constructor with zero parameters or with one or more parameters all with default values. 
  An I/O constructor is a constructor with exactly one parameter which type is a pointer to one of the type 
  marked as an 'io constructor type'. We will come back to this context in a few paragraphs. This default or I/O 
@@ -45,7 +45,7 @@ KEvent::KEvent(void)
  
  And, I broke that rule in the KHLAEvent because I allocate memory for the TClonesArrays.
  */
-	InitializeMembers();
+  InitializeMembers();
 
 }
 
@@ -56,8 +56,8 @@ KEvent::KEvent(const KEvent &anEvent)
   //HLA or Raw dara. However, when you're using the KRawEvent and KHLAEvent, those
   //classes have their own copy constructors.
   
-	CopyLocalMembers(anEvent);
-	
+  CopyLocalMembers(anEvent);
+  
 }
 
 KEvent& KEvent::operator=(const KEvent &anEvent)
@@ -65,139 +65,139 @@ KEvent& KEvent::operator=(const KEvent &anEvent)
   //Assignment operator - copyies local KEvent variables only
   
 #ifdef _K_DEBUG_EVENT_ASSIGNOP
-	cout << "base = base" << endl;
+  cout << "base = base" << endl;
 #endif
-	if(&anEvent == this) return *this;
-	
-	CopyLocalMembers(anEvent);
-	
-	return *this;
+  if(&anEvent == this) return *this;
+  
+  CopyLocalMembers(anEvent);
+  
+  return *this;
 }
 
 void KEvent::CopyLocalMembers(const KEvent &anEvent)
 {
-	
-	SetEventTriggerStamp(anEvent.GetEventTriggerStamp());
-	
-	SetTriggerType(anEvent.GetTriggerType()); 
-	//SetDetectorStatusWord(anEvent.GetDetectorStatusWord());
-	//SetBlindnessWord(anEvent.GetBlindnessWord());
-	
-	
+  
+  SetEventTriggerStamp(anEvent.GetEventTriggerStamp());
+  
+  SetTriggerType(anEvent.GetTriggerType()); 
+  //SetDetectorStatusWord(anEvent.GetDetectorStatusWord());
+  //SetBlindnessWord(anEvent.GetBlindnessWord());
+  
+  
 }
 
 KEvent::~KEvent(void) 
 {
-	Clear("C");
+  Clear("C");
 }
 
 void KEvent::Clear(Option_t * /*anOption*/)
 {
-	//
+  //
   
-	//delete any memory allocated by the KEvent class here that
-	//needs to be deleted for each event -- but not the TClonesArrays. Clear should be called 
-	//after every event so that the TClonesArrays are cleared. 
-	
-	InitializeMembers();
+  //delete any memory allocated by the KEvent class here that
+  //needs to be deleted for each event -- but not the TClonesArrays. Clear should be called 
+  //after every event so that the TClonesArrays are cleared. 
+  
+  InitializeMembers();
 }
 
 
-void KEvent::InitializeMembers(void)	
+void KEvent::InitializeMembers(void)  
 {
   //initializes local data members
   
-	//WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
-	//ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-	
-	SetEventTriggerStamp(-99);
-	
-	SetTriggerType(0); //initialize this to zero, instead of -99 so that AddTriggerType works.
-	//SetDetectorStatusWord(-99);
-	//SetBlindnessWord(-99);
-		
+  //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
+  //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
+  
+  SetEventTriggerStamp(-99);
+  
+  SetTriggerType(0); //initialize this to zero, instead of -99 so that AddTriggerType works.
+  //SetDetectorStatusWord(-99);
+  //SetBlindnessWord(-99);
+    
 }
 
 Bool_t KEvent::operator==(const KEvent &anEvent) const
 {
-	//returns true of both events are EXACTLY the same
-	//this is most useful as a test of the copy constructors
-	return IsSame(anEvent,false);
+  //returns true of both events are EXACTLY the same
+  //this is most useful as a test of the copy constructors
+  return IsSame(anEvent,false);
 }
 
 Bool_t KEvent::IsSame(const KEvent &anEvent, Bool_t bPrint) const
 {
-	//same as operator==, but with the option to print out whenever it finds
-	//a difference.
-	
-	Bool_t bIsEqual = true; //assume its true, then test for differences
-	
-	if(fEventTriggerStamp != anEvent.fEventTriggerStamp){
-		if (bPrint) 
-			cout << "KEvent fEventTriggerStamp Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}
-	
-	if(fTriggerType != anEvent.fTriggerType){
-		if (bPrint) 
-			cout << "KEvent fTriggerType Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}
-	
-	
-	/*if(fDetectorStatusWord != anEvent.fDetectorStatusWord){
-		if (bPrint) 
-			cout << "KEvent fDetectorStatusWord Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}*/
-	
-	/*if(fBlindnessWord != anEvent.fBlindnessWord){
-		if (bPrint) 
-			cout << "KEvent fBlindnessWord Not Equal" << endl;		
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  
-	}*/
-		
-	return bIsEqual;
+  //same as operator==, but with the option to print out whenever it finds
+  //a difference.
+  
+  Bool_t bIsEqual = true; //assume its true, then test for differences
+  
+  if(fEventTriggerStamp != anEvent.fEventTriggerStamp){
+    if (bPrint) 
+      cout << "KEvent fEventTriggerStamp Not Equal" << endl;    
+    bIsEqual = false;
+    if(!bPrint)
+      return false;  
+  }
+  
+  if(fTriggerType != anEvent.fTriggerType){
+    if (bPrint) 
+      cout << "KEvent fTriggerType Not Equal" << endl;    
+    bIsEqual = false;
+    if(!bPrint)
+      return false;  
+  }
+  
+  
+  /*if(fDetectorStatusWord != anEvent.fDetectorStatusWord){
+    if (bPrint) 
+      cout << "KEvent fDetectorStatusWord Not Equal" << endl;   
+    bIsEqual = false;
+    if(!bPrint)
+      return false;  
+  }*/
+  
+  /*if(fBlindnessWord != anEvent.fBlindnessWord){
+    if (bPrint) 
+      cout << "KEvent fBlindnessWord Not Equal" << endl;    
+    bIsEqual = false;
+    if(!bPrint)
+      return false;  
+  }*/
+    
+  return bIsEqual;
 }
 
 
 Bool_t KEvent::IsBlind(void) const 
 {
-	//returns true if you are officially Blind by this event. 
-	//If this returns true, then you should not analyze this event.
-	//
+  //returns true if you are officially Blind by this event. 
+  //If this returns true, then you should not analyze this event.
+  //
   //currently, we do not have a blindness scheme for Edelweiss
   //so this method will always return false.
   
-	//check the fBlindnessWord for a particular bit pattern
-	return false;
+  //check the fBlindnessWord for a particular bit pattern
+  return false;
 
 }  
 
 Double_t KEvent::GetSecPerStamp(void) const
 {
-	//returns the number of seconds that each Opera stamp spans.
-	//Currently, each stamp value is 10 microseconds long. 
-	//Actually there is an .8% deviation from 10 microseconds due to 
-	//6 MHz base frequency in the Super Cluzel which is reduced to 
-	//to a 10.08? microsends period length. This seems to be a reduction of 65 
-	//cycles to one. A redcution of 60 cycles to one should be much closer to 
-	//10 microseconds in fact 1.00000000000000008e-05 s long.
-	return 1.e-5;
+  //returns the number of seconds that each Opera stamp spans.
+  //Currently, each stamp value is 10 microseconds long. 
+  //Actually there is an .8% deviation from 10 microseconds due to 
+  //6 MHz base frequency in the Super Cluzel which is reduced to 
+  //to a 10.08? microsends period length. This seems to be a reduction of 65 
+  //cycles to one. A redcution of 60 cycles to one should be much closer to 
+  //10 microseconds in fact 1.00000000000000008e-05 s long.
+  return 1.e-5;
 }
 
 Double_t KEvent::GetStampTime(void) const
 {
-	//returns the stamp time in seconds.  
-	//return GetSecPerStamp() * GetEventTriggerStamp();
-	
-	return GetSecPerStamp() * GetEventTriggerStamp();
+  //returns the stamp time in seconds.  
+  //return GetSecPerStamp() * GetEventTriggerStamp();
+  
+  return GetSecPerStamp() * GetEventTriggerStamp();
 }

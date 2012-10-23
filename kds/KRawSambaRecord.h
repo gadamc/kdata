@@ -15,19 +15,19 @@
 
 class KRawSambaRecord : public KSambaRecord
 {
-	
+  
 public:
   //Constructors
   KRawSambaRecord(void); //MUST have a default constructor
-	KRawSambaRecord(const KRawSambaRecord &aRec);
-	KRawSambaRecord& operator=(const KRawSambaRecord &aRec);
+  KRawSambaRecord(const KRawSambaRecord &aRec);
+  KRawSambaRecord& operator=(const KRawSambaRecord &aRec);
   virtual ~KRawSambaRecord(void);
-	virtual void Clear(Option_t *anOpt = "C");
-	Bool_t IsSame(const KRawSambaRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KRawSambaRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KRawSambaRecord &aRec) const { return !(*this==aRec); }
-	virtual void Compact(void);
-	
+  virtual void Clear(Option_t *anOpt = "C");
+  Bool_t IsSame(const KRawSambaRecord &aRec, Bool_t bPrint = false) const;
+  Bool_t operator==(const KRawSambaRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KRawSambaRecord &aRec) const { return !(*this==aRec); }
+  virtual void Compact(void);
+  
   void SetSambaDelay(Double32_t aVal) {fSambaDelay = aVal;  }
   void SetTriggerBit1(Int_t aVal) {fTriggerBit1 = aVal;  }
   void SetTriggerBit2(Int_t aVal) {fTriggerBit2 = aVal;  }
@@ -44,17 +44,17 @@ public:
   Bool_t GetIsStreamMode(void) const { return fStreamMode;}
   
 private:
-	
+  
   Double32_t fSambaDelay; 
   UInt_t fTriggerBit1; //Samba's Liste1 event trigger bit map
-	UInt_t fTriggerBit2; //Samba's Liste2 event trigger bit map
+  UInt_t fTriggerBit2; //Samba's Liste2 event trigger bit map
   string fDataSource;
   Double32_t fDataBufferLength; //size of Samba's internal data buffer in ms
   Bool_t fStreamMode;
   
-	//private methods
-	void InitializeMembers(void);
-	void CopyLocalMembers(const KRawSambaRecord &aRec);
+  //private methods
+  void InitializeMembers(void);
+  void CopyLocalMembers(const KRawSambaRecord &aRec);
   ClassDef(KRawSambaRecord,3);
 };
 

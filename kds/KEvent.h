@@ -28,7 +28,7 @@ public:
   virtual KEvent& operator=(const KEvent &anEvent);
   Bool_t IsSame(const KEvent &anEvent, Bool_t bPrint = false) const;
   Bool_t operator==(const KEvent &anEvent) const;
-  Bool_t operator!=(const KEvent &anEvent) const { return !(*this==anEvent); }	
+  Bool_t operator!=(const KEvent &anEvent) const { return !(*this==anEvent); }  
   virtual void Clear(Option_t *option = "C");
   virtual void Compact(void) {/*nothing to compact */}
   static const char* GetClassName() {return "KEvent"; }

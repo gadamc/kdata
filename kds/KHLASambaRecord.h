@@ -15,24 +15,24 @@
 
 class KHLASambaRecord : public KSambaRecord
 {
-	
+  
 public:
   //Constructors
   KHLASambaRecord(void); //MUST have a default constructor
-	KHLASambaRecord(const KHLASambaRecord &aRec);
-	KHLASambaRecord& operator=(const KHLASambaRecord &aRec);
+  KHLASambaRecord(const KHLASambaRecord &aRec);
+  KHLASambaRecord& operator=(const KHLASambaRecord &aRec);
   virtual ~KHLASambaRecord(void);
-	virtual void Clear(Option_t *anOpt = "C");
-	Bool_t IsSame(const KHLASambaRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KHLASambaRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KHLASambaRecord &aRec) const { return !(*this==aRec); }
-	virtual void Compact(void);
-	
+  virtual void Clear(Option_t *anOpt = "C");
+  Bool_t IsSame(const KHLASambaRecord &aRec, Bool_t bPrint = false) const;
+  Bool_t operator==(const KHLASambaRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KHLASambaRecord &aRec) const { return !(*this==aRec); }
+  virtual void Compact(void);
+  
 private:
-	
-	//private methods
-	void InitializeMembers(void);
-	void CopyLocalMembers(const KHLASambaRecord &aRec);
+  
+  //private methods
+  void InitializeMembers(void);
+  void CopyLocalMembers(const KHLASambaRecord &aRec);
   ClassDef(KHLASambaRecord,2);
 };
 

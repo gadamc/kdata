@@ -23,14 +23,14 @@ KMuonModuleRecord::KMuonModuleRecord(void)
 {
   //default constructor
   
-	InitializeMembers();
+  InitializeMembers();
 }
 
 KMuonModuleRecord::~KMuonModuleRecord(void)
 {
   //destructor
   
-	Clear("C");
+  Clear("C");
 }
 
 KMuonModuleRecord::KMuonModuleRecord(const KMuonModuleRecord &aRec)
@@ -38,34 +38,34 @@ KMuonModuleRecord::KMuonModuleRecord(const KMuonModuleRecord &aRec)
 {
   //copy constructor
   
-	CopyLocalMembers(aRec);
-	
+  CopyLocalMembers(aRec);
+  
 }
 
 KMuonModuleRecord& KMuonModuleRecord::operator=(const KMuonModuleRecord &aRec)
 {
   //assignment operator
   
-	if(&aRec == this) return *this;
-	
-	CopyLocalMembers(aRec);
-	
-	return *this;
+  if(&aRec == this) return *this;
+  
+  CopyLocalMembers(aRec);
+  
+  return *this;
 }
 
 void KMuonModuleRecord::CopyLocalMembers(const KMuonModuleRecord &aRec)
 {
-	SetModuleNumber(aRec.GetModuleNumber());
-	SetTdc(0, aRec.GetTdc(0));
-	SetAdc(0, aRec.GetAdc(0));
-	SetTdc(1, aRec.GetTdc(1));
-	SetAdc(1, aRec.GetAdc(1));
-	SetAdcGroup(aRec.GetAdcGroup());
+  SetModuleNumber(aRec.GetModuleNumber());
+  SetTdc(0, aRec.GetTdc(0));
+  SetAdc(0, aRec.GetAdc(0));
+  SetTdc(1, aRec.GetTdc(1));
+  SetAdc(1, aRec.GetAdc(1));
+  SetAdcGroup(aRec.GetAdcGroup());
 }
 
 void KMuonModuleRecord::Clear(Option_t *anopt)
 {
-	//Clear the base classes and then clear/delete any local
+  //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
   //in the case that instances of this object are stored
   //inside of a TClonesArray
@@ -73,26 +73,26 @@ void KMuonModuleRecord::Clear(Option_t *anopt)
   //TClonesArray::Clear("C")
 
   TObject::Clear(anopt);
-	
+  
   //Clear and delete local objects here. 
-	
+  
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
-	
+  
 }
 
 void KMuonModuleRecord::InitializeMembers(void)
 {
-	//Init local members. 
-	
+  //Init local members. 
+  
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-	SetModuleNumber(-99);
-	SetTdc(0, -99);
-	SetAdc(0, -99);
-	SetTdc(1, -99);
-	SetAdc(1, -99);
-	SetAdcGroup(-99);
+  SetModuleNumber(-99);
+  SetTdc(0, -99);
+  SetAdc(0, -99);
+  SetTdc(1, -99);
+  SetAdc(1, -99);
+  SetAdcGroup(-99);
 }
 
 
@@ -106,10 +106,10 @@ Int_t KMuonModuleRecord::GetTdc(Int_t i) const
   //If a -1 is returned, this is because the value was not set in the 
   //data stream, or i was invalid (not equal to 0 or 1).
   
-	if(i < kNumPmtsPerMuonModule && i >= 0)
-		return fTdc[i];
-	else
-		return -1;
+  if(i < kNumPmtsPerMuonModule && i >= 0)
+    return fTdc[i];
+  else
+    return -1;
 } 
 
 Int_t KMuonModuleRecord::GetAdc(Int_t i) const
@@ -121,10 +121,10 @@ Int_t KMuonModuleRecord::GetAdc(Int_t i) const
   //If a -1 is returned, this is because the value was not set in the 
   //data stream, or i was invalid (not equal to 0 or 1).
   
-	if(i < kNumPmtsPerMuonModule && i >= 0)
-		return fAdc[i];
-	else
-		return -1;
+  if(i < kNumPmtsPerMuonModule && i >= 0)
+    return fAdc[i];
+  else
+    return -1;
 }
 
 Int_t KMuonModuleRecord::SetTdc(Int_t i, Int_t val)
@@ -137,12 +137,12 @@ Int_t KMuonModuleRecord::SetTdc(Int_t i, Int_t val)
   //If a -1 is returned, this is i was invalid (not equal to 0 or 1).
 
   
-	if(i < kNumPmtsPerMuonModule && i >= 0){
-		fTdc[i] = val;
-		return val;
-	}
-	else
-		return -1;
+  if(i < kNumPmtsPerMuonModule && i >= 0){
+    fTdc[i] = val;
+    return val;
+  }
+  else
+    return -1;
 }
 
 Int_t KMuonModuleRecord::SetAdc(Int_t i, Int_t val)
@@ -155,12 +155,12 @@ Int_t KMuonModuleRecord::SetAdc(Int_t i, Int_t val)
   //If a -1 is returned, this is i was invalid (not equal to 0 or 1).
 
   
-	if(i < kNumPmtsPerMuonModule && i >= 0){
-		fAdc[i] = val;
-		return val;
-	}
-	else
-		return -1;
+  if(i < kNumPmtsPerMuonModule && i >= 0){
+    fAdc[i] = val;
+    return val;
+  }
+  else
+    return -1;
 }
 
 Bool_t KMuonModuleRecord::IsSame(const KMuonModuleRecord &aRec, Bool_t bPrint) const
@@ -169,74 +169,74 @@ Bool_t KMuonModuleRecord::IsSame(const KMuonModuleRecord &aRec, Bool_t bPrint) c
   //for it to be verbose and list to standard out the differences.
   //Use bPrint = true for verbosity. 
   
-	Bool_t bIsEqual = true; //assume its true, then test for differences
-	
-	
-	
-	if(fModuleNumber != aRec.fModuleNumber){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KMuonModuleRecord fModuleNumber Not Equal. lhs: " 
-			<< fModuleNumber << " != rhs " << aRec.fModuleNumber << endl;	
-		else
-			return false;  
-	}
-	
-	for(Int_t i = 0; i < kNumPmtsPerMuonModule; i++){
-		if(fTdc[i] != aRec.fTdc[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KMuonModuleRecord fTdc["<<i<<"] Not Equal. lhs: " 
-				<< fTdc[i] << " != rhs " << aRec.fTdc[i] << endl;			
-			else
-				return false;  
-		}
-	}
-	
-	for(Int_t i = 0; i < kNumPmtsPerMuonModule; i++){
-		if(fAdc[i] != aRec.fAdc[i]){
-			bIsEqual = false;
-			if (bPrint) 
-				cout << "KMuonModuleRecord fAdc["<<i<<"] Not Equal. lhs: " 
-				<< fAdc[i] << " != rhs " << aRec.fAdc[i] << endl;			
-			else
-				return false;  
-		}
-	}
-	
-	if(fAdcGroup != aRec.fAdcGroup){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KMuonModuleRecord fAdcGroup Not Equal. lhs: " 
-			<< fAdcGroup << " != rhs " << aRec.fAdcGroup << endl;		
-		else
-			return false;  
-	}
-	return bIsEqual;
+  Bool_t bIsEqual = true; //assume its true, then test for differences
+  
+  
+  
+  if(fModuleNumber != aRec.fModuleNumber){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KMuonModuleRecord fModuleNumber Not Equal. lhs: " 
+      << fModuleNumber << " != rhs " << aRec.fModuleNumber << endl; 
+    else
+      return false;  
+  }
+  
+  for(Int_t i = 0; i < kNumPmtsPerMuonModule; i++){
+    if(fTdc[i] != aRec.fTdc[i]){
+      bIsEqual = false;
+      if (bPrint) 
+        cout << "KMuonModuleRecord fTdc["<<i<<"] Not Equal. lhs: " 
+        << fTdc[i] << " != rhs " << aRec.fTdc[i] << endl;     
+      else
+        return false;  
+    }
+  }
+  
+  for(Int_t i = 0; i < kNumPmtsPerMuonModule; i++){
+    if(fAdc[i] != aRec.fAdc[i]){
+      bIsEqual = false;
+      if (bPrint) 
+        cout << "KMuonModuleRecord fAdc["<<i<<"] Not Equal. lhs: " 
+        << fAdc[i] << " != rhs " << aRec.fAdc[i] << endl;     
+      else
+        return false;  
+    }
+  }
+  
+  if(fAdcGroup != aRec.fAdcGroup){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KMuonModuleRecord fAdcGroup Not Equal. lhs: " 
+      << fAdcGroup << " != rhs " << aRec.fAdcGroup << endl;   
+    else
+      return false;  
+  }
+  return bIsEqual;
 }
 
 Bool_t KMuonModuleRecord::IsNeutronCounter(void)
 {
-	//If fMuonModuleNumber is set to 50 or 51, then this event
-	//contains information for the Neutron Counter and not for the Muon
-	//Veto System. 
-	
-	return (fModuleNumber == 50 || fModuleNumber == 51);
+  //If fMuonModuleNumber is set to 50 or 51, then this event
+  //contains information for the Neutron Counter and not for the Muon
+  //Veto System. 
+  
+  return (fModuleNumber == 50 || fModuleNumber == 51);
 }
 
 void KMuonModuleRecord::Compact(void)
 {
-	//make the event class as small as possible. this calls 'Compact' for all member
-	//variables that are KDS classes, member variables that can be compacted (such as TBits)
-	//and base classes
-	
+  //make the event class as small as possible. this calls 'Compact' for all member
+  //variables that are KDS classes, member variables that can be compacted (such as TBits)
+  //and base classes
+  
 }
 
 Bool_t KMuonModuleRecord::IsHardTrigger()
 {
-	//returns true if both TDC and ADC values have a value > -1.
-	//Note, this means that a TDC value of 0 indicates a
-	//trigger. 
-	
-	return (  (fTdc[0] > -1) && (fTdc[1] > -1) && (fAdc[0] > -1) && (fAdc[1] > -1) );
+  //returns true if both TDC and ADC values have a value > -1.
+  //Note, this means that a TDC value of 0 indicates a
+  //trigger. 
+  
+  return (  (fTdc[0] > -1) && (fTdc[1] > -1) && (fAdc[0] > -1) && (fAdc[1] > -1) );
 }

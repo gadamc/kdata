@@ -14,25 +14,25 @@
 
 class KRawMuonModuleRecord : public KMuonModuleRecord
 {
-	
+  
 public:
   //Constructors
   KRawMuonModuleRecord(void);
-	KRawMuonModuleRecord(const KRawMuonModuleRecord &aRec);
-	KRawMuonModuleRecord& operator=(const KRawMuonModuleRecord &aRec);
+  KRawMuonModuleRecord(const KRawMuonModuleRecord &aRec);
+  KRawMuonModuleRecord& operator=(const KRawMuonModuleRecord &aRec);
   virtual ~KRawMuonModuleRecord(void);
-	virtual void Clear(Option_t *anOpt);
-	Bool_t IsSame(const KRawMuonModuleRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KRawMuonModuleRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KRawMuonModuleRecord &aRec) const { return !(*this==aRec); }
-	virtual void Compact(void);
-	
-	
+  virtual void Clear(Option_t *anOpt);
+  Bool_t IsSame(const KRawMuonModuleRecord &aRec, Bool_t bPrint = false) const;
+  Bool_t operator==(const KRawMuonModuleRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KRawMuonModuleRecord &aRec) const { return !(*this==aRec); }
+  virtual void Compact(void);
+  
+  
 private:
-		
-	//private methods
-	void InitializeMembers(void);
-	void CopyLocalMembers(const KRawMuonModuleRecord &aRec);
+    
+  //private methods
+  void InitializeMembers(void);
+  void CopyLocalMembers(const KRawMuonModuleRecord &aRec);
   ClassDef(KRawMuonModuleRecord,2);
 };
 

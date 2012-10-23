@@ -31,9 +31,9 @@ public:
   virtual void Clear(Option_t *opt = "C");
   KRawBoloPulseRecord& operator=(const KRawBoloPulseRecord &aRec);
   Bool_t IsSame(const KRawBoloPulseRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KRawBoloPulseRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KRawBoloPulseRecord &aRec) const { return !(*this==aRec); }
-	virtual void Compact(void);
+  Bool_t operator==(const KRawBoloPulseRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KRawBoloPulseRecord &aRec) const { return !(*this==aRec); }
+  virtual void Compact(void);
   
   virtual const vector<Short_t>& GetTrace(void) const {return fTrace;}  
   virtual Double32_t GetDaqAmplitude(void) const {return fDaqAmplitude;  }
@@ -55,8 +55,8 @@ public:
   virtual TH1D* GetHist(void);
   virtual TGraph* GetGraph(void);
 
-  KRawBolometerRecord* GetBolometerRecord(void) const {return (KRawBolometerRecord*)fBolometerRecord.GetObject();	}
-	void SetBolometerRecord(KRawBolometerRecord *aRec) {fBolometerRecord = aRec;	}
+  KRawBolometerRecord* GetBolometerRecord(void) const {return (KRawBolometerRecord*)fBolometerRecord.GetObject(); }
+  void SetBolometerRecord(KRawBolometerRecord *aRec) {fBolometerRecord = aRec;  }
   
 private:
 

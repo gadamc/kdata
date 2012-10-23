@@ -35,8 +35,8 @@ public:
   virtual void Compact(void);
 
 
-  KAmpBolometerRecord* GetBolometerRecord(void) const {return (KAmpBolometerRecord*)fBolometerRecord.GetObject();	}
-  void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;	}
+  KAmpBolometerRecord* GetBolometerRecord(void) const {return (KAmpBolometerRecord*)fBolometerRecord.GetObject(); }
+  void SetBolometerRecord(KAmpBolometerRecord *aRec) {fBolometerRecord = aRec;  }
 
   KPulseAnalysisRecord* GetPulseAnalysisRecord(Int_t i) const;
   KPulseAnalysisRecord* GetPulseAnalysisRecord(const char* name) const;

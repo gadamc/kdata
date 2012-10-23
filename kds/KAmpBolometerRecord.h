@@ -24,30 +24,30 @@ class KAmpBolometerRecord : public KBolometerRecord
 public:
   //Constructors
   KAmpBolometerRecord(void);  //MUST have a default constructor
-	KAmpBolometerRecord(const KAmpBolometerRecord &aRec);
-	KAmpBolometerRecord& operator=(const KAmpBolometerRecord &aRec);
+  KAmpBolometerRecord(const KAmpBolometerRecord &aRec);
+  KAmpBolometerRecord& operator=(const KAmpBolometerRecord &aRec);
   virtual ~KAmpBolometerRecord(void);
-	virtual void Clear(Option_t *opt = "C");
-	Bool_t IsSame(const KAmpBolometerRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KAmpBolometerRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KAmpBolometerRecord &aRec) const { return !(*this==aRec); }
-	void Compact(void); //make the class as small as possible.
+  virtual void Clear(Option_t *opt = "C");
+  Bool_t IsSame(const KAmpBolometerRecord &aRec, Bool_t bPrint = false) const;
+  Bool_t operator==(const KAmpBolometerRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KAmpBolometerRecord &aRec) const { return !(*this==aRec); }
+  void Compact(void); //make the class as small as possible.
 
-	KRawSambaRecord* GetSambaRecord(void) const {return (KRawSambaRecord*)fSambaRecord.GetObject();}
-	KAmpBoloPulseRecord* GetPulseRecord(Int_t i) const;
+  KRawSambaRecord* GetSambaRecord(void) const {return (KRawSambaRecord*)fSambaRecord.GetObject();}
+  KAmpBoloPulseRecord* GetPulseRecord(Int_t i) const;
   Int_t GetNumPulseRecords(void) const { return  fPulseRecords.GetEntriesFast(); }
 
-	void SetSambaRecord(KRawSambaRecord *aRec) {fSambaRecord = aRec;	}
-	void AddPulseRecord(KAmpBoloPulseRecord* aPulseRecord);
+  void SetSambaRecord(KRawSambaRecord *aRec) {fSambaRecord = aRec;  }
+  void AddPulseRecord(KAmpBoloPulseRecord* aPulseRecord);
 
   TRefArray& pulseRecords() {return fPulseRecords;}
 
 
 private:
 
-	//private methods
-	void InitializeMembers(void);
-	void CopyLocalMembers(const KAmpBolometerRecord &aRec);
+  //private methods
+  void InitializeMembers(void);
+  void CopyLocalMembers(const KAmpBolometerRecord &aRec);
 
 
   ClassDef(KAmpBolometerRecord,3);

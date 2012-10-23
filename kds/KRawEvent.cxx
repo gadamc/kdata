@@ -134,7 +134,7 @@ KRawEvent& KRawEvent::operator=(const KRawEvent &anEvent)
   CopyLocalMembers(anEvent);
   CopyClonesArrays(anEvent);
 
-  return *this;	
+  return *this; 
 }
 
 
@@ -571,7 +571,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
 
   if(!fMuonSystem.IsSame(anEvent.fMuonSystem, bPrint)){
     if (bPrint) 
-      cout << "KRawEvent fMuonSystem Not Equal" << endl;		
+      cout << "KRawEvent fMuonSystem Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;
@@ -586,7 +586,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
       if(bolo != 0 && boloOther != 0){
         if(!bolo->IsSame(*boloOther, bPrint)){
           if (bPrint) 
-            cout << "KRawEvent KRawBolometerRecord number " << i << " Not Equal" << endl;		
+            cout << "KRawEvent KRawBolometerRecord number " << i << " Not Equal" << endl;   
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -640,7 +640,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
         }
         else {
           if(bPrint)
-            cout << "KRawEvent KRawBolometerRecord number " << i << " Number of Pulse Records Not Equal" << endl;	
+            cout << "KRawEvent KRawBolometerRecord number " << i << " Number of Pulse Records Not Equal" << endl; 
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -661,7 +661,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
   }
   else {
     if (bPrint) 
-      cout << "KRawEvent size of Bolo Array Not Equal" << endl;		
+      cout << "KRawEvent size of Bolo Array Not Equal" << endl;   
     bIsEqual = false;
     if(!bPrint)
       return false;
@@ -676,7 +676,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
       if(s != 0 && sOther != 0){
         if(!s->IsSame(*sOther, bPrint)){
           if (bPrint) 
-            cout << "KRawEvent KRawBoloPulseRecord number " << i << " Not Equal" << endl;		
+            cout << "KRawEvent KRawBoloPulseRecord number " << i << " Not Equal" << endl;   
           bIsEqual = false;
           if(!bPrint)
             return false;
@@ -686,7 +686,7 @@ Bool_t KRawEvent::IsSame(const KRawEvent &anEvent, Bool_t bPrint) const
   }
   else {
     if (bPrint) 
-      cout << "KRawEvent size of muon module array Not Equal" << endl;		
+      cout << "KRawEvent size of muon module array Not Equal" << endl;    
     bIsEqual = false;
     if(!bPrint)
       return false;

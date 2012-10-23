@@ -27,29 +27,29 @@ class KRawBolometerRecord : public KBolometerRecord
 public:
   //Constructors
   KRawBolometerRecord(void);  //MUST have a default constructor
-	KRawBolometerRecord(const KRawBolometerRecord &aRec);
-	KRawBolometerRecord& operator=(const KRawBolometerRecord &aRec);
+  KRawBolometerRecord(const KRawBolometerRecord &aRec);
+  KRawBolometerRecord& operator=(const KRawBolometerRecord &aRec);
   virtual ~KRawBolometerRecord(void);
-	virtual void Clear(Option_t *opt = "C");
-	Bool_t IsSame(const KRawBolometerRecord &aRec, Bool_t bPrint = false) const;
-	Bool_t operator==(const KRawBolometerRecord &aRec) const { return IsSame(aRec,false); }
-	Bool_t operator!=(const KRawBolometerRecord &aRec) const { return !(*this==aRec); }
-	void Compact(void); //make the class as small as possible.
+  virtual void Clear(Option_t *opt = "C");
+  Bool_t IsSame(const KRawBolometerRecord &aRec, Bool_t bPrint = false) const;
+  Bool_t operator==(const KRawBolometerRecord &aRec) const { return IsSame(aRec,false); }
+  Bool_t operator!=(const KRawBolometerRecord &aRec) const { return !(*this==aRec); }
+  void Compact(void); //make the class as small as possible.
 
-	KRawSambaRecord* GetSambaRecord(void) const {return (KRawSambaRecord*)fSambaRecord.GetObject();}
-	KRawBoloPulseRecord* GetPulseRecord(Int_t i) const;
+  KRawSambaRecord* GetSambaRecord(void) const {return (KRawSambaRecord*)fSambaRecord.GetObject();}
+  KRawBoloPulseRecord* GetPulseRecord(Int_t i) const;
   Int_t GetNumPulseRecords(void) const {return (fPulseRecords.GetEntriesFast());}
 
-	void SetSambaRecord(KRawSambaRecord *aRec) {fSambaRecord = aRec;	}
-	void AddPulseRecord(KRawBoloPulseRecord* aPulseRecord);
+  void SetSambaRecord(KRawSambaRecord *aRec) {fSambaRecord = aRec;  }
+  void AddPulseRecord(KRawBoloPulseRecord* aPulseRecord);
 
   TRefArray& pulseRecords(void) { return fPulseRecords;}
 
 private:
 
-	//private methods
-	void InitializeMembers(void);
-	void CopyLocalMembers(const KRawBolometerRecord &aRec);
+  //private methods
+  void InitializeMembers(void);
+  void CopyLocalMembers(const KRawBolometerRecord &aRec);
 
 
   ClassDef(KRawBolometerRecord,3);

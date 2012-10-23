@@ -35,26 +35,26 @@ KRawBoloPulseRecord::KRawBoloPulseRecord(const KRawBoloPulseRecord &aRec)
 {
   //copy constructor 
   
-	CopyLocalMembers(aRec);
-	
+  CopyLocalMembers(aRec);
+  
 }
 
 KRawBoloPulseRecord& KRawBoloPulseRecord::operator=(const KRawBoloPulseRecord &aRec)
 {
-	if(&aRec == this) return *this;
-	
-	this->KBoloPulseRecord::operator=(aRec);
-	
-	CopyLocalMembers(aRec);
-	
-	return *this;
+  if(&aRec == this) return *this;
+  
+  this->KBoloPulseRecord::operator=(aRec);
+  
+  CopyLocalMembers(aRec);
+  
+  return *this;
 }
 
 void KRawBoloPulseRecord::CopyLocalMembers(const KRawBoloPulseRecord &aRec)
 {
-	//used in the assignment operator method, this copies over the local 
+  //used in the assignment operator method, this copies over the local 
   //data members. It also set sets fBolometerRecord (the TRef pointer) to zero.
-  	
+    
   fTrace = aRec.fTrace;   
   fDaqAmplitude = aRec.fDaqAmplitude;   
   fDaqAmplitudeBaseline = aRec.fDaqAmplitudeBaseline;   
@@ -106,64 +106,64 @@ void KRawBoloPulseRecord::InitializeMembers(void)
 
 Bool_t KRawBoloPulseRecord::IsSame(const KRawBoloPulseRecord &aRec, Bool_t bPrint) const
 {
-	//Compares two objects and their member variables to test for equality.
-	//If bPrint is set to true, then a message for each member variable that is different
-	//will print to standard out. Otherwise, this method will return false and quit
-	//checking member variables as soon as it finds a unequal data member.
-	
-	Bool_t bIsEqual = true; //assume its true, then test for differences
-	
-	//call the base class's IsSame methods
-	if(!this->KBoloPulseRecord::IsSame(aRec,bPrint)){
-		bIsEqual = false;
-		if(!bPrint)
-			return false;  //if we're not printing out, just return false at first failure
+  //Compares two objects and their member variables to test for equality.
+  //If bPrint is set to true, then a message for each member variable that is different
+  //will print to standard out. Otherwise, this method will return false and quit
+  //checking member variables as soon as it finds a unequal data member.
+  
+  Bool_t bIsEqual = true; //assume its true, then test for differences
+  
+  //call the base class's IsSame methods
+  if(!this->KBoloPulseRecord::IsSame(aRec,bPrint)){
+    bIsEqual = false;
+    if(!bPrint)
+      return false;  //if we're not printing out, just return false at first failure
                      //the operator== method uses this functionality.
-	}
-	
-	//HMM...if the following lines of code produce a lot of Not Equal messages to cout, its probably
-	//because I'm asking if two floating point values are exactly the same!
-	//this is inherently dangerous.  its probably better to specify an allowed 
-	//range that's on the order of machine error. 
-	
+  }
+  
+  //HMM...if the following lines of code produce a lot of Not Equal messages to cout, its probably
+  //because I'm asking if two floating point values are exactly the same!
+  //this is inherently dangerous.  its probably better to specify an allowed 
+  //range that's on the order of machine error. 
+  
 
-	
+  
   
   if(fTrace != aRec.fTrace){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fTrace Not Equal. " << endl;
-		else
-			return false;  
-	}
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KRawBoloPulseRecord fTrace Not Equal. " << endl;
+    else
+      return false;  
+  }
   
-	
-	if(fDaqAmplitude != aRec.fDaqAmplitude){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fDaqAmplitude Not Equal. lhs: " 
-			<< fDaqAmplitude << " != rhs " << aRec.fDaqAmplitude << endl;		
-		else
-			return false;  
-	}
-	
+  
+  if(fDaqAmplitude != aRec.fDaqAmplitude){
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KRawBoloPulseRecord fDaqAmplitude Not Equal. lhs: " 
+      << fDaqAmplitude << " != rhs " << aRec.fDaqAmplitude << endl;   
+    else
+      return false;  
+  }
+  
   if(fDaqAmplitudeBaseline != aRec.fDaqAmplitudeBaseline){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fDaqAmplitudeBaseline Not Equal. lhs: " 
-			<< fDaqAmplitudeBaseline << " != rhs " << aRec.fDaqAmplitudeBaseline << endl;		
-		else
-			return false;  
-	}
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KRawBoloPulseRecord fDaqAmplitudeBaseline Not Equal. lhs: " 
+      << fDaqAmplitudeBaseline << " != rhs " << aRec.fDaqAmplitudeBaseline << endl;   
+    else
+      return false;  
+  }
   
   if(fDaqAmplitudeBaselineNoise != aRec.fDaqAmplitudeBaselineNoise){
-		bIsEqual = false;
-		if (bPrint) 
-			cout << "KRawBoloPulseRecord fDaqAmplitudeBaselineNoise Not Equal. lhs: " 
-			<< fDaqAmplitudeBaselineNoise << " != rhs " << aRec.fDaqAmplitudeBaselineNoise << endl;		
-		else
-			return false;  
-	}
+    bIsEqual = false;
+    if (bPrint) 
+      cout << "KRawBoloPulseRecord fDaqAmplitudeBaselineNoise Not Equal. lhs: " 
+      << fDaqAmplitudeBaselineNoise << " != rhs " << aRec.fDaqAmplitudeBaselineNoise << endl;   
+    else
+      return false;  
+  }
   
   if(fPulseRiseTime != aRec.fPulseRiseTime){
     bIsEqual = false;
@@ -175,18 +175,18 @@ Bool_t KRawBoloPulseRecord::IsSame(const KRawBoloPulseRecord &aRec, Bool_t bPrin
   }
   
   
-	
-	return bIsEqual;
+  
+  return bIsEqual;
 }
 
 
 void KRawBoloPulseRecord::Compact(void)
 {
-	//make the event class as small as possible. this calls 'Compact' for all member
-	//variables that are KDS classes, member variables that can be compacted (such as TBits)
-	//and base classes
-	
-	KBoloPulseRecord::Compact();
+  //make the event class as small as possible. this calls 'Compact' for all member
+  //variables that are KDS classes, member variables that can be compacted (such as TBits)
+  //and base classes
+  
+  KBoloPulseRecord::Compact();
   
 }
 

@@ -24,7 +24,7 @@ KPulsePolarityCalculator::KPulsePolarityCalculator(void)
 
 KPulsePolarityCalculator::~KPulsePolarityCalculator(void)
 {
-	
+  
 }
 
 int KPulsePolarityCalculator::GetExpectedPolarity(KRawBoloPulseRecord *p, KRawBolometerRecord* bolo)
