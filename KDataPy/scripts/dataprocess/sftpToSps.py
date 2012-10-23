@@ -2,7 +2,7 @@
 import pexpect
 import datetime
 import sys
-import os, subprocess, shlex, re
+import os, subprocess, shlex, re, tempfile
 
 def send(username, password, item, path):
     '''
@@ -31,7 +31,8 @@ def send(username, password, item, path):
         startTime = datetime.datetime.now()
         print startTime
         p = pexpect.spawn('/usr/bin/sftp %s@%s' % (username, theRet['hostname']) , timeout=3600*24)
-        fout = file('mylog.txt', 'w')
+        fout = tempfile.NamedTemporaryFile(delete=False)
+        foutName = fout.name
         p.logfile = fout
         ssh_newkey = 'Are you sure you want to continue connecting'
         i=p.expect([ssh_newkey,'password:',pexpect.EOF])
@@ -49,9 +50,11 @@ def send(username, password, item, path):
             p.sendline('bye')
             fout.close()
             p.close()
-            with open('mylog.txt','r') as fff:
+            with open(foutName,'r') as fff:
                 theRet['log'] = fff.read()
             fff.close()
+            os.unlink(foutName)
+
         elif i==2:
             theRet['scpStdOut'] = 'fail'
             print "I either got key or connection timeout"
