@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from couchdbkit import Server, Database
-import sys, os, subprocess, datetime, string
+import sys, os, subprocess, datetime, string, math
 
 
 def submitBatchJob(scriptOut, scriptErr, script, server, dbname, docids):
@@ -53,6 +53,7 @@ def main(*argv, **kwargs):
   
   s = Server(argv[0])
   db = s[argv[1]]
+  print kwargs
   vr = db.view('proc/proc1', reduce=False, **kwargs )
     
   scriptDir = argv[2]
@@ -70,6 +71,7 @@ def main(*argv, **kwargs):
   
   for row in vr:
     doc = db[row['id']]
+    print row['id'], 'proc1 queued'
     doc['status'] = 'proc1 queued'
     db.save_doc(doc) 
     docids.append(row['id'])
@@ -79,15 +81,44 @@ def main(*argv, **kwargs):
       
   #don't forget last chunk of data files
   docids = submitBatchJob(scriptOut, scriptErr, script, argv[0], argv[1], docids)
+
+
+# format value
+def formatvalue(value):
+  if (isinstance(value,str)):
+    # #see if this string is really an int or a float
+    if value.isdigit()==True: #int
+      return int(value)
+    else: #try a float
+      try:
+        if math.isnan(float(value))==False:
+          return float(value)
+      except:
+        pass
+
+    return value.strip('" ') #strip off any quotations and extra spaces found in the value
+  else:
+    return value
       
 if __name__ == '__main__':
   myargs = []
   mykwargs = {}
   for arg in sys.argv[1:]:
     if string.find(arg, '=') == -1:
+      print arg
       myargs.append(arg)
     else:
-      mykwargs[arg.split('=')[0]]=arg.split('=')[1]
+      key, val = tuple(arg.split('='))
+      
+      if val  == 'True':
+        val = True
+      elif val == 'False':
+        val = False
+      else:
+        val = formatvalue(val)
+     
+      print key,val
+      mykwargs[key] = val
 
   main(*myargs, **mykwargs)
   
