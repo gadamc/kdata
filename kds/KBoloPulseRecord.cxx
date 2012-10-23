@@ -61,7 +61,7 @@ void KBoloPulseRecord::CopyLocalMembers(const KBoloPulseRecord &aRec)
   fPositiveTriggerAmp = aRec.fPositiveTriggerAmp;
   fNegativeTriggerAmp = aRec.fNegativeTriggerAmp;
   fState = aRec.fState; 
-  fPolarity = aRec.fPolarity;
+  fVoltage = aRec.fVoltage;
   fGain = aRec.fGain;
 
   fBoloBoxVersion = aRec.fBoloBoxVersion;
@@ -125,7 +125,7 @@ void KBoloPulseRecord::InitializeMembers(void)
   fPositiveTriggerAmp = -99999;
   fNegativeTriggerAmp = -99999;
   fState.resize(0);
-  fPolarity = -99999;
+  fVoltage = -99999;
   fGain = -999999;
   
   fBoloBoxVersion = 1.0;  //assume its bbv1 unless otherwise informed (because there is no such information in the samba header)
@@ -179,11 +179,11 @@ Bool_t KBoloPulseRecord::IsSame(const KBoloPulseRecord &aRec, Bool_t bPrint) con
        return false;  
    }
    
-  if(fPolarity != aRec.fPolarity){
+  if(fVoltage != aRec.fVoltage){
      bIsEqual = false;
      if (bPrint) 
-       cout << "KBoloPulseRecord fPolarity Not Equal. lhs: " 
-       << fPolarity << " != rhs " << aRec.fPolarity << endl;		
+       cout << "KBoloPulseRecord fVoltage Not Equal. lhs: " 
+       << fVoltage << " != rhs " << aRec.fVoltage << endl;		
      else
        return false;  
    }

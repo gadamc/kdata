@@ -11,8 +11,6 @@
 #define __KRAWBOLOMETERRECORD_H__
 
 #include "KBolometerRecord.h"
-#include "TRef.h"
-#include "TRefArray.h"
 #include "TBits.h"
 #include <vector>
 #include "KRawSambaRecord.h"
@@ -46,17 +44,15 @@ public:
 	void AddPulseRecord(KRawBoloPulseRecord* aPulseRecord);
 
   TRefArray& pulseRecords(void) { return fPulseRecords;}
-private:
 
-	TRef fSambaRecord;  //holds a pointer to the associated Samba record
-	TRefArray fPulseRecords; //holds an array of pointers to the BoloPulse sub records associated with this bolometer event
+private:
 
 	//private methods
 	void InitializeMembers(void);
 	void CopyLocalMembers(const KRawBolometerRecord &aRec);
 
 
-  ClassDef(KRawBolometerRecord,2);
+  ClassDef(KRawBolometerRecord,3);
 };
 
 

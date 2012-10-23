@@ -11,8 +11,6 @@
 #define __KHLABOLOMETERRECORD_H__
 
 #include "KBolometerRecord.h"
-#include "TRef.h"
-#include "TRefArray.h"
 #include "TBits.h"
 #include <vector>
 #include "KHLASambaRecord.h"
@@ -116,6 +114,7 @@ public:
 	void SetCuts(const TBits *mCuts);
 
   TRefArray& pulseRecords(){return fPulseRecords;}
+  
 private:
 
 	Double32_t fQvalue; //calculation based upon event category (heat, fiducial, surface, etc...)
@@ -128,9 +127,6 @@ private:
 	
 	Int_t fVoltageFlag; //Set to the voltage configuration value, as found in era/Scripts/params_id_run12.C .
 	Int_t fIonPulseTimeOffset; //the time offset of the peak of the ion pulse relative to the peak of the heat pulse, in units of stamp (10 microseonds)
-
-	TRef fSambaRecord;  //holds a pointer to the associated Samba record
-	TRefArray fPulseRecords; //holds an array of pointers to the BoloPulse sub records associated with this bolometer event
 
 	Double32_t fEnergyIonFiducial;  //energy of the fiducial signal (the weighted average of the fEnergyCollectrode)
 	Double32_t fEnergyIonSum; //the sum of energy on all ionization channels that have a signal (calucaled by ERA)
@@ -149,7 +145,7 @@ private:
   Double32_t GetEnergyBaseline(Int_t aChannel, Int_t aType) const;
   Double32_t GetBaselineNoise(Int_t aChannel, Int_t aType) const;
 
-  ClassDef(KHLABolometerRecord,3);
+  ClassDef(KHLABolometerRecord,4);
 };
 
 

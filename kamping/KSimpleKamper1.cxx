@@ -166,7 +166,7 @@ map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
     for(UInt_t ii = 0; ii < pRec->GetPulseLength() && ii < 8196; ii++)
       fIonPulse[ii]  = pRec->GetTrace()[ii];
     //pRec->GetTrace(fIonPulse);
-    fPeakFindIon.SetPolarity(pRec->GetPolarity() >= 0 ? 0 : 1);
+    fPeakFindIon.SetPolarity(pRec->GetVoltage() >= 0 ? 0 : 1);
     
     if(fLinRemovalIon.RunProcess()){
       if(fPatRemoval.RunProcess()){

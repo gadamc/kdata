@@ -33,7 +33,7 @@ public:
   virtual Double32_t GetPositiveTriggerAmp(void) const { return fPositiveTriggerAmp;}
   virtual Double32_t GetNegativeTriggerAmp(void) const { return fNegativeTriggerAmp;}
   virtual const char* GetState(void) const { return fState.c_str();}
-  virtual Double32_t GetPolarity(void) const { return fPolarity;}
+  virtual Double32_t GetVoltage(void) const { return fVoltage;}
   virtual Double32_t GetGain(void) const { return fGain;}
   
   virtual Double32_t GetBoloBoxVersion(void) const {return fBoloBoxVersion;}
@@ -64,7 +64,7 @@ public:
   virtual void SetPositiveTriggerAmp(Double32_t aVal) {fPositiveTriggerAmp = aVal;}
   virtual void SetNegativeTriggerAmp(Double32_t aVal) {fNegativeTriggerAmp = aVal;}
   virtual void SetState(const char* aVal) {fState = aVal;}
-  virtual void SetPolarity(Double32_t aVal) {fPolarity = aVal;}
+  virtual void SetVoltage(Double32_t aVal) {fVoltage = aVal;}
   virtual void SetGain(Double32_t aVal) {fGain = aVal;}
 
   virtual void SetBoloBoxVersion(Double32_t aVal) {fBoloBoxVersion = aVal;}
@@ -98,7 +98,7 @@ private:
   Double32_t fPositiveTriggerAmp;
   Double32_t fNegativeTriggerAmp;
   string fState;
-  Double32_t fPolarity;
+  Double32_t fVoltage;
   Double32_t fGain;
 
   //bolo box information

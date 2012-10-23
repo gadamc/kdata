@@ -58,9 +58,9 @@ int KPulsePolarityCalculator::GetExpectedPolarity(KRawBoloPulseRecord *p, KRawBo
   
   //guess pulse polarity is opposite of the voltage... yes KRawBoloPulseRecord:: "Polarity" is a very poor name choice.
   //suggestion - change this to "Bias"
-  if (p->GetPolarity()  > 0)
+  if (p->GetVoltage()  > 0)
     return -1;
-  else if (p->GetPolarity()  < 0)
+  else if (p->GetVoltage()  < 0)
     return 1;
   else
     return 0; //!!! should i spit out some error?
@@ -98,16 +98,16 @@ int KPulsePolarityCalculator::GetPolarityStandardCalculator(KRawBolometerRecord 
   for (int i = 0; i < bolo->GetNumPulseRecords(); i++){
     KRawBoloPulseRecord *pp = bolo->GetPulseRecord(i);
     if( !pp->GetIsHeatPulse()){
-      aveVolts += pp->GetPolarity();
+      aveVolts += pp->GetVoltage();
       numChans++;
     }
   }  
   if (numChans > 0)
     aveVolts = aveVolts/numChans;
     
-  if (p->GetPolarity() - aveVolts > 0)
+  if (p->GetVoltage() - aveVolts > 0)
     return -1;
-  else if (p->GetPolarity() - aveVolts < 0)
+  else if (p->GetVoltage() - aveVolts < 0)
     return 1;
   else
     return 0; //!!! should i spit out some error?
@@ -147,9 +147,9 @@ int KPulsePolarityCalculator::GetExpectedPolarity(KAmpBoloPulseRecord *p, KAmpBo
   
   //guess pulse polarity is opposite of the voltage... yes KAmpBoloPulseRecord:: "Polarity" is a very poor name choice.
   //suggestion - change this to "Bias"
-  if (p->GetPolarity()  > 0)
+  if (p->GetVoltage()  > 0)
     return -1;
-  else if (p->GetPolarity()  < 0)
+  else if (p->GetVoltage()  < 0)
     return 1;
   else
     return 0; //!!! should i spit out some error?
@@ -187,16 +187,16 @@ int KPulsePolarityCalculator::GetPolarityStandardCalculator(KAmpBolometerRecord 
   for (int i = 0; i < bolo->GetNumPulseRecords(); i++){
     KAmpBoloPulseRecord *pp = bolo->GetPulseRecord(i);
     if( !pp->GetIsHeatPulse()){
-      aveVolts += pp->GetPolarity();
+      aveVolts += pp->GetVoltage();
       numChans++;
     }
   }  
   if (numChans > 0)
     aveVolts = aveVolts/numChans;
     
-  if (p->GetPolarity() - aveVolts > 0)
+  if (p->GetVoltage() - aveVolts > 0)
     return -1;
-  else if (p->GetPolarity() - aveVolts < 0)
+  else if (p->GetVoltage() - aveVolts < 0)
     return 1;
   else
     return 0; //!!! should i spit out some error?

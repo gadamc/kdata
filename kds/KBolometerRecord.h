@@ -11,6 +11,8 @@
 #define __KBOLOMETERRECORD_H__
 
 #include "TObject.h"
+#include "TRef.h"
+#include "TRefArray.h"
 #include <string>
 
 using namespace std;
@@ -40,6 +42,10 @@ public:
   void SetDetectorName(const Char_t* aWord); 
   void SetMass(Double32_t aVal) {fMass = aVal;}
 
+protected:
+  TRef fSambaRecord;  //holds a pointer to the associated Samba record
+  TRefArray fPulseRecords; //holds an array of pointers to the BoloPulse sub records associated with this bolometer event
+
 private:
     
   string fDetectorName; 
@@ -49,7 +55,7 @@ private:
   void InitializeMembers(void);
   void CopyLocalMembers(const KBolometerRecord &aRec);
 
-  ClassDef(KBolometerRecord,4);
+  ClassDef(KBolometerRecord,5);
 };
 
 

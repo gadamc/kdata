@@ -1709,7 +1709,7 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
         
         if(pulseChannelName.BeginsWith("chal") || detName.BeginsWith("Gc")){  //changed 'chaleur' to 'chal' to accommodate samba version >= 9.20
           p->SetIsHeatPulse(1);
-          p->SetPolarity(0.0);
+          p->SetVoltage(0.0);
           p->SetPolarFet(chan->GetPolarFet());
           p->SetGain(chan->GetGainChaleur());
           p->SetCorrPied(chan->GetCorrPied()); 
@@ -1718,15 +1718,15 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
           p->SetAmplModul(chan->GetAmplModul());
         }
         else if(pulseChannelName.BeginsWith("centre")){
-          p->SetPolarity(chan->GetPolarCentre());
+          p->SetVoltage(chan->GetPolarCentre());
           p->SetGain(chan->GetGainCentre());
         }
         else if(pulseChannelName.BeginsWith("garde")){
-          p->SetPolarity(chan->GetPolarGarde());
+          p->SetVoltage(chan->GetPolarGarde());
           p->SetGain(chan->GetGainGarde());
         }
         else if (pulseChannelName.BeginsWith("ionis")){ //added for samba version >= 9.20
-          p->SetPolarity(chan->GetPolarCentre());
+          p->SetVoltage(chan->GetPolarCentre());
           p->SetGain(chan->GetGainCentre());
         }
         
