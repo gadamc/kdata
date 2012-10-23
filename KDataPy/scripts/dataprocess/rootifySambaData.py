@@ -27,13 +27,13 @@ def convertfile(input, output):
       if c.ConvertFile():
         print 'converted file to root file'
       else:
-        raise KDataRootification('KDataTransfer. rootifySambaData.convertfile. Failed to convert root file but exited KSamba2KData gracefully.  KSamba2KData::ConvertFile returned False.\n')
+        raise KDataRootification('KDataRootification. rootifySambaData.convertfile. Failed to convert root file but exited KSamba2KData gracefully.  KSamba2KData::ConvertFile returned False.\n')
     else:
-      raise KDataRootification('KDataTransfer. rootifySambaData.convertfile. Input must be a file path and Output cannot be a directory  \n')
+      raise KDataRootification('KDataRootification. rootifySambaData.convertfile. Input must be a file path and Output cannot be a directory  \n')
       
 
   except Exception as e:
-      raise KDataRootification('KDataTransfer. scpToSps.py line73  \n' + str(type(e)) + ' : ' + str(e))
+      raise KDataRootification('KDataRootification. scpToSps.py line73  \n' + str(type(e)) + ' : ' + str(e))
   
   return output
     
@@ -48,6 +48,6 @@ def convertdir(input, output):
       rootFiles.append( convertfile(file, os.path.join(output, os.path.basename(file)+'.root')) )
     
   else:
-    raise KDataRootification('KDataTransfer. rootifySambaData.convertdir. Input and Output must be directory path  \n')
+    raise KDataRootification('KDataRootification. rootifySambaData.convertdir. Input and Output must be directory path  \n')
     
   return rootFiles

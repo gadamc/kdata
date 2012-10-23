@@ -26,30 +26,36 @@ def runProcess(*args, **kwargs):
 def processOne(doc):
   global myProc
   
-  print 'have doc', doc['_id']
-  doc['status'] = 'proc1 in progress'
-  myProc.upload(doc)
-  procDict = myProc.doprocess(doc) #this step calls runProcess
-  print 'called process'
+  try:
+    print 'have doc', doc['_id']
+    doc['status'] = 'proc1 in progress'
+    myProc.upload(doc)
+    procDict = myProc.doprocess(doc) #this step calls runProcess
+    print 'called process'
 
-  #add a few more items to the document
-  procDict['date'] = str(datetime.datetime.utcnow())
-  procDict['processname'] = 'samba2kdata'
-  procDict['hostname'] = socket.gethostname()
-  procDict['localuname'] = os.uname()
-  
-
-  if doc.has_key('proc1') == False:
-    doc['proc1'] = {}
-  doc['proc1'].update(procDict)
-  
-  if procDict.has_key('file'):
-    doc['status'] = 'good'
-    return (doc, True)
-  else:
-    doc['status'] = 'proc1 failed'
-    return (doc, False)
+    #add a few more items to the document
+    procDict['date'] = str(datetime.datetime.utcnow())
+    procDict['processname'] = 'samba2kdata'
+    procDict['hostname'] = socket.gethostname()
+    procDict['localuname'] = os.uname()
     
+
+    if doc.has_key('proc1') == False:
+      doc['proc1'] = {}
+    doc['proc1'].update(procDict)
+    
+    if procDict.has_key('file'):
+      doc['status'] = 'good'
+      return (doc, True)
+    else:
+      raise KDataRootification('KDataRootification. runProc1.py line51. rootiftySambaData.convertfile returned an empty document.\n')
+
+  except Exception as e:
+    theExc = KDataRootification('KDataRootification. runProc1.py line54  \n' + str(type(e)) + ' : ' + str(e))
+    doc['proc1']['exception'] = theExc
+    doc['status'] = 'proc1 failed'
+    pass  #don't throw here.... processOne is called by main and we want to save this to the database
+
 def setupProc(server, database, function):
   global myProc
   myProc = DBProcess(server, database, function)
@@ -73,11 +79,9 @@ def main(*argv):
   
   for anId in argv[2:]:
     doc = myProc.get(anId)
-    try:
-      (doc, result) = processOne(doc)
-    except Exception as e:
-      doc['exception'] = str(type(e)) + ': ' +  str(e)
-      doc['status'] = 'proc1 failed'
+    
+    (doc, result) = processOne(doc)
+  
     
     myProc.upload(doc)
 

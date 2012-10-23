@@ -387,7 +387,7 @@ def uploadFile(filename, uri, dbname, override=None):
   runDict['status'] = 'closed'
   runDict['hostipaddress'] = socket.gethostbyname( socket.gethostname() )
   runDict['hostname'] = socket.gethostname()
-  runDict['size_in_bytes'] = os.path.getsize(runDict['file'])
+  #runDict['size_in_bytes'] = os.path.getsize(runDict['file'])
 
   #this will write a new version of the document to the DB if it
   #already exists! 
