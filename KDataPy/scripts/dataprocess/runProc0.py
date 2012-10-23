@@ -86,7 +86,7 @@ def main(*argv):
         
       doc['proc0']['exception'] = str(type(e)) + ': ' + str(e)
       doc['status'] = 'proc0 failed'
-      if doc.has_key('proc0'): del doc['proc0']
+      #if doc.has_key('proc0'): del doc['proc0']
       myProc.upload(doc)
       sys.exit(-1)
 
