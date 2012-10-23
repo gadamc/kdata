@@ -51,7 +51,7 @@ KDS_DIRI   := $(MODDIR)
 #therefore, there is no XTRALIBS variable used here.
 
 # Uncomment this to use the LinkDef file when generating the dictionary
-#KDS_LH     := $(KDS_DIRI)/$(MODNAME)_LinkDef.h
+KDS_LH     := $(KDS_DIRI)/$(MODNAME)_LinkDef.h
 KDS_DC     := $(KDS_DIRS)/$(MODNAME)_Dict.C
 KDS_DO     := $(KDS_DC:.C=.$(ObjSuf))
 KDS_DH     := $(KDS_DC:.C=.h)
@@ -64,7 +64,7 @@ KDS_CXX    := $(filter-out $(KDS_ECXX),$(wildcard $(KDS_DIRS)/*.cxx))
 KDS_O      := $(KDS_CXX:.cxx=.$(ObjSuf))
 KDS_EO     := $(KDS_ECXX:.cxx=.$(ObjSuf))
 KDS_EH     := $(KDS_ECXX:.cxx=.h)
-KDS_DICTH  := $(patsubst $(KDS_DIRI)/%.h,$(KDATAINCDIR)/%.h+,$(KDS_EH)) 
+KDS_DICTH  := $(patsubst $(KDS_DIRI)/%.h,$(KDATAINCDIR)/%.h,$(KDS_EH)) 
 
 
 KDS_EXE    := $(patsubst $(KDS_DIRS)/%.cxx,$(KDATABINDIR)/%,$(KDS_CXX))
