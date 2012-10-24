@@ -46,6 +46,8 @@ def send(username, password, item, path):
       p.expect('sftp> ')
       p.sendline("put %s %s" % (item, spspath) )
       p.expect('sftp> ')
+      p.sendline("ls -al %s" % (spspath,) )
+      p.excpet('sftp> ')
       theRet['pexpect_obj'] = p.__str__()
       p.sendline('bye')
       fout.close()
