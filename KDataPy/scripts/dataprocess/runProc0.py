@@ -17,7 +17,7 @@ def scpToLyon(*args, **kwargs):
   try:
     scpRet = scp.sendBoloData(args[0], args[1], args[2])
   except Exception as e:
-    raise KDataTransfer('KDataTransfer. runProc0.py line 20  \n' + str(type(e)) + ' : ' + str(e))
+    raise KDataTransferError('KDataTransferError. runProc0.py line 20  \n' + str(type(e)) + ' : ' + str(e))
 
   return scpRet
   

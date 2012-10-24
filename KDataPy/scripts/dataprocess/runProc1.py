@@ -49,10 +49,10 @@ def processOne(doc):
       doc['status'] = 'good'
       return (doc, True)
     else:
-      raise KDataRootification('KDataRootification. runProc1.py line51. rootiftySambaData.convertfile returned an empty document.\n')
+      raise KDataRootificationError('KDataRootificationError. runProc1.py line51. rootiftySambaData.convertfile returned an empty document.\n')
 
   except Exception as e:
-    theExc = KDataRootification('KDataRootification. runProc1.py line54  \n' + str(type(e)) + ' : ' + str(e))
+    theExc = KDataRootificationError('KDataRootificationError. runProc1.py line54  \n' + str(type(e)) + ' : ' + str(e))
     doc['proc1']['exception'] = theExc
     doc['status'] = 'proc1 failed'
     return(doc, False) #don't throw here.... processOne is called by main and we want to save this to the database

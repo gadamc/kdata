@@ -63,16 +63,16 @@ def send(item, path):
     return theRet
 
   except Exception as e:
-    raise KDataTransfer('KDataTransfer. scpToSps.py line65  \n' + str(type(e)) + ' : ' + str(e))
+    raise KDataTransferError('KDataTransferError. scpToSps.py line65  \n' + str(type(e)) + ' : ' + str(e))
 
 def sendBoloData(item, path = 'kdata/data/raw/'):
   if os.path.isfile(item):
     try:
       return send(item,path) 
     except Exception as e:
-      raise KDataTransfer('KDataTransfer. scpToSps.py line73  \n' + str(type(e)) + ' : ' + str(e))
+      raise KDataTransferError('KDataTransferError. scpToSps.py line73  \n' + str(type(e)) + ' : ' + str(e))
   else:
-    raise KDataTransfer('KDataTransfer. scpToSps.py scpToSps.sendBoloData can only send files, not directories.\n')
+    raise KDataTransferError('KDataTransferError. scpToSps.py scpToSps.sendBoloData can only send files, not directories.\n')
     
 def sendMuonData(item, path = 'kdata/data/muon/'):
   return send(item, path)
