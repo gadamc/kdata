@@ -1,22 +1,27 @@
 #KDataExceptions.py
 import traceback
 
-class KDataException(Exception):
+class KDataError(Exception):
   def __init__(self, value):
     
-    stack = traceback.extract_stack()
-    self.value = value + '\n'.join(str(x) for x in stack[:len(stack)-1])
+    #stack = traceback.extract_stack()
+    #lets not put the stack traceback in here because this information 
+    #gets logged on a potentially publically available website and may
+    #inclde password information
+    #self.value = value #+ '\n'.join(str(x) for x in stack[:len(stack)-1])
+
+    self.value = value 
 
   def __str__(self):
     return str(self.value)
 
-class KDataTransfer(KDataException):
+class KDataTransferError(KDataException):
   pass
 
-class KDataRootification(KDataException):
+class KDataRootificationError(KDataException):
   pass
 
-class KDataSambaHeaderCouch(KDataException):
+class KDataSambaHeaderCouchError(KDataException):
   pass
 
 class KDataKampingError(KDataException):
