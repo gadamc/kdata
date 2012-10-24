@@ -12,7 +12,7 @@ def scpToLyon(*args, **kwargs):
     sys.exit(-1)
     
   #now send it via secure copy!
-  print 'calling secure copy', args[0], args[1], args[2]
+  print 'calling secure copy'
   
   try:
     scpRet = scp.sendBoloData(args[0], args[1], args[2])
