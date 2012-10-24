@@ -15,14 +15,14 @@ class KDataError(Exception):
   def __str__(self):
     return str(self.value)
 
-class KDataTransferError(KDataException):
+class KDataTransferError(KDataError):
   pass
 
-class KDataRootificationError(KDataException):
+class KDataRootificationError(KDataError):
   pass
 
-class KDataSambaHeaderCouchError(KDataException):
+class KDataSambaHeaderCouchError(KDataError):
   pass
 
-class KDataKampingError(KDataException):
+class KDataKampingError(KDataError):
   pass
