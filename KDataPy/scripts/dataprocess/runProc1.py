@@ -3,6 +3,7 @@
 from KDataPy.scripts.dataprocess.DBProcess import *
 import os, sys, tempfile, shutil, datetime, copy, socket
 import KDataPy.scripts.dataprocess.rootifySambaData as rt
+from KDataPy.exceptions import *
 
 def runProcess(*args, **kwargs):
   
@@ -54,12 +55,9 @@ def processOne(doc):
     theExc = KDataRootification('KDataRootification. runProc1.py line54  \n' + str(type(e)) + ' : ' + str(e))
     doc['proc1']['exception'] = theExc
     doc['status'] = 'proc1 failed'
-    pass  #don't throw here.... processOne is called by main and we want to save this to the database
+    return(doc, False) #don't throw here.... processOne is called by main and we want to save this to the database
 
-def setupProc(server, database, function):
-  global myProc
-  myProc = DBProcess(server, database, function)
-  return myProc
+      
   
 def main(*argv):
   '''
@@ -75,14 +73,13 @@ def main(*argv):
   #create a DBProcess instance, which will assist in uploading the proc
   #document to the database... although, its barely useful... 
   global myProc
-  myProc = setupProc(argv[0], argv[1], runProcess)
+  myProc = DBProcess(argv[0], argv[1], runProcess)
   
   for anId in argv[2:]:
     doc = myProc.get(anId)
     
     (doc, result) = processOne(doc)
   
-    
     myProc.upload(doc)
 
 
