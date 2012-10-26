@@ -2,14 +2,15 @@
 
 from couchdbkit import Server, Database
 import sys, os, subprocess, datetime, string, math
+from KDataPy.util import splitargs
+import json, copy
 
-
-def submitBatchJob(scriptOut, scriptErr, script, server, dbname, docids):
+def submitProc1BatchJobs(scriptOut, scriptErr, script, server, dbname, docids):
 
   if len(docids) == 0:
     return []
 
-  command = 'qsub -P P_edelweis -o %s -e %s -l sps=1 -l vmem=1G -l fsize=1024M  %s %s %s %s' % (scriptOut, scriptErr, script, server, dbname, ' '.join(docids) ) 
+  command = 'qsub -P P_edelweis -o %s -e %s -l sps=1 -l vmem=1G -l fsize=1024M  %s %s %s useProc0=True %s' % (scriptOut, scriptErr, script, server, dbname, ' '.join(docids) ) 
   
   proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,)
   val = proc.communicate()[0]
@@ -53,8 +54,20 @@ def main(*argv, **kwargs):
   
   s = Server(argv[0])
   db = s[argv[1]]
-  print kwargs
-  vr = db.view('proc/proc1', reduce=False, **kwargs )
+
+  print json.dumps(kwargs, indent=1)
+
+  newkwargs = copy.deepcopy(kwargs)
+  del newkwargs['maxDocs']  #remove kwargs that should not be sent to the database
+
+  #maxDocs is increase to "infinity" here.... but can be set by a kwargs
+  maxDocs = -1  
+  try:
+    maxDocs = kwargs['maxDocs']
+  except:
+    pass
+
+  vr = db.view('proc/proc1', reduce=False, **newkwargs )
     
   scriptDir = argv[2]
   script = '$KDATA_ROOT/lib/KDataPy/scripts/dataprocess/runProc1.py'
@@ -62,7 +75,9 @@ def main(*argv, **kwargs):
   scriptOut = os.path.join(scriptDir, 'qsubout')
   scriptErr = os.path.join(scriptDir, 'qsubout')
   
-  maxDocs = 100  #for process 1, we can submit up to 100 files to be processed
+  
+
+  #for process 1, we can submit up to 100 files to be processed
   #by a particular batch job. This is because this is a relatively fast process
   #to convert a Samba file to a KData file and we want to play nice with 
   #the batch system in Lyon
@@ -77,48 +92,16 @@ def main(*argv, **kwargs):
     docids.append(row['id'])
     
     if len(docids) == maxDocs:
-      docids = submitBatchJob(scriptOut, scriptErr, script, argv[0], argv[1], docids)
+      docids = submitProc1BatchJobs(scriptOut, scriptErr, script, argv[0], argv[1], docids)
       
   #don't forget last chunk of data files
-  docids = submitBatchJob(scriptOut, scriptErr, script, argv[0], argv[1], docids)
+  docids = submitProc1BatchJobs(scriptOut, scriptErr, script, argv[0], argv[1], docids)
 
 
-# format value
-def formatvalue(value):
-  if (isinstance(value,str)):
-    # #see if this string is really an int or a float
-    if value.isdigit()==True: #int
-      return int(value)
-    else: #try a float
-      try:
-        if math.isnan(float(value))==False:
-          return float(value)
-      except:
-        pass
 
-    return value.strip('" ') #strip off any quotations and extra spaces found in the value
-  else:
-    return value
       
 if __name__ == '__main__':
-  myargs = []
-  mykwargs = {}
-  for arg in sys.argv[1:]:
-    if string.find(arg, '=') == -1:
-      print arg
-      myargs.append(arg)
-    else:
-      key, val = tuple(arg.split('='))
-      
-      if val  == 'True':
-        val = True
-      elif val == 'False':
-        val = False
-      else:
-        val = formatvalue(val)
-     
-      print key,val
-      mykwargs[key] = val
-
+  
+  (myargs, mykwargs) = splitargs( *sys.argv[1:] )
   main(*myargs, **mykwargs)
   
