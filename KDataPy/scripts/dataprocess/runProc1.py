@@ -62,6 +62,7 @@ def processOne(doc, **kwargs):
         try:
           sftpRet = scp.sendBoloData(kwargs['username'], kwargs['password'], procDict['file'])
           doc['proc1']['sftp'] = sftpRet
+          doc['proc1']['file'] = sftpRet['file'] #must do this to be consistent with batch processing records
         except Exception as e:
           raise KDataTransferError('KDataTransferError. runProc1.py line 55  \n' + str(type(e)) + ' : ' + str(e))  
 
