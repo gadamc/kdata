@@ -57,20 +57,20 @@ def processOne(doc, **kwargs):
     
     if procDict.has_key('file'):
       doc['status'] = 'good'
-
-      if mustSftp:
-        try:
-          sftpRet = scp.sendBoloData(kwargs['username'], kwargs['password'], procDict['file'])
-          doc['proc1']['sftp'] = sftpRet
-          doc['proc1']['file'] = sftpRet['file'] #must do this to be consistent with batch processing records
-        except Exception as e:
-          raise KDataTransferError('KDataTransferError. runProc1.py line 55  \n' + str(type(e)) + ' : ' + str(e))  
-
-      return (doc, True)
-
     else:
       raise KDataRootificationError('KDataRootificationError. runProc1.py line51. rootiftySambaData.convertfile returned an empty document.\n')
 
+    if mustSftp:
+      try:
+        sftpRet = scp.sendBoloData(kwargs['username'], kwargs['password'], procDict['file'])
+        doc['proc1']['sftp'] = sftpRet
+        doc['proc1']['file'] = sftpRet['file'] #must do this to be consistent with batch processing records
+      except Exception as e:
+        raise KDataTransferError('KDataTransferError. runProc1.py line 55  \n' + str(type(e)) + ' : ' + str(e))  
+
+    return (doc, True)
+
+    
   except Exception as e:
     theExc = KDataRootificationError('KDataRootificationError. runProc1.py line54  \n' + str(type(e)) + ' : ' + str(e))
     doc['proc1']['exception'] = theExc

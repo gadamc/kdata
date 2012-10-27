@@ -473,15 +473,18 @@ def splitargs(*argv):
   2. a key=value pair. 
 
   For example, this works
-  "option1 option2  keyword1=value1 keyword2=value2 "
+  "option1 option2 keyword1=value1 keyword2=value2 "
 
-  But this little function doesn't support "switches" that have values like "-k 5" 
+  But this function doesn't support "switches" that have values like "-k 5" 
   
-  It is highly recommended that you test this function before completely trusting what it does.
-
   It returns a tuple of ( [args], {kwargs} ).  In the example above, for example it would return
 
   ( ['option1', 'option2'], {'keyword1':'value1', 'keyword2':'value2'})
+  
+
+  disclaimer:  It is highly recommended that you test this function before completely trusting what it does!!
+  If you want a real tool for parsing arguments, you should use/install argparse.
+
   '''
   
   myargs = []
