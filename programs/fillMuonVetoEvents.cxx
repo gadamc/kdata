@@ -543,7 +543,7 @@ Bool_t fillEvents(void)
           
           else {
             cout << "What! " << endl;
-            exit(-1);
+            return -1;
           }
 					mMod->SetModuleNumber(module);
 					for(Int_t pmt = 0; pmt < kNumPmtsPerMod; pmt++){
@@ -763,8 +763,8 @@ Bool_t testDataIntegrity(const char* muonVetoFile, const char* kdsFile, const ch
       TH1F *hKds = (TH1F*)gDirectory->Get("histKds");
       TH1F *hMuonRaw = (TH1F*)gDirectory->Get("histMuonRaw");
       
-      if(hKds == 0) exit(-1);
-      if(hMuonRaw == 0) exit(-1);
+      if(hKds == 0) return -1;
+      if(hMuonRaw == 0) return -1;
       TH1F histDiff(*hKds);
       histName.Form("Diff_Module%d_Tdc%d",i,p);
       histDiff.SetName(histName.Data());
