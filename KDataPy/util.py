@@ -274,7 +274,6 @@ def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
         if match==True and name != bolo.GetChannelName(): continue
         
       analysisFunction(event, bolo, **kwargs)
-    if maxEvents and kdfilereader.GetCurrentEntryNumber() >= maxEvents: return None
 
             
 def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None, **kwargs):
