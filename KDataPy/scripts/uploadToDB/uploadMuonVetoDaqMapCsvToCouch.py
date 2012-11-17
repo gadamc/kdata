@@ -4,6 +4,7 @@ from couchdbkit import Server, Database
 from couchdbkit.loaders import FileSystemDocsLoader
 from csv import DictReader
 import time, sys, subprocess, math, os, datetime
+import pytz, calendar
 
     
 #______________
@@ -101,21 +102,23 @@ def uploadFile(fname, uri, dbname):
     or newdoc.has_key('year') == False or newdoc.has_key('month') == False \
     or newdoc.has_key('day') == False:
       print 'Quitting! Your CVS Muon Veto DAQ map MUST have a column called'
-      print '"module", "end", "year", "month" and "day". These are used to generate'
-      print 'the unique document identifier "_id" in the database.'
+      print '"module", "end", "year", "month" and "day". These are used to set the proper date and should be in UTC time'
+
       sys.exit(1)
     
     #reformat the date
     newdoc['date_valid'] = {} #change it to a dictionary
+    yy,mm,dd = newdoc['year'], newdoc['month'], newdoc['day']
     newdoc['date_valid']['year'] = newdoc['year']
     newdoc['date_valid']['month'] = newdoc['month']
     newdoc['date_valid']['day'] = newdoc['day']
+
     del newdoc['year'] #remove the old fields
     del newdoc['month']
     del newdoc['day']
     
+    newdoc['date_valid_unix'] = calendar.timegm( datetime.datetime(yy,mm,dd,tzinfo=pytz.utc).utctimetuple() )
     
-    newdoc['_id'] = 'muon_veto_daq_map_module_' + str(newdoc['muonmodule']) + str(newdoc['end']) + '_' + str(newdoc['date_valid']['year']) +'_'+ str(newdoc['date_valid']['month']) +'_'+ str(newdoc['date_valid']['day'])
     newdoc['type'] = 'muon_veto_daq_map'
     newdoc['author'] = 'KIT'
     newdoc['content'] = 'Muon Veto DAQ Mapping'
