@@ -4,7 +4,7 @@ from couchdbkit import *
 from couchdbkit.loaders import FileSystemDocsLoader
 from csv import DictReader
 import time, sys, subprocess, math, os, glob, copy
-import datetime, json, re
+import datetime, json, re, time
 import socket
 from KDataPy.exceptions import *
 
@@ -309,7 +309,7 @@ def uploadFile(filename, uri, dbname, override=None):
   dd = datetime.datetime.utcnow()
   runDict['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
                           'hour':dd.hour,'minute':dd.minute,'second':dd.second,
-                          'microsecond':dd.microsecond,'timezone':0}  
+                          'microsecond':dd.microsecond,'timezone':0, 'unixtime':time.time()}
   runname = os.path.basename(file.name)
   runsplit = runname.split('_')
   runDict['file'] = file.name

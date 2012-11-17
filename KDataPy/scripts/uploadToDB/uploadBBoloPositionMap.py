@@ -23,33 +23,18 @@ def parseDoc(doc):
                     pass            
     return doc
 
-#_______________
-# format value
-def formatvalue(value):
-  if (isinstance(value,str)):
-    # #see if this string is really an int or a float
-    if value.isdigit()==True: #int
-      return int(value)
-    else: #try a float
-      try:
-        if math.isnan(float(value))==False:
-          return float(value)
-      except:
-        pass
 
-    return value.strip('" ') #strip off any quotations and extra spaces found in the value
-  else:
-    return value
-    
-    
-def parsechannelLine(line):
+
+      
+def parsechannels(newdoc):
+
+  def parsechannelLine(line):
     ml = line.split('+')
     for i in range(len(ml)):
       ml[i] =  ml[i].strip() #strip off any extra spaces        
      
     return ml
-      
-def parsechannels(newdoc):
+    
   if newdoc.has_key('channels'):
     try:
       newdoc['channels'] = parsechannelLine(newdoc['channels'])

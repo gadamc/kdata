@@ -7,68 +7,6 @@ import math
 
 plt.ion()
 
-try:
-  gSystem.Load('libkds')
-  gSystem.Load('libkpta')
-  gSystem.Load('libkamping')
-
-except Exception as e: 
-  print 'failed to load KDataPy.util'
-  raise e
-
-
-#add various iterators to KData objects
-
-import libPyROOT as _libpyroot
-
-def _KEvent_iter__(self):
-  i = 0
-  while self.GetEntry(i):
-    yield self.GetEvent()                   
-    i += 1
-_libpyroot.MakeRootClass( "KDataReader" ).__iter__    = _KEvent_iter__
-
-
-def _KRawBoloPulseRecord_getNumpArray__(self):
-  return np.array(self.GetTrace())
-_libpyroot.MakeRootClass( "KRawBoloPulseRecord" ).getnumpy    = _KRawBoloPulseRecord_getNumpArray__
-
-
-def _KptaProc_input_iter__(self):
-  i = 0
-  while i < self.GetInputPulseSize():
-    yield self.GetInputPulse()[i]                 
-    i += 1
-_libpyroot.MakeRootClass( "KPtaProcessor" ).input    = property(_KptaProc_input_iter__)
-
-
-
-def _KptaProc_output_iter__(self):
-  i = 0
-  while i < self.GetOutputPulseSize():
-    yield self.GetOutputPulse()[i]                  
-    i += 1
-_libpyroot.MakeRootClass( "KPtaProcessor" ).output    = property(_KptaProc_output_iter__)
-
-
-def _KptaProc_input_iter_index__(self):
-  i = 0
-  while i < self.GetInputPulseSize():
-    yield self.GetInputPulse()[i],i                 
-    i += 1
-_libpyroot.MakeRootClass( "KPtaProcessor" ).input_index    = property(_KptaProc_input_iter_index__)
-
-
-
-def _KptaProc_output_iter_index__(self):
-  i = 0
-  while i < self.GetOutputPulseSize():
-    yield self.GetOutputPulse()[i],i                
-    i += 1
-_libpyroot.MakeRootClass( "KPtaProcessor" ).output_index    = property(_KptaProc_output_iter_index__)
-
-
-
 
 #small utility functions  
 def get_as_nparray(c_pointer, size):
@@ -115,6 +53,8 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
   This function provides you with automatic looping code and gives you the chance for pulse processing. 
   This function will loop through a datafile, apply the KPulseProcessor that you provide (in pta), 
   and then call the analysisFunction, passing in the pulseRecord, the pta, and all **kwargs. 
+  This function allows for all KData types (Raw, Amp, HLA). Only events in Raw data files are processed with the
+  KPtaProcessor object, of course.
 
   :param data: The data file to use.
   :type data: string path to file or KDataReader object
@@ -124,7 +64,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
   :type match: bool
   :param pta: a KPtaProcessor that will be automatically called for each pulse
   :type pta: KPtaProcessor object
-  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
+  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
   :type analysisFunction: function pointer
   :param maxEvents: if maxEvents != None, stops looping after maxEvents events. 
   :type match: int
@@ -143,7 +83,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
      gSystem.Load('libkpta')
   
      #here i define the analysis function
-     def myFunction(pulseRecord, ptaObject=None, **kwargs):
+     def myFunction(theEvent, pulseRecord, ptaObject=None, **kwargs):
        print pulseRecord.GetChannelName()
     
        if ptaObject != None
@@ -167,7 +107,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
     gSystem.Load('libkpta')
   
     #here i define the analysis function
-    def myFunction(pulseRecord, ptaObject=None, **kwargs):
+    def myFunction(theEvent, pulseRecord, ptaObject=None, **kwargs):
       print pulseRecord.GetChannelName()
     
       if ptaObject != None
@@ -196,7 +136,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
     gSystem.Load('libkpta')
 
     
-    def myAnalysis(pulse, pta=None, **kwargs):
+    def myAnalysis(theEvent, pulse, pta=None, **kwargs):
       if pta != None
         pulsetrace = util.get_out(pta)
       else: pulsetrace = np.array(pulse.GetTrace())
@@ -230,12 +170,15 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
         if name not in pulse.GetChannelName(): continue
         if match==True and name != pulse.GetChannelName(): continue
       
-      if pta:
-        pta.SetInputPulse( pulse.GetTrace() )
-        pta.RunProcess()
-        
+      try:
+        if pta:
+          pta.SetInputPulse( pulse.GetTrace() )
+          pta.RunProcess()
+      except AttributeError:
+        pass #ignore. probably because the pulse.GetTrace method doesn't exist because this file is not a raw level kdata file
+
       if analysisFunction:
-        analysisFunction(pulse, pta, **kwargs)
+        analysisFunction(event pulse, pta, **kwargs)
 
     if maxEvents and kdfilereader.GetCurrentEntryNumber() >= maxEvents: return None
    
@@ -250,7 +193,7 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
   :type name: string
   :param match: if match is True, then the bolometer name needs to exactly match 'name'. Otherwise, if the bolometer name contains 'name', then the data will be analyzed. For example, if you set 'name'='FID', then your analysis function will be called for each FID detector in the file
   :type match: bool
-  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function will be passed the following arguments: KBolometerRecord, **kwargs. 
+  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function will be passed the following arguments: KEvent, KBolometerRecord, **kwargs. 
   :type analysisFunction: function pointer
   :param maxEvents: if maxEvents != None, stops looping after maxEvents events. 
   :type match: int
@@ -261,7 +204,7 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
   
   .. code-block:: python
 
-    def myFunction(boloRecord, **kwargs):
+    def myFunction(theEvent, boloRecord, **kwargs):
       print boloRecord.GetDetectorName()
       
       for pulse in boloRecord.pulseRecords():
@@ -283,7 +226,7 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
       print 'I can be called'
 
 
-    def myFunction(boloRecord, **kwargs):
+    def myFunction(theEvent, boloRecord, **kwargs):
       print boloRecord.GetDetectorName()
       
       if kwargs['firstCall']:
@@ -335,16 +278,17 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
         if name not in bolo.GetDetectorName(): continue
         if match==True and name != bolo.GetChannelName(): continue
         
-      analysisFunction(bolo, **kwargs)
+      analysisFunction(event, bolo, **kwargs)
     if maxEvents and kdfilereader.GetCurrentEntryNumber() >= maxEvents: return None
 
             
 def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None, maxEvents=None, **kwargs):
     '''
-    Exactly like looppulse, but will plot each pulse on screen and wait for you to hit the 'Enter'
+    Exactly like looppulse, but will plot each raw pulse on screen and wait for you to hit the 'Enter'
     key in the shell before continuing. In fact, this function calls looppulse. This is a nice way to visualize what is happening
     to the pulses. Additionally, if you don't provide any analysisFunction, it will be a
-    nice event viewer just to look at the data.
+    nice event viewer just to look at the data.  This function will only work with KData Raw-level files. That is, its only
+    meant for plotting the pulse traces, which only exist in the raw data files. Otherwise, this will raise an exception at run-time.
     
     :param data: The data file to use.
     :type data: string path to file or KDataReader object
@@ -354,7 +298,7 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     :type match: bool
     :param pta: a KPtaProcessor that will be automatically called for each pulse
     :type pta: KPtaProcessor object
-    :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
+    :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
     :type analysisFunction: function pointer
     :param maxEvents: if maxEvents != None, stops looping after maxEvents events. 
     :type match: int
@@ -377,7 +321,7 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     ##. this is much more robust than using __callersAnalysisFunction. perhaps....
     #
 
-    def plotingfunction(pulse, pta=None, **kwargs):
+    def __plotingfunction(event, pulse, pta=None, **kwargs):
             
       
       print 'plotting', pulse.GetChannelName()
@@ -391,7 +335,7 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       if kwargs['__callersAnalysisFunction']:
         newkwargs = copy.deepcopy(kwargs)
         del newkwargs['__callersAnalysisFunction']
-        kwargs['__callersAnalysisFunction'](pulse,pta=pta, **newkwargs)
+        kwargs['__callersAnalysisFunction'](event, pulse,pta=pta, **newkwargs)
       
       try:
         if raw_input() == 'quit': 
@@ -404,7 +348,7 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       plt.cla()
       
       
-    looppulse(data, name=name, match=match, pta = pta, analysisFunction = plotingfunction, __callersAnalysisFunction = analysisFunction, **kwargs)  
+    looppulse(data, name=name, match=match, pta = pta, analysisFunction = __plotingfunction, __callersAnalysisFunction = analysisFunction, **kwargs)  
     
         
         
@@ -475,7 +419,7 @@ def splitargs(*argv):
   For example, this works
   "option1 option2 keyword1=value1 keyword2=value2 "
 
-  But this function doesn't support "switches" that have values like "-k 5" 
+  But this function doesn't support "switches" that have values like "-k 5". you must use the "=" sign and NO spaces.
   
   It returns a tuple of ( [args], {kwargs} ).  In the example above, for example it would return
 

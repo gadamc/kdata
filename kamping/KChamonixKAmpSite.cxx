@@ -556,16 +556,16 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   SetTemplateShift(channelName, pulseShift);
 
   fPulseTemplateShifter.SetShift(pulseShift);
-  //fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetOutputPulse());
-  //fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetOutputPulseSize());
-  //fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetOutputPulse());
-  //fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetOutputPulseSize());
+  fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetOutputPulse());
+  fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetOutputPulseSize());
+  fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetOutputPulse());
+  fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetOutputPulseSize());
 
-  //super hack!!!
-  fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetInputPulse());
-  fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetInputPulseSize());
-  fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetInputPulse());
-  fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetInputPulseSize());
+  // old super hack!!!  what was this for?
+  // fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetInputPulse());
+  // fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetInputPulseSize());
+  // fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetInputPulse());
+  // fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetInputPulseSize());
   
 
   fPulseTemplateShifter.SetMode(2);
