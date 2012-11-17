@@ -27,7 +27,7 @@ def splitargs(*argv):
   For example, this works
   "option1 option2 keyword1=value1 keyword2=value2 "
 
-  But this function doesn't support "switches" that have values like "-k 5" 
+  But this function doesn't support "switches" that have values like "-k 5". you must use the "=" sign and NO spaces.
   
   It returns a tuple of ( [args], {kwargs} ).  In the example above, for example it would return
 
