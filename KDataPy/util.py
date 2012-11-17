@@ -176,7 +176,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  
         pass #ignore. probably because the pulse.GetTrace method doesn't exist because this file is not a raw level kdata file
 
       if analysisFunction:
-        analysisFunction(event pulse, pta, **kwargs)
+        analysisFunction(event, pulse, pta, **kwargs)
 
    
 def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
