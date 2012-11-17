@@ -47,7 +47,7 @@ def getRootHistFromOutput(pta):
   return h
 
 
-def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, maxEvents=None, **kwargs):
+def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  **kwargs):
   '''
   
   This function provides you with automatic looping code and gives you the chance for pulse processing. 
@@ -66,8 +66,6 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
   :type pta: KPtaProcessor object
   :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
   :type analysisFunction: function pointer
-  :param maxEvents: if maxEvents != None, stops looping after maxEvents events. 
-  :type match: int
   :param kwargs: all kwargs are pass to the analysisFunction
   :type kwargs: keyword argument list
 
@@ -180,9 +178,8 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None, m
       if analysisFunction:
         analysisFunction(event pulse, pta, **kwargs)
 
-    if maxEvents and kdfilereader.GetCurrentEntryNumber() >= maxEvents: return None
    
-def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=None, **kwargs):
+def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
   '''
   Like looppulse, but just loops through each bolo record for you
   and you provide the analysis function. 
@@ -195,8 +192,6 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
   :type match: bool
   :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function will be passed the following arguments: KEvent, KBolometerRecord, **kwargs. 
   :type analysisFunction: function pointer
-  :param maxEvents: if maxEvents != None, stops looping after maxEvents events. 
-  :type match: int
   :param kwargs: all remaining kwargs are pass to the analysisFunction
   :type kwargs: keyword argument list
 
@@ -278,11 +273,15 @@ def loopbolo(data, name=None, match=False, analysisFunction = None, maxEvents=No
         if name not in bolo.GetDetectorName(): continue
         if match==True and name != bolo.GetChannelName(): continue
         
+<<<<<<< HEAD
       analysisFunction(event, bolo, **kwargs)
     if maxEvents and kdfilereader.GetCurrentEntryNumber() >= maxEvents: return None
+=======
+      analysisFunction(bolo, **kwargs)
+>>>>>>> bumping to version 5.0 and removing maxEvents. If people want a maxEvent counter, then they can create an analysisFunction that raises an Exception after max events and then catch that error. For example:
 
             
-def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None, maxEvents=None, **kwargs):
+def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None, **kwargs):
     '''
     Exactly like looppulse, but will plot each raw pulse on screen and wait for you to hit the 'Enter'
     key in the shell before continuing. In fact, this function calls looppulse. This is a nice way to visualize what is happening
@@ -300,8 +299,6 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     :type pta: KPtaProcessor object
     :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
     :type analysisFunction: function pointer
-    :param maxEvents: if maxEvents != None, stops looping after maxEvents events. 
-    :type match: int
     :param kwargs: all kwargs are pass to the analysisFunction
     :type kwargs: keyword argument list
 
