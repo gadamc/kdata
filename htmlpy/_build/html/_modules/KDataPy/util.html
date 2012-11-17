@@ -54,6 +54,7 @@
 <span class="kn">import</span> <span class="nn">KDataPy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>
 
@@ -159,7 +160,7 @@
   <span class="k">return</span> <span class="n">h</span>
 
 </div>
-<div class="viewcode-block" id="looppulse"><a class="viewcode-back" href="../../util.html#KDataPy.util.looppulse">[docs]</a><span class="k">def</span> <span class="nf">looppulse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pta</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">maxEvents</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="looppulse"><a class="viewcode-back" href="../../util.html#KDataPy.util.looppulse">[docs]</a><span class="k">def</span> <span class="nf">looppulse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pta</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  </span>
 <span class="sd">  This function provides you with automatic looping code and gives you the chance for pulse processing. </span>
@@ -176,8 +177,6 @@
 <span class="sd">  :type pta: KPtaProcessor object</span>
 <span class="sd">  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta</span>
 <span class="sd">  :type analysisFunction: function pointer</span>
-<span class="sd">  :param maxEvents: if maxEvents != None, stops looping after maxEvents events. </span>
-<span class="sd">  :type match: int</span>
 <span class="sd">  :param kwargs: all kwargs are pass to the analysisFunction</span>
 <span class="sd">  :type kwargs: keyword argument list</span>
 
@@ -287,9 +286,8 @@
       <span class="k">if</span> <span class="n">analysisFunction</span><span class="p">:</span>
         <span class="n">analysisFunction</span><span class="p">(</span><span class="n">pulse</span><span class="p">,</span> <span class="n">pta</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">maxEvents</span> <span class="ow">and</span> <span class="n">kdfilereader</span><span class="o">.</span><span class="n">GetCurrentEntryNumber</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">maxEvents</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
    </div>
-<div class="viewcode-block" id="loopbolo"><a class="viewcode-back" href="../../util.html#KDataPy.util.loopbolo">[docs]</a><span class="k">def</span> <span class="nf">loopbolo</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">maxEvents</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="loopbolo"><a class="viewcode-back" href="../../util.html#KDataPy.util.loopbolo">[docs]</a><span class="k">def</span> <span class="nf">loopbolo</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  Like looppulse, but just loops through each bolo record for you</span>
 <span class="sd">  and you provide the analysis function. </span>
@@ -302,8 +300,6 @@
 <span class="sd">  :type match: bool</span>
 <span class="sd">  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function will be passed the following arguments: KBolometerRecord, **kwargs. </span>
 <span class="sd">  :type analysisFunction: function pointer</span>
-<span class="sd">  :param maxEvents: if maxEvents != None, stops looping after maxEvents events. </span>
-<span class="sd">  :type match: int</span>
 <span class="sd">  :param kwargs: all remaining kwargs are pass to the analysisFunction</span>
 <span class="sd">  :type kwargs: keyword argument list</span>
 
@@ -386,10 +382,9 @@
         <span class="k">if</span> <span class="n">match</span><span class="o">==</span><span class="bp">True</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">bolo</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">():</span> <span class="k">continue</span>
         
       <span class="n">analysisFunction</span><span class="p">(</span><span class="n">bolo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">maxEvents</span> <span class="ow">and</span> <span class="n">kdfilereader</span><span class="o">.</span><span class="n">GetCurrentEntryNumber</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">maxEvents</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
 
             </div>
-<div class="viewcode-block" id="plotpulse"><a class="viewcode-back" href="../../util.html#KDataPy.util.plotpulse">[docs]</a><span class="k">def</span> <span class="nf">plotpulse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pta</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">maxEvents</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="plotpulse"><a class="viewcode-back" href="../../util.html#KDataPy.util.plotpulse">[docs]</a><span class="k">def</span> <span class="nf">plotpulse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pta</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Exactly like looppulse, but will plot each pulse on screen and wait for you to hit the &#39;Enter&#39;</span>
 <span class="sd">    key in the shell before continuing. In fact, this function calls looppulse. This is a nice way to visualize what is happening</span>
@@ -406,8 +401,6 @@
 <span class="sd">    :type pta: KPtaProcessor object</span>
 <span class="sd">    :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta</span>
 <span class="sd">    :type analysisFunction: function pointer</span>
-<span class="sd">    :param maxEvents: if maxEvents != None, stops looping after maxEvents events. </span>
-<span class="sd">    :type match: int</span>
 <span class="sd">    :param kwargs: all kwargs are pass to the analysisFunction</span>
 <span class="sd">    :type kwargs: keyword argument list</span>
 
@@ -496,8 +489,68 @@
 
 
   
+<span class="c"># format value</span></div>
+<span class="k">def</span> <span class="nf">formatvalue</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="nb">str</span><span class="p">)):</span>
+    <span class="c"># #see if this string is really an int or a float</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span><span class="o">==</span><span class="bp">True</span><span class="p">:</span> <span class="c">#int</span>
+      <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c">#try a float</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">==</span><span class="bp">False</span><span class="p">:</span>
+          <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+      <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;&quot; &#39;</span><span class="p">)</span> <span class="c">#strip off any quotations and extra spaces found in the value</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="c">#splitargs</span>
+<div class="viewcode-block" id="splitargs"><a class="viewcode-back" href="../../util.html#KDataPy.util.splitargs">[docs]</a><span class="k">def</span> <span class="nf">splitargs</span><span class="p">(</span><span class="o">*</span><span class="n">argv</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  A simple arg parser. This is useful because argparse is not installed on some Python systems with version &lt; 2.7.</span>
+<span class="sd">  This supports two kinds of arguments.</span>
+<span class="sd">  1. a single value</span>
+<span class="sd">  2. a key=value pair. </span>
+
+<span class="sd">  For example, this works</span>
+<span class="sd">  &quot;option1 option2 keyword1=value1 keyword2=value2 &quot;</span>
+
+<span class="sd">  But this function doesn&#39;t support &quot;switches&quot; that have values like &quot;-k 5&quot; </span>
+<span class="sd">  </span>
+<span class="sd">  It returns a tuple of ( [args], {kwargs} ).  In the example above, for example it would return</span>
+
+<span class="sd">  ( [&#39;option1&#39;, &#39;option2&#39;], {&#39;keyword1&#39;:&#39;value1&#39;, &#39;keyword2&#39;:&#39;value2&#39;})</span>
+<span class="sd">  </span>
+
+<span class="sd">  disclaimer:  It is highly recommended that you test this function before completely trusting what it does!!</span>
+<span class="sd">  If you want a real tool for parsing arguments, you should use/install argparse.</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
   
-</pre></div></div>
+  <span class="n">myargs</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">mykwargs</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argv</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+      <span class="k">print</span> <span class="n">arg</span>
+      <span class="n">myargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">))</span>
+      
+      <span class="k">if</span> <span class="n">val</span>  <span class="o">==</span> <span class="s">&#39;True&#39;</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">True</span>
+      <span class="k">elif</span> <span class="n">val</span> <span class="o">==</span> <span class="s">&#39;False&#39;</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">False</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">formatvalue</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+     
+      <span class="k">print</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span>
+      <span class="n">mykwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="n">myargs</span><span class="p">,</span> <span class="n">mykwargs</span><span class="p">)</span></div>
+</pre></div>
 
           </div>
         </div>
