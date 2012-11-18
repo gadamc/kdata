@@ -84,7 +84,13 @@
 #pragma link C++ function KOptimalFilter::SetTemplateDFT(short*, unsigned int );
 
 #pragma link C++ class KOrderFilter+;
+
 #pragma link C++ class KPatternRemoval+;
+#pragma link C++ function KPatternRemoval::SetPattern<double>;
+#pragma link C++ function KPatternRemoval::SetPattern<float>;
+#pragma link C++ function KPatternRemoval::SetPattern<int>;
+#pragma link C++ function KPatternRemoval::SetPattern<short>;
+
 #pragma link C++ class KPeakDetectorProto+;
 #pragma link C++ class KPeakFinder+;
 #pragma link C++ class KPtaTestPulse+;
@@ -93,6 +99,7 @@
 #pragma link C++ class KPulseTemplate+;
 #pragma link C++ class KRealToHalfComplexDFT+;
 #pragma link C++ class KRingBuffer+;
+
 #pragma link C++ class KRootMeanSquare+;
 #pragma link C++ function KRootMeanSquare::GetRms<double>;
 #pragma link C++ function KRootMeanSquare::GetRms<float>;
