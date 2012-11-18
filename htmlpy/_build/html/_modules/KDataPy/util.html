@@ -58,68 +58,6 @@
 
 <span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>
 
-<span class="k">try</span><span class="p">:</span>
-  <span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&#39;libkds&#39;</span><span class="p">)</span>
-  <span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&#39;libkpta&#39;</span><span class="p">)</span>
-  <span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&#39;libkamping&#39;</span><span class="p">)</span>
-
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> 
-  <span class="k">print</span> <span class="s">&#39;failed to load KDataPy.util&#39;</span>
-  <span class="k">raise</span> <span class="n">e</span>
-
-
-<span class="c">#add various iterators to KData objects</span>
-
-<span class="kn">import</span> <span class="nn">libPyROOT</span> <span class="kn">as</span> <span class="nn">_libpyroot</span>
-
-<span class="k">def</span> <span class="nf">_KEvent_iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetEvent</span><span class="p">()</span>                   
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KDataReader&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">__iter__</span>    <span class="o">=</span> <span class="n">_KEvent_iter__</span>
-
-
-<span class="k">def</span> <span class="nf">_KRawBoloPulseRecord_getNumpArray__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-  <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">())</span>
-<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KRawBoloPulseRecord&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">getnumpy</span>    <span class="o">=</span> <span class="n">_KRawBoloPulseRecord_getNumpArray__</span>
-
-
-<span class="k">def</span> <span class="nf">_KptaProc_input_iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInputPulseSize</span><span class="p">():</span>
-    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span>                 
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KPtaProcessor&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">input</span>    <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_KptaProc_input_iter__</span><span class="p">)</span>
-
-
-
-<span class="k">def</span> <span class="nf">_KptaProc_output_iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetOutputPulseSize</span><span class="p">():</span>
-    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetOutputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span>                  
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KPtaProcessor&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">output</span>    <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_KptaProc_output_iter__</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_KptaProc_input_iter_index__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInputPulseSize</span><span class="p">():</span>
-    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span><span class="n">i</span>                 
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KPtaProcessor&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">input_index</span>    <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_KptaProc_input_iter_index__</span><span class="p">)</span>
-
-
-
-<span class="k">def</span> <span class="nf">_KptaProc_output_iter_index__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetOutputPulseSize</span><span class="p">():</span>
-    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetOutputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span><span class="n">i</span>                
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KPtaProcessor&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">output_index</span>    <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_KptaProc_output_iter_index__</span><span class="p">)</span>
-
-
-
 
 <span class="c">#small utility functions  </span>
 <div class="viewcode-block" id="get_as_nparray"><a class="viewcode-back" href="../../util.html#KDataPy.util.get_as_nparray">[docs]</a><span class="k">def</span> <span class="nf">get_as_nparray</span><span class="p">(</span><span class="n">c_pointer</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
@@ -166,6 +104,8 @@
 <span class="sd">  This function provides you with automatic looping code and gives you the chance for pulse processing. </span>
 <span class="sd">  This function will loop through a datafile, apply the KPulseProcessor that you provide (in pta), </span>
 <span class="sd">  and then call the analysisFunction, passing in the pulseRecord, the pta, and all **kwargs. </span>
+<span class="sd">  This function allows for all KData types (Raw, Amp, HLA). Only events in Raw data files are processed with the</span>
+<span class="sd">  KPtaProcessor object, of course.</span>
 
 <span class="sd">  :param data: The data file to use.</span>
 <span class="sd">  :type data: string path to file or KDataReader object</span>
@@ -175,7 +115,7 @@
 <span class="sd">  :type match: bool</span>
 <span class="sd">  :param pta: a KPtaProcessor that will be automatically called for each pulse</span>
 <span class="sd">  :type pta: KPtaProcessor object</span>
-<span class="sd">  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta</span>
+<span class="sd">  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta</span>
 <span class="sd">  :type analysisFunction: function pointer</span>
 <span class="sd">  :param kwargs: all kwargs are pass to the analysisFunction</span>
 <span class="sd">  :type kwargs: keyword argument list</span>
@@ -192,7 +132,7 @@
 <span class="sd">     gSystem.Load(&#39;libkpta&#39;)</span>
 <span class="sd">  </span>
 <span class="sd">     #here i define the analysis function</span>
-<span class="sd">     def myFunction(pulseRecord, ptaObject=None, **kwargs):</span>
+<span class="sd">     def myFunction(theEvent, pulseRecord, ptaObject=None, **kwargs):</span>
 <span class="sd">       print pulseRecord.GetChannelName()</span>
 <span class="sd">    </span>
 <span class="sd">       if ptaObject != None</span>
@@ -216,7 +156,7 @@
 <span class="sd">    gSystem.Load(&#39;libkpta&#39;)</span>
 <span class="sd">  </span>
 <span class="sd">    #here i define the analysis function</span>
-<span class="sd">    def myFunction(pulseRecord, ptaObject=None, **kwargs):</span>
+<span class="sd">    def myFunction(theEvent, pulseRecord, ptaObject=None, **kwargs):</span>
 <span class="sd">      print pulseRecord.GetChannelName()</span>
 <span class="sd">    </span>
 <span class="sd">      if ptaObject != None</span>
@@ -245,7 +185,7 @@
 <span class="sd">    gSystem.Load(&#39;libkpta&#39;)</span>
 
 <span class="sd">    </span>
-<span class="sd">    def myAnalysis(pulse, pta=None, **kwargs):</span>
+<span class="sd">    def myAnalysis(theEvent, pulse, pta=None, **kwargs):</span>
 <span class="sd">      if pta != None</span>
 <span class="sd">        pulsetrace = util.get_out(pta)</span>
 <span class="sd">      else: pulsetrace = np.array(pulse.GetTrace())</span>
@@ -279,12 +219,15 @@
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">():</span> <span class="k">continue</span>
         <span class="k">if</span> <span class="n">match</span><span class="o">==</span><span class="bp">True</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">():</span> <span class="k">continue</span>
       
-      <span class="k">if</span> <span class="n">pta</span><span class="p">:</span>
-        <span class="n">pta</span><span class="o">.</span><span class="n">SetInputPulse</span><span class="p">(</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">()</span> <span class="p">)</span>
-        <span class="n">pta</span><span class="o">.</span><span class="n">RunProcess</span><span class="p">()</span>
-        
+      <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pta</span><span class="p">:</span>
+          <span class="n">pta</span><span class="o">.</span><span class="n">SetInputPulse</span><span class="p">(</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">()</span> <span class="p">)</span>
+          <span class="n">pta</span><span class="o">.</span><span class="n">RunProcess</span><span class="p">()</span>
+      <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span> <span class="c">#ignore. probably because the pulse.GetTrace method doesn&#39;t exist because this file is not a raw level kdata file</span>
+
       <span class="k">if</span> <span class="n">analysisFunction</span><span class="p">:</span>
-        <span class="n">analysisFunction</span><span class="p">(</span><span class="n">pulse</span><span class="p">,</span> <span class="n">pta</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">analysisFunction</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">pulse</span><span class="p">,</span> <span class="n">pta</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
    </div>
 <div class="viewcode-block" id="loopbolo"><a class="viewcode-back" href="../../util.html#KDataPy.util.loopbolo">[docs]</a><span class="k">def</span> <span class="nf">loopbolo</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -298,7 +241,7 @@
 <span class="sd">  :type name: string</span>
 <span class="sd">  :param match: if match is True, then the bolometer name needs to exactly match &#39;name&#39;. Otherwise, if the bolometer name contains &#39;name&#39;, then the data will be analyzed. For example, if you set &#39;name&#39;=&#39;FID&#39;, then your analysis function will be called for each FID detector in the file</span>
 <span class="sd">  :type match: bool</span>
-<span class="sd">  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function will be passed the following arguments: KBolometerRecord, **kwargs. </span>
+<span class="sd">  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function will be passed the following arguments: KEvent, KBolometerRecord, **kwargs. </span>
 <span class="sd">  :type analysisFunction: function pointer</span>
 <span class="sd">  :param kwargs: all remaining kwargs are pass to the analysisFunction</span>
 <span class="sd">  :type kwargs: keyword argument list</span>
@@ -307,7 +250,7 @@
 <span class="sd">  </span>
 <span class="sd">  .. code-block:: python</span>
 
-<span class="sd">    def myFunction(boloRecord, **kwargs):</span>
+<span class="sd">    def myFunction(theEvent, boloRecord, **kwargs):</span>
 <span class="sd">      print boloRecord.GetDetectorName()</span>
 <span class="sd">      </span>
 <span class="sd">      for pulse in boloRecord.pulseRecords():</span>
@@ -329,7 +272,7 @@
 <span class="sd">      print &#39;I can be called&#39;</span>
 
 
-<span class="sd">    def myFunction(boloRecord, **kwargs):</span>
+<span class="sd">    def myFunction(theEvent, boloRecord, **kwargs):</span>
 <span class="sd">      print boloRecord.GetDetectorName()</span>
 <span class="sd">      </span>
 <span class="sd">      if kwargs[&#39;firstCall&#39;]:</span>
@@ -381,16 +324,18 @@
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bolo</span><span class="o">.</span><span class="n">GetDetectorName</span><span class="p">():</span> <span class="k">continue</span>
         <span class="k">if</span> <span class="n">match</span><span class="o">==</span><span class="bp">True</span> <span class="ow">and</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">bolo</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">():</span> <span class="k">continue</span>
         
-      <span class="n">analysisFunction</span><span class="p">(</span><span class="n">bolo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+      <span class="n">analysisFunction</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">bolo</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             </div>
 <div class="viewcode-block" id="plotpulse"><a class="viewcode-back" href="../../util.html#KDataPy.util.plotpulse">[docs]</a><span class="k">def</span> <span class="nf">plotpulse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pta</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Exactly like looppulse, but will plot each pulse on screen and wait for you to hit the &#39;Enter&#39;</span>
+<span class="sd">    Exactly like looppulse, but will plot each raw pulse on screen and wait for you to hit the &#39;Enter&#39;</span>
 <span class="sd">    key in the shell before continuing. In fact, this function calls looppulse. This is a nice way to visualize what is happening</span>
 <span class="sd">    to the pulses. Additionally, if you don&#39;t provide any analysisFunction, it will be a</span>
-<span class="sd">    nice event viewer just to look at the data.</span>
-<span class="sd">    </span>
+<span class="sd">    nice event viewer just to look at the data.  This function will only work with KData Raw-level files. That is, its only</span>
+<span class="sd">    meant for plotting the pulse traces, which only exist in the raw data files. Otherwise, this will raise an exception at run-time.</span>
+<span class="sd">    This function plot to matplotlib figure(0)! So, don&#39;t use figure(0) or it will be cleared and a pulse will be drawn.</span>
+
 <span class="sd">    :param data: The data file to use.</span>
 <span class="sd">    :type data: string path to file or KDataReader object</span>
 <span class="sd">    :param name: The channel name you want to analyze</span>
@@ -399,7 +344,7 @@
 <span class="sd">    :type match: bool</span>
 <span class="sd">    :param pta: a KPtaProcessor that will be automatically called for each pulse</span>
 <span class="sd">    :type pta: KPtaProcessor object</span>
-<span class="sd">    :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function must have three arguments(KRawBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta</span>
+<span class="sd">    :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of &#39;callback&#39; function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta</span>
 <span class="sd">    :type analysisFunction: function pointer</span>
 <span class="sd">    :param kwargs: all kwargs are pass to the analysisFunction</span>
 <span class="sd">    :type kwargs: keyword argument list</span>
@@ -420,10 +365,12 @@
     <span class="c">##. this is much more robust than using __callersAnalysisFunction. perhaps....</span>
     <span class="c">#</span>
 
-    <span class="k">def</span> <span class="nf">plotingfunction</span><span class="p">(</span><span class="n">pulse</span><span class="p">,</span> <span class="n">pta</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__plotingfunction</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">pulse</span><span class="p">,</span> <span class="n">pta</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             
       
       <span class="k">print</span> <span class="s">&#39;plotting&#39;</span><span class="p">,</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">()</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
       <span class="k">if</span> <span class="n">pta</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">pta</span><span class="o">.</span><span class="n">SetInputPulse</span><span class="p">(</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">()</span> <span class="p">)</span>
         <span class="n">pta</span><span class="o">.</span><span class="n">RunProcess</span><span class="p">()</span>
@@ -434,7 +381,7 @@
       <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;__callersAnalysisFunction&#39;</span><span class="p">]:</span>
         <span class="n">newkwargs</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">del</span> <span class="n">newkwargs</span><span class="p">[</span><span class="s">&#39;__callersAnalysisFunction&#39;</span><span class="p">]</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;__callersAnalysisFunction&#39;</span><span class="p">](</span><span class="n">pulse</span><span class="p">,</span><span class="n">pta</span><span class="o">=</span><span class="n">pta</span><span class="p">,</span> <span class="o">**</span><span class="n">newkwargs</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;__callersAnalysisFunction&#39;</span><span class="p">](</span><span class="n">event</span><span class="p">,</span> <span class="n">pulse</span><span class="p">,</span><span class="n">pta</span><span class="o">=</span><span class="n">pta</span><span class="p">,</span> <span class="o">**</span><span class="n">newkwargs</span><span class="p">)</span>
       
       <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">raw_input</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;quit&#39;</span><span class="p">:</span> 
@@ -447,7 +394,7 @@
       <span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>
       
       
-    <span class="n">looppulse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="n">match</span><span class="p">,</span> <span class="n">pta</span> <span class="o">=</span> <span class="n">pta</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="n">plotingfunction</span><span class="p">,</span> <span class="n">__callersAnalysisFunction</span> <span class="o">=</span> <span class="n">analysisFunction</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  
+    <span class="n">looppulse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="n">match</span><span class="p">,</span> <span class="n">pta</span> <span class="o">=</span> <span class="n">pta</span><span class="p">,</span> <span class="n">analysisFunction</span> <span class="o">=</span> <span class="n">__plotingfunction</span><span class="p">,</span> <span class="n">__callersAnalysisFunction</span> <span class="o">=</span> <span class="n">analysisFunction</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  
     
         
         
@@ -489,68 +436,7 @@
 
 
   
-<span class="c"># format value</span></div>
-<span class="k">def</span> <span class="nf">formatvalue</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="nb">str</span><span class="p">)):</span>
-    <span class="c"># #see if this string is really an int or a float</span>
-    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span><span class="o">==</span><span class="bp">True</span><span class="p">:</span> <span class="c">#int</span>
-      <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span> <span class="c">#try a float</span>
-      <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">==</span><span class="bp">False</span><span class="p">:</span>
-          <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-      <span class="k">except</span><span class="p">:</span>
-        <span class="k">pass</span>
-
-    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;&quot; &#39;</span><span class="p">)</span> <span class="c">#strip off any quotations and extra spaces found in the value</span>
-  <span class="k">else</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">value</span>
-
-
-<span class="c">#splitargs</span>
-<div class="viewcode-block" id="splitargs"><a class="viewcode-back" href="../../util.html#KDataPy.util.splitargs">[docs]</a><span class="k">def</span> <span class="nf">splitargs</span><span class="p">(</span><span class="o">*</span><span class="n">argv</span><span class="p">):</span>
-  <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">  A simple arg parser. This is useful because argparse is not installed on some Python systems with version &lt; 2.7.</span>
-<span class="sd">  This supports two kinds of arguments.</span>
-<span class="sd">  1. a single value</span>
-<span class="sd">  2. a key=value pair. </span>
-
-<span class="sd">  For example, this works</span>
-<span class="sd">  &quot;option1 option2 keyword1=value1 keyword2=value2 &quot;</span>
-
-<span class="sd">  But this function doesn&#39;t support &quot;switches&quot; that have values like &quot;-k 5&quot; </span>
-<span class="sd">  </span>
-<span class="sd">  It returns a tuple of ( [args], {kwargs} ).  In the example above, for example it would return</span>
-
-<span class="sd">  ( [&#39;option1&#39;, &#39;option2&#39;], {&#39;keyword1&#39;:&#39;value1&#39;, &#39;keyword2&#39;:&#39;value2&#39;})</span>
-<span class="sd">  </span>
-
-<span class="sd">  disclaimer:  It is highly recommended that you test this function before completely trusting what it does!!</span>
-<span class="sd">  If you want a real tool for parsing arguments, you should use/install argparse.</span>
-
-<span class="sd">  &#39;&#39;&#39;</span>
-  
-  <span class="n">myargs</span> <span class="o">=</span> <span class="p">[]</span>
-  <span class="n">mykwargs</span> <span class="o">=</span> <span class="p">{}</span>
-  <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argv</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-      <span class="k">print</span> <span class="n">arg</span>
-      <span class="n">myargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">))</span>
-      
-      <span class="k">if</span> <span class="n">val</span>  <span class="o">==</span> <span class="s">&#39;True&#39;</span><span class="p">:</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">True</span>
-      <span class="k">elif</span> <span class="n">val</span> <span class="o">==</span> <span class="s">&#39;False&#39;</span><span class="p">:</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="bp">False</span>
-      <span class="k">else</span><span class="p">:</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">formatvalue</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-     
-      <span class="k">print</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span>
-      <span class="n">mykwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-
-  <span class="k">return</span> <span class="p">(</span><span class="n">myargs</span><span class="p">,</span> <span class="n">mykwargs</span><span class="p">)</span></div>
-</pre></div>
+</pre></div></div>
 
           </div>
         </div>

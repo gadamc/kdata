@@ -283,7 +283,8 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     to the pulses. Additionally, if you don't provide any analysisFunction, it will be a
     nice event viewer just to look at the data.  This function will only work with KData Raw-level files. That is, its only
     meant for plotting the pulse traces, which only exist in the raw data files. Otherwise, this will raise an exception at run-time.
-    
+    This function plot to matplotlib figure(0)! So, don't use figure(0) or it will be cleared and a pulse will be drawn.
+
     :param data: The data file to use.
     :type data: string path to file or KDataReader object
     :param name: The channel name you want to analyze
@@ -317,6 +318,8 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
             
       
       print 'plotting', pulse.GetChannelName()
+      plt.figure(0)
+      plt.cla()
       if pta != None:
         pta.SetInputPulse( pulse.GetTrace() )
         pta.RunProcess()
