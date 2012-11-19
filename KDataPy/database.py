@@ -100,6 +100,13 @@ def radon(serverName=None):
   '''
   return getdatabase('radon',serverName)
 
+def vetopos(serverName=None):
+  '''
+  
+  returns an instance of couchdbkit.Database initialized to the 'vetopos' database
+  
+  '''
+  return getdatabase('vetopos',serverName)
 
 def automat(serverName=None):
   '''
