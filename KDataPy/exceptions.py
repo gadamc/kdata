@@ -26,3 +26,4 @@ class KDataSambaHeaderCouchError(KDataError):
 
 class KDataKampingError(KDataError):
   pass
+

@@ -4,8 +4,13 @@ import KDataPy
 import matplotlib.pyplot as plt
 import copy
 import math
+import KDataPy.exceptions
 
 plt.ion()
+
+class KDataUtilQuitLoop(Exception):
+  def __init__(self, value):
+    self.value = value 
 
 
 #small utility functions  
@@ -134,7 +139,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  
     gSystem.Load('libkpta')
 
     
-    def myAnalysis(theEvent, pulse, pta=None, **kwargs):
+    def myAnalysis(theEvent, pulse, pta, **kwargs):
       if pta != None
         pulsetrace = util.get_out(pta)
       else: pulsetrace = np.array(pulse.GetTrace())
@@ -156,7 +161,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  
       
   
   '''
-  if 'KDataReader' in str(type(data)): kdfilereader = data
+  if 'KDataReader' in str(type(data)): kdfilereader = data 
   else:
     kdfilereader = KDataPy.KDataReader(data)
     
@@ -176,21 +181,27 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  
         pass #ignore. probably because the pulse.GetTrace method doesn't exist because this file is not a raw level kdata file
 
       if analysisFunction:
-        analysisFunction(event, pulse, pta, **kwargs)
-
+        try:
+          analysisFunction(event, pulse, pta, **kwargs)
+        except KDataUtilQuitLoop:
+          return
    
-def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
+def loopbolo(data, name=None, match=False, ptaDictionary = None, analysisFunction = None,  **kwargs):
   '''
   Like looppulse, but just loops through each bolo record for you
-  and you provide the analysis function. 
+  and you provide the analysis function. However, you can also supply a dictionary object that has the pulse
+  channel names for keys and KPtaProcessor objects as values. Before your analysisFunction is called,
+  these KPtaProcessors will be applied to the appropriate pulses. See the examples below.
   
   :param data: The data file to use.
-  :type data: string path to file or KDataReader object
+  :type data:  string, or KDataReader object
   :param name: The bolometer name you want to analyze
   :type name: string
   :param match: if match is True, then the bolometer name needs to exactly match 'name'. Otherwise, if the bolometer name contains 'name', then the data will be analyzed. For example, if you set 'name'='FID', then your analysis function will be called for each FID detector in the file
   :type match: bool
-  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function will be passed the following arguments: KEvent, KBolometerRecord, **kwargs. 
+  :param ptaDictionary: A dictionary of references to pta Objects. Each 'key' is the channel name and the value is the KPtaProcessor that will be applied to that channel's pulse before the analysisFunction is called.
+  :type ptaDictionary: dict 
+  :param analysisFunction: the function that you define to analyze the bolometer record. You must supply this callback function.  The function will be passed the following arguments: KEvent, KBolometerRecord, ptaDictionary, **kwargs. 
   :type analysisFunction: function pointer
   :param kwargs: all remaining kwargs are pass to the analysisFunction
   :type kwargs: keyword argument list
@@ -198,8 +209,9 @@ def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
   For example
   
   .. code-block:: python
+    import KDataPy.util
 
-    def myFunction(theEvent, boloRecord, **kwargs):
+    def myFunction(theEvent, boloRecord, ptaDict=None,  **kwargs):
       print boloRecord.GetDetectorName()
       
       for pulse in boloRecord.pulseRecords():
@@ -210,18 +222,21 @@ def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
             .... do something different....
         
         
-    util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, myExtraOptions="condition1")
+    KDataPy.util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, myExtraOptions="condition1")
     
  
-  Besides strings, you can pass ANYTHING via the kwargs, in any order, even objects, and pointers to other functions!
+  Besides strings, you can pass ANYTHING via the kwargs, in any order, even objects, and pointers to other functions.
 
   .. code-block:: python
+
+    import KDataPy.util
+    from ROOT import *
 
     def callMe():
       print 'I can be called'
 
 
-    def myFunction(theEvent, boloRecord, **kwargs):
+    def myFunction(theEvent, boloRecord, ptaDict=None, **kwargs):
       print boloRecord.GetDetectorName()
       
       if kwargs['firstCall']:
@@ -241,7 +256,7 @@ def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
 
         theAna.SetInputPulse(pulse.GetTrace())
         theAna.RunProcess()
-        outTrace = KDataPy.util.get_out(theAna)
+        outTrace = util.get_out(theAna)
           ... do something ...
 
 
@@ -255,6 +270,47 @@ def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
 
     util.loopbolo('/path/to/file.root', name="FID", analysisFunction=myFunction, heatAna = chainHeat, ionAna = chainIon, firstCall = callMe)
 
+  This final example shows how to use the ptaDictionary, which should save you some lines of code in your anaysisFunction.
+
+  .. code-block:: python
+
+from KDataPy import util
+import ROOT
+ROOT.gSystem.Load('libkds')
+ROOT.gSystem.Load('libkpta')
+
+def myFunction(theEvent, boloRecord, ptaDict=None, **kwargs):
+  print boloRecord.GetDetectorName()
+
+  for pulse in boloRecord.pulseRecords():
+    
+    outTrace = KDataPy.util.get_out( ptaDict[pulse.GetChannelName()])
+      ... do something ...
+
+
+
+chainHeat =ROOT.KPulseAnalysisChain()
+chainHeat.AddProcessor(ROOT.KBaselineRemoval() )
+
+chainIon1 =ROOT.KPulseAnalysisChain()
+chainIon1.AddProcessor(ROOT.KBaselineRemoval() )
+chainIon1.AddProcessor(ROOT.KPatternRemoval() )
+
+chainIon2 =ROOT.KPulseAnalysisChain()
+chainIon2.AddProcessor(ROOT.KLinearRemoval() )
+chainIon.AddProcessor(ROOT.KPatternRemoval() )
+
+myPtaDict = {}
+myPtaDict['chalA FID807'] = chainHeat
+myPtaDict['chalB FID807'] = chainHeat
+
+myPtaDict['ionisA FID807'] = chainIon1
+myPtaDict['ionisB FID807'] = chainIon1
+myPtaDict['ionisC FID807'] = chainIon2
+myPtaDict['ionisD FID807'] = chainIon2
+
+
+    util.loopbolo('/path/to/file.root', name="FID", ptaDictionary = myPtaDict, analysisFunction=myFunction)
 
 
   '''
@@ -273,8 +329,22 @@ def loopbolo(data, name=None, match=False, analysisFunction = None,  **kwargs):
         if name not in bolo.GetDetectorName(): continue
         if match==True and name != bolo.GetChannelName(): continue
         
-      analysisFunction(event, bolo, **kwargs)
+        if ptaDictionary:
+          for pulse in bolo.pulseRecords():
+            if pulse.GetPulseLength() == 0: continue  #skip empty pulses
+            try:
+              ptaDictionary[pulse.GetChannelName()].SetInputPulse(pulse.GetTrace())
+              if ptaDictionary[pulse.GetChannelName()].RunProcess() is False:
+                raise KDataPy.exceptions.KDataError('RunProcess failed in plotbolo')
 
+            except KeyError as e:
+              if e.message != pulse.GetChannelName(): 
+                raise e
+
+      try:
+        analysisFunction(event, bolo, ptaDictionary, **kwargs)
+      except KDataUtilQuitLoop:
+          return
             
 def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None, **kwargs):
     '''
@@ -284,6 +354,8 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     nice event viewer just to look at the data.  This function will only work with KData Raw-level files. That is, its only
     meant for plotting the pulse traces, which only exist in the raw data files. Otherwise, this will raise an exception at run-time.
     This function plot to matplotlib figure(0)! So, don't use figure(0) or it will be cleared and a pulse will be drawn.
+
+    You can quit the loop by typing 'quit', 'q', 'bye', or '-q' on the command-line
 
     :param data: The data file to use.
     :type data: string path to file or KDataReader object
@@ -330,12 +402,13 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       if kwargs['__callersAnalysisFunction']:
         newkwargs = copy.deepcopy(kwargs)
         del newkwargs['__callersAnalysisFunction']
-        kwargs['__callersAnalysisFunction'](event, pulse,pta=pta, **newkwargs)
+        kwargs['__callersAnalysisFunction'](event, pulse, pta, **newkwargs)
       
       try:
-        if raw_input() == 'quit': 
+        quitmessage = raw_input()
+        if quitmessage in ['quit', 'q', 'bye', '-q']: 
           plt.cla()
-          raise KeyboardInterrupt
+          raise KDataUtilQuitLoop(quitmessage)
       except KeyboardInterrupt: 
         plt.cla()
         raise KeyboardInterrupt
@@ -345,6 +418,101 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       
     looppulse(data, name=name, match=match, pta = pta, analysisFunction = __plotingfunction, __callersAnalysisFunction = analysisFunction, **kwargs)  
     
+
+def plotbolo(data, name=None, match=False, ptaDictionary = None, analysisFunction = None, **kwargs):
+    '''
+    Exactly like loopbolo, but will plot each raw pulse on screen and wait for you to hit the 'Enter'
+    key in the shell before continuing. In fact, this function calls loopbolo. This is a nice way to visualize what is happening
+    to the pulses. Additionally, if you don't provide any analysisFunction, it will be a
+    nice event viewer just to look at the data.  This function will only work with KData Raw-level files. That is, its only
+    meant for plotting the pulse traces, which only exist in the raw data files. Otherwise, this will raise an exception at run-time.
+    This function plot to matplotlib figure(0)! So, don't use figure(0) or it will be cleared and a pulse will be drawn.
+
+    You can quit the loop by typing 'quit', 'q', 'bye', or '-q' on the command-line
+
+    :param data: The data file to use.
+    :type data:  string, or KDataReader object
+    :param name: The bolometer name you want to analyze
+    :type name: string
+    :param match: if match is True, then the bolometer name needs to exactly match 'name'. Otherwise, if the bolometer name contains 'name', then the data will be analyzed. For example, if you set 'name'='FID', then your analysis function will be called for each FID detector in the file
+    :type match: bool
+    :param ptaDictionary: A dictionary of references to pta Objects. Each 'key' is the channel name and the value is the KPtaProcessor that will be applied to that channel's pulse before the analysisFunction is called.
+    :type ptaDictionary: dict 
+    :param analysisFunction: the function that you define to analyze the bolometer record. You must supply this callback function.  The function will be passed the following arguments: KEvent, KBolometerRecord, ptaDictionary, axisDictionary, **kwargs. The axisDictionary is a dictionary of matplotlib.pyplot.Axis objects that are created for each subplot in the figure. You can use these to alter how your plot looks
+    :type analysisFunction: function pointer
+    :param kwargs: all remaining kwargs are pass to the analysisFunction
+    :type kwargs: keyword argument list
+
+
+
+    Example Event Viewer. This will just print to screen all pulses for any detector with "FID" in its name
+
+    .. code-block:: python
+
+      from KDataPy import util
+
+      util.plotbolo('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'FID')
+
+
+    '''
+        
+    #hey - maybe i should use a decorator to "subclass" the looppulse function!.  how do i do that? 
+    ##. this is much more robust than using __callersAnalysisFunction. perhaps....
+    #
+
+    def __plotingfunction__(event, bolo, ptaDictionary=None, **kwargs):
+            
+      axisDict = {}
+      
+      print 'plotting', bolo.GetDetectorName()
+      fig = plt.figure(0)
+      fig.clf()
+
+      counter = 1
+      for pulse in bolo.pulseRecords():
+
+
+        ax = plt.subplot(bolo.GetNumPulseRecords(), 1, counter)
+        counter += 1
+        plt.cla()
+        if pulse.GetPulseLength() == 0: 
+          continue
+
+        axisDict[pulse.GetChannelName()] = ax
+        ax.set_title(pulse.GetChannelName())
+        
+
+        if ptaDictionary:
+          try:
+            tobeplotted = get_out(ptaDictionary[pulse.GetChannelName()])
+
+          except KeyError as e:
+            if e.message != pulse.GetChannelName(): raise e
+            tobeplotted = pulse.GetTrace()
+        else:
+          tobeplotted = pulse.GetTrace()
+
+        plt.plot(tobeplotted)
+      
+        
+      if kwargs['__callersAnalysisFunction__']:
+        newkwargs = copy.deepcopy(kwargs)
+        del newkwargs['__callersAnalysisFunction__']
+        kwargs['__callersAnalysisFunction__'](event, bolo, ptaDictionary, axisDict, **newkwargs)
+      
+      try:
+        quitmessage = raw_input()
+        if quitmessage in ['quit', 'q', 'bye', '-q']: 
+          plt.cla()
+          raise KDataUtilQuitLoop(quitmessage)
+      except KeyboardInterrupt: 
+        plt.cla()
+        raise KeyboardInterrupt
+      
+      plt.cla()
+      
+      
+    loopbolo(data, name=name, match=match, ptaDictionary = ptaDictionary, analysisFunction = __plotingfunction__, __callersAnalysisFunction__ = analysisFunction, **kwargs)  
         
         
 
