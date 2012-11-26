@@ -58,21 +58,23 @@ def processOne(doc, **kwargs):
     if procDict.has_key('file'):
       doc['status'] = 'good'
     else:
-      raise KDataRootificationError('KDataRootificationError. runProc1.py line51. rootiftySambaData.convertfile returned an empty document.\n')
+      raise KDataRootificationError('KDataRootificationError. runProc1.py line61 rootiftySambaData.convertfile returned an empty document.\n')
 
     if mustSftp:
       try:
         sftpRet = scp.sendBoloData(kwargs['username'], kwargs['password'], procDict['file'])
+        if doc.has_key('proc1') == False:  doc['proc1'] = {}
         doc['proc1']['sftp'] = sftpRet
         doc['proc1']['file'] = sftpRet['file'] #must do this to be consistent with batch processing records
       except Exception as e:
-        raise KDataTransferError('KDataTransferError. runProc1.py line 55  \n' + str(type(e)) + ' : ' + str(e))  
+        raise KDataTransferError('KDataTransferError. runProc1.py line70  \n' + str(type(e)) + ' : ' + str(e))  
 
     return (doc, True)
 
     
   except Exception as e:
-    theExc = KDataRootificationError('KDataRootificationError. runProc1.py line54  \n' + str(type(e)) + ' : ' + str(e))
+    theExc = KDataRootificationError('KDataRootificationError. runProc1.py line76  \n' + str(type(e)) + ' : ' + str(e))
+    if doc.has_key('proc1') == False:  doc['proc1'] = {}
     doc['proc1']['exception'] = theExc
     doc['status'] = 'proc1 failed'
     return(doc, False) #don't throw here.... processOne is called by main and we want to save this to the database
