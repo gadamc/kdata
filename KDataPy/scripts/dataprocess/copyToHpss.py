@@ -378,7 +378,7 @@ def runSubProcess(command):
   return subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 def fileExistsOnSrb(spath, afile):
-  sbproc = runSubProcess(spath + '/Sls ' + afile)
+  sbproc = runSubProcess(spath + '/ils ' + afile)
   return sbproc.stdout.readline() != ''
   
 def printLinesInFile(afile):
@@ -392,17 +392,17 @@ def uploadToHpss(theparams, tarfile, overwrite = False): #option to overwrite a 
   
   theReturn = True
   
-  sinit = runSubProcess(spath +'/Sinit')
+  sinit = runSubProcess(spath +'/iinit')
   sinit.wait()
   printLinesInFile(sinit.stderr)
   
   hpssdir = theparams['srbdestination'] + '/' + formatSrbYearMonthDirStructure(tarfile.rstrip('.tar'))
     
-  smkdir = runSubProcess(spath + '/Smkdir -p ' + hpssdir)
+  smkdir = runSubProcess(spath + '/imkdir -p ' + hpssdir)
   smkdir.wait()
   printLinesInFile(smkdir.stderr)
     
-  scd = runSubProcess(spath +'/Scd ' + hpssdir)
+  scd = runSubProcess(spath +'/icd ' + hpssdir)
   scd.wait()
   printLinesInFile(scd.stderr)
     
@@ -410,14 +410,14 @@ def uploadToHpss(theparams, tarfile, overwrite = False): #option to overwrite a 
   setToCurrentTransfer(theparams['currentTransferFile'], os.path.basename(tarfile).rstrip('.tar'))
  
   if overwrite==True:
-    putprocess = spath + '/Sput -fMvK -r ' + tarfile
+    putprocess = spath + '/iput -fMvK -r ' + tarfile
   else: 
     if fileExistsOnSrb(spath, hpssdir + '/' + os.path.basename(tarfile))==False:
-      putprocess = spath + '/Sput -fMvK -r ' + tarfile
+      putprocess = spath + '/iput -fMvK -r ' + tarfile
           
     elif overwrite == 'Update':
         targetfile = str.replace(os.path.basename(tarfile), '.tar','_2.tar')
-        putprocess = spath + '/Sput -fMvK -r ' + tarfile + ' ' + targetfile
+        putprocess = spath + '/iput -fMvK -r ' + tarfile + ' ' + targetfile
         print os.path.basename(tarfile), 'already exists on HPSS. Update option uploads file to', targetfile
     else:
       print os.path.basename(tarfile), 'already exists on HPSS. No update'
@@ -440,7 +440,7 @@ def uploadToHpss(theparams, tarfile, overwrite = False): #option to overwrite a 
   setToCurrentTransfer(theparams['currentTransferFile'], '')
   #the setToLastCopyFile should make sure to output a last-file for each 'mac' 
   
-  sexit  = runSubProcess(spath + '/Sexit')
+  sexit  = runSubProcess(spath + '/iexit')
   printLinesInFile(sexit.stderr)
   logfile.flush()
   
