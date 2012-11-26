@@ -102,6 +102,6 @@ def main(*argv, **kwargs):
       
 if __name__ == '__main__':
   
-  (myargs, mykwargs) = splitargs( *sys.argv[1:] )
+  (myargs, mykwargs) = splitargs( sys.argv[1:] )
   main(*myargs, **mykwargs)
   
