@@ -19,13 +19,13 @@ def getBlankDoc():
   }
   
 #
-def uploadIIRFilter(binwidth, order, docid, freqs, filtertype="butter", bandtype="highpass", replace=False):
+def uploadIIRFilter(binwidth, order, docid, freqs, password, filtertype="butter", bandtype="highpass", replace=False):
   '''
   the filtertype and bandtype variables should match the expected values in scipy.signal.iirfilter
   binwidth is in nanoseconds
   freqs is either a scalar or a list of size two.
   '''
-  db = KDataPy.database.multiprocessanadb(serverName='https://edelweiss:3000kgd@edelweiss.cloudant.com')
+  db = KDataPy.database.multiprocessanadb(serverName='https://edelweiss:%s@edelweiss.cloudant.com' % password)
   doc = getBlankDoc()
   doc['frequencies'] = freqs
   doc['binwidth_ns'] = binwidth

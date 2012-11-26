@@ -54,10 +54,9 @@ def getRootHistFromOutput(pta):
 
 def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  **kwargs):
   '''
-  
   This function provides you with automatic looping code and gives you the chance for pulse processing. 
   This function will loop through a datafile, apply the KPulseProcessor that you provide (in pta), 
-  and then call the analysisFunction, passing in the pulseRecord, the pta, and all **kwargs. 
+  and then call the analysisFunction, passing in the pulseRecord, the pta, and all kwargs. 
   This function allows for all KData types (Raw, Amp, HLA). Only events in Raw data files are processed with the
   KPtaProcessor object, of course.
 
@@ -69,7 +68,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  
   :type match: bool
   :param pta: a KPtaProcessor that will be automatically called for each pulse
   :type pta: KPtaProcessor object
-  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
+  :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, kwargs). The KPtaProcessor will be the same object that you pass into pta
   :type analysisFunction: function pointer
   :param kwargs: all kwargs are pass to the analysisFunction
   :type kwargs: keyword argument list
@@ -131,7 +130,6 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  
   Example 3 - using kwargs
   
   .. code-block:: python
-
 
     from KDataPy import util
     import numpy as np
@@ -201,7 +199,7 @@ def loopbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
   :type match: bool
   :param ptaDictionary: A dictionary of references to pta Objects. Each 'key' is the channel name and the value is the KPtaProcessor that will be applied to that channel's pulse before the analysisFunction is called.
   :type ptaDictionary: dict 
-  :param analysisFunction: the function that you define to analyze the bolometer record. You must supply this callback function.  The function will be passed the following arguments: KEvent, KBolometerRecord, ptaDictionary, **kwargs. 
+  :param analysisFunction: the function that you define to analyze the bolometer record. You must supply this callback function.  The function will be passed the following arguments: KEvent, KBolometerRecord, ptaDictionary, kwargs. 
   :type analysisFunction: function pointer
   :param kwargs: all remaining kwargs are pass to the analysisFunction
   :type kwargs: keyword argument list
@@ -209,6 +207,7 @@ def loopbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
   For example
   
   .. code-block:: python
+
     import KDataPy.util
 
     def myFunction(theEvent, boloRecord, ptaDict=None,  **kwargs):
@@ -274,40 +273,39 @@ def loopbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
 
   .. code-block:: python
 
-from KDataPy import util
-import ROOT
-ROOT.gSystem.Load('libkds')
-ROOT.gSystem.Load('libkpta')
+    from KDataPy import util
+    import ROOT
+    ROOT.gSystem.Load('libkds')
+    ROOT.gSystem.Load('libkpta')
 
-def myFunction(theEvent, boloRecord, ptaDict=None, **kwargs):
-  print boloRecord.GetDetectorName()
+    def myFunction(theEvent, boloRecord, ptaDict=None, **kwargs):
+      print boloRecord.GetDetectorName()
 
-  for pulse in boloRecord.pulseRecords():
-    
-    outTrace = KDataPy.util.get_out( ptaDict[pulse.GetChannelName()])
-      ... do something ...
+      for pulse in boloRecord.pulseRecords():
+        
+        outTrace = KDataPy.util.get_out( ptaDict[pulse.GetChannelName()])
+          # do something 
 
 
+    chainHeat =ROOT.KPulseAnalysisChain()
+    chainHeat.AddProcessor(ROOT.KBaselineRemoval() )
 
-chainHeat =ROOT.KPulseAnalysisChain()
-chainHeat.AddProcessor(ROOT.KBaselineRemoval() )
+    chainIon1 =ROOT.KPulseAnalysisChain()
+    chainIon1.AddProcessor(ROOT.KBaselineRemoval() )
+    chainIon1.AddProcessor(ROOT.KPatternRemoval() )
 
-chainIon1 =ROOT.KPulseAnalysisChain()
-chainIon1.AddProcessor(ROOT.KBaselineRemoval() )
-chainIon1.AddProcessor(ROOT.KPatternRemoval() )
+    chainIon2 =ROOT.KPulseAnalysisChain()
+    chainIon2.AddProcessor(ROOT.KLinearRemoval() )
+    chainIon.AddProcessor(ROOT.KPatternRemoval() )
 
-chainIon2 =ROOT.KPulseAnalysisChain()
-chainIon2.AddProcessor(ROOT.KLinearRemoval() )
-chainIon.AddProcessor(ROOT.KPatternRemoval() )
+    myPtaDict = {}
+    myPtaDict['chalA FID807'] = chainHeat
+    myPtaDict['chalB FID807'] = chainHeat
 
-myPtaDict = {}
-myPtaDict['chalA FID807'] = chainHeat
-myPtaDict['chalB FID807'] = chainHeat
-
-myPtaDict['ionisA FID807'] = chainIon1
-myPtaDict['ionisB FID807'] = chainIon1
-myPtaDict['ionisC FID807'] = chainIon2
-myPtaDict['ionisD FID807'] = chainIon2
+    myPtaDict['ionisA FID807'] = chainIon1
+    myPtaDict['ionisB FID807'] = chainIon1
+    myPtaDict['ionisC FID807'] = chainIon2
+    myPtaDict['ionisD FID807'] = chainIon2
 
 
     util.loopbolo('/path/to/file.root', name="FID", ptaDictionary = myPtaDict, analysisFunction=myFunction)
@@ -365,7 +363,7 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
     :type match: bool
     :param pta: a KPtaProcessor that will be automatically called for each pulse
     :type pta: KPtaProcessor object
-    :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, **kwargs). The KPtaProcessor will be the same object that you pass into pta
+    :param analysisFunction: the function that you will define to analyze your pulse. This is a sort of 'callback' function. Your function must have three arguments(KEvent, KBoloPulseRecord, KPtaProcessor, kwargs). The KPtaProcessor will be the same object that you pass into pta
     :type analysisFunction: function pointer
     :param kwargs: all kwargs are pass to the analysisFunction
     :type kwargs: keyword argument list
@@ -438,12 +436,10 @@ def plotbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
     :type match: bool
     :param ptaDictionary: A dictionary of references to pta Objects. Each 'key' is the channel name and the value is the KPtaProcessor that will be applied to that channel's pulse before the analysisFunction is called.
     :type ptaDictionary: dict 
-    :param analysisFunction: the function that you define to analyze the bolometer record. You must supply this callback function.  The function will be passed the following arguments: KEvent, KBolometerRecord, ptaDictionary, axisDictionary, **kwargs. The axisDictionary is a dictionary of matplotlib.pyplot.Axis objects that are created for each subplot in the figure. You can use these to alter how your plot looks
+    :param analysisFunction: the function that you define to analyze the bolometer record. You must supply this callback function.  The function will be passed the following arguments: KEvent, KBolometerRecord, ptaDictionary, axisDictionary, kwargs. The axisDictionary is a dictionary of matplotlib.pyplot.Axis objects that are created for each subplot in the figure. You can use these to alter how your plot looks
     :type analysisFunction: function pointer
     :param kwargs: all remaining kwargs are pass to the analysisFunction
     :type kwargs: keyword argument list
-
-
 
     Example Event Viewer. This will just print to screen all pulses for any detector with "FID" in its name
 
@@ -452,7 +448,6 @@ def plotbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
       from KDataPy import util
 
       util.plotbolo('/sps/edelweis/kdata/data/raw/me20a010_010.root', name = 'FID')
-
 
     '''
         
