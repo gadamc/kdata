@@ -1,3 +1,5 @@
+import string
+
 # format value
 def formatvalue(value):
   if (isinstance(value,str)):
@@ -17,7 +19,7 @@ def formatvalue(value):
 
 
 #splitargs
-def splitargs(*argv):
+def splitargs(argv):
   '''
   A simple arg parser. This is useful because argparse is not installed on some Python systems with version < 2.7.
   This supports two kinds of arguments.
