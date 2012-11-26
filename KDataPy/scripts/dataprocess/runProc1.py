@@ -5,7 +5,7 @@ import os, sys, tempfile, shutil, datetime, copy, socket
 import KDataPy.scripts.dataprocess.rootifySambaData as rt
 from KDataPy.exceptions import *
 import KDataPy.scripts.dataprocess.sftpToSps as ftp
-from KDataPy.util import splitargs
+from KDataPy.uploadutilities import splitargs
 
 def runProcess(*args, **kwargs):
   

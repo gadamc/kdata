@@ -2,7 +2,7 @@
 
 from couchdbkit import Server, Database
 import sys, os, subprocess, datetime, string, math
-from KDataPy.util import splitargs
+from KDataPy.uploadutilities import splitargs
 import json, copy
 
 def submitProc1BatchJobs(scriptOut, scriptErr, script, server, dbname, docids):
