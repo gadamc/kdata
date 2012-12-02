@@ -20,6 +20,9 @@ def upload(*argv):
   if db.doc_exist(doc['_id']):
     doc['_rev'] = db.get_rev(doc['_id'])
   doc['type'] = 'radondatafile'
+  doc['rawdata_file_last_modified'] = os.path.getmtime(argv[2])
+  doc['rawdata_file_last_created'] = os.path.getctime(argv[2])
+
   data = []
   
   previousEventHour = fileEndTime.hour
@@ -31,7 +34,7 @@ def upload(*argv):
       lineNum += 1
       eventTimeAsci, adcValue = line.strip('\r\n').split('\t ')
       if lineNum == 1:
-        doc['first_line_of_raw_data_file'] = eventTimeAsci
+        doc['first_line_of_raw_data_file'] = eventTimeAsci #may be useful for reconstructing the proper event time!
       adcValue = int(adcValue.strip())
       ehour, eminute, esecond, ems = eventTimeAsci.strip().split(':')
       ehour = int(ehour)
