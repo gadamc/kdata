@@ -24,9 +24,14 @@ def upload(*argv):
   
   previousEventHour = fileEndTime.hour
   
+  lineNum = 0
+
   while line:  
     if line.strip('\n\r\t') != '' and line != '':
+      lineNum += 1
       eventTimeAsci, adcValue = line.strip('\r\n').split('\t ')
+      if lineNum == 1:
+        doc['first_line_of_raw_data_file'] = eventTimeAsci
       adcValue = int(adcValue.strip())
       ehour, eminute, esecond, ems = eventTimeAsci.strip().split(':')
       ehour = int(ehour)
@@ -50,6 +55,8 @@ def upload(*argv):
     line = theFile.readline()
   
   doc['data'] = data
+  doc['date_uploaded_utc_epoch'] = time.time()
+  doc['date_uploaded_utc_string'] = str(datetime.datetime.utcnow())
   
   db.save_doc(doc)
     
