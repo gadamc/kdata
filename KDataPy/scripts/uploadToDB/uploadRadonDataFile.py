@@ -58,7 +58,7 @@ def upload(*argv):
     line = theFile.readline()
   
   doc['data'] = data
-  doc['date_uploaded_utc_epoch'] = time.time()
+  doc['date_uploaded_utc_second'] = time.time()
   doc['date_uploaded_utc_string'] = str(datetime.datetime.utcnow())
   
   db.save_doc(doc)
