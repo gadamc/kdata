@@ -6,7 +6,7 @@ import uploadRadonDataFile as up
 from couchdbkit import Server, Database
 
 def main(*argv):
-  uri = 'https://%s:%s@edelweiss.cloudant.com' % (argv[1], argv[2])
+  uri = 'https://%s:%s@edelweiss.cloudant.com' % (argv[0], argv[1])
   dbname = 'radon'
   dataDir = '\\Radon\Data\\'  #this is where i will look for data files. we won't look recursively... just in this directory
   
