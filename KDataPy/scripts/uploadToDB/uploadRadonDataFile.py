@@ -21,7 +21,7 @@ def upload(*argv):
     doc['_rev'] = db.get_rev(doc['_id'])
   doc['type'] = 'radondatafile'
   doc['rawdata_file_last_modified'] = os.path.getmtime(argv[2])
-  doc['rawdata_file_last_created'] = os.path.getctime(argv[2])
+  doc['rawdata_file_created'] = os.path.getctime(argv[2])
 
   data = []
   
