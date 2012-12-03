@@ -289,11 +289,6 @@ def tarTheDir(adir, tempDir = None):
   return filename
 
 
-def checkArguments(p):
-  '''checks to make sure that paths are directories and that files are files'''
-  return True
-  
-
 def readArguments(arglist):
   
   p = {'minfilesize':200,'timeout_hours':23.5, 'workingdir':'/Users/adam/Scripts/copyToHpss', \
@@ -315,19 +310,9 @@ def readArguments(arglist):
         p['timeout_hours'] = val
       else:
         print 'Invalid value for timeout.', val, 'Set to default', p['timeout_hours']
-    
-      
-    else:
-      pass
-      #we don't know this option
-      #print 'The option', arglist[i], 'is unknown. Exiting.'
-      #sys.exit(-1)
 
-  if checkArguments(p):
-    return p
-  else:
-    return False
-    
+  return p
+ 
 def getmonthnamedict():
   return {'a':'jan', 'b':'fev', 'c':'mar', 'd':'avr', 'e':'mai', 'f':'jun', 'g':'jul', 'h':'aou', 'i':'sep', 'j':'oct', 'k':'nov', 'l':'dec'}
 
