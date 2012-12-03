@@ -412,6 +412,7 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
   } 
   else if (bolo.BeginsWith("ZM")) {
     AddChannelToDetectorWithNamePost919("H1", bolo, detector);
+    AddChannelToDetectorWithNamePost919("H2", bolo, detector);
     AddChannelToDetectorWithNamePost919("LT1", bolo, detector);
     AddChannelToDetectorWithNamePost919("LT2", bolo, detector);
   }
