@@ -16,6 +16,7 @@ def packageFiles(fileList):
 
 def getFileName(fileList):
   #figures out how to name the tarred file
+  pass
 
 def putOnIrods(tarredFile):
   pass
