@@ -8,7 +8,7 @@ def getListOfFiles(**dbKwargs):
   #returns a list of lists, one for each SAMBA machine
 
   #will need to check only SAMBA runs that are older than the current one... 
-  #or, how do we tell this program when the Run is complete? Fucking hell, I hate Samba. what a piece of shit software. 
+  #or, how do we tell this program when the Run is complete?  
   pass
 
 def packageFiles(fileList):
