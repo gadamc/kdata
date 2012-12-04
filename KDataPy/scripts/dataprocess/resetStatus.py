@@ -18,6 +18,8 @@ def resetStatus(server, databaseName, newstatus, **kwargs):
   s = Server(server)
   db = s[databaseName]
 
+  print 'kwargs:' , kwargs
+
   if kwargs['startkey'] == None or kwargs['endkey'] == None:
     print 'you should supply a range of runs to use with **kwargs["startkey"] and kwargs["endkey"]'
     return
@@ -47,7 +49,7 @@ if __name__ == '__main__':
   parser.add_argument('newstatus', help='new status')
   parser.add_argument('startkey', help='the name of the samba run that defines the beginning of the range of runs')
   parser.add_argument('endkey', help='the name of the samba run that defines the end of the range of runs')
-  parser.add_argument('-db', '--database', help='select the database you wish to use. "datadb" is the default', default='datadb')
+c  parser.add_argument('-db', '--database', help='select the database you wish to use. "datadb" is the default', default='datadb')
   parser.add_argument('-s', '--server', help='select the couchdb server you wish to use. You must supply the username and password or this will not work.')
   parser.add_argument('-o', '--oldstatus', help='if this is set, only documents with the current "status" keyword equal to the value given will be updated. otherwise, all documents will have their "status" keyword updated.')
 

@@ -6,6 +6,7 @@ import KDataPy.scripts.dataprocess.rootifySambaData as rt
 from KDataPy.exceptions import *
 import KDataPy.scripts.dataprocess.sftpToSps as ftp
 from KDataPy.uploadutilities import splitargs
+import pickle
 
 def runProcess(*args, **kwargs):
   
@@ -16,6 +17,7 @@ def runProcess(*args, **kwargs):
   #
   newFileName = args[0] + '.root'
   outFile = ''
+  print args[0], newFileName
     
   outFile = rt.convertfile(args[0], newFileName)
       
@@ -28,7 +30,7 @@ def runProcess(*args, **kwargs):
   
 def processOne(doc, **kwargs):
   global myProc
-  
+  print 'starting processOne', kwargs  
   try:
     print 'have doc', doc['_id']
     doc['status'] = 'proc1 in progress'
@@ -38,11 +40,17 @@ def processOne(doc, **kwargs):
     mustSftp = False
 
     try:
-      if kwargs['useProc0'] == True:  #use the location of the file from proc0 -- useful when run from Lyon
+      print kwargs
+      print kwargs['useProc0']
+      if kwargs['useProc0']:  #use the location of the file from proc0 -- useful when run from Lyon
+        print 'processing file', doc['proc0']['file']
         procDict = myProc.doprocess(doc['proc0']['file']) #this step calls runProcess
-    except:
-      procDict = myProc.doprocess(doc['file']) #this step calls runProcess
-      mustSftp = True
+    except KeyError as e:
+      print e
+      if e.args[0] == 'useProc0':
+        print 'processing file', doc['file']
+        procDict = myProc.doprocess(doc['file']) #this step calls runProcess
+        mustSftp = True
 
     print 'called process'
 
@@ -54,11 +62,14 @@ def processOne(doc, **kwargs):
     
     if doc.has_key('proc1') == False:  doc['proc1'] = {}
     doc['proc1'].update(procDict)    
-    
+    print 'process dictionary', procDict
+
     if procDict.has_key('file'):
       doc['status'] = 'good'
     else:
       raise KDataRootificationError('KDataRootificationError. runProc1.py line61 rootiftySambaData.convertfile returned an empty document.\n')
+
+    print 'must sftp?', mustSftp
 
     if mustSftp:
       try:
@@ -74,8 +85,10 @@ def processOne(doc, **kwargs):
     
   except Exception as e:
     theExc = KDataRootificationError('KDataRootificationError. runProc1.py line76  \n' + str(type(e)) + ' : ' + str(e))
+    print theExc
     if doc.has_key('proc1') == False:  doc['proc1'] = {}
-    doc['proc1']['exception'] = theExc
+    doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
+    doc['proc1']['str_exception'] = str(theExc)
     doc['status'] = 'proc1 failed'
     return(doc, False) #don't throw here.... processOne is called by main and we want to save this to the database
 
@@ -97,6 +110,8 @@ def main(*argv):
   
   (myargs, mykwargs) = splitargs(argv)
   
+  print 'my args', myargs
+  print ' and kwargs', mykwargs
 
   #create a DBProcess instance, which will assist in uploading the proc
   #document to the database... although, its barely useful... 
