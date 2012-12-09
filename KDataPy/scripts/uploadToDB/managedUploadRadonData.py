@@ -49,9 +49,8 @@ def main(*argv):
       print 'sleeping...', datetime.datetime.now()
       time.sleep(3600)  #wait one hour to look for more data
 
-    except Exception as e: 
-      ej = json.loads(e.msg)
-      print json.dumps(ej, indent=1)
-      
+    except Exception as e:
+      print e
+            
 if __name__ == '__main__':
   main(*sys.argv[1:])
