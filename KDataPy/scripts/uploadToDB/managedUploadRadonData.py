@@ -51,11 +51,7 @@ def main(*argv):
 
     except Exception as e: 
       ej = json.loads(e.msg)
+      print json.dumps(ej, indent=1)
       
-      if ej['error'] == 'unauthorized'
-        pass  #just wait and try again. 
-
-      else raise e  #break - something else happened. 
-
 if __name__ == '__main__':
   main(*sys.argv[1:])
