@@ -8,6 +8,8 @@ import KDataPy.exceptions
 
 plt.ion()
 
+quitSymbols = ['quit', 'q', 'bye', '-q']
+
 class KDataUtilQuitLoop(Exception):
   def __init__(self, value):
     self.value = value 
@@ -50,6 +52,32 @@ def getRootHistFromOutput(pta):
   h = TH1D(pta.GetName(), pta.GetName(), pta.GetOutputPulseSize(), 0, pta.GetOutputPulseSize())
   for val,i in pta.output_index: h.SetBinContent(i+1, val)
   return h
+
+def docSet(doc, name, method):
+  try: doc[name] = method
+  except: pass
+
+def jsonPulseInfo(pulse):
+  doc = {}
+  docSet(doc, 'channel', pulse.GetChannelName)
+
+  return doc
+
+def jsonBoloInfo(bolo):
+  doc = {}
+  docSet(doc, 'bolo',  bolo.GetDetectorName)
+
+  return doc
+
+def jsonEventInfo(event, bolo, pulse=None):
+  '''
+  Returns a JSON object filled with a standard set of event information. If pulse = None, then all standard pulse information is added to the JSON object.
+  '''
+  doc = {}
+  docSet(doc, 'triggertype', event)
+def printEventInfo(event, bolo, pulse=None):
+  doc = jsonEventInf(event, bolo, pulse)
+
 
 
 def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  **kwargs):
@@ -404,7 +432,7 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       
       try:
         quitmessage = raw_input()
-        if quitmessage in ['quit', 'q', 'bye', '-q']: 
+        if quitmessage in quitSymbols: 
           plt.cla()
           raise KDataUtilQuitLoop(quitmessage)
       except KeyboardInterrupt: 
@@ -497,7 +525,7 @@ def plotbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
       
       try:
         quitmessage = raw_input()
-        if quitmessage in ['quit', 'q', 'bye', '-q']: 
+        if quitmessage in quitSymbols: 
           plt.cla()
           raise KDataUtilQuitLoop(quitmessage)
       except KeyboardInterrupt: 
