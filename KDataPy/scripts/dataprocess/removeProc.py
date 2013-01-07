@@ -77,18 +77,17 @@ def removeProc(server, databaseName, procname, **kwargs):
   for row in vr:
     print 'checking', row['id']
 
-    reqCom = '%s/%s/_design/proc/_update/removeproc/%s?' % (server, databaseName, row['id'] )
+    reqCom = '%s/%s/_design/proc/_update/removeproc/%s' % (server, databaseName, row['id'] )
 
     reqComDic = {'procname':procname, 'new_status':new_status}
     
     if kwargs.has_key('status') and kwargs['status'] != '':
       reqComDic['old_status'] = kwargs['status']
 
-
     if kwargs.has_key('test') and kwargs['test'] != '' and  kwargs['test'] is not False:
       reqComDic['test'] = kwargs['test']
 
-    reqCom += '&' + urllib.urlencode(reqComDic)
+    reqCom += '?' + urllib.urlencode(reqComDic)
 
     print 'HTTP PUT', reqCom
     resp = request(reqCom, method='PUT')
