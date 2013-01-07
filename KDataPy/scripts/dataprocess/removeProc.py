@@ -15,12 +15,12 @@ def removeProc(server, databaseName, procname, **kwargs):
 
     You need to set the following arguments:
     procname = the name of the "procname" object that will be removed from the database documents (proc0, proc1, etc...)
-    server = the full URL to the main database server (https://edelweiss.cloudant.com)
+    server = the full URL to the main database server (https://<username>:<password>@edelweiss.cloudant.com)
     databaseName = the name of the database (datadb)
 
 
     This script will remove the "procname" object from a subset of the database documents. 
-    To specify this particular subset of documents, you must specify the following kwargs:
+    To specify the particular subset of documents, you MUST specify the following kwargs:
     
     startkey = first run name (ex. "ma22a003_003")
     endkey = final run name (ex. "mb24b001_010")
@@ -28,11 +28,12 @@ def removeProc(server, databaseName, procname, **kwargs):
       You can use any of the "Views" that return the run_name + file_name as a key. These are "proc/bad", "proc/daqdoc",
       "proc/failed", "proc/inprogress", "proc/inqueue", "proc/procX", "proc/procXinprogress" (X = 1,2,3), and "proc/raw"
 
-    All documents that are returned by the viewname within the given startkey/endkey will be affected.
+    All documents that are returned by the viewname within the given startkey/endkey range will be affected.
 
     Optional kwargs:
 
     status = if you set kwargs['status'] then only database documents with this status will be affected
+    
     test = if this is set to True, then no documents will be saved back to the database. All other operations will
       be performed so that you may test the use of this function before affecting docs in the database. 
 
@@ -47,7 +48,7 @@ def removeProc(server, databaseName, procname, **kwargs):
     options['test'] = True;  #this will just be a test
     options['viewname'] = 'proc/failed'
     
-    removeProc.removeProc('https://edelweissuser:password@edelweiss.cloudant.com', 'datadb', proc1', options)
+    removeProc.removeProc('https://edelweissuser:password@edelweiss.cloudant.com', 'datadb', 'proc1', options)
 
    '''
 
