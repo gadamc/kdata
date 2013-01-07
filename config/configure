@@ -275,15 +275,16 @@ sub WriteSetupScript($)
         # Set other environment variables that depend on the ones above
         print KDATA_SH <<__END__;
 setenv PATH {\$KDATA_ROOT}/bin:{\$ROOTSYS}/bin:{\$PATH}
+setenv KDATAPY {\$KDATA_ROOT}/lib}
 if ({\$?$library_path}) then
 setenv $library_path {\$KDATA_ROOT}/lib:{\$ROOTSYS}/lib:{\$$library_path}
 else
 setenv $library_path {\$KDATA_ROOT}/lib:{\$ROOTSYS}/lib
 endif
 if ({\$?$pythonlibpath}) then
-setenv $pythonlibpath {\$KDATA_ROOT}/lib:{\$ROOTSYS}/lib:{\$$pythonlibpath}
+setenv $pythonlibpath {\$KDATAPY}:{\$ROOTSYS}/lib:{\$$pythonlibpath}
 else
-setenv $pythonlibpath {\$KDATA_ROOT}/lib:{\$ROOTSYS}/lib
+setenv $pythonlibpath {\$KDATAPY}:{\$ROOTSYS}/lib
 endif
 __END__
         #print KDATA_SH "setenv MACOSX_DEPLOYMENT_TARGET 10.6\n" if $ENV{'OSTYPE'} eq 'darwin';
@@ -301,15 +302,16 @@ __END__
 	# Set other environment variables that depend on the ones above
         print KDATA_SH <<__END__;
 export PATH=\$KDATA_ROOT/bin:\$ROOTSYS/bin:\$PATH
+export KDATAPY=\$KDATA_ROOT/lib
 if (test "\$$library_path") then
 export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib:\$$library_path
 else
 export $library_path=\$KDATA_ROOT/lib:\$ROOTSYS/lib
 fi
 if (test "\$$pythonlibpath") then
-export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS/lib:\$$pythonlibpath
+export $pythonlibpath=\$KDATAPY:\$ROOTSYS/lib:\$$pythonlibpath
 else
-export $pythonlibpath=\$KDATA_ROOT/lib:\$ROOTSYS/lib
+export $pythonlibpath=\$KDATAPY:\$ROOTSYS/lib
 fi
 __END__
         #print KDATA_SH "export MACOSX_DEPLOYMENT_TARGET=10.6\n" if $ENV{'OSTYPE'} eq 'darwin';
