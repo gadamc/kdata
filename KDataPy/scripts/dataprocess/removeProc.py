@@ -2,7 +2,7 @@
 
 from couchdbkit import Server, Database
 from restkit import request
-import sys, string, copy, json
+import sys, string, copy, json, urllib
   
 import argparse
 
@@ -80,12 +80,17 @@ def removeProc(server, databaseName, procname, **kwargs):
     reqCom = '%s/%s/_design/proc/_update/removeproc/%s?procname=%s&new_status=%s' % \
       (server, databaseName, row['id'], procname, new_status )
 
+    reqComDic = {'procname':procname, 'new_status':new_status}
+    
     if kwargs.has_key('status') and kwargs['status'] != '':
-      reqCom += '&old_status=' + kwargs['status']
+      reqComDic['old_status'] = kwargs['status']
+
 
     if kwargs.has_key('test') and kwargs['test'] != '' and  kwargs['test'] is not False:
-      reqCom += '&test=' + str(kwargs['test'])
+      reqComDic['test'] = kwargs['test']
 
+    reqCom += urllib.urlencode(reqComDic)
+    
     print 'HTTP PUT', reqCom
     resp = request(reqCom, method='PUT')
     respj = json.loads(resp.body_string())
