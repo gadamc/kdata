@@ -51,13 +51,6 @@ def removeProc(server, databaseName, procname, **kwargs):
 
    '''
 
-  #developer note:  In the "proc" _design document now on the database, I've added two "update" function
-  # and a "show" function, which could be used instead of downloading the entire document, updating it and 
-  # then sending the entire thing back to the server
-  #
-  # I should start to use the "updates/in-place" function to put a document on the database (if I can get this to work
-  #  with cloudant -- right now the request.form field is empty!  but for standard couch request.form contains valid data.)
-  #
 
   db = Server(server)[databaseName]
   
