@@ -76,21 +76,21 @@ def removeProc(server, databaseName, procname, **kwargs):
 
   for row in vr:
     print 'checking', row['id']
-    
+
     reqCom = '%s/%s/_design/proc/_update/removeproc/%s?procname=%s&new_status=%s' % \
       (server, databaseName, row['id'], procname, new_status )
 
     if kwargs.has_key('status') and kwargs['status'] != '':
       reqCom += '&old_status=' + kwargs['status']
 
-    if kwargs.has_key('test') and kwargs['test'] != '':
+    if kwargs.has_key('test') and kwargs['test'] != '' and  kwargs['test'] is not False:
       reqCom += '&test=' + str(kwargs['test'])
 
     print 'HTTP PUT', reqCom
     resp = request(reqCom, method='PUT')
     respj = json.loads(resp.body_string())
-    print respj
-
+    print json.dumps(respj, indent=1)
+    print ''
   
 if __name__ == '__main__':
 
