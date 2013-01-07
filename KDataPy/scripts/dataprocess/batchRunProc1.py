@@ -10,7 +10,7 @@ def submitProc1BatchJobs(scriptOut, scriptErr, script, server, dbname, docids):
   if len(docids) == 0:
     return []
 
-  command = 'qsub -P P_edelweis -o %s -e %s -l sps=1 -l vmem=2G -l fsize=2048M  %s %s %s useProc0=True %s' % (scriptOut, scriptErr, script, server, dbname, ' '.join(docids) ) 
+  command = 'qsub -P P_edelweis -o %s -e %s -l sps=1 -l ct=100000 -l vmem=2G -l fsize=2048M  %s %s %s useProc0=True %s' % (scriptOut, scriptErr, script, server, dbname, ' '.join(docids) ) 
   
   proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,)
   val = proc.communicate()[0]
