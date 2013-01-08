@@ -1402,7 +1402,14 @@ Bool_t KSamba2KData::ReadSambaData(void)
       
       if (fSambaFileStream.eof()) {
         cout << "Unexpected end of file after reading event" << endl;
-        return false;
+	cerr << "Unexpected end of file after reading event" << endl;
+
+	cout << "  Found a total of " << eventCount << " Bolometer Events" << endl;
+	cout << "    a total of and " << pulseCount << " Pulses" << endl;
+  
+	fKdataOutput.Write();
+
+        return true;
       }
       
       
