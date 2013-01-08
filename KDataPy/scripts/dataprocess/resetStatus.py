@@ -98,13 +98,13 @@ if __name__ == '__main__':
 
   parser = argparse.ArgumentParser()
   
-  parser.add_argument('newstatus', help='new status')
-  parser.add_argument('startkey', help='the name of the samba run that defines the beginning of the range of runs')
-  parser.add_argument('endkey', help='the name of the samba run that defines the end of the range of runs')
-  parser.add_argument('-db', '--database', help='select the database you wish to use. "datadb" is the default', default='datadb')
+  parser.add_argument('newstatus', help='[required] new status')
+  parser.add_argument('startkey', help='[required] the name of the samba run that defines the beginning of the range of runs')
+  parser.add_argument('endkey', help='[required] the name of the samba run that defines the end of the range of runs')
+  parser.add_argument('-db', '--database', help='[optional] select the database you wish to use. "datadb" is the default', default='datadb')
   parser.add_argument('-v', '--viewname', help='[optional] with this option you can specify which couchdb mapReduce View to use to select data files', default='proc/daqdoc')
-  parser.add_argument('-s', '--server', help='select the couchdb server you wish to use. You must supply the username and password or this will not work.')
-  parser.add_argument('-o', '--status', help='if this is set, only documents with the current "status" keyword equal to the value given will be updated. otherwise, all documents will have their "status" keyword updated.')
+  parser.add_argument('-s', '--server', help='[required] select the couchdb server you wish to use. You must supply the username and password or this will not work.')
+  parser.add_argument('-o', '--status', help='[optional] if this is set, only documents with the current "status" keyword equal to the value given will be updated. otherwise, all documents will have their "status" keyword updated.')
   parser.add_argument('--test', help='[optional] only test - do not save document back to database. for debugging', action='store_true')
 
   args = parser.parse_args()
@@ -113,6 +113,7 @@ if __name__ == '__main__':
   mykwargs['startkey'] = args.startkey
   mykwargs['endkey'] = args.endkey
   mykwargs['viewname'] = args.viewname
+  mykwargs['test'] = args.test
 
   print ''
   print 'CouchDB Server:', args.server
