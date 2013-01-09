@@ -61,10 +61,18 @@ def uploadFile(fname, uri, dbname, override=None):
     fname = gunzip(fname)
   
   # #connect to the db
-  theServer = Server(uri)
-  db = theServer.get_or_create_db(dbname)
-  #print db.info()
-  
+  try:
+      theServer = Server(uri)
+      db = theServer.get_or_create_db(dbname)
+      print db.info()
+  except:
+      #if cannot connect to the server that was given to us
+      #then try the localhost before giving up
+      uri = 'http://adam:tk421tk421@localhost:5984'
+      theServer = Server(uri)
+      db = theServer.get_or_create_db(dbname)
+      print db.info()
+      
   #sync the views for prebuilt indices
   #loader = FileSystemDocsLoader('_design/')
   #loader.sync(db, verbose=True)

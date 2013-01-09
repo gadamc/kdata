@@ -291,11 +291,17 @@ def uploadFile(filename, uri, dbname, override=None):
   
   if override == None:
     override = False
-    
-  theServer = Server(uri)
-  db = theServer.get_or_create_db(dbname)
-  #print db.info()
-   
+  
+  try:  
+    theServer = Server(uri)
+    db = theServer.get_or_create_db(dbname)
+    print db.info()
+  except:
+    uri = 'http://adam:tk421tk421@localhost:5984'
+    theServer = Server(uri)
+    db = theServer.get_or_create_db(dbname)
+    print db.info()
+
   #read the run header
   file = open(filename)
   docs = list()
