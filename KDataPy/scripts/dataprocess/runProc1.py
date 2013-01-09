@@ -19,6 +19,8 @@ caught_sigxcpu = False
 def signalHandler(sigNum, frame):
   global caught_sigxcpu
   caught_sigxcpu = True
+  print 'Caught Signal: ', sigNum
+  print 'Preparing to cleanUp'
 
 #in the main processing loop, the cleanUp is called when
 #the sigxcpu signal has been caught
