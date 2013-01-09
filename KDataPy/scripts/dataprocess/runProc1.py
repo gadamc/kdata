@@ -68,22 +68,19 @@ def processOne(doc, **kwargs):
     myProc.upload(doc)
 
     #need to pass in the correct file name, depending upon where the process is happening!
-    mustSftp = False
+    print 'processOne kwargs:', kwargs
 
-    try:
-      print kwargs
-      print kwargs['useProc0']
-      if kwargs['useProc0']:  #use the location of the file from proc0 -- useful when run from Lyon
-        print 'processing file', doc['proc0']['file']
-        procDict = myProc.doprocess(doc['proc0']['file']) #this step calls runProcess
-    except KeyError as e:
-      print e
-      if e.args[0] == 'useProc0':
-        print 'processing file', doc['file']
-        procDict = myProc.doprocess(doc['file']) #this step calls runProcess
-        mustSftp = True
+    if kwargs.has_key('useProc0'):  #use this keyword arg when processing from Lyon!!! this is coded into batchRunProc1.py
+      mustSftp = False
+      filePath = doc['proc0']['file']
+    else:
+      filePath = doc['file']
+      mustSftp = True
 
-    print 'called process'
+
+    print 'processing file', filePath
+    procDict = myProc.doprocess(filePath) #this step calls runProcess
+    print 'called rootification'
 
     #add a few more items to the document
     procDict['date'] = str(datetime.datetime.utcnow())
