@@ -7,6 +7,35 @@ from KDataPy.exceptions import *
 import KDataPy.scripts.dataprocess.sftpToSps as ftp
 from KDataPy.uploadutilities import splitargs
 import pickle
+import signal
+import urllib
+
+
+#this function will give you a chance to clean up the database. Currently, its set to 
+#handle, in the "main" function below, only the SIGXCPU signal, which is the signal sent 
+#by the batch system when the batch job has reached the maximum allowed time to run
+caught_sigxcpu = False
+
+def signalHandler(sigNum, frame):
+  global caught_sigxcpu
+  caught_sigxcpu = True
+
+#in the main processing loop, the cleanUp is called when
+#the sigxcpu signal has been caught
+def cleanUp(doclist):
+
+  serverName = sys.argv[1]
+  dbName = sys.argv[2]
+
+  for docid in doclist:
+    reqUrl = '%s/%s/_design/proc/_update/in-place/%s' % (serverName, dbName, docid)
+    reqOpts = {'update':'status', 'value':'good', 'remove':'proc1'}
+    reqUrl += '?' + urllib.urlencode(reqOpts)
+    resp = request(reqUrl, method='PUT')
+    rj = json.loads(resp.body_string())
+    print 'resetting database information for', docid
+    print json.dumps(rj['results']['value'], indent=1)
+
 
 def runProcess(*args, **kwargs):
   
@@ -117,14 +146,33 @@ def main(*argv):
   #document to the database... although, its barely useful... 
   global myProc
   myProc = DBProcess(myargs[0], myargs[1], runProcess)
-  
+
+
+  #create a list of remaining docs
+  #these will be dealt with if the job
+  #is killed by the SIGXCPU sent by 
+  #the Lyon CC batch system
+  myRemainingDocs = []
   for anId in myargs[2:]:
+    myRemainingDocs.append(anId)
+
+  signal.signal( getattr(signal, 'SIGXCPU') ,signalHandler)
+
+
+  #start the data processing loop
+  for anId in myargs[2:]:
+
+    if caught_sigxcpu:
+      cleanUp(myRemainingDocs)
+      break  
+
     doc = myProc.get(anId)
-    
     (doc, result) = processOne(doc, **mykwargs)
-  
     myProc.upload(doc)
 
+    myRemainingDocs.remove(anId)
+
+    
 
 if __name__ == '__main__':
   main(*sys.argv[1:])
