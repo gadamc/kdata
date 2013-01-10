@@ -16,11 +16,14 @@ import urllib
 #by the batch system when the batch job has reached the maximum allowed time to run
 caught_sigxcpu = False
 
-def signalHandler(sigNum, frame):
+def sigxcpuHandler(sigNum, frame):
   global caught_sigxcpu
   caught_sigxcpu = True
   print 'Caught Signal: ', sigNum
   print 'Preparing to cleanUp'
+
+def genericSignalHandler(sigNum, frame):
+  print 'Caught Signal from System: ', sigNum
 
 #in the main processing loop, the cleanUp is called when
 #the sigxcpu signal has been caught
@@ -155,7 +158,15 @@ def main(*argv):
   for anId in myargs[2:]:
     myRemainingDocs.append(anId)
 
-  signal.signal( getattr(signal, 'SIGXCPU') ,signalHandler)
+  signal.signal( getattr(signal, 'SIGXCPU') ,sigxcpuHandler)
+
+  for i in [x for x in dir(signal) if x.startswith("SIG")]:
+  try:
+    signum = getattr(signal,i)
+    signal.signal(signum,genericSignalHandler)
+    print 'registering the signal handler for', signum, i
+  except RuntimeError,m:
+    print "Skipping %s"%i
 
 
   #start the data processing loop
