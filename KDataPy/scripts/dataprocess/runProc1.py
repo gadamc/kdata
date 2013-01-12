@@ -160,14 +160,15 @@ def main(*argv):
 
   signal.signal( getattr(signal, 'SIGXCPU') ,sigxcpuHandler)
 
-  for i in [x for x in dir(signal) if x.startswith("SIG")]:
-  try:
-    signum = getattr(signal,i)
-    signal.signal(signum,genericSignalHandler)
-    print 'registering the signal handler for', signum, i
-  except RuntimeError,m:
-    print "Skipping %s"%i
-
+  for i in [x for x in dir(signal) if x.startswith("SIG") and x != 'SIGXCPU']:
+    try:
+      signum = getattr(signal,i)
+      signal.signal(signum,genericSignalHandler)
+      print 'registering the signal handler for', signum, i
+    except RuntimeError as m:
+      print "RTE: Skipping %s"%i
+    except ValueError as e:
+      print "VE: Skipping %s"%i
 
   #start the data processing loop
   for anId in myargs[2:]:

@@ -1,7 +1,7 @@
 //______________________________________________________________________
 //
 // KSamba2KData.cxx
-// Author: Adam Cox <mailto:adam.cox@kit.edu>
+// 
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
@@ -71,6 +71,7 @@ void KSamba2KData::InitializeMembers(void)
  
   fSambaFileLine = "";
   fSambaRunName = "";
+  fPreviousSambaFileLine = "";
   fSambaFileNum = -1;
   TString value = fLocalBigEndian==true ? "big" : "little";
 
@@ -88,49 +89,71 @@ void  KSamba2KData::SetOutputKdataFile(const char* fileName)
   
 }
 
+void KSamba2KData::ReadNextSambaFileLine(void)
+{
+  fPreviousSambaFileLine = fSambaFileLine;
+  fSambaFileLine.ReadToDelim(fSambaFileStream);
+  
+}
+
+void KSamba2KData::PrintExceptionInfo(exception& e, int linenumber)
+{
+  cout << "Exception: " << e.what() << endl;
+  cout << "exception line " << linenumber <<  endl;
+  cout << "the current samba file position " << fSambaFileStream.tellg() << endl;
+  cout << "number of events in output kdata file " << fKdataOutput.GetEntries() << endl;
+  cout << "the previous samba file line " << fPreviousSambaFileLine << endl;
+  cout << "the current samba file line " << fSambaFileLine << endl;
+  
+}
+
 Bool_t  KSamba2KData::ConvertFile(void)
 {
   //
-  
-  if(fSambaFileName == "" || fKdataFileName == ""){
-    cerr << "KSamba2KData::ConvertFile. Input and Output file names are not set." << endl;
-    return false;
-  }
-  
-  cout << "Converting File. " << endl;
-  cout << "   " << fSambaFileName << " -> " << fKdataFileName << endl;
-  
-  if(!OpenSambaFileStream()){
-    cout << "Open Samba File Stream Fail." << endl;
-    return false;
-  }
+  try {
+    if(fSambaFileName == "" || fKdataFileName == ""){
+      cerr << "KSamba2KData::ConvertFile. Input and Output file names are not set." << endl;
+      return false;
+    }
     
-  if(!OpenKdataFile()){
-    cout << "Open Kdata File Fail." << endl;
+    cout << "Converting File. " << endl;
+    cout << "   " << fSambaFileName << " -> " << fKdataFileName << endl;
+    
+    if(!OpenSambaFileStream()){
+      cout << "Open Samba File Stream Fail." << endl;
+    return false;
+    }
+    
+    if(!OpenKdataFile()){
+      cout << "Open Kdata File Fail." << endl;
+      return false;
+    }
+    
+    /*KDataProcessingInfo *info = (KDataProcessingInfo *)(fKdataOutput.GetTTree()->GetUserInfo()->Last());
+      info->AddModule("ksamba");
+      info->AddCommand("KSamba2KData::ConvertFile");
+    */
+    if(!CheckStartOfSambaFile()){
+      cout << "Check Start of Samba File Fail." << endl;
+      return false;
+    }
+    
+    if(ReadSambaHeaderGeneral())
+      if(ReadSambaDetectorConfigurations())
+	if(ReadSambaChannelConfigurations()){
+	  if(ReadSambaRunHeader())
+	    if(ReadSambaData())
+	      if(CloseSambaFileStream())
+		return CloseKdataFile();
+	}
+    
     return false;
   }
-  
-  /*KDataProcessingInfo *info = (KDataProcessingInfo *)(fKdataOutput.GetTTree()->GetUserInfo()->Last());
-  info->AddModule("ksamba");
-  info->AddCommand("KSamba2KData::ConvertFile");
-  */
-  if(!CheckStartOfSambaFile()){
-    cout << "Check Start of Samba File Fail." << endl;
-    return false;
+
+  catch (exception& e){
+    PrintExceptionInfo(e,153);
+    throw e;
   }
-    
-  if(ReadSambaHeaderGeneral())
-    if(ReadSambaDetectorConfigurations())
-      if(ReadSambaChannelConfigurations()){
-        if(ReadSambaRunHeader())
-          if(ReadSambaData())
-            if(CloseSambaFileStream())
-              return CloseKdataFile();
-      }
-        
-    
-  
-  return false;
 }
 
 Bool_t  KSamba2KData::ConvertFile(const char* inputSamba, const char* outputKRawEventFile)
@@ -184,7 +207,8 @@ Bool_t KSamba2KData::CheckStartOfSambaFile(void)
   cout << "Check Start of Samba File" << endl;
   string startSamba = "* Archive SAMBA";
   
-  fSambaFileLine.ReadToDelim(fSambaFileStream);  
+  //fSambaFileLine.ReadToDelim(fSambaFileStream);  
+  ReadNextSambaFileLine();
   return fSambaFileLine.BeginsWith(startSamba.c_str()); 
 }
 
@@ -290,7 +314,8 @@ Bool_t KSamba2KData::ReadSambaHeaderGeneral(void)
       return false;
     }
                               
-    fSambaFileLine.ReadToDelim(fSambaFileStream);
+    //fSambaFileLine.ReadToDelim(fSambaFileStream);
+    ReadNextSambaFileLine();
   } 
   return !fSambaFileStream.eof();
   
@@ -325,7 +350,8 @@ Bool_t KSamba2KData::ReadSambaDetectorConfigurations(void)
       }
     }
           
-    fSambaFileLine.ReadToDelim(fSambaFileStream);
+    //fSambaFileLine.ReadToDelim(fSambaFileStream);
+    ReadNextSambaFileLine();
   }
   
   return !fSambaFileStream.eof();
@@ -467,8 +493,9 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
     
     else if(fSambaFileLine.BeginsWith("Bolo.reglages")){  //the bolometer
       Bool_t foundGoodKey = true;
-      fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
-      
+      //fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
+      ReadNextSambaFileLine();
+
       if (fSambaFileLine.BeginsWith(endOfDetecorHeader.c_str()) ) return true;  //probably the veto configuration
       //return here if the Bolo.reglages section is empty.
 
@@ -809,15 +836,17 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
           //foundGoodKey = false; //just keep reading... Samba is allowed to insert a new key
         }
 
-        fSambaFileLine.ReadToDelim(fSambaFileStream);
-        
+        //fSambaFileLine.ReadToDelim(fSambaFileStream);
+	ReadNextSambaFileLine();
+
         if(fSambaFileLine.BeginsWith(")") || fSambaFileStream.eof())
           return true; // I know this is the last thing in the Detector Header Part. So, I quit when I get to the end.
       }
     }
     
-    fSambaFileLine.ReadToDelim(fSambaFileStream);
-    
+    //fSambaFileLine.ReadToDelim(fSambaFileStream);
+    ReadNextSambaFileLine();
+
   }
  
   return !fSambaFileStream.eof(); 
@@ -998,8 +1027,9 @@ Bool_t KSamba2KData::AddDetectorInfoPre919(KSambaDetector *detector)
     }
     else if(fSambaFileLine.BeginsWith("Bolo.reglages")){
       Bool_t foundGoodKey = true;
-      fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
-      
+      //fSambaFileLine.ReadToDelim(fSambaFileStream);  //go to the next line
+      ReadNextSambaFileLine();
+
       if (fSambaFileLine.BeginsWith(endOfDetecorHeader.c_str()) ) return true;  //probably the veto configuration
       //return here if the Bolo.reglages section is empty.
 
@@ -1067,15 +1097,16 @@ Bool_t KSamba2KData::AddDetectorInfoPre919(KSambaDetector *detector)
           //foundGoodKey = false; //just keep reading... Samba is allowed to insert a new key
         }
 
-        fSambaFileLine.ReadToDelim(fSambaFileStream);
-        
+        //fSambaFileLine.ReadToDelim(fSambaFileStream);
+        ReadNextSambaFileLine();
+
         if(fSambaFileLine.BeginsWith(")") || fSambaFileStream.eof())
           return true; // I know this is the last thing in the Detector Header Part. So, I quit when I get to the end.
       }
     }
     
-    fSambaFileLine.ReadToDelim(fSambaFileStream);
-    
+    //fSambaFileLine.ReadToDelim(fSambaFileStream);
+    ReadNextSambaFileLine();
   }
   
   return !fSambaFileStream.eof();
@@ -1176,8 +1207,9 @@ Bool_t KSamba2KData::ReadSambaRunHeader(void)
   while(!fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginRun) &&
         !fSambaFileLine.Contains(kBeginEvent2) && !fSambaFileLine.Contains(kBeginRun2) &&
         !fSambaFileStream.eof())
-    fSambaFileLine.ReadToDelim(fSambaFileStream);
-  
+    //fSambaFileLine.ReadToDelim(fSambaFileStream);
+    ReadNextSambaFileLine();
+
   if(fSambaFileLine.BeginsWith(kBeginEvent) || fSambaFileLine.Contains(kBeginEvent2))
     return true;  //found the start of events... i guess there just isn't a run header for these data.
   
@@ -1334,7 +1366,8 @@ Bool_t KSamba2KData::ReadSambaRunHeader(void)
       delete arr;
     }*/
     
-    fSambaFileLine.ReadToDelim(fSambaFileStream);
+    //fSambaFileLine.ReadToDelim(fSambaFileStream);
+    ReadNextSambaFileLine();
   }
   
   fSambaHeader.SetRunStartTriggerStamp( (Long64_t)(gigaStampStartRun*(1e9) + smallStampStartRun) );
@@ -1366,7 +1399,8 @@ Bool_t KSamba2KData::ReadSambaData(void)
       cerr << "KSamba2KData::ReadSambaData: "<< kBeginEvent<< " not found" << endl;
       return false;
     }
-    fSambaFileLine.ReadToDelim(fSambaFileStream);
+    //fSambaFileLine.ReadToDelim(fSambaFileStream);
+    ReadNextSambaFileLine();
   } 
   
   Int_t eventCount = 0;
@@ -1381,23 +1415,35 @@ Bool_t KSamba2KData::ReadSambaData(void)
       //event, and pack each
       //channels pulse trace and other information into the appropriate bolometer
       //record. 
-      
-      event->Clear("C");
-      KRawSambaRecord *samba = event->AddSamba();
-      samba->SetRunName(fSambaHeader.GetRunName());
-      samba->SetFileNumber(fSambaFileNum);
-      samba->SetSambaDAQNumber(fSambaRunName[4] - 'a' + 1); 
-      AddSambaInformationFromHeader(samba);
+
+      KRawSambaRecord *samba;
       UInt_t gigaStamp = 0;
       UInt_t smallStamp = 0;
-      
-      fSambaFileLine.ReadToDelim(fSambaFileStream);  //read the next line. it should be a comment. #
-      
+      try {
+	event->Clear("C");
+	//KRawSambaRecord *samba = event->AddSamba();
+	samba = event->AddSamba();
+	samba->SetRunName(fSambaHeader.GetRunName());
+	samba->SetFileNumber(fSambaFileNum);
+	samba->SetSambaDAQNumber(fSambaRunName[4] - 'a' + 1); 
+	AddSambaInformationFromHeader(samba);
+	//UInt_t gigaStamp = 0;
+	//UInt_t smallStamp = 0;
+	
+	//fSambaFileLine.ReadToDelim(fSambaFileStream);  //read the next line. it should be a comment. #
+	ReadNextSambaFileLine();
+      }
+      catch (exception& e){
+	PrintExceptionInfo(e,1436);
+	throw e;
+      }
+
       while(!fSambaFileLine.Contains(kBeginChannel) && !fSambaFileStream.eof()){
         //continue reading the file to get all of the samba information, exiting the loop when the first 
         //channel record is found (or end of file)
         ReadSambaRecordLine(samba, fSambaFileLine, gigaStamp, smallStamp);
-        fSambaFileLine.ReadToDelim(fSambaFileStream);
+        //fSambaFileLine.ReadToDelim(fSambaFileStream);
+	ReadNextSambaFileLine();
       } 
       
       if (fSambaFileStream.eof()) {
@@ -1456,7 +1502,13 @@ Bool_t KSamba2KData::ReadSambaData(void)
             }
           }
           if (newBolo) {
+	    try{
             bolo = event->AddBolo();
+	    }
+	    catch (exception& e){ 
+	      PrintExceptionInfo(e, 1508);
+	      throw e;
+	    }
             bolo->SetDetectorName(detector.Data());
             
             bolo->SetSambaRecord(samba);
@@ -1466,9 +1518,16 @@ Bool_t KSamba2KData::ReadSambaData(void)
             cout << "Didn't get a proper pointer to the KRawBolometerRecord!" << endl;
             return false;  //this should never happen!
           }
-          
-          KRawBoloPulseRecord *pulse = event->AddBoloPulse();
-          //set the pulse name 
+	  KRawBoloPulseRecord *pulse;
+          try {
+	    //KRawBoloPulseRecord *pulse = event->AddBoloPulse();
+	    pulse = event->AddBoloPulse();
+          }
+	  catch (exception& e){
+	    PrintExceptionInfo(e,1526);
+	    throw e;
+	  }
+	  //set the pulse name 
           //don't worry about figuring out the exact channel, just record the pulse
           //name as whatever is found inside the quotes after the Voie
           
@@ -1483,12 +1542,13 @@ Bool_t KSamba2KData::ReadSambaData(void)
           
           pulseCount++;
           
-          Short_t lPulseSize=0;
+          UInt_t lPulseSize=0;
           int lPtsFiltre=0;
           
-          fSambaFileLine.ReadToDelim(fSambaFileStream); //should be at the first line still of the channel record
+          //fSambaFileLine.ReadToDelim(fSambaFileStream); //should be at the first line still of the channel record
                                                         //so read the next line and start reading the channel record
-          
+          ReadNextSambaFileLine();
+
           while( !fSambaFileLine.Contains(kBeginChannel) && !fSambaFileStream.eof() && !fSambaFileLine.Contains(kBeginEvent)){
             
             if (fSambaFileLine.Contains(kMuonVetoIgnore)) cout << fSambaFileLine.Data() << endl;
@@ -1552,7 +1612,8 @@ Bool_t KSamba2KData::ReadSambaData(void)
               //pulse, or it could be the start of another event or channel record.
               
               long lPos = fSambaFileStream.tellg();
-              fSambaFileLine.ReadToDelim(fSambaFileStream); //read the line, which includes the pulse trace and possibly the next channel info
+              //fSambaFileLine.ReadToDelim(fSambaFileStream); //read the line, which includes the pulse trace and possibly the next channel info
+	      ReadNextSambaFileLine();
               fSambaFileStream.seekg(lPos);  //but back up the stream pointer
               
               if ( !fSambaFileLine.BeginsWith(kBeginEvent) && !fSambaFileLine.BeginsWith(kBeginEvent2) &&
@@ -1560,15 +1621,23 @@ Bool_t KSamba2KData::ReadSambaData(void)
                 
                 if ( lPtsFiltre )  //skip the filter information
                   fSambaFileStream.ignore(8*lPtsFiltre); // filtered data = 8 bytes
+                Short_t* lArray;
+		try {
+		  //Short_t* lArray = new Short_t[lPulseSize];
+		  lArray = new Short_t[lPulseSize];
+                }
+		catch (exception& e){
+		  PrintExceptionInfo(e, 1629);
+		  cout << "pulse size requested " << lPulseSize*sizeof(Short_t) << " bytes" << endl;
+		  throw e;
+		}
+		fSambaFileStream.read((char*)lArray,lPulseSize*2); //read the pulse from the stream. always 2 bytes for each point. 
                 
-                Short_t* lArray = new Short_t[lPulseSize];
-                fSambaFileStream.read((char*)lArray,lPulseSize*2); //read the pulse from the stream. always 2 bytes for each point. 
-                
-                if (fSambaFileStream.fail()) 
-                  cerr << "KSamba2KData::ReadSambaData. Possible error reading a pulse for event " << samba->GetSambaEventNumber()<< endl;
+                if (fSambaFileStream.fail() && !fSambaFileStream.eof()) 
+                  cerr << "KSamba2KData::ReadSambaData. Possible error reading a pulse for samb event/eventCount/pulseCount " << samba->GetSambaEventNumber() << " / " << eventCount << " / " << pulseCount << endl;
                 
                 if (fSambaHeader.GetEndian() != fLocalBigEndian)  {//reverse order if necessary.
-		              for (Short_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
+		              for (UInt_t i=0;i<lPulseSize;i++) lArray[i]=R__bswap_16(lArray[i]);
                 }
 
                 pulse->SetTrace(lPulseSize,lArray);
@@ -1582,8 +1651,8 @@ Bool_t KSamba2KData::ReadSambaData(void)
               
             }
             
-            fSambaFileLine.ReadToDelim(fSambaFileStream);
-            
+            //fSambaFileLine.ReadToDelim(fSambaFileStream);
+            ReadNextSambaFileLine();
           }  
           
           //reached the end of this channel's record.
@@ -1636,8 +1705,9 @@ Bool_t KSamba2KData::ReadSambaData(void)
       }
       cin >> stop;
       */
-    }  
-    else fSambaFileLine.ReadToDelim(fSambaFileStream); //if the line doesn't begin with a new event, read the next line
+    } 
+    else ReadNextSambaFileLine();
+    //else fSambaFileLine.ReadToDelim(fSambaFileStream); //if the line doesn't begin with a new event, read the next line
     
   }
   

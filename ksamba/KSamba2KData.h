@@ -19,6 +19,7 @@
 #include <fstream>
 #include <string>
 #include "TObject.h"
+#include <exception>
 
 class TObjArray;
 class KRawSambaRecord;
@@ -46,6 +47,7 @@ public:
 public:
     
   string fSambaFileName;
+  string fPreviousSambaFileLine;
   string fKdataFileName;
   ifstream fSambaFileStream;
   TString fSambaFileLine; //most recently read line in Samba File.
@@ -92,7 +94,10 @@ public:
   Int_t GetSubVersion(void);
   Int_t GetReleaseIndex(Int_t i);
   
-  
+  void PrintExceptionInfo(exception& e, int linenumber = -1);
+  void ReadNextSambaFileLine(void);
+
+
   ClassDef(KSamba2KData,1);
 
 };
