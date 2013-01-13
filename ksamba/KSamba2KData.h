@@ -34,17 +34,14 @@ public:
   KSamba2KData(void);
   KSamba2KData(const char* inputSambaFile, const char* outputKRawEventFile);
   virtual ~KSamba2KData(void);
-  
-  void SetInputSambaFile(const char* fileName);
-  void SetOutputKdataFile(const char* fileName);
-  
+    
   Bool_t ConvertFile(void);
   Bool_t ConvertFile(const char* inputSamba, const char* outputKRawEventFile);
   
   //Bool_t ConvertStream(ifstream& inputSambaStream, const char* outputKRawEventFile);
   
  
-public:
+private:
     
   string fSambaFileName;
   string fPreviousSambaFileLine;
@@ -60,6 +57,9 @@ public:
   KSambaHeader fSambaHeader;
 
   //private methods
+  void SetInputSambaFile(const char* fileName);
+  void SetOutputKdataFile(const char* fileName);
+
   void InitializeMembers(void);
   Bool_t OpenSambaFileStream(void);
   Bool_t OpenKdataFile(void);
