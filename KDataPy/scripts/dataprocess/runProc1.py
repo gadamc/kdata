@@ -6,6 +6,7 @@ import KDataPy.scripts.dataprocess.rootifySambaData as rt
 from KDataPy.exceptions import *
 import KDataPy.scripts.dataprocess.sftpToSps as ftp
 from KDataPy.uploadutilities import splitargs
+import KDataPy.datadb
 import pickle
 import signal
 import urllib
@@ -29,17 +30,15 @@ def genericSignalHandler(sigNum, frame):
 #the sigxcpu signal has been caught
 def cleanUp(doclist):
 
-  serverName = sys.argv[1]
-  dbName = sys.argv[2]
+  dbs = KDataPy.datadb.datadb( sys.argv[1], sys.argv[2])
 
   for docid in doclist:
-    reqUrl = '%s/%s/_design/proc/_update/in-place/%s' % (serverName, dbName, docid)
+    
     reqOpts = {'update':'status', 'value':'good', 'remove':'proc1'}
-    reqUrl += '?' + urllib.urlencode(reqOpts)
-    resp = request(reqUrl, method='PUT')
-    rj = json.loads(resp.body_string())
+    resp = dbs._update_inplace(docid,reqOpts)
+
     print 'resetting database information for', docid
-    print json.dumps(rj['results']['value'], indent=1)
+    print json.dumps(resp['results'], indent=1)
 
 
 def runProcess(*args, **kwargs):
@@ -104,13 +103,14 @@ def processOne(doc, **kwargs):
 
     if mustSftp:
       try:
-        sftpRet = scp.sendBoloData(kwargs['username'], kwargs['password'], procDict['file'])
+        sftpRet = ftp.sendBoloData(kwargs['username'], kwargs['password'], procDict['file'])
         if doc.has_key('proc1') == False:  doc['proc1'] = {}
         doc['proc1']['sftp'] = sftpRet
         doc['proc1']['file'] = sftpRet['file'] #must do this to be consistent with batch processing records
       except Exception as e:
         raise KDataTransferError('KDataTransferError. runProc1.py line70  \n' + str(type(e)) + ' : ' + str(e))  
 
+      #need to delete local .root file!
     return (doc, True)
 
     
@@ -129,7 +129,8 @@ def main(*argv):
   '''
   argv[0] is the couchdb server (http://127.0.0.1:5984)
   argv[1] is the database (datadb)
-  argv[2], argv[3], ... are the document ids (you can pass in an unlimited number of ids.)
+  argv[2... n] are possible kwargs
+  argv[n], argv[n+1], ... are the document ids (you can pass in an unlimited number of ids.)
 
   This supports passing in kwargs, in the form "keyword=value" without spaces! I don't use python.argparse here because CC in Lyon doesn't support it
   It uses the KData.util.splitargs function

@@ -2,7 +2,7 @@
 
 from KDataPy.scripts.dataprocess.DBProcess import *
 from KDataPy.exceptions import *
-import os, sys, tempfile, shutil, datetime
+import os, sys, tempfile, shutil, datetime, time
 import KDataPy.scripts.dataprocess.sftpToSps as scp
 
 def scpToLyon(*args, **kwargs):
@@ -43,6 +43,9 @@ def main(*argv):
   except:
     vr = myProc.view('proc/proc0', reduce=False)
   
+  successfulDocs = []
+  failedDocs = []
+
   for row in vr:
     print row['id']
     
@@ -58,6 +61,7 @@ def main(*argv):
       if len(procDict) > 0:
         #add a few more items to the document
         procDict['date'] = str(datetime.datetime.utcnow())
+        procDict['date_unixtime'] = time.time()
         procDict['processname'] = 'copySambaFileToSps'
       
         #if len(procDict['scpErrs']) > 0:
@@ -72,12 +76,13 @@ def main(*argv):
         
         doc['proc0'].update(procDict)
         myProc.upload(doc)
-      
+        successfulDocs.append(doc['_id'])
+
       else:
         doc['status'] = 'proc0 failed'
         myProc.upload(doc)
         print 'the process returned an empty dictionary!'
-        sys.exit(-1)
+        failedDocs.append(doc['_id'])
 
     except Exception as e:
       print e
@@ -88,8 +93,9 @@ def main(*argv):
       doc['status'] = 'proc0 failed'
       #if doc.has_key('proc0'): del doc['proc0']
       myProc.upload(doc)
-      sys.exit(-1)
+      failedDocs.append(doc['_id'])
 
+  return (successfulDocs, failedDocs)    
 
 if __name__ == '__main__':
   main(*sys.argv[1:])
