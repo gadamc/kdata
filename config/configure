@@ -275,7 +275,7 @@ sub WriteSetupScript($)
         # Set other environment variables that depend on the ones above
         print KDATA_SH <<__END__;
 setenv PATH {\$KDATA_ROOT}/bin:{\$ROOTSYS}/bin:{\$PATH}
-setenv KDATAPY {\$KDATA_ROOT}/lib}
+setenv KDATAPY {\$KDATA_ROOT}/lib
 if ({\$?$library_path}) then
 setenv $library_path {\$KDATA_ROOT}/lib:{\$ROOTSYS}/lib:{\$$library_path}
 else
