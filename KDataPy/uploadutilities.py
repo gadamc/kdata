@@ -50,9 +50,9 @@ def splitargs(argv):
     else:
       key, val = tuple(arg.split('='))
       
-      if val  == 'True':
+      if val in ('True', 'true'):
         val = True
-      elif val == 'False':
+      elif val in ('False', 'false'):
         val = False
       else:
         val = formatvalue(val)

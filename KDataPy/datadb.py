@@ -31,7 +31,7 @@ class datadb():
     '''
     '''
     reqUrl = '%s/%s/_design/%s/_%s/%s/%s?%s' % \
-      (self.server, self.datbasename,  self.designdoc, designDocName, functionName, docid, urllib.urlencode(reqOpts))
+      (self.server, self.databasename,  self.designdoc, designDocName, functionName, docid, urllib.urlencode(reqOpts))
     return json.loads( request(reqUrl, method=method).body_string() )
 
   def _update(self, docid, functionName, reqOpts):

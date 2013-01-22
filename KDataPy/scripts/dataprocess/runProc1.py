@@ -10,7 +10,7 @@ import KDataPy.datadb
 import pickle
 import signal
 import urllib
-
+import json
 
 #this function will give you a chance to clean up the database. Currently, its set to 
 #handle, in the "main" function below, only the SIGXCPU signal, which is the signal sent 
@@ -28,9 +28,8 @@ def genericSignalHandler(sigNum, frame):
 
 #in the main processing loop, the cleanUp is called when
 #the sigxcpu signal has been caught
-def cleanUp(doclist):
-
-  dbs = KDataPy.datadb.datadb( sys.argv[1], sys.argv[2])
+def cleanUp(doclist, servername, dbname):
+  dbs = KDataPy.datadb.datadb( servername, dbname)
 
   for docid in doclist:
     
@@ -40,19 +39,21 @@ def cleanUp(doclist):
     print 'resetting database information for', docid
     print json.dumps(resp['results'], indent=1)
 
-
-def runProcess(*args, **kwargs):
+def rootify(*args):
   
-  if len(args) > 1:
-    print 'takes one argument...the input file name with the full path to the file.'
-    sys.exit(-1)
+  sambaFile = args[0]
+  kdataFile = None
 
-  #
-  newFileName = args[0] + '.root'
+  if len(args) > 1:
+    kdataFile = args[1]
+
+  if kdataFile == None:
+    kdataFile = sambaFile + '.root'
+  
   outFile = ''
-  print args[0], newFileName
+  print sambaFile, '->', kdataFile
     
-  outFile = rt.convertfile(args[0], newFileName)
+  outFile = rt.convertfile(sambaFile, kdataFile)
       
   processdoc = {}
   
@@ -70,18 +71,26 @@ def processOne(doc, **kwargs):
     myProc.upload(doc)
 
     #need to pass in the correct file name, depending upon where the process is happening!
+
     print 'processOne kwargs:', kwargs
 
-    if kwargs.has_key('useProc0'):  #use this keyword arg when processing from Lyon!!! this is coded into batchRunProc1.py
+    kdataFile = None
+    tempDir = None
+
+    if kwargs.get('useProc0', False):  #use this keyword arg when processing from Lyon!!! this is coded into batchRunProc1.py
       mustSftp = False
       filePath = doc['proc0']['file']
     else:
+      print 'useProc0 set to false, will sftp ROOT file to sps'
       filePath = doc['file']
       mustSftp = True
-
+      tempDir = tempfile.mkdtemp()
+      print tempDir
+      kdataFile = os.path.join(tempDir, os.path.basename(filePath)+'.root')
+      print 'will create', kdataFile
 
     print 'processing file', filePath
-    procDict = myProc.doprocess(filePath) #this step calls runProcess
+    procDict = myProc.doprocess(filePath, kdataFile) #this step calls rootify
     print 'called rootification'
 
     #add a few more items to the document
@@ -97,25 +106,40 @@ def processOne(doc, **kwargs):
     if procDict.has_key('file'):
       doc['status'] = 'good'
     else:
-      raise KDataRootificationError('KDataRootificationError. runProc1.py line61 rootiftySambaData.convertfile returned an empty document.\n')
+      raise KDataRootificationError('KDataRootificationError. runProc1.py line102 rootiftySambaData.convertfile returned an empty document.\n')
+
+    
 
     print 'must sftp?', mustSftp
 
     if mustSftp:
       try:
+        print str(datetime.datetime.now()), 'sending proc1 file', procDict['file']
         sftpRet = ftp.sendBoloData(kwargs['username'], kwargs['password'], procDict['file'])
+        os.listdir(tempDir)
+        print 'removing temp directory', tempDir
+        shutil.rmtree(tempDir)
         if doc.has_key('proc1') == False:  doc['proc1'] = {}
         doc['proc1']['sftp'] = sftpRet
+        doc['proc1']['sftp']['local_tempfile'] = kdataFile
         doc['proc1']['file'] = sftpRet['file'] #must do this to be consistent with batch processing records
-      except Exception as e:
-        raise KDataTransferError('KDataTransferError. runProc1.py line70  \n' + str(type(e)) + ' : ' + str(e))  
+        
+        #print json.dumps(doc['proc1'], indent=1)
 
-      #need to delete local .root file!
+      except Exception as e:
+        theExc = KDataTransferError('KDataTransferError. runProc1.py line113  \n' + str(type(e)) + ' : ' + str(e))  
+        print theExc
+        if doc.has_key('proc1') == False:  doc['proc1'] = {}
+        doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
+        doc['proc1']['str_exception'] = str(theExc)
+        doc['status'] = 'proc1 failed'
+        return(doc, False) #don't throw here.... processOne is called by main and we want to save this to the database
+    
     return (doc, True)
 
     
   except Exception as e:
-    theExc = KDataRootificationError('KDataRootificationError. runProc1.py line76  \n' + str(type(e)) + ' : ' + str(e))
+    theExc = KDataRootificationError('KDataRootificationError. runProc1.py line120  \n' + str(type(e)) + ' : ' + str(e))
     print theExc
     if doc.has_key('proc1') == False:  doc['proc1'] = {}
     doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
@@ -129,8 +153,7 @@ def main(*argv):
   '''
   argv[0] is the couchdb server (http://127.0.0.1:5984)
   argv[1] is the database (datadb)
-  argv[2... n] are possible kwargs
-  argv[n], argv[n+1], ... are the document ids (you can pass in an unlimited number of ids.)
+  argv[2], argv[3], ... are the document ids (you can pass in an unlimited number of ids.)
 
   This supports passing in kwargs, in the form "keyword=value" without spaces! I don't use python.argparse here because CC in Lyon doesn't support it
   It uses the KData.util.splitargs function
@@ -148,7 +171,7 @@ def main(*argv):
   #create a DBProcess instance, which will assist in uploading the proc
   #document to the database... although, its barely useful... 
   global myProc
-  myProc = DBProcess(myargs[0], myargs[1], runProcess)
+  myProc = DBProcess(myargs[0], myargs[1], rootify)
 
 
   #create a list of remaining docs
@@ -161,21 +184,12 @@ def main(*argv):
 
   signal.signal( getattr(signal, 'SIGXCPU') ,sigxcpuHandler)
 
-  for i in [x for x in dir(signal) if x.startswith("SIG") and x != 'SIGXCPU']:
-    try:
-      signum = getattr(signal,i)
-      signal.signal(signum,genericSignalHandler)
-      print 'registering the signal handler for', signum, i
-    except RuntimeError as m:
-      print "RTE: Skipping %s"%i
-    except ValueError as e:
-      print "VE: Skipping %s"%i
-
+ 
   #start the data processing loop
   for anId in myargs[2:]:
 
     if caught_sigxcpu:
-      cleanUp(myRemainingDocs)
+      cleanUp(myRemainingDocs, myargs[0], myargs[1])
       break  
 
     doc = myProc.get(anId)
