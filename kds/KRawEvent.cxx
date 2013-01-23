@@ -21,7 +21,7 @@
 
 #include "KRawEvent.h"
 #include "TProcessID.h"
-#include "KClonesArray.h"
+//#include "KClonesArray.h"
 
 //sub record includes
 #include "KRawSambaRecord.h"
@@ -40,14 +40,13 @@ ClassImp(KRawEvent);
 KRawEvent::KRawEvent(void)
 {
   //Default constructor 
-  InitializeMembers();
+
 
   fSamba = 0;
   fBolo = 0;
   fBoloPulse = 0;
   fMuonModule = 0;
 
-  CreateArrays();
 
 }
 
@@ -402,58 +401,49 @@ void KRawEvent::Clear(Option_t *opt)
 
   fMuonSystem.Clear(opt);
 
-  //reset member variables to zero
-  InitializeMembers();
 }
 
-void KRawEvent::InitializeMembers(void)
-{
 
-}
 
 void KRawEvent::CreateArrays(void)
 {
 
   //Allocates memory for the KClonesArrays if they haven't already
   //been allocated.
+  //This is not called in the constructor for ROOT I/O reasons. 
 
   if(!fSamba)
-    fSamba = new KClonesArray(KRawSambaRecord::Class(),2);
+    fSamba = new TClonesArray(KRawSambaRecord::Class(),2);
 
   if(!fBolo)
-    fBolo = new KClonesArray(KRawBolometerRecord::Class(),5);
+    fBolo = new TClonesArray(KRawBolometerRecord::Class(),5);
 
   if(!fBoloPulse)
-    fBoloPulse = new KClonesArray(KRawBoloPulseRecord::Class(),20);
+    fBoloPulse = new TClonesArray(KRawBoloPulseRecord::Class(),20);
 
   if(!fMuonModule)
-    fMuonModule = new KClonesArray(KRawMuonModuleRecord::Class(),5);
+    fMuonModule = new TClonesArray(KRawMuonModuleRecord::Class(),5);
 
-
-  //why doesn't this create a memory leak? CreateArrays is called
-  //by the default constructor. Does ROOT realize that I already 
-  //have these KClonesArrays. Or maybe a KClonesArray object doesn't
-  //require that much memory, so I don't notice the leak.
 
 }
 
 
 
-void KRawEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
-{
-  //now with KClonesArrays, we don't have to call DeleteArray when constructing
-  //event records.
-  //this method is deprecated and will eventually be removed. 
-  if(mArray) {
-    mArray->Delete( (anOption && *anOption) ? anOption : "C" );
-  }
-}
+// void KRawEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
+// {
+//   //now with KClonesArrays, we don't have to call DeleteArray when constructing
+//   //event records.
+//   //this method is deprecated and will eventually be removed. 
+//   if(mArray) {
+//     mArray->Delete( (anOption && *anOption) ? anOption : "C" );
+//   }
+// }
 
 
 void KRawEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)
 {
   if(mArray) {
-    static_cast<KClonesArray *>(mArray)->Clear( (anOption && *anOption) ? anOption : "C" );
+    mArray->Clear( (anOption && *anOption) ? anOption : "C" );
   }
 }
 

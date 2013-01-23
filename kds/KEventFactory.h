@@ -41,7 +41,7 @@ public:
   virtual ~KEventFactory(void);
 
   static KEvent* NewEvent(const Char_t* type); 
-  static KEvent* NewEvent(const KEvent* event);  
+  static KEvent* NewEvent( KEvent* event);  
   static KHLAEvent* NewHLAEvent(void);
   static KRawEvent* NewRawEvent(void);
   static KAmpEvent* NewAmpEvent(void);
