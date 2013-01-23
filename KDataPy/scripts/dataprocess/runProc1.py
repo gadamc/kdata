@@ -1,34 +1,34 @@
 #!/usr/bin/env python
 
-from KDataPy.scripts.dataprocess.DBProcess import *
 import os, sys, tempfile, shutil, datetime, copy, socket
-import KDataPy.scripts.dataprocess.rootifySambaData as rt
-from KDataPy.exceptions import *
-import KDataPy.scripts.dataprocess.sftpToSps as ftp
-from KDataPy.uploadutilities import splitargs
-import KDataPy.datadb
 import pickle
 import signal
 import urllib
 import json
+import argparse
+import KDataPy.scripts.dataprocess.rootifySambaData as rt
+from KDataPy.exceptions import *
+import KDataPy.scripts.dataprocess.sftpToSps as ftp
+import KDataPy.datadb
+from KDataPy.scripts.dataprocess.DBProcess import *
+from couchdbkit import Server
 
 #this function will give you a chance to clean up the database. Currently, its set to 
 #handle, in the "main" function below, only the SIGXCPU signal, which is the signal sent 
 #by the batch system when the batch job has reached the maximum allowed time to run
 caught_sigxcpu = False
 
-def sigxcpuHandler(sigNum, frame):
+
+def _sigxcpuHandler(sigNum, frame):
   global caught_sigxcpu
   caught_sigxcpu = True
   print 'Caught Signal: ', sigNum
   print 'Preparing to cleanUp'
 
-def genericSignalHandler(sigNum, frame):
-  print 'Caught Signal from System: ', sigNum
 
 #in the main processing loop, the cleanUp is called when
 #the sigxcpu signal has been caught
-def cleanUp(doclist, servername, dbname):
+def _cleanUp(doclist, servername, dbname):
   dbs = KDataPy.datadb.datadb( servername, dbname)
 
   for docid in doclist:
@@ -39,7 +39,7 @@ def cleanUp(doclist, servername, dbname):
     print 'resetting database information for', docid
     print json.dumps(resp['results'], indent=1)
 
-def rootify(*args):
+def _rootify(*args):
   
   sambaFile = args[0]
   kdataFile = None
@@ -62,9 +62,9 @@ def rootify(*args):
     
   return processdoc
   
-def processOne(doc, **kwargs):
+def _processOne(doc, **kwargs):
   global myProc
-  print 'starting processOne', kwargs  
+  print 'starting _processOne', kwargs  
   try:
     print 'have doc', doc['_id']
     doc['status'] = 'proc1 in progress'
@@ -72,25 +72,36 @@ def processOne(doc, **kwargs):
 
     #need to pass in the correct file name, depending upon where the process is happening!
 
-    print 'processOne kwargs:', kwargs
+    print '_processOne kwargs:', kwargs
 
     kdataFile = None
     tempDir = None
 
+    mustSftp = False
+    if kwargs.get('ftp', False):
+      mustSftp = True
+
+
     if kwargs.get('useProc0', False):  #use this keyword arg when processing from Lyon!!! this is coded into batchRunProc1.py
-      mustSftp = False
       filePath = doc['proc0']['file']
+
     else:
       print 'useProc0 set to false, will sftp ROOT file to sps'
       filePath = doc['file']
-      mustSftp = True
-      tempDir = tempfile.mkdtemp()
-      print tempDir
-      kdataFile = os.path.join(tempDir, os.path.basename(filePath)+'.root')
+      #if we're going to send by FTP, just create the file in a temporary space
+      #so that we can delete it later after its been sent
+      if mustSftp:
+        tempDir = tempfile.mkdtemp()
+        print tempDir
+        kdataFile = os.path.join(tempDir, os.path.basename(filePath)+'.root')
+      else:
+        kdataFile = filePath + '.root'
+
       print 'will create', kdataFile
 
+
     print 'processing file', filePath
-    procDict = myProc.doprocess(filePath, kdataFile) #this step calls rootify
+    procDict = myProc.doprocess(filePath, kdataFile) #this step calls _rootify
     print 'called rootification'
 
     #add a few more items to the document
@@ -108,7 +119,6 @@ def processOne(doc, **kwargs):
     else:
       raise KDataRootificationError('KDataRootificationError. runProc1.py line102 rootiftySambaData.convertfile returned an empty document.\n')
 
-    
 
     print 'must sftp?', mustSftp
 
@@ -133,7 +143,7 @@ def processOne(doc, **kwargs):
         doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
         doc['proc1']['str_exception'] = str(theExc)
         doc['status'] = 'proc1 failed'
-        return(doc, False) #don't throw here.... processOne is called by main and we want to save this to the database
+        return(doc, False) #don't throw here.... _processOne is called by main and we want to save this to the database
     
     return (doc, True)
 
@@ -145,55 +155,46 @@ def processOne(doc, **kwargs):
     doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
     doc['proc1']['str_exception'] = str(theExc)
     doc['status'] = 'proc1 failed'
-    return(doc, False) #don't throw here.... processOne is called by main and we want to save this to the database
+    return(doc, False) #don't throw here.... _processOne is called by main and we want to save this to the database
 
       
   
-def main(*argv):
+def process(couchServer, couchDbName, runList, **processKwargs):
   '''
-  argv[0] is the couchdb server (http://127.0.0.1:5984)
-  argv[1] is the database (datadb)
-  argv[2], argv[3], ... are the document ids (you can pass in an unlimited number of ids.)
+  runList is a list of document _id's for each run that will be processed.
 
-  This supports passing in kwargs, in the form "keyword=value" without spaces! I don't use python.argparse here because CC in Lyon doesn't support it
-  It uses the KData.util.splitargs function
+  the following kwargs affect the behavior
+  'useProc0' -- if set to True, then this rootifies the data using the samba file found in the location doc['proc0']['file'], where the 'doc' is the CouchDB database document for that run. If set to False, or not set at all, then the file located in doc['file'] is rootified. This is used when the rootification process (proc1) is done "locally" (in production, this means on a computer in Modane -- S7)
 
-  process 1 - converts a raw Samba data file into Kdata ROOT file.
-  This script is meant to be run on ccage.in2p3.fr with access to the /sps/edelweis directory
-  because that is where we expect the data files to be located.
+  'ftp' -- if set to True, then this process will attempt to send the rootified data file to the ccage.in2p3.fr system. 
+  
+  If 'ftp' is set to True, you must supply a 'username' and 'password' in the kwargs, which will be used to gain access to ccage.in2p3.fr and transfer the data to /sps/edelweis/kdata/data/raw
+
   '''
   
-  (myargs, mykwargs) = splitargs(argv)
-  
-  print 'my args', myargs
-  print ' and kwargs', mykwargs
-
-  #create a DBProcess instance, which will assist in uploading the proc
-  #document to the database... although, its barely useful... 
   global myProc
-  myProc = DBProcess(myargs[0], myargs[1], rootify)
+  myProc = DBProcess(couchServer, couchDbName, _rootify)
 
+  #create a list of remaining docs that will be dealt with if the job
+  #is killed by the SIGXCPU sent by the Lyon CC batch system
 
-  #create a list of remaining docs
-  #these will be dealt with if the job
-  #is killed by the SIGXCPU sent by 
-  #the Lyon CC batch system
   myRemainingDocs = []
-  for anId in myargs[2:]:
+  for anId in runList:
     myRemainingDocs.append(anId)
 
-  signal.signal( getattr(signal, 'SIGXCPU') ,sigxcpuHandler)
+  #the SIGXCPU signal is sent by the Lyon Batch system - set up handler function
+  signal.signal( getattr(signal, 'SIGXCPU') ,_sigxcpuHandler)
 
  
   #start the data processing loop
-  for anId in myargs[2:]:
+  for anId in runList:
 
     if caught_sigxcpu:
-      cleanUp(myRemainingDocs, myargs[0], myargs[1])
+      _cleanUp(myRemainingDocs, couchServer, couchDbName)
       break  
 
     doc = myProc.get(anId)
-    (doc, result) = processOne(doc, **mykwargs)
+    (doc, result) = _processOne(doc, **processKwargs)
     myProc.upload(doc)
 
     myRemainingDocs.remove(anId)
@@ -201,4 +202,26 @@ def main(*argv):
     
 
 if __name__ == '__main__':
-  main(*sys.argv[1:])
+  '''
+  Uses argparse to split up the command line and call the 'process' function above. See above for details.
+  '''
+
+  parser = argparse.ArgumentParser()
+  parser.add_argument('serverUrl', help='[required] the name of the couch server including credentials')
+  parser.add_argument('dbName', help='[required] the name of the database (datadb)')
+  parser.add_argument('-f', '--files', nargs = "+")
+  parser.add_argument('-p0', '--useProc0', action='store_true')
+  parser.add_argument('-ftp','--ftp', action='store_true')
+  parser.add_argument('-u', '--username')
+  parser.add_argument('-pw', '--password')
+  args = parser.parse_args()
+
+  if args.ftp and (args.username is None or args.password is None):
+    print 'Must set username and password if using ftp option'
+    sys.exit(0)
+  else:
+    print args
+
+  kw = {'useProc0':args.useProc0, 'username':args.username, 'password':args.password, 'ftp':args.ftp}
+
+  process(args.serverUrl, args.dbName, args.files, **kw)
