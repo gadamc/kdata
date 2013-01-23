@@ -136,7 +136,7 @@ Bool_t KEventFactory::DeleteEvent(KEvent *event)
   return true;
 }
 
-KEvent* KEventFactory::NewEvent(const KEvent* event)
+KEvent* KEventFactory::NewEvent(KEvent* event)
 {
   //make a new Event object, but copy it from an already existing event.
   //This method checks which type of KEvent you passed in,
@@ -158,20 +158,21 @@ KEvent* KEventFactory::NewEvent(const KEvent* event)
 
 void KEventFactory::BuildEvent(KEvent *event)
 {
-  if(const KHLAEvent *mHLAEvent = dynamic_cast<const KHLAEvent*>(event)){
+  if( KHLAEvent *mHLAEvent = dynamic_cast< KHLAEvent*>(event)){
     //do whatever is needed. nothing for now. 
     if(mHLAEvent){
       //do stuff. 
     }
   }
 
-  else if(const KRawEvent *mRawEvent = dynamic_cast<const KRawEvent*>(event)){
-    //do whatever is needed. nothing for now.
-    if(mRawEvent){
-      //do stuff. 
+  else if( KRawEvent *mRawEvent = dynamic_cast< KRawEvent*>(event)){
+
+    if(mRawEvent){ 
+      //allocate memory for TClonesArrays
+      mRawEvent->CreateArrays();
     }
   }
-  else if(const KAmpEvent *mAmpEvent = dynamic_cast<const KAmpEvent*>(event)){
+  else if( KAmpEvent *mAmpEvent = dynamic_cast< KAmpEvent*>(event)){
     //do whatever is needed. nothing for now. 
     if(mAmpEvent){
       //do stuff. 
