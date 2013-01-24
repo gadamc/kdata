@@ -738,7 +738,7 @@ Bool_t KSamba2KData::AddDetectorInfoPost919(KSambaDetector *detector)
         }
         
       
-        else if(key.BeginsWith("Rt") ) {
+        else if(key.BeginsWith("Rt" && key.Length() > 2) ) { // Run300 veto detector got "Rt" without channel names
           
           TString cName = "ionis";
           cName += key(key.Length()-1, 1);  cName += " "; cName += bolo;
