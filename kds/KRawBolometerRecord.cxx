@@ -52,8 +52,7 @@ void KRawBolometerRecord::CopyLocalMembers(const KRawBolometerRecord& /*aRec*/)
 {
   //copies local data members
   
-  fSambaRecord = 0;  //will need to set these another way
-  fPulseRecords.Delete();
+
 }
 
 
@@ -69,10 +68,8 @@ void KRawBolometerRecord::Clear(Option_t *opt)
 {
   //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
-  //in the case that instances of this object are stored
-  //inside of a TClonesArray
-  //Also, if this class holds any TClonesArrays, it must call
-  //TClonesArray::Clear("C")
+  //since this is stored within a TClonesArray within the KRawEvent
+
   KBolometerRecord::Clear(opt);
 
   //Clear and delete local objects here.
@@ -88,8 +85,7 @@ void KRawBolometerRecord::InitializeMembers(void)
   
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
-  fSambaRecord = 0;
-  fPulseRecords.Delete();
+
 
 }
 
@@ -121,7 +117,7 @@ void KRawBolometerRecord::Compact(void)
 
   KBolometerRecord::Compact();
 
-  fPulseRecords.Compress();
+  
 }
 
 void KRawBolometerRecord::AddPulseRecord(KRawBoloPulseRecord* aPulseRecord)

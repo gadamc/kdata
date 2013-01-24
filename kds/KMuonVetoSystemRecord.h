@@ -89,10 +89,8 @@ private:
   Double_t fRunStartTime; //start time, in unix time, for the beginning of the current system run
   Double_t fRunEndTime; //end time, in unix time, for the beginning of the current system run
   Double_t fFileStartTime; //start time, in unix time, for the beginning of the current "file"
-    Double_t fFileEndTime; //end time, in unix time, for the beginning of the current "file"
-  
-  //Int_t fAdcA[kSizeOfChannelArrays]; //****MOVE TO RAW*****// 
-  //Int_t fTdcA[kSizeOfChannelArrays]; //****MOVE TO RAW*****//
+  Double_t fFileEndTime; //end time, in unix time, for the beginning of the current "file"
+
   
   TBits fEventQuality;  //|| //the Event Quality bits. But don't split them! Otherwise, they won't be accessible from TTree::Draw
 

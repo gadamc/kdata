@@ -43,7 +43,6 @@ KEvent::KEvent(void)
  any space for embedded pointer objects in this constructor. This space will be lost (memory leak) while reading 
  in the object. 
  
- And, I broke that rule in the KHLAEvent because I allocate memory for the TClonesArrays.
  */
   InitializeMembers();
 
@@ -91,14 +90,15 @@ KEvent::~KEvent(void)
   Clear("C");
 }
 
-void KEvent::Clear(Option_t * /*anOption*/)
+void KEvent::Clear(Option_t * anOption)
 {
   //
   
   //delete any memory allocated by the KEvent class here that
   //needs to be deleted for each event -- but not the TClonesArrays. Clear should be called 
   //after every event so that the TClonesArrays are cleared. 
-  
+  TObject::Clear(anOption);
+
   InitializeMembers();
 }
 
