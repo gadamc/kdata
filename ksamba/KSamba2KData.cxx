@@ -18,7 +18,7 @@
 // waveforms will still be read from the raw Samba files since it would
 // be prohibitively expensive to store all of the data in the couchdb. 
 //
-
+ 
 
 #include "KSamba2KData.h"
 #include "RConfig.h"
