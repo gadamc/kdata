@@ -10,7 +10,6 @@
 #pragma link C++ class KAmpBolometerRecord+;
 #pragma link C++ class KAmpEvent+;
 #pragma link C++ class KBoloPulseRecord+;
-#pragma link C++ class KBoloSystemRecord+;
 #pragma link C++ class KBolometerRecord+;
 #pragma link C++ class KClonesArray+;
 #pragma link C++ class KDataFileIO+;
@@ -20,7 +19,6 @@
 #pragma link C++ class KEvent+;
 #pragma link C++ class KEventFactory+;
 #pragma link C++ class KHLABoloPulseRecord+;
-#pragma link C++ class KHLABoloSysRecord+;
 #pragma link C++ class KHLABolometerRecord+;
 #pragma link C++ class KHLAEvent+;
 #pragma link C++ class KHLAMuonModuleRecord+;
