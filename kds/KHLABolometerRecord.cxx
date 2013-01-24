@@ -69,9 +69,6 @@ void KHLABolometerRecord::CopyLocalMembers(const KHLABolometerRecord &aRec)
   fIonFlags = aRec.fIonFlags;
   fIonFlags.Compact();
 
-  fSambaRecord = 0;  //will need to set these by hand!
-  fPulseRecords.Delete();
-
   SetEnergyIonFiducial(aRec.GetEnergyIonFiducial());
   SetEnergySumIonChannels(aRec.GetEnergySumIonChannels());
   SetBaselineIonFiducial(aRec.GetBaselineIonFiducial());
@@ -125,9 +122,6 @@ void KHLABolometerRecord::InitializeMembers(void)
   SetIonPulseTimeOffset(-99);
 
   fIonFlags.Clear();
-
-  fSambaRecord = 0;
-  fPulseRecords.Delete();
 
   SetEnergyIonFiducial(-99.0);
   SetEnergySumIonChannels(-99.0);
@@ -536,7 +530,6 @@ void KHLABolometerRecord::Compact(void)
 
   fCuts.Compact();
   fIonFlags.Compact();
-  fPulseRecords.Compress();
 }
 
 Bool_t KHLABolometerRecord::TestCutsBit(Int_t i) const

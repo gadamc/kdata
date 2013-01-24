@@ -502,13 +502,7 @@ void KHLAEvent::CreateArrays(void)
   //require that much memory, so I don't notice the leak.
 }
 
-void KHLAEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
-{
-  if(mArray) {
-    //we have to delete because our sub-records contain TString members! :(
-    mArray->Delete( (anOption && *anOption) ? anOption : "C" );
-  }
-}
+
 
 
 void KHLAEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)

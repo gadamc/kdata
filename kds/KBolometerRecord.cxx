@@ -59,6 +59,8 @@ void KBolometerRecord::CopyLocalMembers(const KBolometerRecord &aRec)
   
   SetDetectorName(aRec.fDetectorName.c_str());
   SetMass(aRec.GetMass());
+  fSambaRecord = 0;  //will need to set these another way
+  fPulseRecords.Delete();
   
 }
 
@@ -72,16 +74,16 @@ KBolometerRecord::~KBolometerRecord(void)
   
 }
 
-void KBolometerRecord::Clear(Option_t * /*opt*/)
+void KBolometerRecord::Clear(Option_t * opt)
 {
   //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
-  //in the case that instances of this object are stored
-  //inside of a TClonesArray
-  //Also, if this class holds any TClonesArrays, it must call
-  //TClonesArray::Clear("C")
+  //since it is called by TClonesArray
   
+  TObject::Clear(opt);
+
   
+
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
   
@@ -95,6 +97,8 @@ void KBolometerRecord::InitializeMembers(void)
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
   fDetectorName.resize(0);
   fMass = 0;
+  fSambaRecord = 0;  
+  fPulseRecords.Delete();
   
 }
 
@@ -146,6 +150,7 @@ void KBolometerRecord::Compact(void)
   //variables that are KDS classes, member variables that can be compacted (such as TBits)
   //and base classes
   
+  fPulseRecords.Compress();
 }
 
 Bool_t KBolometerRecord::IsDetector(const char* name)
@@ -170,6 +175,7 @@ Bool_t KBolometerRecord::IsDetector(const char* name)
   else return false;
 
 }
+
 
 
 

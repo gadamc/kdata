@@ -91,7 +91,6 @@ KRawEvent::~KRawEvent(void)
   if(fMuonModule) delete fMuonModule;
   fMuonModule = 0;
 
-  if(fSamba != 0) cout << "WTF!" <<endl;
 
 }
 
@@ -382,8 +381,8 @@ void KRawEvent::CopyLocalMembers(const KRawEvent &anEvent)
 
 void KRawEvent::ClearArrays(Option_t *anOption)
 {
-  ClearArray(anOption, fSamba);  //have to call delete on Samba array because the KSambaRecord class contains a string
-  ClearArray(anOption, fBolo); // also contains a string, like KSambaRecord
+  ClearArray(anOption, fSamba);  
+  ClearArray(anOption, fBolo); 
   ClearArray(anOption, fBoloPulse);
   ClearArray(anOption, fMuonModule);
 }
@@ -427,17 +426,6 @@ void KRawEvent::CreateArrays(void)
 
 }
 
-
-
-// void KRawEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
-// {
-//   //now with KClonesArrays, we don't have to call DeleteArray when constructing
-//   //event records.
-//   //this method is deprecated and will eventually be removed. 
-//   if(mArray) {
-//     mArray->Delete( (anOption && *anOption) ? anOption : "C" );
-//   }
-// }
 
 
 void KRawEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)

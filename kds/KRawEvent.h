@@ -102,7 +102,6 @@ private:
   void CopyClonesArrays(const KRawEvent &anEvent);
 
   template<class T> T* AddSubRecord(TClonesArray *mArray);
-  //void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
   void ClearArray(Option_t *anOpt, TClonesArray *mArray);
 
   UInt_t GetLargestUniqueIDNumber(void);
