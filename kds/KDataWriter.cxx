@@ -22,7 +22,7 @@
 //   f.NewEvent();
 //
 //   //Fill in event information using the event pointer above. 
-//   //See:     
+//   //See: https://gist.github.com/4658511
 //
 //   f.Fill();
 // }
@@ -31,8 +31,7 @@
 // f.Close();
 //
 //
-// This class automatically assume that we're going to use TRefs, by calling
-// TTree::BranchRef when opening the file. 
+//
 // Because we're using TRefs, the TProcessID ObjectNumber counter needs to be managed properly.
 // The NewEvent method must therefore be called at the beginning of each new event. This method
 // calls event->Clear("C") and then records the TProcessID object number
