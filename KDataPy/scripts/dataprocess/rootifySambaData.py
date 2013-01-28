@@ -33,7 +33,7 @@ def convertfile(input, output):
       
 
   except Exception as e:
-      raise KDataRootificationError('KDataRootificationError. scpToSps.py line73  \n' + str(type(e)) + ' : ' + str(e))
+      raise KDataRootificationError('KDataRootificationError. rootifySambaData.convertfile. line95  \n' + str(type(e)) + ' : ' + str(e))
   
   return output
     
