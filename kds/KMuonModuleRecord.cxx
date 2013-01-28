@@ -67,10 +67,7 @@ void KMuonModuleRecord::Clear(Option_t *anopt)
 {
   //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
-  //in the case that instances of this object are stored
-  //inside of a TClonesArray
-  //Also, if this class holds any TClonesArrays, it must call
-  //TClonesArray::Clear("C")
+  //since this object and its subclasses are found in TClonesArrays
 
   TObject::Clear(anopt);
   

@@ -66,7 +66,7 @@ KRawSambaRecord::~KRawSambaRecord(void)
 
 void KRawSambaRecord::Clear(Option_t  *opt)
 {
-  //Clear the base classes and then clear/delete any local
+  //Clear the base classes and then clear/reset any local
   //members. Its necessary for this Clear method to exist
   //in the case that instances of this object are stored
   //inside of a TClonesArray
@@ -74,7 +74,8 @@ void KRawSambaRecord::Clear(Option_t  *opt)
   //TClonesArray::Clear("C")
   KSambaRecord::Clear(opt);
   
-  //Clear and delete local objects here. 
+  //Clear and reset local objects here. 
+  fDataSource.resize(0);
 
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();

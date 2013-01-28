@@ -70,16 +70,14 @@ KRawBoloPulseRecord::~KRawBoloPulseRecord(void)
 
 }
 
-void KRawBoloPulseRecord::Clear(Option_t* /* opt */)
+void KRawBoloPulseRecord::Clear(Option_t* opt )
 {
   //Clear the base classes and then clear/delete any local
   //members. Its necessary for this Clear method to exist
   //in the case that instances of this object are stored
   //inside of a TClonesArray
-  //Also, if this class holds any TClonesArrays, it must call
-  //TClonesArray::Clear("C")
-
-  //Clear and delete local objects here. 
+  
+  KBoloPulseRecord::Clear(opt);
 
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
@@ -93,7 +91,7 @@ void KRawBoloPulseRecord::InitializeMembers(void)
   //WARNING - THIS METHOD SHOULD NEVER ALLOCATE SPACE FOR POINTERS
   //ONLY SET MEMBERS ON THE STACK TO THEIR INITIAL VALUES
   
-  fTrace.resize(0); //the raw trace.
+  fTrace.clear(); //the raw trace.
   fDaqAmplitude = -99; //the pulse amplitude calcuated by the DAQ
   fDaqAmplitudeBaseline = -99; //the baseline amplitude calculated by DAQ
   fDaqAmplitudeBaselineNoise = -99; //the width of the distribution of the baseline amplitude for this run period, calculated by DAQ
@@ -192,8 +190,8 @@ void KRawBoloPulseRecord::Compact(void)
 
 void KRawBoloPulseRecord::SetTrace(UInt_t size, const Short_t* aData)
 {
-  fTrace.resize(0);
-  for(UInt_t i = 0; i < size; i++) fTrace.push_back(aData[i]);
+  fTrace.resize(size);
+  for(UInt_t i = 0; i < size; i++) fTrace[i] = aData[i];
 }
 
 void KRawBoloPulseRecord::FillHistogram(TH1 &hist)

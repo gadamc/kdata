@@ -71,14 +71,10 @@ KMuonVetoSystemRecord::~KMuonVetoSystemRecord(void)
 
 void KMuonVetoSystemRecord::Clear(Option_t * /*opt*/)
 {
-  //Clear the base classes and then clear/delete any local
-  //members. Its necessary for this Clear method to exist
-  //in the case that instances of this object are stored
-  //inside of a TClonesArray
-  //Also, if this class holds any TClonesArrays, it must call
-  //TClonesArray::Clear("C")
+
   
   //Clear and delete local objects here. 
+
 
   //Re initialize local members here and prepare for the next use of this class.
   InitializeMembers();
@@ -105,7 +101,7 @@ void KMuonVetoSystemRecord::InitializeMembers(void)
   fEventQuality.Clear();
   fRunStartTime = -99.;
   fRunEndTime = -99.;
-    fFileStartTime = -99.;
+  fFileStartTime = -99.;
   fFileEndTime = -99.;
 }
 

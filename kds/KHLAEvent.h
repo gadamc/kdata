@@ -178,7 +178,6 @@ void InitializeMembers(void);
 
 
 template<class T> T* AddSubRecord(TClonesArray *mArray);
-void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
 void ClearArray(Option_t *anOpt, TClonesArray *mArray);
 
 
