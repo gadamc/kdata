@@ -131,8 +131,8 @@ Bool_t KAmpKounselor::Run( int maxNumEvents)
   
   if(!CheckSetup()) return false;
     
-  KAmpEvent *ee = (KAmpEvent *)fOutput->GetEvent();
-  KRawEvent *e = (KRawEvent *)fInput->GetEvent();
+  KAmpEvent *eventOutput = (KAmpEvent *)fOutput->GetEvent();
+  KRawEvent *eventInput = (KRawEvent *)fInput->GetEvent();
   
   vector<KAmpSite *>::iterator it;
   
@@ -143,23 +143,23 @@ Bool_t KAmpKounselor::Run( int maxNumEvents)
   for(int ii = 0; ii < numEvents; ii++){
     fInput->GetEntry(ii);
     
-    ee->Clear("C");
-    *(KEvent *)ee = *(KEvent *)e; //copy the base-class stuff
+    fOutput->NewEvent();
+    *(KEvent *)eventOutput = *(KEvent *)eventInput; //copy the base-class stuff
         
     //copy the muon veto system record information
-    KRawMuonVetoSysRecord *muonRaw = (KRawMuonVetoSysRecord *)e->GetMuonVetoSystemRecord();
+    KRawMuonVetoSysRecord *muonRaw = (KRawMuonVetoSysRecord *)eventInput->GetMuonVetoSystemRecord();
 
     //NO, this is NOT a bug, its just bad design. :)  the KAmpEvent holds KRawMuonVeto data....
-    KRawMuonVetoSysRecord *muonAmp = (KRawMuonVetoSysRecord *)ee->GetMuonVetoSystemRecord();
+    KRawMuonVetoSysRecord *muonAmp = (KRawMuonVetoSysRecord *)eventOutput->GetMuonVetoSystemRecord();
     *muonAmp = *muonRaw;
 
-    for(int j = 0; j < e->GetNumBolos(); j++){
+    for(int j = 0; j < eventInput->GetNumBolos(); j++){
       
-      KRawBolometerRecord *boloRaw = (KRawBolometerRecord *)e->GetBolo(j);      
-      KAmpBolometerRecord *boloAmp = ee->AddBolo(boloRaw);
+      KRawBolometerRecord *boloRaw = (KRawBolometerRecord *)eventInput->GetBolo(j);      
+      KAmpBolometerRecord *boloAmp = eventOutput->AddBolo(boloRaw);
       
       for( it = fKampSites.begin(); it < fKampSites.end(); it++){
-        (*it)->RunKampSite(boloRaw, boloAmp, ee);
+        (*it)->RunKampSite(boloRaw, boloAmp, eventOutput);
       }
       
     }

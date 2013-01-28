@@ -40,6 +40,7 @@ public:
     const Char_t* mode = "recreate");
 
   virtual KEvent* GetEvent(void);
+  virtual void NewEvent(void);
   virtual Int_t Fill(void); 
   virtual Int_t Write(const Char_t* name = 0, Int_t option = TObject::kWriteDelete, Int_t bufsize = 0);
   virtual Bool_t Close(Option_t *opt = "");
@@ -52,6 +53,11 @@ public:
   virtual Bool_t IsReady(void) const;
   virtual Int_t GetEntries(void) const{if(IsReady()) return fTree->GetEntries(); else return -1;};
  
+  virtual Int_t GetBufferSize(void){return fBufferSize;}
+  virtual void SetBufferSize(Int_t aSize){fBufferSize = aSize;}
+
+  virtual Int_t GetSplitLevel(void){return fSplitLevel;}
+  virtual void SetSplitLevel(Int_t aSize){fSplitLevel = aSize;}
 private:
 
   //Bool_t bIsReady; //true if ready, false if not.
@@ -60,7 +66,9 @@ private:
   TFile *fFile;
   TTree *fTree;
   
-  
+  Int_t fBufferSize;
+  Int_t fObjectNumber;
+  Int_t fSplitLevel;
   Bool_t SetTreeBranch(KEvent** event);
  
   TFile* OpenFileForWriting(const Char_t* name, const Char_t* option = "recreate", 

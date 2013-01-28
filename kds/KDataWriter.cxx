@@ -13,10 +13,31 @@
 // to add the event to an output tree. This file creates an KData file with
 // trees filled with KHLAEvents, KRawEvents.
 //
+// Example:
+// KDataWriter f("myNewFile.root",KRawEvent::GetClassName()); //or KAmpEvent/KHLAEvent
+//
+// KRawEvent *event = (KRawEvent *)f.GetEvent();
+//
+// for(int i 0; i < 1000; i++){
+//   f.NewEvent();
+//
+//   //Fill in event information using the event pointer above. 
+//   //See:     
+//
+//   f.Fill();
+// }
+//
+// f.Write();
+// f.Close();
+//
+//
 // This class automatically assume that we're going to use TRefs, by calling
 // TTree::BranchRef when opening the file. 
-// But, the user of this object will have to make sure they are dealing
-// with the object count properly. See the TRef documentation. 
+// Because we're using TRefs, the TProcessID ObjectNumber counter needs to be managed properly.
+// The NewEvent method must therefore be called at the beginning of each new event. This method
+// calls event->Clear("C") and then records the TProcessID object number
+// After filling in the event information, you should call KDataWriter::Fill(), which restores the
+// TProcessID ObjectNumber and calls the TTree::Fill() method. 
 //
 
 #include "KDataWriter.h"
@@ -34,7 +55,7 @@
 #include "KDataProcessingInfo.h"
 #include "TSystem.h"
 #include "TTimeStamp.h"
-
+#include "TProcessID.h"
 using namespace std;
 
 ClassImp(KDataWriter);
@@ -45,7 +66,8 @@ KDataWriter::KDataWriter(void)
   fLocalEvent = 0;
   fTree = 0;
   fFile = 0;
-
+  fBufferSize = 16000;
+  fSplitLevel = 99;
 }
 
 KDataWriter::KDataWriter(const Char_t* name, const Char_t* eventType, 
@@ -64,6 +86,8 @@ KDataWriter::KDataWriter(const Char_t* name, const Char_t* eventType,
   fLocalEvent = 0;
   fTree = 0;
   fFile = 0;
+  fBufferSize = 16000;
+  fSplitLevel = 99;
   OpenFile(name, eventType, mode);
 }
 
@@ -79,6 +103,8 @@ KDataWriter::KDataWriter(const Char_t* name, KEvent** event,
   fLocalEvent = 0;
   fTree = 0;
   fFile = 0;
+  fBufferSize = 16000;
+  fSplitLevel = 99;
   OpenFile(name, event, mode);  
 }
 
@@ -194,25 +220,25 @@ Bool_t KDataWriter::SetTreeBranch(KEvent **anEvent)
     if( dynamic_cast<KHLAEvent*>(*anEvent) != 0) {
       //cout << typeid(*hlaEv).name() << endl;
       //cout << &hlaEv << " " << &anEvent << endl;
-      fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KHLAEvent::GetClassName(), anEvent, 512000, 99));
+      fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KHLAEvent::GetClassName(), anEvent, fBufferSize, fSplitLevel));
 
     }
     else if( dynamic_cast<KRawEvent*>(*anEvent) !=0 ) {
             //cout << "trying to create a Branch and cast it as TBrachElement*" << endl;
-      fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KRawEvent::GetClassName(), anEvent, 512000, 99));
+      fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KRawEvent::GetClassName(), anEvent, fBufferSize, fSplitLevel));
       //cout << "dynamic_cast worked" << endl;
     }
     else if( dynamic_cast<KAmpEvent*>(*anEvent) !=0 ) {
       //cout << typeid(*hlaEv).name() << endl;
       //cout << hlaEv << " " << anEvent << endl;
-      fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KAmpEvent::GetClassName(), anEvent, 512000, 99));
+      fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), KAmpEvent::GetClassName(), anEvent, fBufferSize, fSplitLevel));
 
     }
     else{
       cout << "KDataWriter::SetTreeBranch. Unsupported Event Class " << endl;
     }
 
-    //fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), **anEvent.ClassName(), anEvent, 512000, 99));
+    //fEventBranch = dynamic_cast<TBranchElement*>(fTree->Branch(GetBranchName().c_str(), **anEvent.ClassName(), anEvent, fBufferSize, fSplitLevel));
   }
   catch (exception& e) {
 
@@ -268,11 +294,29 @@ KEvent* KDataWriter::GetEvent(void)
   return event;
 }
 
+void KDataWriter::NewEvent(void)
+{
+  //Instead of calling KEvent::Clear("C") at the start of each new event when writing a new KData file
+  //call this NewEvent instead. This method calls KEvent::Clear for you, as well as keeps track
+  //of the TProcessID Object Number, which is required since we use TRefs and TRefArrays within
+  //KData ROOT files.
+
+  fObjectNumber = TProcessID::GetObjectCount();
+  fLocalEvent->Clear("C");
+
+}
+
 
 Int_t KDataWriter::Fill(void)
 {
   //Fills the data in the current KEvent pointer to the file. 
   //This essentially calls TTree::Fill. 
+  //
+  //If the local TFile pointer is NULL, this method returns -1.
+  //If the local TTree pointer is NULL, this method returns -2.
+  //othewise, it returns the value returned by TTree::Fill()
+  //
+
   if(fFile == 0) return -1;
   
   if(fTree!=0) {
@@ -284,6 +328,7 @@ Int_t KDataWriter::Fill(void)
     if(e!=0) e->Compact();  //if this were to fail, then something would be terribly wrong
 
     fFile->cd();
+    TProcessID::SetObjectCount(fObjectNumber);
     return fTree->Fill();
   }
   else 
@@ -382,41 +427,3 @@ Bool_t KDataWriter::IsReady(void) const
     
   return false;
 }
-/*
-TTree* KDataWriter::CloneTree(TTree *treeIn, Long64_t nEnt, Option_t* anOpt)
-{
-  //Clones the treeIn and sets the resulting pointer from treeIn->CloneTree
-  //to the local TTree pointer, fTree.
-
-  if(fTree != 0)
-    delete fTree; fTree = 0;
-
-  if(fLocalEvent != 0)
-    KEventFactory::DeleteEvent(fLocalEvent); fLocalEvent = 0;
-
-  //if we clone the tree from treeIn, then we don't use
-  //the local event object memory space. So, we should delete it. 
-
-  fTree = (TTree*) treeIn->CloneTree(nEnt, anOpt);
-
-  return fTree;
-}
-
-
-TTree *KDataWriter::ConcatenateTrees(TList* li, Option_t *anOpt)
-{
-  //Calls the static function TTree::MergeTree(TList*). The returned
-  //pointer to TTree is set to the local fTree and returned by this method.
-
-  if(fTree != 0)
-    delete fTree; fTree = 0;
-
-  if(fLocalEvent != 0)
-    KEventFactory::DeleteEvent(fLocalEvent); fLocalEvent = 0;
-
-  fTree = (TTree*) TTree::MergeTrees(li,anOpt);
-
-  return fTree;
-}
-
-*/
