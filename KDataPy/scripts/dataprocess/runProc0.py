@@ -5,7 +5,7 @@ from KDataPy.exceptions import *
 import os, sys, tempfile, shutil, datetime, time
 import KDataPy.scripts.dataprocess.sftpToSps as scp
 
-def scpToLyon(*args, **kwargs):
+def _sendToLyon(*args, **kwargs):
   
   if len(args) > 3:
     print 'takes three args: username, password and filename.'
@@ -22,7 +22,7 @@ def scpToLyon(*args, **kwargs):
   return scpRet
   
   
-def main(*argv):
+def process(*argv):
   '''
   argv[0] is the server (http://127.0.0.1:5984)
   argv[1] is the database (datadb)
@@ -35,7 +35,7 @@ def main(*argv):
 
   #create a DBProcess instance, which will assist in uploading the proc
   #document to the database
-  myProc = DBProcess(argv[0], argv[1], scpToLyon)
+  myProc = DBProcess(argv[0], argv[1], _sendToLyon)
   
   try:
     if argv[4] == 'limit': 
@@ -55,7 +55,7 @@ def main(*argv):
       doc['status'] = 'proc0 in progress'
       myProc.upload(doc)
 
-      procDict = myProc.doprocess(argv[2], argv[3], doc['file']) #this step calls scpToLyon
+      procDict = myProc.doprocess(argv[2], argv[3], doc['file']) #this step calls _sendToLyon
       print 'called process'
 
       if len(procDict) > 0:
@@ -98,4 +98,4 @@ def main(*argv):
   return (successfulDocs, failedDocs)    
 
 if __name__ == '__main__':
-  main(*sys.argv[1:])
+  process(*sys.argv[1:])
