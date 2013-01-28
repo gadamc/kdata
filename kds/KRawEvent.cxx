@@ -40,6 +40,10 @@ ClassImp(KRawEvent);
 KRawEvent::KRawEvent(void)
 {
   //Default constructor 
+  //
+  //You are encouraged to use the KEventFactory to create a new
+  //KEvent of any type. This way you can be sure that all memory allocations
+  //and any setup calls have been done properly.
 
 
   fSamba = 0;

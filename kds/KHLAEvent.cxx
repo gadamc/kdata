@@ -42,10 +42,7 @@ ClassImp(KHLAEvent);
 
 KHLAEvent::KHLAEvent(void)
 {
-  //Default Constructor. This allocates memory for the KClonesArrays
-  //and this might be a bug/memory leak. According to the ROOT documentation
-  //no memory should be allocated by the default constructor. This needs
-  //to be checked.
+  //Default Constructor. 
   //
   //If you are creating your own KHLAEvent object for use outside 
   //of ROOT I/O, it is strongly encouraged that you use the KEventFactory
@@ -57,7 +54,7 @@ KHLAEvent::KHLAEvent(void)
   //HLAEvent members that are on the STACK
   InitializeMembers();
 
-  //KClonesArray Initializations must be done separately.
+  //TClonesArray Initializations must be done separately.
   //as well as any other members that are created on the heap/free store
 
   fSamba = 0;
@@ -65,7 +62,6 @@ KHLAEvent::KHLAEvent(void)
   fBoloPulse = 0;
   fMuonModule = 0;
 
-  CreateArrays();
 }
 
 KHLAEvent::KHLAEvent(const KHLAEvent &anEvent)
@@ -79,7 +75,7 @@ KHLAEvent::KHLAEvent(const KHLAEvent &anEvent)
   //MUST copy all TRef's appropriately to the new file. Otherwise
   //they will point to records in a different File! This is 
   //why I use the copyClonesArray method here instead of
-  //using KClonesArray's copy constructors. 
+  //using TClonesArray's copy constructors. 
 
   fSamba = 0;
   fBolo = 0;
@@ -95,7 +91,7 @@ KHLAEvent::~KHLAEvent(void)
 
   Clear("C");
 
-  //Delete KClonesArrays
+  //Delete TClonesArray
   if(fSamba) delete fSamba;
   fSamba = 0;
 
@@ -108,7 +104,6 @@ KHLAEvent::~KHLAEvent(void)
   if(fMuonModule) delete fMuonModule;
   fMuonModule = 0;
 
-  if(fSamba != 0) cout << "WTF!" <<endl;
 
 
 }
@@ -455,8 +450,8 @@ void KHLAEvent::Clear(Option_t *anOption)
 
   ClearArrays(anOption);
   //delete any memory allocated by the KEvent class here that
-  //needs to be deleted for each event -- but not the KClonesArrays. Clear should be called 
-  //after every event so that the KClonesArrays are cleared. 
+  //needs to be deleted for each event -- but not the TClonesArray. Clear should be called 
+  //after every event so that the TClonesArray are cleared. 
   KEvent::Clear(anOption);
 
   //Call the System Record clears in case they need to clean up
@@ -480,26 +475,21 @@ void KHLAEvent::InitializeMembers(void)
 
 void KHLAEvent::CreateArrays(void)
 {
-  //Allocates memory for the KClonesArrays if they haven't already
+  //Allocates memory for the TClonesArray if they haven't already
   //been allocated.
 
   if(!fSamba)
-    fSamba = new KClonesArray(KHLASambaRecord::Class(),2);
+    fSamba = new TClonesArray(KHLASambaRecord::Class(),2);
 
   if(!fBolo)
-    fBolo = new KClonesArray(KHLABolometerRecord::Class(),5);
+    fBolo = new TClonesArray(KHLABolometerRecord::Class(),5);
 
   if(!fBoloPulse)
-    fBoloPulse = new KClonesArray(KHLABoloPulseRecord::Class(),20);
+    fBoloPulse = new TClonesArray(KHLABoloPulseRecord::Class(),20);
 
   if(!fMuonModule)
-    fMuonModule = new KClonesArray(KHLAMuonModuleRecord::Class(),5);
+    fMuonModule = new TClonesArray(KHLAMuonModuleRecord::Class(),5);
 
-
-  //why doesn't this create a memory leak? CreateArrays is called
-  //by the default constructor. Does ROOT realize that I already 
-  //have these KClonesArrays. Or maybe a KClonesArray object doesn't
-  //require that much memory, so I don't notice the leak.
 }
 
 
@@ -507,9 +497,9 @@ void KHLAEvent::CreateArrays(void)
 
 void KHLAEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)
 {
-  if(mArray) {
-    static_cast<KClonesArray *>(mArray)->Clear( (anOption && *anOption) ? anOption : "C" );
-  }
+  if(mArray) 
+    mArray->Clear( (anOption && *anOption) ? anOption : "C" );
+  
 }
 
 
@@ -839,42 +829,4 @@ Double_t KHLAEvent::GetSumBoloEnergyIon(void) const
 
   return energy;
 }
-
-Double_t KHLAEvent::GetEventTriggerTime(void) const
-{
-  //This method is provided for backwards compatibility for some programs
-  //and should NOT be used when writing new programs!! 
-  //
-  //Searches the Bolometer subrecords and any Muon Veto data and returns
-  //the *earliest* PC time found in those records. 
-  //
-  //
-  //You should deal with event times in a different way since eventually
-  //this method will be removed. 
-  //
-
-  Double_t earliestTime = -1;
-
-  for(Int_t i = 0; i < GetNumBolos(); i++){
-    KHLABolometerRecord *bolo = static_cast<KHLABolometerRecord *>(GetBolo(i));
-    KHLASambaRecord *sam = bolo->GetSambaRecord();
-    Double_t thisTime = sam->GetNtpDateSec() + 1.0e-6*sam->GetNtpDateMicroSec();
-    if(earliestTime == -1)
-      earliestTime = thisTime;
-    else if( thisTime < earliestTime)
-      earliestTime = thisTime;
-  }
-
-  if(GetNumMuonModules()){
-    Double_t thisTime = fMuonSystem.GetPcTimeSec() + 1.0e-6*fMuonSystem.GetPcTimeMuSec();
-    if(earliestTime == -1)
-      earliestTime = thisTime;
-    else if( thisTime < earliestTime)
-      earliestTime = thisTime;
-  }
-
-  return earliestTime;
-}
-
-
 

@@ -158,27 +158,29 @@ KEvent* KEventFactory::NewEvent(KEvent* event)
 
 void KEventFactory::BuildEvent(KEvent *event)
 {
-  if( KHLAEvent *mHLAEvent = dynamic_cast< KHLAEvent*>(event)){
-    //do whatever is needed. nothing for now. 
-    if(mHLAEvent){
-      //do stuff. 
-    }
-  }
+  //call the required methods
+  event->CreateArrays();
 
-  else if( KRawEvent *mRawEvent = dynamic_cast< KRawEvent*>(event)){
 
-    if(mRawEvent){ 
-      //allocate memory for TClonesArrays
-      mRawEvent->CreateArrays();
-    }
-  }
-  else if( KAmpEvent *mAmpEvent = dynamic_cast< KAmpEvent*>(event)){
-    //do whatever is needed. nothing for now. 
-    if(mAmpEvent){
-      //do stuff. 
-    }
-  }
-  else {
-    //cout << "KEventFactory::NewEvent: Cannot create a new Event of this type" << endl;
-  }
+  //then, if there are ever any Raw/Amp/HLA specific requirements
+  //put them here.
+  // if( KHLAEvent *mHLAEvent = dynamic_cast< KHLAEvent*>(event)){
+  //   if(mHLAEvent){
+  //     mHLAEvent->doSomething();
+  //   }
+  // }
+
+  // else if( KRawEvent *mRawEvent = dynamic_cast< KRawEvent*>(event)){
+  //   if(mRawEvent){ 
+  //     mRawEvent->doSomething();
+  //   }
+  // }
+
+  // else if( KAmpEvent *mAmpEvent = dynamic_cast< KAmpEvent*>(event)){
+  //   if(mAmpEvent){
+  //     mAmpEvent->doSomething(); 
+  //   }
+  // }
+
+
 }

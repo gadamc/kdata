@@ -12,7 +12,7 @@
 
 #include "KEvent.h"
 #include "KRawMuonVetoSysRecord.h"
-#include "KClonesArray.h"
+#include "TClonesArray.h"
 
 class KAmpBoloPulseRecord;
 class KRawSambaRecord;
@@ -45,20 +45,21 @@ public:
   Bool_t operator!=(const KAmpEvent &anEvent) const { return !(*this==anEvent); }
   virtual void Compact(void);
   static const char* GetClassName() {return "KAmpEvent";}
+  void CreateArrays(void);
 
   virtual KEvent& operator=(const KEvent &anEvent);
   virtual KAmpEvent& operator=(const KAmpEvent &anEvent);
 
-  const KClonesArray* GetSambaRecords(void) const {return static_cast<KClonesArray *>(fSamba);}
-  const KClonesArray* GetBoloRecords(void) const {return static_cast<KClonesArray *>(fBolo);}
-  const KClonesArray* GetBoloPulseRecords(void) const {return static_cast<KClonesArray *>(fBoloPulse);}
-  const KClonesArray* GetMuonModuleRecords(void) const {return static_cast<KClonesArray *>(fMuonModule);}
-  const KClonesArray* GetPulseAnalysisRecord(void) const {return static_cast<KClonesArray *>(fPulseAna);}
+  const TClonesArray* GetSambaRecords(void) const {return fSamba;}
+  const TClonesArray* GetBoloRecords(void) const {return fBolo;}
+  const TClonesArray* GetBoloPulseRecords(void) const {return fBoloPulse;}
+  const TClonesArray* GetMuonModuleRecords(void) const {return fMuonModule;}
+  const TClonesArray* GetPulseAnalysisRecord(void) const {return fPulseAna;}
   //more pythonic looking methdos
-  const KClonesArray* sambaRecords(void) const {return GetSambaRecords();}
-  const KClonesArray* boloRecords(void) const {return GetBoloRecords();}
-  const KClonesArray* boloPulseRecords(void) const {return GetBoloPulseRecords();}
-  const KClonesArray* muonModuleRecords(void) const {return GetMuonModuleRecords();}
+  const TClonesArray* sambaRecords(void) const {return GetSambaRecords();}
+  const TClonesArray* boloRecords(void) const {return GetBoloRecords();}
+  const TClonesArray* boloPulseRecords(void) const {return GetBoloPulseRecords();}
+  const TClonesArray* muonModuleRecords(void) const {return GetMuonModuleRecords();}
   
   KRawSambaRecord* AddSamba();
   KAmpBolometerRecord* AddBolo();
@@ -100,13 +101,11 @@ private:
   TClonesArray *fMuonModule; //-> an array of muon module records
   TClonesArray *fPulseAna; //-> an array of pulse analysis, each calculated by a different method
 
-  void CreateArrays(void);
   void InitializeMembers(void);
   void CopyLocalMembers(const KAmpEvent &anEvent);
   void CopyClonesArrays(const KAmpEvent &anEvent);
 
   template<class T> T* AddSubRecord(TClonesArray *mArray);
-  void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
   void ClearArray(Option_t *anOpt, TClonesArray *mArray);
 
   UInt_t GetLargestUniqueIDNumber(void);
@@ -116,7 +115,7 @@ private:
 
 template<class T> T* KAmpEvent::AddSubRecord(TClonesArray *mArray)
 {
-  return static_cast<T* >(static_cast<KClonesArray *>(mArray)->GetNewOrCleanedObject( mArray->GetEntriesFast() ) );
+  return static_cast<T* >( mArray->ConstructedAt( mArray->GetEntriesFast() ) );
 }
 
 #endif // __KAMPEVENT_H__

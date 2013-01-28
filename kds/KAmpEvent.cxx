@@ -21,7 +21,6 @@
 
 #include "KAmpEvent.h"
 #include "TProcessID.h"
-#include "KClonesArray.h"
 
 //sub record includes
 #include "KRawSambaRecord.h"
@@ -50,7 +49,6 @@ KAmpEvent::KAmpEvent(void)
   fMuonModule = 0;
   fPulseAna= 0;
 
-  CreateArrays();
 
 }
 
@@ -65,7 +63,7 @@ KAmpEvent::KAmpEvent(const KAmpEvent &anEvent)
   //MUST copy all TRef's appropriately to the new file. Otherwise
   //they will point to records in a different File! This is 
   //why I use the copyClonesArray method here instead of
-  //using KClonesArray's copy constructors. 
+  //using TClonesArray's copy constructors. 
 
   fSamba = 0;
   fBolo = 0;
@@ -83,7 +81,7 @@ KAmpEvent::~KAmpEvent(void)
   //destructor 
   Clear("C");
 
-  //Delete KClonesArrays
+  //Delete TClonesArrays
   if(fSamba) delete fSamba;
   fSamba = 0;
 
@@ -436,8 +434,8 @@ void KAmpEvent::Clear(Option_t *opt)
 {
   ClearArrays(opt);
   //delete any memory allocated by the KEvent class here that
-  //needs to be deleted for each event -- but not the KClonesArrays. Clear should be called 
-  //after every event so that the KClonesArrays are cleared. 
+  //needs to be deleted for each event -- but not the TClonesArrays. Clear should be called 
+  //after every event so that the TClonesArrays are cleared. 
   KEvent::Clear(opt);
 
   //Call the System Record clears in case they need to clean up
@@ -457,49 +455,32 @@ void KAmpEvent::InitializeMembers(void)
 void KAmpEvent::CreateArrays(void)
 {
 
-  //Allocates memory for the KClonesArrays if they haven't already
+  //Allocates memory for the TClonesArrays if they haven't already
   //been allocated.
 
   if(!fSamba)
-    fSamba = new KClonesArray(KRawSambaRecord::Class(),2);
+    fSamba = new TClonesArray(KRawSambaRecord::Class(),2);
 
   if(!fBolo)
-    fBolo = new KClonesArray(KAmpBolometerRecord::Class(),5);
+    fBolo = new TClonesArray(KAmpBolometerRecord::Class(),5);
 
   if(!fBoloPulse)
-    fBoloPulse = new KClonesArray(KAmpBoloPulseRecord::Class(),20);
+    fBoloPulse = new TClonesArray(KAmpBoloPulseRecord::Class(),20);
 
   if(!fMuonModule)
-    fMuonModule = new KClonesArray(KRawMuonModuleRecord::Class(),5);
+    fMuonModule = new TClonesArray(KRawMuonModuleRecord::Class(),5);
 
   if(!fPulseAna)
-    fPulseAna = new KClonesArray(KPulseAnalysisRecord::Class(),80);
-
-  //why doesn't this create a memory leak? CreateArrays is called
-  //by the default constructor. Does ROOT realize that I already 
-  //have these KClonesArrays. Or maybe a KClonesArray object doesn't
-  //require that much memory, so I don't notice the leak.
-
-}
+    fPulseAna = new TClonesArray(KPulseAnalysisRecord::Class(),80);
 
 
-
-void KAmpEvent::DeleteArray(Option_t *anOption, TClonesArray *mArray)
-{
-  //now with KClonesArrays, we don't have to call DeleteArray when constructing
-  //event records.
-  //this method is deprecated and will eventually be removed. 
-  if(mArray) {
-    mArray->Delete( (anOption && *anOption) ? anOption : "C" );
-  }
 }
 
 
 void KAmpEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)
 {
-  if(mArray) {
-    static_cast<KClonesArray *>(mArray)->Clear( (anOption && *anOption) ? anOption : "C" );
-  }
+  if(mArray) 
+    mArray->Clear( (anOption && *anOption) ? anOption : "C" );
 }
 
 

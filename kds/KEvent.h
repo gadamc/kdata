@@ -67,6 +67,7 @@ public:
   virtual Int_t AddSubRecords(const KEvent &anEvent) = 0;
   virtual Bool_t AddMuonModuleSubRecord(const KMuonModuleRecord &inMuonModule) = 0;
   virtual Bool_t AddBoloSubRecord(const KBolometerRecord &inBolo) = 0;
+  virtual void CreateArrays(void) = 0;
 
   virtual KSambaRecord* GetSamba(Int_t i) const = 0;
   virtual KBolometerRecord* GetBolo(Int_t i) const = 0;
@@ -79,7 +80,6 @@ public:
   virtual Int_t GetNumBolos(void) const = 0;
   virtual Int_t GetNumBoloPulses(void) const = 0;
   virtual Int_t GetNumMuonModules(void) const = 0;
-
   virtual KMuonVetoSystemRecord* GetMuonVetoSystemRecord(void)  = 0;
 
 private:
