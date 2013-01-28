@@ -33,7 +33,7 @@
 #include <cstdlib>
 #include <sstream>
 #include "KDataProcessingInfo.h"
-
+#include "TProcessID.h"
 
 ClassImp(KSamba2KData);
 
@@ -1385,7 +1385,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
   string kBeginChannel = "* Voie " ;
   string kSeparator = "* ----------" ;
   string kMuonVetoIgnore = "veto";
-  
+  Int_t mObjectNumber;
   KRawEvent *event = dynamic_cast<KRawEvent *>(fKdataOutput.GetEvent());
   
   if(event == 0){
@@ -1419,7 +1419,11 @@ Bool_t KSamba2KData::ReadSambaData(void)
       KRawSambaRecord *samba;
       UInt_t gigaStamp = 0;
       UInt_t smallStamp = 0;
+      mObjectNumber = TProcessID::GetObjectCount();
       try {
+
+  
+
 	event->Clear("C");
 	//KRawSambaRecord *samba = event->AddSamba();
 	samba = event->AddSamba();
@@ -1675,6 +1679,7 @@ Bool_t KSamba2KData::ReadSambaData(void)
       //event. so,  finally save all of the event information that's been collected
       
       event->SetEventTriggerStamp((Long64_t)(gigaStamp*(1e9) + smallStamp));
+      TProcessID::SetObjectCount(mObjectNumber);
       fKdataOutput.Fill();
       eventCount++;
       //cout << eventCount << endl;
