@@ -427,7 +427,6 @@ void KRawEvent::CreateArrays(void)
 }
 
 
-
 void KRawEvent::ClearArray(Option_t *anOption, TClonesArray *mArray)
 {
   if(mArray) {
