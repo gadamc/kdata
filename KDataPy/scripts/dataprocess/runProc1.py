@@ -80,13 +80,13 @@ def _processOne(doc, **kwargs):
     mustSftp = False
     if kwargs.get('ftp', False):
       mustSftp = True
-
+      print 'will sent output ROOT file to SPS via sFTP'
 
     if kwargs.get('useProc0', False):  #use this keyword arg when processing from Lyon!!! this is coded into batchRunProc1.py
       filePath = doc['proc0']['file']
 
     else:
-      print 'useProc0 set to false, will sftp ROOT file to sps'
+      print 'useProc0 set to false'
       filePath = doc['file']
       #if we're going to send by FTP, just create the file in a temporary space
       #so that we can delete it later after its been sent
@@ -120,7 +120,6 @@ def _processOne(doc, **kwargs):
       raise KDataRootificationError('KDataRootificationError. runProc1.py line102 rootiftySambaData.convertfile returned an empty document.\n')
 
 
-    print 'must sftp?', mustSftp
 
     if mustSftp:
       try:
@@ -133,7 +132,7 @@ def _processOne(doc, **kwargs):
         doc['proc1']['sftp'] = sftpRet
         doc['proc1']['sftp']['local_tempfile'] = kdataFile
         doc['proc1']['file'] = sftpRet['file'] #must do this to be consistent with batch processing records
-        
+        print os.path.basename(doc['proc1']['file']), ' successfully sent'
         #print json.dumps(doc['proc1'], indent=1)
 
       except Exception as e:
@@ -143,8 +142,10 @@ def _processOne(doc, **kwargs):
         doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
         doc['proc1']['str_exception'] = str(theExc)
         doc['status'] = 'proc1 failed'
+        print str(datetime.datetime.now()), doc['_id'], 'proc1 failed'
         return(doc, False) #don't throw here.... _processOne is called by main and we want to save this to the database
     
+    print str(datetime.datetime.now()), doc['_id'], 'complete'
     return (doc, True)
 
     
@@ -155,6 +156,7 @@ def _processOne(doc, **kwargs):
     doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
     doc['proc1']['str_exception'] = str(theExc)
     doc['status'] = 'proc1 failed'
+    print str(datetime.datetime.now()), doc['_id'], 'proc1 failed'
     return(doc, False) #don't throw here.... _processOne is called by main and we want to save this to the database
 
       
