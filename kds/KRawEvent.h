@@ -12,7 +12,7 @@
 
 #include "KEvent.h"
 #include "KRawMuonVetoSysRecord.h"
-#include "KClonesArray.h"
+#include "TClonesArray.h"
 
 
 class KRawBoloPulseRecord;
@@ -38,6 +38,7 @@ public:
   virtual ~KRawEvent(void);
   virtual void Clear(Option_t *opt = "C");
   void ClearArrays(Option_t *opt = "C");
+  void CreateArrays(void);  
   Bool_t IsSame(const KRawEvent &anEvent, Bool_t bPrint = false) const;
   Bool_t operator==(const KRawEvent &anEvent) const { return IsSame(anEvent,false); }
   Bool_t operator!=(const KRawEvent &anEvent) const { return !(*this==anEvent); }
@@ -47,16 +48,16 @@ public:
   virtual KEvent& operator=(const KEvent &anEvent);
   virtual KRawEvent& operator=(const KRawEvent &anEvent);
 
-  const KClonesArray* GetSambaRecords(void) const {return static_cast<KClonesArray *>(fSamba);}
-  const KClonesArray* GetBoloRecords(void) const {return static_cast<KClonesArray *>(fBolo);}
-  const KClonesArray* GetBoloPulseRecords(void) const {return static_cast<KClonesArray *>(fBoloPulse);}
-  const KClonesArray* GetMuonModuleRecords(void) const {return static_cast<KClonesArray *>(fMuonModule);}
+  const TClonesArray* GetSambaRecords(void) const {return fSamba;}
+  const TClonesArray* GetBoloRecords(void) const {return fBolo;}
+  const TClonesArray* GetBoloPulseRecords(void) const {return fBoloPulse;}
+  const TClonesArray* GetMuonModuleRecords(void) const {return fMuonModule;}
 
   //more pythonic looking methdos
-  const KClonesArray* sambaRecords(void) const {return GetSambaRecords();}
-  const KClonesArray* boloRecords(void) const {return GetBoloRecords();}
-  const KClonesArray* boloPulseRecords(void) const {return GetBoloPulseRecords();}
-  const KClonesArray* muonModuleRecords(void) const {return GetMuonModuleRecords();}
+  const TClonesArray* sambaRecords(void) const {return GetSambaRecords();}
+  const TClonesArray* boloRecords(void) const {return GetBoloRecords();}
+  const TClonesArray* boloPulseRecords(void) const {return GetBoloPulseRecords();}
+  const TClonesArray* muonModuleRecords(void) const {return GetMuonModuleRecords();}
   
   KRawSambaRecord* AddSamba();
   KRawBolometerRecord* AddBolo();
@@ -87,20 +88,21 @@ private:
 
   KRawMuonVetoSysRecord fMuonSystem; //Muon Veto System Record
 
-  //the '//->' comment tells ROOT that this pointer will never be NULL
+  //  the //-> comment tells ROOT that the following array will never be NULL!
+  //  if you use the KEventFactory to get a pointer to this type of event, then 
+  //  this will be true. Otherwise, if you do a "new KRawEvent", you must then
+  //  call CreateArrays before you use this object as the memory location for a TTree branch
 
   TClonesArray *fSamba; //->  an array of samba records
   TClonesArray *fBolo; //-> an array of bolometer records
   TClonesArray *fBoloPulse; //-> an array of pulse record
   TClonesArray *fMuonModule; //-> an array of muon module records
 
-  void CreateArrays(void);
-  void InitializeMembers(void);
   void CopyLocalMembers(const KRawEvent &anEvent);
   void CopyClonesArrays(const KRawEvent &anEvent);
 
   template<class T> T* AddSubRecord(TClonesArray *mArray);
-  void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
+  //void DeleteArray(Option_t *anOpt, TClonesArray *mArray);
   void ClearArray(Option_t *anOpt, TClonesArray *mArray);
 
   UInt_t GetLargestUniqueIDNumber(void);
@@ -110,7 +112,7 @@ private:
 
 template<class T> T* KRawEvent::AddSubRecord(TClonesArray *mArray)
 {
-  return static_cast<T* >(static_cast<KClonesArray *>(mArray)->GetNewOrCleanedObject( mArray->GetEntriesFast() ) );
+  return static_cast<T* >( mArray->ConstructedAt( mArray->GetEntriesFast() ) );
 }
 
 
