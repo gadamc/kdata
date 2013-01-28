@@ -11,7 +11,6 @@
 #pragma link C++ class KAmpEvent+;
 #pragma link C++ class KBoloPulseRecord+;
 #pragma link C++ class KBolometerRecord+;
-#pragma link C++ class KClonesArray+;
 #pragma link C++ class KDataFileIO+;
 #pragma link C++ class KDataProcessingInfo+;
 #pragma link C++ class KDataReader+;

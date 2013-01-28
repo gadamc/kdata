@@ -12,7 +12,7 @@
 #include "KEvent.h"
 //system record forward declarations
 #include "KHLAMuonVetoSysRecord.h"
-#include "KClonesArray.h"
+#include "TClonesArray.h"
 #include "TRef.h"
 
 //sub record forward declarrations
@@ -43,6 +43,7 @@ public:
   Bool_t operator!=(const KHLAEvent &anEvent) const { return !(*this==anEvent); }
   virtual void Compact(void);
   static const char* GetClassName() {return "KHLAEvent";}
+  void CreateArrays(void);
 
 
   virtual KEvent& operator=(const KEvent &anEvent);
@@ -56,20 +57,20 @@ public:
   Double_t GetSumBoloEnergyIon(void) const;
 
 
-  //pointers to KClonesArrays of SubRecord objects. 
-  //unless you need some specific informaton from the KClonesArray
+  //pointers to TClonesArrays of SubRecord objects. 
+  //unless you need some specific informaton from the TClonesArray
   //its best to use the methods above to get pointers
   //directly to the subRecords
-  const KClonesArray* GetSambaRecords(void) const {return static_cast<KClonesArray *>(fSamba);}
-  const KClonesArray* GetBoloRecords(void) const {return static_cast<KClonesArray *>(fBolo);}
-  const KClonesArray* GetBoloPulseRecords(void) const {return static_cast<KClonesArray *>(fBoloPulse);}
-  const KClonesArray* GetMuonModuleRecords(void) const {return static_cast<KClonesArray *>(fMuonModule);}
+  const TClonesArray* GetSambaRecords(void) const {return fSamba;}
+  const TClonesArray* GetBoloRecords(void) const {return fBolo;}
+  const TClonesArray* GetBoloPulseRecords(void) const {return fBoloPulse;}
+  const TClonesArray* GetMuonModuleRecords(void) const {return fMuonModule;}
   
   //more pythonic looking methdos
-  const KClonesArray* sambaRecords(void) const {return GetSambaRecords();}
-  const KClonesArray* boloRecords(void) const {return GetBoloRecords();}
-  const KClonesArray* boloPulseRecords(void) const {return GetBoloPulseRecords();}
-  const KClonesArray* muonModuleRecords(void) const {return GetMuonModuleRecords();}
+  const TClonesArray* sambaRecords(void) const {return GetSambaRecords();}
+  const TClonesArray* boloRecords(void) const {return GetBoloRecords();}
+  const TClonesArray* boloPulseRecords(void) const {return GetBoloPulseRecords();}
+  const TClonesArray* muonModuleRecords(void) const {return GetMuonModuleRecords();}
   
   //Adders
   KHLASambaRecord* AddSamba();
@@ -113,8 +114,7 @@ public:
   virtual KBolometerRecord* GetBolo(const char* name) const;
   virtual KBoloPulseRecord* GetBoloPulse(const char* name) const;
 
-  //soon to be deprecated methods
-  Double_t GetEventTriggerTime(void) const;
+
 
 private: 
 
@@ -130,27 +130,27 @@ private:
   of the TTree when looking at the file from the TBrowser or from
   the TTree::Show TTree::Scan methods. 
 
-ALSO, the names of the system record class and the KClonesArrays
-should be EXACTLY the same as the names used in ALL Other Event Levels, 
-such as the Raw level and the MC level. This makes it easy for porting
-analysis code for each level... 
-Hmm... there is probably a better way to do this by putting these in the KEvent class...
+  ALSO, the names of the system record class and the TClonesArrays
+  should be EXACTLY the same as the names used in ALL Other Event Levels, 
+  such as the Raw level and the MC level. This makes it easy for porting
+  analysis code for each level... 
+  Hmm... there is probably a better way to do this by putting these in the KEvent class...
 
-In principle, everybody doing analysis should use each Class's Member 
-Functions, rather than directly reading from the TTree. This ensures 
-that the data in the TTrees are properly encapsulated and the user 
-doesn't NEED to know the structure or the names of the underlying 
-TTree.... This is especially important if the underlying data 
-structure changes! By using member functions in a ROOT script or 
-compiled code, you're no longer dependent upon the exact naming 
-structure in your analysis. 
-But, since many people are still uncomfortable with C++
-and many people are still doing their 
-analysis by direct interaction with the data Tree, we will support 
-them as much as possible by using these easy-to-read names that 
-are the same accross the different "levels".
+  In principle, everybody doing analysis should use each Class's Member 
+  Functions, rather than directly reading from the TTree. This ensures 
+  that the data in the TTrees are properly encapsulated and the user 
+  doesn't NEED to know the structure or the names of the underlying 
+  TTree.... This is especially important if the underlying data 
+  structure changes! By using member functions in a ROOT script or 
+  compiled code, you're no longer dependent upon the exact naming 
+  structure in your analysis. 
+  But, since many people are still uncomfortable with C++
+  and many people are still doing their 
+  analysis by direct interaction with the data Tree, we will support 
+  them as much as possible by using these easy-to-read names that 
+  are the same accross the different "levels".
 
-*/
+  */
 
   //a user can determine the number of these records in the event.
   //1) - from a root script that calls Event::GetNumSamba, etc...
@@ -167,29 +167,28 @@ are the same accross the different "levels".
   // it only tells you the number of records in the data structure
 
 
-Int_t fRunNumber; //big Run number. the small run number is found in the Bolometer data record
-Double_t fRunStartTime;  //begining of the Big Run 
-Double_t fRunEndTime; //end of the Big Run
-Int_t fGSEventNumber; //Global Software Event Number. starts from 1 with each new Run
+  Int_t fRunNumber; //big Run number. the small run number is found in the Bolometer data record
+  Double_t fRunStartTime;  //begining of the Big Run 
+  Double_t fRunEndTime; //end of the Big Run
+  Int_t fGSEventNumber; //Global Software Event Number. starts from 1 with each new Run
 
-  //private methods
-void CreateArrays(void);
-void InitializeMembers(void);
-
-
-template<class T> T* AddSubRecord(TClonesArray *mArray);
-void ClearArray(Option_t *anOpt, TClonesArray *mArray);
+    //private methods
+  void InitializeMembers(void);
 
 
-UInt_t GetLargestUniqueIDNumber(void);
+  template<class T> T* AddSubRecord(TClonesArray *mArray);
+  void ClearArray(Option_t *anOpt, TClonesArray *mArray);
 
 
-ClassDef(KHLAEvent ,4);
+  UInt_t GetLargestUniqueIDNumber(void);
+
+
+  ClassDef(KHLAEvent ,4);
 };
 
 template<class T> T* KHLAEvent::AddSubRecord(TClonesArray *mArray)
 {
-  return static_cast<T* >(static_cast<KClonesArray *>(mArray)->GetNewOrCleanedObject(mArray->GetEntriesFast() ) );
+  return static_cast<T* >( mArray->ConstructedAt( mArray->GetEntriesFast() ) );
 }
 
 #endif // __KHLAEVENT_H__
