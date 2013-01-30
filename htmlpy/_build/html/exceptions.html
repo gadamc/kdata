@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>KDataPy Bandpass Filter Database Doc &mdash; KDataPy 5.0 documentation</title>
+    <title>KDataPy Exceptions &mdash; KDataPy 5.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,7 +25,10 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="KDataPy 5.0 documentation" href="index.html" /> 
+    <link rel="top" title="KDataPy 5.0 documentation" href="index.html" />
+    <link rel="up" title="KDataPy Modules" href="code.html" />
+    <link rel="next" title="KDataPy External Documentation" href="extraDocs.html" />
+    <link rel="prev" title="KDataPy Upload Utility Functions" href="uploadutilities.html" /> 
   </head>
   <body>
     <div class="related">
@@ -37,7 +40,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">KDataPy 5.0 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="extraDocs.html" title="KDataPy External Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="uploadutilities.html" title="KDataPy Upload Utility Functions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">KDataPy 5.0 documentation</a> &raquo;</li>
+          <li><a href="code.html" accesskey="U">KDataPy Modules</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -46,17 +56,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="kdatapy-bandpass-filter-database-doc">
-<h1>KDataPy Bandpass Filter Database Doc<a class="headerlink" href="#kdatapy-bandpass-filter-database-doc" title="Permalink to this headline">¶</a></h1>
-<p>This is still in development (sorta of... manpower issues has slowed it down.) The idea is that this will help a user to upload a bandpass filter document to the database for use in automated analysis routines that are planned to be implemented. Contact <a class="reference external" href="mailto:adam&#46;cox&#37;&#52;&#48;kit&#46;edu">adam<span>&#46;</span>cox<span>&#64;</span>kit<span>&#46;</span>edu</a> if you want to work on this.</p>
-<span class="target" id="module-KDataPy.bandpass"></span><dl class="function">
-<dt id="KDataPy.bandpass.uploadIIRFilter">
-<tt class="descclassname">KDataPy.bandpass.</tt><tt class="descname">uploadIIRFilter</tt><big>(</big><em>binwidth</em>, <em>order</em>, <em>docid</em>, <em>freqs</em>, <em>password</em>, <em>filtertype='butter'</em>, <em>bandtype='highpass'</em>, <em>replace=False</em><big>)</big><a class="reference internal" href="_modules/KDataPy/bandpass.html#uploadIIRFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.bandpass.uploadIIRFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>the filtertype and bandtype variables should match the expected values in scipy.signal.iirfilter
-binwidth is in nanoseconds
-freqs is either a scalar or a list of size two.</p>
-</dd></dl>
-
+  <div class="section" id="module-KDataPy.exceptions">
+<span id="kdatapy-exceptions"></span><h1>KDataPy Exceptions<a class="headerlink" href="#module-KDataPy.exceptions" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -65,9 +66,15 @@ freqs is either a scalar or a list of size two.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="uploadutilities.html"
+                        title="previous chapter">KDataPy Upload Utility Functions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extraDocs.html"
+                        title="next chapter">KDataPy External Documentation</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/bandpass.txt"
+    <li><a href="_sources/exceptions.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -96,7 +103,14 @@ freqs is either a scalar or a list of size two.</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">KDataPy 5.0 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="extraDocs.html" title="KDataPy External Documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="uploadutilities.html" title="KDataPy Upload Utility Functions"
+             >previous</a> |</li>
+        <li><a href="index.html">KDataPy 5.0 documentation</a> &raquo;</li>
+          <li><a href="code.html" >KDataPy Modules</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

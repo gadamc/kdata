@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>KDataPy.uploadutilities &mdash; KDataPy 5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="KDataPy 5.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">KDataPy 5.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for KDataPy.uploadutilities</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<span class="c"># format value</span>
+<div class="viewcode-block" id="formatvalue"><a class="viewcode-back" href="../../uploadutilities.html#KDataPy.uploadutilities.formatvalue">[docs]</a><span class="k">def</span> <span class="nf">formatvalue</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function reformats &#39;value&#39; in an expected way. </span>
+<span class="sd">    It tests if value is a string, and tries to convert it into an integer or float, </span>
+<span class="sd">    returning the integer of float value if possible.</span>
+<span class="sd">    If &#39;value&#39; is a string, it strips off any whitespace or double quotation marks.</span>
+<span class="sd">    This function is used extensively to format values found in the Samba header or</span>
+<span class="sd">    in various Excel spreadsheets that are uploaded to our databases. </span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="nb">str</span><span class="p">)):</span>
+    <span class="c"># #see if this string is really an int or a float</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span><span class="o">==</span><span class="bp">True</span><span class="p">:</span> <span class="c">#int</span>
+      <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c">#try a float</span>
+      <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="o">==</span><span class="bp">False</span><span class="p">:</span>
+          <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+      <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;&quot; &#39;</span><span class="p">)</span> <span class="c">#strip off any quotations and extra spaces found in the value</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="c">#splitargs</span></div>
+<div class="viewcode-block" id="splitargs"><a class="viewcode-back" href="../../uploadutilities.html#KDataPy.uploadutilities.splitargs">[docs]</a><span class="k">def</span> <span class="nf">splitargs</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  A simple arg parser. This is useful because argparse is not installed on some Python systems with version &lt; 2.7.</span>
+<span class="sd">  This supports two kinds of arguments.</span>
+<span class="sd">  1. a single value</span>
+<span class="sd">  2. a key=value pair. </span>
+
+<span class="sd">  For example, this works</span>
+<span class="sd">  &quot;option1 option2 keyword1=value1 keyword2=value2 &quot;</span>
+
+<span class="sd">  But this function doesn&#39;t support &quot;switches&quot; that have values like &quot;-k 5&quot;. you must use the &quot;=&quot; sign and NO spaces.</span>
+<span class="sd">  </span>
+<span class="sd">  It returns a tuple of ( [args], {kwargs} ).  In the example above, for example it would return</span>
+
+<span class="sd">  ( [&#39;option1&#39;, &#39;option2&#39;], {&#39;keyword1&#39;:&#39;value1&#39;, &#39;keyword2&#39;:&#39;value2&#39;})</span>
+<span class="sd">  </span>
+
+<span class="sd">  disclaimer:  It is highly recommended that you test this function before completely trusting what it does!!</span>
+<span class="sd">  If you want a real tool for parsing arguments, you should use/install argparse.</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
+  
+  <span class="n">myargs</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">mykwargs</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">argv</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+      <span class="k">print</span> <span class="n">arg</span>
+      <span class="n">myargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">))</span>
+      
+      <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;True&#39;</span><span class="p">,</span> <span class="s">&#39;true&#39;</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">True</span>
+      <span class="k">elif</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;False&#39;</span><span class="p">,</span> <span class="s">&#39;false&#39;</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="bp">False</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">formatvalue</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+     
+      <span class="k">print</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span>
+      <span class="n">mykwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="n">myargs</span><span class="p">,</span> <span class="n">mykwargs</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">KDataPy 5.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Adam Cox, KIT.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

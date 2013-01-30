@@ -20,7 +20,7 @@ Contents:
    :maxdepth: 2
 
    code
-
+   
    extraDocs
 
 Indices and tables

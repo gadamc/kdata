@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'KDataPy'
-copyright = u'2012, Adam Cox, KIT'
+copyright = u'2013, Adam Cox, KIT'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
