@@ -2,6 +2,14 @@ import string
 
 # format value
 def formatvalue(value):
+  '''
+    This function reformats 'value' in an expected way. 
+    It tests if value is a string, and tries to convert it into an integer or float, 
+    returning the integer of float value if possible.
+    If 'value' is a string, it strips off any whitespace or double quotation marks.
+    This function is used extensively to format values found in the Samba header or
+    in various Excel spreadsheets that are uploaded to our databases. 
+  '''
   if (isinstance(value,str)):
     # #see if this string is really an int or a float
     if value.isdigit()==True: #int
