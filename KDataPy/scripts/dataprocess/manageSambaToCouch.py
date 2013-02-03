@@ -1,70 +1,62 @@
 #!/usr/bin/env python
 
-import os, string, sys, lastSambaPartitionToCouch as last, uploadSambaHeaderToCouch as upload
-import findSambaPartitionFiles as find
+import os, string, sys
 import datetime
 import re
+import json
+import KDataPy.scripts.dataprocess.uploadSambaHeaderToCouch as upload
+import KDataPy.scripts.dataprocess.findSambaPartitionFiles as find
+from KDataPy.scripts.dataprocess.sambaFileDataDBTracker import SambaFileDataDBTracker
 
-def main(uri = 'http://127.0.0.1:5984',
-        dataDir = '/Users/adam/Scripts/uploadSambaToCouch/rawdata', 
-        lastfile = '/Users/adam/Scripts/uploadSambaToCouch/lastSambaPartitionUploaded.txt',
-        logFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.log', 
-        errFileName = '/Users/adam/Scripts/uploadSambaToCouch/sambatocouch.err',
-        db = 'datadb', startDir = '', override = None):
+def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
+        dataDir = '/Users/adam/Scripts/rawdata', 
+        trackerDoc_id = None):
         
-  logfile = open(logFileName, 'a')
-  errfile = open(errFileName, 'a')
-  sys.stdout = logfile
-  sys.stderr = errfile
+  
   print ''
   print 'Starting SambaToCouch', datetime.datetime.now()
-  print 'Initial Arguments:', dataDir, lastfile, logFileName, uri, db, startDir
+  print 'Initial Arguments:', uri, db, dataDir, trackerDoc_id
   
-  lastFiles = last.getDictOfLastFiles(lastfile)    
-  
-  #print lastFiles
-  
-  if startDir != '':
-    startDir = startDir.split('/')[ len(startDir.split('/')) - 1 ]  #just get the last part of the directory
-    if re.match('[d-n][a-m][0-9][0-9]', startDir[:4]) == False:
-      print startDir, 'does\'t match the first four characters for the standard samba directory format. exiting'
-      sys.exit(-1)
-    
-    for k, v in lastFiles.items():
-      v['run'] = startDir[:4] + k + '000'
-      v['file'] = 0
 
-  print ''
-  print 'Last Samba Partition File Read'
-  for k, v in lastFiles.items():
-    if v['run'] != '':
-      print 'Mac', k, 'SambaRun', v['run'], 'File', v['file']
+  tracker = SambaFileDataDBTracker( uri, db, trackerDoc_id)
+  trackerDoc = tracker.getTrackerDoc(trackerDoc_id)    
   
-  
-  filelist = find.main(dataDir,lastFiles)
   
   print ''
-  #print 'List of Samba Partition Files to Upload Header information to CouchDB' 
-  #print filelist
-  
-  logfile.flush()
+  print 'Samba Database Doc Tracker file read: ', trackerDoc['_id']
+  print trackerDoc
   
   
-  for i in filelist:
+  filelist, metafilelist = find.getListOfNewSambaFiles(dataDir,trackerDoc)
+  
+  
+  errors = False
 
-    print 'Uploading ', i , 'to Couch'
-    result = upload.uploadFile(i, uri, db, override)
-    #graphs is a dictionary if key = detectorName and value = list of TGraph
-    #result = True
-    
-    if(result == True):
-      last.writeToLastSambaPartitionToCouchFile(lastfile, i)
+  for afile in filelist:
+
+    print 'Uploading ', afile , 'to Couch'
+
+    if upload.uploadFile(afile, uri, db):
+      tracker.setLastSambaDataFile( afile)
     else:
-      print 'Something failed when uploading the file.'
+      print 'Something failed when uploading the file.', afile
+      errors = True    
+      break  #STOP if something has gone wrong.... don't want to make the problem worse
       
-    logfile.flush()
-    
-  
+  for ametafile in metafilelist:
+
+    print 'Uploading ', ametafile , 'to Couch'
+ 
+    if upload.uploadMetaFile(ametafile, uri, db):
+      tracker.setLastSambaMetaFile( ametafile ) 
+    else:
+      print 'Something failed when uploading the file.', ametafile
+      errors = True
+      break
+      
+
+  if errors:
+    print 'there were errors!!!!  '
   print 'done', datetime.datetime.now()
   
   
