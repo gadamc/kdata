@@ -204,7 +204,7 @@ def addItemToLastFiles(lastfilename, item):
   
 
 def getSambaDirPattern():
-  return '[d-n][a-m][0-9][0-9][a-z][0-9][0-9][0-9]'
+  return '[d-z][a-m][0-9][0-9][a-z][0-9][0-9][0-9]'
 
 
 def isDirReady(dir):
