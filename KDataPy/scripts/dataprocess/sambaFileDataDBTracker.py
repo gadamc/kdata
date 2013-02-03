@@ -1,40 +1,56 @@
 #!/usr/bin/env python
 
 import os, string, sys
+import KDataPy.samba_utilities as sut
+import couchdbkit
 
-def getEmptyFileDict():
-  letters = string.lowercase
-  files = dict()
-  for i in range(len(letters)):
-    files[letters[i]] = {'run':'', 'file':0}
-  return files
-  
+class SambaFileDataDBTracker:
 
-def getDictOfLastFiles(theLastFile):
-  
-  files = getEmptyFileDict()
-  
-  if os.path.isfile(theLastFile):
-    file = open(theLastFile, 'rU')
-    for line in file:
-      splitline = line.split(' ')
-      if splitline[0].strip() != '':  #skip blank lines!
-        files[line.strip()[4:5]]['run'] = splitline[0].strip()
-        files[line.strip()[4:5]]['file'] = int(splitline[1].strip())
-      
-    file.close()
-  return files
+  def __init__:(self, couchDB_ServerName, couchDB_DatabaseName, db_doc_id = '_sambaToCouchDBTrackerDoc_'):
+    '''
+      couchDB_DataBase is a couchdbkit.Database object
+    '''
+    if db_doc_id is not None:
+      self.trackerdoc_id = db_doc_id
+    
+    self.db = couchdbkit.Server(couchDB_Server)[couchDB_DatabaseName]
 
-def writeToLastSambaPartitionToCouchFile(theLastFile, aSambaFile):
-  lastfiles = getDictOfLastFiles(theLastFile)
-  
-  lastfiles[os.path.basename(aSambaFile)[4:5]]['run'] = os.path.basename(aSambaFile).split('_')[0]
-  lastfiles[os.path.basename(aSambaFile)[4:5]]['file'] = int(  os.path.basename(aSambaFile).split('_')[1] )
-  
-  file = open(theLastFile,'w')
-  
-  for k, v in lastfiles.items():
-    if v['run'] != '':
-      file.write( lastfiles[k]['run']+ ' ' + str(lastfiles[k]['file']) + '\n')
-      
-  file.close()  
+  def _getEmptyTrackerDoc(self):
+    
+    doc = {}
+    doc['samba'] = {}
+    doc['_id'] = self.trackerdoc_id
+
+    for aletter in string.lowercase:
+      doc['samba'][ aletter ] = {'lastfile':'', 'last_BB': False, 'last_ntp' : False, 'last_log': False}
+    return doc
+    
+  def getTrackerDoc(self):
+    
+    return self.db[self.trackerdoc_id]
+
+  def setLastSambaDataFile(self, aSambaDataFileName):
+
+    if sut.isvalidsambadatafilename(aSambaDataFileName) is False:
+      raise TypeError('%s : Invalid Samba Data File Name' % aSambaDataFileName)
+
+    trackerDoc = self.getTrackerDoc()
+    sambakey = os.path.basename(aSambaMetaFileName)[4]
+
+    trackerDoc['samba'][sambakey]['lastfile'] = os.path.basename(aSambaDataFileName) 
+    
+    self.db.save_doc(trackerDoc)
+
+  def setLastSambaMetaFile(self, aSambaMetaFileName):
+
+    if sut.isvalidsambametadatafilename(aSambaMetaFileName) is False:
+      raise TypeError('%s : Invalid Samba Meta Data File Name' % aSambaMetaFileName)
+
+    trackerDoc = self.getTrackerDoc()
+    sambakey = os.path.basename(aSambaMetaFileName)[4]
+    metakey = 'last_%s' % os.path.basename(aSambaMetaFileName).split('_')[1]
+
+    trackerDoc['samba'][sambakey][metakey] = os.path.basename(aSambaMetaFileName) 
+    
+    self.db.save_doc(trackerDoc)
+
