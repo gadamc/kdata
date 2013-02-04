@@ -273,7 +273,7 @@ def readchannelheader(file, voie):
   return header
 
 
-def uploadFile(filename, uri, dbname):
+def uploadFile(filename, uri, dbname, overWrite = False):
 
   if sut.isvalidsambadatafilename(os.path.basename(filename)) is False:
     return False
@@ -290,11 +290,6 @@ def uploadFile(filename, uri, dbname):
   
   runheader = readrunheader(file)
   
-  #don't allow this script to rewrite a doc to the database!
-  #if you want to do that, then delete the doc you want to recreate
-  if db.doc_exist(_localRunDict['_id']):
-    return False
-
 
   _localRunDict['author'] = 'Samba'
   _localRunDict['content'] = 'Samba DAQ document for a particular run. Use this database entry to track the progress of the processing of this data'
@@ -376,6 +371,14 @@ def uploadFile(filename, uri, dbname):
   _localRunDict['hostipaddress'] = socket.gethostbyname( socket.gethostname() )
   _localRunDict['hostname'] = socket.gethostname()
   #_localRunDict['size_in_bytes'] = os.path.getsize(_localRunDict['file'])
+
+  #don't allow this script to rewrite a doc to the database!
+  #if you want to do that, then delete the doc you want to recreate
+  if db.doc_exist(_localRunDict['_id']) and overWrite is False:
+    file.close()
+    return False
+  else:
+    _localRunDict = ['_rev'] = db.get_rev(_localRunDict['_id'])
 
   db.save_doc(_localRunDict)
   
