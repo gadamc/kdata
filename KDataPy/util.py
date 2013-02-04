@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 from ROOT import *
 import KDataPy
@@ -393,9 +394,22 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       if pta != None:
         pta.SetInputPulse( pulse.GetTrace() )
         pta.RunProcess()
-        plt.plot( get_out(pta) )
+        dataPulse = get_out(pta)
+        
       else:
-        plt.plot( np.array(pulse.GetTrace()) )
+        dataPulse = np.array(pulse.GetTrace())
+        
+        
+      yMax = np.max(dataPulse)
+      yMin = np.min(dataPulse)
+      yMaxNew = abs(yMax - yMin)*0.05 + yMax
+      yMinNew = -abs(yMax - yMin)*0.05 +yMin
+      plt.plot(dataPulse)
+      plt.ylim(yMinNew, yMaxNew)
+      plt.title(pulse.GetChannelName())
+        #plt.show()
+        
+      
         
       if kwargs['__callersAnalysisFunction']:
         newkwargs = copy.deepcopy(kwargs)
@@ -487,7 +501,14 @@ def plotbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
         else:
           tobeplotted = pulse.GetTrace()
 
-        plt.plot(tobeplotted)
+        yMax = np.max(tobeplotted)
+        yMin = np.min(tobeplotted)
+        yMaxNew = abs(yMax - yMin)*0.05 + yMax
+        yMinNew = -abs(yMax - yMin)*0.05 +yMin
+        plt.plot(tobeplotted )
+        plt.ylim(yMinNew, yMaxNew)
+        plt.title(pulse.GetChannelName())
+
       
         
       if kwargs['__callersAnalysisFunction__']:
