@@ -30,8 +30,6 @@ def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
   filelist, metafilelist = find.getListOfNewSambaFiles(dataDir,trackerDoc)
   
   
-  errors = False
-
   for afile in filelist:
 
     print 'Uploading ', afile , 'to Couch'
@@ -39,9 +37,7 @@ def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
     if upload.uploadFile(afile, uri, db):
       tracker.setLastSambaDataFile( afile)
     else:
-      print 'Something failed when uploading the file.', afile
-      errors = True    
-      break  #STOP if something has gone wrong.... don't want to make the problem worse
+      raise KDataDatabaseError( 'Something failed when uploading the file: %s' % afile )
       
   for ametafile in metafilelist:
 
@@ -50,13 +46,9 @@ def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
     if upload.uploadMetaFile(ametafile, uri, db):
       tracker.setLastSambaMetaFile( ametafile ) 
     else:
-      print 'Something failed when uploading the file.', ametafile
-      errors = True
-      break
+      raise KDataDatabaseError( 'Something failed when uploading the file: %s' % ametafile )
       
-
-  if errors:
-    print 'there were errors!!!!  '
+  
   print 'done', datetime.datetime.now()
   
   

@@ -1,4 +1,5 @@
 from couchdbkit import Server, Database, Document
+from KDataPy.exceptions import KDataDatabaseError
 
 class DBProcess(object):
   '''   
@@ -27,7 +28,9 @@ class DBProcess(object):
     '''  
     if self.db.doc_exist(doc['_id']):
       doc['_rev'] = self.db.get_rev(doc['_id'])
-    self.db.save_doc(doc)
+    res = self.db.save_doc(doc)
+    if not res['ok']:
+      raise KDataDatabaseError('DBprocess could not save doc')
     return doc['_id']
 
   def view(self, view_name, schema=None, wrapper=None, **params):

@@ -3,6 +3,7 @@
 import os, string, sys
 import KDataPy.samba_utilities as sut
 import couchdbkit
+from KDataPy.exceptions import KDataDatabaseError
 
 class SambaFileDataDBTracker:
 
@@ -24,7 +25,12 @@ class SambaFileDataDBTracker:
     for aletter in string.lowercase:
       doc['samba'][ aletter ] = {'lastfile':'', 'last_BB': False, 'last_ntp' : False, 'last_log': False}
     return doc
-    
+
+  def _saveTrackerDoc(self, doc):
+    res = self.db.save_doc(trackerDoc)
+    if not res['ok']:
+      raise KDataDatabaseError('SambaFileDataDBTracker could not set data file')
+
   def getTrackerDoc(self):
     
     return self.db[self.trackerdoc_id]
@@ -39,7 +45,8 @@ class SambaFileDataDBTracker:
 
     trackerDoc['samba'][sambakey]['lastfile'] = os.path.basename(aSambaDataFileName) 
     
-    self.db.save_doc(trackerDoc)
+    self.saveTrackerDoc(trackerDoc)
+    
 
   def setLastSambaMetaFile(self, aSambaMetaFileName):
 
@@ -52,5 +59,6 @@ class SambaFileDataDBTracker:
 
     trackerDoc['samba'][sambakey][metakey] = os.path.basename(aSambaMetaFileName) 
     
-    self.db.save_doc(trackerDoc)
+    self.saveTrackerDoc(trackerDoc)
+
 

@@ -380,10 +380,10 @@ def uploadFile(filename, uri, dbname, overWrite = False):
   else:
     _localRunDict = ['_rev'] = db.get_rev(_localRunDict['_id'])
 
-  db.save_doc(_localRunDict)
+  res = db.save_doc(_localRunDict)
   
   file.close()
-  return True
+  return res['ok']
   
 
 def uploadMetaFile(filename, uri, dbname):
@@ -410,9 +410,9 @@ def uploadMetaFile(filename, uri, dbname):
   doc['hostname'] = socket.gethostname()
   doc['file_size'] = os.path.getsize(doc['original_file'])
 
-  db.save_doc(doc)
+  res = db.save_doc(doc)
   
-  return True
+  return res['ok']
 
 
 def uploadFromRunDir(dirname, uri, dbname):
