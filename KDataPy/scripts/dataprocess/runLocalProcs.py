@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from KDataPy.scripts.dataprocess import runProc1, runProc0
+from KDataPy.scripts.dataprocess import runProc1, runProc0, runMetaProc0
 import KDataPy.datadb
 import json, datetime
 
@@ -19,10 +19,18 @@ def run(**kwargs):
   sftp_password: password
   '''
 
+  print logtime(), 'running metaproc0'
+  (sucDocIds, failDocIds) = runMetaProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
+  print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
+
+
   print logtime(), 'running proc0'
   (sucDocIds, failDocIds) = runProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
   print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
 
+
+  print logtime(), 'running proc1'
+  print logtime(), 'proc1 setting queue status'  
   dbs = KDataPy.datadb.datadb(kwargs['server'], kwargs['database'])
 
   for docid in sucDocIds:
