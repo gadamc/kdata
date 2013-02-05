@@ -118,6 +118,14 @@ def sambayearmonth(year, month):
   '''
   return sambayear(year) + sambamonth(month)
 
+def sambadate(year, month, day):
+  '''
+    returns the Samba date format year-month0day string value for a given year, month and day.
+    For example, if year = 2012, and month = 2, and day = 12 this function will return 'mb12'.
+    The input arguments follow the rules of getsambayear, and getsambamonth.
+  '''
+  return sambayearmonth(year, month) + str(day)
+
 def getcurrentsambayear(): 
   '''
     returns the Samba date format year string value for right now.
@@ -142,7 +150,7 @@ def sambadatenow():
     returns the Samba date format year-month-day string value for right now.
   '''
   n = datetime.datetime.now()
-  return sambayearmonth(n.year, n.month) + str(n.day)
+  return sambadate(n.year, n.month, n.day)
 
 
 def monthfromsamba(month):
