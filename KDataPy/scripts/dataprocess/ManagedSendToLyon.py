@@ -89,14 +89,16 @@ class ManagedSendToLyon:
       
       try:
         doc = self.myProc.get(row['id'])
-        print 'have doc', doc['_id']
         doc['status'] = self.dbRecordName + ' in progress'
         self.myProc.upload(doc)
 
+        print '  sending %s to lyon' % doc['file']
         procDict = self.myProc.doprocess(doc['file']) #this step calls _sendToLyon
-        print 'called process'
+
 
         if len(procDict) > 0:
+          print 'appending database document'
+
           #add a few more items to the document
           procDict['date'] = str(datetime.datetime.utcnow())
           procDict['date_unixtime'] = time.time()
@@ -119,10 +121,11 @@ class ManagedSendToLyon:
         else:
           doc['status'] = self.dbRecordName + ' failed'
           self.myProc.upload(doc)
-          print 'the process returned an empty dictionary!'
+          print 'send to lyon returned an empty dictionary!'
           failedDocs.append(doc['_id'])
 
       except Exception as e:
+        print 'an exception has occurred'
         print e
         if doc.has_key(self.dbRecordName) == False:
             doc[self.dbRecordName] = {}
