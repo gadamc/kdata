@@ -19,11 +19,7 @@ def run(**kwargs):
   sftp_password: password
   '''
 
-  print logtime(), 'running metaproc0'
-  (sucDocIds, failDocIds) = runMetaProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
-  print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
-
-
+  
   print logtime(), 'running proc0'
   (sucDocIds, failDocIds) = runProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
   print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
@@ -41,8 +37,17 @@ def run(**kwargs):
 
   docstringlist = ' '.join(sucDocIds)
   print docstringlist
-  print logtime(), 'running proc1 locally with useProc0=false'
-  
+
+  print logtime(), 'runProc1.process called locally with useProc0=false'
   rp1kwargs = {'useProc0':False, 'username':kwargs['sftp_username'], 'password':kwargs['sftp_password'], 'ftp':kwargs['ftp']}
 
   runProc1.process(kwargs['server'], kwargs['database'], sucDocIds, **rp1kwargs)
+
+
+  #run meta docs last...
+  
+  print logtime(), 'running metaproc0'
+  (sucDocIds, failDocIds) = runMetaProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
+  print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
+
+
