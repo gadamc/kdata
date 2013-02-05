@@ -1,7 +1,6 @@
-from .info import __version_info__, __version__
-from ROOT import *
+from ROOT import gSystem
 
-__all__ = ['info', 'util', 'pulsetempy', 'database']
+__all__ = ['util', 'database']
 
 try:
   gSystem.Load('libkds')

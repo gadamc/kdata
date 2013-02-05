@@ -298,7 +298,7 @@ def uploadFile(filename, uri, dbname, overWrite = False):
   _localRunDict['date_uploaded'] = time.time()
   runname = os.path.basename(file.name)
   runsplit = runname.split('_')
-  _localRunDict['file'] = file.name
+  _localRunDict['file'] = os.path.realpath(filename)
   _localRunDict['run_name'] = formatvalue(runsplit[0])
   _localRunDict['file_number'] = int(runsplit[1])
  
@@ -378,7 +378,7 @@ def uploadFile(filename, uri, dbname, overWrite = False):
     file.close()
     return False
   else:
-    _localRunDict = ['_rev'] = db.get_rev(_localRunDict['_id'])
+    _localRunDict['_rev'] = db.get_rev(_localRunDict['_id'])
 
   res = db.save_doc(_localRunDict)
   
@@ -402,13 +402,13 @@ def uploadMetaFile(filename, uri, dbname):
   doc['type'] = 'daqmetadatadocuments'
   doc['date_uploaded'] = time.time()
   doc['content'] = 'Meta Data DB Document for a particular Samba Run'
-  doc['file'] = filename
-  doc['run_name'] = filename.split('_')[0]
+  doc['file'] = os.path.realpath(filename)
+  doc['run_name'] = os.path.basename(filename).split('_')[0]
   
   doc['status'] = 'closed'
   doc['hostipaddress'] = socket.gethostbyname( socket.gethostname() )
   doc['hostname'] = socket.gethostname()
-  doc['file_size'] = os.path.getsize(doc['original_file'])
+  doc['file_size'] = os.path.getsize(doc['file'])
 
   res = db.save_doc(doc)
   

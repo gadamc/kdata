@@ -30,7 +30,7 @@ class ManagedSendToLyon:
 
   '''
 
-  def __init__(self, server, datebase, username, password, viewName, dbRecordName, limit=False, lyonpath = '/sps/edelweis/kdata/data/raw/'):
+  def __init__(self, server, database, username, password, viewName, dbRecordName, limit=False, lyonpath = '/sps/edelweis/kdata/data/raw/'):
     '''
       server - couchdb server, including credentials.
       database - name of the couchdb database
@@ -69,16 +69,18 @@ class ManagedSendToLyon:
     return sftpRet
     
     
-  def sendAvailableDocs():
+  def sendAvailableDocs(self):
     
     
     print '\n', str(datetime.datetime.now()), ': starting ManagedSendToLyon.sendAvailableDocs \n'
     print self.viewName, self.dbRecordName
 
     
-    if self.limit 
+    if self.limit: 
       vr = self.myProc.view(self.viewName, reduce=False, limit=1)
-    
+    else:
+      vr = self.myProc.view(self.viewName, reduce=False)
+
     successfulDocs = []
     failedDocs = []
 

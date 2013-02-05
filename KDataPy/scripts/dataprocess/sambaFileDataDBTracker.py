@@ -7,14 +7,13 @@ from KDataPy.exceptions import KDataDatabaseError
 
 class SambaFileDataDBTracker:
 
-  def __init__:(self, couchDB_ServerName, couchDB_DatabaseName, db_doc_id = '_sambaToCouchDBTrackerDoc_'):
+  def __init__(self, couchDB_ServerName, couchDB_DatabaseName, db_doc_id = '_sambaToCouchDBTrackerDoc_'):
     '''
       couchDB_DataBase is a couchdbkit.Database object
     '''
-    if db_doc_id is not None:
-      self.trackerdoc_id = db_doc_id
-    
-    self.db = couchdbkit.Server(couchDB_Server)[couchDB_DatabaseName]
+
+    self.trackerdoc_id = db_doc_id  
+    self.db = couchdbkit.Server(couchDB_ServerName)[couchDB_DatabaseName]
 
   def _getEmptyTrackerDoc(self):
     
@@ -26,14 +25,14 @@ class SambaFileDataDBTracker:
       doc['samba'][ aletter ] = {'lastfile':'', 'last_BB': False, 'last_ntp' : False, 'last_log': False}
     return doc
 
-  def _saveTrackerDoc(self, doc):
-    res = self.db.save_doc(trackerDoc)
+  def _save_doc(self, doc):
+    res = self.db.save_doc(doc)
     if not res['ok']:
       raise KDataDatabaseError('SambaFileDataDBTracker could not set data file')
 
   def getTrackerDoc(self):
-    
-    return self.db[self.trackerdoc_id]
+
+    return self.db[self.trackerdoc_id ]
 
   def setLastSambaDataFile(self, aSambaDataFileName):
 
@@ -45,7 +44,7 @@ class SambaFileDataDBTracker:
 
     trackerDoc['samba'][sambakey]['lastfile'] = os.path.basename(aSambaDataFileName) 
     
-    self.saveTrackerDoc(trackerDoc)
+    self._save_doc(trackerDoc)
     
 
   def setLastSambaMetaFile(self, aSambaMetaFileName):
@@ -59,6 +58,6 @@ class SambaFileDataDBTracker:
 
     trackerDoc['samba'][sambakey][metakey] = os.path.basename(aSambaMetaFileName) 
     
-    self.saveTrackerDoc(trackerDoc)
+    self._save_doc(trackerDoc)
 
 

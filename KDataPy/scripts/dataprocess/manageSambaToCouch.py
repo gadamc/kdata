@@ -9,17 +9,16 @@ import KDataPy.scripts.dataprocess.findSambaPartitionFiles as find
 from KDataPy.scripts.dataprocess.sambaFileDataDBTracker import SambaFileDataDBTracker
 
 def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
-        dataDir = '/Users/adam/Scripts/rawdata', 
-        trackerDoc_id = None):
+        dataDir = '/Users/adam/Scripts/rawdata'):
         
   
   print ''
   print 'Starting SambaToCouch', datetime.datetime.now()
-  print 'Initial Arguments:', uri, db, dataDir, trackerDoc_id
+  print 'Initial Arguments:', uri, db, dataDir
   
 
   tracker = SambaFileDataDBTracker( uri, db, trackerDoc_id)
-  trackerDoc = tracker.getTrackerDoc(trackerDoc_id)    
+  trackerDoc = tracker.getTrackerDoc()    
   
   
   print ''
@@ -33,18 +32,18 @@ def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
   for afile in filelist:
 
     print 'Uploading ', afile , 'to Couch'
-
+    raw_input()
     if upload.uploadFile(afile, uri, db):
-      tracker.setLastSambaDataFile( afile)
+      tracker.setLastSambaDataFile( os.path.basename(afile) )
     else:
       raise KDataDatabaseError( 'Something failed when uploading the file: %s' % afile )
       
   for ametafile in metafilelist:
 
     print 'Uploading ', ametafile , 'to Couch'
- 
+    raw_input()
     if upload.uploadMetaFile(ametafile, uri, db):
-      tracker.setLastSambaMetaFile( ametafile ) 
+      tracker.setLastSambaMetaFile( os.path.basename(ametafile) ) 
     else:
       raise KDataDatabaseError( 'Something failed when uploading the file: %s' % ametafile )
       
