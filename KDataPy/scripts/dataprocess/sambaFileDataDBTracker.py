@@ -7,7 +7,7 @@ from KDataPy.exceptions import KDataDatabaseError
 
 class SambaFileDataDBTracker:
 
-  def __init__(self, couchDB_ServerName, couchDB_DatabaseName, db_doc_id = '_sambaToCouchDBTrackerDoc_'):
+  def __init__(self, couchDB_ServerName, couchDB_DatabaseName, db_doc_id = 'sambaToCouchDBTrackerDoc'):
     '''
       couchDB_DataBase is a couchdbkit.Database object
     '''
