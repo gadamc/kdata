@@ -280,7 +280,7 @@ def uploadFile(filename, uri, dbname, overWrite = False):
   
   theServer = Server(uri)
   db = theServer.get_or_create_db(dbname)
-  print db.info()
+  #print db.info()
   
   #read the run header
   file = open(filename)
@@ -393,7 +393,7 @@ def uploadMetaFile(filename, uri, dbname):
   
   theServer = Server(uri)
   db = theServer.get_or_create_db(dbname)
-  print db.info()
+  #print db.info()
   
   #with the meta file docs, I don't have to read anytihng inside of the doc!
   doc = {}
