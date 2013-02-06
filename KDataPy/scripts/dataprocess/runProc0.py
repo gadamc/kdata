@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import datetime
 from KDataPy.scripts.dataprocess.ManagedSendToLyon import ManagedSendToLyon
   
 def process(*argv):
