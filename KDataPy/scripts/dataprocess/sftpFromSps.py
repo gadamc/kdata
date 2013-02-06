@@ -29,7 +29,7 @@ def get(username, password, localpath, spspath):
     theRet['localuname'] = os.uname()
     theRet['stdOut'] = ''
         
-    startTime = datetime.datetime.now()
+    startTime = datetime.datetime.utcnow()
     print startTime
     p = pexpect.spawn('/usr/bin/sftp %s@%s' % (username, theRet['hostname']) , timeout=3600*24)
     fout = tempfile.NamedTemporaryFile(delete=False)

@@ -116,6 +116,7 @@ def _processOne(doc, **kwargs):
 
     if procDict.has_key('file'):
       doc['status'] = 'good'
+      procDict['file_size'] = os.path.getsize(procDict['file'])
     else:
       raise KDataRootificationError('KDataRootificationError. runProc1.py line102 rootiftySambaData.convertfile returned an empty document.\n')
 
@@ -123,7 +124,7 @@ def _processOne(doc, **kwargs):
 
     if mustSftp:
       try:
-        print str(datetime.datetime.now()), 'sending proc1 file', procDict['file']
+        print str(datetime.datetime.utcnow()), 'sending proc1 file', procDict['file']
         sftpRet = ftp.sendBoloData(kwargs['username'], kwargs['password'], procDict['file'])
         os.listdir(tempDir)
         print 'removing temp directory', tempDir
@@ -132,6 +133,7 @@ def _processOne(doc, **kwargs):
         doc['proc1']['sftp'] = sftpRet
         doc['proc1']['sftp']['local_tempfile'] = kdataFile
         doc['proc1']['file'] = sftpRet['file'] #must do this to be consistent with batch processing records
+
         print os.path.basename(doc['proc1']['file']), ' successfully sent'
         #print json.dumps(doc['proc1'], indent=1)
 
@@ -142,10 +144,10 @@ def _processOne(doc, **kwargs):
         doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
         doc['proc1']['str_exception'] = str(theExc)
         doc['status'] = 'proc1 failed'
-        print str(datetime.datetime.now()), doc['_id'], 'proc1 failed'
+        print str(datetime.datetime.utcnow()), doc['_id'], 'proc1 failed'
         return(doc, False) #don't throw here.... _processOne is called by main and we want to save this to the database
     
-    print str(datetime.datetime.now()), doc['_id'], 'complete'
+    print str(datetime.datetime.utcnow()), doc['_id'], 'complete'
     return (doc, True)
 
     
@@ -156,7 +158,7 @@ def _processOne(doc, **kwargs):
     doc['proc1']['pickled_exception'] = pickle.dumps(theExc)
     doc['proc1']['str_exception'] = str(theExc)
     doc['status'] = 'proc1 failed'
-    print str(datetime.datetime.now()), doc['_id'], 'proc1 failed'
+    print str(datetime.datetime.utcnow()), doc['_id'], 'proc1 failed'
     return(doc, False) #don't throw here.... _processOne is called by main and we want to save this to the database
 
       

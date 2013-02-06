@@ -4,7 +4,7 @@ import KDataPy.datadb
 import json, datetime
 
 def logtime():
-  return str(datetime.datetime.now())
+  return str(datetime.datetime.utcnow())
 
 def run(**kwargs): 
   '''
@@ -45,7 +45,7 @@ def run(**kwargs):
 
 
   #run meta docs last...
-  
+
   print logtime(), 'running metaproc0'
   (sucDocIds, failDocIds) = runMetaProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
   print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'

@@ -39,7 +39,7 @@ def submitProc1BatchJobs(scriptOut, scriptErr, script, server, dbname, docids):
     jobStuff['type'] = 'proc1'
     jobStuff['message'] = val
 
-    jobStuff['date'] = str(datetime.datetime.now())
+    jobStuff['date'] = str(datetime.datetime.utcnow())
     doc['batchJob'].append(jobStuff)
     proc = {}
     proc['batchjob'] = jobStuff['number']
@@ -94,7 +94,7 @@ def main(*argv, **kwargs):
       docids.append(row['id'])
     else:
       print '       did NOT save to DB. Res["ok"] was not True'
-      
+
     if len(docids) == maxDocs:
       docids = submitProc1BatchJobs(scriptOut, scriptErr, script, argv[0], argv[1], docids)
       

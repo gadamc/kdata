@@ -528,14 +528,14 @@ if __name__ == '__main__':
   sys.stdout = logfile
   sys.stderr = logfile
   print ''
-  print 'Starting transfer script', str(os.uname()), ':', datetime.datetime.now()
+  print 'Starting transfer script', str(os.uname()), ':', datetime.datetime.utcnow()
   print ''
   logfile.flush()
   
   returncode = timeout(runCopy, (params,), timeout_duration = params['timeout_hours']*60.0*60.0, default = 'TimedOut')
   
   if returncode == 'TimedOut':
-    print 'Either an error occured, or the process timed-out before', params['timeout_hours'], 'hours.', datetime.datetime.now()
+    print 'Either an error occured, or the process timed-out before', params['timeout_hours'], 'hours.', datetime.datetime.utcnow()
     
   else:
     ndocs = returncode
@@ -543,7 +543,7 @@ if __name__ == '__main__':
     rate = float(ndocs)/float(delta)
     ndocs = ndocs
     print 'uploaded: %i docs in: %i seconds for a rate: %f docs/sec' % (ndocs, delta,rate)
-    print 'done at', datetime.datetime.now()
+    print 'done at', datetime.datetime.utcnow()
   
   logfile.close()
   sys.stdout = sys.__stdout__

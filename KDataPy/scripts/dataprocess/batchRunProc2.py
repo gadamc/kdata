@@ -58,7 +58,7 @@ def main(*argv, **kwargs):
     jobStuff['type'] = 'proc2'
     jobStuff['message'] = val
     
-    jobStuff['date'] = str(datetime.datetime.now())
+    jobStuff['date'] = str(datetime.datetime.utcnow())
     doc['batchJob'].append(jobStuff)
     proc = {}
     proc['batchjob'] = jobStuff['number']

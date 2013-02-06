@@ -19,7 +19,7 @@ def process(*argv):
 
   theManager = ManagedSendToLyon(argv[0], argv[1], argv[2], argv[3], 'proc/proc0', 'proc0', limit)
 
-  print '\n', str(datetime.datetime.now()), ': starting runProc0.py \n'
+  print '\n', str(datetime.datetime.utcnow()), ': starting runProc0.py \n'
 
   return theManager.sendAvailableDocs()
 

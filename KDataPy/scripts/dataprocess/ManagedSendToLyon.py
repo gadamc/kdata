@@ -72,7 +72,7 @@ class ManagedSendToLyon:
   def sendAvailableDocs(self):
     
     
-    print '\n', str(datetime.datetime.now()), ': starting ManagedSendToLyon.sendAvailableDocs \n'
+    print '\n', str(datetime.datetime.utcnow()), ': starting ManagedSendToLyon.sendAvailableDocs \n'
     print self.viewName, self.dbRecordName
 
     
