@@ -33,7 +33,7 @@ def sambametadatafileregex():
     something like 'ma22a012_BB', '_ntp', or '_log' for example. It only matches _BB, _ntp and _log.
     you can use this in the python re module.
   '''
-  return sambarunnameregex().split('$')[0] + '_(BB|log|ntp)$'
+  return sambarunnameregex().split('$')[0] + '_(BB|log|ntp|seuils|setup\.csv)$'
 
 def isvalidsambadate(sambadate):
   '''
