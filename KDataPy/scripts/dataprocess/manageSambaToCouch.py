@@ -13,7 +13,7 @@ def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
         
   
   print ''
-  print 'Starting SambaToCouch', datetime.datetime.now()
+  print 'Starting SambaToCouch', datetime.datetime.utcnow()
   print 'Initial Arguments:', uri, db, dataDir
   
 
@@ -32,7 +32,7 @@ def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
   for afile in filelist:
 
     print 'Uploading ', afile , 'to Couch'
-    raw_input()
+
     if upload.uploadFile(afile, uri, db):
       tracker.setLastSambaDataFile( os.path.basename(afile) )
     else:
@@ -41,14 +41,14 @@ def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
   for ametafile in metafilelist:
 
     print 'Uploading ', ametafile , 'to Couch'
-    raw_input()
+
     if upload.uploadMetaFile(ametafile, uri, db):
       tracker.setLastSambaMetaFile( os.path.basename(ametafile) ) 
     else:
       raise KDataDatabaseError( 'Something failed when uploading the file: %s' % ametafile )
       
   
-  print 'done', datetime.datetime.now()
+  print 'done', datetime.datetime.utcnow()
   
   
 if __name__ == '__main__':
