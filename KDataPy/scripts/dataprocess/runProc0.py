@@ -13,7 +13,7 @@ def process(*argv):
   
   limit = False
   try:
-    if argv[4] == 'limit'
+    if argv[4] == 'limit':
       limit = True
   except: pass
 
