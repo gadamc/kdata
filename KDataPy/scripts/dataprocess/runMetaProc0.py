@@ -11,7 +11,7 @@ def process(*argv):
   argv[4] - if set to 'limit', then this will only process one file
   '''
   
-  limit = False:
+  limit = False
   try:
     if argv[4] == 'limit'
       limit = True
