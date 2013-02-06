@@ -22,7 +22,7 @@ class SambaFileDataDBTracker:
     doc['_id'] = self.trackerdoc_id
 
     for aletter in string.lowercase:
-      doc['samba'][ aletter ] = {'lastfile':'', 'last_BB': False, 'last_ntp' : False, 'last_log': False}
+      doc['samba'][ aletter ] = {'lastfile':'', 'last_BB': False, 'last_ntp' : False, 'last_log': False, 'last_setup.csv': False, 'last_seuils':False}
     return doc
 
   def _save_doc(self, doc):
