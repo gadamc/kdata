@@ -17,7 +17,7 @@ def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
   print 'Initial Arguments:', uri, db, dataDir
   
 
-  tracker = SambaFileDataDBTracker( uri, db, trackerDoc_id)
+  tracker = SambaFileDataDBTracker( uri, db)
   trackerDoc = tracker.getTrackerDoc()    
   
   
