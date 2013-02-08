@@ -30,3 +30,5 @@ class KDataKampingError(KDataError):
 class KDataDatabaseError(KDataError):
   pass
 
+class KDataIrodsError(KDataError):
+  pass
