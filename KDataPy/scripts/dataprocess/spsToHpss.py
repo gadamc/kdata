@@ -236,17 +236,18 @@ def run(server, dbname, fromThisTime = 0):
 
     
 
-  #Now deal with the small runs.  First, I only want to deal with small files from the months prior to the current
-  #month since we have to wait for the month to finish to package together all of the small data files. 
+  #Now deal with the small runs.  First, I only want to deal with small files from the months prior to the 
+  #month of fromThisTime since we have to wait for the month to finish to package together all of the small data files. 
 
-  #first, need to determine the previous month's Samba YM string.
-  ddnow = datetime.datetime.utcnow()
-  ddlastmonth = datetime.datetime(ddnow.year, ddnow.month, 1) - datetime.timedelta(days=1) #subtract one day from the first day of the current month
-  #ddlastmonth is now the last day of the last month, from which we get the samba year-month string.
+  #first, need to determine the previous month's Samba YM string from the time of fromThisTime.
+  #use the date fromThisTime
+  ddftt = datetime.datetime.fromtimestamp(fromThisTime)
+  ddlastmonth = datetime.datetime(ddftt.year, ddftt.month, 1) - datetime.timedelta(days=1) #subtract one day from the first day of the month
+  #ddlastmonth is now the last day of the month prior to fromThisTime.
+  #now get the samba year-month string.
   sambaMaxMonth = sut.sambayearmonth(ddlastmonth.year, ddlastmonth.month) 
   #sambaMaxMonth is something like "ml"...
 
-  #make sure that the run is from the previous month than the current month. 
   #need to group these run names in the smallSambaRunNames according to their samba date
   #can do this by creating a dictionary like { "mk" : [], "ml": [], "mj": [], ....}
   smallSambaRunDict = {}
