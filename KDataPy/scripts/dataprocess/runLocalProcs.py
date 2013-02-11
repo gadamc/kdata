@@ -6,6 +6,22 @@ import json, datetime
 def logtime():
   return str(datetime.datetime.utcnow())
 
+def checkForLog(doc):
+  try:
+    dataPath = os.path.dirname(doc['file'])
+    logFilePath = os.path.join(dataPath, os.path.basename(doc['file']).split('_')[0]+'_log')
+
+    if os.path.isfile(logFilePath):
+      time.sleep(300) #sleep five minutes just to make sure all the meta data has copied over.... 
+      return True
+    else:
+      return False
+
+  except: 
+    print str(datetime.datetime.utcnow()), 'runLocalProcs.checkForLog raised an Exception with doc ID %s.... returning false' % doc['_id']
+    return False
+
+
 def run(**kwargs): 
   '''
   kwargs are
@@ -21,7 +37,7 @@ def run(**kwargs):
 
   
   print logtime(), 'running proc0'
-  (sucDocIds, failDocIds) = runProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
+  (sucDocIds, failDocIds) = runProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'], callback = checkForLog)
   print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
 
 
@@ -47,7 +63,7 @@ def run(**kwargs):
   #run meta docs last...
 
   print logtime(), 'running metaproc0'
-  (sucDocIds, failDocIds) = runMetaProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
+  (sucDocIds, failDocIds) = runMetaProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'], callback = checkForLog)
   print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
 
 
