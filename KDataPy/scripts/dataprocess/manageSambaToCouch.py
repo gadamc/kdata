@@ -7,6 +7,7 @@ import json
 import KDataPy.scripts.dataprocess.uploadSambaHeaderToCouch as upload
 import KDataPy.scripts.dataprocess.findSambaPartitionFiles as find
 from KDataPy.scripts.dataprocess.sambaFileDataDBTracker import SambaFileDataDBTracker
+from KDataPy.exceptions import KDataDatabaseError
 
 def main(uri = 'http://127.0.0.1:5984', db = 'datadb',
         dataDir = '/Users/adam/Scripts/rawdata'):

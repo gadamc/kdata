@@ -102,13 +102,15 @@ class ManagedSendToLyon:
     failedDocs = []
 
     for row in vr:
-      print row['id']
+      print str(datetime.datetime.utcnow()), 'ManagedSendToLyon.py has doc', row['id']
       
       try:
         doc = self.myProc.get(row['id'])
 
         if self.testDocFunction is not None:
-          if self.testDocFunction(doc) is False: continue
+          if self.testDocFunction(doc) is False: 
+            print str(datetime.datetime.utcnow()), 'ManagedSendToLyon.py testDocFunction returned false'
+            continue
 
         doc['status'] = self.dbRecordName + ' in progress'
         self.myProc.upload(doc)

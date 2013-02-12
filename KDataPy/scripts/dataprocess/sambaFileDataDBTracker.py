@@ -40,7 +40,7 @@ class SambaFileDataDBTracker:
       raise TypeError('%s : Invalid Samba Data File Name' % aSambaDataFileName)
 
     trackerDoc = self.getTrackerDoc()
-    sambakey = os.path.basename(aSambaMetaFileName)[4]
+    sambakey = os.path.basename(aSambaDataFileName)[4]
 
     trackerDoc['samba'][sambakey]['lastfile'] = os.path.basename(aSambaDataFileName) 
     

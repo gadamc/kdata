@@ -46,7 +46,7 @@ def getBolometerName(astring):
   return astring
 
     
-def readrunheader(file):
+def readrunheader(sambafile):
 
   line = ''
   
@@ -54,7 +54,7 @@ def readrunheader(file):
   
   while True:
   
-    line = file.readline().rstrip()
+    line = sambafile.readline().rstrip()
     #need to check if we got to the end of the file, otherwise this will probably 
     #run forever.
     if line == '':
@@ -62,15 +62,15 @@ def readrunheader(file):
       sys.exit(-1)
       
     if line == '# ===== Entete de run =====':
-      print 'Found start of run. Creating Run Document'
-      _localRunDict['_id'] = 'run_' + os.path.basename(file.name) + '_kdatascript'
+      print 'Found start of run %s. Creating Run Document' % os.path.basename(sambafile.name)
+      _localRunDict['_id'] = 'run_' + os.path.basename(sambafile.name) + '_kdatascript'
       break
   
   #found the start of the run header, now read the lines
   #until the data is found
   
   while True:
-    line = file.readline().rstrip()
+    line = sambafile.readline().rstrip()
     if line.startswith('#'):
       pass
     elif line == '* Donnees':
@@ -93,13 +93,13 @@ def readrunheader(file):
  #otherwise, if an error occurs, should return False
 
 
-def readsambafileheader(file):
+def readsambafileheader(sambafile):
   
   header = {}
     
-  firstline = file.readline()
+  firstline = sambafile.readline()
   if firstline.rstrip() == '* Archive SAMBA':
-    firstline = file.readline() #skip the next line
+    firstline = sambafile.readline() #skip the next line
     if firstline.rstrip().startswith('* Version ') == False:
       return False  #force the file to hold this formatting. if not, then we'll deal with it later
   else:
@@ -108,7 +108,7 @@ def readsambafileheader(file):
     
   while True:
   
-    line = file.readline()
+    line = sambafile.readline()
     
     if line.rstrip().endswith('* ----------'):
       print 'Finished reading Samba File Header'
@@ -138,11 +138,11 @@ def readsambafileheader(file):
   print 'Reading Samba Partition Header. We ended in a weird state.'
   sys.exit(-1)
       
-def readboloheader(file):
+def readboloheader(sambafile):
 
   header = {}
 
-  firstline = file.readline()
+  firstline = sambafile.readline()
   if firstline.strip().startswith('* Detecteur'):
     alist = firstline.split()
     detector = alist[2]
@@ -155,7 +155,7 @@ def readboloheader(file):
     
   while True:
   
-    line = file.readline()
+    line = sambafile.readline()
     
     if line.rstrip().endswith('* ----------'):
       print 'Finished Bolo Header' 
@@ -179,7 +179,7 @@ def readboloheader(file):
               
               rootval = dict()
               while True:
-                nline = file.readline()
+                nline = sambafile.readline()
                 
                 if nline.strip().startswith(')') or nline.rstrip().endswith('* ----------'):
                   #print 'found end of bolo.reglages'
@@ -203,7 +203,7 @@ def readboloheader(file):
   sys.exit(-1)
 
 
-def readchannelheader(file, voie):
+def readchannelheader(sambafile, voie):
   '''Due to the structure of the Samba Header, this function returns the a 2-tuple,
   with the first element being the header dictionary and the second element is the
   last line read, which should have the channel name of the next channel in the header
@@ -219,10 +219,10 @@ def readchannelheader(file, voie):
   
   while True:
   
-    line = file.readline().rstrip()
+    line = sambafile.readline().rstrip()
     
     if line == '* Filtre:':
-      line = file.readline()
+      line = sambafile.readline()
       #print 'Found the Filter. This should be the end of', header['Voie'], '\'s header'
       while True:
         if line.find('* Voie') != -1:
@@ -240,7 +240,7 @@ def readchannelheader(file, voie):
           return (header, line, False)
         else:  #we must have found a filter that appears to have an end-of-line byte in the filter
           #print 'Found premature end of line in filter'
-          line = file.readline()
+          line = sambafile.readline()
         
     if line.startswith('* Voie'):
       #print 'End of header. Found Next Voie at start of line', line[line.find('* Voie'):].rstrip()
@@ -283,12 +283,12 @@ def uploadFile(filename, uri, dbname, overWrite = False):
   #print db.info()
   
   #read the run header
-  file = open(filename)
+  sambafile = open(filename)
   
   global _localRunDict
   _localRunDict = {}
   
-  runheader = readrunheader(file)
+  runheader = readrunheader(sambafile)
   
 
   _localRunDict['author'] = 'Samba'
@@ -296,19 +296,19 @@ def uploadFile(filename, uri, dbname, overWrite = False):
   _localRunDict['type'] = 'daqdocument'
 
   _localRunDict['date_uploaded'] = time.time()
-  runname = os.path.basename(file.name)
+  runname = os.path.basename(sambafile.name)
   runsplit = runname.split('_')
   _localRunDict['file'] = os.path.realpath(filename)
   _localRunDict['run_name'] = formatvalue(runsplit[0])
   _localRunDict['file_number'] = int(runsplit[1])
  
 
-  file.close()  #close and then reopen the file, just to make it easy to get to the start
+  sambafile.close()  #close and then reopen the file, just to make it easy to get to the start
   # of the run.
   
   #read the samba file header
-  file = open(filename)
-  sambaheader = readsambafileheader(file)
+  sambafile = open(filename)
+  sambaheader = readsambafileheader(sambafile)
   
   #now add the key/values to the _localRunDict document
   for k, v in sambaheader.items():
@@ -321,7 +321,7 @@ def uploadFile(filename, uri, dbname, overWrite = False):
   lastline = ''
   
   while True:
-    boloheader = readboloheader(file)
+    boloheader = readboloheader(sambafile)
     
     if isinstance(boloheader,dict):
       boloArray.append(boloheader)
@@ -350,7 +350,7 @@ def uploadFile(filename, uri, dbname, overWrite = False):
   voiepart = lastline[lastline.find('* Voie'):]
   channelName = voiepart[voiepart.find('"'):].strip('":\n')
   while True:
-    chanheaderoutput = readchannelheader(file, channelName)
+    chanheaderoutput = readchannelheader(sambafile, channelName)
     channelheader = chanheaderoutput[0]
     voiepart = chanheaderoutput[1][chanheaderoutput[1].find('* Voie'):]
     channelName = voiepart[voiepart.find('"'):].strip('":\n')
@@ -374,15 +374,20 @@ def uploadFile(filename, uri, dbname, overWrite = False):
 
   #don't allow this script to rewrite a doc to the database!
   #if you want to do that, then delete the doc you want to recreate
-  if db.doc_exist(_localRunDict['_id']) and overWrite is False:
-    file.close()
-    return False
-  else:
+  #or use the overWrite option
+  doc_exist_status = db.doc_exist(_localRunDict['_id'])
+  if doc_exist_status and overWrite:    
+    print 'doc exists on database, but overWrite was true. so i overwrite it'
     _localRunDict['_rev'] = db.get_rev(_localRunDict['_id'])
+
+  elif doc_exist_status and not overWrite:
+    print 'doc exists on database! exiting without uploading to database'
+    sambafile.close()
+    return False
 
   res = db.save_doc(_localRunDict)
   
-  file.close()
+  sambafile.close()
   return res['ok']
   
 
