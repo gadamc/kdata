@@ -5,9 +5,9 @@ import KDataPy.samba_utilities as sut
 
 def isFileOldEnough(aFileName):
   '''
-  returns True if aFileName is older than 15 minutes from now. 
+  returns True if aFileName is older than 10 minutes from now. 
   '''
-  if os.path.getmtime(aFileName) < time.time() - 900:
+  if os.path.getmtime(aFileName) < time.time() - 600:
     return True
   else:
     return False
@@ -20,7 +20,7 @@ def getListOfNewSambaFiles(topDir, lastSambaFileDict):
 
   sambafiles = list()
   metafiles = list()
-
+  sambaLetter = ''
   
   if os.path.isdir(topDir)==False:
     print topDir, 'is not a directory'
@@ -31,11 +31,11 @@ def getListOfNewSambaFiles(topDir, lastSambaFileDict):
       for aFileName in files:
 
         parentdir = os.path.basename(dirpath) 
+        sambaLetter = parentdir[4] 
 
         #check for data file
-        if sut.isvalidsambadatafilename(aFileName) and sut.isvalidsambarunname(parentdir) and isFileOldEnough(aFileName):
+        if sut.isvalidsambadatafilename(aFileName) and sut.isvalidsambarunname(parentdir) and isFileOldEnough(os.path.join(dirpath, aFileName)):
         
-          sambaLetter = parentdir[4] 
           add = False
 
           if lastSambaFileDict['samba'].has_key(sambaLetter):
@@ -49,9 +49,8 @@ def getListOfNewSambaFiles(topDir, lastSambaFileDict):
 
 
         #check for meta data file
-        if sut.isvalidsambametadatafilename(aFileName) and sut.isvalidsambarunname(parentdir) and isFileOldEnough(aFileName):
+        if sut.isvalidsambametadatafilename(aFileName) and sut.isvalidsambarunname(parentdir) and isFileOldEnough(os.path.join(dirpath,aFileName)):
         
-          sambaLetter = parentdir[4] 
           add = False
 
           if lastSambaFileDict['samba'].has_key(sambaLetter):

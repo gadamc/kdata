@@ -10,6 +10,10 @@ def logtime():
   return str(datetime.datetime.utcnow())
 
 def checkForLog(doc):
+  '''
+  this function is not used at the moment...
+  
+  '''
   try:
     
     if mycouchDb.doc_exists( doc['run_name']+'_log' ):
@@ -42,7 +46,7 @@ def run(**kwargs):
   mycouchDb = KDataPy.database.datadb(kwargs['server'])
 
   print logtime(), 'running proc0'
-  (sucDocIds, failDocIds) = runProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'], callback = checkForLog)
+  (sucDocIds, failDocIds) = runProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
   print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
 
 
@@ -69,7 +73,7 @@ def run(**kwargs):
   #run meta docs last...
 
   print logtime(), 'running metaproc0'
-  (sucDocIds, failDocIds) = runMetaProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'], callback = checkForLog)
+  (sucDocIds, failDocIds) = runMetaProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'])
   print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
 
 
