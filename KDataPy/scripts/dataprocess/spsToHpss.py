@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-
-import os, sys, time, argparse, tarfile
+import os, sys, time, argparse, tarfile, datetime, re
 import couchdbkit
 import KDataPy.samba_utilities as sut
 import KDataPy.datadb
@@ -20,7 +19,7 @@ def _getHpssLocation(tarredFileName):
     this handles individual runs like 'ma22a000.tar' and compound tar files like 'ma_small.tar'
 
   '''
-  if re.match('^[a-z][a-l].+(\.tar)$', tarredFileName) is None:
+  if re.match('^[a-z][a-l].+\.tar$', tarredFileName) is None:
     raise Exception ('_getHpssLocation failed. bad name %s', tarredFileName)
   
   basedir = '/edw/edw3rawdata'
@@ -28,10 +27,10 @@ def _getHpssLocation(tarredFileName):
   year = sut.yearfromsamba(tarredFileName[0])
   month = _getHpssMonthName( tarredFileName[1] ) + str(year)[2:4]
 
-  yeardir = os.path.join(basedir, year)
-  monthdir = os.path.join(yeardir, month)
+  yeardir = os.path.join(basedir, str(year))
+  monthdir = os.path.join(yeardir, str(month))
 
-  finaldir os.path.join(monthdir, 'events')
+  finaldir = os.path.join(monthdir, 'events')
 
   return os.path.join(finaldir, tarredFileName)
 
@@ -68,7 +67,7 @@ def _getListOfIdsNotOnHpssSinceSambaRun(db, sambaRun):
   
   runlist = []
   for row in vr:
-      runlist.append([row['id'])
+      runlist.append(row['id'])
 
   return runlist
 
@@ -79,7 +78,7 @@ def _getListOfIdsForSambaRun(db, sambaRun):
   
   runlist = []
   for row in vr:
-      runlist.append([row['id'])
+      runlist.append(row['id'])
 
   return runlist
 
@@ -96,12 +95,12 @@ def _getListOfAllRunsAndSizeSinceSambaRun(db, sambaRun):
   return sambarunlist
 
 
-def _getListsOfBigAndSmallRunsSinceSambaRun(sambarunlist, threshold = 200*1024*1024):
+def _getListsOfBigAndSmallRunsSinceSambaRun(sambarunlist, threshold = 200.0*1024.0*1024.0):
   
   biglist = []
   smalllist = []
   for arun in sambarunlist:
-    if arun[1] > threshold #200 MB
+    if arun[1] > threshold: #200 MB
       biglist.append(arun[0])
     else:
       smalllist.append(arun[0])
@@ -113,31 +112,42 @@ def _packageFiles(db, idList, fileName):
   
   filelist = []
   members = []
+  datasize = 0
   for docid in idList:
     doc = db[docid]
-    if doc.has_proc('proc0'):
-      filelist.append(doc['proc0']['file'])
-    elif doc.has_proc('metaproc0'):
-      filelist.append(doc['metaproc0']['file'])
+    if doc.has_key('proc0'):
+      thelocalfile = doc['proc0']['file']  
+    elif doc.has_key('metaproc0'):
+      thelocalfile = doc['metaproc0']['file']
     else:
       raise Exception("WTF! this doesn't have a proc0 or metaproc0.")
+    
+    filelist.append( thelocalfile )
+    
+    datasize += os.path.getsize( thelocalfile )
+    
+      
 
   print 'Creating Tar File', fileName
-  thetarfile = tarfile.open(fileName, 'w:gz')
+  #thetarfile = tarfile.open(fileName, 'w:gz')
   for afile in filelist:
+    print 'adding to tarfile %s' % os.path.basename(afile)
     members.append(os.path.basename(afile))
-    thetarfile.add(afile, arcname = os.path.basename(afile))
+    #thetarfile.add(afile, arcname = os.path.basename(afile))
 
-  thetarfile.close()
-  return fileName, members
+  #thetarfile.close()
+  return fileName, members, datasize
 
 
 def _sendToIrods(tarredFile, irodFileName):
   pyrods = KDataPyRods()
   
-  pyrods.imkdir('-p %s' % os.path.dirname(irodFileName))
-  out, err = pyrods.iput(tarredFile + ' ' + irodFileName)
-  
+  print 'making directory:imkdir -p %s' % os.path.dirname(irodFileName)
+  #pyrods.imkdir('-p %s' % os.path.dirname(irodFileName))
+  print 'calling irods iput %s %s' % (tarredFile, irodFileName)
+  #out, err = pyrods.iput(tarredFile + ' ' + irodFileName)
+  out, err = 'called send to irods', ''
+
   if err != '':
     raise Exception(err)
 
@@ -145,9 +155,16 @@ def _sendToIrods(tarredFile, irodFileName):
 
 def _tarAndFeather(db, idList, tarfilebasename):
 
-  tarredFileName, members = _packageFiles(db, idList, os.path.join('/sps/edelweis/kdata/data/raw',  tarfilebasename ))
+  try:
+    tarredFileName, members, datasize = _packageFiles(db, idList, os.path.join('/sps/edelweis/kdata/data/raw',  tarfilebasename ))
+  except OSError as e:
+    print e
+    print '...... something happened. probably could not find a file. quiting tarAndFeader'
+    print '     will need to do something with the idList. I should raise the exception here and then deal with it in the caller'
+    return None
+
   docs = []
-  hpssTarredFileName = _getHpssLocation(tarredFileName)
+  hpssTarredFileName = _getHpssLocation(os.path.basename(tarredFileName))
   icommandOut = _sendToIrods(tarredFileName, hpssTarredFileName)
 
   for docid in idList:
@@ -156,7 +173,7 @@ def _tarAndFeather(db, idList, tarfilebasename):
     doc['hpss']['file'] = hpssTarredFileName
     doc['hpss']['date'] = str(datetime.datetime.utcnow())
     doc['hpss']['date_unixtime'] = time.time()
-    doc['hpss']['file_size'] = os.path.getsize(tarredFileName)
+    doc['hpss']['file_size'] = -1#os.path.getsize(tarredFileName)
     doc['hpss']['icommandOut'] = icommandOut
     doc['status'] = 'good'
     docs.append(doc)
@@ -171,11 +188,15 @@ def _tarAndFeather(db, idList, tarfilebasename):
   doc['date'] = str(datetime.datetime.utcnow())
   doc['date_unixtime'] = time.time()
   doc['file_lastmodified'] = os.path.getctime(tarredFileName)
-  doc['file_size'] = os.path.getsize(tarredFileName)
+  doc['file_size'] = -1 #os.path.getsize(tarredFileName)
+  doc['data_size'] = datasize
   doc['icommandOut'] = icommandOut
 
   docs.append(doc)
-  db.bulk_save(docs)
+  print 'would save docs', ' '.join([x['_id'] for x in docs])
+  print 'datasize [MB]:', datasize/(1024.0*1024.0)
+  #raw_input()
+  #db.bulk_save(docs)
 
   #remove the tarred file
 
@@ -190,8 +211,9 @@ def run(server, dbname, fromThisTime = 0):
 
   ''' 
   db = couchdbkit.Server(server)[dbname]  
-  dbs = KDataPy.datadb.datadb(kwargs['server'], kwargs['database'])
+  dbs = KDataPy.datadb.datadb(server, dbname)
 
+  print str(datetime.datetime.utcnow()), 'called spsToHpss.run(%s, %s, %d)' % (server, dbname, fromThisTime)
 
 
   #first, find the newest possible Samba run that I can transfer to HPSS. I use the date to determine this
@@ -209,8 +231,9 @@ def run(server, dbname, fromThisTime = 0):
   idSetOfDataNotOnHpss = frozenset( _getListOfIdsNotOnHpssSinceSambaRun(db, newestPossibleSamba) )
   
   for docid in idSetOfDataNotOnHpss:
-    resp = dbs.setkey(docid, 'status', 'hpss in progress')
-    print resp, '\n'
+    resp = 'would set status to hpss in progress: %s' % docid
+    #resp = dbs.setkey(docid, 'status', 'hpss in progress')
+    print resp
 
 
   #next, I get a list of all Samba Runs since before the newestPossibleSamba run above.
@@ -220,22 +243,24 @@ def run(server, dbname, fromThisTime = 0):
 
   #bigSambaRunNames and smallSambaRunNames is a list of samba run names.
 
-  print 'found', len(bigSambaRunNames), 'big runs and', len(smallSambaRunNames), 'small runs'
+  print str(datetime.datetime.utcnow()), 'found', len(bigSambaRunNames), 'big runs and', len(smallSambaRunNames), 'small runs'
 
   
   idSetOfBigData = set()
 
-  for arun in bigSambaRunNames:
+
+  #for arun in bigSambaRunNames:
+  #  print str(datetime.datetime.utcnow()), 'big run:', arun
     
     #for each samba run name, get all of the doc _ids for that run 
-    idListOfBigDataDocs = _getListOfIdsForSambaRun(db, arun)
-    
-    idSetOfBigData.update(idListOfBigDataDocs)
+  #  idListOfBigDataDocs = _getListOfIdsForSambaRun(db, arun)
+
+  #  idSetOfBigData.update(idListOfBigDataDocs)
 
     #all of the data for each of these runs can be tarred and transfered to HPSS via irods
-    _tarAndFeather(db, idListOfBigDataDocs, arun+'.tar.gz')
+  #  _tarAndFeather(db, idListOfBigDataDocs, arun+'.tar')
 
-    
+  raw_input()  
 
   #Now deal with the small runs.  First, I only want to deal with small files from the months prior to the 
   #month of fromThisTime since we have to wait for the month to finish to package together all of the small data files. 
@@ -272,11 +297,14 @@ def run(server, dbname, fromThisTime = 0):
   for sambaYM, runNameList in smallSambaRunDict.iteritems():
     #sambaYM is the key and runNameList is the value, which is a list of Samba Run Names for the particular sambaYM
     #now, get all of the docids for these Samba Runs and put them in a list
+    print str(datetime.datetime.utcnow()), 'small data from Samba YM:', sambaYM
     idListofSmallRunDocs = []
     for aSmallRun in runNameList:
+      print '      ', aSmallRun
+
       idListofSmallRunDocs += _getListOfIdsForSambaRun(db, aSmallRun)
 
-    _tarAndFeather(db, idListofSmallRunDocs, sambaYM+'_small.tar.gz')
+    _tarAndFeather(db, idListofSmallRunDocs, sambaYM+'_small.tar')
     
     idSetOfSmallData.update(idListofSmallRunDocs)
 
@@ -285,8 +313,9 @@ def run(server, dbname, fromThisTime = 0):
   #reset the status to 'good' so that they show up again the next time
   notOnHpssSet = idSetOfDataNotOnHpss - idSetOfSmallData - idSetOfBigData
   for docid in notOnHpssSet:
-    resp = dbs.setkey(docid, 'status', 'good')
-    print resp, '\n'    
+    resp = 'would set status to good for %s' % docid
+    #resp = dbs.setkey(docid, 'status', 'good')
+    print resp    
 
    
 
