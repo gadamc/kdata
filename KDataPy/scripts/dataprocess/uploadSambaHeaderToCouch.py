@@ -299,6 +299,7 @@ def uploadFile(filename, uri, dbname, overWrite = False):
   runname = os.path.basename(sambafile.name)
   runsplit = runname.split('_')
   _localRunDict['file'] = os.path.realpath(filename)
+  _localRunDict['file_lastmodified'] = os.path.getctime(filename) 
   _localRunDict['run_name'] = formatvalue(runsplit[0])
   _localRunDict['file_number'] = int(runsplit[1])
  
@@ -406,6 +407,7 @@ def uploadMetaFile(filename, uri, dbname):
   doc['author'] = 'Samba'
   doc['type'] = 'daqmetadatadocuments'
   doc['date_uploaded'] = time.time()
+  doc['file_lastmodified'] = os.path.getmtime(filename)
   doc['content'] = 'Meta Data DB Document for a particular Samba Run'
   doc['file'] = os.path.realpath(filename)
   doc['run_name'] = os.path.basename(filename).split('_')[0]

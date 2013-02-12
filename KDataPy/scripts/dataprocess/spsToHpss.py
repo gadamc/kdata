@@ -43,17 +43,17 @@ def _getNewestPossibleSambaRunNameToProcessFromEpoch(db, fromThisTime):
   are older than 'fromThisTime' (expressed in seconds from pc epoch) and are safe to assume have been completed runs
   and their data may be sent to IRODs
 
-  This uses the db view 'hpss/metatime', which returns the meta data documents (_BB, _log, _ntp) sorted by 
-  the time the data was copied to Lyon. (via the doc['metaproc0']['date_unixtime'] key value). It is somewhat assumed that
-  the meta data docs are the last documents to be transfered to Lyon (this should be the case assuming that Jules scripts on s7 
-  perform as advertised). Additionally, this function is normally used with fromThisTime set to ten days in the past, 
+  This uses the db view 'hpss/logtime', which returns the _log documents sorted by 
+  the time the data was copied to Lyon. (via the doc['metaproc0']['date_unixtime'] key value). It is  assumed that
+  the _log data docs are the last documents to be transfered to Lyon (this should be the case assuming that Jules scripts on s7 
+  perform as advertised and Samba successfully creates a _log file). Additionally, this function is normally used with fromThisTime set to ten days in the past, 
   increasing the likelihood that this function returns an accurate Samba run name. 
 
   If there are no Samba files that need to be sent to IRODs this function returns None.
   '''
 
 
-  vr = db.view( 'hpss/metatime', descending=True, startkey=fromThisTime, limit=1 )
+  vr = db.view( 'hpss/logtime', descending=True, startkey=fromThisTime, limit=1 )
 
   result = vr.first()
 
@@ -170,6 +170,7 @@ def _tarAndFeather(db, idList, tarfilebasename):
   doc['members'] = members
   doc['date'] = str(datetime.datetime.utcnow())
   doc['date_unixtime'] = time.time()
+  doc['file_lastmodified'] = os.path.getctime(tarredFileName)
   doc['file_size'] = os.path.getsize(tarredFileName)
   doc['icommandOut'] = icommandOut
 
