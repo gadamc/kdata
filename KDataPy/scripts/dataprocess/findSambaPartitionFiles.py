@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 
-import sys, os, re
+import sys, os, re, time
 import KDataPy.samba_utilities as sut
 
+def isFileOldEnough(aFileName):
+  '''
+  returns True if aFileName is older than 15 minutes from now. 
+  '''
+  if os.path.getmtime(aFileName) < time.time() - 900:
+    return True
+  else:
+    return False
 
 def _appendToList(aList, aPath, message):
   aList.append(aPath)
@@ -25,7 +33,7 @@ def getListOfNewSambaFiles(topDir, lastSambaFileDict):
         parentdir = os.path.basename(dirpath) 
 
         #check for data file
-        if sut.isvalidsambadatafilename(aFileName) and sut.isvalidsambarunname(parentdir):
+        if sut.isvalidsambadatafilename(aFileName) and sut.isvalidsambarunname(parentdir) and isFileOldEnough(aFileName):
         
           sambaLetter = parentdir[4] 
           add = False
@@ -41,7 +49,7 @@ def getListOfNewSambaFiles(topDir, lastSambaFileDict):
 
 
         #check for meta data file
-        if sut.isvalidsambametadatafilename(aFileName) and sut.isvalidsambarunname(parentdir):
+        if sut.isvalidsambametadatafilename(aFileName) and sut.isvalidsambarunname(parentdir) and isFileOldEnough(aFileName):
         
           sambaLetter = parentdir[4] 
           add = False
