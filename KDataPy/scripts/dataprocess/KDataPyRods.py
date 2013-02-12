@@ -21,7 +21,7 @@ class KDataPyRods():
       this class's _icommand method, it will just sit there until the Universe explodes (or you type Ctrl-C).
       I could code in this functionality, but why bother until its needed...
       However, I currently keep stdout and stderr separate. This way, if there's any message coming from stderr,
-      the user of this class can raise an Exception (which is what I do inside of spsToIrods.py)
+      the user of this class can raise an Exception (which is what I do inside of spsToHpss.py)
 
     '''
     pass
