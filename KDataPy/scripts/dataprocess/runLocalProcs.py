@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 from KDataPy.scripts.dataprocess import runProc1, runProc0, runMetaProc0
 import KDataPy.datadb
+import KDataPy.database
 import json, datetime, os, time
+
+mycouchDb = None
 
 def logtime():
   return str(datetime.datetime.utcnow())
 
 def checkForLog(doc):
   try:
-    dataPath = os.path.dirname(doc['file'])
-    logFilePath = os.path.join(dataPath, doc['run_name']+'_log')
-
-    if os.path.isfile(logFilePath):
-      print str(datetime.datetime.utcnow()), 'FOUND LOG file for Samba run %s ... waiting five minutes' % doc['run_name']
-      time.sleep(3) #sleep five minutes just to make sure all the meta data has copied over.... 
+    
+    if mycouchDb.doc_exists( doc['run_name']+'_log' ):
+      print str(datetime.datetime.utcnow()), 'FOUND LOG file for Samba run %s found on database... ' % doc['run_name']
       return True
     else:
-      print str(datetime.datetime.utcnow()), 'NO LOG file for Samba run %s ... this run must still be active' % doc['run_name']
+      print str(datetime.datetime.utcnow()), 'NO LOG file for Samba run %s found on database ... this run must still be active' % doc['run_name']
       return False
 
   except Exception as e:
@@ -38,7 +38,9 @@ def run(**kwargs):
   sftp_password: password
   '''
 
-  
+  global mycouchDb
+  mycouchDb = KDataPy.database.datadb(kwargs['server'])
+
   print logtime(), 'running proc0'
   (sucDocIds, failDocIds) = runProc0.process(kwargs['server'], kwargs['database'], kwargs['sftp_username'], kwargs['sftp_password'], callback = checkForLog)
   print logtime(), 'found', len(sucDocIds), 'successful docs and', len(failDocIds), 'failed docs'
