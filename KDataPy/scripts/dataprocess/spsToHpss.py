@@ -9,6 +9,7 @@ from KDataPy.scripts.dataprocess.KDataPyRods import KDataPyRods
 This script MUST be run from a node on CC in Lyon. It assumes that is where it is running and where it can find the data files.
 '''
 
+
 def _getHpssMonthName(sambamonth):
   doc =  {'a':'jan', 'b':'fev', 'c':'mar', 'd':'avr', 'e':'mai', 'f':'jun', 'g':'jul', 'h':'aou', 'i':'sep', 'j':'oct', 'k':'nov', 'l':'dec'}
   return doc[sambamonth]
@@ -129,7 +130,7 @@ def _packageFiles(db, idList, fileName):
       
 
   print 'Creating Tar File', fileName
-  thetarfile = tarfile.open(fileName, 'w:gz')
+  thetarfile = tarfile.open(fileName, 'w')
   for afile in filelist:
     print 'adding to tarfile %s' % os.path.basename(afile)
     members.append(os.path.basename(afile))
@@ -139,12 +140,12 @@ def _packageFiles(db, idList, fileName):
   return fileName, members, datasize
 
 
-def _sendToIrods(tarredFile, irodFileName):
+def _sendToIrods(iputOptions, tarredFile, irodFileName):
   pyrods = KDataPyRods()
   command = '-p %s' % os.path.dirname(irodFileName)
   print 'making directory:imkdir %s' % command
   pyrods.imkdir(command)
-  command = '%s %s' % (tarredFile, irodFileName)
+  command = '%s %s %s' % (iputOptions, tarredFile, irodFileName)
   print 'calling irods iput %s' % command
   out, err = pyrods.iput(command)
   
@@ -154,7 +155,7 @@ def _sendToIrods(tarredFile, irodFileName):
 
   return out
 
-def _tarAndFeather(db, idList, tarfilebasename):
+def _tarAndFeather(db, idList, tarfilebasename, iputOpts=''):
 
   try:
     tarredFileName, members, datasize = _packageFiles(db, idList, os.path.join('/sps/edelweis/kdata/data/raw',  tarfilebasename ))
@@ -166,7 +167,7 @@ def _tarAndFeather(db, idList, tarfilebasename):
 
   docs = []
   hpssTarredFileName = _getHpssLocation(os.path.basename(tarredFileName))
-  icommandOut = _sendToIrods(tarredFileName, hpssTarredFileName)
+  icommandOut = _sendToIrods(iputOpts, tarredFileName, hpssTarredFileName)
 
   for docid in idList:
     doc = db[docid]
@@ -202,7 +203,7 @@ def _tarAndFeather(db, idList, tarfilebasename):
   #remove the tarred file
   os.remove(tarredFileName)
 
-def run(server, dbname, fromThisTime = 0):
+def run(server, dbname, fromThisTime = 0, iputOpts=''):
   '''
   server - couchdb server with credentials
   dbname - couchdb database name
@@ -262,7 +263,7 @@ def run(server, dbname, fromThisTime = 0):
     #but only if a _log file is found in the list
     if arun + '_log' in idListOfBigDataDocs:
       idSetOfBigData.update(idListOfBigDataDocs)
-      _tarAndFeather(db, idListOfBigDataDocs, arun+'.tar')
+      _tarAndFeather(db, idListOfBigDataDocs, arun+'.tar', iputOpts)
     
     
   #Now deal with the small runs.  First, I only want to deal with small files from the months prior to the 
@@ -312,7 +313,7 @@ def run(server, dbname, fromThisTime = 0):
 
     if len(idListofSmallRunDocs) > 0:    
       print 'tar and feather', sambaYM+'_small.tar'
-      _tarAndFeather(db, idListofSmallRunDocs, sambaYM+'_small.tar')
+      _tarAndFeather(db, idListofSmallRunDocs, sambaYM+'_small.tar', iputOpts)
     
       idSetOfSmallData.update(idListofSmallRunDocs)
 
@@ -331,10 +332,14 @@ if __name__ == '__main__':
   
   parser.add_argument('server', help='[required] couch server, with credentials')
   parser.add_argument('databasename', help='[required] the name of database (datadb)')
-  parser.add_argument('-d', '--date', type=int, default = 0, 
-            help='[optional] This script moves data from SPS to HPSS in Lyon. It only moves data that were last modified before a specific date. You can specify this date here, but otherwise it defaults to 10 days before the run function is called')
+  parser.add_argument('-d', '--date', type=int, default = 0, help='[optional] This script moves data from SPS to HPSS in Lyon. It only moves data that were last modified before a specific date. You can specify this date here, but otherwise it defaults to 10 days before the run function is called')
+  parser.add_argument('-f', '--force', action='store_true', help='[optional] If you use this switch, then the iput command will be called with the -f (force) option. This means that files on HPSS will overwritten if they already exist.')
  
   args = parser.parse_args()
 
-  run(args.server, args.databasename, args.date) 
+  forceOpt = ''
+  if args.force:
+    forceOpt = '-f'
+
+  run(args.server, args.databasename, args.date, forceOpt) 
 
