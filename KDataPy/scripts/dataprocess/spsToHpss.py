@@ -325,7 +325,7 @@ if __name__ == '__main__':
   parser.add_argument('server', help='[required] couch server, with credentials')
   parser.add_argument('databasename', help='[required] the name of database (datadb)')
   parser.add_argument('-d', '--date', type=int, default = 0, 
-            help='[optional] This script moves data from SPS to HPSS in Lyon. It only moves data that were uploaded to SPS before a specific time. You can specify this time here, but otherwise it defaults to 10 days before now!')
+            help='[optional] This script moves data from SPS to HPSS in Lyon. It only moves data that were last modified before a specific date. You can specify this date here, but otherwise it defaults to 10 days before the run function is called')
  
   args = parser.parse_args()
 
