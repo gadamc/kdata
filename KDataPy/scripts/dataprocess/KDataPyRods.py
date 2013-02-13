@@ -27,8 +27,8 @@ class KDataPyRods():
     pass
 
   def _icommand(self, command):
-    if isinstance(command, str) is False:
-      raise TypeError('command was not a string: %s' % command)
+    if isinstance(command, str) is False and isinstance(command, unicode) is False:
+      raise TypeError('command was not a string or unicode: %s is of type: %s' % (command, str(type(command))) )
 
     proc =  subprocess.Popen( [command] , shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = proc.communicate() #this forces to wait for completion of subprocess

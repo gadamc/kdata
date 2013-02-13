@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os, sys, time, argparse, tarfile, datetime, re
-import couchdbkit
+import couchdbkit, json
 import KDataPy.samba_utilities as sut
 import KDataPy.datadb
 from KDataPy.scripts.dataprocess.KDataPyRods import KDataPyRods
@@ -73,7 +73,7 @@ def _getListOfIdsNotOnHpssSinceSambaRun(db, sambaRun):
 
 
 def _getListOfIdsForSambaRun(db, sambaRun):
-  
+
   vr = db.view('hpss/notonhpss', descending=True, reduce=False, key=sambaRun)
   
   runlist = []
@@ -81,7 +81,7 @@ def _getListOfIdsForSambaRun(db, sambaRun):
       runlist.append(row['id'])
 
   return runlist
-
+  
 
 def _getListOfAllRunsAndSizeSinceSambaRun(db, sambaRun):
   
@@ -129,24 +129,25 @@ def _packageFiles(db, idList, fileName):
       
 
   print 'Creating Tar File', fileName
-  #thetarfile = tarfile.open(fileName, 'w:gz')
+  thetarfile = tarfile.open(fileName, 'w:gz')
   for afile in filelist:
     print 'adding to tarfile %s' % os.path.basename(afile)
     members.append(os.path.basename(afile))
-    #thetarfile.add(afile, arcname = os.path.basename(afile))
+    thetarfile.add(afile, arcname = os.path.basename(afile))
 
-  #thetarfile.close()
+  thetarfile.close()
   return fileName, members, datasize
 
 
 def _sendToIrods(tarredFile, irodFileName):
   pyrods = KDataPyRods()
+  command = '-p %s' % os.path.dirname(irodFileName)
+  print 'making directory:imkdir %s' % command
+  pyrods.imkdir(command)
+  command = '%s %s' % (tarredFile, irodFileName)
+  print 'calling irods iput %s' % command
+  out, err = pyrods.iput(command)
   
-  print 'making directory:imkdir -p %s' % os.path.dirname(irodFileName)
-  #pyrods.imkdir('-p %s' % os.path.dirname(irodFileName))
-  print 'calling irods iput %s %s' % (tarredFile, irodFileName)
-  #out, err = pyrods.iput(tarredFile + ' ' + irodFileName)
-  out, err = 'called send to irods', ''
 
   if err != '':
     raise Exception(err)
@@ -173,7 +174,7 @@ def _tarAndFeather(db, idList, tarfilebasename):
     doc['hpss']['file'] = hpssTarredFileName
     doc['hpss']['date'] = str(datetime.datetime.utcnow())
     doc['hpss']['date_unixtime'] = time.time()
-    doc['hpss']['file_size'] = -1#os.path.getsize(tarredFileName)
+    doc['hpss']['file_size'] = os.path.getsize(tarredFileName)
     doc['hpss']['icommandOut'] = icommandOut
     doc['status'] = 'good'
     docs.append(doc)
@@ -188,18 +189,18 @@ def _tarAndFeather(db, idList, tarfilebasename):
   doc['date'] = str(datetime.datetime.utcnow())
   doc['date_unixtime'] = time.time()
   doc['file_lastmodified'] = os.path.getctime(tarredFileName)
-  doc['file_size'] = -1 #os.path.getsize(tarredFileName)
+  doc['file_size'] = os.path.getsize(tarredFileName)
   doc['data_size'] = datasize
   doc['icommandOut'] = icommandOut
 
   docs.append(doc)
-  print 'would save docs', ' '.join([x['_id'] for x in docs])
+  print 'save docs', ' '.join([x['_id'] for x in docs])
   print 'datasize [MB]:', datasize/(1024.0*1024.0)
   #raw_input()
-  #db.bulk_save(docs)
+  db.bulk_save(docs)
 
   #remove the tarred file
-
+  os.remove(tarredFileName)
 
 def run(server, dbname, fromThisTime = 0):
   '''
@@ -231,9 +232,10 @@ def run(server, dbname, fromThisTime = 0):
   idSetOfDataNotOnHpss = frozenset( _getListOfIdsNotOnHpssSinceSambaRun(db, newestPossibleSamba) )
   
   for docid in idSetOfDataNotOnHpss:
-    resp = 'would set status to hpss in progress: %s' % docid
-    #resp = dbs.setkey(docid, 'status', 'hpss in progress')
-    print resp
+    
+    resp = dbs.setkey(docid, 'status', 'hpss in progress')
+    resp['doc_id'] =  docid
+    print json.dumps(resp, indent=1)
 
 
   #next, I get a list of all Samba Runs since before the newestPossibleSamba run above.
@@ -249,19 +251,20 @@ def run(server, dbname, fromThisTime = 0):
   idSetOfBigData = set()
 
 
-  #for arun in bigSambaRunNames:
-  #  print str(datetime.datetime.utcnow()), 'big run:', arun
+  for arun in bigSambaRunNames:
+    print str(datetime.datetime.utcnow()), 'big run:', arun
     
-    #for each samba run name, get all of the doc _ids for that run 
-  #  idListOfBigDataDocs = _getListOfIdsForSambaRun(db, arun)
+    #for each samba run name, get all of the doc _ids for that run
 
-  #  idSetOfBigData.update(idListOfBigDataDocs)
+    idListOfBigDataDocs = _getListOfIdsForSambaRun(db, arun)
 
     #all of the data for each of these runs can be tarred and transfered to HPSS via irods
-  #  _tarAndFeather(db, idListOfBigDataDocs, arun+'.tar')
-
-  raw_input()  
-
+    #but only if a _log file is found in the list
+    if arun + '_log' in idListOfBigDataDocs:
+      idSetOfBigData.update(idListOfBigDataDocs)
+      _tarAndFeather(db, idListOfBigDataDocs, arun+'.tar')
+    
+    
   #Now deal with the small runs.  First, I only want to deal with small files from the months prior to the 
   #month of fromThisTime since we have to wait for the month to finish to package together all of the small data files. 
 
@@ -302,22 +305,26 @@ def run(server, dbname, fromThisTime = 0):
     for aSmallRun in runNameList:
       print '      ', aSmallRun
 
+      #we do not check for the _log file here. This data is at least one month old, and up to 40 days old
+      #if there is not a _log file already, then there never will be.
+      #something bad must have happened. 
       idListofSmallRunDocs += _getListOfIdsForSambaRun(db, aSmallRun)
 
-    _tarAndFeather(db, idListofSmallRunDocs, sambaYM+'_small.tar')
+    if len(idListofSmallRunDocs) > 0:    
+      print 'tar and feather', sambaYM+'_small.tar'
+      _tarAndFeather(db, idListofSmallRunDocs, sambaYM+'_small.tar')
     
-    idSetOfSmallData.update(idListofSmallRunDocs)
+      idSetOfSmallData.update(idListofSmallRunDocs)
 
 
   #now, for all of the document ids that weren't sent to HPSS
   #reset the status to 'good' so that they show up again the next time
   notOnHpssSet = idSetOfDataNotOnHpss - idSetOfSmallData - idSetOfBigData
   for docid in notOnHpssSet:
-    resp = 'would set status to good for %s' % docid
-    #resp = dbs.setkey(docid, 'status', 'good')
-    print resp    
-
-   
+    
+    resp = dbs.setkey(docid, 'status', 'good')
+    resp['doc_id'] = docid
+    print json.dumps(resp, indent=1)      
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
