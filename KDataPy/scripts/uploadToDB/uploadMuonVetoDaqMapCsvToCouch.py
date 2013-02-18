@@ -1,61 +1,32 @@
 #!/usr/bin/env python
-
-from couchdbkit import Server, Database
-from couchdbkit.loaders import FileSystemDocsLoader
+from couchdbkit import Server
 from csv import DictReader
-import time, sys, subprocess, math, os, datetime
-import pytz, calendar
+import time, sys, subprocess, math, os, datetime, pytz, calendar, json
 
-    
 #______________
 # parseDoc
 def parseDoc(doc):
-    for k,v in doc.items():
-        #strips off any spaces found in the keys.
-        del doc[k]
-        k = k.strip(' ')
-        doc[k] = v  
-        if (isinstance(v,str)):
-            #print k, v, v.isdigit()
-            # #see if this string is really an int or a float
-            if v.isdigit()==True: #int
-                doc[k] = int(v)
-            else: #try a float
-                try:
-                    if math.isnan(float(v))==False:
-                        doc[k] = float(v) 
-                except:
-                    pass            
-    return doc
-
-
+  for k,v in doc.items():
     
-def parsecommentLine(line):
-    ml = line.split('/')
-    for i in range(len(ml)):
-      ml[i] =  ml[i].strip() #strip off any extra spaces
-     
-    return ml
-      
-def parsecomments(newdoc):
-  if newdoc.has_key('comment') or newdoc.has_key('comments'):
-    try:
-      newdoc['comment'] = parsecommentLine(newdoc['comment'])
-    except KeyError:
-      try:
-        newdoc['comments'] = parsecommentLine(newdoc['comments'])
-      except KeyError:
-        print 'it should be impossible to get here.'
-    
-      
+    #strips off any spaces found in the keys.
+    del doc[k]
+    kk = k.strip(' ') 
+    doc[kk] = v  
 
-#_____________
-# upload
-def upload(db, docs):
-    db.bulk_save(docs)
-    del docs
-    return list()
-    
+    # see if this string is really an int or a float
+    if (isinstance(v,str) or isinstance(v, unicode)):
+
+      if v.isdigit()==True: #int
+        doc[kk] = int(v)
+      else: #try a float
+        try:
+          if math.isnan(float(v))==False:
+            doc[kk] = float(v) 
+        except:
+          pass  
+
+  return doc
+  
 
 #______________
 # uploadFile
@@ -65,72 +36,58 @@ def uploadFile(fname, uri, dbname):
   
   # #connect to the db
   theServer = Server(uri)
-  db = theServer.get_or_create_db(dbname)
+  db = theServer[dbname]
   
   #loop on file for upload
   reader = DictReader(open(fname, 'rU'), dialect = 'excel')
   
-  #used for bulk uploading
-  docs = list()
-  checkpoint = 10
-  n=0
-  start = time.time()
+  #store a list of docs for upload to db
+  docs = []
 
   for doc in reader:
-    n+=1
-    #print doc
+
     newdoc = parseDoc(doc)
   
-    if newdoc.has_key('muonmodule')==False or newdoc.has_key('end')==False \
-    or newdoc.has_key('year') == False or newdoc.has_key('month') == False \
-    or newdoc.has_key('day') == False:
-      print 'Quitting! Your CVS Muon Veto DAQ map MUST have a column called'
-      print '"module", "end", "year", "month" and "day". These are used to set the proper date and should be in UTC time'
-
+    #enforce some sort of schema. that is, require the existence of a set of keys in the database documents
+    requiredSet = set(['muonmodule', 'end', 'year', 'month', 'day', 'HV channel', 'ADC channel', 'ADC card', 'TDC channel'])
+    if requiredSet  < set(newdoc.keys()) is False:
+      print 'Quitting! Your CVS Muon Veto DAQ map MUST have the following columns'
+      print ', '.join([x for x in requiredSet])
       sys.exit(1)
     
-    #reformat the date
-    newdoc['date_valid'] = {} #change it to a dictionary
-    yy,mm,dd = newdoc['year'], newdoc['month'], newdoc['day']
-    newdoc['date_valid']['year'] = newdoc['year']
-    newdoc['date_valid']['month'] = newdoc['month']
-    newdoc['date_valid']['day'] = newdoc['day']
+    #reformat the date to a single dictionary
+    newdoc['date_valid'] = {} 
+    for dk in ['year', 'month', 'day', 'hour', 'minute']:
+      try:
+        newdoc['date_valid'][dk] = newdoc[dk]
+        del newdoc[dk]  
+      except: pass
 
-    del newdoc['year'] #remove the old fields
-    del newdoc['month']
-    del newdoc['day']
+    #also save the date in unix time.
+    yy,mm,dd = newdoc['date_valid']['year'], newdoc['date_valid']['month'], newdoc['date_valid']['day']
+    newdoc['date_valid_unixtime'] = calendar.timegm( datetime.datetime(yy,mm,dd,tzinfo=pytz.utc).utctimetuple() )
     
-    newdoc['date_valid_unix'] = calendar.timegm( datetime.datetime(yy,mm,dd,tzinfo=pytz.utc).utctimetuple() )
-    
+
+    #fill in additional information for database document
     newdoc['type'] = 'muon_veto_daq_map'
     newdoc['author'] = 'KIT'
     newdoc['content'] = 'Muon Veto DAQ Mapping'
     dd = datetime.datetime.utcnow()
-    newdoc['date_filed'] = {'year':dd.year, 'month':dd.month, 'day':dd.day, 'hour':dd.hour, 'minute':dd.minute, 'second':dd.second, 'microsecond':dd.microsecond} 
-    parsecomments(newdoc)
+    newdoc['date_filed'] = {'year':dd.year, 'month':dd.month, 'day':dd.day, 'hour':dd.hour, 'minute':dd.minute, 'second':dd.second} 
+    newdoc['date_filed_unixtime'] = time.time()
+    newdoc['date_filed_isoformat'] = dd.isoformat() + '+0:00'  #add the +0:00 to indicate clearly that this is UTC
+
+    #parse comments into a list of comments
+    commentList = newdoc['comments'].split('/')
+    newdoc['comments'] =  [x.strip() for x in commentList] #strip off any extra spaces 
     
-    docexists = False
-    if db.doc_exist(newdoc.get('_id')):
-      newdoc['_rev'] = db.get_rev(newdoc.get('_id'))
-      docexists = True
-      
+    #append to list for bulk upload when ready
     docs.append(newdoc)
-    
-    if len(docs)%checkpoint==0:
-      docs = upload(db,docs)
-        
-  #don't forget the last batch        
-  docs = upload(db,docs)
-  
-  #print summary statistics  
-  delta = time.time() - start
-  rate = float(n)/float(delta)
-  ndocs = n
-  print 'uploaded: %i docs in: %i seconds for a rate: %f docs/sec' % (ndocs, delta,rate)
   
   
-#______________
-# start script here
+  db.bulk_save(docs)
+  
+
 if __name__=='__main__':
   csvfile = sys.argv[1]
   uri = sys.argv[2]
@@ -141,5 +98,3 @@ if __name__=='__main__':
   
   uploadFile(csvfile, uri, dbname)
   
-
-
