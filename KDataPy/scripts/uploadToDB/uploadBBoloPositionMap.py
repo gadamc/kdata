@@ -4,7 +4,7 @@ from couchdbkit import Server, Database
 from couchdbkit.loaders import FileSystemDocsLoader
 from csv import DictReader
 import time, sys, subprocess, math, os, datetime, string, re
-
+from KDatatPy.uploadutilities import formatvalue
     
 #______________
 # parseDoc
