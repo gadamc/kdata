@@ -7,24 +7,10 @@ import time, sys, subprocess, math, os, glob, copy
 import datetime, json, re, time
 import socket
 from KDataPy.exceptions import *
+from KDataPy.uploadutilities import formatvalue
+import KDataPy.samba_utilities as sut
 
-runDict = {}
-
-def formatvalue(value):
-  if (isinstance(value,str)):
-    # #see if this string is really an int or a float
-    if value.isdigit()==True: #int
-      return int(value)
-    else: #try a float
-      try:
-        if math.isnan(float(value))==False:
-          return float(value)
-      except:
-        pass
-
-    return value.strip('"') #strip off any quotations found in the value
-  else:
-    return value
+_localRunDict = {}
 
 
 def getBolometerName(astring):
@@ -60,15 +46,15 @@ def getBolometerName(astring):
   return astring
 
     
-def readrunheader(file):
+def readrunheader(sambafile):
 
   line = ''
   
-  global runDict
+  global _localRunDict
   
   while True:
   
-    line = file.readline().rstrip()
+    line = sambafile.readline().rstrip()
     #need to check if we got to the end of the file, otherwise this will probably 
     #run forever.
     if line == '':
@@ -76,20 +62,20 @@ def readrunheader(file):
       sys.exit(-1)
       
     if line == '# ===== Entete de run =====':
-      print 'Found start of run. Creating Run Document'
-      runDict['_id'] = 'run_' + os.path.basename(file.name) + '_kdatascript'
+      print 'Found start of run %s. Creating Run Document' % os.path.basename(sambafile.name)
+      _localRunDict['_id'] = 'run_' + os.path.basename(sambafile.name) + '_kdatascript'
       break
   
   #found the start of the run header, now read the lines
   #until the data is found
   
   while True:
-    line = file.readline().rstrip()
+    line = sambafile.readline().rstrip()
     if line.startswith('#'):
       pass
     elif line == '* Donnees':
-      print 'Finished Run Header', runDict['_id']
-      return runDict
+      print 'Finished Run Header', _localRunDict['_id']
+      return _localRunDict
     elif line == '':
       print 'Prematurely found an empty line while reading the Run Header'
       sys.exit(-1)  #we shouldn't reach the end of the file already
@@ -101,19 +87,19 @@ def readrunheader(file):
           vlist = alist[1].split('#')
           value = formatvalue(vlist[0].strip())
            
-          runDict[key] = value
+          _localRunDict[key] = value
     
- #if all goes well, will return runDict.
+ #if all goes well, will return _localRunDict.
  #otherwise, if an error occurs, should return False
 
 
-def readsambafileheader(file):
+def readsambafileheader(sambafile):
   
   header = {}
     
-  firstline = file.readline()
+  firstline = sambafile.readline()
   if firstline.rstrip() == '* Archive SAMBA':
-    firstline = file.readline() #skip the next line
+    firstline = sambafile.readline() #skip the next line
     if firstline.rstrip().startswith('* Version ') == False:
       return False  #force the file to hold this formatting. if not, then we'll deal with it later
   else:
@@ -122,7 +108,7 @@ def readsambafileheader(file):
     
   while True:
   
-    line = file.readline()
+    line = sambafile.readline()
     
     if line.rstrip().endswith('* ----------'):
       print 'Finished reading Samba File Header'
@@ -152,11 +138,11 @@ def readsambafileheader(file):
   print 'Reading Samba Partition Header. We ended in a weird state.'
   sys.exit(-1)
       
-def readboloheader(file):
+def readboloheader(sambafile):
 
   header = {}
 
-  firstline = file.readline()
+  firstline = sambafile.readline()
   if firstline.strip().startswith('* Detecteur'):
     alist = firstline.split()
     detector = alist[2]
@@ -169,7 +155,7 @@ def readboloheader(file):
     
   while True:
   
-    line = file.readline()
+    line = sambafile.readline()
     
     if line.rstrip().endswith('* ----------'):
       print 'Finished Bolo Header' 
@@ -193,7 +179,7 @@ def readboloheader(file):
               
               rootval = dict()
               while True:
-                nline = file.readline()
+                nline = sambafile.readline()
                 
                 if nline.strip().startswith(')') or nline.rstrip().endswith('* ----------'):
                   #print 'found end of bolo.reglages'
@@ -217,7 +203,7 @@ def readboloheader(file):
   sys.exit(-1)
 
 
-def readchannelheader(file, voie):
+def readchannelheader(sambafile, voie):
   '''Due to the structure of the Samba Header, this function returns the a 2-tuple,
   with the first element being the header dictionary and the second element is the
   last line read, which should have the channel name of the next channel in the header
@@ -233,10 +219,10 @@ def readchannelheader(file, voie):
   
   while True:
   
-    line = file.readline().rstrip()
+    line = sambafile.readline().rstrip()
     
     if line == '* Filtre:':
-      line = file.readline()
+      line = sambafile.readline()
       #print 'Found the Filter. This should be the end of', header['Voie'], '\'s header'
       while True:
         if line.find('* Voie') != -1:
@@ -254,7 +240,7 @@ def readchannelheader(file, voie):
           return (header, line, False)
         else:  #we must have found a filter that appears to have an end-of-line byte in the filter
           #print 'Found premature end of line in filter'
-          line = file.readline()
+          line = sambafile.readline()
         
     if line.startswith('* Voie'):
       #print 'End of header. Found Next Voie at start of line', line[line.find('* Voie'):].rstrip()
@@ -287,55 +273,48 @@ def readchannelheader(file, voie):
   return header
 
 
-def uploadFile(filename, uri, dbname, override=None):
-  
-  if override == None:
-    override = False
-  
-  try:  
-    theServer = Server(uri)
-    db = theServer.get_or_create_db(dbname)
-    print db.info()
-  except:
-    uri = 'http://adam:tk421tk421@localhost:5984'
-    theServer = Server(uri)
-    db = theServer.get_or_create_db(dbname)
-    print db.info()
+def uploadFile(filename, uri, dbname, overWrite = False):
 
+  if sut.isvalidsambadatafilename(os.path.basename(filename)) is False:
+    return False
+  
+  theServer = Server(uri)
+  db = theServer.get_or_create_db(dbname)
+  #print db.info()
+  
   #read the run header
-  file = open(filename)
-  docs = list()
+  sambafile = open(filename)
   
+  global _localRunDict
+  _localRunDict = {}
   
-  runDict.clear()
+  runheader = readrunheader(sambafile)
   
-  runDict['author'] = 'Samba'
-  runDict['content'] = 'Samba DAQ document for a particular run. Use this database entry to track the progress of the processing of this data'
-  runDict['type'] = 'daqdocument'
-  dd = datetime.datetime.utcnow()
-  runDict['date_uploaded'] = {'year':dd.year,'month':dd.month,'day':dd.day,
-                          'hour':dd.hour,'minute':dd.minute,'second':dd.second,
-                          'microsecond':dd.microsecond,'timezone':0, 'unixtime':time.time()}
-  runname = os.path.basename(file.name)
+
+  _localRunDict['author'] = 'Samba'
+  _localRunDict['content'] = 'Samba DAQ document for a particular run. Use this database entry to track the progress of the processing of this data'
+  _localRunDict['type'] = 'daqdocument'
+
+  _localRunDict['date_uploaded'] = time.time()
+  runname = os.path.basename(sambafile.name)
   runsplit = runname.split('_')
-  runDict['file'] = file.name
-  runDict['run_name'] = formatvalue(runsplit[0])
-  runDict['file_number'] = int(runsplit[1])
+  _localRunDict['file'] = os.path.realpath(filename)
+  _localRunDict['file_lastmodified'] = os.path.getctime(filename) 
+  _localRunDict['run_name'] = formatvalue(runsplit[0])
+  _localRunDict['file_number'] = int(runsplit[1])
  
-  runheader = readrunheader(file)
-  
-  
-  file.close()  #close and then reopen the file, just to make it easy to get to the start
+
+  sambafile.close()  #close and then reopen the file, just to make it easy to get to the start
   # of the run.
   
   #read the samba file header
-  file = open(filename)
-  sambaheader = readsambafileheader(file)
+  sambafile = open(filename)
+  sambaheader = readsambafileheader(sambafile)
   
-  #now add the key/values to the runDict document
+  #now add the key/values to the _localRunDict document
   for k, v in sambaheader.items():
-    if runDict.has_key(k) is False:
-      runDict[k] = v
+    if _localRunDict.has_key(k) is False:
+      _localRunDict[k] = v
       
   #now, loop through and read the bolometer header files
   
@@ -343,7 +322,7 @@ def uploadFile(filename, uri, dbname, override=None):
   lastline = ''
   
   while True:
-    boloheader = readboloheader(file)
+    boloheader = readboloheader(sambafile)
     
     if isinstance(boloheader,dict):
       boloArray.append(boloheader)
@@ -357,9 +336,8 @@ def uploadFile(filename, uri, dbname, override=None):
       print 'Not a Dictionary. We are done reading the bolometer headers.'
       break    
   
-  runDict['Detecteurs'] = boloArray
+  _localRunDict['Detecteurs'] = boloArray
   
-  #docs = upload(db,docs)
   
   #now read through the channel configuration values  
   # the while loop above quits when the the readboloheader doesn't return
@@ -373,7 +351,7 @@ def uploadFile(filename, uri, dbname, override=None):
   voiepart = lastline[lastline.find('* Voie'):]
   channelName = voiepart[voiepart.find('"'):].strip('":\n')
   while True:
-    chanheaderoutput = readchannelheader(file, channelName)
+    chanheaderoutput = readchannelheader(sambafile, channelName)
     channelheader = chanheaderoutput[0]
     voiepart = chanheaderoutput[1][chanheaderoutput[1].find('* Voie'):]
     channelName = voiepart[voiepart.find('"'):].strip('":\n')
@@ -388,26 +366,63 @@ def uploadFile(filename, uri, dbname, override=None):
       print 'Channel Header output False - Done reading Channel Headers.' # okay, this tells us that we're done
       break
   
-  runDict['Voies'] = channelArray
+  _localRunDict['Voies'] = channelArray
   
-  runDict['status'] = 'closed'
-  runDict['hostipaddress'] = socket.gethostbyname( socket.gethostname() )
-  runDict['hostname'] = socket.gethostname()
-  #runDict['size_in_bytes'] = os.path.getsize(runDict['file'])
+  _localRunDict['status'] = 'closed'
+  _localRunDict['hostipaddress'] = socket.gethostbyname( socket.gethostname() )
+  _localRunDict['hostname'] = socket.gethostname()
+  #_localRunDict['size_in_bytes'] = os.path.getsize(_localRunDict['file'])
 
-  #this will write a new version of the document to the DB if it
-  #already exists! 
-  if db.doc_exist(runDict['_id']) and override==True:
-     runDict['_rev'] = db.get_rev(runDict['_id'])
-     print 'overriding document', runDict['_id'], runDict['_rev']
+  #don't allow this script to rewrite a doc to the database!
+  #if you want to do that, then delete the doc you want to recreate
+  #or use the overWrite option
+  doc_exist_status = db.doc_exist(_localRunDict['_id'])
+  if doc_exist_status and overWrite:    
+    print 'doc exists on database, but overWrite was true. so i overwrite it'
+    _localRunDict['_rev'] = db.get_rev(_localRunDict['_id'])
 
-  db.save_doc(runDict)
+  elif doc_exist_status and not overWrite:
+    print 'doc exists on database! exiting without uploading to database'
+    sambafile.close()
+    return False
+
+  res = db.save_doc(_localRunDict)
   
-  file.close()
-  return True
+  sambafile.close()
+  return res['ok']
   
 
-def uploadFromRunDir(dirname, uri, dbname, override=None):
+def uploadMetaFile(filename, uri, dbname):
+
+  if sut.isvalidsambametadatafilename(os.path.basename(filename)) is False:
+    return False
+  
+  theServer = Server(uri)
+  db = theServer.get_or_create_db(dbname)
+  #print db.info()
+  
+  #with the meta file docs, I don't have to read anytihng inside of the doc!
+  doc = {}
+  doc['_id'] = os.path.basename(filename)
+  doc['author'] = 'Samba'
+  doc['type'] = 'daqmetadatadocuments'
+  doc['date_uploaded'] = time.time()
+  doc['file_lastmodified'] = os.path.getmtime(filename)
+  doc['content'] = 'Meta Data DB Document for a particular Samba Run'
+  doc['file'] = os.path.realpath(filename)
+  doc['run_name'] = os.path.basename(filename).split('_')[0]
+  
+  doc['status'] = 'closed'
+  doc['hostipaddress'] = socket.gethostbyname( socket.gethostname() )
+  doc['hostname'] = socket.gethostname()
+  doc['file_size'] = os.path.getsize(doc['file'])
+
+  res = db.save_doc(doc)
+  
+  return res['ok']
+
+
+def uploadFromRunDir(dirname, uri, dbname):
   if os.path.isdir(dirname)==False:
     return False
 
@@ -424,11 +439,11 @@ def uploadFromRunDir(dirname, uri, dbname, override=None):
     
   for i in filelist:
     print 'Uploading ' + i
-    uploadFile(i, uri, dbname, override)
+    uploadFile(i, uri, dbname)
     
   return True
   
-def uploadFromTopLevelDir(dirname, uri, dbname, override=None):
+def uploadFromTopLevelDir(dirname, uri, dbname):
   if os.path.isdir(dirname)==False:
     return False
   
@@ -439,33 +454,9 @@ def uploadFromTopLevelDir(dirname, uri, dbname, override=None):
     
   for i in dirlist:
     if os.path.isdir(i):
-      uploadFromRunDir(i, uri, dbname, override)
+      uploadFromRunDir(i, uri, dbname)
     
   return True
   
-  
-def main(*args):
-  uri = args[1]
-  dbname = args[2]
-  
-  if len(args)>=4:
-    if args[3]=='True':
-      override = True   
-    else:
-      override = False
-  else:
-    override = False
-  
-  #check to see if argv[1] is a directory name or a file name
-  if os.path.isfile(args[0]):
-    uploadFile(args[0], uri, dbname, override)
-  elif os.path.isdir(args[0]):
-    if uploadFromRunDir(args[0], uri, dbname, override)==False:
-      #try if this is a top-level samba directory rather than a single run directory
-      uploadFromTopLevelDir(args[0], uri, dbname, override)
-      
-      
 
-if __name__ == '__main__':
-  main(*sys.argv[1:])
-
+  

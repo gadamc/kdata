@@ -61,7 +61,7 @@ def upload(*argv):
   doc['date_uploaded_utc_second'] = time.time()
   doc['date_uploaded_utc_string'] = str(datetime.datetime.utcnow())
   
-  db.save_doc(doc)
+  return db.save_doc(doc)
     
 #
 if __name__ == '__main__':

@@ -1,0 +1,148 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>KDataPy Upload Utility Functions &mdash; KDataPy 5.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="KDataPy 5.0 documentation" href="index.html" />
+    <link rel="up" title="KDataPy Modules" href="code.html" />
+    <link rel="next" title="KDataPy Exceptions" href="exceptions.html" />
+    <link rel="prev" title="KDataPy Samba Utility Functions" href="samba_utilities.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="exceptions.html" title="KDataPy Exceptions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="samba_utilities.html" title="KDataPy Samba Utility Functions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">KDataPy 5.0 documentation</a> &raquo;</li>
+          <li><a href="code.html" accesskey="U">KDataPy Modules</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-KDataPy.uploadutilities">
+<span id="kdatapy-upload-utility-functions"></span><h1>KDataPy Upload Utility Functions<a class="headerlink" href="#module-KDataPy.uploadutilities" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="KDataPy.uploadutilities.formatvalue">
+<tt class="descclassname">KDataPy.uploadutilities.</tt><tt class="descname">formatvalue</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="_modules/KDataPy/uploadutilities.html#formatvalue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.uploadutilities.formatvalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function reformats &#8216;value&#8217; in an expected way. 
+It tests if value is a string, and tries to convert it into an integer or float, 
+returning the integer of float value if possible.
+If &#8216;value&#8217; is a string, it strips off any whitespace or double quotation marks.
+This function is used extensively to format values found in the Samba header or
+in various Excel spreadsheets that are uploaded to our databases.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="KDataPy.uploadutilities.splitargs">
+<tt class="descclassname">KDataPy.uploadutilities.</tt><tt class="descname">splitargs</tt><big>(</big><em>argv</em><big>)</big><a class="reference internal" href="_modules/KDataPy/uploadutilities.html#splitargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.uploadutilities.splitargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple arg parser. This is useful because argparse is not installed on some Python systems with version &lt; 2.7.
+This supports two kinds of arguments.
+1. a single value
+2. a key=value pair.</p>
+<p>For example, this works
+&#8220;option1 option2 keyword1=value1 keyword2=value2 &#8220;</p>
+<p>But this function doesn&#8217;t support &#8220;switches&#8221; that have values like &#8220;-k 5&#8221;. you must use the &#8220;=&#8221; sign and NO spaces.</p>
+<p>It returns a tuple of ( [args], {kwargs} ).  In the example above, for example it would return</p>
+<p>( [&#8216;option1&#8217;, &#8216;option2&#8217;], {&#8216;keyword1&#8217;:&#8217;value1&#8217;, &#8216;keyword2&#8217;:&#8217;value2&#8217;})</p>
+<p>disclaimer:  It is highly recommended that you test this function before completely trusting what it does!!
+If you want a real tool for parsing arguments, you should use/install argparse.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="samba_utilities.html"
+                        title="previous chapter">KDataPy Samba Utility Functions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="exceptions.html"
+                        title="next chapter">KDataPy Exceptions</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/uploadutilities.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="exceptions.html" title="KDataPy Exceptions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="samba_utilities.html" title="KDataPy Samba Utility Functions"
+             >previous</a> |</li>
+        <li><a href="index.html">KDataPy 5.0 documentation</a> &raquo;</li>
+          <li><a href="code.html" >KDataPy Modules</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Adam Cox, KIT.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -230,8 +230,9 @@ def main(*args, **kwargs):
   doc = fillDoc(**kwargs)
   
   if doc != '':
-    db.save_doc(doc)
-  
+    res = db.save_doc(doc)
+    return res
+
 if __name__ == '__main__':
   import json
   

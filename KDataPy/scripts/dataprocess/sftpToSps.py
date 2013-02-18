@@ -7,16 +7,13 @@ from KDataPy.exceptions import *
 
 def send(username, password, item, path):
   '''
-  item must be a file. sends the item to the path on the /sps/edelweis directory on CC in Lyon
+  item must be a file. sends the item to the path on CC in Lyon
   '''
   try:
     theRet = dict()
     option = ''
-    if os.path.isdir(item):
-      option = '-r' #add the recursive transfer
-    elif os.path.isfile(item) == False:
-      print 'wie bitte? item is neither a directory or a file?'
-      return
+    if os.path.isfile(item) == False:
+      raise KDataTransferError('KDataTransferError. sftpToSps.send can only send files, not directories.\n')
   
     spspath = os.path.join(path ,os.path.basename(item))
     theRet['transfer_method'] = 'sftp'
@@ -28,7 +25,7 @@ def send(username, password, item, path):
     theRet['localuname'] = os.uname()
     theRet['stdOut'] = ''
         
-    startTime = datetime.datetime.now()
+    startTime = datetime.datetime.utcnow()
     print startTime
     p = pexpect.spawn('/usr/bin/sftp %s@%s' % (username, theRet['hostname']) , timeout=3600*24)
     fout = tempfile.NamedTemporaryFile(delete=False)

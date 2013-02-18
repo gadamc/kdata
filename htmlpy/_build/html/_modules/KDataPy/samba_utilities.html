@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>KDataPy.samba_utilities &mdash; KDataPy 5.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '5.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="KDataPy 5.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">KDataPy 5.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for KDataPy.samba_utilities</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">KDataPy.uploadutilities</span> <span class="kn">as</span> <span class="nn">util</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">sambayear</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
+<div class="viewcode-block" id="sambayear"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambayear">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns the Samba date format year string value for a given year.</span>
+<span class="sd">    The input arguemnt, year, must be greater than or equal to 2000 and less than 2026</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="n">year</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">formatvalue</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+  <span class="n">expmsg</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">, must be integer greater than or equal to 2000 and less than 2026&#39;</span> <span class="o">%</span> <span class="n">year</span>
+
+  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">expmsg</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="mi">2000</span> <span class="ow">or</span> <span class="n">year</span> <span class="o">&gt;=</span> <span class="mi">2026</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">expmsg</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">2000</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sambamonth</span><span class="p">(</span><span class="n">month</span><span class="p">):</span></div>
+<div class="viewcode-block" id="sambamonth"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambamonth">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns the Samba date format month string value for a given month.</span>
+<span class="sd">    The input argument, month, must be number from 1 to 12</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="n">month</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">formatvalue</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+  <span class="n">expmsg</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">, must be integer between 1 and 12, inclusively&#39;</span> <span class="o">%</span> <span class="n">month</span>
+
+  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">expmsg</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="n">month</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">month</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">expmsg</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="nb">chr</span><span class="p">(</span> <span class="n">month</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sambayearmonth</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span></div>
+<div class="viewcode-block" id="sambayearmonth"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambayearmonth">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns the Samba date format year-month string value for a given year and month.</span>
+<span class="sd">    The input arguments follow the rules of getsambayear, and getsambamonth.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">sambayear</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">+</span> <span class="n">sambamonth</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">getcurrentsambayear</span><span class="p">():</span> </div>
+<div class="viewcode-block" id="getcurrentsambayear"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.getcurrentsambayear">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns the Samba date format year string value for right now.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">sambayear</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sambamonthnow</span><span class="p">():</span></div>
+<div class="viewcode-block" id="sambamonthnow"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambamonthnow">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns the Samba date format month string value for right now.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">sambamonth</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sambayearmonthnow</span><span class="p">():</span></div>
+<div class="viewcode-block" id="sambayearmonthnow"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambayearmonthnow">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns the Samba date format year-month string value for right now.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">sambayearmonth</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sambadatenow</span><span class="p">():</span></div>
+<div class="viewcode-block" id="sambadatenow"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambadatenow">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns the Samba date format year-month-day string value for right now.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">sambayearmonth</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">month</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">isvalidsambadate</span><span class="p">(</span><span class="n">date</span><span class="p">):</span></div>
+<div class="viewcode-block" id="isvalidsambadate"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.isvalidsambadate">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test if date is a valid date for Samba file names. Such as ma22, or lk14. </span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span> <span class="s">&#39;^[a-z]{1}[a-l]{1}(((0)[1-9])|((1|2)[0-9])|(3[0-1]))$&#39;</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">False</span>
+  <span class="k">else</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">monthfromsamba</span><span class="p">(</span><span class="n">month</span><span class="p">):</span></div>
+<div class="viewcode-block" id="monthfromsamba"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.monthfromsamba">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns month number between 1 and 12 for a give Samba date format month string.</span>
+<span class="sd">    The input argument, month, must be a string between a and l, inclusively.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+  <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span> <span class="s">&#39;^[a-l]{1}$&#39;</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">, must be a string between a and l, inclusively&#39;</span> <span class="o">%</span> <span class="n">month</span> <span class="p">)</span>
+
+  <span class="k">return</span> <span class="nb">ord</span><span class="p">(</span><span class="n">month</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">yearfromsamba</span><span class="p">(</span><span class="n">year</span><span class="p">):</span></div>
+<div class="viewcode-block" id="yearfromsamba"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.yearfromsamba">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns year number between 2000 and 2025 for a give Samba date format year string.</span>
+<span class="sd">    The input argument, year, must be a string between a and z, inclusively.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+  <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39;^[a-z]{1}$&#39;</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">, must be a string between a and z, inclusively&#39;</span> <span class="o">%</span> <span class="n">year</span> <span class="p">)</span>
+
+  <span class="k">return</span> <span class="nb">ord</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2000</span>
+
+
+<span class="k">def</span> <span class="nf">datetimeobjectfromsamba</span><span class="p">(</span><span class="n">date</span><span class="p">):</span></div>
+<div class="viewcode-block" id="datetimeobjectfromsamba"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.datetimeobjectfromsamba">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns a datetime object for a given Samba date format year-month-day string.</span>
+<span class="sd">    For example, the input argument, date, must look something like ma22</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">isvalidsambadate</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">, must be a valid samba date string, like ma22, or lk15&#39;</span> <span class="o">%</span> <span class="n">date</span> <span class="p">)</span>
+
+  <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">yearfromsamba</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">monthfromsamba</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]))</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">KDataPy 5.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Adam Cox, KIT.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

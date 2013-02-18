@@ -3,39 +3,51 @@
 from couchdbkit import Server, Database
 from restkit import request
 import sys, string, copy, json, urllib
-  
 import argparse
 
 
 def removeProc(server, databaseName, procname, **kwargs):
   '''
-    This script will remove a "procname" key from database run document and set the doc['status'] = 'good'. 
-    If "procname" == "proc0", then doc['status'] will be set to 'closed'
+    This script will remove a "procname" key from database run document 
+    and set the doc['status'] = 'good'. If "procname" == "proc0", then 
+    doc['status'] will be set to 'closed' 
 
 
-    You need to set the following arguments:
-    procname = the name of the "procname" object that will be removed from the database documents (proc0, proc1, etc...)
-    server = the full URL to the main database server (https://<username>:<password>@edelweiss.cloudant.com)
-    databaseName = the name of the database (datadb)
+    You need to set the following arguments: 
+    procname = the name of the "procname" object that will be removed  
+    from the database documents (proc0, proc1, etc...) 
+
+    server = the full URL to the main database server 
+          (https://<username>:<password>@edelweiss.cloudant.com)
+    databaseName = the name of the database (datadb) 
 
 
-    This script will remove the "procname" object from a subset of the database documents. 
-    To specify the particular subset of documents, you MUST specify the following kwargs:
+    This script will remove the "procname" object from a subset of the  
+    database documents. To specify the particular subset of documents, 
+    you MUST specify the following kwargs: 
     
     startkey = first run name (ex. "ma22a003_003")
     endkey = final run name (ex. "mb24b001_010")
-    viewname = the DB View function that you use to get the list of documents. The most general view is "proc/daqdoc". 
-      You can use any of the "Views" that return the run_name + file_name as a key. These are "proc/bad", "proc/daqdoc",
-      "proc/failed", "proc/inprogress", "proc/inqueue", "proc/procX", "proc/procXinprogress" (X = 1,2,3), and "proc/raw"
+    viewname = the DB View function that you use to get the list 
+      of documents. 
+      The most general view is "proc/daqdoc". You can use any of the 
+      "Views" that return the run_name + file_name as a key. These are 
+      "proc/bad", "proc/daqdoc", "proc/failed", "proc/inprogress", 
+      "proc/inqueue", "proc/procX",  "proc/procXinprogress" (X = 1,2,3), 
+      and "proc/raw"
 
-    All documents that are returned by the viewname within the given startkey/endkey range will be affected.
+    All documents that are returned by the viewname within the given 
+    startkey/endkey range will be affected.
 
     Optional kwargs:
 
-    status = if you set kwargs['status'] then only database documents with this status will be affected
+    status = if you set kwargs['status'] then only database documents 
+    with this status will be affected
     
-    test = if this is set to True, then no documents will be saved back to the database. All other operations will
-      be performed so that you may test the use of this function before affecting docs in the database. 
+    test = if this is set to True, then no documents will be saved 
+      back to the database. All other operations will be performed so that
+      you may test the use of this function before affecting docs in 
+      the database. 
 
 
     example: 
@@ -48,10 +60,10 @@ def removeProc(server, databaseName, procname, **kwargs):
     options['test'] = True;  #this will just be a test
     options['viewname'] = 'proc/failed'
     
-    removeProc.removeProc('https://edelweissuser:password@edelweiss.cloudant.com', 'datadb', 'proc1', options)
+    removeProc.removeProc('https://edelweissuser:password@edelweiss.cloudant.com', 
+      'datadb', 'proc1', options)
 
    '''
-
 
   db = Server(server)[databaseName]
   
@@ -91,7 +103,7 @@ def removeProc(server, databaseName, procname, **kwargs):
   
 if __name__ == '__main__':
 
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(description = 'Please import this module and call help(removeProc) for details')
   parser.add_argument('procname', help='[required] the name of the process key you wish to remove')
   parser.add_argument('startkey', help='[required] the name of the samba run that defines the beginning of the range of runs (example mj00a000_000')
   parser.add_argument('endkey', help='[required] the name of the samba run that defines the end of the range of runs (example zz99z999_999')

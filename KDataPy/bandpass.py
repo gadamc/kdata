@@ -76,5 +76,5 @@ def uploadIIRFilter(binwidth, order, docid, freqs, password, filtertype="butter"
      
   print 'saving doc to database'
   print json.dumps(doc, indent=1)
-  db.save_doc(doc)
-
+  res = db.save_doc(doc)
+  return res['ok']
