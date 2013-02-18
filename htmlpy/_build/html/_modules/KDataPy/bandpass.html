@@ -127,8 +127,9 @@
      
   <span class="k">print</span> <span class="s">&#39;saving doc to database&#39;</span>
   <span class="k">print</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-  <span class="n">db</span><span class="o">.</span><span class="n">save_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-</pre></div></div>
+  <span class="n">res</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">save_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="s">&#39;ok&#39;</span><span class="p">]</span></div>
+</pre></div>
 
           </div>
         </div>

@@ -72,9 +72,27 @@ For example, the input argument, date, must look something like ma22</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="KDataPy.samba_utilities.isvalidsambadatafilename">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">isvalidsambadatafilename</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#isvalidsambadatafilename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.isvalidsambadatafilename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if name is a valid name for Samba file (aka partition) names. Such as ma22000_012</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="KDataPy.samba_utilities.isvalidsambadate">
-<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">isvalidsambadate</tt><big>(</big><em>date</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#isvalidsambadate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.isvalidsambadate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Test if date is a valid date for Samba file names. Such as ma22, or lk14.</p>
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">isvalidsambadate</tt><big>(</big><em>sambadate</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#isvalidsambadate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.isvalidsambadate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if sambadate is a valid date for Samba file names. Such as ma22, or lk14.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="KDataPy.samba_utilities.isvalidsambametadatafilename">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">isvalidsambametadatafilename</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#isvalidsambametadatafilename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.isvalidsambametadatafilename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if name is a valid name for Samba meta data file names. Such as ma22000_BB (or ntp or log)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="KDataPy.samba_utilities.isvalidsambarunname">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">isvalidsambarunname</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#isvalidsambarunname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.isvalidsambarunname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if name is a valid name for Samba run names. Such as ma22000</p>
 </dd></dl>
 
 <dl class="function">
@@ -85,15 +103,48 @@ The input argument, month, must be a string between a and l, inclusively.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="KDataPy.samba_utilities.sambadatafileregex">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambadatafileregex</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambadatafileregex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambadatafileregex" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a regular expression string that matches a samba file (aka &#8216;partition&#8217;) string.
+something like &#8216;ma22a012_023&#8217;, for example.
+you can use this in the python re module.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="KDataPy.samba_utilities.sambadate">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambadate</tt><big>(</big><em>year</em>, <em>month</em>, <em>day</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambadate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambadate" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the Samba date format year-month0day string value for a given year, month and day.
+For example, if year = 2012, and month = 2, and day = 12 this function will return &#8216;mb12&#8217;.
+The input arguments follow the rules of getsambayear, and getsambamonth.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="KDataPy.samba_utilities.sambadatenow">
 <tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambadatenow</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambadatenow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambadatenow" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the Samba date format year-month-day string value for right now.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="KDataPy.samba_utilities.sambadateregex">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambadateregex</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambadateregex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambadateregex" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a regular expression string that matches a samba date string.
+something like &#8216;ma22&#8217;, for example.
+you can use this in the python re module.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="KDataPy.samba_utilities.sambametadatafileregex">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambametadatafileregex</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambametadatafileregex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambametadatafileregex" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a regular expression string that matches a samba meta data file string.
+something like &#8216;ma22a012_BB&#8217;, &#8216;_ntp&#8217;, or &#8216;_log&#8217; for example. It only matches _BB, _ntp and _log.
+you can use this in the python re module.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="KDataPy.samba_utilities.sambamonth">
 <tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambamonth</tt><big>(</big><em>month</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambamonth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambamonth" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the Samba date format month string value for a given month.
+For example, if month = 1, this function will return &#8216;a&#8217;.
 The input argument, month, must be number from 1 to 12</p>
 </dd></dl>
 
@@ -104,9 +155,18 @@ The input argument, month, must be number from 1 to 12</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="KDataPy.samba_utilities.sambarunnameregex">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambarunnameregex</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambarunnameregex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambarunnameregex" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a regular expression string that matches a samba run string.
+something like &#8216;ma22a012&#8217;, for example.
+you can use this in the python re module.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="KDataPy.samba_utilities.sambayear">
 <tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambayear</tt><big>(</big><em>year</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambayear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambayear" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the Samba date format year string value for a given year.
+For example, if year = 2012, this function will return &#8216;m&#8217;
 The input arguemnt, year, must be greater than or equal to 2000 and less than 2026</p>
 </dd></dl>
 
@@ -114,6 +174,7 @@ The input arguemnt, year, must be greater than or equal to 2000 and less than 20
 <dt id="KDataPy.samba_utilities.sambayearmonth">
 <tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">sambayearmonth</tt><big>(</big><em>year</em>, <em>month</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#sambayearmonth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.sambayearmonth" title="Permalink to this definition">¶</a></dt>
 <dd><p>returns the Samba date format year-month string value for a given year and month.
+For example, if year = 2012, and month = 2, this function will return &#8216;mb&#8217;.
 The input arguments follow the rules of getsambayear, and getsambamonth.</p>
 </dd></dl>
 

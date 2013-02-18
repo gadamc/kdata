@@ -55,8 +55,9 @@
 <div class="viewcode-block" id="datadb"><a class="viewcode-back" href="../../datadb.html#KDataPy.datadb.datadb">[docs]</a><span class="k">class</span> <span class="nc">datadb</span><span class="p">():</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This class encapsulates the server-side functions that are built into the &#39;datadb&#39;</span>
-<span class="sd">    database&#39;s &#39;proc&#39; design document, and provides some common couchdbkit calls that are</span>
-<span class="sd">    often made to the &#39;datadb&#39; database. </span>
+<span class="sd">    database&#39;s &#39;proc&#39; design document, and provides some common calls that are</span>
+<span class="sd">    often made to the &#39;datadb&#39; database. This does not use couchdbkit. Rather it uses</span>
+<span class="sd">    restkit (upon with couchdbkit is built) since I only want to make the HTTP request</span>
 
 <span class="sd">    If you have moved the database to a different server and changed the names of the database </span>
 <span class="sd">    (something other than &#39;datadb&#39;) or the design doc, then you can specify those parameters </span>
@@ -64,6 +65,15 @@
 
 <span class="sd">    You must provide the server with login credentials for methods that write new values</span>
 <span class="sd">    to database documents. </span>
+
+<span class="sd">    ONLY use this class if you absolutely know what you are doing. Remember, you will be affecting</span>
+<span class="sd">    data on the database with these tools.</span>
+
+<span class="sd">    ***</span>
+<span class="sd">    </span>
+<span class="sd">    Are you SURE you want to alter data on the database?</span>
+<span class="sd">    </span>
+<span class="sd">    ***</span>
 
 <span class="sd">  &#39;&#39;&#39;</span>
 
@@ -117,6 +127,7 @@
 
 <div class="viewcode-block" id="datadb.setkey"><a class="viewcode-back" href="../../datadb.html#KDataPy.datadb.datadb.setkey">[docs]</a>  <span class="k">def</span> <span class="nf">setkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docid</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Are you SURE you want to alter data on the database?</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_inplace</span><span class="p">(</span><span class="n">docid</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;update&#39;</span><span class="p">:</span><span class="n">key</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">}</span> <span class="p">)</span>
 
@@ -128,6 +139,7 @@
     </div>
 <div class="viewcode-block" id="datadb.removekey"><a class="viewcode-back" href="../../datadb.html#KDataPy.datadb.datadb.removekey">[docs]</a>  <span class="k">def</span> <span class="nf">removekey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docid</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Are you SURE you want to alter data on the database?</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_inplace</span><span class="p">(</span><span class="n">docid</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;remove&#39;</span><span class="p">:</span><span class="n">key</span><span class="p">}</span> <span class="p">)</span>
 </pre></div></div></div>

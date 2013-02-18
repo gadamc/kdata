@@ -66,13 +66,19 @@ documents found in the &#8216;datadb&#8217; database.</p>
 <dt id="KDataPy.datadb.datadb">
 <em class="property">class </em><tt class="descclassname">KDataPy.datadb.</tt><tt class="descname">datadb</tt><big>(</big><em>server='https://edelweiss.cloudant.com'</em>, <em>databasename='datadb'</em>, <em>designDocName='proc'</em><big>)</big><a class="reference internal" href="_modules/KDataPy/datadb.html#datadb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.datadb.datadb" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class encapsulates the server-side functions that are built into the &#8216;datadb&#8217;
-database&#8217;s &#8216;proc&#8217; design document, and provides some common couchdbkit calls that are
-often made to the &#8216;datadb&#8217; database.</p>
+database&#8217;s &#8216;proc&#8217; design document, and provides some common calls that are
+often made to the &#8216;datadb&#8217; database. This does not use couchdbkit. Rather it uses
+restkit (upon with couchdbkit is built) since I only want to make the HTTP request</p>
 <p>If you have moved the database to a different server and changed the names of the database 
 (something other than &#8216;datadb&#8217;) or the design doc, then you can specify those parameters 
 when you instantiate the class.</p>
 <p>You must provide the server with login credentials for methods that write new values
 to database documents.</p>
+<p>ONLY use this class if you absolutely know what you are doing. Remember, you will be affecting
+data on the database with these tools.</p>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a><a href="#id3"><span class="problematic" id="id4">*</span></a></p>
+<p>Are you SURE you want to alter data on the database?</p>
+<p><a href="#id5"><span class="problematic" id="id6">**</span></a><a href="#id7"><span class="problematic" id="id8">*</span></a></p>
 <dl class="method">
 <dt id="KDataPy.datadb.datadb.getkey">
 <tt class="descname">getkey</tt><big>(</big><em>docid</em>, <em>key</em><big>)</big><a class="reference internal" href="_modules/KDataPy/datadb.html#datadb.getkey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.datadb.datadb.getkey" title="Permalink to this definition">¶</a></dt>
@@ -81,12 +87,14 @@ to database documents.</p>
 <dl class="method">
 <dt id="KDataPy.datadb.datadb.removekey">
 <tt class="descname">removekey</tt><big>(</big><em>docid</em>, <em>key</em><big>)</big><a class="reference internal" href="_modules/KDataPy/datadb.html#datadb.removekey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.datadb.datadb.removekey" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Are you SURE you want to alter data on the database?</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="KDataPy.datadb.datadb.setkey">
 <tt class="descname">setkey</tt><big>(</big><em>docid</em>, <em>key</em>, <em>value</em><big>)</big><a class="reference internal" href="_modules/KDataPy/datadb.html#datadb.setkey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.datadb.datadb.setkey" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Are you SURE you want to alter data on the database?</p>
+</dd></dl>
 
 </dd></dl>
 

@@ -49,13 +49,74 @@
           <div class="body">
             
   <h1>Source code for KDataPy.util</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">ROOT</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">KDataPy</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">KDataPy.exceptions</span>
+<span class="kn">from</span> <span class="nn">ROOT</span> <span class="kn">import</span> <span class="n">gSystem</span>
+
+<span class="k">try</span><span class="p">:</span>
+  <span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&#39;libkds&#39;</span><span class="p">)</span>
+  <span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&#39;libkpta&#39;</span><span class="p">)</span>
+  <span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="s">&#39;libkamping&#39;</span><span class="p">)</span>
+
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> 
+  <span class="k">print</span> <span class="s">&quot;failed to load KDataPy. Couldn&#39;t load one of the libraries: libkds, libkpta or libkamping&quot;</span>
+  <span class="k">raise</span> <span class="n">e</span>
+
+
+<span class="c">#add various iterators to KData objects</span>
+
+<span class="kn">import</span> <span class="nn">libPyROOT</span> <span class="kn">as</span> <span class="nn">_libpyroot</span>
+
+<span class="k">def</span> <span class="nf">_KEvent_iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetEntry</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetEvent</span><span class="p">()</span>                   
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KDataReader&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">__iter__</span>    <span class="o">=</span> <span class="n">_KEvent_iter__</span>
+
+
+<span class="k">def</span> <span class="nf">_KRawBoloPulseRecord_getNumpArray__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">())</span>
+<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KRawBoloPulseRecord&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">getnumpy</span>    <span class="o">=</span> <span class="n">_KRawBoloPulseRecord_getNumpArray__</span>
+
+
+<span class="k">def</span> <span class="nf">_KptaProc_input_iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInputPulseSize</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span>                 
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KPtaProcessor&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">input</span>    <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_KptaProc_input_iter__</span><span class="p">)</span>
+
+
+
+<span class="k">def</span> <span class="nf">_KptaProc_output_iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetOutputPulseSize</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetOutputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span>                  
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KPtaProcessor&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">output</span>    <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_KptaProc_output_iter__</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_KptaProc_input_iter_index__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInputPulseSize</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetInputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span><span class="n">i</span>                 
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KPtaProcessor&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">input_index</span>    <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_KptaProc_input_iter_index__</span><span class="p">)</span>
+
+
+
+<span class="k">def</span> <span class="nf">_KptaProc_output_iter_index__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetOutputPulseSize</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetOutputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">],</span><span class="n">i</span>                
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">_libpyroot</span><span class="o">.</span><span class="n">MakeRootClass</span><span class="p">(</span> <span class="s">&quot;KPtaProcessor&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">output_index</span>    <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_KptaProc_output_iter_index__</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>
 
@@ -444,9 +505,22 @@
       <span class="k">if</span> <span class="n">pta</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">pta</span><span class="o">.</span><span class="n">SetInputPulse</span><span class="p">(</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">()</span> <span class="p">)</span>
         <span class="n">pta</span><span class="o">.</span><span class="n">RunProcess</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">get_out</span><span class="p">(</span><span class="n">pta</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">dataPulse</span> <span class="o">=</span> <span class="n">get_out</span><span class="p">(</span><span class="n">pta</span><span class="p">)</span>
+        
       <span class="k">else</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pulse</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">())</span> <span class="p">)</span>
+        <span class="n">dataPulse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pulse</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">())</span>
+        
+        
+      <span class="n">yMax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dataPulse</span><span class="p">)</span>
+      <span class="n">yMin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dataPulse</span><span class="p">)</span>
+      <span class="n">yMaxNew</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">yMax</span> <span class="o">-</span> <span class="n">yMin</span><span class="p">)</span><span class="o">*</span><span class="mf">0.05</span> <span class="o">+</span> <span class="n">yMax</span>
+      <span class="n">yMinNew</span> <span class="o">=</span> <span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">yMax</span> <span class="o">-</span> <span class="n">yMin</span><span class="p">)</span><span class="o">*</span><span class="mf">0.05</span> <span class="o">+</span><span class="n">yMin</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dataPulse</span><span class="p">)</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">yMinNew</span><span class="p">,</span> <span class="n">yMaxNew</span><span class="p">)</span>
+      <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">pulse</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">())</span>
+        <span class="c">#plt.show()</span>
+        
+      
         
       <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;__callersAnalysisFunction&#39;</span><span class="p">]:</span>
         <span class="n">newkwargs</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
@@ -538,7 +612,14 @@
         <span class="k">else</span><span class="p">:</span>
           <span class="n">tobeplotted</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">GetTrace</span><span class="p">()</span>
 
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tobeplotted</span><span class="p">)</span>
+        <span class="n">yMax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tobeplotted</span><span class="p">)</span>
+        <span class="n">yMin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tobeplotted</span><span class="p">)</span>
+        <span class="n">yMaxNew</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">yMax</span> <span class="o">-</span> <span class="n">yMin</span><span class="p">)</span><span class="o">*</span><span class="mf">0.05</span> <span class="o">+</span> <span class="n">yMax</span>
+        <span class="n">yMinNew</span> <span class="o">=</span> <span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">yMax</span> <span class="o">-</span> <span class="n">yMin</span><span class="p">)</span><span class="o">*</span><span class="mf">0.05</span> <span class="o">+</span><span class="n">yMin</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tobeplotted</span> <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">yMinNew</span><span class="p">,</span> <span class="n">yMaxNew</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">pulse</span><span class="o">.</span><span class="n">GetChannelName</span><span class="p">())</span>
+
       
         
       <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;__callersAnalysisFunction__&#39;</span><span class="p">]:</span>

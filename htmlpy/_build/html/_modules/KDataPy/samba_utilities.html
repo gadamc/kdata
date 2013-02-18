@@ -53,9 +53,83 @@
 <span class="kn">import</span> <span class="nn">KDataPy.uploadutilities</span> <span class="kn">as</span> <span class="nn">util</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="k">def</span> <span class="nf">sambayear</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">sambadateregex</span><span class="p">():</span>
+<div class="viewcode-block" id="sambadateregex"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambadateregex">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns a regular expression string that matches a samba date string.</span>
+<span class="sd">    something like &#39;ma22&#39;, for example.</span>
+<span class="sd">    you can use this in the python re module.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="s">&#39;^[a-z]{1}[a-l]{1}(((0)[1-9])|((1|2)[0-9])|(3[0-1]))$&#39;</span>
+
+<span class="k">def</span> <span class="nf">sambarunnameregex</span><span class="p">():</span></div>
+<div class="viewcode-block" id="sambarunnameregex"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambarunnameregex">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns a regular expression string that matches a samba run string.</span>
+<span class="sd">    something like &#39;ma22a012&#39;, for example.</span>
+<span class="sd">    you can use this in the python re module.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">sambadateregex</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;$&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;[a-z]{1}[0-9]{3}$&#39;</span>  
+
+<span class="k">def</span> <span class="nf">sambadatafileregex</span><span class="p">():</span></div>
+<div class="viewcode-block" id="sambadatafileregex"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambadatafileregex">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns a regular expression string that matches a samba file (aka &#39;partition&#39;) string.</span>
+<span class="sd">    something like &#39;ma22a012_023&#39;, for example.</span>
+<span class="sd">    you can use this in the python re module.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">sambarunnameregex</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;$&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;_[0-9]{3}$&#39;</span>
+
+<span class="k">def</span> <span class="nf">sambametadatafileregex</span><span class="p">():</span></div>
+<div class="viewcode-block" id="sambametadatafileregex"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambametadatafileregex">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns a regular expression string that matches a samba meta data file string.</span>
+<span class="sd">    something like &#39;ma22a012_BB&#39;, &#39;_ntp&#39;, or &#39;_log&#39; for example. It only matches _BB, _ntp and _log.</span>
+<span class="sd">    you can use this in the python re module.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">sambarunnameregex</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;$&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;_(BB|log|ntp|seuils|setup\.csv)$&#39;</span>
+
+<span class="k">def</span> <span class="nf">isvalidsambadate</span><span class="p">(</span><span class="n">sambadate</span><span class="p">):</span></div>
+<div class="viewcode-block" id="isvalidsambadate"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.isvalidsambadate">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test if sambadate is a valid date for Samba file names. Such as ma22, or lk14. </span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span> <span class="n">sambadateregex</span><span class="p">()</span> <span class="p">,</span> <span class="n">sambadate</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">False</span>
+  <span class="k">else</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">isvalidsambadatafilename</span><span class="p">(</span><span class="n">name</span><span class="p">):</span></div>
+<div class="viewcode-block" id="isvalidsambadatafilename"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.isvalidsambadatafilename">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test if name is a valid name for Samba file (aka partition) names. Such as ma22000_012</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span> <span class="n">sambadatafileregex</span><span class="p">()</span> <span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">False</span>
+  <span class="k">else</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">isvalidsambarunname</span><span class="p">(</span><span class="n">name</span><span class="p">):</span></div>
+<div class="viewcode-block" id="isvalidsambarunname"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.isvalidsambarunname">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test if name is a valid name for Samba run names. Such as ma22000</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span> <span class="n">sambarunnameregex</span><span class="p">()</span> <span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">False</span>
+  <span class="k">else</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">isvalidsambametadatafilename</span><span class="p">(</span><span class="n">name</span><span class="p">):</span></div>
+<div class="viewcode-block" id="isvalidsambametadatafilename"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.isvalidsambametadatafilename">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Test if name is a valid name for Samba meta data file names. Such as ma22000_BB (or ntp or log)</span>
+
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span> <span class="n">sambametadatafileregex</span><span class="p">()</span> <span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">False</span>
+  <span class="k">else</span><span class="p">:</span> 
+    <span class="k">return</span> <span class="bp">True</span>
+
+
+<span class="k">def</span> <span class="nf">sambayear</span><span class="p">(</span><span class="n">year</span><span class="p">):</span></div>
 <div class="viewcode-block" id="sambayear"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambayear">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    returns the Samba date format year string value for a given year.</span>
+<span class="sd">    For example, if year = 2012, this function will return &#39;m&#39;</span>
 <span class="sd">    The input arguemnt, year, must be greater than or equal to 2000 and less than 2026</span>
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="n">year</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">formatvalue</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
@@ -72,6 +146,7 @@
 <span class="k">def</span> <span class="nf">sambamonth</span><span class="p">(</span><span class="n">month</span><span class="p">):</span></div>
 <div class="viewcode-block" id="sambamonth"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambamonth">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    returns the Samba date format month string value for a given month.</span>
+<span class="sd">    For example, if month = 1, this function will return &#39;a&#39;.</span>
 <span class="sd">    The input argument, month, must be number from 1 to 12</span>
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="n">month</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">formatvalue</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
@@ -88,9 +163,18 @@
 <span class="k">def</span> <span class="nf">sambayearmonth</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span></div>
 <div class="viewcode-block" id="sambayearmonth"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambayearmonth">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    returns the Samba date format year-month string value for a given year and month.</span>
+<span class="sd">    For example, if year = 2012, and month = 2, this function will return &#39;mb&#39;.</span>
 <span class="sd">    The input arguments follow the rules of getsambayear, and getsambamonth.</span>
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="k">return</span> <span class="n">sambayear</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">+</span> <span class="n">sambamonth</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sambadate</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span></div>
+<div class="viewcode-block" id="sambadate"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.sambadate">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    returns the Samba date format year-month0day string value for a given year, month and day.</span>
+<span class="sd">    For example, if year = 2012, and month = 2, and day = 12 this function will return &#39;mb12&#39;.</span>
+<span class="sd">    The input arguments follow the rules of getsambayear, and getsambamonth.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">return</span> <span class="n">sambayearmonth</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">getcurrentsambayear</span><span class="p">():</span> </div>
 <div class="viewcode-block" id="getcurrentsambayear"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.getcurrentsambayear">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
@@ -116,17 +200,8 @@
 <span class="sd">    returns the Samba date format year-month-day string value for right now.</span>
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="n">n</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-  <span class="k">return</span> <span class="n">sambayearmonth</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">month</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">sambadate</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">isvalidsambadate</span><span class="p">(</span><span class="n">date</span><span class="p">):</span></div>
-<div class="viewcode-block" id="isvalidsambadate"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.isvalidsambadate">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Test if date is a valid date for Samba file names. Such as ma22, or lk14. </span>
-
-<span class="sd">  &#39;&#39;&#39;</span>
-  <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span> <span class="s">&#39;^[a-z]{1}[a-l]{1}(((0)[1-9])|((1|2)[0-9])|(3[0-1]))$&#39;</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> 
-    <span class="k">return</span> <span class="bp">False</span>
-  <span class="k">else</span><span class="p">:</span> 
-    <span class="k">return</span> <span class="bp">True</span>
 
 <span class="k">def</span> <span class="nf">monthfromsamba</span><span class="p">(</span><span class="n">month</span><span class="p">):</span></div>
 <div class="viewcode-block" id="monthfromsamba"><a class="viewcode-back" href="../../samba_utilities.html#KDataPy.samba_utilities.monthfromsamba">[docs]</a>  <span class="sd">&#39;&#39;&#39;</span>
