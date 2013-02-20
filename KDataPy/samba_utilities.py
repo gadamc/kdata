@@ -75,6 +75,24 @@ def isvalidsambametadatafilename(name):
   else: 
     return True
 
+def sambamac(name):
+  '''
+    given name is either valid samba datafile name, metafile name or run name, returns
+    the Samba mac number, such as 1, 2, 5, etc.. where a = 1, b = 2, etc..
+    returns None if it fails for some reason
+  '''
+  if isvalidsambadatafilename(name) or isvalidsambametadatafilename(name) or isvalidsambarunname(name):
+    return daqfromsamba(name[4])
+
+def sambahote(name):
+  '''
+    given name is either valid samba datafile name, metafile name or run name, returns
+    the Samba "Hote" name, such as s1, s2, s5, etc..
+  '''
+  macnum = sambamac(name)
+  if macnum is not None:
+    return 's' + str(macnum)
+
 
 def sambayear(year):
   '''
@@ -175,6 +193,16 @@ def yearfromsamba(year):
 
   return ord(year) - ord('a') + 2000
 
+def daqfromsamba(month):
+  '''
+    returns daq number between 1 and 26 for a give Samba DAQ machine letter.
+    The input argument, month, must be a string between a and l, inclusively.
+  '''
+
+  if re.match( '^[a-z]{1}$', month) is None:
+    raise TypeError( '%s, must be a string between a and z, inclusively' % month )
+
+  return ord(month) - ord('a') + 1
 
 def datetimeobjectfromsamba(date):
   '''
