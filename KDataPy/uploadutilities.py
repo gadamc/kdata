@@ -10,7 +10,7 @@ def formatvalue(value):
     This function is used extensively to format values found in the Samba header or
     in various Excel spreadsheets that are uploaded to our databases. 
   '''
-  if (isinstance(value,str)):
+  if (isinstance(value,str) or isinstance(value, unicode)):
     # #see if this string is really an int or a float
     if value.isdigit()==True: #int
       return int(value)
