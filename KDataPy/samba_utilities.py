@@ -193,16 +193,16 @@ def yearfromsamba(year):
 
   return ord(year) - ord('a') + 2000
 
-def daqfromsamba(month):
+def daqfromsamba(name):
   '''
     returns daq number between 1 and 26 for a give Samba DAQ machine letter.
-    The input argument, month, must be a string between a and l, inclusively.
+    The input argument, name, must be a string between a and z, inclusively.
   '''
 
-  if re.match( '^[a-z]{1}$', month) is None:
-    raise TypeError( '%s, must be a string between a and z, inclusively' % month )
+  if re.match( '^[a-z]{1}$', name) is None:
+    raise TypeError( '%s, must be a string between a and z, inclusively' % name )
 
-  return ord(month) - ord('a') + 1
+  return ord(name) - ord('a') + 1
 
 def datetimeobjectfromsamba(date):
   '''
