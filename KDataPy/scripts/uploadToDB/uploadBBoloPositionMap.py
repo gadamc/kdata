@@ -105,10 +105,7 @@ def uploadFile(fname, uri, dbname):
     newdoc['date_valid_unixtime'] = calendar.timegm( validdate.utctimetuple() )
     newdoc['date_valid_isoformat'] = validdate.isoformat() 
 
-    #get a nicely formated string holding the channels for this bolometer and use
-    #it for the unique
-    chans = str.replace(str.replace(str(newdoc['channels']),' ', ''), '+', '') #remove the spaces and the "+" sign from the channels field
-    
+      
     #add the type, author, content, and date_filed fields. 
     newdoc['type'] = 'bbolo_position_map'
     newdoc['author'] = 'Bernard Paul'
