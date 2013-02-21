@@ -17,7 +17,7 @@ def sambarunnameregex():
     something like 'ma22a012', for example.
     you can use this in the python re module.
   '''
-  return sambadateregex().split('$')[0] + '[a-z]{1}[0-9]{3}$'  
+  return sambadateregex().rstrip('$') + '[a-z]{1}[0-9]{3}$'  
 
 def sambadatafileregex():
   '''
@@ -25,7 +25,7 @@ def sambadatafileregex():
     something like 'ma22a012_023', for example.
     you can use this in the python re module.
   '''
-  return sambarunnameregex().split('$')[0] + '_[0-9]{3}$'
+  return sambarunnameregex().rstrip('$') + '_[0-9]{3}$'
 
 def sambametadatafileregex():
   '''
@@ -33,7 +33,15 @@ def sambametadatafileregex():
     something like 'ma22a012_BB', '_ntp', or '_log' for example. It only matches _BB, _ntp and _log.
     you can use this in the python re module.
   '''
-  return sambarunnameregex().split('$')[0] + '_(BB|log|ntp|seuils|setup\.csv)$'
+  return sambarunnameregex().rstrip('$') + '_(BB|log|ntp|seuils|setup\.csv)$'
+
+def kdatafileregex():
+  '''
+    returns a regular expression string that matches a samba file (aka 'partition') string.
+    something like 'ma22a012_023', for example.
+    you can use this in the python re module.
+  '''
+  return sambadatafileregex().rstrip('$') + '\.root|\.amp\.root|\.hla\.root$'
 
 def isvalidsambadate(sambadate):
   '''
@@ -51,6 +59,16 @@ def isvalidsambadatafilename(name):
 
   '''
   if re.match( sambadatafileregex() , name) is None: 
+    return False
+  else: 
+    return True
+
+def isvalidkdatafilename(name):
+  '''
+    Test if name is a valid name for KData file (aka partition) names. Such as ma22000_012.root (or .amp.root, .hla.root)
+
+  '''
+  if re.match( kdatafileregex() , name) is None: 
     return False
   else: 
     return True
