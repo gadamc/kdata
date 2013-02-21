@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 import copy
 import math
 import KDataPy.exceptions
-from ROOT import gSystem
+import ROOT
 
 try:
-  gSystem.Load('libkds')
-  gSystem.Load('libkpta')
-  gSystem.Load('libkamping')
+  ROOT.gSystem.Load('libkds')
+  ROOT.gSystem.Load('libkpta')
+  ROOT.gSystem.Load('libkamping')
 
 except Exception as e: 
   print "failed to load KDataPy. Couldn't load one of the libraries: libkds, libkpta or libkamping"
@@ -108,7 +108,7 @@ def getRootHistFromOutput(pta):
   return a ROOT TH1D histogram from the output pulse of a KPtaProcessor (pta)
   
   '''
-  h = TH1D(pta.GetName(), pta.GetName(), pta.GetOutputPulseSize(), 0, pta.GetOutputPulseSize())
+  h = ROOT.TH1D(pta.GetName(), pta.GetName(), pta.GetOutputPulseSize(), 0, pta.GetOutputPulseSize())
   for val,i in pta.output_index: h.SetBinContent(i+1, val)
   return h
 
@@ -222,7 +222,7 @@ def looppulse(data, name=None, match=False, pta=None, analysisFunction = None,  
   '''
   if 'KDataReader' in str(type(data)): kdfilereader = data 
   else:
-    kdfilereader = KDataPy.KDataReader(data)
+    kdfilereader = ROOT.KDataReader(data)
     
   for event in kdfilereader:
     for pulse in event.boloPulseRecords():
@@ -379,7 +379,7 @@ def loopbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
     
   if 'KDataReader' in str(type(data)): kdfilereader = data
   else:
-    kdfilereader = KDataPy.KDataReader(data)
+    kdfilereader = ROOT.KDataReader(data)
     
   for event in kdfilereader:
     for bolo in event.boloRecords():
@@ -612,7 +612,7 @@ def concatKdataFiles(fileList, outputFileName):
   print 'attempting to merge the following files'
   for fname in fileList:
     print fname
-    f = TFile(fname)
+    f = ROOT.TFile(fname)
     listOfTFiles.append(f)
     if f.Get('t') == 0:
       print 'doesnt appear to be a kdata file. no tree with name "t" found. quiting.'
@@ -620,9 +620,9 @@ def concatKdataFiles(fileList, outputFileName):
     listOfTrees.Add(f.Get('t'))
   
   print 'output file:', outputFileName
-  fout = TFile(outputFileName, 'recreate')
+  fout = ROOT.TFile(outputFileName, 'recreate')
   print 'starting the merge...'
-  outTree = TTree.MergeTrees(listOfTrees, 'fast')
+  outTree = ROOT.TTree.MergeTrees(listOfTrees, 'fast')
   outTree.Write()
   fout.Close()
   print 'done'
