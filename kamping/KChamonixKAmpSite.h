@@ -89,9 +89,9 @@ private:
   void FillResults(KPulseAnalysisRecord* rec, std::map<std::string, KResult> &resMap);
 
   
-  KEraPeakFinder fHeatPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
-  KEraPeakFinder fBBv1IonPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
-  KEraPeakFinder fBBv2IonPeakDetector;  //change this to a Wavelet decomposition based pulse detector in the future...?
+  KEraPeakFinder fHeatPeakDetector;  //ERA Peak Finder
+  KEraPeakFinder fBBv1IonPeakDetector;  //ERA Peak Finder
+  KEraPeakFinder fBBv2IonPeakDetector;  //ERA Peak Finder
  
   Bool_t fScoutData;
 

@@ -72,7 +72,7 @@ def uploadFile(fname, uri, dbname):
   
     #enforce some sort of schema. that is, require the existence of a set of keys in the database documents
     requiredSet = set(['bolometer', 'channels', 'repartition_number', 'year', 'month', 'day'])
-    if requiredSet  < set(newdoc.keys()) is False:
+    if (requiredSet  < set(newdoc.keys())) is False:
       print 'Quitting! Your CVS file map MUST have the following columns'
       print ', '.join([x for x in requiredSet])
       sys.exit(1)

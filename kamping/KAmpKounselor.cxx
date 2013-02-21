@@ -108,7 +108,7 @@ Bool_t KAmpKounselor::Scout( int maxNumEvents)
 
 Bool_t KAmpKounselor::Prepare()
 {
-  //call each KampSite's Prepare method, which is used to calculate any information
+  //call each KampSite's PrepareKampSite method, which is used to calculate any information
   //obtained during the ScoutKampSite method that will be needed before running the analysis
   //on the data.
 

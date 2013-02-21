@@ -50,11 +50,12 @@ def uploadFile(fname, uri, dbname):
   
     #enforce some sort of schema. that is, require the existence of a set of keys in the database documents
     requiredSet = set(['muonmodule', 'end', 'year', 'month', 'day', 'HV channel', 'ADC channel', 'ADC card', 'TDC channel'])
-    if requiredSet  < set(newdoc.keys()) is False:
+    if (requiredSet < set(newdoc.keys())) is False:
       print 'Quitting! Your CVS Muon Veto DAQ map MUST have the following columns'
       print ', '.join([x for x in requiredSet])
       sys.exit(1)
-    
+
+
     #reformat the date to a single dictionary
     newdoc['date_valid'] = {} 
     for dk in ['year', 'month', 'day', 'hour', 'minute']:
