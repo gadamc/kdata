@@ -74,6 +74,24 @@ Here's how you would use the iteratble KPtaProcessor.output and KPtaProcessor.in
        print i, val
 
 
+When loading this module, the KPulseAnalysisChain also becomes iterable and returns a pointer to each KPtaProcessor in its ordered list. 
+
+.. code-block:: python
+
+     import KDataPy.util
+     import ROOT
+
+     #add processors to the chain
+     chain = ROOT.KPulseAnalysisChain()
+     chain.AddProcessor( ROOT.KBaselineRemoval() )
+     chain.AddProcessor( ROOT.KLinearRemoval() )
+     chain.AddProcessor( ROOT.KPatternRemoval() )
+
+     #now pythonic iterable.
+     for processor in chain:
+       print processor.GetName()
+
+
 
 .. automodule:: KDataPy.util
    :members:
