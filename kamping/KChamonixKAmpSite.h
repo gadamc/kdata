@@ -86,7 +86,7 @@ public:
   KRealToHalfComplexDFT& GetRealToHalfComplexDFT(void){return fR2Hc;}
   KHalfComplexPower& GetHalfComplexPower(void){return fHc2P;}
   KEraPeakFinder& GetHeatPeakDetector(void){return fHeatPeakDetector;}
-  KEraPeakFinder& GetonPeakDetector(void){return fIonPeakDetector;}
+  KEraPeakFinder& GetIonPeakDetector(void){return fIonPeakDetector;}
   KPulseShifter& GetPulseTemplateShifter(void){return fPulseTemplateShifter;}
   
   void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.75);
