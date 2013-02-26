@@ -39,7 +39,9 @@
 // *** The pulse lengths of the ionization channel and heat channels are defined when you call SetTemplate ** So, you MUST set
 // your numerical pulse template to have the same length as the length of the signals in the data ****
 // 
-//
+// The data stored in the KPulseAnalysisRecords from this processor can be directly read from the source code in the
+// FillResults method. Almost all of the data in the KPulseAnalysisRecord comes from the results produced by the
+// KOptimalKamper class. 
 //
 
 #include "KChamonixKAmpSite.h"
@@ -297,14 +299,14 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     fOptKamper.SetPreProcessor( preProc );
     //need to tell the Kamper about the template pulse shift.
     fOptKamper.SetPulseTemplateShiftFromPreTrigger( GetTemplateShift(pRaw->GetChannelName()) );
-    fOptKamper.SetAmplitudeEstimatorSearchRangeMax(600); //hard coded... this is bad. better to at least use a physical time of X microseconds... 
+    fOptKamper.SetAmplitudeEstimatorSearchRangeMax(1500); //hard coded... this is bad. better to at least use a physical time of X microseconds... 
       //better yet to set this in a map and load it beforehand using the database or python routine
     fOptKamper.SetAmplitudeEstimatorSearchRangeMin(0);
 
     //perform the optimal filtering
     map<string, KResult> resMap = fOptKamper.MakeKamp(pRaw);
     
-    FillResults(rec, resMap);
+    FillResults(rec, resMap, pRaw);
 
     if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
        maxPeak = fabs(rec->GetAmp());
@@ -313,7 +315,12 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
      }
 
   }
-  
+    
+  //If there ever needs to be any "cross-talk" between the analysis of the ionization channels and
+  //the heat channels, THIS is the place to do it!
+  //for now, all channels are treated independently. 
+
+
   //now for the heat pulses.
 
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
@@ -348,14 +355,14 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     fOptKamper.SetPreProcessor( fHeatPreProcessor );
     //need to tell the Kamper about the template pulse shift.
     fOptKamper.SetPulseTemplateShiftFromPreTrigger( GetTemplateShift(pRaw->GetChannelName()) );
-    fOptKamper.SetAmplitudeEstimatorSearchRangeMax(25); //hard coded... this is bad. 
+    fOptKamper.SetAmplitudeEstimatorSearchRangeMax(150); //hard coded... this is bad. 
     fOptKamper.SetAmplitudeEstimatorSearchRangeMin(-2);
     fOptKamper.SetIonPulseStartTime(PeakPos);
 
     //perform the optimal filtering
     map<string, KResult> resMap = fOptKamper.MakeKamp(pRaw);
     
-    FillResults(rec, resMap);
+    FillResults(rec, resMap, pRaw );
 
     //fill heat channel specific results...
     fHeatPeakDetector.SetInputPulse( fHeatWindow);
@@ -369,7 +376,7 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
   return true;
 }  
 
-void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResult> &resMap)
+void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResult> &resMap, KRawBoloPulseRecord *pRaw )
 {
   //fill results
   if(resMap.find("amp") != resMap.end())                    rec->SetAmp(resMap["amp"].fValue);
@@ -395,6 +402,28 @@ void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResu
   if(resMap.find("chi2AtIonPulseStartTime") != resMap.end())    rec->SetExtra(resMap["chi2AtIonPulseStartTime"].fValue, 12);
   if(resMap.find("slope") != resMap.end())                      rec->SetExtra(resMap["slope"].fValue, 13);
 
+
+  //this following chunk of code looks to see if this event was used
+  //in the calculation of the noise spectrum for this channel.
+  //It searches the vector in the fNoiseEventSambaEventNumberList for this channel name
+  //and if it finds the samba event number, it sets the Extra[14] field to be 1.
+  // if it does not find the samba event number in this list, it sets the Extra[14]  to be 0.
+  // if, for some reason, it can't find the channel name in the fNoiseEventSambaEventNumberList,
+  // it sets Extra[14] to be -1, which is the default value, to indicate an unknown value.
+  KRawBolometerRecord *bolo = pRaw->GetBolometerRecord();
+  KRawSambaRecord *samba = bolo->GetSambaRecord();
+  std::map<std::string, std::vector<Int_t> >::iterator it;
+  it = fNoiseEventSambaEventNumberList.find(pRaw->GetChannelName());
+
+  int noiseIndicator = -1;
+  if (it != fNoiseEventSambaEventNumberList.end()){
+
+    if ( find( it->second.begin(), it->second.end(), samba->GetSambaEventNumber()) != it->second.end() )
+      noiseIndicator = 1;   //  
+    else
+      noiseIndicator = 0;
+  }
+  rec->SetExtra(noiseIndicator, 14); 
 
   rec->SetName(GetName());
 }
@@ -753,8 +782,6 @@ void KChamonixKAmpSite::SetNoisePower(const char* channelName, vector<double> po
 
 void KChamonixKAmpSite::ReportResults(void)
 {
-  //
-
   //report on the number of power spectra found
   std::map<std::string, unsigned int>::iterator it;
   cout << "Report on the number of Noise Events Found" << endl;

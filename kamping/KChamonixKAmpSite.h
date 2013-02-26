@@ -99,7 +99,7 @@ public:
 
 private:
 
-  void FillResults(KPulseAnalysisRecord* rec, std::map<std::string, KResult> &resMap);
+  void FillResults(KPulseAnalysisRecord* rec, std::map<std::string, KResult> &resMap, KRawBoloPulseRecord *pRaw);
 
   
   KEraPeakFinder fHeatPeakDetector;  //ERA Peak Finder
