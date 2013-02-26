@@ -15,6 +15,8 @@
 // You can SetPolarity( -1, +1, or 0). If set to 0, then this object searches for pulses 
 // in both directions. otherwise, it only looks for pulses with the polarity you indicated.
 //
+// This class now inherits from KOrderThresholdFilter. It sets the threshold based upon the value
+// set in fNumRms and the calculated std deviation of the smoothed pulse between the start and stop values.
 
 #include <iostream>
 #include "KEraPeakFinder.h"
@@ -24,14 +26,13 @@ using namespace std;
 //ClassImp(KEraPeakFinder);
 
 KEraPeakFinder::KEraPeakFinder(void)
-: fOrderFilter(0, 0, 0, 0)  //initialize the order filter with null pointers so that we can set the internal arrays at run-time
 {
   SetName("KEraPeakFinder");
   InitializeMembers();
 }
 
 KEraPeakFinder::KEraPeakFinder(double *inPulse, unsigned int inSize, double* outPulse, unsigned int outsize)
-  : KPtaProcessor(inPulse, inSize, outPulse, outsize), fOrderFilter(0, 0, 0, 0) //initialize the order filter with null pointers so that we can set the internal arrays at run-time
+  : KOrderThresholdFinder(inPulse, inSize, outPulse, outsize)
 {
   SetName("KEraPeakFinder"); 
   InitializeMembers();
@@ -51,65 +52,30 @@ void KEraPeakFinder::InitializeMembers(void)
 
   fBaselineStart = 0.0;
   fBaselineStop = 0.40;
-  fOrderFilter.SetOrder(3);
+  SetOrder(3);
   fNumRms = 3.0; 
-  fPeakBins.reserve(100);
-  fPolarity = 0;
+
 }
 
 bool KEraPeakFinder::RunProcess(void)
 {
-  //cout << "Run Process: " << GetName() << endl;
-  
-  if(SmoothPulse())
-    return FindPeaks();
-  else {
-    return false;
-  }
 
-}
-
-bool KEraPeakFinder::SmoothPulse(void)
-{
-  fOrderFilter.SetInputPulse(GetInputPulse());
-  fOrderFilter.SetInputPulseSize(GetInputPulseSize());
-  fOrderFilter.SetOutputPulse(GetOutputPulse());
-  fOrderFilter.SetOutputPulseSize(GetOutputPulseSize());
-  
-  
-  if(fOrderFilter.RunProcess()) return true;
-  else return false;
-}
-
-bool KEraPeakFinder::FindPeaks(void)
-{
   if( (unsigned int)(fBaselineStart*GetOutputPulseSize()) >= GetOutputPulseSize() ||  
   (unsigned int)(fBaselineStop*GetOutputPulseSize()) >= GetOutputPulseSize() )  //have to check this before using Rms calculator because it doesn't know how the size of the array
     return false;
-    
-  fPeakBins.erase(fPeakBins.begin(), fPeakBins.end());  //this should, from what I understand, keep the memory allocated, which would be faster than deallocation and reallocation for each pulse
-  
-  double threshold = fNumRms* fRms.GetStdDev(GetOutputPulse(), (unsigned int)(fBaselineStart*GetOutputPulseSize()), (unsigned int)(fBaselineStop*GetOutputPulseSize()) );
-  
-  if (fPolarity == 0){
-    for (unsigned int i = 0; i < GetOutputPulseSize(); i++) {
-      if( abs(GetOutputPulse()[i]) >= threshold )
-        fPeakBins.push_back(i);
-    }
-  }
-  else if (fPolarity > 0){
-    for (unsigned int i = 0; i < GetOutputPulseSize(); i++) {
-      if (GetOutputPulse()[i] > threshold)
-        fPeakBins.push_back(i);
-    }
+
+  if(fBaselineStop < fBaselineStart) //require something reasonable
+    return false;
+
+  if(SmoothPulse()){  
+        
+    SetThreshold( fNumRms* fRms.GetStdDev(GetOutputPulse(), (unsigned int)(fBaselineStart*GetOutputPulseSize()), (unsigned int)(fBaselineStop*GetOutputPulseSize()) ) );
+
+    return FindPeaks();
   }
   else {
-    threshold = -1.*threshold;
-    for (unsigned int i = 0; i < GetOutputPulseSize(); i++) {
-      if (GetOutputPulse()[i] < threshold)
-        fPeakBins.push_back(i);
-    } 
+    return false;
   }
-  
-  return true;
+
 }
+

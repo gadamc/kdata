@@ -15,9 +15,6 @@
 // You can SetPolarity( -1, +1, or 0). If set to 0, then this object searches for pulses 
 // in both directions. otherwise, it only looks for pulses with the polarity you indicated.
 //
-// Developer note: This class was written after KEraPeakFinder and was essentially copied from that class.
-// However, it is obvious that KEraPeakFinder should inherit this class and just set the threshold.
-// This inheritance coding has not been done though because of time constraints. 
 //
 
 #include <iostream>
@@ -51,7 +48,7 @@ void KOrderThresholdFinder::InitializeMembers(void)
 {
   //initialize members. 
 
-  fOrderFilter.SetOrder(1);
+  SetOrder(1);
   fThreshold = 1000.0; //in ADU  
   fPeakBins.reserve(100);
   fPolarity = 0;
@@ -70,6 +67,9 @@ bool KOrderThresholdFinder::RunProcess(void)
 
 bool KOrderThresholdFinder::SmoothPulse(void)
 {
+  //
+
+  //set pointers and pointer sizes, which is faster than copying the data around
   fOrderFilter.SetInputPulse(GetInputPulse());
   fOrderFilter.SetInputPulseSize(GetInputPulseSize());
   fOrderFilter.SetOutputPulse(GetOutputPulse());

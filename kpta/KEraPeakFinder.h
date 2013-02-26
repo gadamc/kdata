@@ -11,12 +11,10 @@
 #ifndef __KERAPEAKFINDER_H__
 #define __KERAPEAKFINDER_H__
 
-#include "KPtaProcessor.h"
-#include "KOrderFilter.h"
+#include "KOrderThresholdFinder.h"
 #include "KRootMeanSquare.h"
-#include <vector>
 
-class KEraPeakFinder : public KPtaProcessor { 
+class KEraPeakFinder : public KOrderThresholdFinder { 
 
 public:
   //Constructors
@@ -28,31 +26,20 @@ public:
   virtual ~KEraPeakFinder(void);
   virtual bool RunProcess(void);
 
-  virtual bool SmoothPulse(void);
-  virtual bool FindPeaks(void);
-  
   virtual double GetBaselineStart(void) const {return fBaselineStart;}
   virtual double GetBaselineStop(void) const {return fBaselineStop;}
-  virtual int GetOrder(void) const {return fOrderFilter.GetOrder();}
   virtual double GetNumRms(void) const {return fNumRms;}
-  virtual double GetPolarity(void) const {return fPolarity;}
-  virtual std::vector<int>& GetPeakBins(void) {return fPeakBins;}
   
   virtual void SetBaselineStart(double aVal) {fBaselineStart = aVal;}
   virtual void SetBaselineStop(double aVal) {fBaselineStop = aVal;}
-  virtual void SetOrder(int aVal) {fOrderFilter.SetOrder(aVal);}
   virtual void SetNumRms(double aVal) {fNumRms = aVal;}
-  virtual void SetPolarity(int aVal) {fPolarity = aVal;}
   
 private:
 
   double fBaselineStart;  //starting position of region to be averaged for baseline subtraction, in percent of the total pulse length
   double fBaselineStop; //stoping position of region to be averaged for baseline subtraction, in percent of the total pulse length
   double fNumRms;
-  int fPolarity; //if set to 0, then this object searches for pulses in both directions. otherwise, it only looks for the polarity you give it
-  std::vector<int> fPeakBins;
   
-  KOrderFilter fOrderFilter;
   KRootMeanSquare fRms;
   
   //private methods
