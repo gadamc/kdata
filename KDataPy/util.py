@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-import numpy as np
+import numpy
 import KDataPy
-import matplotlib.pyplot as plt
+import matplotlib.pyplot
 import copy
 import math
 import KDataPy.exceptions
 import ROOT
-plt.ion()
+matplotlib.pyplot.ion()
 
 try:
   ROOT.gSystem.Load('libkds')
@@ -31,7 +31,7 @@ _libpyroot.MakeRootClass( "KDataReader" ).__iter__    = _KEvent_iter__
 
 
 def _KRawBoloPulseRecord_getNumpArray__(self):
-  return np.array(self.GetTrace())
+  return numpy.array(self.GetTrace())
 _libpyroot.MakeRootClass( "KRawBoloPulseRecord" ).getnumpy    = _KRawBoloPulseRecord_getNumpArray__
 
 
@@ -88,7 +88,7 @@ def get_as_nparray(c_pointer, size):
   return a numpy array from a pointer to data of length 'size'
   
   '''
-  data = np.zeros(size)
+  data = numpy.zeros(size)
   for i in range(size):
     data[i] = c_pointer[i]
   return data
@@ -456,25 +456,25 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
             
       
       print 'plotting', pulse.GetChannelName()
-      plt.figure(0)
-      plt.cla()
+      matplotlib.pyplot.figure(0)
+      matplotlib.pyplot.cla()
       if pta != None:
         pta.SetInputPulse( pulse.GetTrace() )
         pta.RunProcess()
         dataPulse = get_out(pta)
         
       else:
-        dataPulse = np.array(pulse.GetTrace())
+        dataPulse = numpy.array(pulse.GetTrace())
         
         
-      yMax = np.max(dataPulse)
-      yMin = np.min(dataPulse)
+      yMax = numpy.max(dataPulse)
+      yMin = numpy.min(dataPulse)
       yMaxNew = abs(yMax - yMin)*0.05 + yMax
       yMinNew = -abs(yMax - yMin)*0.05 +yMin
-      plt.plot(dataPulse)
-      plt.ylim(yMinNew, yMaxNew)
-      plt.title(pulse.GetChannelName())
-        #plt.show()
+      matplotlib.pyplot.plot(dataPulse)
+      matplotlib.pyplot.ylim(yMinNew, yMaxNew)
+      matplotlib.pyplot.title(pulse.GetChannelName())
+        #matplotlib.pyplot.show()
         
       
         
@@ -486,13 +486,13 @@ def plotpulse(data, name=None, match=False, pta = None, analysisFunction = None,
       try:
         quitmessage = raw_input()
         if quitmessage in ['quit', 'q', 'bye', '-q']: 
-          plt.cla()
+          matplotlib.pyplot.cla()
           raise KDataUtilQuitLoop(quitmessage)
       except KeyboardInterrupt: 
-        plt.cla()
+        matplotlib.pyplot.cla()
         raise KeyboardInterrupt
       
-      plt.cla()
+      matplotlib.pyplot.cla()
       
       
     looppulse(data, name=name, match=match, pta = pta, analysisFunction = __plotingfunction, __callersAnalysisFunction = analysisFunction, **kwargs)  
@@ -541,16 +541,16 @@ def plotbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
       axisDict = {}
       
       print 'plotting', bolo.GetDetectorName()
-      fig = plt.figure(0)
+      fig = matplotlib.pyplot.figure(0)
       fig.clf()
 
       counter = 1
       for pulse in bolo.pulseRecords():
 
 
-        ax = plt.subplot(bolo.GetNumPulseRecords(), 1, counter)
+        ax = matplotlib.pyplot.subplot(bolo.GetNumPulseRecords(), 1, counter)
         counter += 1
-        plt.cla()
+        matplotlib.pyplot.cla()
         if pulse.GetPulseLength() == 0: 
           continue
 
@@ -568,13 +568,13 @@ def plotbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
         else:
           tobeplotted = pulse.GetTrace()
 
-        yMax = np.max(tobeplotted)
-        yMin = np.min(tobeplotted)
+        yMax = numpy.max(tobeplotted)
+        yMin = numpy.min(tobeplotted)
         yMaxNew = abs(yMax - yMin)*0.05 + yMax
         yMinNew = -abs(yMax - yMin)*0.05 +yMin
-        plt.plot(tobeplotted )
-        plt.ylim(yMinNew, yMaxNew)
-        plt.title(pulse.GetChannelName())
+        matplotlib.pyplot.plot(tobeplotted )
+        matplotlib.pyplot.ylim(yMinNew, yMaxNew)
+        matplotlib.pyplot.title(pulse.GetChannelName())
 
       
         
@@ -586,13 +586,13 @@ def plotbolo(data, name=None, match=False, ptaDictionary = None, analysisFunctio
       try:
         quitmessage = raw_input()
         if quitmessage in ['quit', 'q', 'bye', '-q']: 
-          plt.cla()
+          matplotlib.pyplot.cla()
           raise KDataUtilQuitLoop(quitmessage)
       except KeyboardInterrupt: 
-        plt.cla()
+        matplotlib.pyplot.cla()
         raise KeyboardInterrupt
       
-      plt.cla()
+      matplotlib.pyplot.cla()
       
       
     loopbolo(data, name=name, match=match, ptaDictionary = ptaDictionary, analysisFunction = __plotingfunction__, __callersAnalysisFunction__ = analysisFunction, **kwargs)  
