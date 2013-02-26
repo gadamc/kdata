@@ -41,7 +41,7 @@ public:
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e);  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void){ return fScoutData;}
   void NeedScout(Bool_t aVal){fScoutData = aVal;}
-
+  virtual void ReportResults(void);
   
   //these parameters should be available from the database 
   Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse, int pulseShift, unsigned int pulseType);
@@ -56,6 +56,18 @@ public:
 
   void SetTemplateShift(const char* channelName, int value){fTemplateShift[channelName] = value;}
   int GetTemplateShift(const char* channelName) const;
+
+  void SetEraPeakFinderOrder(const char* channelName, UInt_t n){fEraPeakFinderOrder[channelName] = n;}
+  void SetEraPeakFinderOrderIonDefault(UInt_t n){fEraPeakFinderOrderIon_default = n;}
+  void SetEraPeakFinderOrderHeatDefault(UInt_t n){fEraPeakFinderOrderHeat_default = n;}
+
+  void SetEraPeakFinderNumRms(const char* channelName, Double_t n){fEraPeakFinderNumRms[channelName] = n;}
+  void SetEraPeakFinderNumRmsIonDefault(Double_t n){fEraPeakFinderNumRmsIon_default = n;}
+  void SetEraPeakFinderNumRmsHeatDefault(Double_t n){fEraPeakFinderNumRmsHeat_default = n;}
+
+  Int_t GetEraPeakFinderOrder(const char* channelName) const;
+  Double_t GetEraPeakFinderNumRms(const char* channelName) const;
+  std::map<std::string, std::vector<Int_t> >& GetNoiseEventSambaEventNumberList() {return fNoiseEventSambaEventNumberList;}
 
   KPulseAnalysisChain* GetHeatPreProcessor(void){return fHeatPreProcessor;}
   KPulseAnalysisChain* GetBBv1IonPreProcessor(void){return fBBv1IonPreProcessor;}
@@ -74,8 +86,7 @@ public:
   KRealToHalfComplexDFT& GetRealToHalfComplexDFT(void){return fR2Hc;}
   KHalfComplexPower& GetHalfComplexPower(void){return fHc2P;}
   KEraPeakFinder& GetHeatPeakDetector(void){return fHeatPeakDetector;}
-  KEraPeakFinder& GetBBv1IonPeakDetector(void){return fBBv1IonPeakDetector;}
-  KEraPeakFinder& GetBBv2IonPeakDetector(void){return fBBv2IonPeakDetector;}
+  KEraPeakFinder& GetonPeakDetector(void){return fIonPeakDetector;}
   KPulseShifter& GetPulseTemplateShifter(void){return fPulseTemplateShifter;}
   
   void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.75);
@@ -90,8 +101,7 @@ private:
 
   
   KEraPeakFinder fHeatPeakDetector;  //ERA Peak Finder
-  KEraPeakFinder fBBv1IonPeakDetector;  //ERA Peak Finder
-  KEraPeakFinder fBBv2IonPeakDetector;  //ERA Peak Finder
+  KEraPeakFinder fIonPeakDetector;  //ERA Peak Finder
  
   Bool_t fScoutData;
 
@@ -105,11 +115,24 @@ private:
   KHalfComplexPower fHc2P;
   KPulseShifter fPulseTemplateShifter;
   
+
+  //todo - need to change all types to ROOT Types...
+  //
   std::map<std::string, int> fTemplateShift;
-  std::map<std::string, unsigned int> fNoiseEventCounts;
+  std::map<std::string, unsigned int> fNoiseEventCounts;  //this is kept in a separate field for the case where a user wants to provide the noise spectra explicitly, but still wants this class to know how many noise events were used to produce the spectra
   std::map<std::string, std::vector<double> > fNoiseSpectra;
   std::map<std::string, std::vector<double> > fTemplateSpectra;
   std::map<std::string, std::set<int> > fHeatPulseStampWidths;
+  
+  std::map<std::string, std::vector<Int_t> > fNoiseEventSambaEventNumberList;
+
+  std::map<std::string, UInt_t> fEraPeakFinderOrder;
+  std::map<std::string, Double_t> fEraPeakFinderNumRms;
+  UInt_t fEraPeakFinderOrderIon_default;
+  Double_t fEraPeakFinderNumRmsIon_default;
+  UInt_t fEraPeakFinderOrderHeat_default;
+  Double_t fEraPeakFinderNumRmsHeat_default;
+
 
   KOptimalKamper fOptKamper;
   // Bool_t fFirstPulse; 

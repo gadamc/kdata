@@ -67,13 +67,16 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
 {
   SetName("KChamonixKAmpSite");
   
-  fHeatPeakDetector.SetOrder(5);
-  fHeatPeakDetector.SetNumRms(2.3);
+  fEraPeakFinderOrderHeat_default = 3;
+  fEraPeakFinderNumRmsHeat_default = 5.0;
+  fHeatPeakDetector.SetOrder( fEraPeakFinderOrderHeat_default );
+  fHeatPeakDetector.SetNumRms( fEraPeakFinderNumRmsHeat_default );
   
-  fBBv1IonPeakDetector.SetOrder(2);
-  fBBv1IonPeakDetector.SetNumRms(7);
-  fBBv2IonPeakDetector.SetOrder(5);
-  fBBv2IonPeakDetector.SetNumRms(4);
+  
+  fEraPeakFinderOrderIon_default = 3;
+  fEraPeakFinderNumRmsIon_default = 5.0;
+  fIonPeakDetector.SetOrder( fEraPeakFinderOrderIon_default );
+  fIonPeakDetector.SetNumRms( fEraPeakFinderNumRmsIon_default );
 
   //need something completely different here!
 
@@ -100,6 +103,7 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
   fHeatWindow = 0;
   fIonWindow = 0;
   // fFirstPulse = true;
+  fScoutData = true;
 
 }
 
@@ -228,6 +232,7 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
   //   fFirstPulse = false;
   // }
 
+  if(boloRaw->IsVetoRecord()){return true;}  //skip veto records!
 
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
     
@@ -397,93 +402,117 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   //run through the data, look for noise events, find their power spectra and then find the average
   //noise power. use these noise spectra for the optimal filter.
   //
+  //If the Ion/Heat channel Window has not been created before you call this method, it will be created for you
+  //automatically with the default parameters. If you wish to have different parameters (such as a different alpha 
+  //parameter for the Tukey Window), you should first call CreateHeat/IonWindow(size, alpha). 
+  //
+
+  KRawBolometerRecord *bolo = pRaw->GetBolometerRecord();
+  if(bolo->IsVetoRecord())
+    return true;
+
   if(pRaw->GetPulseLength() == 0) { return false;}
-  //if(!pRaw->GetIsHeatPulse()) return false;
-  
-  // double decayVal = GetTrapDecayConstant(pRaw->GetChannelName());
-  //  d if (decayVal < 0) return false;
-  
+
+
+  //the preprocessing, windowing, and peak detection tools all depend upon if this channel
+  //is a heat channel, or an ionization channel and its bb version number
+  //check this information and setup accordingly
+
   KPtaProcessor *thePreProc = 0;
   KPtaProcessor *theWindow = 0;
   KEraPeakFinder* thePeakDetector = 0;
   KPtaProcessor* theProcToTheFFT = 0;
+
+  Int_t eraPFOrder = GetEraPeakFinderOrder(pRaw->GetChannelName());
+  Double_t eraPFRms = GetEraPeakFinderNumRms(pRaw->GetChannelName());
 
   if(pRaw->GetIsHeatPulse()){
     thePreProc = fHeatPreProcessor;
     if (fHeatWindow == 0) CreateHeatWindow(pRaw->GetPulseLength());
     theWindow = theProcToTheFFT = fHeatWindow;
     thePeakDetector = &fHeatPeakDetector;
-  }
-  else if(pRaw->GetBoloBoxVersion() > 2.1)
-    return false;  //only support bbv2 and bbv1 at the moment
 
-  else if(pRaw->GetBoloBoxVersion() > 1.99){  //avoid direct comparison of floating point number  
+    if(eraPFRms < 0)
+      eraPFRms = fEraPeakFinderNumRmsHeat_default;
+    if(eraPFOrder < 0)
+      eraPFOrder = fEraPeakFinderOrderHeat_default;
+  }
+  else{
+
+    if(eraPFRms < 0)
+      eraPFRms = fEraPeakFinderNumRmsIon_default;
+    if(eraPFOrder < 0)
+      eraPFOrder = fEraPeakFinderOrderIon_default;
+
+    if(pRaw->GetBoloBoxVersion() > 2.1)
+      return false;  //only support bbv2 and bbv1 at the moment
+
+    if (fIonWindow == 0) CreateIonWindow(pRaw->GetPulseLength());
+
+    else if(pRaw->GetBoloBoxVersion() > 1.99){  //avoid direct comparison of floating point number  
+
       thePreProc = fBBv2IonPreProcessor;
-      if (fIonWindow == 0) CreateIonWindow(pRaw->GetPulseLength());
-      //keep theWindow pointer set to NULL for BBv2 channels
-      //in the code below theWindow pointer is checked
-      //theProcToTheFFT now points to thePreProc for BBv2
-      theProcToTheFFT = thePreProc;
-      thePeakDetector = &fBBv2IonPeakDetector;
-  }
-  else if(pRaw->GetBoloBoxVersion() > 0.9){
+      
+      //why did I have windowing turned off for bbv2 at a previous commit to the
+      //repository? what's wrong with windowing bbv2?
+      theWindow = theProcToTheFFT = fIonWindow;
+      thePeakDetector = &fIonPeakDetector;
+
+    }
+    else if(pRaw->GetBoloBoxVersion() > 0.9){
       thePreProc = fBBv1IonPreProcessor;
-      if (fIonWindow == 0) CreateIonWindow(pRaw->GetPulseLength());
       theWindow =  theProcToTheFFT = fIonWindow;
-      thePeakDetector = &fBBv1IonPeakDetector;
+      thePeakDetector = &fIonPeakDetector;
+    }
   }
+
+
+  //the following code:
+  //  calls the preprocessor - usually baseline/linear removal and pattern removal
+  //  looks for noise with the era peak finder
+  //  if it is noise:
+  //    windows the event
+  //    calculates the power spectrum 
+  //    adds it to the running average for that channel
 
   thePreProc->SetInputPulse( (std::vector<short> &)pRaw->GetTrace());
   if(!thePreProc->RunProcess()){
-    cout << "KChamonixKAmpSite::ScoutKampSite. the preprocessor failed" << endl;
+    cout << "KChamonixKAmpSite::ScoutKampSite. the preprocessor failed. pulse channel: " << pRaw->GetChannelName() << endl;
     return false;
   }
   
-  //should replace the following with the KOrderFilter and then look for noise
-  //have to figure out how to effectively find noise events using the ionization channel
-  //but could also talk to Benjamin Censier on how he does this work and how he analyzes
-  //the events. 
-  // thePeakDetector->SetDecayTimeConstant(decayVal);
-  //   thePeakDetector->SetPolarity(-1);
-  //   thePeakDetector->SetInputPulse(thePreProc->GetOutputPulse(), thePreProc->GetOutputPulseSize());
-  //   if( !thePeakDetector->RunProcess()){
-  //     cout << "KChamonixKAmpSite::ScoutKampSite. fHeatPeakDetector failed" << endl;
-  //     return false;
-  //   }
-  //   std::vector< std::vector<double> > foundPeaks = thePeakDetector->GetRemainingPeaks();
-  //   if(foundPeaks.size() > 0) return false; //we found a peak, so this is not noise.
-  
-  
-  //thePeakDetector->SetPolarity( KPulsePolarityCalculator::GetExpectedPolarity(pRaw));
+ 
   thePeakDetector->SetPolarity( 0 ); //always search for pulse in both polarities
 
   thePeakDetector->SetInputPulse(thePreProc);
   if( !thePeakDetector->RunProcess()){
-      cout << "KChamonixKAmpSite::ScoutKampSite. fHeatPeakDetector failed" << endl;
+      cout << "KChamonixKAmpSite::ScoutKampSite. thePeakDetector failed. pulse channel: " << pRaw->GetChannelName() << endl;
       return false;
   }
   if(thePeakDetector->GetPeakBins().size() > 0) {return false;} //we found a peak, so this is not noise.
       
   //we found noise, now window it, find its power spectrum and then add it to the running average power spectrum  
   if(theWindow){
+
     theWindow->SetInputPulse(thePreProc);
     if(!theWindow->RunProcess()){
-      cout << "KChamonixKAmpSite::ScoutKampSite. theWindow failed" << endl; return false;
+      cout << "KChamonixKAmpSite::ScoutKampSite. theWindow failed. pulse channel: " << pRaw->GetChannelName() << endl; return false;
     }
   }
 
+  //calculate the power spectrum - fft, then |fft|^2
   fR2Hc.SetInputPulse(theProcToTheFFT);
   if(!fR2Hc.RunProcess()){
-    cout << "KChamonixKAmpSite::ScoutKampSite. fR2Hc failed" << endl; return false;
+    cout << "KChamonixKAmpSite::ScoutKampSite. fR2Hc failed. pulse channel: " << pRaw->GetChannelName() << endl; return false;
   }
 
   fHc2P.SetInputPulse(fR2Hc);
   if(!fHc2P.RunProcess()){
-    cout << "KChamonixKAmpSite::ScoutKampSite. fHc2P failed" << endl; return false;
+    cout << "KChamonixKAmpSite::ScoutKampSite. fHc2P failed. pulse channel: " << pRaw->GetChannelName()<< endl; return false;
   }
 
   if(fHc2P.GetOutputPulse() == 0){
-    cout << "KChamonixKAmpSite::ScoutKampSite. fHc2P null pointer" << endl; return false;
+    cout << "KChamonixKAmpSite::ScoutKampSite. fHc2P null pointer. pulse channel: " << pRaw->GetChannelName() << endl; return false;
   }
   
   if(fNoiseEventCounts.find(pRaw->GetChannelName()) == fNoiseEventCounts.end()){
@@ -506,6 +535,10 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
     }
   }
 
+  //also, record the samba event number of this noise event
+  KRawSambaRecord *samba = bolo->GetSambaRecord();
+  fNoiseEventSambaEventNumberList[pRaw->GetChannelName()].push_back( samba->GetSambaEventNumber());
+
   return true;
 }  
 
@@ -514,6 +547,11 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
 {
   //pulsetype, 0 = heat, 1 = ion
   //
+  //If the Ion/Heat channel Window has not been created before you call this method, it will be created for you
+  //automatically with the default parameters. If you wish to have different parameters (such as a different alpha 
+  //parameter for the Tukey Window), you should first call CreateHeat/IonWindow(size, alpha). 
+  //
+
   KPtaProcessor *theWindowProcessor = 0;
   switch (pulseType) {
     case 0:
@@ -687,8 +725,54 @@ vector<double> KChamonixKAmpSite::GetNoisePower(const char* channelName) const
     
 }
 
+Int_t KChamonixKAmpSite::GetEraPeakFinderOrder(const char* channelName) const
+{
+  if (fEraPeakFinderOrder.find(channelName) != fEraPeakFinderOrder.end()){
+    return fEraPeakFinderOrder.find(channelName)->second;
+  }
+  else return -1;
+}
+  
+Double_t KChamonixKAmpSite::GetEraPeakFinderNumRms(const char* channelName) const
+{
+  if (fEraPeakFinderNumRms.find(channelName) != fEraPeakFinderNumRms.end()){
+    return fEraPeakFinderNumRms.find(channelName)->second;
+  }
+  else return -1;
+}
+
+
+
 void KChamonixKAmpSite::SetNoisePower(const char* channelName, vector<double> power)
 {
   fNoiseSpectra[channelName] = power;
+}
+
+void KChamonixKAmpSite::ReportResults(void)
+{
+  //
+
+  //report on the number of power spectra found
+  std::map<std::string, unsigned int>::iterator it;
+  cout << "Report on the number of Noise Events Found" << endl;
+  cout << "Default ERA Peak finder order/num rms:" << endl;
+  cout << "Heat (order/num rms): " << fEraPeakFinderOrderHeat_default << "/" << fEraPeakFinderNumRmsHeat_default << endl;
+  cout << "Ion (order/num rms): " << fEraPeakFinderOrderIon_default << "/" << fEraPeakFinderNumRmsIon_default << endl;
+  for( it = fNoiseEventCounts.begin(); it != fNoiseEventCounts.end(); it++){
+    cout << (*it).first.c_str() << endl;
+    cout << "  era order: ";
+    if(GetEraPeakFinderOrder((*it).first.c_str()) > 0)
+      cout << GetEraPeakFinderOrder((*it).first.c_str()) << endl;
+    else
+      cout << "default" << endl;
+    cout << "  era num rms: ";
+    if(GetEraPeakFinderNumRms((*it).first.c_str()) > 0)
+      cout << GetEraPeakFinderNumRms((*it).first.c_str()) << endl;
+    else
+      cout << "default" << endl;
+
+    cout << "  number of noise events: " << (*it).second << endl;
+  }
+
 }
 
