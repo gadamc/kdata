@@ -64,7 +64,9 @@ void KAmpKounselor::SetFiles(const char* inputRawKDataFile, const char* outputAm
 Bool_t KAmpKounselor::CheckSetup()
 {
   if (fInput==0 || fOutput == 0) return false;
-  else return true;
+  if (!fInput->GetTFile()->IsOpen() || !fIOutput->GetTFile()->IsOpen()) return false;
+  
+  return true;
 }
 
 Bool_t KAmpKounselor::Scout( int maxNumEvents)
@@ -196,6 +198,10 @@ Int_t KAmpKounselor::Run( int maxNumEvents)
   }
   
   int writeReturn = fOutput->Write();
+
+  WriteKampSiteData();
+
+
   fOutput->Close();
   fInput->Close();
 
@@ -216,12 +222,15 @@ void KAmpKounselor::WriteKampSiteData(void)
 {
   
   if(!CheckSetup()) return;
+  
+  cout < "KAmpKounselor::WriteKampSiteData" << endl;
 
   vector<KAmpSite *>::iterator it;
 
   for( it = fKampSites.begin(); it < fKampSites.end(); it++){
     
     if( !(*it)->GetWriteExtraData() )  continue;
+    cout << <"KAmpKounselor - writing extra data for " << (*it)->GetName() << endl;
 
     TDirectory *dd = 0;
     unsigned int count = 0;
@@ -240,6 +249,7 @@ void KAmpKounselor::WriteKampSiteData(void)
       continue;
     }
 
+    cout << <"              - into directory: " << dd->GetPath() << endl;
     dd->cd();
     (*it)->WriteExtraData(dd);
   }
@@ -262,8 +272,6 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
 
   if(fReport >= 1)
     ReportResults();
-
-  WriteKampSiteData();
 
   return retVal;
 }
