@@ -42,6 +42,8 @@ public:
   virtual Bool_t NeedScout(void){ return fScoutData;}
   void NeedScout(Bool_t aVal){fScoutData = aVal;}
   virtual void ReportResults(void);
+  virtual void WriteExtraData(TDirectory *dd);
+
   
   //these parameters should be available from the database 
   Bool_t SetTemplate(const char* channelName,  std::vector<double>& pulse, int pulseShift, unsigned int pulseType);

@@ -30,6 +30,7 @@ public:
   virtual Bool_t Prepare();
   virtual Int_t Run(int maxNumEvents = -1);
   virtual void ReportResults();
+  virtual void WriteKampSiteData(void);
   //virtual std::vector<KAmpSite *> GetListOfKAmpSites(void){ return fKampSites;}
   virtual void SetStatusCheckPercentage(Float_t val){if (val > 0 && val < 1.0) fStatusCheckPercentage = val;}
   virtual Float_t GetStatusCheckPercentage(void){return fStatusCheckPercentage;}

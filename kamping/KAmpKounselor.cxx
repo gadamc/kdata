@@ -19,7 +19,9 @@
 #include "KAmpBoloPulseRecord.h"
 #include "KAmpSite.h"
 #include "KDataProcessingInfo.h"
+#include "TDirectory.h"
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -203,6 +205,38 @@ void KAmpKounselor::ReportResults(void)
       (*it)->ReportResults();
   }
 }
+
+void KAmpKounselor::WriteKampSiteData(void)
+{
+  
+  if(!CheckSetup()) return;
+
+  vector<KAmpSite *>::iterator it;
+
+  for( it = fKampSites.begin(); it < fKampSites.end(); it++){
+    
+    if( !(*it)->GetWriteExtraData() )  continue;
+
+    TDirectory *dd = 0;
+    unsigned int count = 0;
+    while(dd == 0 && count < fKampSites.size()){  //we should never get bigger than this!
+      string dirName = (*it)->GetName();
+      if(count)
+        dirName += static_cast<ostringstream*>( &(ostringstream() << count) )->str();
+      dd = fOutput->GetTFile()->mkdir(dirName.c_str());
+      count++;
+    }
+    if(dd == 0){
+      cout << "KAmpKounselor. Unable to call WriteExtraData for " << (*it)->GetName() << " because mkdir failed." << endl;
+      continue;
+    }
+
+    dd->cd();
+    (*it)->WriteExtraData(dd);
+  }
+   
+}
+
 
 
 Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputAmpKDataFile,  int maxNumEvents)

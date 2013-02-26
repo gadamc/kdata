@@ -12,6 +12,7 @@
 
 #include "Rtypes.h"
 #include "KResult.h"
+#include "TDirectory.h"
 #include <map>
 #include <string>
 
@@ -35,9 +36,12 @@ public:
   virtual Bool_t NeedScout(void) = 0;
   virtual void ReportStatus(void){}
   virtual void ReportResults(void){}
+  virtual void WriteExtraData(TDirectory * /*dd*/) {}
   virtual void SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp);
   const char * GetName(void) const {return fName.c_str();}
   virtual void SetName(const char* name){fName = name;}
+  Bool_t GetWriteExtraData(void){return fWriteExtraData;}
+  void SetWriteExtraData(Bool_t val = true){fWriteExtraData = val;}
   
   //helper method
   // this compiles, but it doesn't yet work with the build-system and how rootcint is used in Kdata
@@ -48,6 +52,7 @@ public:
 protected:
 
   std::string fName;
+  Bool_t fWriteExtraData; 
 };
 
 

@@ -26,7 +26,7 @@
 
 KAmpSite::KAmpSite(void)
 {
-
+  fWriteExtraData = false;
 }
 
 KAmpSite::~KAmpSite(void)
