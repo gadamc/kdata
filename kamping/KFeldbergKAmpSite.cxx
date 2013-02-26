@@ -55,7 +55,6 @@ using namespace std;
 KFeldbergKAmpSite::KFeldbergKAmpSite(void)
 {
   SetName("KFeldbergKAmpSite");
-  SetTitle("KFeldbergKAmpSite");
   fHeatPreprocessor.SetIsOwner(true);
   fHeatPreprocessor.AddProcessor(new KBaselineRemoval());
   fFCKamp.SetName("KFeldbergKAmpSite");

@@ -69,7 +69,6 @@ using namespace std;
 KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //set the fPulseTemplateShifter pulse locations to NULL so we set them later.
 {
   SetName("KChamonixKAmpSite");
-  SetTitle("KChamonixKAmpSite");
 
   fEraPeakFinderOrderHeat_default = 3;
   fEraPeakFinderNumRmsHeat_default = 5.0;
@@ -449,7 +448,7 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   if(pRaw->GetPulseLength() == 0) { return false;}
 
   if(fNoiseSpectra.find(pRaw->GetChannelName()) == fNoiseSpectra.end()) {
-      return;
+      return true;
     };  //skip if we don't have a noise spectr
 
   //the preprocessing, windowing, and peak detection tools all depend upon if this channel
@@ -818,9 +817,6 @@ void KChamonixKAmpSite::WriteExtraData(TDirectory *dd)
     cerr << "KChamonixKAmpSite::WriteExtraData received null pointer." << endl;
     return;
   }
-
-  this->Write();  //write this object to disk
-
 
   //for convenience, extract the noise spectra and make histograms
   std::map<std::string, std::vector<double> >::iterator it;

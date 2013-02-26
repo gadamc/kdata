@@ -25,7 +25,6 @@ using namespace std;
 KBackyardKampSite::KBackyardKampSite(void)
 {
   SetName("KBackyardKampSite");
-  SetTitle("KBackyardKampSite");
 }
 
 KBackyardKampSite::~KBackyardKampSite(void)

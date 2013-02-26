@@ -64,7 +64,7 @@ void KAmpKounselor::SetFiles(const char* inputRawKDataFile, const char* outputAm
 Bool_t KAmpKounselor::CheckSetup()
 {
   if (fInput==0 || fOutput == 0) return false;
-  if (!fInput->GetTFile()->IsOpen() || !fIOutput->GetTFile()->IsOpen()) return false;
+  if (!fInput->GetTFile()->IsOpen() || !fOutput->GetTFile()->IsOpen()) return false;
   
   return true;
 }
@@ -223,14 +223,14 @@ void KAmpKounselor::WriteKampSiteData(void)
   
   if(!CheckSetup()) return;
   
-  cout < "KAmpKounselor::WriteKampSiteData" << endl;
+  cout << "KAmpKounselor::WriteKampSiteData" << endl;
 
   vector<KAmpSite *>::iterator it;
 
   for( it = fKampSites.begin(); it < fKampSites.end(); it++){
     
     if( !(*it)->GetWriteExtraData() )  continue;
-    cout << <"KAmpKounselor - writing extra data for " << (*it)->GetName() << endl;
+    cout << "KAmpKounselor - writing extra data for " << (*it)->GetName() << endl;
 
     TDirectory *dd = 0;
     unsigned int count = 0;
@@ -249,7 +249,7 @@ void KAmpKounselor::WriteKampSiteData(void)
       continue;
     }
 
-    cout << <"              - into directory: " << dd->GetPath() << endl;
+    cout << "              - into directory: " << dd->GetPath() << endl;
     dd->cd();
     (*it)->WriteExtraData(dd);
   }
