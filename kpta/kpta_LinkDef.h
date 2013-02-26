@@ -49,6 +49,7 @@
 #pragma link C++ function KCorrelation::SetResponse(short*, unsigned int, bool );
 
 #pragma link C++ class KEraPeakFinder+;
+#pragma link C++ class KOrderThresholdFinder+;
 #pragma link C++ class KFIRFilter+;
 #pragma link C++ class KHalfComplexArray+;
 #pragma link C++ class KHalfComplexPower+;
