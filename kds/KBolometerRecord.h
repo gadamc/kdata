@@ -31,7 +31,8 @@ public:
   Bool_t operator!=(const KBolometerRecord &aRec) const { return !(*this==aRec); }
   
   Bool_t IsDetector(const char* name);
-  
+  Bool_t IsVetoRecord(void){return IsDetector("veto");}
+
   virtual void Compact(void);
   
   //getters
