@@ -41,6 +41,12 @@ KAmpKounselor::~KAmpKounselor(void)
 
 void KAmpKounselor::AddKAmpSite(KAmpSite *aSite)
 {
+  //make sure your KAmpSite has a unique "name" by using "KAmpSite::SetName"
+  //otherwise, you may get resulting .amp.root file with results that 
+  //cannot be unambiguously assigned to a particular kampsite. 
+  //
+  //another option is that I could make this method check for other kampsite
+  //names and require uniqueness based on that. 
   fKampSites.push_back(aSite);
   
 }
@@ -220,6 +226,9 @@ void KAmpKounselor::WriteKampSiteData(void)
     TDirectory *dd = 0;
     unsigned int count = 0;
     while(dd == 0 && count < fKampSites.size()){  //we should never get bigger than this!
+      //this is done to support cases where the kampsite name is not unique. for example,
+      //one could set up two different KFeldbergKAmpSites and run them with the same kamp kounselor
+      //although, it is encouraged to SetName for each kampsite such that it has a unique name
       string dirName = (*it)->GetName();
       if(count)
         dirName += static_cast<ostringstream*>( &(ostringstream() << count) )->str();
@@ -253,6 +262,8 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
 
   if(fReport >= 1)
     ReportResults();
+
+  WriteKampSiteData();
 
   return retVal;
 }
