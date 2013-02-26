@@ -816,6 +816,8 @@ void KChamonixKAmpSite::WriteExtraData(TDirectory *dd)
 
   this->Write();  //write this object to disk
 
+
+  //for convenience, extract the noise spectra and make histograms
   std::map<std::string, std::vector<double> >::iterator it;
 
   TDirectory *nd = dd->mkdir("noisespectra");
@@ -838,43 +840,43 @@ void KChamonixKAmpSite::WriteExtraData(TDirectory *dd)
 
   }
     
-  nd = dd->mkdir("templatefft");
+  // nd = dd->mkdir("templatefft");
 
-  if(nd == 0){
-    cerr << "unable to make templatefft directory in KChamonixKAmpSite::WriteExtraData" << endl;
-    return;
-  }
-  nd->cd();
-  for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
-    string histname = it->first + "_template";
+  // if(nd == 0){
+  //   cerr << "unable to make templatefft directory in KChamonixKAmpSite::WriteExtraData" << endl;
+  //   return;
+  // }
+  // nd->cd();
+  // for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
+  //   string histname = it->first + "_template";
 
-    TH1I h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
-    for (unsigned int i = 0; i <  it->second.size(); i++)
-      h.SetBinContent(i+1, it->second[i]);
+  //   TH1I h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
+  //   for (unsigned int i = 0; i <  it->second.size(); i++)
+  //     h.SetBinContent(i+1, it->second[i]);
 
-    h.SetEntries( 1 );
-    h.Write();
+  //   h.SetEntries( 1 );
+  //   h.Write();
 
-  }
+  // }
 
-  nd = dd->mkdir("optimalfilter");
+  // nd = dd->mkdir("optimalfilter");
 
-  if(nd == 0){
-    cerr << "unable to make optimalfilter directory in KChamonixKAmpSite::WriteExtraData" << endl;
-    return;
-  }
-  nd->cd();
-  for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
-    string histname = it->first + "_optfilter";
+  // if(nd == 0){
+  //   cerr << "unable to make optimalfilter directory in KChamonixKAmpSite::WriteExtraData" << endl;
+  //   return;
+  // }
+  // nd->cd();
+  // for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
+  //   string histname = it->first + "_optfilter";
 
-    TH1I h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
-    for (unsigned int i = 0; i <  it->second.size(); i++)
-      h.SetBinContent(i+1, it->second[i]);
+  //   TH1I h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
+  //   for (unsigned int i = 0; i <  it->second.size(); i++)
+  //     h.SetBinContent(i+1, it->second[i]);
 
-    h.SetEntries( 1 );
-    h.Write();
+  //   h.SetEntries( 1 );
+  //   h.Write();
 
-  }
+  // }
 
 }
 
