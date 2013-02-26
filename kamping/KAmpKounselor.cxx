@@ -27,6 +27,8 @@ KAmpKounselor::KAmpKounselor(void)
 {
   fInput = 0;
   fOutput = 0;
+  fStatusCheckPercentage = 0.10;
+  fReport = 2;
 }
 
 KAmpKounselor::~KAmpKounselor(void)
@@ -66,10 +68,6 @@ Bool_t KAmpKounselor::Scout( int maxNumEvents)
   if(!CheckSetup()) return false;
   
   fInput->cd();
-  int numEvents = fInput->GetEntries();
-  if(maxNumEvents > -1) numEvents = maxNumEvents;
-
-  KRawEvent *e = (KRawEvent *)fInput->GetEvent();
   
   vector<KAmpSite *>::iterator it;
   Bool_t bNeedScouting = false;
@@ -88,9 +86,16 @@ Bool_t KAmpKounselor::Scout( int maxNumEvents)
   
   //loop through the raw data and pass it to the 
   //kampsites so they may KAmpSite::ScoutKampSite()
-  //will need to loop through the data here in order to build up the noise power spectrum
-  //to be used in the optimal filter
   if(bNeedScouting){
+    
+    int numEvents = fInput->GetEntries();
+    if(maxNumEvents > -1) {
+      cout << "KAmpKounselor. Only scouting the first " << maxNumEvents << " events in the file" << endl; 
+      numEvents = maxNumEvents;
+    }
+
+    KRawEvent *e = (KRawEvent *)fInput->GetEvent();
+
     for(int i = 0; i < numEvents; i++){
       fInput->GetEntry(i);
       for(int j = 0; j < e->GetNumBoloPulses(); j++){
@@ -124,7 +129,7 @@ Bool_t KAmpKounselor::Prepare()
   return true;
 }
 
-Bool_t KAmpKounselor::Run( int maxNumEvents)
+Int_t KAmpKounselor::Run( int maxNumEvents)
 {
   //loop through the data, passing data to the KAmpSites in order to calculate
   //pulse amplitudes and other characteristics of each event.
@@ -138,7 +143,12 @@ Bool_t KAmpKounselor::Run( int maxNumEvents)
   
   fInput->cd();
   int numEvents = fInput->GetEntries();
-  if(maxNumEvents > -1) numEvents = maxNumEvents;
+  if(maxNumEvents > -1) {
+    cout << "KAmpKounselor. Only processing the first " << maxNumEvents << " events in the file" << endl; 
+    numEvents = maxNumEvents;
+  }
+
+  int checkpoint = numEvents*fStatusCheckPercentage;
   
   for(int ii = 0; ii < numEvents; ii++){
     fInput->GetEntry(ii);
@@ -153,6 +163,7 @@ Bool_t KAmpKounselor::Run( int maxNumEvents)
     KRawMuonVetoSysRecord *muonAmp = (KRawMuonVetoSysRecord *)eventOutput->GetMuonVetoSystemRecord();
     *muonAmp = *muonRaw;
 
+
     for(int j = 0; j < eventInput->GetNumBolos(); j++){
       
       KRawBolometerRecord *boloRaw = (KRawBolometerRecord *)eventInput->GetBolo(j);      
@@ -165,12 +176,32 @@ Bool_t KAmpKounselor::Run( int maxNumEvents)
     }
     
     fOutput->Fill();
+
+    for( it = fKampSites.begin(); it < fKampSites.end(); it++){      
+      if (fReport >= 2 && ii % checkpoint == 0){
+        cout << "KAmpKounselor. calling ReportStatus. Reached event: " << ii << " out of " << numEvents <<  " events to be processed" << endl;
+        (*it)->ReportStatus();    
+      }
+    }
+
+
   }
   
   int writeReturn = fOutput->Write();
   fOutput->Close();
   fInput->Close();
+
   return writeReturn;
+}
+
+
+void KAmpKounselor::ReportResults(void)
+{
+  vector<KAmpSite *>::iterator it;
+
+  for( it = fKampSites.begin(); it < fKampSites.end(); it++){
+      (*it)->ReportResults();
+  }
 }
 
 
@@ -184,5 +215,11 @@ Bool_t KAmpKounselor::RunKamp(const char* inputRawKDataFile, const char* outputA
   
   if(!Prepare()) return false;
   
-  return Run(maxNumEvents);
+  Int_t retVal = Run(maxNumEvents);
+
+  if(fReport >= 1)
+    ReportResults();
+
+  return retVal;
 }
+
