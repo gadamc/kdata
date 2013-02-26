@@ -94,14 +94,23 @@ def uploadFile(fname, uri, dbname):
     del newdoc['date']
     #reformat the date to a single dictionary
     newdoc['date_valid'] = {} 
-    for dk in ['year', 'month', 'day']:
+    for dk in ['year', 'month', 'day', 'hour', 'minute']:
       try:
         newdoc['date_valid'][dk] = newdoc[dk]
         del newdoc[dk]  
       except: pass
 
     yy,mm,dd = newdoc['date_valid']['year'], newdoc['date_valid']['month'], newdoc['date_valid']['day']
-    validdate = datetime.datetime(yy,mm,dd,tzinfo=pytz.utc)
+    try:
+      hh = newdoc['date_valid']['hour']
+    except KeyError:
+      hh = 0
+    try: 
+      min =  newdoc['date_valid']['minute']
+    except KeyError:
+      min = 0
+
+    validdate = datetime.datetime(yy,mm,dd,hh, min, tzinfo=pytz.utc)
     newdoc['date_valid_unixtime'] = calendar.timegm( validdate.utctimetuple() )
     newdoc['date_valid_isoformat'] = validdate.isoformat() 
 
