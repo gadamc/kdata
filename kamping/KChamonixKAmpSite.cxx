@@ -439,6 +439,8 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   //automatically with the default parameters. If you wish to have different parameters (such as a different alpha 
   //parameter for the Tukey Window), you should first call CreateHeat/IonWindow(size, alpha). 
   //
+  //This method skips channels that do not have a pulse template set (see SetTemplate())
+  //
 
   KRawBolometerRecord *bolo = pRaw->GetBolometerRecord();
   if(bolo->IsVetoRecord())
@@ -446,6 +448,9 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
 
   if(pRaw->GetPulseLength() == 0) { return false;}
 
+  if(fNoiseSpectra.find(pRaw->GetChannelName()) == fNoiseSpectra.end()) {
+      return;
+    };  //skip if we don't have a noise spectr
 
   //the preprocessing, windowing, and peak detection tools all depend upon if this channel
   //is a heat channel, or an ionization channel and its bb version number
