@@ -6,6 +6,7 @@ import copy
 import math
 import KDataPy.exceptions
 import ROOT
+plt.ion()
 
 try:
   ROOT.gSystem.Load('libkds')
@@ -67,7 +68,13 @@ def _KptaProc_output_iter_index__(self):
     i += 1
 _libpyroot.MakeRootClass( "KPtaProcessor" ).output_index    = property(_KptaProc_output_iter_index__)
 
-plt.ion()
+
+def _KPulseAnalysisChain_iter__(self):
+  i = 0
+  while i < self.GetNumProcessors():
+    yield self.GetProcessor()                   
+_libpyroot.MakeRootClass( "KPulseAnalysisChain" ).__iter__    = _KPulseAnalysisChain_iter__
+
 
 class KDataUtilQuitLoop(Exception):
   def __init__(self, value):
