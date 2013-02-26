@@ -1793,7 +1793,11 @@ void KSamba2KData::AddPulseInformationFromHeader(KRawBoloPulseRecord *p)
           p->SetVoltage(chan->GetPolarCentre());
           p->SetGain(chan->GetGainCentre());
         }
-        
+
+        else if (pulseChannelName.Contains("veto")){
+          p->SetBoloBoxVersion(0.0);
+        }
+
         //set properties for the bolometer associated with this pulse!  
         //this is kind of a weird place to do it and we could have 
         //problems if the data isn't entered into the samba configuration properly
