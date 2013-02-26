@@ -27,7 +27,7 @@ using namespace std;
 KBlackForestKAmpSite::KBlackForestKAmpSite(void)
 {
   SetName("KBlackForestKAmpSite");
-
+  SetTitle("KBlackForestKAmpSite");
 }
 
 KBlackForestKAmpSite::~KBlackForestKAmpSite(void)

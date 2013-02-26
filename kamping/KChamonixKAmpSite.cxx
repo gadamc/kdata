@@ -69,7 +69,8 @@ using namespace std;
 KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //set the fPulseTemplateShifter pulse locations to NULL so we set them later.
 {
   SetName("KChamonixKAmpSite");
-  
+  SetTitle("KChamonixKAmpSite");
+
   fEraPeakFinderOrderHeat_default = 3;
   fEraPeakFinderNumRmsHeat_default = 5.0;
   fHeatPeakDetector.SetOrder( fEraPeakFinderOrderHeat_default );
@@ -812,6 +813,8 @@ void KChamonixKAmpSite::WriteExtraData(TDirectory *dd)
     cerr << "KChamonixKAmpSite::WriteExtraData received null pointer." << endl;
     return;
   }
+
+  this->Write();  //write this object to disk
 
   std::map<std::string, std::vector<double> >::iterator it;
 

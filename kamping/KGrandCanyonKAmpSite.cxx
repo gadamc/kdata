@@ -27,7 +27,7 @@ using namespace std;
 KGrandCanyonKAmpSite::KGrandCanyonKAmpSite(void)
 {
   SetName("KGrandCanyonKAmpSite");
- 
+  SetTitle("KGrandCanyonKAmpSite");
 }
 
 KGrandCanyonKAmpSite::~KGrandCanyonKAmpSite(void)

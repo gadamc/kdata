@@ -57,7 +57,7 @@ using namespace std;
 KLibertyBellKAmpSite::KLibertyBellKAmpSite(void)
 {
   SetName("KLibertyBellKAmpSite");
- 
+  SetTitle("KLibertyBellKAmpSite");
 }
 
 KLibertyBellKAmpSite::~KLibertyBellKAmpSite(void)
