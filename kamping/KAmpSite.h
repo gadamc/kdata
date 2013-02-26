@@ -33,6 +33,8 @@ public:
   virtual Bool_t PrepareKampSite(void){return true;}
   virtual Bool_t ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent *e) = 0;  //should call this method first. Use this to scan through data to estimate noise...etc..
   virtual Bool_t NeedScout(void) = 0;
+  virtual void ReportStatus(void){}
+  virtual void ReportResults(void){}
   virtual void SetTRefLinksForKAmpEvent(KPulseAnalysisRecord *rec, KAmpBolometerRecord *boloAmp, KAmpBoloPulseRecord *pAmp);
   const char * GetName(void) const {return fName.c_str();}
   virtual void SetName(const char* name){fName = name;}
