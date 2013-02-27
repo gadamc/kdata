@@ -77,6 +77,7 @@ Bool_t KAmpKounselor::Scout( int maxNumEvents)
   
   if(!CheckSetup()) return false;
   
+  cout << "KAmpKounselor::Scout" << endl;
   fInput->cd();
   
   vector<KAmpSite *>::iterator it;
@@ -129,6 +130,8 @@ Bool_t KAmpKounselor::Prepare()
 
   if(!CheckSetup()) return false;
 
+  cout << "KAmpKounselor::Prepare" << endl;
+
   vector<KAmpSite *>::iterator it;
 
   for( it = fKampSites.begin(); it < fKampSites.end(); it++){
@@ -146,6 +149,8 @@ Int_t KAmpKounselor::Run( int maxNumEvents)
   
   if(!CheckSetup()) return false;
     
+  cout << "KAmpKounselor::Run" << endl;
+
   KAmpEvent *eventOutput = (KAmpEvent *)fOutput->GetEvent();
   KRawEvent *eventInput = (KRawEvent *)fInput->GetEvent();
   
@@ -211,6 +216,9 @@ Int_t KAmpKounselor::Run( int maxNumEvents)
 
 void KAmpKounselor::ReportResults(void)
 {
+
+  cout << "KAmpKounselor::ReportResults" << endl;
+  
   vector<KAmpSite *>::iterator it;
 
   for( it = fKampSites.begin(); it < fKampSites.end(); it++){
