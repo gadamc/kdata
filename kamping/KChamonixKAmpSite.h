@@ -19,6 +19,7 @@
 #include "KWindow.h"
 #include "KEraPeakFinder.h"
 #include "KPulseShifter.h"
+#include "KOrderThresholdFinder.h"
 #include <map>
 #include <string>
 #include <set>
@@ -90,6 +91,10 @@ public:
   KEraPeakFinder& GetHeatPeakDetector(void){return fHeatPeakDetector;}
   KEraPeakFinder& GetIonPeakDetector(void){return fIonPeakDetector;}
   KPulseShifter& GetPulseTemplateShifter(void){return fPulseTemplateShifter;}
+  KOrderThresholdFinder& GetOrderThresholdFinder(void){return fOrderThresholdFinder;}
+  UInt_t GetOperaGlitchNumBinsThreshold(void){return fOperaGlitchNumBinsThreshold;}
+  void SetOperaGlitchNumBinsThreshold(UInt_t val){fOperaGlitchNumBinsThreshold = val;}
+
   
   void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.75);
   void CreateIonWindow(unsigned int pulseSize, double tukeyWindowParam = 0.5);
@@ -104,7 +109,9 @@ private:
   
   KEraPeakFinder fHeatPeakDetector;  //ERA Peak Finder
   KEraPeakFinder fIonPeakDetector;  //ERA Peak Finder
- 
+  KOrderThresholdFinder fOrderThresholdFinder; //used to detect "Opera glitches" in the raw pulses. 
+  UInt_t fOperaGlitchNumBinsThreshold; 
+
   Bool_t fScoutData;
 
   KPulseAnalysisChain* fHeatPreProcessor;  //by default is just a baseline removal

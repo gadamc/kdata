@@ -60,7 +60,7 @@
 #include "KBaselineRemoval.h"
 #include "KPatternRemoval.h"
 #include "KPulsePolarityCalculator.h"
-#include "TH1I.h"
+#include "TH1D.h"
 #include <algorithm>
 #include <iostream>
 
@@ -107,7 +107,7 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
   fIonWindow = 0;
   // fFirstPulse = true;
   fScoutData = true;
-
+  fOperaGlitchNumBinsThreshold = 5;
   fWriteExtraData = true;
 
 }
@@ -315,10 +315,6 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
      }
 
   }
-    
-  //If there ever needs to be any "cross-talk" between the analysis of the ionization channels and
-  //the heat channels, THIS is the place to do it!
-  //for now, all channels are treated independently. 
 
 
   //now for the heat pulses.
@@ -357,16 +353,14 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
     fOptKamper.SetPulseTemplateShiftFromPreTrigger( GetTemplateShift(pRaw->GetChannelName()) );
     fOptKamper.SetAmplitudeEstimatorSearchRangeMax(150); //hard coded... this is bad. 
     fOptKamper.SetAmplitudeEstimatorSearchRangeMin(-2);
-    fOptKamper.SetIonPulseStartTime(PeakPos);
+    fOptKamper.SetIonPulseStartTime(PeakPos);  
 
     //perform the optimal filtering
     map<string, KResult> resMap = fOptKamper.MakeKamp(pRaw);
     
     FillResults(rec, resMap, pRaw );
 
-    //fill heat channel specific results...
-    fHeatPeakDetector.SetInputPulse( fHeatWindow);
-    if(fHeatPeakDetector.RunProcess() )    rec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); 
+    
 
 
   }
@@ -390,6 +384,12 @@ void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResu
   if(resMap.find("optAmpAtMinChi2") != resMap.end())                      rec->SetExtra(resMap["optAmpAtMinChi2"].fValue, 3);
   if(resMap.find("pulseAmpAtOptimalAmpPeakPosition") != resMap.end())     rec->SetExtra(resMap["pulseAmpAtOptimalAmpPeakPosition"].fValue, 4);
   if(resMap.find("pulseAmpAtMinChi2Position") != resMap.end())            rec->SetExtra(resMap["pulseAmpAtMinChi2Position"].fValue, 5);
+
+  //fill heat channel specific results...
+  if(pRaw->GetIsHeatPulse()){
+    fHeatPeakDetector.SetInputPulse( fHeatWindow);
+    if(fHeatPeakDetector.RunProcess() )    rec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); 
+  }
 
   if(resMap.find("risetime") != resMap.end())       rec->SetRisetime(resMap["risetime"].fValue);
   if(resMap.find("pulseWidth") != resMap.end())     rec->SetPulseWidth(resMap["pulseWidth"].fValue);
@@ -425,6 +425,13 @@ void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResu
   }
   rec->SetExtra(noiseIndicator, 14); 
 
+
+  if( !pRaw->GetIsHeatPulse()){
+    fOrderThresholdFinder.SetInputPulse( (std::vector<short> &)pRaw->GetTrace() )
+    if(fOrderThresholdFinder.RunProcess())
+      rec->SetExtra(fOrderThresholdFinder.GetPeakBins().size(), 15);
+  }
+
   rec->SetName(GetName());
 }
 
@@ -447,7 +454,7 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
 
   if(pRaw->GetPulseLength() == 0) { return false;}
 
-  if(fNoiseSpectra.find(pRaw->GetChannelName()) == fNoiseSpectra.end()) {
+  if(fTemplateSpectra.find(pRaw->GetChannelName()) == fTemplateSpectra.end()) {
       return true;
     };  //skip if we don't have a noise spectr
 
@@ -505,12 +512,24 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
 
 
   //the following code:
+  //  checks ionization channels for 'opera glitches'
   //  calls the preprocessor - usually baseline/linear removal and pattern removal
   //  looks for noise with the era peak finder
   //  if it is noise:
   //    windows the event
   //    calculates the power spectrum 
   //    adds it to the running average for that channel
+
+  if( !pRaw->GetIsHeatPulse()){
+    fOrderThresholdFinder.SetInputPulse( (std::vector<short> &)pRaw->GetTrace() )
+    if(!fOrderThresholdFinder.RunProcess()){
+      cout << "KChamonixKAmpSite::ScoutKampSite. the fOrderThresholdFinder failed. pulse channel: " << pRaw->GetChannelName() << endl;
+      return false;
+    }
+
+    if(fOrderThresholdFinder.GetPeakBins().size() >= fOperaGlitchNumBinsThreshold) {return false;} //we found a "glitch", so this is not noise.
+  }
+
 
   thePreProc->SetInputPulse( (std::vector<short> &)pRaw->GetTrace());
   if(!thePreProc->RunProcess()){
@@ -818,7 +837,7 @@ void KChamonixKAmpSite::WriteExtraData(TDirectory *dd)
     return;
   }
 
-  //for convenience, extract the noise spectra and make histograms
+  //extract the noise spectra and place them into histograms
   std::map<std::string, std::vector<double> >::iterator it;
 
   TDirectory *nd = dd->mkdir("noisespectra");
@@ -830,54 +849,54 @@ void KChamonixKAmpSite::WriteExtraData(TDirectory *dd)
 
   nd->cd();
   for(it = fNoiseSpectra.begin(); it != fNoiseSpectra.end(); it++){
-    string histname = it->first + "_noise";
+    string histname = it->first;
 
-    TH1I h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
+    TH1D h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
     for (unsigned int i = 0; i <  it->second.size(); i++)
       h.SetBinContent(i+1, it->second[i]);
 
     h.SetEntries( GetNumNoiseEventsFound(it->first.c_str()) );
-    h.Write();
+    h.Write(histname.c_str(), TH1D::kWriteDelete);
 
   }
     
-  // nd = dd->mkdir("templatefft");
+  nd = dd->mkdir("templatefft");
 
-  // if(nd == 0){
-  //   cerr << "unable to make templatefft directory in KChamonixKAmpSite::WriteExtraData" << endl;
-  //   return;
-  // }
-  // nd->cd();
-  // for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
-  //   string histname = it->first + "_template";
+  if(nd == 0){
+    cerr << "unable to make templatefft directory in KChamonixKAmpSite::WriteExtraData" << endl;
+    return;
+  }
+  nd->cd();
+  for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
+    string histname = it->first;
 
-  //   TH1I h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
-  //   for (unsigned int i = 0; i <  it->second.size(); i++)
-  //     h.SetBinContent(i+1, it->second[i]);
+    TH1D h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
+    for (unsigned int i = 0; i <  it->second.size(); i++)
+      h.SetBinContent(i+1, it->second[i]);
 
-  //   h.SetEntries( 1 );
-  //   h.Write();
+    h.SetEntries( 1 );
+    h.Write(histname.c_str(), TH1D::kWriteDelete);
 
-  // }
+  }
 
-  // nd = dd->mkdir("optimalfilter");
+  nd = dd->mkdir("optimalfilter");
 
-  // if(nd == 0){
-  //   cerr << "unable to make optimalfilter directory in KChamonixKAmpSite::WriteExtraData" << endl;
-  //   return;
-  // }
-  // nd->cd();
-  // for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
-  //   string histname = it->first + "_optfilter";
+  if(nd == 0){
+    cerr << "unable to make optimalfilter directory in KChamonixKAmpSite::WriteExtraData" << endl;
+    return;
+  }
+  nd->cd();
+  for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
+    string histname = it->first;
 
-  //   TH1I h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
-  //   for (unsigned int i = 0; i <  it->second.size(); i++)
-  //     h.SetBinContent(i+1, it->second[i]);
+    TH1D h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
+    for (unsigned int i = 0; i <  it->second.size(); i++)
+      h.SetBinContent(i+1, it->second[i]);
 
-  //   h.SetEntries( 1 );
-  //   h.Write();
+    h.SetEntries( 1 );
+    h.Write(histname.c_str(), TH1D::kWriteDelete);
 
-  // }
+  }
 
 }
 
