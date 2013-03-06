@@ -1,3 +1,82 @@
+'''
+  This module defines classes to generate Heat and BBv2 Ionization signals 
+  (BBv1 pulses could be easily added if needed) They can return the value 
+  at a particular time, or they may be used to generate a list or numpy array
+  of numerical values. Additionally, this module defines two classes to produce
+  noise. The GaussianNoise class produces a randomly distributed, but
+  independent, set of values about zero and of a particular width. While, the 
+  ArbitraryNoise class will randomly generare a noise pulse based on an input 
+  noise power spectrum.  (For technical reasons ArbitraryNoise doesn't inherit 
+  directly from Signal, but it does behave similarly.)   
+  These classes are iterable and can be used directly with Numpy and 
+  MatPlotLib. That is, you can called
+
+  import KDataPy.signals
+
+  heat = KDataPy.signals.HeatSignal()
+  heat.parameters[1] = -1500 #by default, this is -1, which is fine for
+                             #templates, but should be larger to see 
+                             #above typical noise levels
+
+  #use iteration to make a list
+  pulse = []
+  for val in heat:
+    pulse.append(val)
+
+  #and get a numpy array
+
+  pulse = heat()  # "call" the instance with the () to return a numpy array
+
+  #and plot with MatPlotLib
+
+  matplotlib.pyplot.plot(heat)
+
+  These classes have been optimized for speed (in case you repeatedly want
+  to generate the same pulse), by using a standard Python 'memoization' 
+  decorator cache. The values are cached the first time they are calculated 
+  so that they are not calculated again. 
+
+  This means that the second time you call 
+
+  pulse = heat()
+
+  the values are just retrieved from the cache. (However, they are repacked 
+  into a numpy array, which takes time.)  
+
+  If you change the value of the parameters, however, the pulse will be 
+  recalculated.
+
+  Additionally, you can use the object call to return just a single 
+  value of the signal. That is, 
+  
+  heat(10) 
+
+  returns the heat at time = 10. 
+
+
+  Signals can also be added, subtraced and multipled with the '+' , '-' 
+  and '*' operators. These operations return a numpy array. 
+
+  noise = KDataPy.signals.GaussianNoise(5)  #instantiate a GaussianNoise 
+                                            #object of width = 5
+
+  signal = noise + heat
+  plt.plot(signal)
+
+  Finally, the ArbitraryNoise class will randomly generate a noise pulse
+  given an input power spectrum. 
+
+  Say 'noise_power' is a list-like object that is the average power 
+  spectrum for a particular channel. Then you would use it to 
+  instantiate an ArbitraryNoise object.
+
+  noise = KDataPy.signals.ArbitraryNoise( noise_power )
+
+  plt.plot(heat + noise)
+
+
+'''
+
 import functools
 import collections
 import math
@@ -39,49 +118,8 @@ class memoized(object):
 class Signal(object):
 
   '''
-    Base class for Signals (HeatSignal and BBv2IonSignal.. BBv1IonSignal could be easily added following the source code)
+    Base class for Signals (HeatSignal and BBv2IonSignal)
     You shouldn't instantiate this class directly.
-
-    These classes model Heat and BBv2 Ionization Signals. They can return the value at a particular time, 
-    or they may be used to generate a list or numpy array of numerical values. 
-
-    These classes are iterable and can be used directly with Numpy and MatPlotLib. That is, you can called
-
-    import KDataPy.signals
-
-    h = KDataPy.signals.HeatSignal()
-
-    pulse = []
-    for val in h:
-      pulse.append(val)
-
-    #and
-
-    pulse = h.__array__()  # pulse is a numpy.array type.
-
-    #and
-
-    matplotlib.pyplot.plot(h)
-
-    In order to make these classes fast for subsequent calculation of the signal values (in case you repeatedly want
-    to generate the same pulse), a standard Python 'memoization' decorator caches the values so that they are not calculated again.
-    This means that the second time you call 
-
-    pulse = numpy.array(h)
-
-    the values are actually not recalculated, but rather retrieved from the cache. (However, they are repacked into a numpy array, which takes time.)
-
-    While convenient for making subsequent pulse generation very fast, this is slightly inconvenient if you change the parameters of the Signal.
-    Due to the caching, you must call the .reset() function if you want to change a parameter.
-
-    h.parameters[1] = -4.0
-    h.reset()
-
-    Otherwise, h.val(), h.__iter__, and h.__array__ will returned the cached values for a pulse calculated with the previous set of parameters. 
-
-    There's probably a nice programmatic way to fix this, so feel free to do so if you know how.
-    If not, just make sure to call h.reset() before you try to regenerate a pulse with new parameters.
-
   '''
 
   def __init__(self, length = 8192, time_per_index = 1, parameters = None):
@@ -91,7 +129,7 @@ class Signal(object):
     self.parameters = parameters
 
 
-  def val(self, time):
+  def _val(self, time):
     if isinstance(time, int) is False and isinstance(time, float) is False and isinstance(time, long) is False:
       raise TypeError('input must be a number')
     if time < 0 or time/self.time_per_index > self.length:
@@ -101,7 +139,7 @@ class Signal(object):
   def __iter__(self):
     i = 0
     while i < self.length:
-      yield self.val(i * self.time_per_index)                   
+      yield self._val(i * self.time_per_index)                   
       i += 1
 
 
@@ -111,8 +149,7 @@ class Signal(object):
 
   def __getattribute__(self, name):
     if name == 'parameters':
-      self.reset()
-      
+      self._reset()
     return object.__getattribute__(self, name)
 
 
@@ -134,16 +171,33 @@ class Signal(object):
     except:
       return NotImplemented
 
+  def __call__(self, time = None):
+    if time is None:
+      return self.__array__()
+    
+    return self._val(time)
 
-  def reset(self):
-    self.val.reset()
+  def __len__(self):
+    return self.length
+
+  def _reset(self):
+    self._val.reset()
 
 
 
 
 class HeatSignal(Signal):
   '''
-    read the base-class (Signal) docstring    
+    This class defines a Heat signal using the standard definition with
+    a finite rise-time, followed by a double exponential tail. 
+
+    Read this module's docstring. 
+
+    Note that by default, the time_per_index for Heat pulses is 
+    2.016 ms. That means that the parameters (0, 2, 3, 5)
+    used in the '_val' method should also be in units of 'ms'. The 
+    length of the pulse, by default, is 512 points.
+
   '''
 
   def __init__(self, length = 512, time_per_index = 2.016, parameters = None):
@@ -155,7 +209,7 @@ class HeatSignal(Signal):
     
 
   @memoized
-  def val(self, time):
+  def _val(self, time):
     '''
       if time < par[0]: 
           return 0  
@@ -163,19 +217,22 @@ class HeatSignal(Signal):
       return par[1]*(1 - math.exp(-(time-par[0])/par[2]))*(math.exp(-(time-par[0])/par[3]) + par[4]*math.exp(-(time-par[0])/par[5]))
     '''
 
-    Signal.val(self, time)
+    Signal._val(self, time)
 
     if time < self.parameters[0]: 
       return 0  
 
-    return self.parameters[1]*(1 - math.exp(-(time-self.parameters[0])/self.parameters[2]))*(math.exp(-(time-self.parameters[0])/self.parameters[3]) + self.parameters[4]*math.exp(-(time-self.parameters[0])/self.parameters[5]))
+    pt = time-self.parameters[0]  #pt = post trigger
+
+    return self.parameters[1]*(1 - math.exp(-( pt )/self.parameters[2]))*(math.exp(-( pt )/self.parameters[3]) + self.parameters[4]*math.exp(-( pt )/self.parameters[5]))
 
 
 
 
 class BBv2IonSignal(Signal):
   '''
-    read the base-class (Signal) docstring  
+    Defines a BBv2 ionization signal (a step function)
+
   '''
 
   def __init__(self, length = 8192, time_per_index = 1.0, parameters = None):
@@ -187,14 +244,14 @@ class BBv2IonSignal(Signal):
     
 
   @memoized
-  def val(self, time):
+  def _val(self, time):
     '''
     if time < par[0]: 
       return 0  
     
     return par[1]
     '''
-    Signal.val(self, time)
+    Signal._val(self, time)
 
     if time < self.parameters[0]: 
       return 0  
@@ -206,7 +263,8 @@ class BBv2IonSignal(Signal):
 
 class GaussianNoise(Signal):
   '''
-    This inherits from Signal, but doesn't use 'memoize'. So, you don't need to call .reset(). 
+    This inherits from Signal, but doesn't use 'memoize'. 
+
     This is just gauassian noise about zero with a particular width
   '''
   def __init__(self, width, length = 8192):
@@ -214,20 +272,35 @@ class GaussianNoise(Signal):
     self.width = width
 
   #don't use memoize since I want to 
-  def val(self, index):
+  def _val(self, index):
     '''
     '''
-    Signal.val(self, index)
+    Signal._val(self, index)
     return random.gauss(0,self.width)
 
 
 
 
 
-class ArbitraryNoise(Signal):
+class ArbitraryNoise(object):
   '''
-    This does not inherit from Signal, but is iterable and numpy array compatible. You must call .generate()
-    to create a new power spectrum based upon the input noise_power.  
+    This does not inherit from Signal, but is iterable and numpy array compatible. It acts like
+    it inherits from Signal, so you can use it similarly. 
+    
+    For example:
+
+    noise = KDataPy.signals.ArbitraryNoise(noise_power)
+    heat = KDataPy.signals.HeatSignal()
+    heat.parameters[1] = -500
+
+    plt.plot(heat + noise)
+
+    You must call .generate() to create a new power spectrum based upon the input noise_power.  
+
+    noise.generate()
+
+    plt.plot(heat + noise)
+
   '''
 
   def __init__(self, noise_power):
@@ -235,11 +308,6 @@ class ArbitraryNoise(Signal):
       noise_power should be 'list-like'. That is, it can be a numpy array, list or tuple.
       It should also be of length N/2 + 1, where N is the length of the pulse and should be even. 
     '''
-    # import ROOT
-    # import KDataPy.util 
-    # ROOT.gSystem.Load('libkpta')
-    # self.hc2r = ROOT.KHalfComplexToRealDFT()
- 
     self.noise_power = noise_power
     self.generate()    
 
@@ -268,6 +336,11 @@ class ArbitraryNoise(Signal):
     #of python to C/kdata here and the extra for-loop. If this was all run in C/C++, I'm believe KData would just as fast
     #when optimized to handle memory in the most efficient way. I think numpy is written in FORTRAN, so it could actually be faster than C
     
+    # import ROOT
+    # import KDataPy.util 
+    # ROOT.gSystem.Load('libkpta')
+    # self.hc2r = ROOT.KHalfComplexToRealDFT()
+
     # real = numpy.empty(no2p1)
 
     # real[0] = random.gauss(0, math.sqrt(self.noise_power[0]/2.0))
@@ -329,4 +402,31 @@ class ArbitraryNoise(Signal):
 
   def __array__(self):
     return self.noise_instance
+
+  def __add__(self, rhs):
+    try:
+      return self.__array__() + rhs.__array__()
+    except:
+      return NotImplemented
+
+  def __sub__(self, rhs):
+    try:
+      return self.__array__() - rhs.__array__()
+    except:
+      return NotImplemented
+
+  def __mul__(self, rhs):
+    try:
+      return self.__array__() * rhs.__array__()
+    except:
+      return NotImplemented
+
+  def __call__(self, time = None):
+    if time is None:
+      return self.__array__()
+    
+    return self.__array__()[time]
+
+  def __len__(self):
+    return len(self.noise_instance)
 
