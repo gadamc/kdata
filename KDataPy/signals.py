@@ -198,6 +198,12 @@ class HeatSignal(Signal):
     used in the '_val' method should also be in units of 'ms'. The 
     length of the pulse, by default, is 512 points.
 
+
+    Here is the code that generates the signal
+
+    if time < par[0]: return 0  
+    else: return par[1]*(1 - math.exp(-(time-par[0])/par[2]))*(math.exp(-(time-par[0])/par[3]) + par[4]*math.exp(-(time-par[0])/par[5]))
+
   '''
 
   def __init__(self, length = 512, time_per_index = 2.016, parameters = None):
@@ -233,6 +239,11 @@ class BBv2IonSignal(Signal):
   '''
     Defines a BBv2 ionization signal (a step function)
 
+    if time < par[0]: 
+      return 0  
+    
+    return par[1]
+    
   '''
 
   def __init__(self, length = 8192, time_per_index = 1.0, parameters = None):
