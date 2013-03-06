@@ -243,7 +243,7 @@ class BBv2IonSignal(Signal):
       return 0  
     
     return par[1]
-    
+
   '''
 
   def __init__(self, length = 8192, time_per_index = 1.0, parameters = None):
@@ -306,7 +306,7 @@ class ArbitraryNoise(object):
 
     plt.plot(heat + noise)
 
-    You must call .generate() to create a new power spectrum based upon the input noise_power.  
+    You must call .generate() to create a new noise pulse based upon the input noise_power.  
 
     noise.generate()
 
