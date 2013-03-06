@@ -84,7 +84,7 @@ class Signal(object):
 
   '''
 
-  def __init__(self, length = 8096, time_per_index = 1, parameters = None):
+  def __init__(self, length = 8192, time_per_index = 1, parameters = None):
 
     self.length = length
     self.time_per_index = time_per_index
@@ -151,7 +151,7 @@ class BBv2IonSignal(Signal):
     read the base-class (Signal) docstring  
   '''
 
-  def __init__(self, length = 8096, time_per_index = 1.0, parameters = None):
+  def __init__(self, length = 8192, time_per_index = 1.0, parameters = None):
     Signal.__init__(self, length, time_per_index)
 
     if parameters is None:
@@ -182,7 +182,7 @@ class GaussianNoise(Signal):
     This inherits from Signal, but doesn't use 'memoize'. So, you don't need to call .reset(). 
     This is just gauassian noise about zero with a particular width
   '''
-  def __init__(self, width, length = 8096):
+  def __init__(self, width, length = 8192):
     Signal.__init__(self, length, 1.0)
     self.width = width
 
@@ -277,7 +277,7 @@ class ArbitraryNoise(Signal):
 
     # for i in range(1,  n/2 ):
     #   width = math.sqrt(self.noise_power[i]/2.0)
-    #   real[i], imag[i-1] = random.gauss(0, width), random.gauss(0, width)
+    #   real[i], imag[i-1] = random.gauss(0, width  ), random.gauss(0, width)
     #   noise_fft[i] = numpy.complex( real[i], imag[i-1])
     #   noise_fft[n - i] = noise_fft[i].conjugate()
 
