@@ -227,7 +227,8 @@ class ArbitraryNoise(Signal):
     noise_fft[ n/2 ] = numpy.complex( random.gauss(0, math.sqrt(self.noise_power[ n/2 ]/2.0)) , 0)
 
     for i in range(1,  n/2 ):
-      noise_fft[i] = numpy.complex(random.gauss(0, math.sqrt(self.noise_power[i]/2.0)), random.gauss(0, math.sqrt(self.noise_power[i]/2.0)))
+      width = math.sqrt(self.noise_power[i]/2.0)
+      noise_fft[i] = numpy.complex(random.gauss(0, width), random.gauss(0, width))
       noise_fft[n - i] = noise_fft[i].conjugate()
 
     self.noise_instance = n * numpy.fft.ifft( noise_fft ).real  #this should be entirely real
@@ -236,9 +237,9 @@ class ArbitraryNoise(Signal):
 
 
     #here is the version using KData's KHalfComplexToRealDFT()
-    #this is about 4 times as slow as using the code above. however, this is due to the sub-optimal interfaceing 
-    #of python to C/kdata here and the extra for-loop. If this was all run in C/C++, I'm sure KData would be faster
-    #when optimized to handle memory in the most efficient way.
+    #this is about ~4 times as slow as using the code above. however, this is due to the sub-optimal interfaceing 
+    #of python to C/kdata here and the extra for-loop. If this was all run in C/C++, I'm believe KData would just as fast
+    #when optimized to handle memory in the most efficient way. I think numpy is written in FORTRAN, so it could actually be faster than C
     
     # real = numpy.empty(no2p1)
 
@@ -248,7 +249,8 @@ class ArbitraryNoise(Signal):
     # imag = numpy.empty(no2p1-2)
 
     # for i in range(1,  n/2 ):
-    #   real[i], imag[i-1] = random.gauss(0, math.sqrt(self.noise_power[i]/2.0)), random.gauss(0, math.sqrt(self.noise_power[i]/2.0))
+    #   width = math.sqrt(self.noise_power[i]/2.0)
+    #   real[i], imag[i-1] = random.gauss(0, width), random.gauss(0, width)
   
     # hcarray = numpy.concatenate( (real,imag[::-1]) )  #puts the real/imag in half-complex array format
     # self.hc2r.SetInputPulse(hcarray, len(hcarray))
@@ -274,7 +276,8 @@ class ArbitraryNoise(Signal):
     # noise_fft[ n/2 ] = numpy.complex( real[ n/2 ] , 0)
 
     # for i in range(1,  n/2 ):
-    #   real[i], imag[i-1] = random.gauss(0, math.sqrt(self.noise_power[i]/2.0)), random.gauss(0, math.sqrt(self.noise_power[i]/2.0))
+    #   width = math.sqrt(self.noise_power[i]/2.0)
+    #   real[i], imag[i-1] = random.gauss(0, width), random.gauss(0, width)
     #   noise_fft[i] = numpy.complex( real[i], imag[i-1])
     #   noise_fft[n - i] = noise_fft[i].conjugate()
 
