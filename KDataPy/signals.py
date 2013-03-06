@@ -67,7 +67,7 @@ class Signal(object):
     to generate the same pulse), a standard Python 'memoization' decorator caches the values so that they are not calculated again.
     This means that the second time you call 
 
-    pulse = h.__array__()
+    pulse = numpy.array(h)
 
     the values are actually not recalculated, but rather retrieved from the cache. (However, they are repacked into a numpy array, which takes time.)
 
@@ -88,6 +88,7 @@ class Signal(object):
 
     self.length = length
     self.time_per_index = time_per_index
+    self.parameters = parameters
 
 
   def val(self, time):
@@ -106,6 +107,32 @@ class Signal(object):
 
   def __array__(self):
     return numpy.array([v for v in self])
+
+
+  def __getattribute__(self, name):
+    if name == 'parameters':
+      self.reset()
+      
+    return object.__getattribute__(self, name)
+
+
+  def __add__(self, rhs):
+    try:
+      return self.__array__() + rhs.__array__()
+    except:
+      return NotImplemented
+
+  def __sub__(self, rhs):
+    try:
+      return self.__array__() - rhs.__array__()
+    except:
+      return NotImplemented
+
+  def __mul__(self, rhs):
+    try:
+      return self.__array__() * rhs.__array__()
+    except:
+      return NotImplemented
 
 
   def reset(self):
@@ -138,10 +165,10 @@ class HeatSignal(Signal):
 
     Signal.val(self, time)
 
-    if x < self.parameters[0]: 
+    if time < self.parameters[0]: 
       return 0  
 
-    return self.parameters[1]*(1 - math.exp(-(x-self.parameters[0])/self.parameters[2]))*(math.exp(-(x-self.parameters[0])/self.parameters[3]) + self.parameters[4]*math.exp(-(x-self.parameters[0])/self.parameters[5]))
+    return self.parameters[1]*(1 - math.exp(-(time-self.parameters[0])/self.parameters[2]))*(math.exp(-(time-self.parameters[0])/self.parameters[3]) + self.parameters[4]*math.exp(-(time-self.parameters[0])/self.parameters[5]))
 
 
 
@@ -169,7 +196,7 @@ class BBv2IonSignal(Signal):
     '''
     Signal.val(self, time)
 
-    if x < self.parameters[0]: 
+    if time < self.parameters[0]: 
       return 0  
     
     return self.parameters[1]
