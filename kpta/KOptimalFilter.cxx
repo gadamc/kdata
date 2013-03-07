@@ -189,6 +189,8 @@ bool KOptimalFilter::BuildFilter(void)
     *(fOptFilter+i) =  *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+i));
     
   //then the imaginary parts. make sure to use the correct index in the noise spectrum
+  //the -1 in the imaginary part is because the optimal filter is the complex conjugate 
+  //of the templateDFT
   unsigned int j = 1;
   for(unsigned int i = fOptFilterSize-1; i > fOptFilterSize/2; i--)
     *(fOptFilter+i) = -1* *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+(j++)));

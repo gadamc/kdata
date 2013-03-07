@@ -35,6 +35,11 @@ public:
   virtual unsigned int GetTemplateDFTSize(void){return fTemplateDFTSize;}
   virtual double* GetOptimalFilter(void){return fOptFilter;}
   virtual unsigned int GetOptimalFilterSize(void){return fOptFilterSize;}
+
+  virtual double* GetTemplatePower(void){return fTemplatePower;}
+  virtual unsigned int GetTemplatePowerSize(void){return fTemplatePowerSize;}
+  virtual double* GetOptFilterAndSignal(void){return fOptFilterAndSignal;}
+  virtual unsigned int GetOptFilterAndSignalSize(void){return fOptFilterAndSignalSize;}
   
   virtual void SetToRecalculate(bool option = true){fRecalculate= option;}
   template <class T> void SetNoiseSpectrum(std::vector<T> &r);
