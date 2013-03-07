@@ -52,6 +52,23 @@
 #pragma link C++ class KOrderThresholdFinder+;
 #pragma link C++ class KFIRFilter+;
 #pragma link C++ class KHalfComplexArray+;
+#pragma link C++ function KHalfComplexArray::Real<double>;
+#pragma link C++ function KHalfComplexArray::Real<float>;
+#pragma link C++ function KHalfComplexArray::Real<int>;
+#pragma link C++ function KHalfComplexArray::Real<short>;
+#pragma link C++ function KHalfComplexArray::Real(double*, unsigned int, unsigned int);
+#pragma link C++ function KHalfComplexArray::Real(float*, unsigned int, unsigned int );
+#pragma link C++ function KHalfComplexArray::Real(int*, unsigned int, unsigned int );
+#pragma link C++ function KHalfComplexArray::Real(short*, unsigned int, unsigned int );
+#pragma link C++ function KHalfComplexArray::Imag<double>;
+#pragma link C++ function KHalfComplexArray::Imag<float>;
+#pragma link C++ function KHalfComplexArray::Imag<int>;
+#pragma link C++ function KHalfComplexArray::Imag<short>;
+#pragma link C++ function KHalfComplexArray::Imag(double*, unsigned int, unsigned int);
+#pragma link C++ function KHalfComplexArray::Imag(float*, unsigned int, unsigned int );
+#pragma link C++ function KHalfComplexArray::Imag(int*, unsigned int, unsigned int );
+#pragma link C++ function KHalfComplexArray::Imag(short*, unsigned int, unsigned int );
+
 #pragma link C++ class KHalfComplexPower+;
 #pragma link C++ class KHalfComplexToRealDFT+;
 #pragma link C++ class KHeatTemplate+;
