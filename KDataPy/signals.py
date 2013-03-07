@@ -14,9 +14,9 @@
   import KDataPy.signals
 
   heat = KDataPy.signals.HeatSignal()
-  heat.parameters[1] = -1500 #by default, this is -1, which is fine for
-                             #templates, but should be larger to see 
-                             #above typical noise levels
+  heat.setpar(1,-1500) #by default, parameter[1] is -1, which is fine for
+                       #templates, but should be larger to see 
+                       #above typical noise levels
 
   #use iteration to make a list
   pulse = []
@@ -25,7 +25,7 @@
 
   #and get a numpy array
 
-  pulse = heat()  # "call" the instance with the () to return a numpy array
+  pulse = heat()  # returns a numpy array
 
   #and plot with MatPlotLib
 
@@ -49,9 +49,12 @@
   Additionally, you can use the object call to return just a single 
   value of the signal. That is, 
   
-  heat(10) 
+  heat[10]  #or heat(10)
 
-  returns the heat at time = 10. 
+  returns the heat at index = 10. 
+
+  If you want the heat at time = X
+  heat[ X/heat.time_per_index ]
 
 
   Signals can also be added, subtraced and multipled with the '+' , '-' 
@@ -66,13 +69,18 @@
   Finally, the ArbitraryNoise class will randomly generate a noise pulse
   given an input power spectrum. 
 
-  Say 'noise_power' is a list-like object that is the average power 
+  Given 'noise_power' is a list-like object that holds the average power 
   spectrum for a particular channel. Then you would use it to 
   instantiate an ArbitraryNoise object.
 
   noise = KDataPy.signals.ArbitraryNoise( noise_power )
 
   plt.plot(heat + noise)
+
+  You can change the noise_power simply by calling
+
+  noise.noise_power = another_noise_power
+  noise.generate()
 
 
 '''
@@ -120,13 +128,17 @@ class Signal(object):
   '''
     Base class for Signals (HeatSignal and BBv2IonSignal)
     You shouldn't instantiate this class directly.
+
+    Use setpar and setparameters instead of setting the values 
+    in the _parameters directly
+
   '''
 
-  def __init__(self, length = 8192, time_per_index = 1, parameters = None):
+  def __init__(self, length = 8192, time_per_index = 1.0, parameters = None):
 
     self.length = length
     self.time_per_index = time_per_index
-    self.parameters = parameters
+    self._parameters = parameters
 
 
   def _val(self, time):
@@ -147,11 +159,42 @@ class Signal(object):
     return numpy.array([v for v in self])
 
 
-  def __getattribute__(self, name):
-    if name == 'parameters':
-      self._reset()
-    return object.__getattribute__(self, name)
+  def setpar(self, index, value):
+    '''
+      I couldn't figure out how to use the __setattr__ when trying 
+      to set a single element of the _parameters list. (self._parameters 
+      calls __getattr__ ) Instead, I've written this simple method 
+      (and setparameters) that you should use to set a parameters list values. 
 
+      When you use this method and setparameters, the internal cache
+      will be reset and the pulse will be calculated.
+
+      calling 
+      self._parameters[index] = value
+      is discouraged because you'll have to remember to call self._reset()
+
+    '''
+    if self._parameters[index] != value:
+      self._parameters[index] =  value
+      self._reset()
+
+  def setparameters(self, paramlist):
+
+    if paramlist == self._parameters is False: #check to see if something is different.
+      self._parameters = paramlist
+      self._reset()
+
+  # def __setattr__(self, name, value):
+  #   print 'signal set', name, value
+  #   if name == 'parameters':
+  #     self._reset()
+  #   object.__setattr__(self, name, value)
+
+  # def __getattribute__(self, name):
+  #   print 'signal get', name
+  #   if name == 'parameters':
+  #     self._reset()
+  #   return object.__getattribute__(self, name)
 
   def __add__(self, rhs):
     try:
@@ -171,11 +214,17 @@ class Signal(object):
     except:
       return NotImplemented
 
-  def __call__(self, time = None):
-    if time is None:
+  def __getitem__(self, index = None):
+    if index is None:
       return self.__array__()
     
-    return self._val(time)
+    return self._val(index * self.time_per_index)
+
+  def __call__(self, index = None):
+    if index is None:
+      return self.__array__()
+    
+    return self._val(index * self.time_per_index)
 
   def __len__(self):
     return self.length
@@ -204,13 +253,18 @@ class HeatSignal(Signal):
     if time < par[0]: return 0  
     else: return par[1]*(1 - math.exp(-(time-par[0])/par[2]))*(math.exp(-(time-par[0])/par[3]) + par[4]*math.exp(-(time-par[0])/par[5]))
 
+    Use setpar and setparameters instead of setting the values 
+    in the _parameters directly
+
   '''
 
   def __init__(self, length = 512, time_per_index = 2.016, parameters = None):
-    Signal.__init__(self, length, time_per_index)
 
     if parameters is None:
-      self.parameters = [514.08,-1,21.04,16.34,0.1331,129.54] #these are actually the parameters for chalA FID802 for 2011-11-23
+      Signal.__init__(self, length, time_per_index, [514.08,-1,21.04,16.34,0.1331,129.54]) #these are actually the parameters for chalA FID802 for 2011-11-23
+    else:
+      Signal.__init__(self, length, time_per_index)
+
 
     
 
@@ -225,12 +279,12 @@ class HeatSignal(Signal):
 
     Signal._val(self, time)
 
-    if time < self.parameters[0]: 
+    if time < self._parameters[0]: 
       return 0  
 
-    pt = time-self.parameters[0]  #pt = post trigger
+    pt = time-self._parameters[0]  #pt = post trigger
 
-    return self.parameters[1]*(1 - math.exp(-( pt )/self.parameters[2]))*(math.exp(-( pt )/self.parameters[3]) + self.parameters[4]*math.exp(-( pt )/self.parameters[5]))
+    return self._parameters[1]*(1 - math.exp(-( pt )/self._parameters[2]))*(math.exp(-( pt )/self._parameters[3]) + self._parameters[4]*math.exp(-( pt )/self._parameters[5]))
 
 
 
@@ -244,13 +298,19 @@ class BBv2IonSignal(Signal):
     
     return par[1]
 
+    Use setpar and setparameters instead of setting the values 
+    in the _parameters directly
+
   '''
 
   def __init__(self, length = 8192, time_per_index = 1.0, parameters = None):
-    Signal.__init__(self, length, time_per_index)
+    
 
     if parameters is None:
-      self.parameters = [4095.0, 1.0]
+      Signal.__init__(self, length, time_per_index, [4095.0, 1.0])
+    else:
+      Signal.__init__(self, length, time_per_index)
+
 
     
 
@@ -264,25 +324,25 @@ class BBv2IonSignal(Signal):
     '''
     Signal._val(self, time)
 
-    if time < self.parameters[0]: 
+    if time < self._parameters[0]: 
       return 0  
     
-    return self.parameters[1]
+    return self._parameters[1]
 
 
 
 
 class GaussianNoise(Signal):
   '''
-    This inherits from Signal, but doesn't use 'memoize'. 
+    This inherits from Signal, but doesn't use 'memoize'. It will always return a different noise signal
 
-    This is just gauassian noise about zero with a particular width
+    This is just gauassian noise about zero with a particular width = std_deviation.  (width**2 = variance)
+
   '''
   def __init__(self, width, length = 8192):
     Signal.__init__(self, length, 1.0)
     self.width = width
 
-  #don't use memoize since I want to 
   def _val(self, index):
     '''
     '''
@@ -302,15 +362,27 @@ class ArbitraryNoise(object):
 
     noise = KDataPy.signals.ArbitraryNoise(noise_power)
     heat = KDataPy.signals.HeatSignal()
-    heat.parameters[1] = -500
+    heat.setpar(1, -500)
 
-    plt.plot(heat + noise)
+    matplotlib.pyplot.plot(heat + noise)
 
     You must call .generate() to create a new noise pulse based upon the input noise_power.  
 
     noise.generate()
 
-    plt.plot(heat + noise)
+    matplotlib.pyplot.plot(heat + noise)
+
+    You can change the noise_power simply by calling
+
+    noise.noise_power = another_noise_power 
+    noise.generate()
+
+    matplotlib.pyplot.plot(noise)
+
+    you can get access to the numpy array by calling
+    noise_nparr = noise[]  or 
+    noise_nparr = noise.noise_instance or
+    noise_nparr = noise.__array__()
 
   '''
 
@@ -319,39 +391,39 @@ class ArbitraryNoise(object):
       noise_power should be 'list-like'. That is, it can be a numpy array, list or tuple.
       It should also be of length N/2 + 1, where N is the length of the pulse and should be even. 
     '''
-    self.noise_power = noise_power
-    self.generate()    
+    
+    self.noise_power = noise_power  
+    self.generate() #have to manually call this the first time...
 
   def generate(self):
-
+    '''
+      You should call this method each time you want to generate a new instance of noise signal.
+    '''
     no2p1 = len(self.noise_power) #n over 2 plus 1
-    n = 2*(no2p1 - 1)
+    n = 2*(no2p1-1)
 
-    noise_fft = numpy.empty( n , dtype=complex)
+    noise_fft = numpy.empty(no2p1, dtype=complex)
 
     noise_fft[0] = numpy.complex( random.gauss(0, math.sqrt(self.noise_power[0]/2.0)) , 0)
-    noise_fft[ n/2 ] = numpy.complex( random.gauss(0, math.sqrt(self.noise_power[ n/2 ]/2.0)) , 0)
+    noise_fft[n/2] = numpy.complex( random.gauss(0, math.sqrt(self.noise_power[n/2]/2.0)) , 0)
 
-    for i in range(1,  n/2 ):
+    for i in range(1,n/2):
       width = math.sqrt(self.noise_power[i]/2.0)
       noise_fft[i] = numpy.complex(random.gauss(0, width), random.gauss(0, width))
-      noise_fft[n - i] = noise_fft[i].conjugate()
 
-    self.noise_instance = n * numpy.fft.ifft( noise_fft ).real  #this should be entirely real
-
+    self.noise_instance = math.sqrt(n) * numpy.fft.irfft(noise_fft, n) 
 
 
 
     #here is the version using KData's KHalfComplexToRealDFT()
     #this is about ~4 times as slow as using the code above. however, this is due to the sub-optimal interfaceing 
-    #of python to C/kdata here and the extra for-loop. If this was all run in C/C++, I'm believe KData would just as fast
-    #when optimized to handle memory in the most efficient way. I think numpy is written in FORTRAN, so it could actually be faster than C
-    
+    #of python to C/kdata here and the extra Python for-loop. If this was all run in C/C++, I'm believe KData would just as fast.
+    #I think numpy is written in FORTRAN, so it could actually be faster than C
     # import ROOT
     # import KDataPy.util 
     # ROOT.gSystem.Load('libkpta')
     # self.hc2r = ROOT.KHalfComplexToRealDFT()
-
+  
     # real = numpy.empty(no2p1)
 
     # real[0] = random.gauss(0, math.sqrt(self.noise_power[0]/2.0))
@@ -367,10 +439,8 @@ class ArbitraryNoise(object):
     # self.hc2r.SetInputPulse(hcarray, len(hcarray))
     # self.hc2r.RunProcess()
     # self.noise_instance = numpy.empty( self.hc2r.GetOutputPulseSize())
-    # self.noise_instance_diff = numpy.empty( self.hc2r.GetOutputPulseSize())
     # for i in range(self.hc2r.GetOutputPulseSize()):
-    #   self.noise_instance[i] = self.hc2r.GetOutputPulse()[i]
-    #   self.noise_instance_diff[i] = self.noise_instance[i] = self.noise_instance_numpy[i]
+    #   self.noise_instance[i] = math.sqrt(n) * self.hc2r.GetOutputPulse()[i]
 
 
 
@@ -390,9 +460,8 @@ class ArbitraryNoise(object):
     #   width = math.sqrt(self.noise_power[i]/2.0)
     #   real[i], imag[i-1] = random.gauss(0, width  ), random.gauss(0, width)
     #   noise_fft[i] = numpy.complex( real[i], imag[i-1])
-    #   noise_fft[n - i] = noise_fft[i].conjugate()
 
-    # self.noise_instance_numpy = n * numpy.fft.ifft( noise_fft ).real  #this should be entirely real
+    # self.noise_instance_numpy = math.sqrt(n) * numpy.fft.irfft( noise_fft, n ) #this should be entirely real
 
     # hcarray = numpy.concatenate( (real,imag[::-1]) )  #puts the real/imag in half-complex array format
     # self.hc2r.SetInputPulse(hcarray, len(hcarray))
@@ -400,7 +469,7 @@ class ArbitraryNoise(object):
     # self.noise_instance = numpy.empty( self.hc2r.GetOutputPulseSize())
     # self.noise_instance_diff = numpy.empty( self.hc2r.GetOutputPulseSize())
     # for i in range(self.hc2r.GetOutputPulseSize()):
-    #   self.noise_instance[i] = self.hc2r.GetOutputPulse()[i]
+    #   self.noise_instance[i] = math.sqrt(n) * self.hc2r.GetOutputPulse()[i]
     #   self.noise_instance_diff[i] = self.noise_instance[i] - self.noise_instance_numpy[i]
 
 
@@ -411,8 +480,10 @@ class ArbitraryNoise(object):
       yield self.noise_instance[i]
       i += 1
 
+
   def __array__(self):
     return self.noise_instance
+
 
   def __add__(self, rhs):
     try:
@@ -420,11 +491,13 @@ class ArbitraryNoise(object):
     except:
       return NotImplemented
 
+
   def __sub__(self, rhs):
     try:
       return self.__array__() - rhs.__array__()
     except:
       return NotImplemented
+
 
   def __mul__(self, rhs):
     try:
@@ -432,12 +505,21 @@ class ArbitraryNoise(object):
     except:
       return NotImplemented
 
-  def __call__(self, time = None):
-    if time is None:
+
+  def __getitem__(self, index = None):
+    if index is None:
       return self.__array__()
     
-    return self.__array__()[time]
+    return self.__array__()[index]
+
 
   def __len__(self):
     return len(self.noise_instance)
 
+
+  def __call__(self, index = None):
+    if index is None:
+      return self.__array__()
+    
+    return self.__array__()(index)
+  
