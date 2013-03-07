@@ -48,7 +48,7 @@ void KEraPeakFinder::InitializeMembers(void)
 {
   //initialize members. The baseline start and stop values are initially
   //set to 0.0 and 0.40, respectively. The default order is 3 and the default
-  //threshold for peak detection is 3.5 * rms. 
+  //threshold for peak detection is 3.0 * rms. 
 
   fBaselineStart = 0.0;
   fBaselineStop = 0.40;
