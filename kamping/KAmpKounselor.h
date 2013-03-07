@@ -38,6 +38,9 @@ public:
   virtual void SetReport(UInt_t val){fReport = val;}
   virtual UInt_t GetReport(void){return fReport;}
 
+  KDataReader* GetKDataReader(void){return fInput;}
+  KDataWriter* GetKDataWriter(void){return fOutput;}
+  
 private:
   std::vector<KAmpSite *> fKampSites;
   KDataReader *fInput;
