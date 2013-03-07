@@ -41,6 +41,19 @@ public:
   int GetPulseAmplitudeShift(void){return fPulseAmplitudeShift;}
   void SetIonPulseStartTime(double peakPos){fIonPulsePeakPos = peakPos;}
 
+
+  //these methods just call the same methods defined in the optimal filter. this is just to make
+  //user's code more clear -- see the KChamonixKAmpSite for example.
+  virtual void SetToRecalculate(bool option = true){fOptimalFilter.SetToRecalculate(option);}  
+  template <class T> void SetNoiseSpectrum(std::vector<T> &r);
+  template <class T> void SetNoiseSpectrum(const T* resp, unsigned int size);
+  template <class T> void SetTemplateDFT(std::vector<T> &r);
+  template <class T> void SetTemplateDFT(const T* resp, unsigned int size);
+  virtual void SetNoiseSpectrum(double* resp){fOptimalFilter.SetNoiseSpectrum(resp);}
+  virtual void SetNoiseSpectrumSize(unsigned int size){fOptimalFilter.SetNoiseSpectrumSize(size);}
+  virtual void SetTemplateDFT(double* resp){fOptimalFilter.SetTemplateDFT(resp);}
+  virtual void SetTemplateDFTSize(unsigned int size){fOptimalFilter.SetTemplateDFTSize(size);}
+
 private:
  
   KOptimalFilter fOptimalFilter;
@@ -56,6 +69,27 @@ private:
   KRealToHalfComplexDFT fR2Hc;
   
 };
+ 
+template <class T> void KOptimalKamper::SetNoiseSpectrum(std::vector<T> &resp)
+{
+  fOptimalFilter.SetNoiseSpectrum(resp);
+}
+
+template <class T> void KOptimalKamper::SetNoiseSpectrum(const T* resp, unsigned int size)
+{
+  fOptimalFilter.SetNoiseSpectrum(resp, size);
+}
+
+template <class T> void KOptimalKamper::SetTemplateDFT(std::vector<T> &resp)
+{
+  fOptimalFilter.SetTemplateDFT(resp);
+}
+
+template <class T> void KOptimalKamper::SetTemplateDFT(const T* resp, unsigned int size)
+{
+  fOptimalFilter.SetTemplateDFT(resp, size);
+}
+
 
 
 #endif // __KOPTIMALKAMPER_H_

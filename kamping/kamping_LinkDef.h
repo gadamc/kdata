@@ -20,6 +20,23 @@
 #pragma link C++ class KLibertyBellKAmpSite+;
 #pragma link C++ class KMultiTrapKamperProto+;
 #pragma link C++ class KOptimalKamper+;
+#pragma link C++ function KOptimalKamper::SetNoiseSpectrum<double>;
+#pragma link C++ function KOptimalKamper::SetNoiseSpectrum<float>;
+#pragma link C++ function KOptimalKamper::SetNoiseSpectrum<int>;
+#pragma link C++ function KOptimalKamper::SetNoiseSpectrum<short>;
+#pragma link C++ function KOptimalKamper::SetNoiseSpectrum(double*, unsigned int );
+#pragma link C++ function KOptimalKamper::SetNoiseSpectrum(float*, unsigned int );
+#pragma link C++ function KOptimalKamper::SetNoiseSpectrum(int*, unsigned int );
+#pragma link C++ function KOptimalKamper::SetNoiseSpectrum(short*, unsigned int );
+#pragma link C++ function KOptimalKamper::SetTemplateDFT<double>;
+#pragma link C++ function KOptimalKamper::SetTemplateDFT<float>;
+#pragma link C++ function KOptimalKamper::SetTemplateDFT<int>;
+#pragma link C++ function KOptimalKamper::SetTemplateDFT<short>;
+#pragma link C++ function KOptimalKamper::SetTemplateDFT(double*, unsigned int );
+#pragma link C++ function KOptimalKamper::SetTemplateDFT(float*, unsigned int );
+#pragma link C++ function KOptimalKamper::SetTemplateDFT(int*, unsigned int );
+#pragma link C++ function KOptimalKamper::SetTemplateDFT(short*, unsigned int );
+
 #pragma link C++ class KResult+;
 #pragma link C++ class KSimpleKamper1+;
 #pragma link C++ class KTrapKamperProto+;
