@@ -15,6 +15,7 @@
 // the r2r transformation 'plans'. 
 // http://www.fftw.org/fftw3_doc/More-DFTs-of-Real-Data.html#More-DFTs-of-Real-Data
 //
+// The output array is normalized to 1/N
 //
 // BEGIN_LATEX
 // #scale[1.5]{Y_{k} = #frac{1}{N} \sum_{j=0}^{n-1} X_{j} e^{2 #pi j k #sqrt{-1}/n}}
@@ -88,13 +89,18 @@ void KHalfComplexToRealDFT::InitializeMembers(void)
 
 bool KHalfComplexToRealDFT::RunProcess(void)
 {
-  return CalculateFFT();
+  if( CalculateFFT() )
+    return Normalize();
+
+  else return false;
 
 }
 
 bool KHalfComplexToRealDFT::Normalize(void)
 {
   //copies the normalized real array to the fOutputPulse.
+  //this method makes the output of this DFT equivalent to the numpy.fft.ifft
+  //
 
   for(unsigned int i = 0; i < fOutputSize; i++)
     *(fOutputPulse+i) = *(fOutputPulse+i)/fOutputSize;  // this IS NORMALIZED

@@ -15,7 +15,9 @@
 // the r2r transformation 'plans'. 
 // http://www.fftw.org/fftw3_doc/More-DFTs-of-Real-Data.html#More-DFTs-of-Real-Data
 //
-// The output array is normalized by 1/N
+// BEGIN_LATEX
+// #scale[1.5]{Y_{k} = #\sum_{j=0}^{n-1} X_{j} e^{-2 #pi j k #sqrt{-1}/n}}
+// END_LATEX
 //
 // To use this processor
 // 1. SetInputPulse(vector<double> aPulse); // or vector of floats, shorts, or ints. 
@@ -67,9 +69,11 @@ void KRealToHalfComplexDFT::InitializeMembers(void)
 
 bool KRealToHalfComplexDFT::RunProcess(void)
 {
-  if(CalculateFFT())
-    return Normalize();
-  else return false;
+  return CalculateFFT();
+
+  // if(CalculateFFT())
+  //   return Normalize();
+  // else return false;
 
 }
 void KRealToHalfComplexDFT::SetFFTWPlan(void)
