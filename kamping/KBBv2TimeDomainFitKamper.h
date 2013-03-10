@@ -25,8 +25,8 @@ public:
   KBBv2TimeDomainFitKamper(void);
   virtual ~KBBv2TimeDomainFitKamper(void);
   
-  virtual std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord);
-  virtual std::map<std::string, KResult>  MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord);
+  virtual std::map<std::string, KResult>&  MakeKamp(KRawBoloPulseRecord * rawPulseRecord);
+  virtual std::map<std::string, KResult>&  MakeBaseKamp(KRawBoloPulseRecord * rawPulseRecord);
    
   KPtaProcessor* GetPreProcessor(void) {return fPulsePreProcessor;}
   void SetPreProcessor(KPtaProcessor *pta) { fPulsePreProcessor = pta;}
@@ -42,6 +42,7 @@ private:
   TF1 *fPulseFit;  
   KPulsePolarityCalculator fPolCalc;
   
+
 };
 
 

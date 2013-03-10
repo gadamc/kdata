@@ -14,21 +14,21 @@
 //  all results regarding time are in units of bin number. 
 //
 //  The following map<string, KResult> is returned by MakeKamp
-//      myResults["amp"] = KResult("amp", fPulseFit->GetParameter(1), "ADU");
-//      myResults["peakPositon"] = KResult("peakPosition", fPulseFit->GetParameter(3), "bin");
-//      myResults["chiSq"] = KResult("chiSq", fPulseFit->GetChisquare(), "");
-//      myResults["baselineAmp"] = KResult("baseline", fPulseFit->GetParameter(0), "ADU");
-//      myResults["sharpness"] = KResult("sharpness", fPulseFit->GetParameter(2), "1/bin");
-//      myResults["fitStatus"] = KResult("fitstatus", fitStatus);  //fitstatus returned my ROOT Minuit routine
-//      myResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetOffset(), "ADU");
-//      myResults["slopeRemoved"] = KResult("slopeRemoved", mProc.GetSlope(), "ADU/bin");
+//      fResults["amp"] = KResult("amp", fPulseFit->GetParameter(1), "ADU");
+//      fResults["peakPositon"] = KResult("peakPosition", fPulseFit->GetParameter(3), "bin");
+//      fResults["chiSq"] = KResult("chiSq", fPulseFit->GetChisquare(), "");
+//      fResults["baselineAmp"] = KResult("baseline", fPulseFit->GetParameter(0), "ADU");
+//      fResults["sharpness"] = KResult("sharpness", fPulseFit->GetParameter(2), "1/bin");
+//      fResults["fitStatus"] = KResult("fitstatus", fitStatus);  //fitstatus returned my ROOT Minuit routine
+//      fResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetOffset(), "ADU");
+//      fResults["slopeRemoved"] = KResult("slopeRemoved", mProc.GetSlope(), "ADU/bin");
 //
-//      myResults["pulseType"] = KResult("heat", 1);
-//      myResults["pulseType"] = KResult("ionization", 1);
+//      fResults["pulseType"] = KResult("heat", 1);
+//      fResults["pulseType"] = KResult("ionization", 1);
 
 //  The following is JUST returned by MakeBaseKamp
-//     myResults["pulseType"] = KResult("heat", 1);
-//     myResults["pulseType"] = KResult("ionization", 1);
+//     fResults["pulseType"] = KResult("heat", 1);
+//     fResults["pulseType"] = KResult("ionization", 1);
 //
 
 
@@ -54,24 +54,23 @@ KBBv2TimeDomainFitKamper::~KBBv2TimeDomainFitKamper(void)
   if(fPulseFit) delete fPulseFit;
 }
 
-std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw)
+std::map<std::string, KResult>& KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseRecord * raw)
 {
 
-  map<string, KResult> myResults;
 
   if(raw->GetIsHeatPulse())
-    myResults["pulseType"] = KResult("heat", 1);
+    fResults["pulseType"] = KResult("heat", 1);
   else
-    myResults["pulseType"] = KResult("ionization", 1);
+    fResults["pulseType"] = KResult("ionization", 1);
 
   if(raw->GetIsHeatPulse())
-    return myResults;
+    return fResults;
     
 
   //rec->SetUnit(0);
   
   if(raw->GetPulseLength() == 0)
-    return myResults;
+    return fResults;
   
   
   if(fPolCalc.GetExpectedPolarity(raw) < 0){
@@ -97,7 +96,7 @@ std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseR
     
     fPulsePreProcessor->SetInputPulse( (vector<short> &)raw->GetTrace());
     if(!fPulsePreProcessor->RunProcess()){
-      cerr << "KBBv2TimeDomainFitKamper. Pulse preprocessor failed" << endl; return myResults;
+      cerr << "KBBv2TimeDomainFitKamper. Pulse preprocessor failed" << endl; return fResults;
     }
     
     for(unsigned int i = 0; i < fPulsePreProcessor->GetOutputPulseSize(); i++)
@@ -112,17 +111,17 @@ std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseR
     
   Int_t fitStatus = fData.Fit(fPulseFit, "QRW");
   
-  myResults["amp"] = KResult("amp", fPulseFit->GetParameter(1), "ADU");
+  fResults["amp"] = KResult("amp", fPulseFit->GetParameter(1), "ADU");
   //rec->SetAmp(fPulseFit->GetParameter(1));
-  myResults["peakPositon"] = KResult("peakPosition", fPulseFit->GetParameter(3), "bin");
+  fResults["peakPositon"] = KResult("peakPosition", fPulseFit->GetParameter(3), "bin");
   //rec->SetPeakPosition(fPulseFit->GetParameter(3));
   //rec->SetSlopeRemoved(fLineRemove.GetSlope());
-  myResults["chiSq"] = KResult("chiSq", fPulseFit->GetChisquare(), "");
+  fResults["chiSq"] = KResult("chiSq", fPulseFit->GetChisquare(), "");
   //rec->SetChiSq(fPulseFit->GetChisquare());
   
-  myResults["baselineAmp"] = KResult("baseline", fPulseFit->GetParameter(0), "ADU");
-  myResults["sharpness"] = KResult("sharpness", fPulseFit->GetParameter(2), "1/bin");
-  myResults["fitStatus"] = KResult("fitstatus", fitStatus);
+  fResults["baselineAmp"] = KResult("baseline", fPulseFit->GetParameter(0), "ADU");
+  fResults["sharpness"] = KResult("sharpness", fPulseFit->GetParameter(2), "1/bin");
+  fResults["fitStatus"] = KResult("fitstatus", fitStatus);
 
   //rec->SetExtra(fPulseFit->GetParameter(0), 0);//the baseline value... essentially.
   //rec->SetExtra(fPulseFit->GetParameter(2), 1);//the parameter that defines the sharpness of the step
@@ -132,29 +131,28 @@ std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeKamp(KRawBoloPulseR
 
     try{
       KLinearRemoval& mProc = dynamic_cast<KLinearRemoval &>( *fPulsePreProcessor->GetProcessor(i) );
-      myResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetOffset(), "ADU");
-      myResults["slopeRemoved"] = KResult("slopeRemoved", mProc.GetSlope(), "ADU/bin");
+      fResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetOffset(), "ADU");
+      fResults["slopeRemoved"] = KResult("slopeRemoved", mProc.GetSlope(), "ADU/bin");
     }
     catch(std::bad_cast){} //just do nothing.
     
     try{
       KBaselineRemoval& mProc = dynamic_cast<KBaselineRemoval &>( *fPulsePreProcessor->GetProcessor(i) );
-      myResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetBaselineOffset(), "ADU");
+      fResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetBaselineOffset(), "ADU");
     }
     catch(std::bad_cast){} //do nothing.
   }
   
-  return myResults;
+  return fResults;
 }
 
-std::map<std::string, KResult> KBBv2TimeDomainFitKamper::MakeBaseKamp(KRawBoloPulseRecord * raw)
+std::map<std::string, KResult>& KBBv2TimeDomainFitKamper::MakeBaseKamp(KRawBoloPulseRecord * raw)
 {
 
-  map<string, KResult> myResults;
   if(raw->GetIsHeatPulse())
-    myResults["pulseType"] = KResult("heat", 1);
+    fResults["pulseType"] = KResult("heat", 1);
   else
-    myResults["pulseType"] = KResult("ionization", 1);
+    fResults["pulseType"] = KResult("ionization", 1);
 
-  return myResults;
+  return fResults;
 }

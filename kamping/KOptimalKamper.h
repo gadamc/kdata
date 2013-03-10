@@ -23,14 +23,15 @@ public:
   KOptimalKamper(void);
   virtual ~KOptimalKamper(void);
   
-  virtual std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord);
-  virtual std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord, double fixPeakPosition);
+  virtual std::map<std::string, KResult>&  MakeKamp(KRawBoloPulseRecord * rawPulseRecord);
+  virtual std::map<std::string, KResult>&  MakeKamp(KRawBoloPulseRecord * rawPulseRecord, double fixPeakPosition);
 
 
   KOptimalFilter& GetOptimalFilter(void){return fOptimalFilter;}
   void SetWindow(KWindow *pta){fWindow = pta;}
   void SetPreProcessor(KPtaProcessor *pta){fPreProcessor = pta;}
-
+  KWindow* GetWindow(void){return fWindow;}
+  
   void SetPulseAmplitudeShift(int a){fPulseAmplitudeShift = a;}
   void SetPulseTemplateShiftFromPreTrigger(double aVal){fPulseTemplateShift = -1*aVal;}
   void SetAmplitudeEstimatorSearchRangeMin(double aVal){fAmplitudeEstimatorSearchRangeMin = aVal;}
@@ -67,6 +68,8 @@ private:
   double fIonPulsePeakPos;
   
   KRealToHalfComplexDFT fR2Hc;
+
+
   
 };
  

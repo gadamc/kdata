@@ -45,9 +45,9 @@ class KFilterChainBestCorrelationKamper : KAmper {
 public:
   KFilterChainBestCorrelationKamper(void);
   virtual ~KFilterChainBestCorrelationKamper(void);
-  std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord){return MakeKamp(rawPulseRecord, -1.0);}
-  std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord, double fixPeakPosition);
-  template <class T> std::map<std::string, KResult>  MakeKamp(const std::vector<T> &aPulse, double fixPeakPosition = -1.0, const char* channelName = "");
+  std::map<std::string, KResult>&  MakeKamp(KRawBoloPulseRecord * rawPulseRecord){return MakeKamp(rawPulseRecord, -1.0);}
+  std::map<std::string, KResult>&  MakeKamp(KRawBoloPulseRecord * rawPulseRecord, double fixPeakPosition);
+  template <class T> std::map<std::string, KResult>&  MakeKamp(const std::vector<T> &aPulse, double fixPeakPosition = -1.0, const char* channelName = "");
 
 
   void SetName(const char* name){fName = name;}
@@ -108,35 +108,34 @@ private:
 
 
 #if !defined(__CINT__)  //we have to hide the template function implementation from the CINT/rootcint in order to build the dictionary
-template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKamper::MakeKamp(const std::vector<T> &aPulse, double fixPeakPosition, const char* channelName)
+template <class T> std::map<std::string, KResult>&  KFilterChainBestCorrelationKamper::MakeKamp(const std::vector<T> &aPulse, double fixPeakPosition, const char* channelName)
 {
   fPreProcessor->SetInputPulse(aPulse); 
 
-  std::map<string, KResult> myResults;
   if(fPreProcessor->GetInputPulseSize() == 0){
     
-    myResults["peakPosition"] = KResult("peakPosition", -1, "bin");
+    fResults["peakPosition"] = KResult("peakPosition", -1, "bin");
     //rec->SetPeakPosition(-1);
-    myResults["amp"] = KResult("amp", -99999, "ADU");
+    fResults["amp"] = KResult("amp", -99999, "ADU");
     //rec->SetAmp(-99999);
-    myResults["ndfFloat"] = KResult("ndfFloat", -99999);
+    fResults["ndfFloat"] = KResult("ndfFloat", -99999);
     //rec->SetExtra(-99999,0);
-    return myResults;
+    return fResults;
   }
   
   if(!fPreProcessor->RunProcess())
-  {std::cerr << "KFilterChainBestCorrelationKamper: fPreProcessor failed" << std::endl; return myResults;}
+  {std::cerr << "KFilterChainBestCorrelationKamper: fPreProcessor failed" << std::endl; return fResults;}
   
   fPostProcessor->SetInputPulse(fPreProcessor);
   
   if(!fPostProcessor->RunProcess())
-  {std::cerr << "KFilterChainBestCorrelationKamper: fPostProcessor failed" << std::endl; return myResults;}
+  {std::cerr << "KFilterChainBestCorrelationKamper: fPostProcessor failed" << std::endl; return fResults;}
   
   fCorrelation.SetInputPulse(fPostProcessor);
   
   fCorrelation.SetResponse(fTemplate);
   if( !fCorrelation.RunProcess() ){
-    std::cerr << "KFilterChainBestCorrelationKamper: fCorrelation failed" <<std::endl; return myResults;
+    std::cerr << "KFilterChainBestCorrelationKamper: fCorrelation failed" <<std::endl; return fResults;
   }
   
   //std::cerr << "Range:"<<fPosRangeMin<<","<<fPosRangeMax<<std::endl;
@@ -153,7 +152,7 @@ template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKa
   Baseline_RMS /= (double) sample;
   Baseline_RMS = sqrt(Baseline_RMS);
   //rec->SetExtra(Baseline_RMS,2);
-  myResults["baselineRmsPostProc"] = KResult("baselineRmsPostProc", Baseline_RMS, "ADU");
+  fResults["baselineRmsPostProc"] = KResult("baselineRmsPostProc", Baseline_RMS, "ADU");
   //--------------------
   
   //RMS of the preprocessed pulse
@@ -165,7 +164,7 @@ template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKa
     Preprocessed_RMS /= (double) sample;
     Preprocessed_RMS = sqrt(Preprocessed_RMS);
     //rec->SetExtra(Preprocessed_RMS,3);
-    myResults["rmsPreProc"] = KResult("rmsPreProc", Preprocessed_RMS, "ADU");
+    fResults["rmsPreProc"] = KResult("rmsPreProc", Preprocessed_RMS, "ADU");
   }
   //-----------------------
   
@@ -177,7 +176,7 @@ template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKa
   Processed_RMS /= (double) sample;
   Processed_RMS = sqrt(Processed_RMS);
   //rec->SetExtra(Processed_RMS,4);
-  myResults["rmsPostProc"] = KResult("rmsPostProc", Processed_RMS, "ADU");
+  fResults["rmsPostProc"] = KResult("rmsPostProc", Processed_RMS, "ADU");
   //-----------------------------
   
   
@@ -201,11 +200,11 @@ template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKa
   }
   Int_t fitres = fFitHist->Fit("fFitFunc","RQNS");
   
-  myResults["amp"] = KResult("amp", fFitFunc->GetParameter(0), "ADU");
-  myResults["peakPosition"] = KResult("peakPosition", (double)fFitFunc->GetParameter(1) + fPulseStartTimeInTemplate, "bin");
-  myResults["chiSq"] = KResult("chiSq", fFitFunc->GetChisquare());
-  myResults["ndfFloat"] = KResult("ndfFloat", fFitFunc->GetNDF());
-  myResults["fitResult"] = KResult("fitResult", fitres);
+  fResults["amp"] = KResult("amp", fFitFunc->GetParameter(0), "ADU");
+  fResults["peakPosition"] = KResult("peakPosition", (double)fFitFunc->GetParameter(1) + fPulseStartTimeInTemplate, "bin");
+  fResults["chiSq"] = KResult("chiSq", fFitFunc->GetChisquare());
+  fResults["ndfFloat"] = KResult("ndfFloat", fFitFunc->GetNDF());
+  fResults["fitResult"] = KResult("fitResult", fitres);
   
   // rec->SetAmp(fFitFunc->GetParameter(0));
   // rec->SetPeakPosition((double)fFitFunc->GetParameter(1)+fPulseStartTimeInTemplate);
@@ -221,9 +220,9 @@ template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKa
   fFitBase->FixParameter(1,fBaselinePosition);
   fitres = fFitHist->Fit("fFitBase","RQNS");
   
-  myResults["ampFixHeatPosition"] = KResult("ampFixHeat", fFitFunc->GetParameter(0), "ADU");
-  myResults["fixHeatPosition"] = KResult("fixHeatPosition", fBaselinePosition, "bin");
-  myResults["fitResults_fixHeatPosition"] = KResult("fitResults_fixHeatPosition", fitres);
+  fResults["ampFixHeatPosition"] = KResult("ampFixHeat", fFitFunc->GetParameter(0), "ADU");
+  fResults["fixHeatPosition"] = KResult("fixHeatPosition", fBaselinePosition, "bin");
+  fResults["fitResults_fixHeatPosition"] = KResult("fitResults_fixHeatPosition", fitres);
   // rec->SetExtra(fFitFunc->GetParameter(0),9);
   //  rec->SetExtra(fBaselinePosition,10);
   //  rec->SetExtra(fitres,11);
@@ -235,23 +234,23 @@ template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKa
     fFitFunc->SetParameters(*(fPostProcessor->GetOutputPulse()+(int)fixPeakPosition)/fMaxAbsValueInTemplate,fixPeakPosition);
     fFitFunc->FixParameter(1,fixPeakPosition);
     fitres = fFitHist->Fit("fFitFunc","RQNS");
-    myResults["ampFixedPositionFromIon"] = KResult("ampFixedPositionFromIon", fFitFunc->GetParameter(0), "ADU");
-    myResults["fixedPositionFromIon"] = KResult("fixedPositionFromIon", fixPeakPosition, "bin");
-    myResults["fitResults_fixedPositionFromIon"] = KResult("fitResults_fixedPositionFromIon", fitres);
+    fResults["ampFixedPositionFromIon"] = KResult("ampFixedPositionFromIon", fFitFunc->GetParameter(0), "ADU");
+    fResults["fixedPositionFromIon"] = KResult("fixedPositionFromIon", fixPeakPosition, "bin");
+    fResults["fitResults_fixedPositionFromIon"] = KResult("fitResults_fixedPositionFromIon", fitres);
     
     //rec->SetExtra(fFitFunc->GetParameter(0),12);
     //rec->SetExtra(fixPeakPosition,13);
     //rec->SetExtra(fitres,14);
   }
-  else myResults["fitResults_fixedPositionFromIon"] =  KResult("fitResults_fixedPositionFromIon", -1);
+  else fResults["fitResults_fixedPositionFromIon"] =  KResult("fitResults_fixedPositionFromIon", -1);
   //rec->SetExtra(-1,14);
   
   for(unsigned int i = 0; i < fPreProcessor->GetNumProcessors(); i++){
     
     try{
       KLinearRemoval& mProc = dynamic_cast<KLinearRemoval &>( *fPreProcessor->GetProcessor(i) );
-      myResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetOffset(), "ADU");
-      myResults["slopeRemoved"] = KResult("slopeRemoved", mProc.GetSlope(), "ADU/bin");
+      fResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetOffset(), "ADU");
+      fResults["slopeRemoved"] = KResult("slopeRemoved", mProc.GetSlope(), "ADU/bin");
       //rec->SetBaselineRemoved(mProc.GetOffset());
       //rec->SetSlopeRemoved(mProc.GetSlope());
     }
@@ -259,7 +258,7 @@ template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKa
     
     try{
       KBaselineRemoval& mProc = dynamic_cast<KBaselineRemoval &>( *fPreProcessor->GetProcessor(i) );
-      myResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetBaselineOffset(), "ADU");
+      fResults["baselineRemoved"] = KResult("baselineRemoved", mProc.GetBaselineOffset(), "ADU");
       //rec->SetBaselineRemoved(mProc.GetBaselineOffset());
     }
     catch(std::bad_cast){} //do nothing.
@@ -285,7 +284,7 @@ template <class T> std::map<std::string, KResult>  KFilterChainBestCorrelationKa
       //now calculate the area under the pulse template, given 
       
       
-  return myResults;
+  return fResults;
       
 }
 #endif

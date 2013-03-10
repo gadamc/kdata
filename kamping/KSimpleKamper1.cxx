@@ -116,15 +116,14 @@ void KSimpleKamper1::CheckMemory(KRawBoloPulseRecord *pRec)
   }
 }
 
-map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
+map<string, KResult >& KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
 {
     
   CheckMemory(pRec);
   
-  map<string, KResult > myResults;
 
   if(pRec->GetPulseLength() == 0)
-    return myResults;
+    return fResults;
 
   //do heat pulse analysis
   if(pRec->GetIsHeatPulse()){
@@ -142,22 +141,22 @@ map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
               peakPos = fPeakFindHeat.GetExtraWeakPosition(i);
             }
           }
-          myResults["amp"] = KResult("amp", maxAmp, "ADU");
-          myResults["peakPosition"] = KResult("peakPosition", peakPos, "bin");
+          fResults["amp"] = KResult("amp", maxAmp, "ADU");
+          fResults["peakPosition"] = KResult("peakPosition", peakPos, "bin");
           //rec->SetAmp(maxAmp);
           //rec->SetPeakPosition(peakPos); 
           //rec->SetName(GetName());
           //rec->SetUnit(0);
-          myResults["baselineRemoved"] = KResult("baselineRemoved", fLinRemovalHeat.GetBaselineOffset(), "ADU");
-          //myResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalHeat.GetSlope(), "ADU/bin");
+          fResults["baselineRemoved"] = KResult("baselineRemoved", fLinRemovalHeat.GetBaselineOffset(), "ADU");
+          //fResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalHeat.GetSlope(), "ADU/bin");
           //rec->SetBaselineRemoved(fLinRemovalHeat.GetBaselineOffset());
           //rec->SetSlopeRemoved(fLinRemovalHeat.GetSlope());
         }
-        else {cerr << "ksimplekamper1 - peak find heat fail." << endl; return myResults;}
+        else {cerr << "ksimplekamper1 - peak find heat fail." << endl; return fResults;}
       } 
-      else {cerr << "ksimplekamper1 - iir filter heat fail." << endl; return myResults;}
+      else {cerr << "ksimplekamper1 - iir filter heat fail." << endl; return fResults;}
     }
-    else {cerr << "ksimplekamper1 - linear removal heat fail." << endl; return myResults;}
+    else {cerr << "ksimplekamper1 - linear removal heat fail." << endl; return fResults;}
     
   }
   
@@ -194,25 +193,25 @@ map<string, KResult > KSimpleKamper1::MakeKamp(KRawBoloPulseRecord * pRec)
               }
             }
 
-            myResults["amp"] = KResult("amp", maxAmp, "ADU");
-            myResults["peakPosition"] = KResult("peakPosition", peakPos, "bin");
+            fResults["amp"] = KResult("amp", maxAmp, "ADU");
+            fResults["peakPosition"] = KResult("peakPosition", peakPos, "bin");
             //rec->SetAmp(maxAmp);
             //rec->SetPeakPosition(peakPos); 
             //rec->SetName(GetName());
             //rec->SetUnit(0);
-            myResults["baselineRemoved"] = KResult("baselineRemoved", fLinRemovalIon.GetBaselineOffset(), "ADU");
-            //myResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalIon.GetSlope(), "ADU/bin");
+            fResults["baselineRemoved"] = KResult("baselineRemoved", fLinRemovalIon.GetBaselineOffset(), "ADU");
+            //fResults["slopeRemoved"] = KResult("slopeRemoved", fLinRemovalIon.GetSlope(), "ADU/bin");
             //rec->SetBaselineRemoved(fLinRemovalIon.GetBaselineOffset());
           }
-          else {cerr << "ksimplekamper1 - peak find ion fail." << endl; return myResults;}
+          else {cerr << "ksimplekamper1 - peak find ion fail." << endl; return fResults;}
         }
-        else {cerr << "ksimplekamper1 - iir filter ion fail." << endl; return myResults;}
+        else {cerr << "ksimplekamper1 - iir filter ion fail." << endl; return fResults;}
       }
-      else {cerr << "ksimplekamper1 - pattern removal ion fail." << endl; return myResults;}
+      else {cerr << "ksimplekamper1 - pattern removal ion fail." << endl; return fResults;}
     }
-    else {cerr << "ksimplekamper1 - linear removal ion fail." << endl; return myResults;}
+    else {cerr << "ksimplekamper1 - linear removal ion fail." << endl; return fResults;}
   }
   
   
-  return myResults;
+  return fResults;
 }

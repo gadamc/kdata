@@ -5,55 +5,55 @@
 // Created by Adam Cox
 // Copyright 2011 Karlsruhe Institute of Technology. All rights reserved.
 //
-// Definition of map returned by MakeKamp  (myResults is of type map<string, KResult>)
+// Definition of map returned by MakeKamp  (fResults is of type map<string, KResult>)
 //
-// myResults["amp"]
+// fResults["amp"]
 //        amplitude estimate from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
 //
-// myResults["peakPosition"] 
+// fResults["peakPosition"] 
 //        estimated pulse peak position from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
 //
-// myResults["chiSq"]
+// fResults["chiSq"]
 //        ChiSq returned by ROOT fit routine from time-domain pulse fit with floating peak position (+- 5 bins about point of best correlation)
 //
-// myResults["ndfFloat"] 
+// fResults["ndfFloat"] 
 //        NDF of the fit -- fit with floating start time
 //
-// myResults["fitResult"] 
+// fResults["fitResult"] 
 //        ROOT's TMinuit Fit return output - 0=good fit.
 //
-// myResults["baselineRmsPostProc"] 
+// fResults["baselineRmsPostProc"] 
 //        RMS of the first 40% of the post-processed pulse
 //
-// myResults["rmsPreProc"] 
+// fResults["rmsPreProc"] 
 //        RMS of entire preprocessed pulse
 //
-// myResults["rmsPostProc"]
+// fResults["rmsPostProc"]
 //        RMS of entire post-processed pulse
 //  
-// myResults["ampFixHeatPosition"]
+// fResults["ampFixHeatPosition"]
 //        amplitude estimate of the fit with a fixed start time set to fBaselinePosition.
 //
-// myResults["fixHeatPosition"]
+// fResults["fixHeatPosition"]
 //        fBaselinePosition - the fixed position of the pulse peak time in the above amplitude estimate fit..
 //
-// myResults["fitResults_fixHeatPosition"]
+// fResults["fitResults_fixHeatPosition"]
 //        fit result -- ROOT's TMinuit Fit return output for baseline fit
 //
-// myResults["ampFixedPositionFromIon"] 
+// fResults["ampFixedPositionFromIon"] 
 //        Heat channel amplitude estimate from the fit with the peak time fixed to the estimated Ionization pulse time. 
 //        Heat channel only. This element of the map will not exist for ionization channels
 //
-// myResults["fixedPositionFromIon"] 
+// fResults["fixedPositionFromIon"] 
 //        Fixed pulse time -- the estimated Ionization pulse time used in the fit. 
 //        This element of the map will not exist for ionization channels
 //
-// myResults["fitResults_fixedPositionFromIon"]
+// fResults["fitResults_fixedPositionFromIon"]
 //        fixed pulse time fit result -- ROOT's TMinuit Fit return output for Heat channel fit with the peak time fixed to the Ionization peak time. 
 //
-// myResults["baselineRemoved"]
+// fResults["baselineRemoved"]
 //        the value removed from baseline removal object found in the PreProcessor object (if the preProcessor is a chain)
-// myResults["slopeRemoved"] 
+// fResults["slopeRemoved"] 
 //        the linear slope removed from the baseline removal object. If a KBaselineRemoval object was used
 //        then this element will not exist -- only if a KLinearRemoval object was found in the PreProcessor
 
@@ -91,28 +91,27 @@ KFilterChainBestCorrelationKamper::~KFilterChainBestCorrelationKamper(void)
 }
 
 
-std::map<std::string, KResult> KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, double fixPeakPosition)
+std::map<std::string, KResult>& KFilterChainBestCorrelationKamper::MakeKamp(KRawBoloPulseRecord * pRec, double fixPeakPosition)
 {
   
-  map<string, KResult> myResults;
   if(pRec->GetPulseLength() == 0 || pRec->GetTrace().size() == 0){
 
-    myResults["peakPosition"] = KResult("peakPosition", -1, "bin");
+    fResults["peakPosition"] = KResult("peakPosition", -1, "bin");
     //rec->SetPeakPosition(-1);
-    myResults["amp"] = KResult("amp", -99999, "ADU");
+    fResults["amp"] = KResult("amp", -99999, "ADU");
     //rec->SetAmp(-99999);
-    myResults["ndfFloat"] = KResult("ndfFloat", -99999);
+    fResults["ndfFloat"] = KResult("ndfFloat", -99999);
     //rec->SetExtra(-99999,0);
-    return myResults;
+    return fResults;
   }
 
   
   if(fTemplate.size() == 0)
-    {cerr << "KFilterChainBestCorrelationKamper: fTemplate isn't set!" << endl; return myResults;}
+    {cerr << "KFilterChainBestCorrelationKamper: fTemplate isn't set!" << endl; return fResults;}
 
   fPeakPos = -1.0;
   
-  if(!fPreProcessor  || !fPostProcessor) {cerr << "KFilterChainBestCorrelationKamper: pre or post processor pointer not set." << endl; return myResults;} 
+  if(!fPreProcessor  || !fPostProcessor) {cerr << "KFilterChainBestCorrelationKamper: pre or post processor pointer not set." << endl; return fResults;} 
 
 
   return MakeKamp( pRec->GetTrace(), fixPeakPosition, pRec->GetChannelName());

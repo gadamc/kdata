@@ -5,7 +5,7 @@
 // Created by Adam Cox
 // Copyright 2012 Karlsruhe Institute of Technology. All rights reserved.
 //
-// MakeKamp output map<string, KResult>
+// MakeKamp output map<string, KResult> fResults
 //
 //  string                |   description
 //  
@@ -21,7 +21,7 @@
 //
 //   pulseTemplateShift       the time shift of the pulse template
 //   amplitudeShift           an extra time shift used to measure the baseline amplitude
-//   ampAtTemplatePluseAmplitudeShift   the amplitude estimated by the optimal filter at the pulseTemplateShift+amplitudeShift position
+//   ampAtTemplatePulseAmplitudeShift   the amplitude estimated by the optimal filter at the pulseTemplateShift+amplitudeShift position
 //   minChi2                  the minimum value of the chi^2 as a function of pulse start time
 //   minChi2Pos               the time(bin number) of the pulse where chi^2 is at a minimum
 //   optAmpAtMinChi2          amplitude from the optimal filter at minChi2Pos
@@ -61,12 +61,12 @@ KOptimalKamper::~KOptimalKamper(void)
 
 }
 
-std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord)
+std::map<std::string, KResult>& KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord)
 {
   return MakeKamp(rawPulseRecord, -1);
 }
 
-std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, double fixPeakPosition)
+std::map<std::string, KResult>& KOptimalKamper::MakeKamp(KRawBoloPulseRecord * rawPulseRecord, double fixPeakPosition)
 {
   //make sure that you set up the Optimal Filter properly before each event. This means you have to 
   //set the optimal filter's noise and template power spectra before MakeKamp gets called.
@@ -75,17 +75,17 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
   //if the rawPulseRecord->GetPulseLength() == 0 
   //this kamper returns an empty map
 
-  map<string, KResult> myResults;
+  
 
-  if(rawPulseRecord->GetPulseLength() == 0) return myResults;
-  //if(!rawPulseRecord->GetIsHeatPulse()) return myResults;
+  if(rawPulseRecord->GetPulseLength() == 0) return fResults;
+  //if(!rawPulseRecord->GetIsHeatPulse()) return fResults;
   
   
   KPtaProcessor *last = 0;
   if(fPreProcessor){
     fPreProcessor->SetInputPulse( (std::vector<short>&)rawPulseRecord->GetTrace());
     if(!fPreProcessor->RunProcess()){
-      cout << "fPreProcessor failed" << endl; return myResults;
+      cout << "fPreProcessor failed" << endl; return fResults;
     }
     last = fPreProcessor;
   }
@@ -96,7 +96,7 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
       fWindow->SetInputPulse((std::vector<short>&)rawPulseRecord->GetTrace());
     
     if(!fWindow->RunProcess()){
-      cout << "fWindow failed" << endl; return myResults;
+      cout << "fWindow failed" << endl; return fResults;
     }
     last = fWindow;
   }
@@ -107,19 +107,19 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
   else fR2Hc.SetInputPulse((std::vector<short>&)rawPulseRecord->GetTrace());
   
   if(!fR2Hc.RunProcess()){
-    cout << "KOptimalKamper::MakeKamp. fR2Hc failed" << endl; return myResults;
+    cout << "KOptimalKamper::MakeKamp. fR2Hc failed" << endl; return fResults;
   }
   
   fOptimalFilter.SetInputPulse( fR2Hc);
   
   if(!fOptimalFilter.RunProcess()){
-    cout << "KOptimalKamper::MakeKamp. fOptimalFilter failed" << endl; return myResults;
+    cout << "KOptimalKamper::MakeKamp. fOptimalFilter failed" << endl; return fResults;
   }
   
   //what is this: just a test to see what is the amplitude of the pulse at this point in time.
-  myResults["ampAtTemplatePluseAmplitudeShift"] = KResult("ampAtTemplatePluseAmplitudeShift", fOptimalFilter.GetOutputPulse()[(int)fPulseTemplateShift + fPulseAmplitudeShift], "ADU");
-  myResults["pulseTemplateShift"]  = KResult("pulseTemplateShift", fPulseTemplateShift, "bin");
-  myResults["amplitudeShift"] = KResult("amplitudeShift", fPulseAmplitudeShift, "bin");
+  fResults["ampAtTemplatePulseAmplitudeShift"] = KResult("ampAtTemplatePulseAmplitudeShift", fOptimalFilter.GetOutputPulse()[(int)fPulseTemplateShift + fPulseAmplitudeShift], "ADU");
+  fResults["pulseTemplateShift"]  = KResult("pulseTemplateShift", fPulseTemplateShift, "bin");
+  fResults["amplitudeShift"] = KResult("amplitudeShift", fPulseAmplitudeShift, "bin");
 
   //rec->SetExtra(fOptimalFilter.GetOutputPulse()[(int)fPulseTemplateShift + fPulseAmplitudeShift], 0);
 
@@ -156,13 +156,13 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
         
       }
     }
-    myResults["minChi2"] = KResult("minChi2", minChi2);
-    myResults["minChi2Pos"] = KResult("minChi2Pos", minChi2Pos, "bin");
-    myResults["optAmpAtMinChi2"] = KResult("optAmpAtMinChi2", fOptimalFilter.GetOutputPulse()[minChi2Pos], "ADU");
+    fResults["minChi2"] = KResult("minChi2", minChi2);
+    fResults["minChi2Pos"] = KResult("minChi2Pos", minChi2Pos, "bin");
+    fResults["optAmpAtMinChi2"] = KResult("optAmpAtMinChi2", fOptimalFilter.GetOutputPulse()[minChi2Pos], "ADU");
 
     if(last){
-      myResults["pulseAmpAtOptimalAmpPeakPosition"] = KResult("pulseAmpAtOptimalAmpPeakPosition", last->GetOutputPulse()[maxPosition], "ADU");
-      myResults["pulseAmpAtMinChi2Position"] = KResult("pulseAmpAtMinChi2Position", last->GetOutputPulse()[minChi2Pos], "ADU");
+      fResults["pulseAmpAtOptimalAmpPeakPosition"] = KResult("pulseAmpAtOptimalAmpPeakPosition", last->GetOutputPulse()[maxPosition], "ADU");
+      fResults["pulseAmpAtMinChi2Position"] = KResult("pulseAmpAtMinChi2Position", last->GetOutputPulse()[minChi2Pos], "ADU");
     
     
       //other pulse shape characteristics. rise time, width
@@ -193,28 +193,40 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
           }
         }
       }
-      myResults["risetime"] = KResult("risetime", (ninetyPercTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9, "seconds");
-      myResults["pulseWidth"] = KResult("pulseWidth", (tenPercEndTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9, "seconds");
+      fResults["risetime"] = KResult("risetime", (ninetyPercTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9, "seconds");
+      fResults["pulseWidth"] = KResult("pulseWidth", (tenPercEndTime - tenPercStartTime)*rawPulseRecord->GetPulseTimeWidth()*1.0e-9, "seconds");
     }
   }
   else if (fixPeakPosition >= 0 && fixPeakPosition < fOptimalFilter.GetOutputPulseSize()){  //use the position specificed by the caller
     maxValue = fOptimalFilter.GetOutputPulse()[(int)fixPeakPosition];
     maxPosition = (int)fixPeakPosition;
   }
-  myResults["amp"] = KResult("amp", maxValue, "ADU");
-  myResults["peakPosition"] = KResult("peakPosition", maxPosition, "bin");
-  myResults["chi2AtPeakPosition"] = KResult("chi2AtPeakPosition", fOptimalFilter.GetChiSquared(maxPosition));
-  myResults["fixPeakPosition"] = KResult("fixPeakPosition", fixPeakPosition, "bin");
+  fResults["amp"] = KResult("amp", maxValue, "ADU");
+  fResults["peakPosition"] = KResult("peakPosition", maxPosition, "bin");
+  fResults["chi2AtPeakPosition"] = KResult("chi2AtPeakPosition", fOptimalFilter.GetChiSquared(maxPosition));
+  fResults["fixPeakPosition"] = KResult("fixPeakPosition", fixPeakPosition, "bin");
 
-  
-  
+
+  fResults["ionPulseStartTime"] = KResult("ionPulseStartTime", -99999, "seconds");;
+  fResults["ampAtIonPulseStartTime"] = KResult("ampAtIonPulseStartTime", -99999, "ADU");;
+  fResults["chi2AtIonPulseStartTime"]  = KResult("chi2AtIonPulseStartTime", -99999);
+
+  if(rawPulseRecord->GetIsHeatPulse()){
+    fResults["ionPulseStartTime"] = KResult("ionPulseStartTime", fIonPulsePeakPos, "seconds");
+    int ionPulseStartTimeBin = rawPulseRecord->GetPretriggerSize()-1 + fIonPulsePeakPos/( rawPulseRecord->GetPulseTimeWidth()*1.e-9);
+    if (ionPulseStartTimeBin < (int)fOptimalFilter.GetOutputPulseSize() && ionPulseStartTimeBin > 0){
+      fResults["ampAtIonPulseStartTime"] =  KResult("ampAtIonPulseStartTime", fOptimalFilter.GetOutputPulse()[ ionPulseStartTimeBin ], "ADU");
+      fResults["chi2AtIonPulseStartTime"]  = KResult("chi2AtIonPulseStartTime", fOptimalFilter.GetChiSquared(ionPulseStartTimeBin));
+    }
+  }
+
   try{
     if( dynamic_cast<KBaselineRemoval*>(fPreProcessor) != 0)
-      myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KBaselineRemoval*>(fPreProcessor))->GetBaselineOffset(), "ADU");
+      fResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KBaselineRemoval*>(fPreProcessor))->GetBaselineOffset(), "ADU");
       
     else if( dynamic_cast<KLinearRemoval*>(fPreProcessor) != 0) {
-      myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetOffset(), "ADU");
-      myResults["slope"] = KResult("slope", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetSlope(), "ADU/bin");
+      fResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetOffset(), "ADU");
+      fResults["slope"] = KResult("slope", (dynamic_cast<KLinearRemoval*>(fPreProcessor))->GetSlope(), "ADU/bin");
     } 
 
     //if the preprocessor is a chain, go through the chain to find
@@ -225,12 +237,12 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
       for(unsigned int i = 0; i < (dynamic_cast<KPulseAnalysisChain*>(fPreProcessor))->GetNumProcessors(); i++){
         KPtaProcessor *aProc = (dynamic_cast<KPulseAnalysisChain*>(fPreProcessor))->GetProcessor(i);
         if( dynamic_cast<KBaselineRemoval*>(aProc) != 0){
-          myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KBaselineRemoval*>(aProc))->GetBaselineOffset(), "ADU");
+          fResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KBaselineRemoval*>(aProc))->GetBaselineOffset(), "ADU");
           break;
         }
         else if( dynamic_cast<KLinearRemoval*>(aProc) != 0) {
-          myResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(aProc))->GetOffset(), "ADU");
-          myResults["slope"] = KResult("slope", (dynamic_cast<KLinearRemoval*>(aProc))->GetSlope(), "ADU/bin");
+          fResults["baselineRemoved"] = KResult("baselineRemoved", (dynamic_cast<KLinearRemoval*>(aProc))->GetOffset(), "ADU");
+          fResults["slope"] = KResult("slope", (dynamic_cast<KLinearRemoval*>(aProc))->GetSlope(), "ADU/bin");
           break;
         }   
       }
@@ -240,6 +252,6 @@ std::map<std::string, KResult> KOptimalKamper::MakeKamp(KRawBoloPulseRecord * ra
     cout << "Exception: " << e.what() << endl;
   }  
   
-  return myResults;
+  return fResults;
 }
 

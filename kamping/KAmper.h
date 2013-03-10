@@ -22,12 +22,17 @@ public:
   KAmper(void);
   virtual ~KAmper(void);
   
-  virtual std::map<std::string, KResult>  MakeKamp(KRawBoloPulseRecord * rawPulseRecord) = 0;
+  virtual std::map<std::string, KResult>&  MakeKamp(KRawBoloPulseRecord * rawPulseRecord) = 0;
   virtual void SetName(const char* name){fName = name;}
   virtual const char* GetName(void){return fName.c_str();}
-  
+  virtual std::map<std::string, KResult>& GetResults(){return fResults;}
+
+protected:
+  std::map<std::string, KResult> fResults;
+
 private:
   std::string fName;
+
 };
 
 
