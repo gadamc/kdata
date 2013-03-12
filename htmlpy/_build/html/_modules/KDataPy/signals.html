@@ -125,34 +125,35 @@
 <span class="sd">  (BBv1 pulses could be easily added if needed) They can return the value </span>
 <span class="sd">  at a particular time, or they may be used to generate a list or numpy array</span>
 <span class="sd">  of numerical values. Additionally, this module defines two classes to produce</span>
-<span class="sd">  noise. The GaussianNoise class produces a randomly distributed, but</span>
-<span class="sd">  independent, set of values about zero and of a particular width. While, the </span>
-<span class="sd">  ArbitraryNoise class will randomly generare a noise pulse based on an input </span>
-<span class="sd">  noise power spectrum.  (For technical reasons ArbitraryNoise doesn&#39;t inherit </span>
-<span class="sd">  directly from Signal, but it does behave similarly.)   </span>
-<span class="sd">  These classes are iterable and can be used directly with Numpy and </span>
-<span class="sd">  MatPlotLib. That is, you can called</span>
+<span class="sd">  noise. The GaussianNoise class produces white gaussian noise about zero and </span>
+<span class="sd">  of a particular width. While, the ArbitraryNoise class will randomly generare </span>
+<span class="sd">  a noise pulse based on an input noise power spectrum.  (For technical </span>
+<span class="sd">  reasons ArbitraryNoise doesn&#39;t inherit directly from Signal, but it does </span>
+<span class="sd">  behave similarly.)   These classes are iterable and can be used directly </span>
+<span class="sd">  with Numpy and  MatPlotLib. That is, you can called</span>
 
-<span class="sd">  import KDataPy.signals</span>
+<span class="sd">  .. code-block:: python</span>
 
-<span class="sd">  heat = KDataPy.signals.HeatSignal()</span>
-<span class="sd">  #by default, parameter[1] is -1, which is fine for</span>
-<span class="sd">  #templates, but should be larger to see </span>
-<span class="sd">  #above typical noise levels</span>
-<span class="sd">  heat.setpar(1,-1500) </span>
+<span class="sd">    import KDataPy.signals</span>
+<span class="sd">    heat = KDataPy.signals.HeatSignal()</span>
+<span class="sd">    #by default, parameter[1] is -1, which is fine for</span>
+<span class="sd">    #templates, but should be larger to see </span>
+<span class="sd">    #above typical noise levels</span>
+<span class="sd">    heat.setpar(1,-1500) </span>
 
-<span class="sd">  #use iteration to make a list</span>
-<span class="sd">  pulse = []</span>
-<span class="sd">  for val in heat:</span>
-<span class="sd">    pulse.append(val)</span>
+<span class="sd">    #use iteration to make a list</span>
+<span class="sd">    pulse = []</span>
+<span class="sd">    for val in heat:</span>
+<span class="sd">      pulse.append(val)</span>
 
-<span class="sd">  #and get a numpy array</span>
+<span class="sd">    #and get a numpy array</span>
 
-<span class="sd">  pulse = heat()  </span>
+<span class="sd">    pulse = heat()  </span>
 
-<span class="sd">  #and plot with MatPlotLib</span>
+<span class="sd">    #and plot with MatPlotLib</span>
 
-<span class="sd">  matplotlib.pyplot.plot(heat)</span>
+<span class="sd">    matplotlib.pyplot.plot(heat)</span>
+
 
 <span class="sd">  These classes have been optimized for speed (in case you repeatedly want</span>
 <span class="sd">  to generate the same pulse), by using a standard Python &#39;memoization&#39; </span>
@@ -161,7 +162,9 @@
 
 <span class="sd">  This means that the second time you call </span>
 
-<span class="sd">  pulse = heat()</span>
+<span class="sd">  .. code-block:: python</span>
+
+<span class="sd">    pulse = heat()</span>
 
 <span class="sd">  the values are just retrieved from the cache. (However, they are repacked </span>
 <span class="sd">  into a numpy array, which takes time.)  </span>
@@ -171,24 +174,31 @@
 
 <span class="sd">  Additionally, you can use the object call to return just a single </span>
 <span class="sd">  value of the signal. That is, </span>
-<span class="sd">  </span>
-<span class="sd">  heat[10]  #or heat(10)</span>
+
+<span class="sd">  .. code-block:: python</span>
+
+<span class="sd">    heat[10]  #or heat(10)</span>
 
 <span class="sd">  returns the heat at index = 10. </span>
 
 <span class="sd">  If you want the heat at time = X</span>
-<span class="sd">  heat[ X/heat.time_per_index ]</span>
+
+<span class="sd">  .. code-block:: python</span>
+
+<span class="sd">    heat[ X/heat.time_per_index ]</span>
 
 
 <span class="sd">  Signals can also be added, subtraced and multipled with the &#39;+&#39; , &#39;-&#39; </span>
 <span class="sd">  and &#39;*&#39; operators. These operations return a numpy array. </span>
 
-<span class="sd">  #instantiate a GaussianNoise </span>
-<span class="sd">  #object of width = 5</span>
-<span class="sd">  noise = KDataPy.signals.GaussianNoise(5)  </span>
+<span class="sd">  .. code-block:: python</span>
 
-<span class="sd">  signal = noise + heat</span>
-<span class="sd">  plt.plot(signal)</span>
+<span class="sd">    #instantiate a GaussianNoise </span>
+<span class="sd">    #object of width = 5</span>
+<span class="sd">    noise = KDataPy.signals.GaussianNoise(5)  </span>
+
+<span class="sd">    signal = noise + heat</span>
+<span class="sd">    plt.plot(signal)</span>
 
 <span class="sd">  Finally, the ArbitraryNoise class will randomly generate a noise pulse</span>
 <span class="sd">  given an input power spectrum. </span>
@@ -197,14 +207,18 @@
 <span class="sd">  spectrum for a particular channel. Then you would use it to </span>
 <span class="sd">  instantiate an ArbitraryNoise object.</span>
 
-<span class="sd">  noise = KDataPy.signals.ArbitraryNoise( noise_power )</span>
+<span class="sd">  .. code-block:: python</span>
 
-<span class="sd">  plt.plot(heat + noise)</span>
+<span class="sd">    noise = KDataPy.signals.ArbitraryNoise( noise_power )</span>
+
+<span class="sd">    plt.plot(heat + noise)</span>
 
 <span class="sd">  You can change the noise_power simply by calling</span>
 
-<span class="sd">  noise.noise_power = another_noise_power</span>
-<span class="sd">  noise.generate()</span>
+<span class="sd">  .. code-block:: python</span>
+
+<span class="sd">    noise.noise_power = another_noise_power</span>
+<span class="sd">    noise.generate()</span>
 
 
 <span class="sd">  Developer&#39;s note: This whole module should probably be rewritten such that everything inherits from numpy.ndarray. Then </span>
@@ -377,8 +391,10 @@
 
 <span class="sd">    Here is the code that generates the signal</span>
 
-<span class="sd">    if time &lt; par[0]: return 0  </span>
-<span class="sd">    else: return par[1]*(1 - math.exp(-(time-par[0])/par[2]))*(math.exp(-(time-par[0])/par[3]) + par[4]*math.exp(-(time-par[0])/par[5]))</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">      if time &lt; par[0]: return 0  </span>
+<span class="sd">      else: return par[1]*(1 - math.exp(-(time-par[0])/par[2]))*(math.exp(-(time-par[0])/par[3]) + par[4]*math.exp(-(time-par[0])/par[5]))</span>
 
 <span class="sd">    Use setpar and setparameters instead of setting the values </span>
 <span class="sd">    in the _parameters directly</span>
@@ -398,6 +414,9 @@
   <span class="nd">@memoized</span>
   <span class="k">def</span> <span class="nf">_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">    .. code-block:: python</span>
+
 <span class="sd">      if time &lt; par[0]: </span>
 <span class="sd">          return 0  </span>
 
@@ -420,10 +439,12 @@
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Defines a BBv2 ionization signal (a step function)</span>
 
-<span class="sd">    if time &lt; par[0]: </span>
-<span class="sd">      return 0  </span>
-<span class="sd">    </span>
-<span class="sd">    return par[1]</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">      if time &lt; par[0]: </span>
+<span class="sd">        return 0  </span>
+<span class="sd">      </span>
+<span class="sd">      return par[1]</span>
 
 <span class="sd">    Use setpar and setparameters instead of setting the values </span>
 <span class="sd">    in the _parameters directly</span>
@@ -487,29 +508,38 @@
 <span class="sd">    </span>
 <span class="sd">    For example:</span>
 
-<span class="sd">    noise = KDataPy.signals.ArbitraryNoise(noise_power)</span>
-<span class="sd">    heat = KDataPy.signals.HeatSignal()</span>
-<span class="sd">    heat.setpar(1, -500)</span>
+<span class="sd">    .. code-block:: python</span>
 
-<span class="sd">    matplotlib.pyplot.plot(heat + noise)</span>
+<span class="sd">      noise = KDataPy.signals.ArbitraryNoise(noise_power)</span>
+<span class="sd">      heat = KDataPy.signals.HeatSignal()</span>
+<span class="sd">      heat.setpar(1, -500)</span>
+
+<span class="sd">      matplotlib.pyplot.plot(heat + noise)</span>
 
 <span class="sd">    You must call .generate() to create a new noise pulse based upon the input noise_power.  </span>
 
-<span class="sd">    noise.generate()</span>
+<span class="sd">    .. code-block:: python</span>
 
-<span class="sd">    matplotlib.pyplot.plot(heat + noise)</span>
+<span class="sd">      noise.generate()</span>
+
+<span class="sd">      matplotlib.pyplot.plot(heat + noise)</span>
 
 <span class="sd">    You can change the noise_power simply by calling</span>
 
-<span class="sd">    noise.noise_power = another_noise_power </span>
-<span class="sd">    noise.generate()</span>
+<span class="sd">    .. code-block:: python</span>
 
-<span class="sd">    matplotlib.pyplot.plot(noise)</span>
+<span class="sd">      noise.noise_power = another_noise_power </span>
+<span class="sd">      noise.generate()</span>
+
+<span class="sd">      matplotlib.pyplot.plot(noise)</span>
 
 <span class="sd">    you can get access to the numpy array by calling</span>
-<span class="sd">    noise_nparr = noise[]  or </span>
-<span class="sd">    noise_nparr = noise.noise_instance or</span>
-<span class="sd">    noise_nparr = noise.__array__()</span>
+<span class="sd">    </span>
+<span class="sd">    .. code-block:: python</span>
+<span class="sd">    </span>
+<span class="sd">      noise_nparr = noise[]  or </span>
+<span class="sd">      noise_nparr = noise.noise_instance or</span>
+<span class="sd">      noise_nparr = noise.__array__()</span>
 
 <span class="sd">  &#39;&#39;&#39;</span>
 

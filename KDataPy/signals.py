@@ -3,34 +3,35 @@
   (BBv1 pulses could be easily added if needed) They can return the value 
   at a particular time, or they may be used to generate a list or numpy array
   of numerical values. Additionally, this module defines two classes to produce
-  noise. The GaussianNoise class produces a randomly distributed, but
-  independent, set of values about zero and of a particular width. While, the 
-  ArbitraryNoise class will randomly generare a noise pulse based on an input 
-  noise power spectrum.  (For technical reasons ArbitraryNoise doesn't inherit 
-  directly from Signal, but it does behave similarly.)   
-  These classes are iterable and can be used directly with Numpy and 
-  MatPlotLib. That is, you can called
+  noise. The GaussianNoise class produces white gaussian noise about zero and 
+  of a particular width. While, the ArbitraryNoise class will randomly generare 
+  a noise pulse based on an input noise power spectrum.  (For technical 
+  reasons ArbitraryNoise doesn't inherit directly from Signal, but it does 
+  behave similarly.)   These classes are iterable and can be used directly 
+  with Numpy and  MatPlotLib. That is, you can called
 
-  import KDataPy.signals
+  .. code-block:: python
 
-  heat = KDataPy.signals.HeatSignal()
-  #by default, parameter[1] is -1, which is fine for
-  #templates, but should be larger to see 
-  #above typical noise levels
-  heat.setpar(1,-1500) 
+    import KDataPy.signals
+    heat = KDataPy.signals.HeatSignal()
+    #by default, parameter[1] is -1, which is fine for
+    #templates, but should be larger to see 
+    #above typical noise levels
+    heat.setpar(1,-1500) 
 
-  #use iteration to make a list
-  pulse = []
-  for val in heat:
-    pulse.append(val)
+    #use iteration to make a list
+    pulse = []
+    for val in heat:
+      pulse.append(val)
 
-  #and get a numpy array
+    #and get a numpy array
 
-  pulse = heat()  
+    pulse = heat()  
 
-  #and plot with MatPlotLib
+    #and plot with MatPlotLib
 
-  matplotlib.pyplot.plot(heat)
+    matplotlib.pyplot.plot(heat)
+
 
   These classes have been optimized for speed (in case you repeatedly want
   to generate the same pulse), by using a standard Python 'memoization' 
@@ -39,7 +40,9 @@
 
   This means that the second time you call 
 
-  pulse = heat()
+  .. code-block:: python
+
+    pulse = heat()
 
   the values are just retrieved from the cache. (However, they are repacked 
   into a numpy array, which takes time.)  
@@ -49,24 +52,31 @@
 
   Additionally, you can use the object call to return just a single 
   value of the signal. That is, 
-  
-  heat[10]  #or heat(10)
+
+  .. code-block:: python
+
+    heat[10]  #or heat(10)
 
   returns the heat at index = 10. 
 
   If you want the heat at time = X
-  heat[ X/heat.time_per_index ]
+
+  .. code-block:: python
+
+    heat[ X/heat.time_per_index ]
 
 
   Signals can also be added, subtraced and multipled with the '+' , '-' 
   and '*' operators. These operations return a numpy array. 
 
-  #instantiate a GaussianNoise 
-  #object of width = 5
-  noise = KDataPy.signals.GaussianNoise(5)  
+  .. code-block:: python
 
-  signal = noise + heat
-  plt.plot(signal)
+    #instantiate a GaussianNoise 
+    #object of width = 5
+    noise = KDataPy.signals.GaussianNoise(5)  
+
+    signal = noise + heat
+    plt.plot(signal)
 
   Finally, the ArbitraryNoise class will randomly generate a noise pulse
   given an input power spectrum. 
@@ -75,14 +85,18 @@
   spectrum for a particular channel. Then you would use it to 
   instantiate an ArbitraryNoise object.
 
-  noise = KDataPy.signals.ArbitraryNoise( noise_power )
+  .. code-block:: python
 
-  plt.plot(heat + noise)
+    noise = KDataPy.signals.ArbitraryNoise( noise_power )
+
+    plt.plot(heat + noise)
 
   You can change the noise_power simply by calling
 
-  noise.noise_power = another_noise_power
-  noise.generate()
+  .. code-block:: python
+
+    noise.noise_power = another_noise_power
+    noise.generate()
 
 
   Developer's note: This whole module should probably be rewritten such that everything inherits from numpy.ndarray. Then 
@@ -255,8 +269,10 @@ class HeatSignal(Signal):
 
     Here is the code that generates the signal
 
-    if time < par[0]: return 0  
-    else: return par[1]*(1 - math.exp(-(time-par[0])/par[2]))*(math.exp(-(time-par[0])/par[3]) + par[4]*math.exp(-(time-par[0])/par[5]))
+    .. code-block:: python
+
+      if time < par[0]: return 0  
+      else: return par[1]*(1 - math.exp(-(time-par[0])/par[2]))*(math.exp(-(time-par[0])/par[3]) + par[4]*math.exp(-(time-par[0])/par[5]))
 
     Use setpar and setparameters instead of setting the values 
     in the _parameters directly
@@ -276,6 +292,9 @@ class HeatSignal(Signal):
   @memoized
   def _val(self, time):
     '''
+
+    .. code-block:: python
+
       if time < par[0]: 
           return 0  
 
@@ -298,10 +317,12 @@ class BBv2IonSignal(Signal):
   '''
     Defines a BBv2 ionization signal (a step function)
 
-    if time < par[0]: 
-      return 0  
-    
-    return par[1]
+    .. code-block:: python
+
+      if time < par[0]: 
+        return 0  
+      
+      return par[1]
 
     Use setpar and setparameters instead of setting the values 
     in the _parameters directly
@@ -365,29 +386,38 @@ class ArbitraryNoise(object):
     
     For example:
 
-    noise = KDataPy.signals.ArbitraryNoise(noise_power)
-    heat = KDataPy.signals.HeatSignal()
-    heat.setpar(1, -500)
+    .. code-block:: python
 
-    matplotlib.pyplot.plot(heat + noise)
+      noise = KDataPy.signals.ArbitraryNoise(noise_power)
+      heat = KDataPy.signals.HeatSignal()
+      heat.setpar(1, -500)
+
+      matplotlib.pyplot.plot(heat + noise)
 
     You must call .generate() to create a new noise pulse based upon the input noise_power.  
 
-    noise.generate()
+    .. code-block:: python
 
-    matplotlib.pyplot.plot(heat + noise)
+      noise.generate()
+
+      matplotlib.pyplot.plot(heat + noise)
 
     You can change the noise_power simply by calling
 
-    noise.noise_power = another_noise_power 
-    noise.generate()
+    .. code-block:: python
 
-    matplotlib.pyplot.plot(noise)
+      noise.noise_power = another_noise_power 
+      noise.generate()
+
+      matplotlib.pyplot.plot(noise)
 
     you can get access to the numpy array by calling
-    noise_nparr = noise[]  or 
-    noise_nparr = noise.noise_instance or
-    noise_nparr = noise.__array__()
+    
+    .. code-block:: python
+    
+      noise_nparr = noise[]  or 
+      noise_nparr = noise.noise_instance or
+      noise_nparr = noise.__array__()
 
   '''
 

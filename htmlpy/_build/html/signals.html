@@ -135,61 +135,80 @@
 (BBv1 pulses could be easily added if needed) They can return the value 
 at a particular time, or they may be used to generate a list or numpy array
 of numerical values. Additionally, this module defines two classes to produce
-noise. The GaussianNoise class produces a randomly distributed, but
-independent, set of values about zero and of a particular width. While, the 
-ArbitraryNoise class will randomly generare a noise pulse based on an input 
-noise power spectrum.  (For technical reasons ArbitraryNoise doesn&#8217;t inherit 
-directly from Signal, but it does behave similarly.)   
-These classes are iterable and can be used directly with Numpy and 
-MatPlotLib. That is, you can called</p>
-<p>import KDataPy.signals</p>
-<p>heat = KDataPy.signals.HeatSignal()
-#by default, parameter[1] is -1, which is fine for
-#templates, but should be larger to see 
-#above typical noise levels
-heat.setpar(1,-1500)</p>
-<p>#use iteration to make a list
-pulse = []
-for val in heat:</p>
-<blockquote>
-<div>pulse.append(val)</div></blockquote>
-<p>#and get a numpy array</p>
-<p>pulse = heat()</p>
-<p>#and plot with MatPlotLib</p>
-<p>matplotlib.pyplot.plot(heat)</p>
+noise. The GaussianNoise class produces white gaussian noise about zero and 
+of a particular width. While, the ArbitraryNoise class will randomly generare 
+a noise pulse based on an input noise power spectrum.  (For technical 
+reasons ArbitraryNoise doesn&#8217;t inherit directly from Signal, but it does 
+behave similarly.)   These classes are iterable and can be used directly 
+with Numpy and  MatPlotLib. That is, you can called</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">KDataPy.signals</span>
+<span class="n">heat</span> <span class="o">=</span> <span class="n">KDataPy</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">HeatSignal</span><span class="p">()</span>
+<span class="c">#by default, parameter[1] is -1, which is fine for</span>
+<span class="c">#templates, but should be larger to see </span>
+<span class="c">#above typical noise levels</span>
+<span class="n">heat</span><span class="o">.</span><span class="n">setpar</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1500</span><span class="p">)</span> 
+
+<span class="c">#use iteration to make a list</span>
+<span class="n">pulse</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">heat</span><span class="p">:</span>
+  <span class="n">pulse</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+<span class="c">#and get a numpy array</span>
+
+<span class="n">pulse</span> <span class="o">=</span> <span class="n">heat</span><span class="p">()</span>  
+
+<span class="c">#and plot with MatPlotLib</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">heat</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>These classes have been optimized for speed (in case you repeatedly want
 to generate the same pulse), by using a standard Python &#8216;memoization&#8217; 
 decorator cache. The values are cached the first time they are calculated 
 so that they are not calculated again.</p>
 <p>This means that the second time you call</p>
-<p>pulse = heat()</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pulse</span> <span class="o">=</span> <span class="n">heat</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>the values are just retrieved from the cache. (However, they are repacked 
 into a numpy array, which takes time.)</p>
 <p>If you change the value of the parameters, however, the pulse will be 
 recalculated.</p>
 <p>Additionally, you can use the object call to return just a single 
 value of the signal. That is,</p>
-<p>heat[10]  #or heat(10)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">heat</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>  <span class="c">#or heat(10)</span>
+</pre></div>
+</div>
 <p>returns the heat at index = 10.</p>
-<p>If you want the heat at time = X
-heat[ X/heat.time_per_index ]</p>
+<p>If you want the heat at time = X</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">heat</span><span class="p">[</span> <span class="n">X</span><span class="o">/</span><span class="n">heat</span><span class="o">.</span><span class="n">time_per_index</span> <span class="p">]</span>
+</pre></div>
+</div>
 <p>Signals can also be added, subtraced and multipled with the &#8216;+&#8217; , &#8216;-&#8216; 
 and &#8216;*&#8217; operators. These operations return a numpy array.</p>
-<p>#instantiate a GaussianNoise 
-#object of width = 5
-noise = KDataPy.signals.GaussianNoise(5)</p>
-<p>signal = noise + heat
-plt.plot(signal)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#instantiate a GaussianNoise </span>
+<span class="c">#object of width = 5</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">KDataPy</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">GaussianNoise</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  
+
+<span class="n">signal</span> <span class="o">=</span> <span class="n">noise</span> <span class="o">+</span> <span class="n">heat</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Finally, the ArbitraryNoise class will randomly generate a noise pulse
 given an input power spectrum.</p>
 <p>Given &#8216;noise_power&#8217; is a list-like object that holds the average power 
 spectrum for a particular channel. Then you would use it to 
 instantiate an ArbitraryNoise object.</p>
-<p>noise = KDataPy.signals.ArbitraryNoise( noise_power )</p>
-<p>plt.plot(heat + noise)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">noise</span> <span class="o">=</span> <span class="n">KDataPy</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">ArbitraryNoise</span><span class="p">(</span> <span class="n">noise_power</span> <span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">heat</span> <span class="o">+</span> <span class="n">noise</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>You can change the noise_power simply by calling</p>
-<p>noise.noise_power = another_noise_power
-noise.generate()</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">noise</span><span class="o">.</span><span class="n">noise_power</span> <span class="o">=</span> <span class="n">another_noise_power</span>
+<span class="n">noise</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>Developer&#8217;s note: This whole module should probably be rewritten such that everything inherits from numpy.ndarray. Then 
 you get all of the numpy stuff for free.... :P  Don&#8217;t ask why I didn&#8217;t do this in the first place.</p>
 <dl class="class">
@@ -198,21 +217,32 @@ you get all of the numpy stuff for free.... :P  Don&#8217;t ask why I didn&#8217
 <dd><p>This does not inherit from Signal, but is iterable and numpy array compatible. It acts like
 it inherits from Signal, so you can use it similarly.</p>
 <p>For example:</p>
-<p>noise = KDataPy.signals.ArbitraryNoise(noise_power)
-heat = KDataPy.signals.HeatSignal()
-heat.setpar(1, -500)</p>
-<p>matplotlib.pyplot.plot(heat + noise)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">noise</span> <span class="o">=</span> <span class="n">KDataPy</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">ArbitraryNoise</span><span class="p">(</span><span class="n">noise_power</span><span class="p">)</span>
+<span class="n">heat</span> <span class="o">=</span> <span class="n">KDataPy</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">HeatSignal</span><span class="p">()</span>
+<span class="n">heat</span><span class="o">.</span><span class="n">setpar</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">500</span><span class="p">)</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">heat</span> <span class="o">+</span> <span class="n">noise</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>You must call .generate() to create a new noise pulse based upon the input noise_power.</p>
-<p>noise.generate()</p>
-<p>matplotlib.pyplot.plot(heat + noise)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">noise</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">heat</span> <span class="o">+</span> <span class="n">noise</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>You can change the noise_power simply by calling</p>
-<p>noise.noise_power = another_noise_power 
-noise.generate()</p>
-<p>matplotlib.pyplot.plot(noise)</p>
-<p>you can get access to the numpy array by calling
-noise_nparr = noise[]  or 
-noise_nparr = noise.noise_instance or
-noise_nparr = noise.__array__()</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">noise</span><span class="o">.</span><span class="n">noise_power</span> <span class="o">=</span> <span class="n">another_noise_power</span> 
+<span class="n">noise</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>you can get access to the numpy array by calling</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">noise_nparr</span> <span class="o">=</span> <span class="n">noise</span><span class="p">[]</span>  <span class="ow">or</span> 
+<span class="n">noise_nparr</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">noise_instance</span> <span class="ow">or</span>
+<span class="n">noise_nparr</span> <span class="o">=</span> <span class="n">noise</span><span class="o">.</span><span class="n">__array__</span><span class="p">()</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="KDataPy.signals.ArbitraryNoise.generate">
 <tt class="descname">generate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/KDataPy/signals.html#ArbitraryNoise.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.signals.ArbitraryNoise.generate" title="Permalink to this definition">¶</a></dt>
@@ -225,11 +255,12 @@ noise_nparr = noise.__array__()</p>
 <dt id="KDataPy.signals.BBv2IonSignal">
 <em class="property">class </em><tt class="descclassname">KDataPy.signals.</tt><tt class="descname">BBv2IonSignal</tt><big>(</big><em>length=8192</em>, <em>time_per_index=1.0</em>, <em>parameters=None</em><big>)</big><a class="reference internal" href="_modules/KDataPy/signals.html#BBv2IonSignal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.signals.BBv2IonSignal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines a BBv2 ionization signal (a step function)</p>
-<dl class="docutils">
-<dt>if time &lt; par[0]: </dt>
-<dd>return 0</dd>
-</dl>
-<p>return par[1]</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">time</span> <span class="o">&lt;</span> <span class="n">par</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> 
+  <span class="k">return</span> <span class="mi">0</span>  
+
+<span class="k">return</span> <span class="n">par</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
 <p>Use setpar and setparameters instead of setting the values 
 in the _parameters directly</p>
 </dd></dl>
@@ -252,8 +283,10 @@ a finite rise-time, followed by a double exponential tail.</p>
 used in the &#8216;_val&#8217; method should also be in units of &#8216;ms&#8217;. The 
 length of the pulse, by default, is 512 points.</p>
 <p>Here is the code that generates the signal</p>
-<p>if time &lt; par[0]: return 0  
-else: return par[1]*(1 - math.exp(-(time-par[0])/par[2]))*(math.exp(-(time-par[0])/par[3]) + par[4]*math.exp(-(time-par[0])/par[5]))</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">time</span> <span class="o">&lt;</span> <span class="n">par</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="k">return</span> <span class="mi">0</span>  
+<span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="n">par</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">time</span><span class="o">-</span><span class="n">par</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">par</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">time</span><span class="o">-</span><span class="n">par</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">par</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="n">par</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">time</span><span class="o">-</span><span class="n">par</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">par</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+</pre></div>
+</div>
 <p>Use setpar and setparameters instead of setting the values 
 in the _parameters directly</p>
 </dd></dl>
