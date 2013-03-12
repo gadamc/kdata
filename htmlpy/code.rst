@@ -7,11 +7,13 @@ KDataPy Modules
 
    util
    
+   samba_utilities
+
+   signals
+
    database
 
    datadb
-
-   samba_utilities
 
    uploadutilities
 
