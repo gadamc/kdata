@@ -83,6 +83,9 @@
   noise.generate()
 
 
+  Developer's note: This whole module should probably be rewritten such that everything inherits from numpy.ndarray. Then 
+  you get all of the numpy stuff for free.... :P  Don't ask why I didn't do this in the first place. 
+
 '''
 
 import functools
