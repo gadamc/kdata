@@ -38,9 +38,7 @@ Since TClonesArrays are also iterable objects, you can then write simple Pythoni
      		np = pulse.getnumpy()
 
 
-Another useful iteration that has been added is for the KPtaProcessor-based classes (KBaselineRemoval, KIIRFilter, KConvolution, KPulseAnalysisChain, etc....). One can iterate over the input and output pulses for each object.
-
-Here's how you would use the iteratble KPtaProcessor.output and KPtaProcessor.input functions
+Another, possibly useful, iteration that has been added is for the KPtaProcessor-based classes (KBaselineRemoval, KIIRFilter, KConvolution, KPulseAnalysisChain, etc....). One can iterate over the input and output pulses for each object.
 
 .. code-block:: python
 
@@ -53,14 +51,7 @@ Here's how you would use the iteratble KPtaProcessor.output and KPtaProcessor.in
      for i in range(1000): vp.push_back(i)
      bas.SetInputPulse(vp)
      bas.RunProcess()
-     #
-
-
-     #The OLD way to loop through the output pulse
-     for ii in range(bas.GetOutputPulseSize()):
-     	print bas.GetOutputPulse()[i]
-
-     #The Python way
+    
      for val in bas.output:
        print val
 
@@ -74,6 +65,7 @@ Here's how you would use the iteratble KPtaProcessor.output and KPtaProcessor.in
      for val, i in bas.input_index:
        print i, val
 
+However, you're unlikely to use this construct - see the Numpy Array section below.
 
 When loading this module, the KPulseAnalysisChain also becomes iterable and returns a pointer to each KPtaProcessor in its ordered list. 
 
@@ -92,6 +84,11 @@ When loading this module, the KPulseAnalysisChain also becomes iterable and retu
      for processor in chain:
        print processor.GetName()
 
+-----------
+Numpy Array
+-----------
+
+There are a few functions which will generate a Numpy array for you from the KPtaProcessor objects. This is actually quite useful for using Numpy tools and plotting the results of KPtaProcessor with Matplotlib.  The functions are get_in(aPtaProc), get_out(aPtaProc) and get_as_nparray(c_pointer, size). 
 
 -------------
 Event Looping

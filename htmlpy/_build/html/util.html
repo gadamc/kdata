@@ -161,8 +161,7 @@
            <span class="n">np</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">getnumpy</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Another useful iteration that has been added is for the KPtaProcessor-based classes (KBaselineRemoval, KIIRFilter, KConvolution, KPulseAnalysisChain, etc....). One can iterate over the input and output pulses for each object.</p>
-<p>Here&#8217;s how you would use the iteratble KPtaProcessor.output and KPtaProcessor.input functions</p>
+<p>Another, possibly useful, iteration that has been added is for the KPtaProcessor-based classes (KBaselineRemoval, KIIRFilter, KConvolution, KPulseAnalysisChain, etc....). One can iterate over the input and output pulses for each object.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">KDataPy.util</span>
 <span class="kn">import</span> <span class="nn">ROOT</span>
 
@@ -172,14 +171,7 @@
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span> <span class="n">vp</span><span class="o">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 <span class="n">bas</span><span class="o">.</span><span class="n">SetInputPulse</span><span class="p">(</span><span class="n">vp</span><span class="p">)</span>
 <span class="n">bas</span><span class="o">.</span><span class="n">RunProcess</span><span class="p">()</span>
-<span class="c">#</span>
 
-
-<span class="c">#The OLD way to loop through the output pulse</span>
-<span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bas</span><span class="o">.</span><span class="n">GetOutputPulseSize</span><span class="p">()):</span>
-   <span class="k">print</span> <span class="n">bas</span><span class="o">.</span><span class="n">GetOutputPulse</span><span class="p">()[</span><span class="n">i</span><span class="p">]</span>
-
-<span class="c">#The Python way</span>
 <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">bas</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
   <span class="k">print</span> <span class="n">val</span>
 
@@ -194,6 +186,7 @@
   <span class="k">print</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span>
 </pre></div>
 </div>
+<p>However, you&#8217;re unlikely to use this construct - see the Numpy Array section below.</p>
 <p>When loading this module, the KPulseAnalysisChain also becomes iterable and returns a pointer to each KPtaProcessor in its ordered list.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">KDataPy.util</span>
 <span class="kn">import</span> <span class="nn">ROOT</span>
@@ -209,6 +202,10 @@
   <span class="k">print</span> <span class="n">processor</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="numpy-array">
+<h2>Numpy Array<a class="headerlink" href="#numpy-array" title="Permalink to this headline">¶</a></h2>
+<p>There are a few functions which will generate a Numpy array for you from the KPtaProcessor objects. This is actually quite useful for using Numpy tools and plotting the results of KPtaProcessor with Matplotlib.  The functions are get_in(aPtaProc), get_out(aPtaProc) and get_as_nparray(c_pointer, size).</p>
 </div>
 <div class="section" id="event-looping">
 <h2>Event Looping<a class="headerlink" href="#event-looping" title="Permalink to this headline">¶</a></h2>
@@ -578,6 +575,7 @@ This function plot to matplotlib figure(0)! So, don&#8217;t use figure(0) or it 
   <ul>
 <li><a class="reference internal" href="#">KDataPy Utility functions</a><ul>
 <li><a class="reference internal" href="#iteration">Iteration</a></li>
+<li><a class="reference internal" href="#numpy-array">Numpy Array</a></li>
 <li><a class="reference internal" href="#event-looping">Event Looping</a></li>
 </ul>
 </li>
