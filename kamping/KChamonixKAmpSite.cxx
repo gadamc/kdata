@@ -54,7 +54,6 @@
 #include "KRawBoloPulseRecord.h"
 #include "KPulseAnalysisRecord.h"
 #include "KWindowDesign.h"
-#include "KOptimalFilter.h"
 #include "KPulseAnalysisChain.h"
 #include "KLinearRemoval.h"
 #include "KBaselineRemoval.h"
@@ -110,6 +109,11 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
   fOperaGlitchNumBinsThreshold = 5;
   fWriteExtraData = true;
 
+  fHeatPulsePeakSearchRangeMin = -25;
+  fHeatPulsePeakSearchRangeMax = 100;
+  fIonPulsePeakSearchRangeMin = -1000;
+  fIonPulsePeakSearchRangeMax = 2000;
+
 }
 
 KChamonixKAmpSite::~KChamonixKAmpSite(void)
@@ -140,6 +144,13 @@ KChamonixKAmpSite::~KChamonixKAmpSite(void)
     delete fIonWindow;
     fIonWindow = 0;
   }
+
+
+  //clean up kampers
+  std::map<std::string, KOptimalKamper* >::iterator  it;
+  for( it = fOptKampers.begin(); it != fOptKampers.end(); it++)
+    delete it->second;
+
 
 }
 
@@ -224,93 +235,53 @@ void KChamonixKAmpSite::CreateIonWindow(unsigned int pulseSize, double tukeyWind
 
 Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolometerRecord *boloAmp, KAmpEvent *ee)
 {
-  //cout << "running a kampsite" << endl;
+  //
 
   //loop first and do the ionization channels. use the result from the ionization channels
   //to inform the heat channel energy estimator. 
 
-  double PeakPos = -1;
+  double PeakPos = 0;
   double maxPeak = 0.;
   int precNum = -1;
-
-  // if(fFirstPulse){
-  //   fFirstPulse = false;
-  // }
 
   if(boloRaw->IsVetoRecord()){return true;}  //skip veto records!
 
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
     
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
-    if(pRaw->GetPulseLength() == 0) continue;
-    if(pRaw->GetIsHeatPulse()) continue;  //first loop through the ionization pulses...
     
-    if(fTemplateSpectra.find(pRaw->GetChannelName()) == fTemplateSpectra.end()) {
+    if(pRaw->GetPulseLength() == 0) 
       continue;
-    }; //we don't have a template spectra for this channel. skip it.
 
-    if(fNoiseSpectra.find(pRaw->GetChannelName()) == fNoiseSpectra.end()) {
-      continue;
-    };  //also skip if we don't have a noise spectr
+    if(pRaw->GetIsHeatPulse()) 
+      continue;  //first loop through the ionization pulses...
     
-    
-    KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp); //for each pulse record, we add a bolo amp pulse record
-    KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
-    SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
-    
-    KOptimalFilter& filter = fOptKamper.GetOptimalFilter();
-    
-    filter.SetTemplateDFT( fTemplateSpectra.find(pRaw->GetChannelName())->second ); //this is extremely slow and will have to be optimized
-    filter.SetNoiseSpectrum( fNoiseSpectra.find(pRaw->GetChannelName())->second ); //this is extremely slow as well. don't want to copy over data
-    filter.SetToRecalculate(); //tell the filter to recalculate its kernel
-    
-    fOptKamper.SetWindow( fIonWindow ); //tell the optimal filter kamper to use this window function.
-    
-    KPtaProcessor *preProc;    
+    if(fTemplateSpectra.find(pRaw->GetChannelName()) == fTemplateSpectra.end()) 
+      continue;   //we don't have a template spectra for this channel. skip it.
 
-    if(pRaw->GetBoloBoxVersion() >= 1.99){
-      preProc = fBBv2IonPreProcessor;
-    }
-    else {
-      std::set<int> heatwidths = GetHeatPulseStampWidths(pRaw);
-      std::set<int>::iterator stampIter;  
-      stampIter = heatwidths.begin();
-      preProc = fBBv1IonPreProcessor;
+    if(fNoiseSpectra.find(pRaw->GetChannelName()) == fNoiseSpectra.end()) 
+      continue; //also skip if we don't have a noise spectr
+    
+    
 
-      try{
-        KPatternRemoval& mPat1 = dynamic_cast<KPatternRemoval &>( *preProc->GetProcessor(1) );
-        mPat1.SetPatternLength( *stampIter );
-      }
-      catch(std::bad_cast){} //just do nothing.
-
-      try {
-        KPatternRemoval& mPat2 = dynamic_cast<KPatternRemoval &>( *preProc->GetProcessor(2) );
-        stampIter++;
-        if ( stampIter != heatwidths.end() )
-          mPat2.SetPatternLength( *stampIter );
-        else {
-          stampIter = heatwidths.begin();
-          mPat2.SetPatternLength( 2 * (*stampIter) );
-        }
-      }
-      catch(std::bad_cast){} //just do nothing.
-    }
-   
-    fOptKamper.SetPreProcessor( preProc );
-    //need to tell the Kamper about the template pulse shift.
-    fOptKamper.SetPulseTemplateShiftFromPreTrigger( GetTemplateShift(pRaw->GetChannelName()) );
-    fOptKamper.SetAmplitudeEstimatorSearchRangeMax(1500); //hard coded... this is bad. better to at least use a physical time of X microseconds... 
-      //better yet to set this in a map and load it beforehand using the database or python routine
-    fOptKamper.SetAmplitudeEstimatorSearchRangeMin(0);
-
+    KOptimalKamper* aKamper = GetOptimalKamper(pRaw);
     //perform the optimal filtering
-    map<string, KResult> resMap = fOptKamper.MakeKamp(pRaw);
+    map<string, KResult> resMap = aKamper->MakeKamp(pRaw);
     
-    FillResults(rec, resMap, pRaw);
 
-    if((fabs(rec->GetAmp()) > maxPeak) and rec->GetAmp()!=-99999){
-       maxPeak = fabs(rec->GetAmp());
-       PeakPos = (rec->GetPeakPosition() - pRaw->GetPretriggerSize() ) * pRaw->GetPulseTimeWidth()*1.e-9;
+    //save the data into the output KAmpEvent (if it exists)
+    if(ee && boloAmp){
+      KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp); //for each pulse record, we add a bolo amp pulse record
+      KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
+      SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
+      
+      FillResults(rec, resMap, pRaw);
+    }  
+
+    
+    if((fabs(resMap["amp"].fValue) > maxPeak) and resMap["amp"].fValue!=-99999){
+       maxPeak = fabs(resMap["amp"].fValue);
+       PeakPos = (resMap["minChi2Pos"].fValue - pRaw->GetPretriggerSize() - 1 ) * pRaw->GetPulseTimeWidth()*1.e-9;
        precNum = k;
      }
 
@@ -322,50 +293,39 @@ Bool_t KChamonixKAmpSite::RunKampSite(KRawBolometerRecord *boloRaw, KAmpBolomete
   for(int k = 0; k < boloRaw->GetNumPulseRecords(); k++){
     
     KRawBoloPulseRecord *pRaw = (KRawBoloPulseRecord *)boloRaw->GetPulseRecord(k);
-    if(pRaw->GetPulseLength() == 0) continue;
-    if(!pRaw->GetIsHeatPulse()) continue;
     
-    if(fTemplateSpectra.find(pRaw->GetChannelName()) == fTemplateSpectra.end()) {
+    if(pRaw->GetPulseLength() == 0) 
       continue;
-    }; //we don't have a template spectra for this channel. skip it.
 
-    if(fNoiseSpectra.find(pRaw->GetChannelName()) == fNoiseSpectra.end()) {
+    if(!pRaw->GetIsHeatPulse()) 
       continue;
-    };  //also skip if we don't have a noise spectr
+    
+    if(fTemplateSpectra.find(pRaw->GetChannelName()) == fTemplateSpectra.end()) 
+      continue; //we don't have a template spectra for this channel. skip it.
+
+    if(fNoiseSpectra.find(pRaw->GetChannelName()) == fNoiseSpectra.end())
+      continue; //also skip if we don't have a noise spectr
     
     if(fHeatWindow == 0) continue;
 
-    //
-    KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp); //for each pulse record, we add a bolo amp pulse record
-    KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
-    SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
     
-    KOptimalFilter& filter = fOptKamper.GetOptimalFilter();
-    
-    filter.SetTemplateDFT( fTemplateSpectra.find(pRaw->GetChannelName())->second );
-    filter.SetNoiseSpectrum( fNoiseSpectra.find(pRaw->GetChannelName())->second );
-    filter.SetToRecalculate(); //tell the filter to recalculate its kernel
-    
-    fOptKamper.SetWindow( fHeatWindow ); //tell the optimal filter kamper to use this window function.
-
-    fOptKamper.SetPreProcessor( fHeatPreProcessor );
-    //need to tell the Kamper about the template pulse shift.
-    fOptKamper.SetPulseTemplateShiftFromPreTrigger( GetTemplateShift(pRaw->GetChannelName()) );
-    fOptKamper.SetAmplitudeEstimatorSearchRangeMax(150); //hard coded... this is bad. 
-    fOptKamper.SetAmplitudeEstimatorSearchRangeMin(-2);
-    fOptKamper.SetIonPulseStartTime(PeakPos);  
+    KOptimalKamper* aKamper = GetOptimalKamper(pRaw);
+    aKamper->SetIonPulseStartTime(PeakPos);    //set the ionization pulse peak position (in seconds from the trigger position)
 
     //perform the optimal filtering
-    map<string, KResult> resMap = fOptKamper.MakeKamp(pRaw);
+    map<string, KResult> resMap = aKamper->MakeKamp(pRaw);
     
-    FillResults(rec, resMap, pRaw );
+    //save the data into the output KAmpEvent (if it exists)
+    if(ee && boloAmp){
+      KAmpBoloPulseRecord *pAmp = ee->AddBoloPulse(pRaw, boloAmp); //for each pulse record, we add a bolo amp pulse record
+      KPulseAnalysisRecord *rec = ee->AddPulseAnalysisRecord();
+      SetTRefLinksForKAmpEvent(rec, boloAmp,pAmp);  //you MUST call this in order to set the TRef links and make a valid KAmpEvent
 
-    
+      FillResults(rec, resMap, pRaw );
 
+    }
 
   }
-
-
   
   return true;
 }  
@@ -378,9 +338,9 @@ void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResu
   if(resMap.find("chi2AtPeakPosition") != resMap.end())     rec->SetChiSq(resMap["chi2AtPeakPosition"].fValue);
   if(resMap.find("baselineRemoved") != resMap.end())        rec->SetBaselineRemoved(resMap["baselineRemoved"].fValue);
 
-  if(resMap.find("ampAtTemplatePluseAmplitudeShift") != resMap.end())     rec->SetExtra(resMap["ampAtTemplatePluseAmplitudeShift"].fValue, 0);
-  if(resMap.find("minChi2") != resMap.end())                              rec->SetExtra(resMap["minChi2Pos"].fValue, 1);
-  if(resMap.find("minChi2Pos") != resMap.end())                           rec->SetExtra(resMap["minChi2"].fValue, 2);
+  if(resMap.find("ampAtTemplatePulseAmplitudeShift") != resMap.end())     rec->SetExtra(resMap["ampAtTemplatePulseAmplitudeShift"].fValue, 0);
+  if(resMap.find("minChi2") != resMap.end())                              rec->SetExtra(resMap["minChi2"].fValue, 1);
+  if(resMap.find("minChi2Pos") != resMap.end())                           rec->SetExtra(resMap["minChi2Pos"].fValue, 2);
   if(resMap.find("optAmpAtMinChi2") != resMap.end())                      rec->SetExtra(resMap["optAmpAtMinChi2"].fValue, 3);
   if(resMap.find("pulseAmpAtOptimalAmpPeakPosition") != resMap.end())     rec->SetExtra(resMap["pulseAmpAtOptimalAmpPeakPosition"].fValue, 4);
   if(resMap.find("pulseAmpAtMinChi2Position") != resMap.end())            rec->SetExtra(resMap["pulseAmpAtMinChi2Position"].fValue, 5);
@@ -389,6 +349,11 @@ void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResu
   if(pRaw->GetIsHeatPulse()){
     fHeatPeakDetector.SetInputPulse( fHeatWindow);
     if(fHeatPeakDetector.RunProcess() )    rec->SetExtra(fHeatPeakDetector.GetPeakBins().size(), 6); 
+  }
+  else{
+    fIonPeakDetector.SetInputPulse( fHeatWindow);
+    if(fIonPeakDetector.RunProcess() )    rec->SetExtra(fIonPeakDetector.GetPeakBins().size(), 6); 
+
   }
 
   if(resMap.find("risetime") != resMap.end())       rec->SetRisetime(resMap["risetime"].fValue);
@@ -427,7 +392,7 @@ void KChamonixKAmpSite::FillResults(KPulseAnalysisRecord* rec, map<string, KResu
 
 
   if( !pRaw->GetIsHeatPulse()){
-    fOrderThresholdFinder.SetInputPulse( (std::vector<short> &)pRaw->GetTrace() )
+    fOrderThresholdFinder.SetInputPulse( (std::vector<short> &)pRaw->GetTrace() );
     if(fOrderThresholdFinder.RunProcess())
       rec->SetExtra(fOrderThresholdFinder.GetPeakBins().size(), 15);
   }
@@ -449,6 +414,11 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   //
 
   KRawBolometerRecord *bolo = pRaw->GetBolometerRecord();
+  if (bolo == 0){
+    cout << pRaw->GetChannelName() << endl;
+    cout << "KChamonixKAmpSite::ScoutKampSite. This is really bad. Check to make sure the file you are processing is a raw ROOT file.  The KRawBoloPulseRecord object returned a null pointer to the KRawBolometerRecord" << endl;
+    return false;
+  }
   if(bolo->IsVetoRecord())
     return true;
 
@@ -521,7 +491,7 @@ Bool_t KChamonixKAmpSite::ScoutKampSite(KRawBoloPulseRecord* pRaw, KRawEvent* /*
   //    adds it to the running average for that channel
 
   if( !pRaw->GetIsHeatPulse()){
-    fOrderThresholdFinder.SetInputPulse( (std::vector<short> &)pRaw->GetTrace() )
+    fOrderThresholdFinder.SetInputPulse( (std::vector<short> &)pRaw->GetTrace() );
     if(!fOrderThresholdFinder.RunProcess()){
       cout << "KChamonixKAmpSite::ScoutKampSite. the fOrderThresholdFinder failed. pulse channel: " << pRaw->GetChannelName() << endl;
       return false;
@@ -603,6 +573,8 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
 {
   //pulsetype, 0 = heat, 1 = ion
   //
+  //pulseShift no longer does anything because I calculate it automatically. Its left here so it doesn't break anything.
+  // 
   //If the Ion/Heat channel Window has not been created before you call this method, it will be created for you
   //automatically with the default parameters. If you wish to have different parameters (such as a different alpha 
   //parameter for the Tukey Window), you should first call CreateHeat/IonWindow(size, alpha). 
@@ -638,14 +610,15 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
     return false;
   }
    
-  //automatic pulse shift detection
-  /*
-  int pulseShift = pulse.size()/2.0; 
-  for(int i = 0; i < pulse.size(); i++){
-    if (pulse[i] != 0)
-      pulseShift = i;
+
+  pulseShift = pulse.size()/2; 
+  for(unsigned int i = 0; i < pulse.size(); i++){
+    if (pulse[i] != 0){
+      pulseShift = -1*i;
+      break;
+    }
   }
-  */
+  //cout << "pulse shift set to " << pulseShift << endl;
 
   SetTemplateShift(channelName, pulseShift);
 
@@ -655,16 +628,13 @@ Bool_t KChamonixKAmpSite::SetTemplate(const char* channelName,  std::vector<doub
   fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetOutputPulse());
   fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetOutputPulseSize());
 
-  // old super hack!!!  what was this for?
-  // fPulseTemplateShifter.SetInputPulse(theWindowProcessor->GetInputPulse());
-  // fPulseTemplateShifter.SetInputPulseSize(theWindowProcessor->GetInputPulseSize());
-  // fPulseTemplateShifter.SetOutputPulse(theWindowProcessor->GetInputPulse());
-  // fPulseTemplateShifter.SetOutputPulseSize(theWindowProcessor->GetInputPulseSize());
-  
 
   fPulseTemplateShifter.SetMode(2);
   fPulseTemplateShifter.RunProcess();
-  
+
+  //for(int iii = 0; iii < 10; iii++)
+  //  cout << "pulse tempate post shift, bin " << iii <<  ":  " << fPulseTemplateShifter.GetOutputPulse()[iii] << endl;
+    
   fR2Hc.SetInputPulse( theWindowProcessor);
   if(!fR2Hc.RunProcess()){
     cout << "fR2Hc failed" << endl; return false;
@@ -765,7 +735,7 @@ int KChamonixKAmpSite::GetTemplateShift(const char* channelName) const
   if (fTemplateShift.find(channelName) != fTemplateShift.end()){
     return fTemplateShift.find(channelName)->second;
   }
-  else return 0;
+  else return -9999;
 }
 
 
@@ -795,6 +765,98 @@ Double_t KChamonixKAmpSite::GetEraPeakFinderNumRms(const char* channelName) cons
     return fEraPeakFinderNumRms.find(channelName)->second;
   }
   else return -1;
+}
+
+KOptimalKamper* KChamonixKAmpSite::GetOptimalKamper(const char* channelName)
+{
+  if (fOptKampers.find(channelName) != fOptKampers.end()){
+    return fOptKampers.find(channelName)->second;
+  }
+  else 
+    return 0;
+ 
+}
+
+KOptimalKamper* KChamonixKAmpSite::GetOptimalKamper(KRawBoloPulseRecord *rawBoloPulse)
+{
+
+  KOptimalKamper* myKamper = GetOptimalKamper(rawBoloPulse->GetChannelName());
+  
+  if (myKamper == 0){
+    // return NULL if can't find noise power spectrum, template spectra or template shift
+    if( fTemplateSpectra.find(rawBoloPulse->GetChannelName()) == fTemplateSpectra.end() ||
+        fNoiseSpectra.find(rawBoloPulse->GetChannelName()) == fNoiseSpectra.end() ||
+        fTemplateShift.find(rawBoloPulse->GetChannelName()) == fTemplateShift.end())
+
+      return 0;
+
+    cout << "Creating new KOptimalKamper for channel: " << rawBoloPulse->GetChannelName() << endl;
+
+    myKamper = new KOptimalKamper();
+    myKamper->SetTemplateDFT( fTemplateSpectra.find(rawBoloPulse->GetChannelName())->second );
+    myKamper->SetNoiseSpectrum( fNoiseSpectra.find(rawBoloPulse->GetChannelName())->second );
+    myKamper->SetPulseTemplateShiftFromPreTrigger( GetTemplateShift(rawBoloPulse->GetChannelName()) );
+
+    myKamper->SetToRecalculate(); //tell the filter to recalculate its kernel
+
+
+    //set up a kamper for a heat pulse
+    if(rawBoloPulse->GetIsHeatPulse()){
+    
+      myKamper->SetWindow( fHeatWindow ); //tell the optimal filter kamper to use this window function.
+      myKamper->SetPreProcessor( fHeatPreProcessor );
+      myKamper->SetAmplitudeEstimatorSearchRangeMax(fHeatPulsePeakSearchRangeMax); 
+      myKamper->SetAmplitudeEstimatorSearchRangeMin(fHeatPulsePeakSearchRangeMin);
+    
+
+    }
+    //set up the kamper for an ionization pulse
+    else{
+      myKamper->SetWindow( fIonWindow ); //tell the optimal filter kamper to use this window function.
+
+      KPtaProcessor *preProc;    
+
+      if(rawBoloPulse->GetBoloBoxVersion() >= 1.99){
+        preProc = fBBv2IonPreProcessor;
+      }
+      else {  //BBv1 ionization needs two separate pattern removal processors
+        std::set<int> heatwidths = GetHeatPulseStampWidths(rawBoloPulse);
+        std::set<int>::iterator stampIter;  
+        stampIter = heatwidths.begin();
+        preProc = fBBv1IonPreProcessor;
+
+        try{
+          KPatternRemoval& mPat1 = dynamic_cast<KPatternRemoval &>( *preProc->GetProcessor(1) );
+          mPat1.SetPatternLength( *stampIter );
+        }
+        catch(std::bad_cast){} //just do nothing.
+
+        try {
+          KPatternRemoval& mPat2 = dynamic_cast<KPatternRemoval &>( *preProc->GetProcessor(2) );
+          stampIter++;
+          if ( stampIter != heatwidths.end() )
+            mPat2.SetPatternLength( *stampIter );
+          else {
+            stampIter = heatwidths.begin();
+            mPat2.SetPatternLength( 2 * (*stampIter) );
+          }
+        }
+        catch(std::bad_cast){} //just do nothing.
+      }
+     
+      myKamper->SetPreProcessor( preProc );
+      myKamper->SetAmplitudeEstimatorSearchRangeMax(fIonPulsePeakSearchRangeMax); 
+      myKamper->SetAmplitudeEstimatorSearchRangeMin(fIonPulsePeakSearchRangeMin);
+
+    }
+
+    fOptKampers[rawBoloPulse->GetChannelName()] = myKamper;
+    return myKamper;
+  }
+  
+  //return myKamper if it already wasn't NULL
+  return myKamper;
+
 }
 
 
@@ -879,24 +941,7 @@ void KChamonixKAmpSite::WriteExtraData(TDirectory *dd)
 
   }
 
-  nd = dd->mkdir("optimalfilter");
-
-  if(nd == 0){
-    cerr << "unable to make optimalfilter directory in KChamonixKAmpSite::WriteExtraData" << endl;
-    return;
-  }
-  nd->cd();
-  for(it = fTemplateSpectra.begin(); it != fTemplateSpectra.end(); it++){
-    string histname = it->first;
-
-    TH1D h(histname.c_str(), histname.c_str(), it->second.size(), 0, it->second.size());
-    for (unsigned int i = 0; i <  it->second.size(); i++)
-      h.SetBinContent(i+1, it->second[i]);
-
-    h.SetEntries( 1 );
-    h.Write(histname.c_str(), TH1D::kWriteDelete);
-
-  }
+  
 
 }
 

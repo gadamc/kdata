@@ -85,7 +85,8 @@ public:
   // void SetHeatWindow(KWindow* pta);
   // void SetIonWindow(KWindow* pta);
 
-  KOptimalKamper& GetOptimalKamper(void){return fOptKamper;}
+  KOptimalKamper* GetOptimalKamper(const char* channelName);
+  KOptimalKamper* GetOptimalKamper(KRawBoloPulseRecord *rawBoloPulse);
   KRealToHalfComplexDFT& GetRealToHalfComplexDFT(void){return fR2Hc;}
   KHalfComplexPower& GetHalfComplexPower(void){return fHc2P;}
   KEraPeakFinder& GetHeatPeakDetector(void){return fHeatPeakDetector;}
@@ -95,9 +96,18 @@ public:
   UInt_t GetOperaGlitchNumBinsThreshold(void){return fOperaGlitchNumBinsThreshold;}
   void SetOperaGlitchNumBinsThreshold(UInt_t val){fOperaGlitchNumBinsThreshold = val;}
 
-  
-  void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.75);
-  void CreateIonWindow(unsigned int pulseSize, double tukeyWindowParam = 0.5);
+  Int_t GetHeatPulsePeakSearchRangeMin(void){return fHeatPulsePeakSearchRangeMin;}
+  void SetHeatPulsePeakSearchRangeMin(Int_t val){fHeatPulsePeakSearchRangeMin = val;}
+  Int_t GetHeatPulsePeakSearchRangeMax(void){return fHeatPulsePeakSearchRangeMax;}
+  void SetHeatPulsePeakSearchRangeMax(Int_t val){fHeatPulsePeakSearchRangeMax = val;}
+
+  Int_t GetIonPulsePeakSearchRangeMin(void){return fIonPulsePeakSearchRangeMin;}
+  void SetIonPulsePeakSearchRangeMin(Int_t val){fIonPulsePeakSearchRangeMin = val;}
+  Int_t GetIonPulsePeakSearchRangeMax(void){return fIonPulsePeakSearchRangeMax;}
+  void SetIonPulsePeakSearchRangeMax(Int_t val){fIonPulsePeakSearchRangeMax = val;}
+
+  void CreateHeatWindow(unsigned int pulseSize, double tukeyWindowParam = 0.3);
+  void CreateIonWindow(unsigned int pulseSize, double tukeyWindowParam = 0.25);
   std::set<int>& GetHeatPulseStampWidths(KRawBoloPulseRecord * pRec);
   std::set<int>& GetHeatPulseStampWidths(const char* channelName); 
   unsigned int GetHeatPulseStampWidthsSize(const char* channelName) const;
@@ -142,8 +152,13 @@ private:
   UInt_t fEraPeakFinderOrderHeat_default;
   Double_t fEraPeakFinderNumRmsHeat_default;
 
+  Int_t fHeatPulsePeakSearchRangeMin;  //relative to the trigger position of the pulse. Can be negative. Default = -25
+  Int_t fHeatPulsePeakSearchRangeMax; //relative to the trigger position of the pulse. Default = 100
+  Int_t fIonPulsePeakSearchRangeMin;  //relative to the trigger position of the pulse. Can be negative. Default = -1000
+  Int_t fIonPulsePeakSearchRangeMax; //relative to the trigger position of the pulse. Default = 2000
 
-  KOptimalKamper fOptKamper;
+
+  std::map<std::string, KOptimalKamper* > fOptKampers;
   // Bool_t fFirstPulse; 
   
 };
