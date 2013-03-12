@@ -99,9 +99,10 @@ Event Looping
 The looppulse, loopbolo, plotpulse and plotbolo functions below have their own documentation. Basically, they run all of the event looping for you, so you don't have to write blocks of code like
 
 .. code-block:: python
-    for event in f:
-        for bolo in event.boloRecords():
-          for pulse in bolo.pulseRecords():
+
+     for event in f:
+       for bolo in event.boloRecords():
+         for pulse in bolo.pulseRecords():
 
 Using these looping tools let's you focus on the analysis of the channel in which you're interested. You can specify which channel you want to analyze and then pass in an analysis function that get's called whenever a pulse for that channel is found. 
 

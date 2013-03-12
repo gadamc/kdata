@@ -28,8 +28,8 @@
             <script type="text/javascript" src="_static/bootstrap-dropdown.js"></script>
         <link rel="top" title="KDataPy 5.01 documentation" href="index.html"/>
             <link rel="up" title="KDataPy Modules" href="code.html"/>
-            <link rel="next" title="KDataPy Upload Utility Functions" href="uploadutilities.html"/>
-            <link rel="prev" title="KDataPy DataDB Functions" href="datadb.html"/> 
+            <link rel="next" title="KDataPy Samba Utility Functions" href="signals.html"/>
+            <link rel="prev" title="KDataPy Utility functions" href="util.html"/> 
     <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
     
 </head>
@@ -51,12 +51,12 @@
                        title="Python Module Index" >modules</a>
                 </li>
                 <li>
-                    <a href="uploadutilities.html"
-                       title="KDataPy Upload Utility Functions" accesskey="N">next</a>
+                    <a href="signals.html"
+                       title="KDataPy Samba Utility Functions" accesskey="N">next</a>
                 </li>
                 <li>
-                    <a href="datadb.html"
-                       title="KDataPy DataDB Functions" accesskey="P">previous</a>
+                    <a href="util.html"
+                       title="KDataPy Utility functions" accesskey="P">previous</a>
                 </li>
                 <li><a href="code.html"
                         accesskey="U">KDataPy Modules</a>
@@ -158,6 +158,12 @@ For example, the input argument, date, must look something like ma22</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="KDataPy.samba_utilities.isvalidkdatarawfilename">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">isvalidkdatarawfilename</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#isvalidkdatarawfilename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.isvalidkdatarawfilename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if name is a valid name for KData raw-level file (aka partition) names. Such as ma22000_012.root</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="KDataPy.samba_utilities.isvalidsambadatafilename">
 <tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">isvalidsambadatafilename</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#isvalidsambadatafilename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.isvalidsambadatafilename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test if name is a valid name for Samba file (aka partition) names. Such as ma22000_012</p>
@@ -184,8 +190,16 @@ For example, the input argument, date, must look something like ma22</p>
 <dl class="function">
 <dt id="KDataPy.samba_utilities.kdatafileregex">
 <tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">kdatafileregex</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#kdatafileregex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.kdatafileregex" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns a regular expression string that matches a samba file (aka &#8216;partition&#8217;) string.
-something like &#8216;ma22a012_023&#8217;, for example.
+<dd><p>returns a regular expression string that matches a kdata file (aka &#8216;partition&#8217;) string.
+something like &#8216;ma22a012_023.root&#8217;, for example. may include .amp.root and .hla.root files.
+you can use this in the python re module.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="KDataPy.samba_utilities.kdatarawfileregex">
+<tt class="descclassname">KDataPy.samba_utilities.</tt><tt class="descname">kdatarawfileregex</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/KDataPy/samba_utilities.html#kdatarawfileregex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.samba_utilities.kdatarawfileregex" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a regular expression string that matches a kdata raw-level file (aka &#8216;partition&#8217;) string name.
+something like &#8216;ma22a012_023.root&#8217;, for example.
 you can use this in the python re module.</p>
 </dd></dl>
 
@@ -313,11 +327,11 @@ The input argument, year, must be a string between a and z, inclusively.</p>
         <div class="sphinxsidebar">
             <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="datadb.html"
-                        title="previous chapter">KDataPy DataDB Functions</a></p>
+  <p class="topless"><a href="util.html"
+                        title="previous chapter">KDataPy Utility functions</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="uploadutilities.html"
-                        title="next chapter">KDataPy Upload Utility Functions</a></p>
+  <p class="topless"><a href="signals.html"
+                        title="next chapter">KDataPy Samba Utility Functions</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/samba_utilities.txt"

@@ -10,9 +10,9 @@ KDataPy is a set of Python tools that were crammed into KData. Many of these too
 
 However, KDataPy does contain a set of Python-based extension to the KData Data Structure library classes (KDataReader, KEvent, KBoloPulseRecords, etc...) and general purpose helper functions (util.py and database.py). 
 
-The KDataPy.util module will likely be the most interesting module. The KDataPy.database module provides just a few quick functions to save you some typing to get a connection to an Edelweiss database server. 
+The KDataPy.util module will likely be the most interesting module. The KDataPy.database module provides just a few quick functions to save you some typing to get a connection to an Edelweiss database server. The KDataPy.samba_utilities module contains some tools to read/write Samba file name strings, as well as providing functions to test for valid Samba/KData file names (useful for finding files data in a directory) and providing regular expressions. The KDataPy.signals module provides the tools needed to simulate raw pulses, which can then be used to test signal processing tools. 
 
-KDataPy is quite sparse at the moment. If you develop any tools or modules, please feel free to contribute them! Contact adam.cox@kit.edu in order to be added to the developer list.
+
 
 Contents:
 

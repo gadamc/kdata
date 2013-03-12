@@ -124,16 +124,16 @@
 <h1>KDataPy<a class="headerlink" href="#kdatapy" title="Permalink to this headline">¶</a></h1>
 <p>KDataPy is a set of Python tools that were crammed into KData. Many of these tools are scripts that perform specific operations, such as uploading .csv files to the database. In reality, these scripts should live in a different code repository (and they may be moved out).</p>
 <p>However, KDataPy does contain a set of Python-based extension to the KData Data Structure library classes (KDataReader, KEvent, KBoloPulseRecords, etc...) and general purpose helper functions (util.py and database.py).</p>
-<p>The KDataPy.util module will likely be the most interesting module. The KDataPy.database module provides just a few quick functions to save you some typing to get a connection to an Edelweiss database server.</p>
-<p>KDataPy is quite sparse at the moment. If you develop any tools or modules, please feel free to contribute them! Contact <a class="reference external" href="mailto:adam&#46;cox&#37;&#52;&#48;kit&#46;edu">adam<span>&#46;</span>cox<span>&#64;</span>kit<span>&#46;</span>edu</a> in order to be added to the developer list.</p>
+<p>The KDataPy.util module will likely be the most interesting module. The KDataPy.database module provides just a few quick functions to save you some typing to get a connection to an Edelweiss database server. The KDataPy.samba_utilities module contains some tools to read/write Samba file name strings, as well as providing functions to test for valid Samba/KData file names (useful for finding files data in a directory) and providing regular expressions. The KDataPy.signals module provides the tools needed to simulate raw pulses, which can then be used to test signal processing tools.</p>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="code.html">KDataPy Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="util.html">KDataPy Utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="samba_utilities.html">KDataPy Samba Utility Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signals.html">KDataPy Samba Utility Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database.html">KDataPy Database Access Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datadb.html">KDataPy DataDB Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="samba_utilities.html">KDataPy Samba Utility Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uploadutilities.html">KDataPy Upload Utility Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exceptions.html">KDataPy Exceptions</a></li>
 </ul>

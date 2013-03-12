@@ -28,7 +28,7 @@
             <script type="text/javascript" src="_static/bootstrap-dropdown.js"></script>
         <link rel="top" title="KDataPy 5.01 documentation" href="index.html"/>
             <link rel="up" title="KDataPy Modules" href="code.html"/>
-            <link rel="next" title="KDataPy Database Access Functions" href="database.html"/>
+            <link rel="next" title="KDataPy Samba Utility Functions" href="samba_utilities.html"/>
             <link rel="prev" title="KDataPy Modules" href="code.html"/> 
     <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
     
@@ -51,8 +51,8 @@
                        title="Python Module Index" >modules</a>
                 </li>
                 <li>
-                    <a href="database.html"
-                       title="KDataPy Database Access Functions" accesskey="N">next</a>
+                    <a href="samba_utilities.html"
+                       title="KDataPy Samba Utility Functions" accesskey="N">next</a>
                 </li>
                 <li>
                     <a href="code.html"
@@ -131,7 +131,9 @@
                     
   <div class="section" id="kdatapy-utility-functions">
 <h1>KDataPy Utility functions<a class="headerlink" href="#kdatapy-utility-functions" title="Permalink to this headline">¶</a></h1>
-<p>This module extends the KDataReader class, the KRawBoloPulseRecords class and the family of KPtaProcessor classes.  It add iteration, provides easy functions to create numpy arrays from KPtaProcessors, and provides event looping functions, allowing you to hook in an analysis function to the loop. This way you don&#8217;t have to write those chunks of code ever again.</p>
+<p>This module extends the KDataReader class, the KRawBoloPulseRecords class and the family of KPtaProcessor classes.  It adds iteration to some classes, provides easy functions to create numpy arrays from KPtaProcessors, and provides event looping functions, allowing you to hook in an analysis function to the loop. This way you don&#8217;t have to write those chunks of code ever again.</p>
+<div class="section" id="iteration">
+<h2>Iteration<a class="headerlink" href="#iteration" title="Permalink to this headline">¶</a></h2>
 <p>The KDataReader class is now iterable and returns a pointer to the KEvent class (KRawEvent, KAmpEvent, KHLAEvent).  The KRawBoloPulseRecord class has been extended in Python. The method getnumpy() was added, which returns a numpy array. An example is shown below.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">KDataPy.util</span>
 <span class="kn">import</span> <span class="nn">ROOT</span>
@@ -159,8 +161,6 @@
            <span class="n">np</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">getnumpy</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>However, why write an event loop ever again? KDataPy.util already does this for you and gives you an easy
-way to hook in an analysis function for each pulse or bolometer record.  See the looppulse and loopbolo functions below!</p>
 <p>Another useful iteration that has been added is for the KPtaProcessor-based classes (KBaselineRemoval, KIIRFilter, KConvolution, KPulseAnalysisChain, etc....). One can iterate over the input and output pulses for each object.</p>
 <p>Here&#8217;s how you would use the iteratble KPtaProcessor.output and KPtaProcessor.input functions</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">KDataPy.util</span>
@@ -209,6 +209,17 @@ way to hook in an analysis function for each pulse or bolometer record.  See the
   <span class="k">print</span> <span class="n">processor</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="event-looping">
+<h2>Event Looping<a class="headerlink" href="#event-looping" title="Permalink to this headline">¶</a></h2>
+<p>The looppulse, loopbolo, plotpulse and plotbolo functions below have their own documentation. Basically, they run all of the event looping for you, so you don&#8217;t have to write blocks of code like</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+  <span class="k">for</span> <span class="n">bolo</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">boloRecords</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">pulse</span> <span class="ow">in</span> <span class="n">bolo</span><span class="o">.</span><span class="n">pulseRecords</span><span class="p">():</span>
+</pre></div>
+</div>
+<p>Using these looping tools let&#8217;s you focus on the analysis of the channel in which you&#8217;re interested. You can specify which channel you want to analyze and then pass in an analysis function that get&#8217;s called whenever a pulse for that channel is found.</p>
+<p>The plotbolo pulse, without any analysis function and pulse processing, is an easy way to look at the raw events.</p>
 <span class="target" id="module-KDataPy.util"></span><dl class="function">
 <dt id="KDataPy.util.concatKdataFiles">
 <tt class="descclassname">KDataPy.util.</tt><tt class="descname">concatKdataFiles</tt><big>(</big><em>fileList</em>, <em>outputFileName</em><big>)</big><a class="reference internal" href="_modules/KDataPy/util.html#concatKdataFiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.util.concatKdataFiles" title="Permalink to this definition">¶</a></dt>
@@ -545,6 +556,7 @@ This function plot to matplotlib figure(0)! So, don&#8217;t use figure(0) or it 
 </dd></dl>
 
 </div>
+</div>
 
 
                     
@@ -556,12 +568,21 @@ This function plot to matplotlib figure(0)! So, don&#8217;t use figure(0) or it 
                     
         <div class="sphinxsidebar">
             <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">KDataPy Utility functions</a><ul>
+<li><a class="reference internal" href="#iteration">Iteration</a></li>
+<li><a class="reference internal" href="#event-looping">Event Looping</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="code.html"
                         title="previous chapter">KDataPy Modules</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="database.html"
-                        title="next chapter">KDataPy Database Access Functions</a></p>
+  <p class="topless"><a href="samba_utilities.html"
+                        title="next chapter">KDataPy Samba Utility Functions</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/util.txt"
