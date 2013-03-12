@@ -85,7 +85,14 @@ class KDataUtilQuitLoop(Exception):
 def get_as_nparray(c_pointer, size):
   '''
   
-  return a numpy array from a pointer to data of length 'size'
+  return a numpy array from a pointer to data of length 'size'. For example, 
+  cham = ROOT.KChamonixKAmpSite()
+  cham.CreateHeatWindow(512, 0.2)
+  windowObj = cham.GetHeatWindow()
+  window_np = get_as_nparray(windowObj.GetWindow(), windowObj.GetWindowSize())
+
+  This tool is useful for generating a numpy array from some internal memory in 
+  a KPtaProcessor that is not the input/output.
   
   '''
   data = numpy.zeros(size)
