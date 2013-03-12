@@ -7,7 +7,7 @@
 //
 // The template-DFT must be in half-complex format (see KRealToHalfComplexDFT)
 // and should be of size N.
-// But the noise spectrum is the average power spectrum of size N/2. 
+// But the noise spectrum is the average power spectrum of size N/2 + 1. 
 // You must set these data properly, otherwise, this will probably break and go down in flames.
 // 
 // The optimal filter built from these two inputs will be a half-complex array of size N.
@@ -18,6 +18,10 @@
 // as a function of pulse start times. The maximum value in this array is the optimal filter estimate
 // of the amplitude of the pulse and the element of the output array where this occurs is the estimate
 // of the pulse start time.
+//
+// If the noise spectrum was produced from noise events that were windowed before the power spectrum
+// was calculated, then you must take care to window the input signal before you calculate the Fourier transform
+// of that signal and pass it to this class.
 //
 // Another thing to note is that the resulting amplitude estimator as a function of start time is 
 // reduced by a factor of 2 from what it should be. This is because the inverse fourier spectrum transformation is only done
@@ -104,7 +108,7 @@ bool KOptimalFilter::RunProcess(void)
   }
   
   for(unsigned int i = 0; i < fOptFilterAndSignalSize; i++)
-    *(fOptFilterAndSignal+i) = *(fOptFilter+i) * *(fInputPulse+i);
+    *(fOptFilterAndSignal+i) = *(fOptFilter+i) * *(fInputPulse+i);  
   
   return fHc2r->RunProcess();
 
@@ -189,11 +193,11 @@ bool KOptimalFilter::BuildFilter(void)
     *(fOptFilter+i) =  *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+i));
     
   //then the imaginary parts. make sure to use the correct index in the noise spectrum
-  //the -1 in the imaginary part is because the optimal filter is the complex conjugate 
+  //the -1 in the imaginary part is because the optimal filter is proportional to the complex conjugate 
   //of the templateDFT
   unsigned int j = 1;
   for(unsigned int i = fOptFilterSize-1; i > fOptFilterSize/2; i--)
-    *(fOptFilter+i) = -1* *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+(j++)));
+    *(fOptFilter+i) = -1.0* *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+(j++)));
   
   
   
