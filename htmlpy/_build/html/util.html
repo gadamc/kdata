@@ -249,7 +249,13 @@ within these files into a single output file with name &#8220;outputFileName&#82
 <dl class="function">
 <dt id="KDataPy.util.get_as_nparray">
 <tt class="descclassname">KDataPy.util.</tt><tt class="descname">get_as_nparray</tt><big>(</big><em>c_pointer</em>, <em>size</em><big>)</big><a class="reference internal" href="_modules/KDataPy/util.html#get_as_nparray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KDataPy.util.get_as_nparray" title="Permalink to this definition">¶</a></dt>
-<dd><p>return a numpy array from a pointer to data of length &#8216;size&#8217;</p>
+<dd><p>return a numpy array from a pointer to data of length &#8216;size&#8217;. For example, 
+cham = ROOT.KChamonixKAmpSite()
+cham.CreateHeatWindow(512, 0.2)
+windowObj = cham.GetHeatWindow()
+window_np = get_as_nparray(windowObj.GetWindow(), windowObj.GetWindowSize())</p>
+<p>This tool is useful for generating a numpy array from some internal memory in 
+a KPtaProcessor that is not the input/output.</p>
 </dd></dl>
 
 <dl class="function">

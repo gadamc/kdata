@@ -14,9 +14,10 @@
   import KDataPy.signals
 
   heat = KDataPy.signals.HeatSignal()
-  heat.setpar(1,-1500) #by default, parameter[1] is -1, which is fine for
-                       #templates, but should be larger to see 
-                       #above typical noise levels
+  #by default, parameter[1] is -1, which is fine for
+  #templates, but should be larger to see 
+  #above typical noise levels
+  heat.setpar(1,-1500) 
 
   #use iteration to make a list
   pulse = []
@@ -25,7 +26,7 @@
 
   #and get a numpy array
 
-  pulse = heat()  # returns a numpy array
+  pulse = heat()  
 
   #and plot with MatPlotLib
 
@@ -60,8 +61,9 @@
   Signals can also be added, subtraced and multipled with the '+' , '-' 
   and '*' operators. These operations return a numpy array. 
 
-  noise = KDataPy.signals.GaussianNoise(5)  #instantiate a GaussianNoise 
-                                            #object of width = 5
+  #instantiate a GaussianNoise 
+  #object of width = 5
+  noise = KDataPy.signals.GaussianNoise(5)  
 
   signal = noise + heat
   plt.plot(signal)

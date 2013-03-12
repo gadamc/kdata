@@ -136,9 +136,10 @@
 <span class="sd">  import KDataPy.signals</span>
 
 <span class="sd">  heat = KDataPy.signals.HeatSignal()</span>
-<span class="sd">  heat.setpar(1,-1500) #by default, parameter[1] is -1, which is fine for</span>
-<span class="sd">                       #templates, but should be larger to see </span>
-<span class="sd">                       #above typical noise levels</span>
+<span class="sd">  #by default, parameter[1] is -1, which is fine for</span>
+<span class="sd">  #templates, but should be larger to see </span>
+<span class="sd">  #above typical noise levels</span>
+<span class="sd">  heat.setpar(1,-1500) </span>
 
 <span class="sd">  #use iteration to make a list</span>
 <span class="sd">  pulse = []</span>
@@ -147,7 +148,7 @@
 
 <span class="sd">  #and get a numpy array</span>
 
-<span class="sd">  pulse = heat()  # returns a numpy array</span>
+<span class="sd">  pulse = heat()  </span>
 
 <span class="sd">  #and plot with MatPlotLib</span>
 
@@ -182,8 +183,9 @@
 <span class="sd">  Signals can also be added, subtraced and multipled with the &#39;+&#39; , &#39;-&#39; </span>
 <span class="sd">  and &#39;*&#39; operators. These operations return a numpy array. </span>
 
-<span class="sd">  noise = KDataPy.signals.GaussianNoise(5)  #instantiate a GaussianNoise </span>
-<span class="sd">                                            #object of width = 5</span>
+<span class="sd">  #instantiate a GaussianNoise </span>
+<span class="sd">  #object of width = 5</span>
+<span class="sd">  noise = KDataPy.signals.GaussianNoise(5)  </span>
 
 <span class="sd">  signal = noise + heat</span>
 <span class="sd">  plt.plot(signal)</span>

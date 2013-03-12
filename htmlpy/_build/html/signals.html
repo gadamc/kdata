@@ -144,17 +144,17 @@ These classes are iterable and can be used directly with Numpy and
 MatPlotLib. That is, you can called</p>
 <p>import KDataPy.signals</p>
 <p>heat = KDataPy.signals.HeatSignal()
-heat.setpar(1,-1500) #by default, parameter[1] is -1, which is fine for</p>
-<blockquote>
-<div>#templates, but should be larger to see 
-#above typical noise levels</div></blockquote>
+#by default, parameter[1] is -1, which is fine for
+#templates, but should be larger to see 
+#above typical noise levels
+heat.setpar(1,-1500)</p>
 <p>#use iteration to make a list
 pulse = []
 for val in heat:</p>
 <blockquote>
 <div>pulse.append(val)</div></blockquote>
 <p>#and get a numpy array</p>
-<p>pulse = heat()  # returns a numpy array</p>
+<p>pulse = heat()</p>
 <p>#and plot with MatPlotLib</p>
 <p>matplotlib.pyplot.plot(heat)</p>
 <p>These classes have been optimized for speed (in case you repeatedly want
@@ -175,10 +175,9 @@ value of the signal. That is,</p>
 heat[ X/heat.time_per_index ]</p>
 <p>Signals can also be added, subtraced and multipled with the &#8216;+&#8217; , &#8216;-&#8216; 
 and &#8216;*&#8217; operators. These operations return a numpy array.</p>
-<dl class="docutils">
-<dt>noise = KDataPy.signals.GaussianNoise(5)  #instantiate a GaussianNoise </dt>
-<dd>#object of width = 5</dd>
-</dl>
+<p>#instantiate a GaussianNoise 
+#object of width = 5
+noise = KDataPy.signals.GaussianNoise(5)</p>
 <p>signal = noise + heat
 plt.plot(signal)</p>
 <p>Finally, the ArbitraryNoise class will randomly generate a noise pulse

@@ -207,7 +207,14 @@
 <div class="viewcode-block" id="get_as_nparray"><a class="viewcode-back" href="../../util.html#KDataPy.util.get_as_nparray">[docs]</a><span class="k">def</span> <span class="nf">get_as_nparray</span><span class="p">(</span><span class="n">c_pointer</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  </span>
-<span class="sd">  return a numpy array from a pointer to data of length &#39;size&#39;</span>
+<span class="sd">  return a numpy array from a pointer to data of length &#39;size&#39;. For example, </span>
+<span class="sd">  cham = ROOT.KChamonixKAmpSite()</span>
+<span class="sd">  cham.CreateHeatWindow(512, 0.2)</span>
+<span class="sd">  windowObj = cham.GetHeatWindow()</span>
+<span class="sd">  window_np = get_as_nparray(windowObj.GetWindow(), windowObj.GetWindowSize())</span>
+
+<span class="sd">  This tool is useful for generating a numpy array from some internal memory in </span>
+<span class="sd">  a KPtaProcessor that is not the input/output.</span>
 <span class="sd">  </span>
 <span class="sd">  &#39;&#39;&#39;</span>
   <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>

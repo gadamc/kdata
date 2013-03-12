@@ -18,11 +18,8 @@ class datadb():
     ONLY use this class if you absolutely know what you are doing. Remember, you will be affecting
     data on the database with these tools.
 
-    ***
     
-    Are you SURE you want to alter data on the database?
-    
-    ***
+    *Are you SURE you want to alter data on the database?*
 
   '''
 
