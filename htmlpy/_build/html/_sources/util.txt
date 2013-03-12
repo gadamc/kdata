@@ -106,5 +106,8 @@ Using these looping tools let's you focus on the analysis of the channel in whic
 The plotbolo pulse, without any analysis function and pulse processing, is an easy way to look at the raw events. 
 
 
+Module Functions
+----------------
+
 .. automodule:: KDataPy.util
    :members:
