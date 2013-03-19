@@ -11,6 +11,11 @@
 #ifndef __KOPTIMALFILTER_H__
 #define __KOPTIMALFILTER_H__
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 #include "KPtaProcessor.h"
 #include "KHalfComplexArray.h"
 
@@ -18,7 +23,8 @@ class KHalfComplexToRealDFT;
 class KHalfComplexPower;
 
 class KOptimalFilter : public KPtaProcessor { 
-  
+
+
 public:
   //Constructors
   KOptimalFilter(void);
@@ -41,6 +47,8 @@ public:
   virtual double* GetOptFilterAndSignal(void){return fOptFilterAndSignal;}
   virtual unsigned int GetOptFilterAndSignalSize(void){return fOptFilterAndSignalSize;}
   
+  virtual double GetAmpEstimatorDenominator(void){return fAmpEstimatorDenominator;}
+  
   virtual void SetToRecalculate(bool option = true){fRecalculate= option;}
   template <class T> void SetNoiseSpectrum(std::vector<T> &r);
   template <class T> void SetNoiseSpectrum(const T* resp, unsigned int size);
@@ -59,8 +67,17 @@ public:
   virtual void SetOutputPulse(double *aPulse);
   virtual void SetOutputPulseSize(unsigned int s);
   
-  virtual double GetChiSquared(unsigned int aTimeBin);
-  
+  virtual double GetChiSquared(double amp, unsigned int index);
+
+  inline double GetPhase(double freq_k, double index){return  2.0 * M_PI * freq_k * index / (2.0*((double)fNoiseSpectrumSize - 1.0));}
+  double GetChiSquareElement(double optimalAmp, unsigned int index, unsigned int freq_k, bool debug = false);
+
+  virtual unsigned int GetOptimalFilterTimeRangeMin(void){return fOptimalFilterTimeRangeMin;}
+  virtual void SetOptimalFilterTimeRangeMin(unsigned int a){fOptimalFilterTimeRangeMin = a;}
+
+  virtual int GetOptimalFilterTimeRangeMax(void){return fOptimalFilterTimeRangeMax;}
+  virtual void SetOptimalFilterTimeRangeMax(int a){fOptimalFilterTimeRangeMax = a;}
+
 protected:
   double *fNoiseSpectrum;
   unsigned int fNoiseSpectrumSize;
@@ -81,6 +98,13 @@ protected:
   KHalfComplexToRealDFT *fHc2r;
   KHalfComplexPower *fHcPower;
   
+  double fAmpEstimatorDenominator;  //should be the variance / N 
+
+  unsigned int fOptimalFilterTimeRangeMin;  //the minimum search range for the optimal filter amplitude estimator (default = 0)
+  int fOptimalFilterTimeRangeMax;  //the maximim search range for the optimal filter amplitude estimator (default = pulse size)
+
+  bool fUseInverseFFT; 
+
 private:
   //private methods
   void InitializeMembers(void);

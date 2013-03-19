@@ -23,10 +23,6 @@
 // was calculated, then you must take care to window the input signal before you calculate the Fourier transform
 // of that signal and pass it to this class.
 //
-// Another thing to note is that the resulting amplitude estimator as a function of start time is 
-// reduced by a factor of 2 from what it should be. This is because the inverse fourier spectrum transformation is only done
-// on the positive frequencies and not over all frequencies, thus is off by a factor of 2. 
-//
 
 
 #include "KOptimalFilter.h"
@@ -34,6 +30,7 @@
 #include "KHalfComplexToRealDFT.h"
 #include "KHalfComplexPower.h"
 #include <cmath>
+#include <set>
 
 using namespace std;
 
@@ -87,7 +84,11 @@ void KOptimalFilter::InitializeMembers(void)
   fHc2r->DoNotDeletePulses(true);
   fHcPower = new KHalfComplexPower();
   fHcPower->DoNotDeletePulses(true);
-  
+
+  fUseInverseFFT = false;  
+  fOptimalFilterTimeRangeMin = 0;
+  fOptimalFilterTimeRangeMax = -1;  //unless the user changes this, the range will go to the end of the output pulse.
+
 }
 
 bool KOptimalFilter::RunProcess(void)
@@ -102,16 +103,54 @@ bool KOptimalFilter::RunProcess(void)
     return false;
   }
   
+  if (fOptimalFilterTimeRangeMax > 0  && 
+      (fOptimalFilterTimeRangeMax < (int)fOptimalFilterTimeRangeMin ||
+       fOptimalFilterTimeRangeMax > (int)fOutputSize)) {
+    cerr << "koptimal filter. incorrect time range" << endl;
+    return false;        
+  } 
+
   if(fRecalculate){
     if(!BuildFilter())
       return false;
   }
   
-  for(unsigned int i = 0; i < fOptFilterAndSignalSize; i++)
-    *(fOptFilterAndSignal+i) = *(fOptFilter+i) * *(fInputPulse+i);  
-  
-  return fHc2r->RunProcess();
+  set<int> checkSizes;
+  checkSizes.insert(fInputSize);
+  checkSizes.insert(fOutputSize);
+  checkSizes.insert(fOptFilterSize);
+  checkSizes.insert(fOptFilterAndSignalSize);
 
+  if (checkSizes.size() != 1){
+    cout << "KOptimalFilter. Pulse Size Mismatch." << endl;
+    for (set<int>::iterator it=checkSizes.begin(); it!=checkSizes.end(); ++it)
+      cout << " " << *it;
+    cout << endl;
+
+    return false;
+  }
+
+  //g(f) = h(f) * s(f)  where  s(f) = input, h(f) = optFilter
+  fComplex.Multiply(fOptFilterAndSignal, fOptFilter, fInputPulse, fOptFilterAndSignalSize);
+
+
+  if(fUseInverseFFT)
+    return fHc2r->RunProcess();  //inverse fourier transform to get the amplitude estimator as a function of time.
+
+
+  //if, calculating the ingegral explicitly, integrate just over the real parts
+  unsigned int max = fOutputSize;
+  if(fOptimalFilterTimeRangeMax > 0)
+    max = fOptimalFilterTimeRangeMax;
+  
+  for(unsigned int i = fOptimalFilterTimeRangeMin; i < max; i++ ){
+    fOutputPulse[i] = 0;
+    for(unsigned int k = 0; k < fOptFilterAndSignalSize/2; k++)
+      fOutputPulse[i] += fOptFilterAndSignal[k] * cos(GetPhase(k, i));
+
+    fOutputPulse[i] /= fOptFilterAndSignalSize;
+  }
+  return true;
 }
 
 bool KOptimalFilter::BuildFilter(void)
@@ -181,23 +220,36 @@ bool KOptimalFilter::BuildFilter(void)
   // the noise power, on the other hand, has a lengh of n/2+1 elements starting with the lowest
   // frequency component (DC) up to the highest (Nyquist).
   
+  set<int> checkSizes;
+  checkSizes.insert(2*(fNoiseSpectrumSize-1));
+  checkSizes.insert(fOptFilterSize);
+  checkSizes.insert(fTemplateDFTSize);
+  checkSizes.insert(2*(fTemplatePowerSize-1));
+  if (checkSizes.size() != 1){
+    cout << "KOptimalFilter. Build Kernel. Pulse Size Mismatch." << endl;
+    for (set<int>::iterator it=checkSizes.begin(); it!=checkSizes.end(); ++it)
+      cout << ' ' << *it;
+    cout << endl;
+
+    return false;
+  }
+
   
   //first calculate the denominator of the optimal filter
-  double denom = 0;
+  fAmpEstimatorDenominator = 0;
   for (unsigned int i = 0; i < fNoiseSpectrumSize; i++)
-    denom += *(fTemplatePower+i) / *(fNoiseSpectrum+i);
+    fAmpEstimatorDenominator += *(fTemplatePower+i) / *(fNoiseSpectrum+i);
     
-  //cout << "denominator " << denom << endl;
   //now caluclate the real parts of the optimal filter
   for(unsigned int i = 0; i <= fOptFilterSize/2; i++)
-    *(fOptFilter+i) =  *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+i));
+    *(fOptFilter+i) =  *(fTemplateDFT+i) / (fAmpEstimatorDenominator *  *(fNoiseSpectrum+i));
     
   //then the imaginary parts. make sure to use the correct index in the noise spectrum
   //the -1 in the imaginary part is because the optimal filter is proportional to the complex conjugate 
   //of the templateDFT
   unsigned int j = 1;
   for(unsigned int i = fOptFilterSize-1; i > fOptFilterSize/2; i--)
-    *(fOptFilter+i) = -1.0* *(fTemplateDFT+i) / (denom *  *(fNoiseSpectrum+(j++)));
+    *(fOptFilter+i) = -1.0* *(fTemplateDFT+i) / (fAmpEstimatorDenominator *  *(fNoiseSpectrum+(j++)));
   
   
   
@@ -288,44 +340,94 @@ void KOptimalFilter::SetTemplateDFTSize(unsigned int s)
   SetToRecalculate();
 }
 
-double KOptimalFilter::GetChiSquared(unsigned int aTimeBin)
+double KOptimalFilter::GetChiSquareElement(double optimalAmp, unsigned int index, unsigned int freq_k, bool debug)
+{
+
+    double sig_re = fComplex.Real(fInputPulse, fInputSize, freq_k);
+    double sig_im = fComplex.Imag(fInputPulse, fInputSize, freq_k);
+    double temp_re = fComplex.Real(fTemplateDFT, fTemplateDFTSize, freq_k);
+    double temp_im = fComplex.Imag(fTemplateDFT, fTemplateDFTSize, freq_k);
+    
+    double sig2 = sig_re*sig_re + sig_im*sig_im;
+    double temp2 = temp_re*temp_re + temp_im*temp_im;
+    
+    double chi2 = (sig2 + optimalAmp*optimalAmp*temp2)/ fNoiseSpectrum[freq_k];
+    double phase = GetPhase((double)freq_k, (double)index);
+
+    chi2 -= 2.0*optimalAmp*(sig_re*temp_re + sig_im*temp_im)*cos( phase )/fNoiseSpectrum[freq_k];
+    chi2 += 2.0*optimalAmp*(temp_im*sig_re - sig_im*temp_re)*sin( phase )/fNoiseSpectrum[freq_k]; 
+
+    if(debug){
+      cout << "amp, index, freq_k, sig_re, sig_im, temp_re, temp_im, sig**2, temp**2, phase, cos(phase), sin(phase), noise[k]" << endl;
+      cout << optimalAmp << " " << index << " " << freq_k << " " << sig_re << " " << sig_im << " " << " " << temp_re << " " << temp_im << " " << sig2 << " " << temp2 << " " << phase <<  " " << cos( phase ) << " " << sin(phase) << " " << fNoiseSpectrum[freq_k] << endl;
+      cout << "chi2 line 1 " << (sig2 + optimalAmp*optimalAmp*temp2)/ fNoiseSpectrum[freq_k] << endl;
+      cout << "chi2 line 2 " << -2.0*optimalAmp*(sig_re*temp_re + sig_im*temp_im)*cos( phase )/fNoiseSpectrum[freq_k] << endl;
+      cout << "chi2 line 3 " << 2.0*optimalAmp*(temp_im*sig_re - sig_im*temp_re)*sin( phase )/fNoiseSpectrum[freq_k] << endl; 
+    }
+
+    return chi2;
+}
+
+
+double KOptimalFilter::GetChiSquared(double optimalAmp, unsigned int index)
 {
   //
   
   //fOutputSize should equal fInputSize and fTemplateDFTSize.
   //while these are all in half-complex form, their size is equal to 
   //the size of the raw signal.
-  //fNoiseSpectrumSize should equal fInputSize/2
+  //fNoiseSpectrumSize should equal fInputSize/2+1
   
-  if(aTimeBin > fOutputSize) return -1;
-  
-  // double pi = 3.14159265358979;
-  double twopi = 6.28318530717958; 
-  
-  double optimalAmp = fOutputPulse[aTimeBin];
-  double optAmp2 = optimalAmp*optimalAmp;
+  //double twopi = 6.28318530717958; 
+
   double chi2 = 0;
-  double sig2, temp2, cos_i, sin_i, temp_re, temp_im, sig_re, sig_im; 
   
-  for(unsigned int i = 0; i < fNoiseSpectrumSize; i++) {
-  
-    sig_re = fComplex.Real(fInputPulse, fInputSize, i);
-    sig_im = fComplex.Imag(fInputPulse, fInputSize, i);
-    temp_re = fComplex.Real(fTemplateDFT, fTemplateDFTSize, i);
-    temp_im = fComplex.Imag(fTemplateDFT, fTemplateDFTSize, i);
-    
-    sig2 = sig_re*sig_re + sig_im*sig_im;
-    temp2 = temp_re*temp_re + temp_im*temp_im;
-    cos_i = cos(twopi*i *aTimeBin/fInputSize);
-    sin_i = sin(twopi*i *aTimeBin/fInputSize);
-    
-    chi2 += (sig2 + temp2*optAmp2*(cos_i*cos_i + sin_i*sin_i) 
-      - 2*optimalAmp*cos_i*(temp_re*sig_re + temp_im*sig_im) 
-      + 2*optimalAmp*sin_i*(temp_re*sig_im - temp_im*sig_re)) / fNoiseSpectrum[i];
+  //double N = 2*(fNoiseSpectrumSize - 1);
+
+  for(unsigned int i = 0; i < fNoiseSpectrumSize; i++){
+
+    chi2 += GetChiSquareElement(optimalAmp, index, i);
+
   }
+
+  return 2.0 * chi2 / fInputSize;  //divide by N for proper normalization
+
+
+
+  //the original calculation.. which may be correct, but was more complex than the new one above.
+  //actually  - i think it was wrong.
+
+  // if(index > fOutputSize) return -1;
   
-  return 2.0 * chi2; //multiply by two because integration was done only over positive frequencies, but should be done over +- frequency range.
+  // // double pi = 3.14159265358979;
+  // double twopi = 6.28318530717958; 
+  
+  // double optimalAmp = fOutputPulse[index];
+  // double optAmp2 = optimalAmp*optimalAmp;
+  // double chi2 = 0;
+  // double sig2, temp2, cos_i, sin_i, temp_re, temp_im, sig_re, sig_im; 
+  
+  // for(unsigned int i = 0; i < fNoiseSpectrumSize; i++) {
+  
+  //   sig_re = fComplex.Real(fInputPulse, fInputSize, i);
+  //   sig_im = fComplex.Imag(fInputPulse, fInputSize, i);
+  //   temp_re = fComplex.Real(fTemplateDFT, fTemplateDFTSize, i);
+  //   temp_im = fComplex.Imag(fTemplateDFT, fTemplateDFTSize, i);
+    
+  //   sig2 = sig_re*sig_re + sig_im*sig_im;
+  //   temp2 = temp_re*temp_re + temp_im*temp_im;
+  //   cos_i = cos(twopi*i *index/fInputSize);
+  //   sin_i = sin(twopi*i *index/fInputSize);
+    
+  //   chi2 += (sig2 + temp2*optAmp2*(cos_i*cos_i + sin_i*sin_i) 
+  //     - 2*optimalAmp*cos_i*(temp_re*sig_re + temp_im*sig_im) 
+  //     + 2*optimalAmp*sin_i*(temp_re*sig_im - temp_im*sig_re)) / fNoiseSpectrum[i];
+  // }
+  
+  // return 2.0 * chi2; //multiply by two because integration was done only over positive frequencies, but should be done over +- frequency range.
 }
+
+
 
 
 
