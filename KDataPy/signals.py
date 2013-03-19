@@ -59,12 +59,6 @@
 
   returns the heat at index = 10. 
 
-  If you want the heat at time = X
-
-  .. code-block:: python
-
-    heat[ X/heat.time_per_index ]
-
 
   Signals can also be added, subtraced and multipled with the '+' , '-' 
   and '*' operators. These operations return a numpy array. 
@@ -153,24 +147,23 @@ class Signal(object):
 
   '''
 
-  def __init__(self, length = 8192, time_per_index = 1.0, parameters = None):
+  def __init__(self, length = 8192,  parameters = None):
 
     self.length = length
-    self.time_per_index = time_per_index
     self._parameters = parameters
 
 
   def _val(self, time):
     if isinstance(time, int) is False and isinstance(time, float) is False and isinstance(time, long) is False:
       raise TypeError('input must be a number')
-    if time < 0 or time/self.time_per_index > self.length:
+    if time < 0 or time > self.length:
       raise IndexError('out of range')
 
 
   def __iter__(self):
     i = 0
     while i < self.length:
-      yield self._val(i * self.time_per_index)                   
+      yield self._val(i)                   
       i += 1
 
 
@@ -192,6 +185,8 @@ class Signal(object):
       self._parameters[index] = value
       is discouraged because you'll have to remember to call self._reset()
 
+      If you're a better python programmer than me (highly likely), then you can
+      fix this!
     '''
     if self._parameters[index] != value:
       self._parameters[index] =  value
@@ -237,13 +232,13 @@ class Signal(object):
     if index is None:
       return self.__array__()
     
-    return self._val(index * self.time_per_index)
+    return self._val(index)
 
   def __call__(self, index = None):
     if index is None:
       return self.__array__()
     
-    return self._val(index * self.time_per_index)
+    return self._val(index)
 
   def __len__(self):
     return self.length
@@ -261,13 +256,16 @@ class HeatSignal(Signal):
 
     Read this module's docstring. 
 
-    Note that by default, the time_per_index for Heat pulses is 
-    2.016 ms. That means that the parameters (0, 2, 3, 5)
-    used in the '_val' method should also be in units of 'ms'. The 
-    length of the pulse, by default, is 512 points.
+    The parameters (0, 2, 3, 5) used in the '_val' method should also be 
+    in units of 'sample size'. That is, if your heat pulse parameters are 
+    in 'ms', you have to convert them to sample (in Edelweiss with the Opera 
+    cards, the time per sample was 2.016, whereas with the IPE crate, it will
+    probably be exactly 2.0)
+
+    The length of the pulse, by default, is 512 points.
 
 
-    Here is the code that generates the signal
+    Here is the code that generates the signal in the _val method
 
     .. code-block:: python
 
@@ -279,12 +277,12 @@ class HeatSignal(Signal):
 
   '''
 
-  def __init__(self, length = 512, time_per_index = 2.016, parameters = None):
+  def __init__(self, length = 512,  parameters = None):
 
     if parameters is None:
-      Signal.__init__(self, length, time_per_index, [514.08,-1,21.04,16.34,0.1331,129.54]) #these are actually the parameters for chalA FID802 for 2011-11-23
+      Signal.__init__(self, length,  [514.08/2.016,-1,21.04/2.016,16.34/2.016,0.1331,129.54/2.016]) #these are actually the parameters for chalA FID802 for 2011-11-23
     else:
-      Signal.__init__(self, length, time_per_index)
+      Signal.__init__(self, length)
 
 
     
@@ -303,7 +301,7 @@ class HeatSignal(Signal):
 
     Signal._val(self, time)
 
-    if time < self._parameters[0]: 
+    if time <= self._parameters[0]: 
       return 0  
 
     pt = time-self._parameters[0]  #pt = post trigger
@@ -329,13 +327,13 @@ class BBv2IonSignal(Signal):
 
   '''
 
-  def __init__(self, length = 8192, time_per_index = 1.0, parameters = None):
+  def __init__(self, length = 8192,  parameters = None):
     
 
     if parameters is None:
-      Signal.__init__(self, length, time_per_index, [4095.0, 1.0])
+      Signal.__init__(self, length, [4095.0, 1.0])
     else:
-      Signal.__init__(self, length, time_per_index)
+      Signal.__init__(self, length)
 
 
     
@@ -350,7 +348,7 @@ class BBv2IonSignal(Signal):
     '''
     Signal._val(self, time)
 
-    if time < self._parameters[0]: 
+    if time <= self._parameters[0]: 
       return 0  
     
     return self._parameters[1]
@@ -451,8 +449,8 @@ class ArbitraryNoise(object):
 
 
     #here is the version using KData's KHalfComplexToRealDFT()
-    #this is about ~4 times as slow as using the code above. however, this is due to the sub-optimal interfaceing 
-    #of python to C/kdata here and the extra Python for-loop. If this was all run in C/C++, I'm believe KData would just as fast.
+    #this is about ~4 times slower than using the code above. however, this is due to the sub-optimal interfaceing 
+    #of python to C/kdata here and the extra Python for-loop. If this was all run in C/C++, I believe KData would just as fast.
     #I think numpy is written in FORTRAN, so it could actually be faster than C
     # import ROOT
     # import KDataPy.util 
