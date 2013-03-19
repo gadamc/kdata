@@ -24,7 +24,7 @@
 // To use this processor
 // 1. SetInputPulse(vector<double> aPulse); // or vector of floats, shorts, or ints in half-complex format. 
 // 2. (optional). SetFlags(const char* ); // set a fftw specific flag. See the fftw documentation for details.
-//                  The default option is FFTW_MEASURE. The options are 
+//                  The default option is FFTW_EXHAUSTIVE. The options are 
 //                         "ES" = FFTW_ESTIMATE
 //                         "M"  = FFTW_MEASURE
 //                         "P"  = FFTW_PATIENT
@@ -174,7 +174,7 @@ void KHalfComplexToRealDFT::SetFFTWFlag(const char* aFlag)
 
   if(aFlag != 0)
     fFFTWFlag = aFlag;
-  else fFFTWFlag = "M";
+  else fFFTWFlag = "EX";
 
   if(fFFTWFlag != "ES" && fFFTWFlag != "M" && fFFTWFlag != "P" && fFFTWFlag != "EX"){
     cerr << "KHalfComplexToRealDFT::SetOption. Invalid option: " << fFFTWFlag << endl;
