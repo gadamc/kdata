@@ -109,10 +109,10 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
   fOperaGlitchNumBinsThreshold = 5;
   fWriteExtraData = true;
 
-  fHeatPulsePeakSearchRangeMin = -25;
+  fHeatPulsePeakSearchRangeMin = -100;
   fHeatPulsePeakSearchRangeMax = 100;
   fIonPulsePeakSearchRangeMin = -1000;
-  fIonPulsePeakSearchRangeMax = 2000;
+  fIonPulsePeakSearchRangeMax = 3000;
 
 }
 
