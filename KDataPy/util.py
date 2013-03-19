@@ -82,7 +82,7 @@ class KDataUtilQuitLoop(Exception):
 
 
 #small utility functions  
-def get_as_nparray(c_pointer, size):
+def get_as_nparray(c_pointer, size, halfcomplex = False):
   '''
   
   return a numpy array from a pointer to data of length 'size'. For example, 
@@ -93,33 +93,50 @@ def get_as_nparray(c_pointer, size):
 
   This tool is useful for generating a numpy array from some internal memory in 
   a KPtaProcessor that is not the input/output.
+
+  If halfcomplex == True, the input array is assumed to be in half-complex format
+  and the output from this function is a complex numpy array of length = size/2 + 1,
+  where the output[0] and output[size/2] are entirely real.
   
   '''
-  data = numpy.zeros(size)
-  for i in range(size):
-    data[i] = c_pointer[i]
+  if halfcomplex:
+    no2p1 = size/2 + 1
+    data = numpy.zeros(no2p1, dtype=complex)
+    for i in range( no2p1 ):
+      if i == 0 or i == no2p1 - 1:
+        data[i] = complex(c_pointer[i], 0)
+      else:
+        data[i] = complex(c_pointer[i], c_pointer[size - i])
+  
+  else:
+    data = numpy.zeros(size)
+    for i in range(size):
+      data[i] = c_pointer[i]
+    
   return data
 
-def get_out(pta):
+def get_out(pta,halfcomplex = False):
   '''
   
-  return a numpy array from the output pulse of a KPtaProcessor (pta)
+  return a numpy array from the GetOutputPulse()/GetOutputPulseSize() of a KPtaProcessor (pta)
+  see get_as_nparray for further documentation
   
   '''
-  return get_as_nparray(pta.GetOutputPulse(), pta.GetOutputPulseSize())
+  return get_as_nparray(pta.GetOutputPulse(), pta.GetOutputPulseSize(),halfcomplex)
 
-def get_in(pta):
+def get_in(pta,halfcomplex = False):
   '''
 
-  return a numpy array from the input pulse of a KPtaProcessor (pta)
+  return a numpy array from the GetInputPulse()/GetInputPulseSize() of a KPtaProcessor (pta)
+  see get_as_nparray for further documentation
   
   '''
-  return get_as_nparray(pta.GetInputPulse(), pta.GetInputPulseSize())
+  return get_as_nparray(pta.GetInputPulse(), pta.GetInputPulseSize(),halfcomplex)
     
 def getRootHistFromOutput(pta):
   '''
   
-  return a ROOT TH1D histogram from the output pulse of a KPtaProcessor (pta)
+  return a ROOT TH1D histogram from the GetOutputPulse() of a KPtaProcessor (pta)
   
   '''
   h = ROOT.TH1D(pta.GetName(), pta.GetName(), pta.GetOutputPulseSize(), 0, pta.GetOutputPulseSize())
