@@ -31,14 +31,18 @@ public:
   void SetWindow(KWindow *pta){fWindow = pta;}
   void SetPreProcessor(KPtaProcessor *pta){fPreProcessor = pta;}
   KWindow* GetWindow(void){return fWindow;}
-  
+  KPtaProcessor* GetPreProcessor(void){return fPreProcessor;}
+  KRealToHalfComplexDFT& GetRealToHalfComplexDFT(void){return fR2Hc;}
+   
   void SetPulseAmplitudeShift(int a){fPulseAmplitudeShift = a;}
   void SetPulseTemplateShiftFromPreTrigger(double aVal){fPulseTemplateShift = -1*aVal;}
+  double GetPulseTemplateShiftFromPreTrigger(void) const {return fPulseTemplateShift;}
+
   void SetAmplitudeEstimatorSearchRangeMin(double aVal){fAmplitudeEstimatorSearchRangeMin = aVal;}
   void SetAmplitudeEstimatorSearchRangeMax(double aVal){fAmplitudeEstimatorSearchRangeMax = aVal;}
-  double GetPulseTemplateShiftFromPreTrigger(void) const {return fPulseTemplateShift;}
   double GetAmplitudeEstimatorSearchRangeMin(void) const {return fAmplitudeEstimatorSearchRangeMin;}
   double GetAmplitudeEstimatorSearchRangeMax(void) const {return fAmplitudeEstimatorSearchRangeMax;}
+
   int GetPulseAmplitudeShift(void){return fPulseAmplitudeShift;}
   void SetIonPulseStartTime(double peakPos){fIonPulsePeakPos = peakPos;}
 
@@ -64,7 +68,7 @@ private:
   double fPulseTemplateShift;
   double fAmplitudeEstimatorSearchRangeMin;  //minimum value of pulse amplitude search range, relative to the pulse shift. that is, if you set -10, then the fPulseTeplateShift-10 is the minimum value of the range searched
   double fAmplitudeEstimatorSearchRangeMax;  //maximum value of pulse amplitude search range, relative to the pulse shift. that is, if you set 100, then the fPulseTeplateShift+100 is the maximum value of the range searched
-  int fPulseAmplitudeShift;
+  int fPulseAmplitudeShift; //the position, relative to the pulse trigger, from which the pulse amplitude is always estimated. This is useful for the measurement of the baseline resolution.
   double fIonPulsePeakPos;
   
   KRealToHalfComplexDFT fR2Hc;
