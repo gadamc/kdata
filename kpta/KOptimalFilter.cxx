@@ -5,6 +5,13 @@
 //
 // *Copyright 2010 Karlsruhe Inst. of Technology. All Rights Reserved.
 //
+// This class encapsulates all the steps needed to use the Wiener Optimal Filter. To calculate the optimal filter 
+// amplitude as a function of pulse start-time for a real physical pulse of length N, you must supply an instance of this class
+// with the pulse template (in fourier space in half-complex notation array of size N), and the noise power spectrum of length N/2 + 1.
+// Then, for each pulse, you give the instance of this class the input pulse (again in fourier space) via the SetInput method. 
+// Next, you call RunProcess(). The amplitude estimator as a function of pulse start-time (where the start-times are the same
+// as the discrete pulse sample points) is found in the output pulse, obtained via GetOutput().
+//
 // The template-DFT must be in half-complex format (see KRealToHalfComplexDFT)
 // and should be of size N.
 // But the noise spectrum is the average power spectrum of size N/2 + 1. 
@@ -23,7 +30,60 @@
 // was calculated, then you must take care to window the input signal before you calculate the Fourier transform
 // of that signal and pass it to this class.
 //
-
+// One can choose three methods of calculation, which will give the exact same results. However, depending upon the length
+// of the pulse and the range of interest (specified by fOptimalFilterTimeRangeMin/Max), one of these methods will 
+// require the fewest number of operations to perform the calculation. The choices are
+//    a. use inverse FFT
+//    b. direct integration
+//    c. chi^2 minimization
+// and are selected by fUseInverseFFT (true = a, false = b) or by not using the KOptimalFilter::RunProcess method, and rather
+// using a minimization routine to find the amplitudet/start-time that minimizes KOptimalFilter::GetChiSquared. 
+//
+// The number of operations for each method are estimated here.
+// 
+// a. use inverse FFT 
+//    There are two things that must be done here. The first is the multiplication of the N-lengthed input pulse with
+//    the optimal filter kernel. This is done using the KHalfComplexArray::Multiply method. This multiply method is not
+//    terribly efficient since it was written for clarity and for dealing with the half-complex array notation. This method
+//    takes about 21*N operations. 
+//
+//    Following this, there are N*logN operations (roughly) that need to be done for the inverse FFT. The FFTW library, used
+//    in kdata to compute the DFT, searches for the fastest algorithm possible, so N*logN may not be exactly correct. But for 
+//    comparison with method (b), this estimate is used. 
+//   
+//    In total, there are ~ 20 N + N log N operations using method a.  Then, one must search the output over the range (either N)
+//    or between fOptimalFilterTimeRangeMin/Max in order to find the maximum amplitude, which is another R operations, where 
+//    fOptimalFilterTimeRangeMax - fOptimalFilterTimeRangeMin =  R.
+//
+// b. direct integration
+//    Instead of using FFTW to calculate the amplitude estimator for all pulse starting points (still with single bin accuracy), 
+//    the integration in fourier space is done explicity, but only in the time range specified by fOptimalFilterTimeRangeMin/Max. 
+//    For each pulse start time in R, there are roughly 15N + 10 operations. 
+//    So, This will take R * (15N + 10) 
+// 
+//
+// c. chi^2 minimization. 
+//   For a pulse of length N = 512 (8192), the number of operations for method (a) is ~12k (~196k). It may be possible to use
+//   a minimization algorithm to attain the best-fit pulse amplitude and start-time in a fewer number of operations. A number of 
+//   minimization routines are available via ROOT. If you're using this class within Python, the Scipy/Numpy libraries also have
+//   minimization routines. 
+//   For this purpose, the chi^2 as a function of pulse amplitude and start-time is available. See the KOptimalKamper for
+//   an example. Preliminary testing with a perfect filter (the noise power spectrum and pulse templates are exactly known) shows 
+//   that the minimimum chi^2 value is reached when analyzing a pulse of significant amplitude (well above the noise) after ~25-100
+//   calls of the chi^2 function. The chi^2 function requires ~35N operations.  Optimization of this method could reduce the number of
+//   calls down to ~10N, perhaps. 
+//
+//
+// Comparison of number of operations between methods.
+//    Clearly, chi^2 minimization appears to require the largest number of operations. 
+//    One can see that for all cases (except for R = 1), method b is slower than method a, and MUCH slower for reasonable values of R.
+//    Even if one were to optimize the code such that R*(15N + 10) -> R*(5N + 10), method b is slower than a for R > 4. 
+//
+//
+// The comments above were detemined by simply attempting to count the number of operations required for each line of code. There has
+// been no actual time measurements done for these algorithms, so your mileage may vary.  When/If measurements become available, they
+// should be documented here. 
+//
 
 #include "KOptimalFilter.h"
 #include <iostream>
@@ -85,7 +145,7 @@ void KOptimalFilter::InitializeMembers(void)
   fHcPower = new KHalfComplexPower();
   fHcPower->DoNotDeletePulses(true);
 
-  fUseInverseFFT = false;  
+  fUseInverseFFT = true;  
   fOptimalFilterTimeRangeMin = 0;
   fOptimalFilterTimeRangeMax = -1;  //unless the user changes this, the range will go to the end of the output pulse.
 
@@ -130,27 +190,58 @@ bool KOptimalFilter::RunProcess(void)
     return false;
   }
 
-  //g(f) = h(f) * s(f)  where  s(f) = input, h(f) = optFilter
-  fComplex.Multiply(fOptFilterAndSignal, fOptFilter, fInputPulse, fOptFilterAndSignalSize);
-
-
-  if(fUseInverseFFT)
+  
+  if(fUseInverseFFT) {
+    //g(f) = h(f) * s(f)  where  s(f) = input, h(f) = optFilter
+    fComplex.Multiply(fOptFilterAndSignal, fOptFilter, fInputPulse, fOptFilterAndSignalSize);
     return fHc2r->RunProcess();  //inverse fourier transform to get the amplitude estimator as a function of time.
+  }
 
 
-  //if, calculating the ingegral explicitly, integrate just over the real parts
+
+  //if, calculating the ingegral explicitly, 
+  
   unsigned int max = fOutputSize;
-  if(fOptimalFilterTimeRangeMax > 0)
+  if(fOptimalFilterTimeRangeMax > 0 && fOptimalFilterTimeRangeMax < (int)fOutputSize)
     max = fOptimalFilterTimeRangeMax;
   
-  for(unsigned int i = fOptimalFilterTimeRangeMin; i < max; i++ ){
-    fOutputPulse[i] = 0;
-    for(unsigned int k = 0; k < fOptFilterAndSignalSize/2; k++)
-      fOutputPulse[i] += fOptFilterAndSignal[k] * cos(GetPhase(k, i));
 
-    fOutputPulse[i] /= fOptFilterAndSignalSize;
+  double freqsum;
+
+  for(unsigned int timeindex = fOptimalFilterTimeRangeMin; timeindex < max; timeindex++ ){
+
+    //this has been distilled from the original discrete formula of the amplitude estimator for the optimal
+    //filter, and exploits the hermiticity of the fourier-space arrays.    
+    
+    fOutputPulse[timeindex] = fComplex.Real(fOptFilter, fOptFilterSize, 0) * fComplex.Real(fInputPulse, fInputSize, 0)/fInputSize;
+    freqsum = 0;
+    //8 operations
+
+    //plus N/2 * ( 14 + 8 + 10); 14 for the real*real +- imag*imam, 8 for getphase, ~10 for cos/sin
+    // ~15 N 
+    for(unsigned int k = 1; k < fInputSize/2 + 1; k++){
+      freqsum += cos(GetPhase(k, timeindex))*(
+          fComplex.Real(fOptFilter, fOptFilterSize, k)* fComplex.Real(fInputPulse, fInputSize, k)
+            -
+          fComplex.Imag(fOptFilter, fOptFilterSize, k)* fComplex.Imag(fInputPulse, fInputSize, k)
+          )
+
+        - sin(GetPhase(k,timeindex))*(
+            fComplex.Real(fOptFilter, fOptFilterSize, k)*fComplex.Imag(fInputPulse, fInputSize, k)
+            +
+            fComplex.Imag(fOptFilter, fOptFilterSize, k)*fComplex.Real(fInputPulse, fInputSize, k)
+          );
+    }
+
+    fOutputPulse[timeindex] += 2.0*freqsum/fInputSize;
+
+    //4 operations
+
+    //~15N + 12... or  ~15 N + 10
   }
+
   return true;
+
 }
 
 bool KOptimalFilter::BuildFilter(void)
@@ -340,7 +431,7 @@ void KOptimalFilter::SetTemplateDFTSize(unsigned int s)
   SetToRecalculate();
 }
 
-double KOptimalFilter::GetChiSquareElement(double optimalAmp, unsigned int index, unsigned int freq_k, bool debug)
+double KOptimalFilter::GetChiSquareElement(double optimalAmp, double index, unsigned int freq_k, bool debug)
 {
 
     double sig_re = fComplex.Real(fInputPulse, fInputSize, freq_k);
@@ -355,21 +446,21 @@ double KOptimalFilter::GetChiSquareElement(double optimalAmp, unsigned int index
     double phase = GetPhase((double)freq_k, (double)index);
 
     chi2 -= 2.0*optimalAmp*(sig_re*temp_re + sig_im*temp_im)*cos( phase )/fNoiseSpectrum[freq_k];
-    chi2 += 2.0*optimalAmp*(temp_im*sig_re - sig_im*temp_re)*sin( phase )/fNoiseSpectrum[freq_k]; 
+    chi2 -= 2.0*optimalAmp*(temp_im*sig_re - sig_im*temp_re)*sin( phase )/fNoiseSpectrum[freq_k]; 
 
     if(debug){
       cout << "amp, index, freq_k, sig_re, sig_im, temp_re, temp_im, sig**2, temp**2, phase, cos(phase), sin(phase), noise[k]" << endl;
       cout << optimalAmp << " " << index << " " << freq_k << " " << sig_re << " " << sig_im << " " << " " << temp_re << " " << temp_im << " " << sig2 << " " << temp2 << " " << phase <<  " " << cos( phase ) << " " << sin(phase) << " " << fNoiseSpectrum[freq_k] << endl;
       cout << "chi2 line 1 " << (sig2 + optimalAmp*optimalAmp*temp2)/ fNoiseSpectrum[freq_k] << endl;
       cout << "chi2 line 2 " << -2.0*optimalAmp*(sig_re*temp_re + sig_im*temp_im)*cos( phase )/fNoiseSpectrum[freq_k] << endl;
-      cout << "chi2 line 3 " << 2.0*optimalAmp*(temp_im*sig_re - sig_im*temp_re)*sin( phase )/fNoiseSpectrum[freq_k] << endl; 
+      cout << "chi2 line 3 " << -2.0*optimalAmp*(temp_im*sig_re - sig_im*temp_re)*sin( phase )/fNoiseSpectrum[freq_k] << endl; 
     }
 
     return chi2;
 }
 
 
-double KOptimalFilter::GetChiSquared(double optimalAmp, unsigned int index)
+double KOptimalFilter::GetChiSquared(double optimalAmp, double index)
 {
   //
   
@@ -378,53 +469,15 @@ double KOptimalFilter::GetChiSquared(double optimalAmp, unsigned int index)
   //the size of the raw signal.
   //fNoiseSpectrumSize should equal fInputSize/2+1
   
-  //double twopi = 6.28318530717958; 
 
   double chi2 = 0;
   
-  //double N = 2*(fNoiseSpectrumSize - 1);
-
-  for(unsigned int i = 0; i < fNoiseSpectrumSize; i++){
-
+  for(unsigned int i = 0; i < fNoiseSpectrumSize; i++)
     chi2 += GetChiSquareElement(optimalAmp, index, i);
 
-  }
 
   return 2.0 * chi2 / fInputSize;  //divide by N for proper normalization
 
-
-
-  //the original calculation.. which may be correct, but was more complex than the new one above.
-  //actually  - i think it was wrong.
-
-  // if(index > fOutputSize) return -1;
-  
-  // // double pi = 3.14159265358979;
-  // double twopi = 6.28318530717958; 
-  
-  // double optimalAmp = fOutputPulse[index];
-  // double optAmp2 = optimalAmp*optimalAmp;
-  // double chi2 = 0;
-  // double sig2, temp2, cos_i, sin_i, temp_re, temp_im, sig_re, sig_im; 
-  
-  // for(unsigned int i = 0; i < fNoiseSpectrumSize; i++) {
-  
-  //   sig_re = fComplex.Real(fInputPulse, fInputSize, i);
-  //   sig_im = fComplex.Imag(fInputPulse, fInputSize, i);
-  //   temp_re = fComplex.Real(fTemplateDFT, fTemplateDFTSize, i);
-  //   temp_im = fComplex.Imag(fTemplateDFT, fTemplateDFTSize, i);
-    
-  //   sig2 = sig_re*sig_re + sig_im*sig_im;
-  //   temp2 = temp_re*temp_re + temp_im*temp_im;
-  //   cos_i = cos(twopi*i *index/fInputSize);
-  //   sin_i = sin(twopi*i *index/fInputSize);
-    
-  //   chi2 += (sig2 + temp2*optAmp2*(cos_i*cos_i + sin_i*sin_i) 
-  //     - 2*optimalAmp*cos_i*(temp_re*sig_re + temp_im*sig_im) 
-  //     + 2*optimalAmp*sin_i*(temp_re*sig_im - temp_im*sig_re)) / fNoiseSpectrum[i];
-  // }
-  
-  // return 2.0 * chi2; //multiply by two because integration was done only over positive frequencies, but should be done over +- frequency range.
 }
 
 

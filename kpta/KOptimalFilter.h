@@ -67,16 +67,21 @@ public:
   virtual void SetOutputPulse(double *aPulse);
   virtual void SetOutputPulseSize(unsigned int s);
   
-  virtual double GetChiSquared(double amp, unsigned int index);
+  virtual double GetChiSquared(double amp, double index);
 
   inline double GetPhase(double freq_k, double index){return  2.0 * M_PI * freq_k * index / (2.0*((double)fNoiseSpectrumSize - 1.0));}
-  double GetChiSquareElement(double optimalAmp, unsigned int index, unsigned int freq_k, bool debug = false);
+  double GetChiSquareElement(double optimalAmp, double index, unsigned int freq_k, bool debug = false);
 
   virtual unsigned int GetOptimalFilterTimeRangeMin(void){return fOptimalFilterTimeRangeMin;}
   virtual void SetOptimalFilterTimeRangeMin(unsigned int a){fOptimalFilterTimeRangeMin = a;}
 
   virtual int GetOptimalFilterTimeRangeMax(void){return fOptimalFilterTimeRangeMax;}
   virtual void SetOptimalFilterTimeRangeMax(int a){fOptimalFilterTimeRangeMax = a;}
+
+  void SetUseInverseFFTMethod(bool opt=true){fUseInverseFFT = opt;}
+  bool GetUseInverseFFTMethod(void){return fUseInverseFFT;}
+
+
 
 protected:
   double *fNoiseSpectrum;
@@ -103,7 +108,7 @@ protected:
   unsigned int fOptimalFilterTimeRangeMin;  //the minimum search range for the optimal filter amplitude estimator (default = 0)
   int fOptimalFilterTimeRangeMax;  //the maximim search range for the optimal filter amplitude estimator (default = pulse size)
 
-  bool fUseInverseFFT; 
+  bool fUseInverseFFT;
 
 private:
   //private methods
@@ -111,6 +116,8 @@ private:
 
   KHalfComplexArray fComplex;
   
+
+
   //ClassDef(KOptimalFilter,1);
   
 };
