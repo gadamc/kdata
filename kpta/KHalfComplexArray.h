@@ -114,6 +114,16 @@ template <class T> void KHalfComplexArray::Multiply(std::vector<T> &result, cons
 
 template <class T> void KHalfComplexArray::Multiply(T *result, const T* left, const T* right, unsigned int size)
 {
+  //number of operations for this method
+  // 2 operations for each SetReal
+  // 5 operations for each SetImag
+  // 2 operations for each Real access
+  // 4 operations for each Imag access
+  // SetReal<T>() --> 17 operations in this line!
+  // SetImag<T>() --> 19 operations in this line!
+  //
+  // So...N/2 * 36 operations... 18 N total operations
+
   for(unsigned int i = 0; i < size/2 + 1; i++) {
     SetReal<T>(result, size, i, Real(left, size, i) * Real(right, size, i) - Imag(left, size, i) * Imag(right, size, i) );  
     SetImag<T>(result, size, i, Real(left, size, i) * Imag(right, size, i) + Imag(left, size, i) * Real(right, size, i) ); 
