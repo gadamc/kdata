@@ -331,7 +331,7 @@ Int_t KDataWriter::Fill(void)
     return fTree->Fill();
   }
   else 
-    return -1;
+    return -2;
 }
 
 Int_t KDataWriter::Write(const Char_t *name, Int_t option, Int_t bufsize)

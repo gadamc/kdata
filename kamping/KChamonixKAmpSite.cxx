@@ -58,6 +58,7 @@
 #include "KLinearRemoval.h"
 #include "KBaselineRemoval.h"
 #include "KPatternRemoval.h"
+#include "KNullProcessor.h"
 #include "KPulsePolarityCalculator.h"
 #include "TH1D.h"
 #include <algorithm>
@@ -84,7 +85,8 @@ KChamonixKAmpSite::KChamonixKAmpSite(void): fPulseTemplateShifter(0,0,0,0)  //se
 
   fHeatPreProcessor = new KPulseAnalysisChain();
   fHeatPreProcessor->SetIsOwner();
-  fHeatPreProcessor->AddProcessor( new KBaselineRemoval() );
+  //fHeatPreProcessor->AddProcessor( new KBaselineRemoval() );
+  fHeatPreProcessor->AddProcessor( new KNullProcessor() );
 
   fBBv1IonPreProcessor  = new KPulseAnalysisChain();
   fBBv1IonPreProcessor->SetIsOwner();
